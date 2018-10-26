@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include <iostream>
 #include "Singleton.hpp"
 
 int main(int argc, char const *argv[]) {
