@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Singleton.hpp"
+#include "GameState.hpp"
 
 int main(int argc, char const *argv[]) {
 

@@ -18,7 +18,8 @@ main: $(OBJECTS)
 	g++ -o $@ -c $^	$(ADDITIONAL_H)
 
 #clean:	$(shell rm ./build/*) main
-
+clean:
+	rm $(OBJECTS)
 
 info:
 	$(info $(EXTRA_O) $(ADDITIONAL_DIR) $(LIBRARIES))
