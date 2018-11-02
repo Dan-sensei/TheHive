@@ -18,7 +18,7 @@ class Arena{
     private:
 
         uint8_t *memory;
-        uint8_t *firstElement;
+        uint8_t *memoryEnd;
         std::stack<uint8_t*> memoryStack;
 };
 

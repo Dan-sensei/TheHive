@@ -2,7 +2,8 @@
 
 
 Arena::Arena(std::size_t size){
-    firstElement = memory = new uint8_t[size];
+    memory = new uint8_t[size];
+    memoryEnd = memory + size;
     memoryStack.push(memory);
 }
 
@@ -20,8 +21,8 @@ void * Arena::allocate(std::size_t size){
     uint8_t *next = p;
     if(memoryStack.empty()){
         next += size;
-        if(next >= memory)
-            next = firstElement;
+        if(next >= memoryEnd)
+            next = memory;
         memoryStack.push(next);
     }
     return p;
