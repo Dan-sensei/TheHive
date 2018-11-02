@@ -1,0 +1,115 @@
+I N F O 
+-------
+
+Title                  : "TNK gas station" for Painkeep Arena 3.0
+
+URL                    : http://id-games.narod.ru
+                         http://anton.stonks.com   
+
+Date of release        : 30 July 2003
+
+Files in archive       : gas-st.pk3
+                         gas-station.txt
+
+Author                 : Anton
+
+E-mail                 : ap2@hotbox.ru
+
+Homepages              : http://www.shedevr.org/zelda64rus 
+                         (Zelda64: OoT - russian translation)
+                         http://id-games.narod.ru 
+                         (maps for Doom2, Quake & Quake 3 Arena, mapobjects for Quake3,
+                         Q3 mod - "Grazy Fire" (by Kirk Barnes) and some Q3 editing tutorials.
+                         http://anton.stonks.com 
+                         (maps for Painkeep Arena mod only) 
+
+Description            : My PKA map #2.
+                         An idea of converting something that I do very often on my job, for Q3 PKA world.
+                         I've done a lot of advertising for russian oil company "TNK" 
+                         and for ukrainian oil company "KLO", 
+                         so why this is a "TNK"-style gas station (with some "KLO" elements) :)
+                         The idea of disappearing land was taken from the movie "Langoliers" 
+                         and the teleporter style taken from the movie "Phantasm".
+                 
+Game type              : free for all / tourney	 
+
+Max players            : 2-10 players deathmatch.
+
+Bot support            : Yes.                     
+
+New textures           : A lot of + cool "rapture" skybox by amethyst7 (http://amethyst7.gotdoofed.com)
+
+New models             : Oak trees by Grim Reaper (Grimreaper@planetquake.com).
+                         Small plants by Nathan Silvers (nsilvers@home.com).
+                         QkToilet by ... (forgot the author, sorry), retextured by me.
+                         Gas pumps by QkennyQ (http://www.planetquake.com/qkennyq), retextured by me.
+                         Oil cistern by me.
+
+Known Bugs             : FPS may be a bit low in basement, but plays still ok.
+
+Base                   : New map, based on TNK-style gas-stations
+
+Editors used           : GTK Radiant 1.2.11 & Q3map2 by Ydnar
+
+Other Q3A maps 
+by author              : Towers of Death - http://id-games.narod.ru
+                                  Utopia - http://id-games.narod.ru
+                                Lava Pit - http://id-games.narod.ru
+                          Chemical Arena - http://id-games.narod.ru
+                                 Skytown - http://id-games.narod.ru
+                                Skytown2 - http://id-games.narod.ru
+
+                         (All Q3A maps also available with reviews at www.planetquake.com/lvl)
+
+Other Painkeep Arena
+maps by author         : Gravity Lab - http://id-games.narod.ru
+                                       http://anton.stonks.com
+                         Skytown PKA - http://id-games.narod.ru
+                                       http://anton.stonks.com   
+                                       painkeeped by Sh1thead - http://sh.stonks.com
+                             
+  
+Build Time             : Started a year ago, then finished in 3 weeks or so, with long breaks.
+
+Compile machine        : Celeron 2 Ghz / 256 Mb / GeForce2MX400 64 mb.
+
+Compiling time         : ~ 20 min (bsp -meta, -vis -fast, -light -fast -filter -super 2)
+
+
+H O W  T O  P L A Y 
+------------------------
+
+Unzip gas-st.zip to "/quake3/pkarena3" directory
+Run Quake 3 Arena, run Painkeep Arena 3.0 mod, at the console type: map gas-st
+
+
+T H A N K S   TO:
+-----------------
+
+Ergodic
+Flusyndrome
+Uberstonks
+Kirk Barnes
+Alex Petelyak (for testing)
+To guys from www.groundplan.com message boards
+To guys from www.quake3world.com/forums
+
+id Software (www.idsoftware.com) for Quake
+Team Evolve (www.team-evolve.com) - for Painkeep Arena
+www.qeradiant.com - for the editors
+
+
+L E G A L  S T U F F
+--------------------
+
+Distribute this level as you want, 
+but please do not remove this .txt file from the .zip or .pk3 archive.
+
+Have fun.
+
+:: Anton ::
+
+ap2@hotbox.ru
+       
+
+               
