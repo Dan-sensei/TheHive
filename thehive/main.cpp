@@ -6,6 +6,7 @@
 
 #include "Singleton.hpp"
 #include "Arena.hpp"
+#include "ObjectManager.hpp"
 
 //Funciones de Fran Gallego para imprimir memoria por consola ==============================¬
 //                                                                                          |
@@ -32,56 +33,42 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 }
 //============================================================================================
 
-class Dummy{
-    public:
-        Dummy(uint16_t _u, uint8_t _x, uint8_t _y)
-        :uee(_u), x(_x), y(_y)
-        {
-            std::cout << "Construyendo Dummy \n";
-        };
-        ~Dummy(){
-            std::cout << "Destruyendo Dummy \n";
-        };
-    private:
-        uint16_t uee;
-        uint8_t x, y;
-};
+//class Dummy{
+//    public:
+//        Dummy(uint16_t _u, uint8_t _x, uint8_t _y)
+//        :uee(_u), x(_x), y(_y)
+//        {
+//            std::cout << "Construyendo Dummy \n";
+//        };
+//        ~Dummy(){
+//            std::cout << "Destruyendo Dummy \n";
+//        };
+//    private:
+//        uint16_t uee;
+//        uint8_t x, y;
+//};
 
 
-void *operator new(std::size_t size, Arena &A){
-    return A.allocate(size);
-}
 
-void operator delete(void* p, Arena &A){
-    return A.deallocate(p);
-}
 
 int main(int argc, char const *argv[]) {
 
-    std::cout << "Ey yo wassup my nigga" << std::endl;
+    std::cout << "Init" << std::endl;
+
     uint8_t* p;
 
-    Arena DummyArena(128);
+    ObjectManager Manager;
 
-    std::map<uint16_t, Dummy*>  OBJ;
+    uint16_t hero = Manager.createEntity();
+    std::cout << "Hero " << hero << std::endl;
 
-    OBJ[0] = new (DummyArena) Dummy(1, 2, 3);
-    OBJ[1] = new (DummyArena) Dummy(3, 4, 5);
-    OBJ[3] = new (DummyArena) Dummy(6, 7, 8);
-
+    Manager.addComponentToEntity(TRANSFORM, hero);
     // Print memory
-    p  = reinterpret_cast<uint8_t*>(OBJ[0]) - 16;
-    printRawMem(p, 16, 10);
-    std::cout << "--------------\n";
+    //p  = reinterpret_cast<uint8_t*>(2) - 16;
+    //printRawMem(p, 16, 10);
+    //std::cout << "--------------\n";
 
-    OBJ[0]->~Dummy();
-    DummyArena.deallocate(OBJ[0]);
-
-    OBJ[1]->~Dummy();
-    DummyArena.deallocate(OBJ[1]);
-
-    OBJ[3]->~Dummy();
-    DummyArena.deallocate(OBJ[2]);
+    std::cout << "End" << std::endl;
 
 
     return 0;

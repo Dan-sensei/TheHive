@@ -12,12 +12,12 @@ LIBRARIES := -lGL -lGLEW -lglfw -lassimp -lSOIL2
 
 main: $(OBJECTS)
 	g++ -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
-	./main
 
 %.o: ../%.cpp
 	g++ -o $@ -c $^	$(ADDITIONAL_H)
 
-#clean:	$(shell rm ./build/*) main
+clean:
+	rm -f $(BUILD)*.o
 
 
 info:
