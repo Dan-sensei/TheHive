@@ -7,6 +7,8 @@
 #include "Singleton.hpp"
 #include "Arena.hpp"
 #include "ObjectManager.hpp"
+#include "Game.hpp"
+#include "Util.hpp"
 
 //Funciones de Fran Gallego para imprimir memoria por consola ==============================¬
 //                                                                                          |
@@ -54,6 +56,11 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 int main(int argc, char const *argv[]) {
 
     std::cout << "Init" << std::endl;
+    Game THE_HIVE;
+
+    THE_HIVE.RUN();
+    THE_HIVE.CLIN();
+
 
     uint8_t* p;
 
