@@ -155,8 +155,8 @@ Model GameEngine::createModel(const std::string &path, const gg::Vector3f &posit
     return newModel;
 }
 
-bool GameEngine::key(irr::EKEY_CODE keycode){
-    return listener.IsKeyDown(keycode);
+bool GameEngine::key(gg::KEYCODES keyCode){
+    return listener.IsKeyDown(keyCode);
 }
 
 //  ---

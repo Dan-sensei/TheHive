@@ -1,5 +1,8 @@
 #include "Game.hpp"
 #include "Camera.hpp"
+#include "Util.hpp"
+
+#define MOVEMENT_SPEED 1.f
 
 Game::Game(){
     engine.Starto();
@@ -23,11 +26,26 @@ void Game::RUN(){
 
     tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
-    Camera camera = engine.createCamera(gg::Vector3f(-50, 0, 100), gg::Vector3f(0, 0, 50));
+    Camera camera = engine.createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
     //camera.setPosition(gg::Vector3f(-50, 0, 100));
     //camera.setTarget(gg::Vector3f(0, 0, 50));
 
-    while(engine.isWindowOpen()){
+    while(engine.isWindowOpen()) {
+
+        gg::Vector3f nextPosition = tioPablomanesQueNoEstaTanMal.getPosition();
+
+        if(engine.key(gg::GG_W))
+            nextPosition.Z += MOVEMENT_SPEED;
+        else if(engine.key(gg::GG_S))
+            nextPosition.Z -= MOVEMENT_SPEED;
+
+        if(engine.key(gg::GG_A))
+            nextPosition.X -= MOVEMENT_SPEED;
+        else if(engine.key(gg::GG_D))
+            nextPosition.X += MOVEMENT_SPEED;
+
+        tioPablomanesQueNoEstaTanMal.setPosition(nextPosition);
+
         engine.Dro();
         engine.DisplayFPS();
     }

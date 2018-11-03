@@ -15,6 +15,6 @@ bool EventListener::OnEvent(const irr::SEvent& event) {
 }
 
 // This is used to check whether a key is being held down
-bool EventListener::IsKeyDown(irr::EKEY_CODE keyCode) const {
-    return keyMap[keyCode];
+bool EventListener::IsKeyDown(gg::KEYCODES key) const {
+    return keyMap[key];
 }

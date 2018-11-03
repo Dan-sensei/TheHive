@@ -9,7 +9,7 @@ public:
     EventListener();
 
     virtual bool OnEvent(const irr::SEvent& event);
-    virtual bool IsKeyDown(irr::EKEY_CODE keycode) const;
+    virtual bool IsKeyDown(gg::KEYCODES key) const;
 private:
     bool keyMap[irr::KEY_KEY_CODES_COUNT];
 };

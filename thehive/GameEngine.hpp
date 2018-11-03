@@ -35,7 +35,7 @@ public:
     Camera createCamera(const gg::Vector3f &position = {0,0,0}, const gg::Vector3f &direction = {0,0,0});
     Model createModel(const std::string &path, const gg::Vector3f &position = {0,0,0});
 
-    bool key(irr::EKEY_CODE keycode);
+    bool key(gg::KEYCODES keyCode);
 
     void clean();
 
