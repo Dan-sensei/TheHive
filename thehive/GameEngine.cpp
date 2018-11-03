@@ -92,6 +92,7 @@ void GameEngine::loadMesh(ENode* node){
 
 }
 
+
 //  ---
 //  Hides or displays the cursor
 //==================================================================================
@@ -99,37 +100,45 @@ void GameEngine::HideCursor(bool flag){
     device->getCursorControl()->setVisible(!flag);
 }
 
+
 //  ---
-//  Adds a camera to the scene
+//  Adds a camera to the scene with optional initial coordinates
 //==================================================================================
-void GameEngine::addCamera(){
-    irr::SKeyMap keyMap[8];
-    keyMap[0].Action = irr::EKA_MOVE_FORWARD;
-    keyMap[0].KeyCode = irr::KEY_UP;
-    keyMap[1].Action = irr::EKA_MOVE_FORWARD;
-    keyMap[1].KeyCode = irr::KEY_KEY_W;
+Camera GameEngine::createCamera(const gg::Vector3f &position /* = {0,0,0} */, const gg::Vector3f &direction /* = {0,0,0} */) {
 
-    keyMap[2].Action = irr::EKA_MOVE_BACKWARD;
-    keyMap[2].KeyCode = irr::KEY_DOWN;
-    keyMap[3].Action = irr::EKA_MOVE_BACKWARD;
-    keyMap[3].KeyCode = irr::KEY_KEY_S;
+    Camera newCamera;
+    newCamera.mCamera = smgr->addCameraSceneNode(
+        0,
+        irr::core::vector3df(position.X, position.Y, position.Z),
+        irr::core::vector3df(direction.X, direction.Y, direction.Z)
+    );
 
-    keyMap[4].Action = irr::EKA_STRAFE_LEFT;
-    keyMap[4].KeyCode = irr::KEY_LEFT;
-    keyMap[5].Action = irr::EKA_STRAFE_LEFT;
-    keyMap[5].KeyCode = irr::KEY_KEY_A;
+    //irr::SKeyMap keyMap[8];
+    //keyMap[0].Action = irr::EKA_MOVE_FORWARD;
+    //keyMap[0].KeyCode = irr::KEY_UP;
+    //keyMap[1].Action = irr::EKA_MOVE_FORWARD;
+    //keyMap[1].KeyCode = irr::KEY_KEY_W;
 
-    keyMap[6].Action = irr::EKA_STRAFE_RIGHT;
-    keyMap[6].KeyCode = irr::KEY_RIGHT;
-    keyMap[7].Action = irr::EKA_STRAFE_RIGHT;
-    keyMap[7].KeyCode = irr::KEY_KEY_D;
+    //keyMap[2].Action = irr::EKA_MOVE_BACKWARD;
+    //keyMap[2].KeyCode = irr::KEY_DOWN;
+    //keyMap[3].Action = irr::EKA_MOVE_BACKWARD;
+    //keyMap[3].KeyCode = irr::KEY_KEY_S;
 
-    smgr->addCameraSceneNodeFPS(0, 100, 0.5, -1, keyMap, 8);
+    //keyMap[4].Action = irr::EKA_STRAFE_LEFT;
+    //keyMap[4].KeyCode = irr::KEY_LEFT;
+    //keyMap[5].Action = irr::EKA_STRAFE_LEFT;
+    //keyMap[5].KeyCode = irr::KEY_KEY_A;
 
+    //keyMap[6].Action = irr::EKA_STRAFE_RIGHT;
+    //keyMap[6].KeyCode = irr::KEY_RIGHT;
+    //keyMap[7].Action = irr::EKA_STRAFE_RIGHT;
+    //keyMap[7].KeyCode = irr::KEY_KEY_D;
 
-    // smgr->addCameraSceneNode();
+    //smgr->addCameraSceneNodeFPS(0, 100, 0.5, -1, keyMap, 8);
 
+    return newCamera;
 }
+
 
 //  ---
 //  Cleans game engine stuff

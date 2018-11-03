@@ -1,7 +1,9 @@
 #include "Game.hpp"
+#include "Camera.hpp"
 
 Game::Game(){
     engine.Starto();
+    engine.HideCursor(true);
 }
 
 Game::~Game(){
@@ -15,8 +17,9 @@ void Game::RUN(){
     ENode *mierdote = new ENode("assets/Models/obradearte/algo.obj", "assets/Models/obradearte/prueba1.png");
     engine.loadMesh(mierdote);
 
-    engine.HideCursor(true);
-    engine.addCamera();
+    Camera camera = engine.createCamera(gg::Vector3f(-50, 0, 100), gg::Vector3f(0, 0, 50));
+    //camera.setPosition(gg::Vector3f(-50, 0, 100));
+    //camera.setTarget(gg::Vector3f(0, 0, 50));
 
     while(engine.isWindowOpen()){
         engine.Dro();

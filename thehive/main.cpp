@@ -1,8 +1,8 @@
 #include <iostream>
 #include "Singleton.hpp"
-//#include <irrlicht/irrlicht.h>
-
 #include "Game.hpp"
+#include "Util.hpp"
+
 int main(int argc, char const *argv[]) {
 
     Game THE_HIVE;

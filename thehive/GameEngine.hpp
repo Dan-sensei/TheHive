@@ -8,7 +8,8 @@
 #include <irrlicht/SKeyMap.h>
 
 #include "ENode.hpp"
-
+#include "Camera.hpp"
+#include "Util.hpp"
 
 class GameEngine{
 public:
@@ -26,7 +27,7 @@ public:
     void pollEvents();
 
     void HideCursor(bool flag);
-    void addCamera();
+    Camera createCamera(const gg::Vector3f &position = {0,0,0}, const gg::Vector3f &direction = {0,0,0});
 
     void clean();
 
