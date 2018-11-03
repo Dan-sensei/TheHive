@@ -9,8 +9,9 @@ ADDITIONAL_H :=  -I ./include
 LIBRARIES := -lGL -lGLEW -lglfw -lassimp -lSOIL2 -lIrrlicht
 
 
+EXE := main
 
-main: $(OBJECTS)
+$(EXE): $(OBJECTS)
 	g++ -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
 
 %.o: ../%.cpp
@@ -19,6 +20,8 @@ main: $(OBJECTS)
 clean:
 		rm -f $(OBJECTS)
 
+init:
+	./$(EXE)
 
 info:
 	$(info $(EXTRA_O) $(ADDITIONAL_DIR) $(LIBRARIES))

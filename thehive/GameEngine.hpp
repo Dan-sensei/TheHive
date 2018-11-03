@@ -2,7 +2,13 @@
 #define _GAMEENGINE_H
 
 #include <string>
+#include <iostream>
 #include <irrlicht/irrlicht.h>
+#include <irrlicht/Keycodes.h>
+#include <irrlicht/SKeyMap.h>
+
+#include "ENode.hpp"
+
 
 class GameEngine{
 public:
@@ -16,7 +22,8 @@ public:
     void DisplayFPS();
 
     void openScene(std::string path);
-    void loadMesh(std::string path);
+    void loadMesh(ENode*);
+    void pollEvents();
 
     void HideCursor(bool flag);
     void addCamera();
@@ -30,5 +37,4 @@ private:
 
     int lastFPS;
 };
-
 #endif
