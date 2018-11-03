@@ -1,24 +1,24 @@
-#include "Camera.hpp"
+#include "Model.hpp"
 
-Camera::Camera()
-:mCamera(nullptr)
+Model::Model()
+:mModel(nullptr)
 {
 
 }
 
-Camera::Camera(const Camera &orig) {
-    mCamera = orig.mCamera;
+Model::Model(const Model &orig){
+    mModel = orig.mModel;
 }
 
-Camera::~Camera() {
+Model::~Model(){
 
 }
 
 //  ---
 //  Sets the camera position
 //==================================================================================
-void Camera::setPosition(const gg::Vector3f &newPosition){
-    mCamera->setPosition(
+void Model::setPosition(const gg::Vector3f &newPosition){
+    mModel->setPosition(
         irr::core::vector3df(newPosition.X, newPosition.Y, newPosition.Z)
     );
 }
@@ -27,9 +27,9 @@ void Camera::setPosition(const gg::Vector3f &newPosition){
 //  ---
 //  Returns the position of the camera
 //==================================================================================
-gg::Vector3f Camera::getPosition(){
+gg::Vector3f Model::getPosition(){
     gg::Vector3f currentPositionGG;
-    irr::core::vector3df currentPositionIRR = mCamera->getPosition();
+    irr::core::vector3df currentPositionIRR = mModel->getPosition();
 
     // Convert the Irrlicht vector to GG vector
     currentPositionGG.X = currentPositionIRR.X;
@@ -39,10 +39,8 @@ gg::Vector3f Camera::getPosition(){
     return currentPositionGG;
 }
 
-
-//  ---
-//  Sets where the camera should be looking at
-//==================================================================================
-void Camera::setTarget(const gg::Vector3f &target){
-    mCamera->setTarget(irr::core::vector3df(target.X, target.Y, target.Z));
+void Model::assignMaterial(const Material &mat) {
+    irr::video::ITexture * texture = mat.mMaterial.getTexture(0);
+    if(texture)
+        mModel->setMaterialTexture(0, texture);
 }

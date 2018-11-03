@@ -14,9 +14,10 @@ GameEngine::~GameEngine(){
 //  Initializes Irrlicht stuff
 //==================================================================================
 void GameEngine::Starto(){
-    device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080));
+    device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080), 16, false, false, false, &listener);
     driver = device->getVideoDriver();
     smgr = device->getSceneManager();
+    Material::driver = driver;
 }
 
 //  ---
@@ -139,6 +140,24 @@ Camera GameEngine::createCamera(const gg::Vector3f &position /* = {0,0,0} */, co
     return newCamera;
 }
 
+//  ---
+//  Adds a 3D model to the scene on the desired position or 0, 0, 0 by default
+//==================================================================================
+Model GameEngine::createModel(const std::string &path, const gg::Vector3f &position /* = {0,0,0} */) {
+
+    Model newModel;
+    newModel.mModel = smgr->addAnimatedMeshSceneNode(smgr->getMesh(path.c_str()));
+
+    if(newModel.mModel){
+        newModel.mModel->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+        //newModel.mModel->setMD2Animation(scene::EMAT_STAND);
+    }
+    return newModel;
+}
+
+bool GameEngine::key(irr::EKEY_CODE keycode){
+    return listener.IsKeyDown(keycode);
+}
 
 //  ---
 //  Cleans game engine stuff

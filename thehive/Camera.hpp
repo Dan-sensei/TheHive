@@ -6,17 +6,17 @@
 
 class Camera{
     friend class GameEngine;
-public:
-    Camera();
-    Camera(const Camera &orig);
-    ~Camera();
-    
-    void setPosition(const gg::Vector3f &newPosition);
-    void setTarget(const gg::Vector3f &target);
-    gg::Vector3f getPosition();
+    public:
+        Camera();
+        Camera(const Camera &orig);
+        ~Camera();
 
-private:
-    irr::scene::ICameraSceneNode* mCamera;
+        void setPosition(const gg::Vector3f &newPosition);
+        gg::Vector3f getPosition();
+        void setTarget(const gg::Vector3f &target);
+
+    private:
+        irr::scene::ICameraSceneNode* mCamera;
 };
 
 #endif

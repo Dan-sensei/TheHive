@@ -2,6 +2,7 @@
 #define _EVENTLISTENER_H
 
 #include <irrlicht/irrlicht.h>
+#include "KEYCODES.hpp"
 
 class EventListener : public irr::IEventReceiver {
 public:
