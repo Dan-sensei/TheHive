@@ -3,21 +3,34 @@
 
 #include "IComponent.hpp"
 #include "Enum.hpp"
+#include "MessageTypes.hpp"
 #include "Arena.hpp"
 #include <stack>
 #include <map>
+#include <vector>
 #include <cstdint>
 
+template <typename T>
+class Singleton;
+
 class ObjectManager{
+    friend class Singleton<ObjectManager>;
     public:
-        ObjectManager();
-        ObjectManager(const ObjectManager &orig) = delete;
         ~ObjectManager();
 
+        void initObjectManager();
+
         uint16_t createEntity();
-        void addComponentToEntity(EComponentType type, uint16_t EntityID);
+        void addComponentToEntity(gg::EComponentType type, uint16_t EntityID);
+        void subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType);
+
+        void sendMessageToAllEntities(const gg::MessageType &mType);
+        void sendMessageToEntity(uint16_t EntityID, const gg::MessageType &mType);
 
     private:
+        ObjectManager();
+        ObjectManager(const ObjectManager &orig) = delete;
+        void operator=(const ObjectManager &orig) = delete;
 
         IComponent* createTransformComponent    ();
         //IComponent* createColliderComponent     ();
@@ -27,9 +40,11 @@ class ObjectManager{
 
 
         typedef IComponent* (ObjectManager::*pConstructor)(void);
-        pConstructor map[NUM_COMPONENTS];
+        pConstructor map[gg::NUM_COMPONENTS];
 
-        std::map<uint16_t, IComponent*> TypeToComponentMap[NUM_COMPONENTS];
+        std::map<uint16_t, IComponent*> TypeToComponentMap[gg::NUM_COMPONENTS];
+        std::vector<gg::EComponentType> MessageToListeingComponents[gg::MESSAGE_TYPE_COUNT];
+
         std::stack<uint16_t> nextAvailableEntityID;
         Arena memory;
 };

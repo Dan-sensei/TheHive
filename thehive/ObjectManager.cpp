@@ -22,12 +22,12 @@ ObjectManager::ObjectManager()
     //map[2]= &ObjectManager::createRenderableComponent;
     //map[3]= &ObjectManager::createHealthComponent;
     //map[4]= &ObjectManager::createRespectComponent;
-
 }
+
 
 ObjectManager::~ObjectManager() {
     std::cout << "Destruyendo todos los componentes..." << '\n';
-    uint8_t i = NUM_COMPONENTS;
+    uint8_t i = gg::NUM_COMPONENTS;
     while (i--){
         std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
 
@@ -39,6 +39,10 @@ ObjectManager::~ObjectManager() {
         };
 
     }
+}
+
+void ObjectManager::initObjectManager(){
+    CTransform::initComponent();
 }
 
 // ==========================================================
@@ -61,7 +65,7 @@ uint16_t ObjectManager::createEntity() {
 }
 
 
-void ObjectManager::addComponentToEntity(EComponentType type, uint16_t EntityID) {
+void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t EntityID) {
     IComponent* newComponent;
     pConstructor constructor = map[type];
 
@@ -73,6 +77,49 @@ void ObjectManager::addComponentToEntity(EComponentType type, uint16_t EntityID)
     TypeToComponentMap[type].insert(std::make_pair(EntityID, newComponent));
 }
 
+
+
+void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType) {
+    MessageToListeingComponents[mType].push_back(cType);
+}
+
+
+void ObjectManager::sendMessageToAllEntities(const gg::MessageType &mType){
+
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeingComponents[mType].begin();
+    std::map<uint16_t, IComponent*>::iterator entitiesIterator;
+    while(componentsIterator != MessageToListeingComponents[mType].end()){
+
+        std::map<uint16_t, IComponent*>::iterator entitiesEnd = TypeToComponentMap[*componentsIterator].end();
+        entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
+
+        while(entitiesIterator != entitiesEnd) {
+            entitiesIterator->second->processMessage();
+            ++entitiesIterator;
+        }
+        ++componentsIterator;
+    }
+
+}
+
+void ObjectManager::sendMessageToEntity(uint16_t EntityID, const gg::MessageType &mType){
+
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeingComponents[mType].begin();
+    std::map<uint16_t, IComponent*> entitiesMap;
+    while(componentsIterator != MessageToListeingComponents[mType].end()){
+
+        entitiesMap = TypeToComponentMap[*componentsIterator];
+
+        std::map<uint16_t, IComponent*>::iterator EntityFound;
+        EntityFound = entitiesMap.find(EntityID);
+
+        if(EntityFound != entitiesMap.end()){
+            EntityFound->second->processMessage();
+        }
+
+        ++componentsIterator;
+    }
+}
 
 IComponent* ObjectManager::createTransformComponent    ()   {
     return new CTransform;

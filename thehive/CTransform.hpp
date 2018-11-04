@@ -9,6 +9,12 @@ public:
     CTransform(const CTransform &orig);
     virtual ~CTransform();
 
+    static void initComponent();
+
+    virtual gg::EMessageStatus processMessage();
+
+
+
 private:
     float  x,  y,  z;
     float rx, ry, rz;

@@ -12,8 +12,8 @@ IComponent::~IComponent(){
 }
 
 
-EMessageStatus IComponent::processMessage(){
-    return ST_IGNORED;
+gg::EMessageStatus IComponent::processMessage(){
+    return gg::ST_IGNORED;
 }
 
 void IComponent::setEntityID(uint16_t _ID){

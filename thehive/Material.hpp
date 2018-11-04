@@ -18,7 +18,6 @@ class Material {
         irr::video::SMaterial mMaterial;
 
         static irr::video::IVideoDriver* driver;
-
 };
 
 

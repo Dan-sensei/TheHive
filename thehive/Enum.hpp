@@ -1,21 +1,23 @@
 #ifndef _ENUM_H
 #define _ENUM_H
 
-enum EComponentType{
-    TRANSFORM = 0,
-    //COLLIDER,
-    //RENDERABLE,
-    //HEALTH,
-    //RESPECT,
-    NUM_COMPONENTS
-};
+namespace gg{
 
-enum EMessageStatus{
-    ST_TRUE,
-    ST_FALSE,
-    ST_IGNORED,
-    ST_ERROR
-};
+    enum EComponentType{
+        TRANSFORM = 0,
+        //COLLIDER,
+        //RENDERABLE,
+        //HEALTH,
+        //RESPECT,
+        NUM_COMPONENTS
+    };
+
+    enum EMessageStatus{
+        ST_TRUE,
+        ST_FALSE,
+        ST_IGNORED,
+        ST_ERROR
+    };
 
 //enum MemoryForComponentType{
 //    TRANSFORM   = 128,
@@ -24,5 +26,6 @@ enum EMessageStatus{
 //    HEALTH      = 128,
 //    RESPECT     = 128
 //}
+}
 
 #endif

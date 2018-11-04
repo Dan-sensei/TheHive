@@ -2,6 +2,7 @@
 #define _ICOMPONENT_H
 
 #include "Enum.hpp"
+#include "MessageTypes.hpp"
 #include <cstdint>
 
 class IComponent{
@@ -13,8 +14,8 @@ class IComponent{
 
         uint16_t getEntityID();
 
-        virtual EComponentType getComponentType() = delete;
-        virtual EMessageStatus processMessage();
+        virtual gg::EComponentType getComponentType() = delete;
+        virtual gg::EMessageStatus processMessage();
 
     private:
         uint16_t EntityID;
