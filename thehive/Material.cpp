@@ -11,7 +11,7 @@ Material::Material(const std::string& path) {
 }
 
 Material::Material(const Material &orig) {
-
+    mMaterial = orig.mMaterial;
 }
 
 Material::~Material() {

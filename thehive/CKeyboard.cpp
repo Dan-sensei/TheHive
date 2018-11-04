@@ -23,6 +23,7 @@ void CKeyboard::initComponent() {
 
 gg::EMessageStatus CKeyboard::processMessage() {
 
+
     GameEngine* engine = Singleton<GameEngine>::Instance();
 
     CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));

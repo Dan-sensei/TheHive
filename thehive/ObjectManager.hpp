@@ -26,13 +26,13 @@ class ObjectManager{
         void initObjectManager();
 
         uint16_t createEntity();
-        void addComponentToEntity(gg::EComponentType type, uint16_t EntityID);
+        void addComponentToEntity(gg::EComponentType type, uint16_t EntityID, const void* initData = nullptr);
         void subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType);
         IComponent* getComponent(const gg::EComponentType &cType, const uint16_t &EntityID);
 
         void sendMessageToAllEntities(const gg::MessageType &mType);
         void sendMessageToEntity(uint16_t EntityID, const gg::MessageType &mType);
-        
+
     private:
         ObjectManager();
         ObjectManager(const ObjectManager &orig) = delete;

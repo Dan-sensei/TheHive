@@ -14,8 +14,8 @@ class Material {
         ~Material();
 
         void setTexture(const std::string &path);
-    private:
         irr::video::SMaterial mMaterial;
+    private:
 
         static irr::video::IVideoDriver* driver;
 };

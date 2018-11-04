@@ -10,6 +10,7 @@
 #include "Camera.hpp"
 #include "Util.hpp"
 #include "Singleton.hpp"
+#include "InitStructs.hpp"
 
 #define MOVEMENT_SPEED 1.f
 
@@ -50,19 +51,22 @@ Game::~Game(){
 
 void Game::RUN(){
 
-    uint8_t* p;
+    //uint8_t* p;
 
     ObjectManager* Manager = Singleton<ObjectManager>::Instance();
     Manager->initObjectManager();
 
-    Camera* camera = Singleton<Camera>::Instance();
-
     uint16_t hero = Manager->createEntity();
     std::cout << "Hero " << hero << std::endl;
 
-    Manager->addComponentToEntity(gg::TRANSFORM, hero);
+    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+
+    ICTransform CTransformInitData(0, 0, 0, 0, 0, 0, 0, 0, 0);
+    ICRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
+
+    Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
     Manager->addComponentToEntity(gg::KEYBOARD, hero);
-    Manager->addComponentToEntity(gg::RENDERABLE_3D, hero);
+    Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -74,7 +78,7 @@ void Game::RUN(){
 
     //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
-    //Camera camera = engine.createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
+    Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
     ////camera.setPosition(gg::Vector3f(-50, 0, 100));
     ////camera.setTarget(gg::Vector3f(0, 0, 50));
 

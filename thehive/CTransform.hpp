@@ -18,6 +18,8 @@ class CTransform : public IComponent {
         void setRotation(const gg::Vector3f &rotation);
         void setScale(const gg::Vector3f &scale);
 
+        virtual void initializeComponentData(const void* data);
+
         //virtual gg::EMessageStatus processMessage();
 
     private:

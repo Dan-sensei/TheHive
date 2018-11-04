@@ -65,7 +65,7 @@ uint16_t ObjectManager::createEntity() {
 }
 
 
-void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t EntityID) {
+void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t EntityID, const void* initData) {
     IComponent* newComponent;
     pConstructor constructor = map[type];
 
@@ -75,6 +75,7 @@ void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t Entit
     std::cout << "  -Añadiendo componente " << type << " a entidad " << EntityID << '\n';
     newComponent->setEntityID(EntityID);
     TypeToComponentMap[type].insert(std::make_pair(EntityID, newComponent));
+    newComponent->initializeComponentData(initData);
 }
 
 

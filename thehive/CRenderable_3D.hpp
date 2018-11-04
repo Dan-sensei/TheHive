@@ -11,7 +11,7 @@ class CRenderable_3D : public IComponent {
         virtual ~CRenderable_3D();
 
         static void initComponent();
-        void initializeComponentData();
+        virtual void initializeComponentData(const void* data);
 
         virtual gg::EMessageStatus processMessage();
 

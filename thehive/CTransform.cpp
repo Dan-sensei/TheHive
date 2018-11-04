@@ -2,6 +2,7 @@
 #include <iostream>
 #include "ObjectManager.hpp"
 #include "Singleton.hpp"
+#include "InitStructs.hpp"
 
 
 CTransform::CTransform()
@@ -48,6 +49,21 @@ void CTransform::setScale(const gg::Vector3f &scale){
     sx = scale.X;
     sy = scale.Y;
     sz = scale.Z;
+}
+
+void CTransform::initializeComponentData(const void* data) {
+
+    ICTransform* cData = (ICTransform*)data;
+    std::cout << "INIT TRANSFORM (" << cData->x << "," <<cData->y << "," << cData->z << ")" << '\n';
+    x = cData->x;
+    y = cData->y;
+    z = cData->z;
+    rx = cData->rx;
+    ry = cData->ry;
+    rz = cData->rz;
+    sx = cData->sx;
+    sy = cData->sy;
+    sz = cData->sz;
 }
 
 //  ---

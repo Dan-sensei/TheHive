@@ -16,6 +16,7 @@ class IComponent{
 
         virtual gg::EComponentType getComponentType() = delete;
         virtual gg::EMessageStatus processMessage();
+        virtual void initializeComponentData(const void* data);
 
     private:
         uint16_t EntityID;

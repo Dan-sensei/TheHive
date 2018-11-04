@@ -2,6 +2,7 @@
 #include "Singleton.hpp"
 #include "ObjectManager.hpp"
 #include "GameEngine.hpp"
+#include "InitStructs.hpp"
 
 CRenderable_3D::CRenderable_3D()
 :_3DModel()
@@ -18,14 +19,15 @@ CRenderable_3D::~CRenderable_3D() {
 }
 
 void CRenderable_3D::initComponent() {
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::KEYBOARD, gg::M_UPDATE);
+    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RENDERABLE_3D, gg::M_UPDATE);
 }
 
-void CRenderable_3D::initializeComponentData(){
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+void CRenderable_3D::initializeComponentData(const void* data){
 
-    _3DModel = Singleton<GameEngine>::Instance()->createModel("assets/Models/obradearte/algo.obj");
-    _3DModel.assignMaterial(moradoDeLos80);
+    ICRenderable_3D* cData = (ICRenderable_3D*)data;
+
+    _3DModel = Singleton<GameEngine>::Instance()->createModel(cData->pathToModel);
+    _3DModel.assignMaterial(cData->material);
 }
 
 gg::EMessageStatus CRenderable_3D::processMessage() {
@@ -34,7 +36,6 @@ gg::EMessageStatus CRenderable_3D::processMessage() {
     CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
 
     if(cTransform){
-
         _3DModel.setPosition(cTransform->getPosition());
 
         return gg::ST_TRUE;
