@@ -1,3 +1,5 @@
+include MakeColors
+
 BUILD	:= build/
 
 SOURCES := $(wildcard *.cpp)
@@ -12,13 +14,27 @@ LIBRARIES := -lGL -lGLEW -lglfw -lassimp -lSOIL2 -lIrrlicht
 EXE := main
 
 $(EXE): $(OBJECTS)
-	g++ -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
+	$(call br)
+	$(call printInfo, "Generating")
+	$(call printWarning, $(EXE))
+	$(call printInfo,"...")
+	@g++ -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
+	$(call printObj,  "Finished!")
+	$(call br)
+	$(call br)
+
 
 %.o: ../%.cpp
-	g++ -o $@ -c $^	$(ADDITIONAL_H)
+	$(call printInfo, "-Compiling")
+	$(call printObj, $(notdir $^))
+	@g++ -o $@ -c $^ $(ADDITIONAL_H)
+	$(call printSuccess,  "[OK]")
+	$(call br)
 
 clean:
-	rm -f $(OBJECTS)
+	$(call printWarning, "Borrando" "archivos" ".o...")
+	$(call br)
+	@rm -f $(OBJECTS)
 
 init:
 	./$(EXE)
