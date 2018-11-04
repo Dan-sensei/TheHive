@@ -15,10 +15,12 @@
 #include "Model.hpp"
 #include "Material.hpp"
 
+template <typename T>
+class Singleton;
+
 class GameEngine{
+    friend class Singleton<GameEngine>;
     public:
-        GameEngine();
-        GameEngine(const GameEngine& orig) = delete;
         ~GameEngine();
 
         void Starto();
@@ -40,6 +42,10 @@ class GameEngine{
         void clean();
 
     private:
+        GameEngine();
+        GameEngine(const GameEngine &orig) = delete;
+        void operator=(const GameEngine &orig) = delete;
+
         irr::IrrlichtDevice *device;
         irr::video::IVideoDriver* driver;
         irr::scene::ISceneManager* smgr;

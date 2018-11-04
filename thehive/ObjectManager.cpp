@@ -1,5 +1,4 @@
 #include "ObjectManager.hpp"
-#include "CTransform.hpp"
 #include <iostream>
                      //  2^16
 #define MAX_ENTITIES 65536
@@ -18,8 +17,8 @@ ObjectManager::ObjectManager()
     nextAvailableEntityID.push(1);
 
     map[0]= &ObjectManager::createTransformComponent;
-    //map[1]= &ObjectManager::createColliderComponent;
-    //map[2]= &ObjectManager::createRenderableComponent;
+    map[1]= &ObjectManager::createKeyboardComponent;
+    map[2]= &ObjectManager::createRenderable_3DComponent;
     //map[3]= &ObjectManager::createHealthComponent;
     //map[4]= &ObjectManager::createRespectComponent;
 }
@@ -37,12 +36,13 @@ ObjectManager::~ObjectManager() {
             memory.deallocate(it->second);
             ++it;
         };
-
     }
 }
 
 void ObjectManager::initObjectManager(){
     CTransform::initComponent();
+    CKeyboard::initComponent();
+    CRenderable_3D::initComponent();
 }
 
 // ==========================================================
@@ -99,7 +99,6 @@ void ObjectManager::sendMessageToAllEntities(const gg::MessageType &mType){
         }
         ++componentsIterator;
     }
-
 }
 
 void ObjectManager::sendMessageToEntity(uint16_t EntityID, const gg::MessageType &mType){
@@ -121,10 +120,25 @@ void ObjectManager::sendMessageToEntity(uint16_t EntityID, const gg::MessageType
     }
 }
 
-IComponent* ObjectManager::createTransformComponent    ()   {
+IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const uint16_t &EntityID){
+    std::map<uint16_t, IComponent*>::iterator found = TypeToComponentMap[cType].find(EntityID);
+
+    if(found != TypeToComponentMap[cType].end())
+        return found->second;
+
+    return nullptr;
+}
+
+
+IComponent* ObjectManager::createTransformComponent         ()   {
     return new CTransform;
 }
+IComponent* ObjectManager::createKeyboardComponent          ()   {
+    return new CKeyboard;
+}
+IComponent* ObjectManager::createRenderable_3DComponent     ()   {
+    return new CRenderable_3D;
+}
 //IComponent* ObjectManager::createColliderComponent     ();
-//IComponent* ObjectManager::createRenderableComponent   ();
 //IComponent* ObjectManager::createHealthComponent       ();
 //IComponent* ObjectManager::createRespectComponent      ();

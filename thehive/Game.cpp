@@ -39,8 +39,9 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 //============================================================================================
 
 Game::Game(){
-    engine.Starto();
-    engine.HideCursor(true);
+    engine = Singleton<GameEngine>::Instance();
+    engine->Starto();
+    engine->HideCursor(true);
 }
 
 Game::~Game(){
@@ -60,10 +61,8 @@ void Game::RUN(){
     std::cout << "Hero " << hero << std::endl;
 
     Manager->addComponentToEntity(gg::TRANSFORM, hero);
-
-    Manager->sendMessageToAllEntities(gg::M_UPDATE);
-    Manager->sendMessageToAllEntities(gg::M_UPDATE);
-    Manager->sendMessageToAllEntities(gg::M_UPDATE);
+    Manager->addComponentToEntity(gg::KEYBOARD, hero);
+    Manager->addComponentToEntity(gg::RENDERABLE_3D, hero);
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -79,27 +78,13 @@ void Game::RUN(){
     ////camera.setPosition(gg::Vector3f(-50, 0, 100));
     ////camera.setTarget(gg::Vector3f(0, 0, 50));
 
-    //while(engine.isWindowOpen()) {
-
-    //    gg::Vector3f nextPosition = tioPablomanesQueNoEstaTanMal.getPosition();
-
-    //    if(engine.key(gg::GG_W))
-    //        nextPosition.Z += MOVEMENT_SPEED;
-    //    else if(engine.key(gg::GG_S))
-    //        nextPosition.Z -= MOVEMENT_SPEED;
-
-    //    if(engine.key(gg::GG_A))
-    //        nextPosition.X -= MOVEMENT_SPEED;
-    //    else if(engine.key(gg::GG_D))
-    //        nextPosition.X += MOVEMENT_SPEED;
-
-    //    tioPablomanesQueNoEstaTanMal.setPosition(nextPosition);
-
-    //    engine.Dro();
-    //    engine.DisplayFPS();
-    //}
+    while(engine->isWindowOpen()) {
+        Manager->sendMessageToAllEntities(gg::M_UPDATE);
+        engine->Dro();
+        engine->DisplayFPS();
+    }
 }
 
 void Game::CLIN(){
-    engine.clean();
+    engine->clean();
 }

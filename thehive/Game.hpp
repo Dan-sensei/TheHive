@@ -15,7 +15,7 @@ public:
     void CLIN();
 
 private:
-    GameEngine engine;
+    GameEngine* engine;
 };
 
 

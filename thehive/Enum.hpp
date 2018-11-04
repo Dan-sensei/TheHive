@@ -5,8 +5,8 @@ namespace gg{
 
     enum EComponentType{
         TRANSFORM = 0,
-        //COLLIDER,
-        //RENDERABLE,
+        KEYBOARD,
+        RENDERABLE_3D,
         //HEALTH,
         //RESPECT,
         NUM_COMPONENTS

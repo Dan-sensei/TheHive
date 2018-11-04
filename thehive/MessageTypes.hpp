@@ -5,6 +5,7 @@ namespace gg{
 
     enum MessageType{
         M_UPDATE=0,
+        M_TRANSFORM,
         M_DAMAGE,
         MESSAGE_TYPE_COUNT
     };

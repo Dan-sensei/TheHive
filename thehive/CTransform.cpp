@@ -30,13 +30,35 @@ CTransform::~CTransform(){
 
 }
 
-void CTransform::initComponent(){
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::TRANSFORM, gg::M_UPDATE);
+void CTransform::initComponent(){}
 
+void CTransform::setPosition(const gg::Vector3f &position){
+    x = position.X;
+    y = position.Y;
+    z = position.Z;
 }
 
-gg::EMessageStatus CTransform::processMessage(){
-    std::cout << "UPDATING TRANSFORM COMPONENT!" << '\n';
+void CTransform::setRotation(const gg::Vector3f &rotation){
+    rx = rotation.X;
+    ry = rotation.Y;
+    rz = rotation.Z;
+}
 
-    return gg::ST_TRUE;
+void CTransform::setScale(const gg::Vector3f &scale){
+    sx = scale.X;
+    sy = scale.Y;
+    sz = scale.Z;
+}
+
+//  ---
+//  Returns the current position
+//==================================================================================
+gg::Vector3f CTransform::getPosition(){
+    gg::Vector3f currentPositionGG;
+
+    currentPositionGG.X = x;
+    currentPositionGG.Y = y;
+    currentPositionGG.Z = z;
+
+    return currentPositionGG;
 }
