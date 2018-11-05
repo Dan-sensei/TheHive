@@ -4,6 +4,8 @@
 #include <string>
 #include "Material.hpp"
 
+//  Init Data structs for every component type
+
 struct ICTransform{
 
     ICTransform(

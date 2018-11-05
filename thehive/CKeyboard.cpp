@@ -26,9 +26,11 @@ gg::EMessageStatus CKeyboard::processMessage() {
 
     GameEngine* engine = Singleton<GameEngine>::Instance();
 
+    //  We check if this entity has the TRANSFORM component
     CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
 
     if(cTransform){
+        //  If exists, we get its position
         gg::Vector3f nextPosition = cTransform->getPosition();
 
         if(engine->key(gg::GG_W))
@@ -41,6 +43,7 @@ gg::EMessageStatus CKeyboard::processMessage() {
         else if(engine->key(gg::GG_D))
             nextPosition.X += MOVEMENT_SPEED;
 
+        // And we update it accoding to the keyboard input
         cTransform->setPosition(nextPosition);
 
         return gg::ST_TRUE;

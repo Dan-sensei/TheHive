@@ -34,7 +34,15 @@ class GameEngine{
 
         void HideCursor(bool flag);
 
+        //  ---
+        //  Creates and returns a camera object. It optionally accepts a position
+        //  and looking direction
+        //==================================================================================
         Camera createCamera(const gg::Vector3f &position = {0,0,0}, const gg::Vector3f &direction = {0,0,0});
+
+        //  ---
+        //  Creates and returns a model object. It optionally accepts a position
+        //==================================================================================
         Model createModel(const std::string &path, const gg::Vector3f &position = {0,0,0});
 
         bool key(gg::KEYCODES keyCode);

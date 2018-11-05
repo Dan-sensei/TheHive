@@ -53,21 +53,26 @@ void CTransform::setScale(const gg::Vector3f &scale){
 
 void CTransform::initializeComponentData(const void* data) {
 
+    //  We get a void* to our data, but, since we are on the TRANSFORM component
+
+    //  We cast the void to our InitStructure of the TRANSFORM component
     ICTransform* cData = (ICTransform*)data;
-    std::cout << "INIT TRANSFORM (" << cData->x << "," <<cData->y << "," << cData->z << ")" << '\n';
+
     x = cData->x;
     y = cData->y;
     z = cData->z;
+
     rx = cData->rx;
     ry = cData->ry;
     rz = cData->rz;
+
     sx = cData->sx;
     sy = cData->sy;
     sz = cData->sz;
 }
 
 //  ---
-//  Returns the current position
+//  Returns the current position on a GG vector
 //==================================================================================
 gg::Vector3f CTransform::getPosition(){
     gg::Vector3f currentPositionGG;

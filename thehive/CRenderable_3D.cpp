@@ -19,6 +19,7 @@ CRenderable_3D::~CRenderable_3D() {
 }
 
 void CRenderable_3D::initComponent() {
+    //  We wait for the M_UPDATE message
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RENDERABLE_3D, gg::M_UPDATE);
 }
 
@@ -33,9 +34,12 @@ void CRenderable_3D::initializeComponentData(const void* data){
 gg::EMessageStatus CRenderable_3D::processMessage() {
 
     GameEngine* engine = Singleton<GameEngine>::Instance();
+
+    //  We check if this entity has the TRANSFORM component
     CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
 
     if(cTransform){
+        //  If exists, we get its position, and asign it to the _3DModel
         _3DModel.setPosition(cTransform->getPosition());
 
         return gg::ST_TRUE;

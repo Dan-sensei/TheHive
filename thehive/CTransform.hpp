@@ -10,17 +10,19 @@ class CTransform : public IComponent {
         CTransform(const CTransform &orig);
         virtual ~CTransform();
 
+
+        //  Functions of IComponent
         static void initComponent();
+        virtual void initializeComponentData(const void* data);
+        //virtual gg::EMessageStatus processMessage();
 
+
+        // Functions of this component
         gg::Vector3f getPosition();
-
         void setPosition(const gg::Vector3f &position);
         void setRotation(const gg::Vector3f &rotation);
         void setScale(const gg::Vector3f &scale);
 
-        virtual void initializeComponentData(const void* data);
-
-        //virtual gg::EMessageStatus processMessage();
 
     private:
         float  x,  y,  z;

@@ -39,6 +39,9 @@ gg::Vector3f Model::getPosition(){
     return currentPositionGG;
 }
 
+//  ---
+//  We assign the material to the model
+//==================================================================================
 void Model::assignMaterial(const Material &mat) {
     irr::video::ITexture * texture = mat.mMaterial.getTexture(0);
     if(texture)
