@@ -1,14 +1,17 @@
 #ifndef COMPOSITE_HPP
 #define COMPOSITE_HPP
 
-#include "behavior.h"
+#include "behavior.hpp"
+#include <vector>
+
 
 class composite : public behavior {
-protected:
-   virtual void addChild(behavior*)    = 0;
-   virtual void removeChild(behavior*) = 0;
-   virtual void clearChildren()        = 0;
 public:
+
+   virtual void addChild(behavior*){}
+   virtual void removeChild(behavior*){}
+   virtual void clearChildren(){}
+protected:
    typedef std::vector<behavior*> behaviors;
    behaviors m_Children;
 };

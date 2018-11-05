@@ -1,9 +1,9 @@
-#ifndef DECORATOR_H
-#define DECORATOR_H
+#ifndef INVERSO_H
+#define INVERSO_H
 
 #include <iostream>
 
-#include "behavior.hpp"
+#include "decorator.hpp"
 
 // Rama del arbol con solo un hijo
 // Los comportamientos del hijo pueden repetirse n veces si se quiere
@@ -11,16 +11,12 @@
 //-----------------------------------------//
 // Esta es la estructura de cada DECORATOR //
 //-----------------------------------------//
-
-class decorator : public behavior {
-protected:
-   behavior* m_pChild;     // Comportamiento hijo
+class inverso : public decorator{
 public:
-   decorator(behavior*);
+ Status update();
 
-   // Sobreescribir los metodos de la interfaz
-   virtual Status update();
 };
+
 
 
 #endif /* DECORATOR_H */
