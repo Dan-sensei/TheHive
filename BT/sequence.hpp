@@ -16,7 +16,7 @@ protected:
       if(s != BH_SUCCESS)return s;
       if(++m_CurrentChild==m_Children.end()) return BH_SUCCESS;
     }
-    return BH_INVALID;
+    return  BH_INVALID;
   }
 
 };
