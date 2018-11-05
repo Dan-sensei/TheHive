@@ -4,13 +4,14 @@
 #include <map>
 #include <iostream>
 #include <math.h>
-
+//#include <cstdlib>
+//#include <iomanip>
 #include <glm/glm.hpp>
 //#include <time.h>
 #include <sys/time.h>
-static unsigned long timeGetTime();
 static unsigned long id=0;
-static unsigned long id2=0;
+#include <irrlicht/irrList.h>
+#include "Vector.hpp"
 
 
 enum EnumTriggerType
@@ -20,17 +21,9 @@ enum EnumTriggerType
   kTrig_EnemyNear=(1<<1),
   kTrig_Gunfire=(1<<2)
 };
-struct Vector
-{
-  //glm::vec3 V3;
-  float x;
-  float y;
-  float z;
-  Vector();
-  Vector(float _x,float _y, float _z);
-  //glm::vec3 aVector(3);
-};
-static float DIST(Vector v1,Vector v2);
+//static void addAgent(CAgent* agente);
+//static void removeAgent(Iterator agente);
+
 struct TriggerRecordStruct
 {
   EnumTriggerType eTriggerType;
@@ -49,10 +42,13 @@ struct TriggerRecordStruct
 typedef std::multimap<unsigned short, TriggerRecordStruct*,
                       std::greater <unsigned short> > TRIGGER_MAP;
 
+template <typename T>
+class Singleton;
+
 class CTriggerSystem
 {
+  friend class Singleton<CTriggerSystem>;
 public:
-  CTriggerSystem();
   ~CTriggerSystem();
   unsigned long RegisterTriger(EnumTriggerType _eTriggerType,
   unsigned long _nPriority,unsigned long _idSource,
@@ -64,31 +60,14 @@ public:
   void Update();
 
 private:
+  CTriggerSystem();
+  CTriggerSystem(const CTriggerSystem &orig) = delete;
+  void operator=(const CTriggerSystem &orig) = delete;
+
+
   TRIGGER_MAP m_mapTriggerMap;
 
   bool m_bTriggerCriticalSection;
-};
-class CAgent
-{
-public:
-  CAgent(unsigned long _dwTriggerFlags,Vector _vPos){
-    nCAgentID=id2;
-    id2++;
-    dwTriggerFlags=_dwTriggerFlags;
-    nDeltaTime=0;
-    vPos=_vPos;
-  }
-  CAgent();
-  ~CAgent();
-  unsigned long nCAgentID;
-  unsigned long dwTriggerFlags;
-  unsigned long nDeltaTime;
-  Vector vPos;
-  void SetNextTriggerUpdate(unsigned long _nCurTime);
-  unsigned long  GetTriggerFlags();
-  Vector GetPosition();
-  bool HandleTrig(TriggerRecordStruct* _pRec);
-private:
 };
 //void  CAgent::SetNextTriggerUpdate(unsigned long _nCurTime){}
 //unsigned long  CAgent::GetTriggerFlags(){return 0;}

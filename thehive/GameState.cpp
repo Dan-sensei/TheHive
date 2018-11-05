@@ -8,19 +8,31 @@
 //#include <curses.h>
 //#include <unistd.h>
 //#include <vector>
-#include "GameState.hpp"
-void  CAgent::SetNextTriggerUpdate(unsigned long _nCurTime){}
-unsigned long  CAgent::GetTriggerFlags(){return dwTriggerFlags;}
-Vector CAgent::GetPosition(){return vPos;}
-bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){return true;}
+#include "Agent.hpp"
+#include "Vector.hpp"
+#include "Time.hpp"
+unsigned long timeGetTime(){
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    return now.tv_usec/1000;
+  }
 
+CTriggerSystem::CTriggerSystem(){
 
+}
+CTriggerSystem::~CTriggerSystem(){
+
+}
 
 unsigned long CTriggerSystem::RegisterTriger(
   EnumTriggerType _eTriggerType, unsigned long _nPriority,
   unsigned long _idSource,const Vector& _vPos, float _fRadius,
   float _fDuration,bool _bDynamicSourcePos)
 {
+
+
+
+
   //Create a trigger record, and fill it in
   TriggerRecordStruct* pTriggerRecord =
   new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos);
@@ -46,15 +58,6 @@ void CTriggerSystem::RemoveTrigger(unsigned long nTriggerID)
   }
 }
 
-unsigned long timeGetTime(){
-  struct timeval now;
-  gettimeofday(&now, NULL);
-  return now.tv_usec/1000;
-}
-float DIST(Vector v1,Vector v2){
-  return sqrt(((v1.x-v2.x)*(v1.x-v2.x)+(v1.y-v2.y)*(v1.y-v2.y)+(v1.z-v2.z)*(v1.z-v2.z)));
-  //return 1;
-}
 void CTriggerSystem::Update()
 {
   CAgent* pAgent=NULL;
@@ -80,17 +83,20 @@ void CTriggerSystem::Update()
           //Update pos if dynamic flag is set.Reset time-stamp
           if(pRec->bDynamicSourcePos==true)
           {
-            //Update(pRec->vPos);funcion para actualizar la posicion
-            pRec->nTimeStamp = nCurTime;
+            //Update(pRec->vPos);//funcion para actualizar la posicion
+            //pRec->nTimeStamp = nCurTime;
           }
           ++it;
         }
   }
   //Trigger agents
-  int g_nNumAgents=20;//numero actual de agentes
-  for(unsigned long i=0; i<g_nNumAgents;++i)
+  //int g_nNumAgents=20;//numero actual de agentes
+  irr::core::list<CAgent*>::Iterator it2 ;
+  it2=CAgent::hola.begin();
+  for(unsigned long i=0; i<CAgent::hola.size();++i)
   {
-    pAgent->SetNextTriggerUpdate(nCurTime);
+    pAgent=*it2;
+    //pAgent->SetNextTriggerUpdate(nCurTime);
     //llop thru exixting trigger records
     for(it=m_mapTriggerMap.begin();
         it!=m_mapTriggerMap.end();++it)
@@ -100,7 +106,7 @@ void CTriggerSystem::Update()
       if(!(pRec->eTriggerType & pAgent->GetTriggerFlags()))
         continue;
       //is source the agent itself?
-      if(pRec->idSource==i)
+      if(pRec->idSource==pAgent->nCAgentID)
         continue;
       //Check radius
       //
@@ -115,22 +121,8 @@ void CTriggerSystem::Update()
         break;
       }
     }
-
+    it2++;
   }
-}
-Vector::Vector(){
-  x=0;
-  y=0;
-  z=0;
-
-
-}
-Vector::Vector(float _x,float _y, float _z){
-  x=_x;
-  y=_y;
-  z=_z;
-
-
 }
 TriggerRecordStruct::TriggerRecordStruct(EnumTriggerType _eTriggerType,unsigned long _idSource,const Vector _vPos,float _fRadius,
                     unsigned long _fDuration,bool _bDynamicSourcePos)
