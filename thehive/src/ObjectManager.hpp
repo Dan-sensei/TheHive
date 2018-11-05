@@ -6,9 +6,9 @@
 #include "MessageTypes.hpp"
 #include "Arena.hpp"
 
-#include "CTransform.hpp"
-#include "CKeyboard.hpp"
-#include "CRenderable_3D.hpp"
+#include "Components/CTransform.hpp"
+#include "Components/CKeyboard.hpp"
+#include "Components/CRenderable_3D.hpp"
 
 #include <stack>
 #include <map>
@@ -122,7 +122,7 @@ class ObjectManager{
         //
         //========================================================================
         std::vector<gg::EComponentType> MessageToListeningComponents[gg::MESSAGE_TYPE_COUNT];
-        
+
         std::stack<uint16_t> nextAvailableEntityID;
 
         //  ---

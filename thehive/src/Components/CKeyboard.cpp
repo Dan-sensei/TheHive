@@ -1,7 +1,7 @@
 #include "CKeyboard.hpp"
-#include "Singleton.hpp"
-#include "ObjectManager.hpp"
-#include "GameEngine.hpp"
+#include <Singleton.hpp>
+#include <ObjectManager.hpp>
+#include <GameEngine.hpp>
 
 #define MOVEMENT_SPEED 1.f
 

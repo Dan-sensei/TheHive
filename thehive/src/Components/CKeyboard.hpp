@@ -1,7 +1,7 @@
 #ifndef _CKEYBOARD_H
 #define _CKEYBOARD_H
 
-#include "IComponent.hpp"
+#include <IComponent.hpp>
 
 class CKeyboard : public IComponent {
     public:

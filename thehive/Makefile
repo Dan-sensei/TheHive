@@ -2,14 +2,17 @@ include MakeColors
 
 BUILD	:= build/
 
-SOURCES := $(wildcard *.cpp)
-OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
+DIRECTORIES := src/Components/ src/
+SOURCES := $(shell find src/ -type f -name "*.cpp")
+
+OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
 OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 
 ADDITIONAL_LIB :=  -L ./lib
-ADDITIONAL_H :=  -I ./include
+ADDITIONAL_H :=  -I ./include -I ./src
 LIBRARIES := -lGL -lGLEW -lglfw -lassimp -lSOIL2 -lIrrlicht
 
+COMPILER := g++
 
 EXE := main
 
@@ -18,26 +21,39 @@ $(EXE): $(OBJECTS)
 	$(call printInfo, "Generating")
 	$(call printWarning, $(EXE))
 	$(call printInfo,"...")
-	@g++ -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
+	@$(COMPILER) -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
 	$(call printObj,  "Finished!")
 	$(call br)
 	$(call br)
 
+$(OBJECTS): $(BUILD)%.o : %.cpp
+	 @mkdir -p ${@D}
 
-%.o: ../%.cpp
 	$(call printInfo, "-Compiling")
-	$(call printObj, $(notdir $^))
-	@g++ -o $@ -c $^ $(ADDITIONAL_H)
+	$(call printObj, $^)
+	@$(COMPILER) -o $@ -c $< $(ADDITIONAL_H)
 	$(call printSuccess,  "[OK]")
 	$(call br)
 
 clean:
-	$(call printWarning, "Borrando" "archivos" ".o...")
+	$(call printWarning, "Deleting" )
+	$(call printObj,$(BUILD))
+	$(call printWarning,"..." )
+	@rm -rf $(BUILD)
+	$(call printSuccess,  "[OK]")
 	$(call br)
-	@rm -f $(OBJECTS)
+	$(call printWarning, "Deleting" )
+	$(call printObj,$(EXE))
+	@rm -f $(EXE)
+	$(call printSuccess,  "[OK]")
+	$(call br)
 
 init:
 	./$(EXE)
 
 info:
-	$(info $(OBJECTS))
+	$(call br)
+	$(call printObj, "Linker:" )
+	$(call printWarning,$(COMPILER))
+	$(call br)
+	$(call br)

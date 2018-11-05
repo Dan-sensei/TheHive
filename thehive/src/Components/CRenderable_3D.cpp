@@ -1,8 +1,8 @@
 #include "CRenderable_3D.hpp"
-#include "Singleton.hpp"
-#include "ObjectManager.hpp"
-#include "GameEngine.hpp"
-#include "InitStructs.hpp"
+#include <Singleton.hpp>
+#include <ObjectManager.hpp>
+#include <GameEngine.hpp>
+#include <InitStructs.hpp>
 
 CRenderable_3D::CRenderable_3D()
 :_3DModel()
