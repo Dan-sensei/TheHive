@@ -2,7 +2,7 @@
 #define _INITSTRUCTS_H
 
 #include <string>
-#include "Material.hpp"
+#include <GameEngine/Material.hpp>
 
 //  Init Data structs for every component type
 

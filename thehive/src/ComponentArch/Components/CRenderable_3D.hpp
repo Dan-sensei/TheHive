@@ -1,8 +1,8 @@
 #ifndef _CRENDERABLE_3D_H
 #define _CRENDERABLE_3D_H
 
-#include <IComponent.hpp>
-#include <Model.hpp>
+#include <ComponentArch/IComponent.hpp>
+#include <GameEngine/Model.hpp>
 
 class CRenderable_3D : public IComponent {
     public:

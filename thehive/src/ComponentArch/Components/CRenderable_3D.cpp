@@ -1,8 +1,8 @@
 #include "CRenderable_3D.hpp"
 #include <Singleton.hpp>
-#include <ObjectManager.hpp>
-#include <GameEngine.hpp>
-#include <InitStructs.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+#include <ComponentArch/InitStructs.hpp>
+#include <GameEngine/GameEngine.hpp>
 
 CRenderable_3D::CRenderable_3D()
 :_3DModel()
@@ -32,8 +32,6 @@ void CRenderable_3D::initializeComponentData(const void* data){
 }
 
 gg::EMessageStatus CRenderable_3D::processMessage() {
-
-    GameEngine* engine = Singleton<GameEngine>::Instance();
 
     //  We check if this entity has the TRANSFORM component
     CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));

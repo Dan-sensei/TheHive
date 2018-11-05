@@ -1,8 +1,8 @@
 #include "CTransform.hpp"
 #include <iostream>
-#include <ObjectManager.hpp>
+#include <ComponentArch/ObjectManager.hpp>
 #include <Singleton.hpp>
-#include <InitStructs.hpp>
+#include <ComponentArch/InitStructs.hpp>
 
 
 CTransform::CTransform()

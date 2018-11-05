@@ -5,12 +5,12 @@
 #include <string>
 
 #include "Arena.hpp"
-#include "ObjectManager.hpp"
+#include "ComponentArch/ObjectManager.hpp"
+#include "ComponentArch/InitStructs.hpp"
+#include "GameEngine/Camera.hpp"
 #include "Game.hpp"
-#include "Camera.hpp"
 #include "Util.hpp"
 #include "Singleton.hpp"
-#include "InitStructs.hpp"
 
 #define MOVEMENT_SPEED 1.f
 

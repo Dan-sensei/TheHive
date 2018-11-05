@@ -2,7 +2,6 @@ include MakeColors
 
 BUILD	:= build/
 
-DIRECTORIES := src/Components/ src/
 SOURCES := $(shell find src/ -type f -name "*.cpp")
 
 OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))

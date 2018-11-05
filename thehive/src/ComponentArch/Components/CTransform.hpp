@@ -1,7 +1,7 @@
 #ifndef _CTRANSFORM_H
 #define _CTRANSFORM_H
 
-#include <IComponent.hpp>
+#include <ComponentArch/IComponent.hpp>
 #include <Util.hpp>
 
 class CTransform : public IComponent {

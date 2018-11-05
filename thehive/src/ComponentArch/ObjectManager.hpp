@@ -4,7 +4,7 @@
 #include "IComponent.hpp"
 #include "Enum.hpp"
 #include "MessageTypes.hpp"
-#include "Arena.hpp"
+#include <Arena.hpp>
 
 #include "Components/CTransform.hpp"
 #include "Components/CKeyboard.hpp"
@@ -76,10 +76,6 @@ class ObjectManager{
         IComponent* createTransformComponent        ();
         IComponent* createKeyboardComponent         ();
         IComponent* createRenderable_3DComponent    ();
-        //IComponent* createColliderComponent     ();
-        //IComponent* createRenderableComponent   ();
-        //IComponent* createHealthComponent       ();
-        //IComponent* createRespectComponent      ();
 
 
         typedef IComponent* (ObjectManager::*pConstructor)(void);
