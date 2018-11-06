@@ -8,13 +8,17 @@ class CKeyboard : public IComponent {
     public:
         virtual ~CKeyboard();
 
+        // Functions of IComponent
         static void initComponent();
-
         virtual gg::EMessageStatus processMessage();
+        virtual void initializeComponentData(const void* data);
+        virtual void initAfterComponentAssigment();
+
+
 
     private:
         CKeyboard();
-        CKeyboard(const CKeyboard &orig);
+        CKeyboard(const CKeyboard &orig) = delete;
 };
 
 #endif

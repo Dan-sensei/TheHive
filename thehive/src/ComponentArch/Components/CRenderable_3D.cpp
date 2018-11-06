@@ -31,6 +31,12 @@ void CRenderable_3D::initializeComponentData(const void* data){
     _3DModel.assignMaterial(cData->material);
 }
 
+/*      Init     */
+void CRenderable_3D::initAfterComponentAssigment() {
+    std::cout << "Init CRenderable" << '\n';
+
+}
+
 gg::EMessageStatus CRenderable_3D::processMessage() {
 
     //  We check if this entity has the TRANSFORM component

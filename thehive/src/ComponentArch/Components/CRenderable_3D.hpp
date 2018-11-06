@@ -11,8 +11,9 @@ class CRenderable_3D : public IComponent {
 
         // Functions of IComponent
         static void initComponent();
-        virtual void initializeComponentData(const void* data);
         virtual gg::EMessageStatus processMessage();
+        virtual void initializeComponentData(const void* data);
+        virtual void initAfterComponentAssigment();
 
 
     private:

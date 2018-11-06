@@ -164,11 +164,26 @@ IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const u
     if(found != TypeToComponentMap[cType].end())
         return found->second;   // <- We return the pointer to it
 
-    
+
     //  If not
     return nullptr; //  <- We return nullptr
 }
 
+void ObjectManager::LastPreprocessingInitData(){
+    uint8_t i = gg::NUM_COMPONENTS;
+    while (i--){
+        std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
+
+        while(it!=TypeToComponentMap[i].end()){
+            it->second->initAfterComponentAssigment();
+            ++it;
+        }
+    }
+}
+
+//  ---
+//  CONSTRUCTORS
+//===========================================================================================================
 
 IComponent* ObjectManager::createTransformComponent         ()   {
     return new CTransform;

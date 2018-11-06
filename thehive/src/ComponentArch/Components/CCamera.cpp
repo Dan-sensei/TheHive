@@ -9,11 +9,22 @@ CCamera::CCamera(){
     GameEngine *engine = Singleton<GameEngine>::Instance();
     lastCameraPosition = engine->getCamera()->getPosition();
 }
+
+
 CCamera::~CCamera(){}
 
 void CCamera::initComponent(){
     // Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CAMERA, gg::M_UPDATE);
 }
+
+void CCamera::initializeComponentData(const void* data){}
+
+/*      Init     */
+void CCamera::initAfterComponentAssigment() {
+    std::cout << "Init CCamera" << '\n';
+
+}
+
 
 // void CCamera::updateCameraTarget(Camera *cam, Model *mod, gg::Vector3f nextPosition){
 void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
@@ -28,7 +39,7 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
     CTransform *mod = dynamic_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,entity));
 
     cam->bindTargetAndRotation(true);
-    std::cout << nextPosition.X << "," << nextPosition.Y << "," << nextPosition.Z << '\n';
+    //std::cout << nextPosition.X << "," << nextPosition.Y << "," << nextPosition.Z << '\n';
 
     // // First of all, we have to get the mouse position on the screen
     // // and get the X,Y position

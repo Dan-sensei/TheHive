@@ -63,6 +63,12 @@ class ObjectManager{
         //========================================================================
         void sendMessageToEntity(uint16_t EntityID, const gg::MessageType &mType);
 
+        //  ---
+        //  Once every component has been added, we call each component
+        //  initAfterComponentAssigment() method
+        //========================================================================
+        void LastPreprocessingInitData();
+
     private:
         ObjectManager();
         ObjectManager(const ObjectManager &orig) = delete;

@@ -12,8 +12,10 @@ class CTransform : public IComponent {
 
         //  Functions of IComponent
         static void initComponent();
-        virtual void initializeComponentData(const void* data);
         //virtual gg::EMessageStatus processMessage();
+        virtual void initializeComponentData(const void* data);
+        virtual void initAfterComponentAssigment();
+
 
 
         // Functions of this component

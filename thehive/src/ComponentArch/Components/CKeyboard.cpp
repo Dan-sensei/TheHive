@@ -9,10 +9,6 @@ CKeyboard::CKeyboard(){
 
 }
 
-CKeyboard::CKeyboard(const CKeyboard &orig){
-
-}
-
 CKeyboard::~CKeyboard() {
 
 }
@@ -21,16 +17,26 @@ void CKeyboard::initComponent() {
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::KEYBOARD, gg::M_UPDATE);
 }
 
+void CKeyboard::initializeComponentData(const void* data){
+
+}
+
+/*      Init     */
+void CKeyboard::initAfterComponentAssigment() {
+    std::cout << "Init Component" << '\n';
+
+}
+
 gg::EMessageStatus CKeyboard::processMessage() {
 
 
     GameEngine* engine = Singleton<GameEngine>::Instance();
 
     //  We check if this entity has the TRANSFORM component
-    CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    //CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
 
-    if(cTransform){
-        CCamera *camera = dynamic_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
+    //if(cTransform){
+        CCamera *camera = static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
         if(camera){
             //  If exists, we get its position
             gg::Vector3f nextPosition = camera->getLastCameraPosition();
@@ -51,7 +57,7 @@ gg::EMessageStatus CKeyboard::processMessage() {
 
             return gg::ST_TRUE;
         }
-    }
+    //}
 
     return gg::ST_ERROR;
 }

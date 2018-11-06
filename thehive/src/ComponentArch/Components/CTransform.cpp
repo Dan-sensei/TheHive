@@ -10,7 +10,7 @@ CTransform::CTransform()
 rx(0), ry(0), rz(0),
 sx(0), sy(0), sz(0)
 {
-    std::cout << "Creating CTransform===============" << '\n';
+
 }
 
 CTransform::CTransform(const CTransform &orig){
@@ -32,6 +32,11 @@ CTransform::~CTransform(){
 }
 
 void CTransform::initComponent(){}
+
+/*      Init     */
+void CTransform::initAfterComponentAssigment() {
+    std::cout << "Init Transform" << '\n';
+}
 
 void CTransform::setPosition(const gg::Vector3f &position){
     x = position.X;

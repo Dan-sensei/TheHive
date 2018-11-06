@@ -63,21 +63,29 @@ void Game::RUN(){
     uint16_t hero = Manager->createEntity();
     std::cout << "Hero " << hero << std::endl;
 
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
-    InitCTransform CTransformInitData(0, 0, 10, 0, 0, 0, 0, 0, 0);
-    InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
-    Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
-    Manager->addComponentToEntity(gg::KEYBOARD, hero);
-    Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
-    Manager->addComponentToEntity(gg::CAMERA, hero);
+    {
+        Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+        InitCTransform CTransformInitData(0, 0, 10, 0, 0, 0, 0, 0, 0);
+        InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
+        Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
+        Manager->addComponentToEntity(gg::KEYBOARD, hero);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
+        Manager->addComponentToEntity(gg::CAMERA, hero);
 
-    uint16_t cube1 = Manager->createEntity();
-    InitCTransform CTransformCube1(50,0,0,0,0,0,0,0,0);
-    InitCRenderable_3D CRenderableCube1("assets/Models/Cube.obj", moradoDeLos80);
-    Manager->addComponentToEntity(gg::TRANSFORM, cube1, &CTransformCube1);
-    Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
+        uint16_t cube1 = Manager->createEntity();
+        InitCTransform CTransformCube1(50,0,0,0,0,0,0,0,0);
+        InitCRenderable_3D CRenderableCube1("assets/Models/Cube.obj", moradoDeLos80);
+        Manager->addComponentToEntity(gg::TRANSFORM, cube1, &CTransformCube1);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
+    }
 
+    {
+        Material AgujeroNegro("assets/Textures/ice.bmp");
+        InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea.obj", AgujeroNegro);
+        uint16_t TrainingArea = Manager->createEntity();
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
+    }
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -89,7 +97,8 @@ void Game::RUN(){
 
     //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
-
+    std::cout << "BEGIN GAME LOOP" << '\n';
+    Manager->LastPreprocessingInitData();
     while(engine->isWindowOpen()) {
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
         engine->Dro();
