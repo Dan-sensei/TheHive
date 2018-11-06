@@ -12,12 +12,13 @@ class CCamera : public IComponent {
 
         static void initComponent();
 
-        void updateCameraTarget(uint16_t,gg::Vector3f);
-        gg::Vector3f getCameraPosition();
-    private:
-        CCamera();
-        CCamera(const CCamera &orig) = delete;
-
+    void updateCameraTarget(uint16_t,gg::Vector3f);
+    gg::Vector3f getCameraPosition();
+    gg::Vector3f getLastCameraPosition();
+private:
+    CCamera();
+    CCamera(const CCamera &orig) = delete;
+    gg::Vector3f lastCameraPosition;
 };
 
 
