@@ -12,9 +12,11 @@ public:
 
     static void initComponent();
 
-    void updateCameraTarget(uint16_t,gg::Vector3f);
+    void updateCameraTarget(uint16_t,gg::Vector3f,bool);
     gg::Vector3f getCameraPosition();
+    gg::Vector3f getCameraTarget();
     gg::Vector3f getLastCameraPosition();
+
 private:
     gg::Vector3f lastCameraPosition;
 };

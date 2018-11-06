@@ -32,6 +32,9 @@ namespace gg{
         GG_Y = irr::EKEY_CODE::KEY_KEY_Y,
         GG_Z = irr::EKEY_CODE::KEY_KEY_Z,
 
+        GG_LCONTROL = irr::EKEY_CODE::KEY_LCONTROL,
+        GG_LSHIFT = irr::EKEY_CODE::KEY_LSHIFT,
+
         GG_0 = irr::EKEY_CODE::KEY_KEY_0,
         GG_1 = irr::EKEY_CODE::KEY_KEY_1,
         GG_2 = irr::EKEY_CODE::KEY_KEY_2,

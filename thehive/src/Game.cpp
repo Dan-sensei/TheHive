@@ -66,7 +66,7 @@ void Game::RUN(){
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
     ICTransform CTransformInitData(0, 0, 10, 0, 0, 0, 0, 0, 0);
-    ICRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
+    ICRenderable_3D CRenderable_3DInitData("assets/Models/HEROE/hero.obj", moradoDeLos80);
     Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
     Manager->addComponentToEntity(gg::KEYBOARD, hero);
     Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);

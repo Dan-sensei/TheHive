@@ -71,3 +71,10 @@ void Camera::bindTargetAndRotation(bool bound){
 void Camera::setTarget(const gg::Vector3f &target){
     mCamera->setTarget(irr::core::vector3df(target.X, target.Y, target.Z));
 }
+
+gg::Vector3f Camera::getTarget(){
+    return gg::Vector3f(
+        mCamera->getTarget().X,
+        mCamera->getTarget().Y,
+        mCamera->getTarget().Z);
+}

@@ -2,6 +2,7 @@
 #define _CKEYBOARD_H
 
 #include <ComponentArch/IComponent.hpp>
+#include <cmath>
 
 class CKeyboard : public IComponent {
     public:

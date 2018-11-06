@@ -39,6 +39,7 @@ gg::EMessageStatus CRenderable_3D::processMessage() {
     if(cTransform){
         //  If exists, we get its position, and asign it to the _3DModel
         _3DModel.setPosition(cTransform->getPosition());
+        _3DModel.setRotation(cTransform->getRotation());
 
         return gg::ST_TRUE;
     }

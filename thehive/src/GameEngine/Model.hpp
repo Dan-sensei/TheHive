@@ -16,11 +16,13 @@ class Model{
         //  Sets the camera position
         //=============================================================
         void setPosition(const gg::Vector3f &newPosition);
+        void setRotation(const gg::Vector3f &newRotation);
 
         //  ---
         //  Returns the position of the camera
         //=============================================================
         gg::Vector3f getPosition();
+        gg::Vector3f getRotation();
 
         //  ---
         //  We assign the material to the model
