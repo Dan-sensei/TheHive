@@ -15,9 +15,9 @@ void sequence::onTerminate(Status state){
   while (true) {
     std::cout << "sequence update" <<getStatus() << '\n';
     Status s=(*m_CurrentChild)->tick();
-    if(s != BH_SUCCESS){
-      if(s == BH_RUNNING)continue;
-      return s;}
+    if(s != BH_SUCCESS)//{
+      //if(s == BH_RUNNING)continue;
+      return s;//}
     if(++m_CurrentChild==m_Children.end()) return BH_SUCCESS;
   }
   return BH_INVALID;

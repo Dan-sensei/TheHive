@@ -16,7 +16,7 @@ hoja0::~hoja0(){}
     Status hoja0::update() {
       std::cout << "hoja0 update" <<getStatus() << '\n';
       contador++;
-      if(contador!=3){
+      if(contador!=4){
         return BH_RUNNING;
       }else{
         return BH_SUCCESS;

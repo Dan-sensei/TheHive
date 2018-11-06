@@ -15,7 +15,7 @@ Status Succeeder::update(){
   if(m_pChild->getStatus()==BH_FAILURE){
     return BH_SUCCESS;
   }else {
-    if(m_pChild->getStatus()==BH_RUNNING) return update();
+    //if(m_pChild->getStatus()==BH_RUNNING) return update();
     return m_pChild->getStatus();
   }
 }

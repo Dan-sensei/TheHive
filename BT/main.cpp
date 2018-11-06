@@ -40,8 +40,15 @@ sec1->addChild(inv1);
 
 BehaviorTree BT(sec1);
 
-
+std::cout << "tick 1" << '\n';
 BT.tick();
+std::cout << "tick 2" << '\n';
+BT.tick();
+std::cout << "tick 3" << '\n';
+BT.tick();
+std::cout << "tick 4" << '\n';
+BT.tick();
+
 
 
    // Ejemplo con decorator
