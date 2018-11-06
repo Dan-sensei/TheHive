@@ -5,7 +5,10 @@
 
 #define CAMERA_ATENUATION 7
 
-CCamera::CCamera(){}
+CCamera::CCamera(){
+    GameEngine *engine = Singleton<GameEngine>::Instance();
+    lastCameraPosition = engine->getCamera()->getPosition();
+}
 CCamera::~CCamera(){}
 
 void CCamera::initComponent(){
@@ -14,12 +17,18 @@ void CCamera::initComponent(){
 
 // void CCamera::updateCameraTarget(Camera *cam, Model *mod, gg::Vector3f nextPosition){
 void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
+    if(lastCameraPosition.X!=nextPosition.X && lastCameraPosition.Y!=nextPosition.Y && lastCameraPosition.Z!=nextPosition.Z){
+        return;
+    }
+    lastCameraPosition = nextPosition;
+
     GameEngine *engine = Singleton<GameEngine>::Instance();
     ObjectManager *manager = Singleton<ObjectManager>::Instance();
     Camera *cam = engine->getCamera();
     CTransform *mod = dynamic_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,entity));
 
     cam->bindTargetAndRotation(true);
+    std::cout << nextPosition.X << "," << nextPosition.Y << "," << nextPosition.Z << '\n';
 
     // // First of all, we have to get the mouse position on the screen
     // // and get the X,Y position
@@ -42,9 +51,9 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
     nextCamPosition.Y = nextPosition.Y+10.f;
     nextCamPosition.Z = nextPosition.Z-12.f;
     cam->setPosition(nextCamPosition);
-    
-    // Call to updateAbsolutePosition() to avoid perspective
-    // and camera position problems
+    //
+    // // Call to updateAbsolutePosition() to avoid perspective
+    // // and camera position problems
     cam->updateAbsolutePosition();
 
     // SECOND set the camera rotation
@@ -93,5 +102,18 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
 gg::Vector3f CCamera::getCameraPosition(){
     GameEngine *engine = Singleton<GameEngine>::Instance();
     return engine->getCamera()->getPosition();
-
 }
+
+gg::Vector3f CCamera::getLastCameraPosition(){
+    return lastCameraPosition;
+}
+
+
+
+
+
+
+
+
+
+

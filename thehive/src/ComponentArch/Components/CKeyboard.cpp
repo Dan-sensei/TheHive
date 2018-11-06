@@ -33,7 +33,7 @@ gg::EMessageStatus CKeyboard::processMessage() {
         CCamera *camera = dynamic_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
         if(camera){
             //  If exists, we get its position
-            gg::Vector3f nextPosition = camera->getCameraPosition();
+            gg::Vector3f nextPosition = camera->getLastCameraPosition();
 
             if(engine->key(gg::GG_W))
             nextPosition.Z += MOVEMENT_SPEED;

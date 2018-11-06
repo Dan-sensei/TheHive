@@ -14,8 +14,9 @@ public:
 
     void updateCameraTarget(uint16_t,gg::Vector3f);
     gg::Vector3f getCameraPosition();
+    gg::Vector3f getLastCameraPosition();
 private:
-
+    gg::Vector3f lastCameraPosition;
 };
 
 
