@@ -5,10 +5,10 @@
 //#include "Task.hpp"
 
 
-
+class Task;
 class Node{
 public:
-//virtual Task* create();
+virtual Task* create();
 virtual void destroy();
 };
 
