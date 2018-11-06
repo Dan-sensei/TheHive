@@ -3,9 +3,6 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <GameEngine/GameEngine.hpp>
 
-#define MOVEMENT_SPEED 1.f
-#define RUNNING_SPEED MOVEMENT_SPEED*1.05f
-#define DASH_SPEED MOVEMENT_SPEED*4.f
 #define MAX_ANGLE 12.f
 
 #define DASH_KEY gg::GG_F
@@ -62,45 +59,59 @@ gg::EMessageStatus CKeyboard::processMessage() {
             // Vector perpendicular al vector direccion
             gg::Vector3f ppV(-cV.Z,0,cV.X);
 
+            gg::Vector2f DASH_SPEED(cV.X*4,cV.Z*4);
+            gg::Vector2f RUNNING_SPEED(cV.X*1.05,cV.Z*1.05);
+
             if(engine->key(gg::GG_W)){
                 nextPosition.X -= cV.X;
                 nextPosition.Z -= cV.Z;
                 if(engine->key(DASH_KEY)){
-                    nextPosition.X += DASH_SPEED;
+                    nextPosition.X -= DASH_SPEED.X;
+                    nextPosition.Z -= DASH_SPEED.Y;
                 }
                 else if(engine->key(RUN_KEY)){
-                    nextPosition.X += RUNNING_SPEED;
+                    nextPosition.X -= RUNNING_SPEED.X;
+                    nextPosition.Z -= RUNNING_SPEED.Y;
                 }
             }
             else if(engine->key(gg::GG_S)){
                 nextPosition.X += cV.X;
                 nextPosition.Z += cV.Z;
                 if(engine->key(DASH_KEY)){
-                    nextPosition.X -= DASH_SPEED;
+                    nextPosition.X += DASH_SPEED.X;
+                    nextPosition.Z += DASH_SPEED.Y;
                 }
                 else if(engine->key(RUN_KEY)){
-                    nextPosition.X -= RUNNING_SPEED;
+                    nextPosition.X += RUNNING_SPEED.X;
+                    nextPosition.Z += RUNNING_SPEED.Y;
                 }
             }
+
+            DASH_SPEED = gg::Vector2f(ppV.X*4,ppV.Z*4);
+            RUNNING_SPEED =  gg::Vector2f(ppV.X*1.05,ppV.Z*1.05);
 
             if(engine->key(gg::GG_A)){
                 nextPosition.X -= ppV.X;
                 nextPosition.Z -= ppV.Z;
                 if(engine->key(DASH_KEY)){
-                    nextPosition.Z += DASH_SPEED;
+                    nextPosition.X -= DASH_SPEED.X;
+                    nextPosition.Z -= DASH_SPEED.Y;
                 }
                 else if(engine->key(RUN_KEY)){
-                    nextPosition.Z += RUNNING_SPEED;
+                    nextPosition.X -= RUNNING_SPEED.X;
+                    nextPosition.Z -= RUNNING_SPEED.Y;
                 }
             }
             else if(engine->key(gg::GG_D)){
                 nextPosition.X += ppV.X;
                 nextPosition.Z += ppV.Z;
                 if(engine->key(DASH_KEY)){
-                    nextPosition.Z -= DASH_SPEED;
+                    nextPosition.X += DASH_SPEED.X;
+                    nextPosition.Z += DASH_SPEED.Y;
                 }
                 else if(engine->key(RUN_KEY)){
-                    nextPosition.Z -= RUNNING_SPEED;
+                    nextPosition.X += RUNNING_SPEED.X;
+                    nextPosition.Z += RUNNING_SPEED.Y;
                 }
             }
 
