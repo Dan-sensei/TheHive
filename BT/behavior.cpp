@@ -2,8 +2,18 @@
 
 #include "behavior.hpp"
 
+bool behavior::isTerminate(){
+if(m_eStatus==BH_RUNNING){
+  return false;
+}
+else{
+  return true;
 
-
+}
+}
+void behavior::abort(){
+m_eStatus=BH_INVALID;
+}
    Status behavior::tick(){
       if (m_eStatus != BH_RUNNING) onInitialize();
       m_eStatus = update();
