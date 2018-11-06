@@ -10,7 +10,7 @@ CTransform::CTransform()
 rx(0), ry(0), rz(0),
 sx(0), sy(0), sz(0)
 {
-
+    std::cout << "Creating CTransform===============" << '\n';
 }
 
 CTransform::CTransform(const CTransform &orig){
@@ -56,7 +56,7 @@ void CTransform::initializeComponentData(const void* data) {
     //  We get a void* to our data, but, since we are on the TRANSFORM component
 
     //  We cast the void to our InitStructure of the TRANSFORM component
-    ICTransform* cData = (ICTransform*)data;
+    InitCTransform* cData = (InitCTransform*)data;
 
     x = cData->x;
     y = cData->y;

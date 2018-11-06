@@ -5,9 +5,8 @@
 #include <GameEngine/Model.hpp>
 
 class CRenderable_3D : public IComponent {
+    friend class ObjectManager;
     public:
-        CRenderable_3D();
-        CRenderable_3D(const CRenderable_3D &orig);
         virtual ~CRenderable_3D();
 
         // Functions of IComponent
@@ -17,6 +16,8 @@ class CRenderable_3D : public IComponent {
 
 
     private:
+        CRenderable_3D();
+        CRenderable_3D(const CRenderable_3D &orig);
         Model _3DModel;
 };
 

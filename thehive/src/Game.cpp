@@ -61,14 +61,15 @@ void Game::RUN(){
 
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
-    ICTransform CTransformInitData(0, 0, 0, 0, 0, 0, 0, 0, 0);
-    ICRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
+    InitCTransform CTransformInitData(0, 0, 0, 0, 0, 0, 0, 0, 0);
+    InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
     CCamera CGlobalCamera();
 
     Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
     Manager->addComponentToEntity(gg::KEYBOARD, hero);
     Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
     Manager->addComponentToEntity(gg::CAMERA, hero);
+
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;

@@ -6,9 +6,9 @@
 
 //  Init Data structs for every component type
 
-struct ICTransform{
+struct InitCTransform{
 
-    ICTransform(
+    InitCTransform(
         float  _x, float  _y, float  _z,
         float _rx, float _ry, float _rz,
         float _sx, float _sy, float _sz
@@ -23,9 +23,9 @@ struct ICTransform{
 //
 //};
 
-struct ICRenderable_3D{
+struct InitCRenderable_3D{
 
-    ICRenderable_3D(
+    InitCRenderable_3D(
         const std::string &_pathToModel,
         const Material &mat
     );

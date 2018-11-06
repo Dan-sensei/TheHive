@@ -3,7 +3,6 @@ include MakeColors
 BUILD	:= build/
 
 SOURCES := $(shell find src/ -type f -name "*.cpp")
-
 OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
 OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 
@@ -50,9 +49,26 @@ clean:
 init:
 	./$(EXE)
 
-info:
+molon:
 	$(call br)
-	$(call printObj, "Linker:" )
+	$(call printObj, "Titulo:" )
+	$(call printWarning,"THE" "HIVE")
+	$(call br)
+	$(call printObj, "Language:" )
+	$(call printWarning,"C++")
+	$(call br)
+	$(call printObj, "Compiler:" )
 	$(call printWarning,$(COMPILER))
 	$(call br)
+	$(call br)
+
+info:
+	$(call br)
+	$(call printWarning, "Files:")
+	$(call br)
+	$(call br)
+	$(call objColor)
+	@$(foreach var,$(SOURCES), echo " "$(var); )
+	$(call noColor)
+
 	$(call br)

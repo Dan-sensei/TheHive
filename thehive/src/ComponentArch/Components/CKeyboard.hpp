@@ -4,9 +4,8 @@
 #include <ComponentArch/IComponent.hpp>
 
 class CKeyboard : public IComponent {
+    friend class ObjectManager;
     public:
-        CKeyboard();
-        CKeyboard(const CKeyboard &orig);
         virtual ~CKeyboard();
 
         static void initComponent();
@@ -14,6 +13,8 @@ class CKeyboard : public IComponent {
         virtual gg::EMessageStatus processMessage();
 
     private:
+        CKeyboard();
+        CKeyboard(const CKeyboard &orig);
 };
 
 #endif

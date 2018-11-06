@@ -6,15 +6,17 @@
 #include <cmath>
 
 class CCamera : public IComponent {
-public:
-    CCamera ();
-    virtual ~CCamera ();
+    friend class ObjectManager;
+    public:
+        virtual ~CCamera ();
 
-    static void initComponent();
+        static void initComponent();
 
-    void updateCameraTarget(uint16_t,gg::Vector3f);
-    gg::Vector3f getCameraPosition();
-private:
+        void updateCameraTarget(uint16_t,gg::Vector3f);
+        gg::Vector3f getCameraPosition();
+    private:
+        CCamera();
+        CCamera(const CCamera &orig) = delete;
 
 };
 

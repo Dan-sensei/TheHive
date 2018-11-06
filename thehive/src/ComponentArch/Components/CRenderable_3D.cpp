@@ -25,7 +25,7 @@ void CRenderable_3D::initComponent() {
 
 void CRenderable_3D::initializeComponentData(const void* data){
 
-    ICRenderable_3D* cData = (ICRenderable_3D*)data;
+    InitCRenderable_3D* cData = (InitCRenderable_3D*)data;
 
     _3DModel = Singleton<GameEngine>::Instance()->createModel(cData->pathToModel);
     _3DModel.assignMaterial(cData->material);

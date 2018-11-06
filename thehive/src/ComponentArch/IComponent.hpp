@@ -9,7 +9,6 @@ class IComponent{
     //  We make this class friend of ObjectManger, so it can access the setEntityID method
     friend class ObjectManager;
     public:
-        IComponent();
         IComponent(const IComponent &orig) = delete;
         virtual ~IComponent();
 
@@ -30,7 +29,11 @@ class IComponent{
         //========================================================================
         virtual void initializeComponentData(const void* data);
 
+    protected:
+        IComponent();
+
     private:
+
         uint16_t EntityID;
 
         //  ---

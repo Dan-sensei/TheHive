@@ -164,6 +164,7 @@ IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const u
     if(found != TypeToComponentMap[cType].end())
         return found->second;   // <- We return the pointer to it
 
+    
     //  If not
     return nullptr; //  <- We return nullptr
 }

@@ -5,9 +5,8 @@
 #include <Util.hpp>
 
 class CTransform : public IComponent {
+    friend class ObjectManager;
     public:
-        CTransform();
-        CTransform(const CTransform &orig);
         virtual ~CTransform();
 
 
@@ -25,6 +24,9 @@ class CTransform : public IComponent {
 
 
     private:
+        CTransform();
+        CTransform(const CTransform &orig);
+
         float  x,  y,  z;
         float rx, ry, rz;
         float sx, sy, sz;

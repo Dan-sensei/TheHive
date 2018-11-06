@@ -32,3 +32,11 @@ endef
 define br
     @printf "%b" "\n"
 endef
+
+define objColor
+    @printf "%b" "$(OBJ_COLOR)"
+endef
+
+define noColor
+    @printf "%b" "$(NO_COLOR)"
+endef

@@ -1,6 +1,6 @@
 #include "InitStructs.hpp"
 
-ICTransform::ICTransform(
+InitCTransform::InitCTransform(
     float  _x, float  _y, float  _z,
     float _rx, float _ry, float _rz,
     float _sx, float _sy, float _sz
@@ -9,7 +9,7 @@ ICTransform::ICTransform(
     sx(_sx), sy(_sy), sz(_sz)
 {}
 
-ICRenderable_3D::ICRenderable_3D(
+InitCRenderable_3D::InitCRenderable_3D(
     const std::string &_pathToModel,
     const Material &mat
 ) : pathToModel(_pathToModel), material(mat)
