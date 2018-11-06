@@ -41,66 +41,68 @@ gg::EMessageStatus CKeyboard::processMessage() {
         if(camera){
             //  If exists, we get its position
             gg::Vector3f nextPosition = camera->getLastCameraPosition();
-
-            gg::Vector3f tV = camera->getCameraTarget();
-            tV.X = fmod(tV.X -= nextPosition.X,MOVEMENT_SPEED);
-            tV.Y = fmod(tV.Y -= nextPosition.Y,MOVEMENT_SPEED);
-            tV.Z = fmod(tV.Z -= nextPosition.Z,MOVEMENT_SPEED);
-            // tV.X -= nextPosition.X;
-            // tV.Y -= nextPosition.Y;
-            // tV.Z -= nextPosition.Z;
-            std::cout << tV.X << "," << tV.Y << "," << tV.Z << '\n';
-            // std::cout << fmod(tV.X+tV.Z,1) << '\n';
-
             bool heroRotation = true;
 
+            // TODO:
+            //      MEJORAR la forma en la que se calcula el angulo de la camara
+            //      CAMBIAR la forma en la que se mueve CUANDO EL CTRL ESTA PULSADO
+
+            // Vector direccion camara-heroe
+            gg::Vector3f cV = camera->getCameraPosition();
+            gg::Vector3f hV = cTransform->getPosition();
+                cV.X -= hV.X;
+                cV.Y -= hV.Y;
+                cV.Z -= hV.Z;
+
+            float length = sqrt(cV.X*cV.X + cV.Y*cV.Y + cV.Z*cV.Z);
+                cV.X /= length;
+                cV.Y /= length;
+                cV.Z /= length;
+
+            // Vector perpendicular al vector direccion
+            gg::Vector3f ppV(-cV.Z,0,cV.X);
+
             if(engine->key(gg::GG_W)){
-                nextPosition.Z += MOVEMENT_SPEED;
-                if(engine->key(DASH_KEY))
-                    nextPosition.Z += DASH_SPEED;
-                else if(engine->key(RUN_KEY))
-                    nextPosition.Z += RUNNING_SPEED;
+                nextPosition.X -= cV.X;
+                nextPosition.Z -= cV.Z;
+                if(engine->key(DASH_KEY)){
+                    nextPosition.X += DASH_SPEED;
+                }
+                else if(engine->key(RUN_KEY)){
+                    nextPosition.X += RUNNING_SPEED;
+                }
             }
             else if(engine->key(gg::GG_S)){
-                nextPosition.Z -= MOVEMENT_SPEED;
-                if(engine->key(DASH_KEY))
-                    nextPosition.Z -= DASH_SPEED;
-                else if(engine->key(RUN_KEY))
-                    nextPosition.Z -= RUNNING_SPEED;
+                nextPosition.X += cV.X;
+                nextPosition.Z += cV.Z;
+                if(engine->key(DASH_KEY)){
+                    nextPosition.X -= DASH_SPEED;
+                }
+                else if(engine->key(RUN_KEY)){
+                    nextPosition.X -= RUNNING_SPEED;
+                }
             }
 
             if(engine->key(gg::GG_A)){
-                nextPosition.X -= MOVEMENT_SPEED;
-                if(engine->key(DASH_KEY))
-                    nextPosition.X -= DASH_SPEED;
-                else if(engine->key(RUN_KEY))
-                    nextPosition.X -= RUNNING_SPEED;
+                nextPosition.X -= ppV.X;
+                nextPosition.Z -= ppV.Z;
+                if(engine->key(DASH_KEY)){
+                    nextPosition.Z += DASH_SPEED;
+                }
+                else if(engine->key(RUN_KEY)){
+                    nextPosition.Z += RUNNING_SPEED;
+                }
             }
             else if(engine->key(gg::GG_D)){
-                nextPosition.X += MOVEMENT_SPEED;
-                if(engine->key(DASH_KEY))
-                    nextPosition.X += DASH_SPEED;
-                else if(engine->key(RUN_KEY))
-                    nextPosition.X += RUNNING_SPEED;
+                nextPosition.X += ppV.X;
+                nextPosition.Z += ppV.Z;
+                if(engine->key(DASH_KEY)){
+                    nextPosition.Z -= DASH_SPEED;
+                }
+                else if(engine->key(RUN_KEY)){
+                    nextPosition.Z -= RUNNING_SPEED;
+                }
             }
-
-            // if(engine->key(gg::GG_W)){
-            //     nextPosition.X -= tV.X;
-            //     nextPosition.Z -= tV.Z;
-            // }
-            // else if(engine->key(gg::GG_S)){
-            //     nextPosition.X += tV.X;
-            //     nextPosition.Z += tV.Z;
-            // }
-            //
-            // if(engine->key(gg::GG_A)){
-            //     nextPosition.X -= tV.X;
-            //     nextPosition.Z += tV.Z;
-            // }
-            // else if(engine->key(gg::GG_D)){
-            //     nextPosition.X += tV.X;
-            //     nextPosition.Z -= tV.Z;
-            // }
 
             if(engine->key(ROTATE_KEY))
                 heroRotation = false;

@@ -19,9 +19,6 @@ void CCamera::initComponent(){
 
 // void CCamera::updateCameraTarget(Camera *cam, Model *mod, gg::Vector3f nextPosition){
 void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool heroRotation){
-    if(lastCameraPosition.X!=nextPosition.X && lastCameraPosition.Y!=nextPosition.Y && lastCameraPosition.Z!=nextPosition.Z){
-        return;
-    }
     lastCameraPosition = nextPosition;
 
     GameEngine *engine = Singleton<GameEngine>::Instance();
@@ -46,23 +43,10 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool
     float newVY = static_cast<float>(vY);
     float newVX = static_cast<float>(vX);
 
-    // FIRST the camera must be moved
-    // gg::Vector3f nextCamPosition;
-    // nextCamPosition.X = nextPosition.X;
-    // nextCamPosition.Y = nextPosition.Y+OFFSET_POSITION_Y;
-    // nextCamPosition.Z = nextPosition.Z-OFFSET_POSITION_Z;
-    // cam->setPosition(nextCamPosition);
-
-    // Call to updateAbsolutePosition() to avoid perspective
-    // and camera position problems
-    cam->updateAbsolutePosition();
-
-    // SECOND set the camera rotation
     gg::Vector3f newRotation = cam->getRotation();
     newRotation.X += newVY/CAMERA_ATENUATION;
     newRotation.Y += newVX/CAMERA_ATENUATION;
     newRotation.Z = 0;
-    cam->setRotation(newRotation);
 
     // Now is applied the rotation
     // Having the rotation center on the camera position
@@ -77,26 +61,41 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool
     nextModelPosition.X += newX;
     nextModelPosition.Z += newZ;
 
+    // If heroRotation is FALSE, the hero won't move with the camera rotation
     if(heroRotation)
         mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
-    mod->setPosition(gg::Vector3f(nextModelPosition));
+    // mod->setPosition(gg::Vector3f(nextModelPosition));
 
     // Now set the 'OFFSET' to the nextPosition to cheat the player eyes
     gg::Vector3f finalVector;
-    finalVector.X = nextPosition.X-mod->getPosition().X;
-    finalVector.Y = nextPosition.Y-mod->getPosition().Y;
-    finalVector.Z = nextPosition.Z-mod->getPosition().Z;
+    finalVector.X = nextPosition.X-nextModelPosition.X;
+    finalVector.Y = nextPosition.Y-nextModelPosition.Y;
+    finalVector.Z = nextPosition.Z-nextModelPosition.Z;
 
-    mod->setPosition(gg::Vector3f(
-        mod->getPosition().X+finalVector.X,
-        mod->getPosition().Y+finalVector.Y,
-        mod->getPosition().Z+finalVector.Z));
+    // And set the entity position
+    mod->setPosition(
+        gg::Vector3f(
+            nextModelPosition.X+finalVector.X,
+            nextModelPosition.Y+finalVector.Y,
+            nextModelPosition.Z+finalVector.Z
+        )
+    );
 
-    cam->setPosition(gg::Vector3f(
-        cam->getPosition().X+finalVector.X,
-        cam->getPosition().Y+finalVector.Y,
-        cam->getPosition().Z+finalVector.Z));
+    // FIRST we have to set the camera position
+    gg::Vector3f camPosition = cam->getPosition();
+    cam->setPosition(
+        gg::Vector3f(
+            camPosition.X+finalVector.X,
+            camPosition.Y+finalVector.Y,
+            camPosition.Z+finalVector.Z
+        )
+    );
+
+    // Call to updateAbsolutePosition() to avoid perspective
+    // and camera position problems
     cam->updateAbsolutePosition();
+
+    // SECOND set the camera rotation
     cam->setRotation(newRotation);
 
 }
