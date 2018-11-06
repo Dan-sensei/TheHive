@@ -13,7 +13,15 @@
 //-----------------------------------------//
 class inverso : public decorator{
 public:
- Status update();
+  inverso(behavior* _m_pChild);
+  inverso();
+  ~inverso();
+
+  virtual void onTerminate(Status state);
+
+ virtual Status update();
+ //virtual void onInitialize();             // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update
+ //virtual void onTerminate(Status);
 
 };
 

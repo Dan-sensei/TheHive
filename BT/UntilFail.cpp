@@ -13,13 +13,15 @@
 Status UntilFail::update(){
   while(true){
     m_pChild->tick();
-    if(m_pChild->getStatus()==BH_SUCCESS || m_pChild->getStatus()==BH_RUNNING){
-      break;
-    }else if(m_pChild->getStatus()==BH_FAILURE){
+     if(m_pChild->getStatus()==BH_FAILURE){
       return BH_SUCCESS;
     }
+    if(m_pChild->getStatus()==BH_INVALID){
+      break;
+    }
+
 
   }
-  return BH_RUNNING;
+  return BH_INVALID;
 
 }

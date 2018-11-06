@@ -8,9 +8,9 @@
 class composite : public behavior {
 public:
 
-   virtual void addChild(behavior*){}
-   virtual void removeChild(behavior*){}
-   virtual void clearChildren(){}
+   virtual void addChild(behavior* hijo);
+   virtual void removeChild(behavior* hijo);
+   virtual void clearChildren();
 protected:
    typedef std::vector<behavior*> behaviors;
    behaviors m_Children;
