@@ -63,10 +63,12 @@ void Game::RUN(){
 
     ICTransform CTransformInitData(0, 0, 0, 0, 0, 0, 0, 0, 0);
     ICRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
+    CCamera CGlobalCamera();
 
     Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
     Manager->addComponentToEntity(gg::KEYBOARD, hero);
     Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
+    Manager->addComponentToEntity(gg::CAMERA, hero);
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -78,7 +80,8 @@ void Game::RUN(){
 
     //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
-    Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
+    // Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
+    engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
     ////camera.setPosition(gg::Vector3f(-50, 0, 100));
     ////camera.setTarget(gg::Vector3f(0, 0, 50));
 

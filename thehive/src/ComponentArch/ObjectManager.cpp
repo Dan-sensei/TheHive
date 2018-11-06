@@ -19,6 +19,7 @@ ObjectManager::ObjectManager()
     ComponentConstructorVector[0]= &ObjectManager::createTransformComponent;
     ComponentConstructorVector[1]= &ObjectManager::createKeyboardComponent;
     ComponentConstructorVector[2]= &ObjectManager::createRenderable_3DComponent;
+    ComponentConstructorVector[3]= &ObjectManager::createCameraComponent;
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
 }
@@ -49,6 +50,7 @@ void ObjectManager::initObjectManager() {
     CTransform::initComponent();
     CKeyboard::initComponent();
     CRenderable_3D::initComponent();
+    CCamera::initComponent();
 }
 
 
@@ -175,6 +177,9 @@ IComponent* ObjectManager::createKeyboardComponent          ()   {
 }
 IComponent* ObjectManager::createRenderable_3DComponent     ()   {
     return new CRenderable_3D;
+}
+IComponent* ObjectManager::createCameraComponent            ()   {
+    return new CCamera;
 }
 //IComponent* ObjectManager::createColliderComponent     ();
 //IComponent* ObjectManager::createHealthComponent       ();

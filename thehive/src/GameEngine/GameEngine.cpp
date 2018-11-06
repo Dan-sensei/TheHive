@@ -105,39 +105,38 @@ void GameEngine::HideCursor(bool flag){
 //  ---
 //  Adds a camera to the scene with optional initial coordinates
 //==================================================================================
-Camera GameEngine::createCamera(const gg::Vector3f &position /* = {0,0,0} */, const gg::Vector3f &direction /* = {0,0,0} */) {
+void GameEngine::createCamera(const gg::Vector3f &position /* = {0,0,0} */, const gg::Vector3f &direction /* = {0,0,0} */) {
 
-    Camera newCamera;
-    newCamera.mCamera = smgr->addCameraSceneNode(
+    G_Camera.mCamera = smgr->addCameraSceneNode(
         0,
         irr::core::vector3df(position.X, position.Y, position.Z),
         irr::core::vector3df(direction.X, direction.Y, direction.Z)
     );
 
-    //irr::SKeyMap keyMap[8];
-    //keyMap[0].Action = irr::EKA_MOVE_FORWARD;
-    //keyMap[0].KeyCode = irr::KEY_UP;
-    //keyMap[1].Action = irr::EKA_MOVE_FORWARD;
-    //keyMap[1].KeyCode = irr::KEY_KEY_W;
+}
 
-    //keyMap[2].Action = irr::EKA_MOVE_BACKWARD;
-    //keyMap[2].KeyCode = irr::KEY_DOWN;
-    //keyMap[3].Action = irr::EKA_MOVE_BACKWARD;
-    //keyMap[3].KeyCode = irr::KEY_KEY_S;
+Camera* GameEngine::getCamera(){
+    return &G_Camera;
+}
 
-    //keyMap[4].Action = irr::EKA_STRAFE_LEFT;
-    //keyMap[4].KeyCode = irr::KEY_LEFT;
-    //keyMap[5].Action = irr::EKA_STRAFE_LEFT;
-    //keyMap[5].KeyCode = irr::KEY_KEY_A;
+int GameEngine::getScreenWidth(){
+    return driver->getScreenSize().Width;
+}
 
-    //keyMap[6].Action = irr::EKA_STRAFE_RIGHT;
-    //keyMap[6].KeyCode = irr::KEY_RIGHT;
-    //keyMap[7].Action = irr::EKA_STRAFE_RIGHT;
-    //keyMap[7].KeyCode = irr::KEY_KEY_D;
+int GameEngine::getScreenHeight(){
+    return driver->getScreenSize().Height;
+}
 
-    //smgr->addCameraSceneNodeFPS(0, 100, 0.5, -1, keyMap, 8);
+int GameEngine::getCursorX(){
+    return device->getCursorControl()->getPosition().X;
+}
 
-    return newCamera;
+int GameEngine::getCursorY(){
+    return device->getCursorControl()->getPosition().Y;
+}
+
+void GameEngine::setCursorPosition(int x, int y){
+    device->getCursorControl()->setPosition(x, y);
 }
 
 //  ---

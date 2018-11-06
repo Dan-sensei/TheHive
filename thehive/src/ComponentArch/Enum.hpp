@@ -7,8 +7,10 @@ namespace gg{
         TRANSFORM = 0,
         KEYBOARD,
         RENDERABLE_3D,
+        CAMERA,
         //HEALTH,
         //RESPECT,
+        //DANINOSABEPROGRAMAR
         NUM_COMPONENTS
     };
 

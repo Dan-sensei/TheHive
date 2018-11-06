@@ -9,6 +9,7 @@
 #include "Components/CTransform.hpp"
 #include "Components/CKeyboard.hpp"
 #include "Components/CRenderable_3D.hpp"
+#include "Components/CCamera.hpp"
 
 #include <stack>
 #include <map>
@@ -76,6 +77,7 @@ class ObjectManager{
         IComponent* createTransformComponent        ();
         IComponent* createKeyboardComponent         ();
         IComponent* createRenderable_3DComponent    ();
+        IComponent* createCameraComponent           ();
 
 
         typedef IComponent* (ObjectManager::*pConstructor)(void);

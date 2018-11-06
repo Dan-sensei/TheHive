@@ -38,7 +38,13 @@ class GameEngine{
         //  Creates and returns a camera object. It optionally accepts a position
         //  and looking direction
         //==================================================================================
-        Camera createCamera(const gg::Vector3f &position = {0,0,0}, const gg::Vector3f &direction = {0,0,0});
+        void createCamera(const gg::Vector3f &position = {0,0,0}, const gg::Vector3f &direction = {0,0,0});
+        Camera* getCamera();
+        int getScreenWidth();
+        int getScreenHeight();
+        int getCursorX();
+        int getCursorY();
+        void setCursorPosition(int,int);
 
         //  ---
         //  Creates and returns a model object. It optionally accepts a position
@@ -60,5 +66,6 @@ class GameEngine{
 
         int lastFPS;
         EventListener listener;
+        Camera G_Camera;
     };
 #endif

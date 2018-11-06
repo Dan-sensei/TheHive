@@ -12,8 +12,15 @@ class Camera{
         ~Camera();
 
         void setPosition(const gg::Vector3f &newPosition);
+        void setRotation(const gg::Vector3f &newRotation);
+
         gg::Vector3f getPosition();
+        gg::Vector3f getRotation();
+
         void setTarget(const gg::Vector3f &target);
+
+        void updateAbsolutePosition();
+        void bindTargetAndRotation(bool);
 
     private:
         irr::scene::ICameraSceneNode* mCamera;

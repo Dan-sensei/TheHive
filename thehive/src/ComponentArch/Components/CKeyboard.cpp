@@ -30,23 +30,27 @@ gg::EMessageStatus CKeyboard::processMessage() {
     CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
 
     if(cTransform){
-        //  If exists, we get its position
-        gg::Vector3f nextPosition = cTransform->getPosition();
+        CCamera *camera = dynamic_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
+        if(camera){
+            //  If exists, we get its position
+            gg::Vector3f nextPosition = camera->getCameraPosition();
 
-        if(engine->key(gg::GG_W))
+            if(engine->key(gg::GG_W))
             nextPosition.Z += MOVEMENT_SPEED;
-        else if(engine->key(gg::GG_S))
+            else if(engine->key(gg::GG_S))
             nextPosition.Z -= MOVEMENT_SPEED;
 
-        if(engine->key(gg::GG_A))
+            if(engine->key(gg::GG_A))
             nextPosition.X -= MOVEMENT_SPEED;
-        else if(engine->key(gg::GG_D))
+            else if(engine->key(gg::GG_D))
             nextPosition.X += MOVEMENT_SPEED;
 
-        // And we update it accoding to the keyboard input
-        cTransform->setPosition(nextPosition);
+            // And we update it accoding to the keyboard input
+            // cTransform->setPosition(nextPosition);
+            camera->updateCameraTarget(getEntityID(),nextPosition);
 
-        return gg::ST_TRUE;
+            return gg::ST_TRUE;
+        }
     }
 
     return gg::ST_ERROR;
