@@ -13,7 +13,8 @@
 
 static unsigned long id=0;
 #include <irrlicht/irrList.h>
-#include "Vector.hpp"
+#include "Util.hpp"
+
 #include "EnumTriggerType.hpp"
 
 
@@ -25,14 +26,14 @@ struct TriggerRecordStruct
     TriggerRecordStruct(
         EnumTriggerType _eTriggerType,
         unsigned long _idSource,
-        const Vector _vPos,
+        const gg::Vector3f _vPos,
         float _fRadius,
         unsigned long _fDuration,
         bool _bDynamicSourcePos
     );
 
     EnumTriggerType eTriggerType;
-    Vector vPos;
+    gg::Vector3f vPos;
     unsigned long nTriggerID;
     unsigned long idSource;
     std::chrono::high_resolution_clock::time_point nTimeStamp;
@@ -54,7 +55,7 @@ public:
   ~CTriggerSystem();
   unsigned long RegisterTriger(EnumTriggerType _eTriggerType,
   unsigned long _nPriority,unsigned long _idSource,
-  const Vector& _vPos, float _fRadius, float _fDuration,
+  const gg::Vector3f& _vPos, float _fRadius, float _fDuration,
   bool _bDynamicSourcePos);
 
 

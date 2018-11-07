@@ -87,6 +87,12 @@ namespace gg{
         float X, Y;
     };
 
+    class Util{
+    public:
+        template <typename T>
+        static float DIST(T v1,T v2);
+
+    };
 
 }
 

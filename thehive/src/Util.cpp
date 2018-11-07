@@ -1,4 +1,6 @@
 #include "Util.hpp"
+#include <math.h>
+
 
 gg::Vector3u8::Vector3u8(uint8_t _X, uint8_t _Y, uint8_t _Z)
 :X(_X),Y(_Y),Z(_Z) {};
@@ -75,3 +77,12 @@ gg::Vector2f::Vector2f(const Vector2f &orig){
     X = orig.X;
     Y = orig.Y;
 }
+
+template <typename T>
+float gg::Util::DIST(T v1,T v2){
+    return sqrt(((v1.X-v2.X)*(v1.X-v2.X)+(v1.Y-v2.Y)*(v1.Y-v2.Y)+(v1.Z-v2.Z)*(v1.Z-v2.Z)));
+}
+
+
+template float gg::Util::DIST<gg::Vector3f>(gg::Vector3f v1, gg::Vector3f v2);
+//template float gg::Util::DIST<gg::Vector3u8>(gg::Vector3u8 v1, gg::Vector3u8 v2);
