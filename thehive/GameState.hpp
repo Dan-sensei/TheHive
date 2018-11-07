@@ -9,36 +9,38 @@
 #include <glm/glm.hpp>
 //#include <time.h>
 #include <sys/time.h>
+#include <chrono>
+
 static unsigned long id=0;
 #include <irrlicht/irrList.h>
 #include "Vector.hpp"
+#include "EnumTriggerType.hpp"
 
 
-enum EnumTriggerType
-{
-  kTrig_none=0,
-  kTrig_Explosion=(1<<0),
-  kTrig_EnemyNear=(1<<1),
-  kTrig_Gunfire=(1<<2)
-};
 //static void addAgent(CAgent* agente);
 //static void removeAgent(Iterator agente);
 
 struct TriggerRecordStruct
 {
-  EnumTriggerType eTriggerType;
-  unsigned long nTriggerID;
-  unsigned long idSource;
-  Vector vPos;
-  float fRadius;
-  unsigned long nTimeStamp;
-  unsigned long nExpirationTime;
-  bool bDynamicSourcePos;
-  TriggerRecordStruct(EnumTriggerType _eTriggerType,unsigned long _idSource,const Vector _vPos,float _fRadius,
-                      unsigned long _fDuration,bool _bDynamicSourcePos);
+    TriggerRecordStruct(
+        EnumTriggerType _eTriggerType,
+        unsigned long _idSource,
+        const Vector _vPos,
+        float _fRadius,
+        unsigned long _fDuration,
+        bool _bDynamicSourcePos
+    );
 
-
+    EnumTriggerType eTriggerType;
+    Vector vPos;
+    unsigned long nTriggerID;
+    unsigned long idSource;
+    std::chrono::high_resolution_clock::time_point nTimeStamp;
+    unsigned long nExpirationTime;//milliseconds
+    float fRadius;
+    bool bDynamicSourcePos;
 };
+
 typedef std::multimap<unsigned short, TriggerRecordStruct*,
                       std::greater <unsigned short> > TRIGGER_MAP;
 

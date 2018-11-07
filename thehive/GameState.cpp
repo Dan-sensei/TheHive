@@ -10,12 +10,7 @@
 //#include <vector>
 #include "Agent.hpp"
 #include "Vector.hpp"
-#include "Time.hpp"
-unsigned long timeGetTime(){
-    struct timeval now;
-    gettimeofday(&now, NULL);
-    return now.tv_usec/1000;
-  }
+
 
 CTriggerSystem::CTriggerSystem(){
 
@@ -65,7 +60,9 @@ void CTriggerSystem::Update()
 
   TriggerRecordStruct* pRec;
   TRIGGER_MAP::iterator it;
-  unsigned long nCurTime = timeGetTime();
+  //unsigned long nCurTime = Time::timeGetTime();
+  std::chrono::high_resolution_clock::time_point nCurTime = std::chrono::high_resolution_clock::now();
+
   //unsigned long nCurTime = 0;
   //Delete expired trigger records. For records tha are not
   //expired, update position if the dynamic flag is set
@@ -73,8 +70,10 @@ void CTriggerSystem::Update()
   while(it!=m_mapTriggerMap.end())
   {
     pRec = it->second;
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(nCurTime - pRec->nTimeStamp).count();
+
     if( (pRec->nExpirationTime!=0)&&
-        (pRec->nExpirationTime< nCurTime))
+        (pRec->nExpirationTime < ms))
         {
           delete(pRec);
           it=m_mapTriggerMap.erase(it);
@@ -133,8 +132,12 @@ TriggerRecordStruct::TriggerRecordStruct(EnumTriggerType _eTriggerType,unsigned 
   idSource=_idSource;
   vPos=_vPos;
   fRadius=_fRadius;
-  nTimeStamp=timeGetTime();// eso o sucedaneo
-  nExpirationTime=timeGetTime()+_fDuration;
+
+   std::chrono::high_resolution_clock::time_point  begin = std::chrono::high_resolution_clock::now();
+
+
+  nTimeStamp=std::chrono::high_resolution_clock::now();;// eso o sucedaneo
+  nExpirationTime=_fDuration;
   bDynamicSourcePos=_bDynamicSourcePos;
 
 

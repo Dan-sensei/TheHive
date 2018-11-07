@@ -10,8 +10,19 @@
 //#include <time.h>
 #include <sys/time.h>
 #include <irrlicht/irrList.h>
+//
+
+#include <iostream>
+#include <complex>
 
 
+
+// Constant PI for providing angles in radians
+
+
+//Function for Rotation of P about Q by angle theta
+
+//
 struct Vector
 {
   //glm::vec3 V3;

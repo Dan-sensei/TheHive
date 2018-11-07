@@ -10,11 +10,10 @@
 //#include <vector>
 #include "Agent.hpp"
 #include "Vector.hpp"
-#include "Time.hpp"
 
 irr::core::list <CAgent*>  CAgent::hola;
 
-
+//SetNextTriggerUpdate
 void  CAgent::SetNextTriggerUpdate(unsigned long _nCurTime){}
 unsigned long  CAgent::GetTriggerFlags(){return dwTriggerFlags;}
 Vector CAgent::GetPosition(){return vPos;}
@@ -23,6 +22,21 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
   std::cout << "Id agente:"<<nCAgentID << " ha entrado"<<std::endl;
 
   return true;}
+
+  CAgent::CAgent(unsigned long _dwTriggerFlags,Vector _vPos){
+    nCAgentID=id2;
+    id2++;
+    dwTriggerFlags=_dwTriggerFlags;
+    nDeltaTime=0;
+    vPos=_vPos;
+  }
+  CAgent::CAgent(){
+
+  }
+  CAgent::~CAgent(){
+
+  }
+
 
 
 void CAgent::addAgent(CAgent* agente){

@@ -12,27 +12,17 @@
 static unsigned long id2=0;
 #include <irrlicht/irrList.h>
 #include "GameState.hpp"
-
+//SetNextTriggerUpdate hacer que los agentes solo vean los triggers cada cierto tiempo
 
 
 class CAgent
 {
 public:
-  CAgent(unsigned long _dwTriggerFlags,Vector _vPos){
-    nCAgentID=id2;
-    id2++;
-    dwTriggerFlags=_dwTriggerFlags;
-    nDeltaTime=0;
-    vPos=_vPos;
-  }
-  CAgent(){
-
-  }
-  ~CAgent(){
-
-  }
+  CAgent(unsigned long _dwTriggerFlags,Vector _vPos);
+  CAgent();
+  ~CAgent();
   static irr::core::list <CAgent*>  hola;
-  
+
   unsigned long nCAgentID;
   unsigned long dwTriggerFlags;
   unsigned long nDeltaTime;

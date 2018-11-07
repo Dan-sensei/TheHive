@@ -2,8 +2,9 @@
 #include "Singleton.hpp"
 #include "Agent.hpp"
 #include "Vector.hpp"
-#include "Time.hpp"
+
 #include <irrlicht/irrlicht.h>
+#include <irrlicht/ITimer.h>
 //#include <irrlicht/irrList.h>
 #include <irrlicht/IEventReceiver.h>
 using namespace irr;
@@ -88,30 +89,39 @@ int main(int argc, char const *argv[]) {
     device->drop();
     return 0;
  }*/
+
+
 int main(int argc, char const *argv[]) {
 
     //IEventReceiver::SKeyInput(KeyInput)
     //if(IEventReceiver::OnEvent (IEventReceiver::KeyInput))return 0;
+
+
+
     CAgent* pAgent=NULL;
+    CAgent* pAgent1=NULL;
+    CAgent* pAgent2=NULL;
+    CAgent* pAgent3=NULL;
+    CAgent* pAgent4=NULL;
 
     pAgent=new CAgent(kTrig_Gunfire,Vector(4,5,0));
     CAgent::hola.push_back(pAgent);
     std::cout << "Id agente 1:"<<pAgent->nCAgentID << std::endl;
-    pAgent=new CAgent(kTrig_EnemyNear,Vector(3,2,0));
-    CAgent::hola.push_back(pAgent);
-    std::cout << "Id agente 1:"<<pAgent->nCAgentID << std::endl;
+    pAgent1=new CAgent(kTrig_EnemyNear,Vector(3,2,0));
+    CAgent::hola.push_back(pAgent1);
+    std::cout << "Id agente 1:"<<pAgent1->nCAgentID << std::endl;
 
-    pAgent=new CAgent(kTrig_EnemyNear,Vector(77,77,0));
-    CAgent::hola.push_back(pAgent);
-    std::cout << "Id agente 1:"<<pAgent->nCAgentID << std::endl;
+    pAgent2=new CAgent(kTrig_EnemyNear,Vector(77,77,0));
+    CAgent::hola.push_back(pAgent2);
+    std::cout << "Id agente 1:"<<pAgent2->nCAgentID << std::endl;
 
-    pAgent=new CAgent(kTrig_Gunfire,Vector());
-    CAgent::hola.push_back(pAgent);
-    std::cout << "Id agente 1:"<<pAgent->nCAgentID << std::endl;
+    pAgent3=new CAgent(kTrig_Gunfire,Vector());
+    CAgent::hola.push_back(pAgent3);
+    std::cout << "Id agente 1:"<<pAgent3->nCAgentID << std::endl;
 
-    pAgent=new CAgent(kTrig_EnemyNear|kTrig_Gunfire,Vector(77,77,0));
-    CAgent::hola.push_back(pAgent);
-    std::cout << "Id agente 1:"<<pAgent->nCAgentID << std::endl;
+    pAgent4=new CAgent(kTrig_EnemyNear|kTrig_Gunfire,Vector(77,77,0));
+    CAgent::hola.push_back(pAgent4);
+    std::cout << "Id agente 1:"<<pAgent4->nCAgentID << std::endl;
 
     CAgent::hola.size();
     TriggerRecordStruct(kTrig_Explosion,6, Vector(),4,2,false);
@@ -130,7 +140,13 @@ int main(int argc, char const *argv[]) {
 
       it++;
     }
-    std::cout << "Ey yo wassup my nigga" << std::endl;
+    delete pAgent;
+    delete pAgent1;
+    delete pAgent2;
+    delete pAgent3;
+    delete pAgent4;
+
+
 
     //erase(Iterator& it);
      //insert_before(Iterator& it);
