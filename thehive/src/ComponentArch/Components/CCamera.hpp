@@ -15,10 +15,14 @@ public:
     void updateCameraTarget(uint16_t,gg::Vector3f,bool);
     gg::Vector3f getCameraPosition();
     gg::Vector3f getCameraTarget();
+
     gg::Vector3f getLastCameraPosition();
+    gg::Vector3f getCameraPositionBeforeLockRotation();
 
 private:
     gg::Vector3f lastCameraPosition;
+    gg::Vector3f cameraPositionBeforeLockRotation;
+
 };
 
 

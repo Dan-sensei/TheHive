@@ -40,12 +40,8 @@ gg::EMessageStatus CKeyboard::processMessage() {
             gg::Vector3f nextPosition = camera->getLastCameraPosition();
             bool heroRotation = true;
 
-            // TODO:
-            //      MEJORAR la forma en la que se calcula el angulo de la camara
-            //      CAMBIAR la forma en la que se mueve CUANDO EL CTRL ESTA PULSADO
-
             // Vector direccion camara-heroe
-            gg::Vector3f cV = camera->getCameraPosition();
+            gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
             gg::Vector3f hV = cTransform->getPosition();
                 cV.X -= hV.X;
                 cV.Y -= hV.Y;
