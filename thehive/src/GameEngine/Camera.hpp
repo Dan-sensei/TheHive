@@ -18,6 +18,7 @@ class Camera{
         gg::Vector3f getRotation();
 
         void setTarget(const gg::Vector3f &target);
+        gg::Vector3f getTarget();
 
         void updateAbsolutePosition();
         void bindTargetAndRotation(bool);

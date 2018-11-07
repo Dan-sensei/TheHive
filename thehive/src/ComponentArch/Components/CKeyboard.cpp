@@ -3,7 +3,11 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <GameEngine/GameEngine.hpp>
 
-#define MOVEMENT_SPEED 1.f
+#define MAX_ANGLE 12.f
+
+#define DASH_KEY gg::GG_F
+#define ROTATE_KEY gg::GG_LCONTROL
+#define RUN_KEY gg::GG_LSHIFT
 
 CKeyboard::CKeyboard(){
 
@@ -33,31 +37,96 @@ gg::EMessageStatus CKeyboard::processMessage() {
     GameEngine* engine = Singleton<GameEngine>::Instance();
 
     //  We check if this entity has the TRANSFORM component
-    //CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
 
-    //if(cTransform){
+    if(cTransform){
         CCamera *camera = static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
         if(camera){
             //  If exists, we get its position
             gg::Vector3f nextPosition = camera->getLastCameraPosition();
+            bool heroRotation = true;
 
-            if(engine->key(gg::GG_W))
-            nextPosition.Z += MOVEMENT_SPEED;
-            else if(engine->key(gg::GG_S))
-            nextPosition.Z -= MOVEMENT_SPEED;
+            // Vector direccion camara-heroe
+            gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
+            gg::Vector3f hV = cTransform->getPosition();
+                cV.X -= hV.X;
+                cV.Y -= hV.Y;
+                cV.Z -= hV.Z;
 
-            if(engine->key(gg::GG_A))
-            nextPosition.X -= MOVEMENT_SPEED;
-            else if(engine->key(gg::GG_D))
-            nextPosition.X += MOVEMENT_SPEED;
+            float length = sqrt(cV.X*cV.X + cV.Y*cV.Y + cV.Z*cV.Z);
+                cV.X /= length;
+                cV.Y /= length;
+                cV.Z /= length;
+
+            // Vector perpendicular al vector direccion
+            gg::Vector3f ppV(-cV.Z,0,cV.X);
+
+            gg::Vector2f DASH_SPEED(cV.X*4,cV.Z*4);
+            gg::Vector2f RUNNING_SPEED(cV.X*1.05,cV.Z*1.05);
+
+            if(engine->key(gg::GG_W)){
+                nextPosition.X -= cV.X;
+                nextPosition.Z -= cV.Z;
+                if(engine->key(DASH_KEY)){
+                    nextPosition.X -= DASH_SPEED.X;
+                    nextPosition.Z -= DASH_SPEED.Y;
+                }
+                else if(engine->key(RUN_KEY)){
+                    nextPosition.X -= RUNNING_SPEED.X;
+                    nextPosition.Z -= RUNNING_SPEED.Y;
+                }
+            }
+            else if(engine->key(gg::GG_S)){
+                nextPosition.X += cV.X;
+                nextPosition.Z += cV.Z;
+                if(engine->key(DASH_KEY)){
+                    nextPosition.X += DASH_SPEED.X;
+                    nextPosition.Z += DASH_SPEED.Y;
+                }
+                else if(engine->key(RUN_KEY)){
+                    nextPosition.X += RUNNING_SPEED.X;
+                    nextPosition.Z += RUNNING_SPEED.Y;
+                }
+            }
+
+            DASH_SPEED = gg::Vector2f(ppV.X*4,ppV.Z*4);
+            RUNNING_SPEED =  gg::Vector2f(ppV.X*1.05,ppV.Z*1.05);
+
+            if(engine->key(gg::GG_A)){
+                nextPosition.X -= ppV.X;
+                nextPosition.Z -= ppV.Z;
+                if(engine->key(DASH_KEY)){
+                    nextPosition.X -= DASH_SPEED.X;
+                    nextPosition.Z -= DASH_SPEED.Y;
+                }
+                else if(engine->key(RUN_KEY)){
+                    nextPosition.X -= RUNNING_SPEED.X;
+                    nextPosition.Z -= RUNNING_SPEED.Y;
+                }
+            }
+            else if(engine->key(gg::GG_D)){
+                nextPosition.X += ppV.X;
+                nextPosition.Z += ppV.Z;
+                if(engine->key(DASH_KEY)){
+                    nextPosition.X += DASH_SPEED.X;
+                    nextPosition.Z += DASH_SPEED.Y;
+                }
+                else if(engine->key(RUN_KEY)){
+                    nextPosition.X += RUNNING_SPEED.X;
+                    nextPosition.Z += RUNNING_SPEED.Y;
+                }
+            }
+
+            if(engine->key(ROTATE_KEY))
+                heroRotation = false;
 
             // And we update it accoding to the keyboard input
             // cTransform->setPosition(nextPosition);
-            camera->updateCameraTarget(getEntityID(),nextPosition);
+            camera->updateCameraTarget(getEntityID(),nextPosition,heroRotation);
 
             return gg::ST_TRUE;
         }
-    //}
+    }
 
     return gg::ST_ERROR;
 }

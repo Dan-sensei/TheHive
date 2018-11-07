@@ -4,10 +4,10 @@
 #include <ComponentArch/InitStructs.hpp>
 
 #define CAMERA_ATENUATION 7
+#define HEIGHT 10
+#define RADIUS 12
 
 CCamera::CCamera(){
-    GameEngine *engine = Singleton<GameEngine>::Instance();
-    lastCameraPosition = engine->getCamera()->getPosition();
 }
 
 
@@ -22,15 +22,15 @@ void CCamera::initializeComponentData(const void* data){}
 /*      Init     */
 void CCamera::initAfterComponentAssigment() {
     std::cout << "Init CCamera" << '\n';
+    GameEngine *engine = Singleton<GameEngine>::Instance();
+    lastCameraPosition = engine->getCamera()->getPosition();
+    cameraPositionBeforeLockRotation = lastCameraPosition;
 
 }
 
 
 // void CCamera::updateCameraTarget(Camera *cam, Model *mod, gg::Vector3f nextPosition){
-void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
-    if(lastCameraPosition.X!=nextPosition.X && lastCameraPosition.Y!=nextPosition.Y && lastCameraPosition.Z!=nextPosition.Z){
-        return;
-    }
+void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool heroRotation){
     lastCameraPosition = nextPosition;
 
     GameEngine *engine = Singleton<GameEngine>::Instance();
@@ -39,10 +39,9 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
     CTransform *mod = dynamic_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,entity));
 
     cam->bindTargetAndRotation(true);
-    //std::cout << nextPosition.X << "," << nextPosition.Y << "," << nextPosition.Z << '\n';
 
-    // // First of all, we have to get the mouse position on the screen
-    // // and get the X,Y position
+    // First of all, we have to get the mouse position on the screen
+    // and get the X,Y position
     int screenW = static_cast<int>(engine->getScreenWidth())/2;
     int screenH = static_cast<int>(engine->getScreenHeight())/2;
 
@@ -56,30 +55,18 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
     float newVY = static_cast<float>(vY);
     float newVX = static_cast<float>(vX);
 
-    // // FIRST the camera must be moved
-    gg::Vector3f nextCamPosition;
-    nextCamPosition.X = nextPosition.X;
-    nextCamPosition.Y = nextPosition.Y+10.f;
-    nextCamPosition.Z = nextPosition.Z-12.f;
-    cam->setPosition(nextCamPosition);
-    //
-    // // Call to updateAbsolutePosition() to avoid perspective
-    // // and camera position problems
-    cam->updateAbsolutePosition();
-
-    // SECOND set the camera rotation
+    gg::Vector3f backupRotation = cam->getRotation();
     gg::Vector3f newRotation = cam->getRotation();
     newRotation.X += newVY/CAMERA_ATENUATION;
     newRotation.Y += newVX/CAMERA_ATENUATION;
     newRotation.Z = 0;
-    cam->setRotation(newRotation);
 
-    // Now is applied the rotation
+    // Now is applied the rotation on the HORIZONTAL AXIS
     // Having the rotation center on the camera position
     gg::Vector3f nextModelPosition = cam->getPosition();
-    nextModelPosition.Y -= 10;
+    nextModelPosition.Y -= HEIGHT;
 
-    float dist = 12;
+    float dist = RADIUS;
     float angle = newRotation.Y*CAMERA_ATENUATION/400;
     float newX = dist * sin(angle);
     float newZ = dist * cos(angle);
@@ -87,27 +74,68 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition){
     nextModelPosition.X += newX;
     nextModelPosition.Z += newZ;
 
-    // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
-    mod->setPosition(gg::Vector3f(nextModelPosition));
+    // Now set the 'OFFSET' to the nextPosition to cheat the player eyes
+    gg::Vector3f finalXRVector(
+        nextPosition.X-nextModelPosition.X,
+        nextPosition.Y-nextModelPosition.Y,
+        nextPosition.Z-nextModelPosition.Z
+    );
+
+    // And set the entity position
+    mod->setPosition(
+        gg::Vector3f(
+            nextModelPosition.X+finalXRVector.X,
+            nextModelPosition.Y+finalXRVector.Y,
+            nextModelPosition.Z+finalXRVector.Z
+        )
+    );
+
+
+    // Now it's time to set the rotation on the VERTICAL AXIS
+    gg::Vector3f finalModelPosition = cam->getPosition();
+
+    dist = RADIUS+2;
+    angle = -newRotation.X*CAMERA_ATENUATION/400;
+    float newY = dist * sin(angle);
+    newZ = dist * cos(angle);
+
+    finalModelPosition.Y += newY;
+    finalModelPosition.Z += newZ;
 
     // Now set the 'OFFSET' to the nextPosition to cheat the player eyes
-    gg::Vector3f finalVector;
-    finalVector.X = nextPosition.X-mod->getPosition().X;
-    finalVector.Y = nextPosition.Y-mod->getPosition().Y;
-    finalVector.Z = nextPosition.Z-mod->getPosition().Z;
+    gg::Vector3f finalYRVector(
+        nextPosition.X-finalModelPosition.X,
+        nextPosition.Y-finalModelPosition.Y,
+        nextPosition.Z-finalModelPosition.Z
+    );
 
-    mod->setPosition(gg::Vector3f(
-        mod->getPosition().X+finalVector.X,
-        mod->getPosition().Y+finalVector.Y,
-        mod->getPosition().Z+finalVector.Z));
+    // FIRST we have to set the camera position
+    gg::Vector3f camPosition = cam->getPosition();
+    cam->setPosition(
+        gg::Vector3f(
+            camPosition.X+finalXRVector.X,
+            camPosition.Y+finalYRVector.Y+HEIGHT,
+            camPosition.Z+finalXRVector.Z
+        )
+    );
 
-    cam->setPosition(gg::Vector3f(
-        cam->getPosition().X+finalVector.X,
-        cam->getPosition().Y+finalVector.Y,
-        cam->getPosition().Z+finalVector.Z));
+
+
+    // Call to updateAbsolutePosition() to avoid perspective
+    // and camera position problems
     cam->updateAbsolutePosition();
-    cam->setRotation(newRotation);
 
+    // SECOND set the camera rotation
+    if(newRotation.X >= -30 && newRotation.X <= 60)
+        cam->setRotation(newRotation);
+    else
+        cam->setRotation(backupRotation);
+
+    // If heroRotation is FALSE, the hero won't move with the camera rotation
+    if(heroRotation){
+        cameraPositionBeforeLockRotation = cam->getPosition();
+        mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
+    }
 }
 
 gg::Vector3f CCamera::getCameraPosition(){
@@ -115,10 +143,18 @@ gg::Vector3f CCamera::getCameraPosition(){
     return engine->getCamera()->getPosition();
 }
 
+gg::Vector3f CCamera::getCameraTarget(){
+    GameEngine *engine = Singleton<GameEngine>::Instance();
+    return engine->getCamera()->getTarget();
+}
+
 gg::Vector3f CCamera::getLastCameraPosition(){
     return lastCameraPosition;
 }
 
+gg::Vector3f CCamera::getCameraPositionBeforeLockRotation(){
+    return cameraPositionBeforeLockRotation;
+}
 
 
 

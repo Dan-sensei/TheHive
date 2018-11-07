@@ -88,3 +88,14 @@ gg::Vector3f CTransform::getPosition(){
 
     return currentPositionGG;
 }
+
+gg::Vector3f CTransform::getRotation(){
+    gg::Vector3f currentRotationGG;
+
+    currentRotationGG.X = rx;
+    currentRotationGG.Y = ry;
+    currentRotationGG.Z = rz;
+
+    return currentRotationGG;
+}
+

@@ -23,6 +23,12 @@ void Model::setPosition(const gg::Vector3f &newPosition){
     );
 }
 
+void Model::setRotation(const gg::Vector3f &newRotation){
+    mModel->setRotation(
+        irr::core::vector3df(newRotation.X, newRotation.Y, newRotation.Z)
+    );
+}
+
 
 //  ---
 //  Returns the position of the camera
@@ -37,6 +43,18 @@ gg::Vector3f Model::getPosition(){
     currentPositionGG.Z = currentPositionIRR.Z;
 
     return currentPositionGG;
+}
+
+gg::Vector3f Model::getRotation(){
+    gg::Vector3f currentRotationGG;
+    irr::core::vector3df currentRotationIRR = mModel->getRotation();
+
+    // Convert the Irrlicht vector to GG vector
+    currentRotationGG.X = currentRotationIRR.X;
+    currentRotationGG.Y = currentRotationIRR.Y;
+    currentRotationGG.Z = currentRotationIRR.Z;
+
+    return currentRotationGG;
 }
 
 //  ---
