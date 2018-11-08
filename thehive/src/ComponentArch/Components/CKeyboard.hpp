@@ -1,8 +1,14 @@
 #ifndef _CKEYBOARD_H
 #define _CKEYBOARD_H
 
-#include <ComponentArch/IComponent.hpp>
 #include <cmath>
+#include <map>
+#include <Singleton.hpp>
+
+#include <GameEngine/KEYCODES.hpp>
+#include <ComponentArch/IComponent.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+#include <GameEngine/GameEngine.hpp>
 
 
 class CCamera;
@@ -24,9 +30,12 @@ class CKeyboard : public IComponent {
         CKeyboard();
         CKeyboard(const CKeyboard &orig) = delete;
 
+
         CTransform* cTransform;
         CCamera *camera;
         GameEngine* engine;
+        gg::Vector2f DASH_SPEED;
+        gg::Vector2f RUNNING_SPEED;
 };
 
 #endif

@@ -30,7 +30,7 @@ void CKeyboard::initializeComponentData(const void* data){
 
 
 gg::EMessageStatus CKeyboard::processMessage() {
-    
+
     if(cTransform && camera){
         //  If exists, we get its position
         gg::Vector3f nextPosition = camera->getLastCameraPosition();

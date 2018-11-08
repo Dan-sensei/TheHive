@@ -25,6 +25,7 @@ public:
 
     gg::Vector3f getLastCameraPosition();
     gg::Vector3f getCameraPositionBeforeLockRotation();
+    void setCameraPositionBeforeLockRotation(gg::Vector3f);
 
 private:
     CCamera();
