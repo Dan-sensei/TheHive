@@ -5,7 +5,7 @@
 #include <GameEngine/GameEngine.hpp>
 
 CRenderable_3D::CRenderable_3D()
-:_3DModel()
+:_3DModel(), cTransform(nullptr)
 {
 
 }
@@ -24,23 +24,19 @@ void CRenderable_3D::initComponent() {
 }
 
 void CRenderable_3D::initializeComponentData(const void* data){
+    if(data){
+        InitCRenderable_3D* cData = (InitCRenderable_3D*)data;
 
-    InitCRenderable_3D* cData = (InitCRenderable_3D*)data;
-
-    _3DModel = Singleton<GameEngine>::Instance()->createModel(cData->pathToModel);
-    _3DModel.assignMaterial(cData->material);
-}
-
-/*      Init     */
-void CRenderable_3D::initAfterComponentAssigment() {
-    std::cout << "Init CRenderable" << '\n';
-
-}
-
-gg::EMessageStatus CRenderable_3D::processMessage() {
+        _3DModel = Singleton<GameEngine>::Instance()->createModel(cData->pathToModel);
+        _3DModel.assignMaterial(cData->material);
+    }
 
     //  We check if this entity has the TRANSFORM component
-    CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+}
+
+
+gg::EMessageStatus CRenderable_3D::processMessage() {
 
     if(cTransform){
         //  If exists, we get its position, and asign it to the _3DModel

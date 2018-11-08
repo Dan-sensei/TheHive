@@ -17,26 +17,20 @@ void CCamera::initComponent(){
     // Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CAMERA, gg::M_UPDATE);
 }
 
-void CCamera::initializeComponentData(const void* data){}
+void CCamera::initializeComponentData(const void* data){
 
-/*      Init     */
-void CCamera::initAfterComponentAssigment() {
-    std::cout << "Init CCamera" << '\n';
-    GameEngine *engine = Singleton<GameEngine>::Instance();
+    engine = Singleton<GameEngine>::Instance();
+    manager = Singleton<ObjectManager>::Instance();
+    cam = engine->getCamera();
+
     lastCameraPosition = engine->getCamera()->getPosition();
     cameraPositionBeforeLockRotation = lastCameraPosition;
-
+    mod = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM, getEntityID()));
 }
 
-
 // void CCamera::updateCameraTarget(Camera *cam, Model *mod, gg::Vector3f nextPosition){
-void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool heroRotation){
+void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation){
     lastCameraPosition = nextPosition;
-
-    GameEngine *engine = Singleton<GameEngine>::Instance();
-    ObjectManager *manager = Singleton<ObjectManager>::Instance();
-    Camera *cam = engine->getCamera();
-    CTransform *mod = dynamic_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,entity));
 
     cam->bindTargetAndRotation(true);
 
@@ -118,8 +112,6 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool
             camPosition.Z+finalXRVector.Z
         )
     );
-
-
 
     // Call to updateAbsolutePosition() to avoid perspective
     // and camera position problems

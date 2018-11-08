@@ -29,15 +29,6 @@ class IComponent{
         //========================================================================
         virtual void initializeComponentData(const void* data) = 0;
 
-        //  ---
-        //  Calls the init method of each component after every component
-        //  has been added to the entity. You can use this method to make
-        //  references to other components, because you can be sure that every
-        //  predefined component, has been added
-        //========================================================================
-        virtual void initAfterComponentAssigment() = 0;
-
-
 
     protected:
         IComponent();

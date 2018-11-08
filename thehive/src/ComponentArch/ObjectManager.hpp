@@ -63,12 +63,6 @@ class ObjectManager{
         //========================================================================
         void sendMessageToEntity(uint16_t EntityID, const gg::MessageType &mType);
 
-        //  ---
-        //  Once every component has been added, we call each component
-        //  initAfterComponentAssigment() method
-        //========================================================================
-        void LastPreprocessingInitData();
-
     private:
         ObjectManager();
         ObjectManager(const ObjectManager &orig) = delete;
@@ -86,7 +80,7 @@ class ObjectManager{
         IComponent* createCameraComponent           ();
 
 
-        typedef IComponent* (ObjectManager::*pConstructor)(void);
+        using pConstructor = IComponent* (ObjectManager::*)(void);
         pConstructor ComponentConstructorVector[gg::NUM_COMPONENTS];
 
 

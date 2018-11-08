@@ -4,6 +4,8 @@
 #include <ComponentArch/IComponent.hpp>
 #include <GameEngine/Model.hpp>
 
+class CTransform;
+
 class CRenderable_3D : public IComponent {
     friend class ObjectManager;
     public:
@@ -13,13 +15,13 @@ class CRenderable_3D : public IComponent {
         static void initComponent();
         virtual gg::EMessageStatus processMessage();
         virtual void initializeComponentData(const void* data);
-        virtual void initAfterComponentAssigment();
-
 
     private:
         CRenderable_3D();
         CRenderable_3D(const CRenderable_3D &orig);
         Model _3DModel;
+
+        CTransform* cTransform;
 };
 
 #endif

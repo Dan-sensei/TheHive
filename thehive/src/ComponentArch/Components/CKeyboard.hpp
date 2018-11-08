@@ -4,6 +4,11 @@
 #include <ComponentArch/IComponent.hpp>
 #include <cmath>
 
+
+class CCamera;
+class CTransform;
+class GameEngine;
+
 class CKeyboard : public IComponent {
     friend class ObjectManager;
     public:
@@ -13,13 +18,15 @@ class CKeyboard : public IComponent {
         static void initComponent();
         virtual gg::EMessageStatus processMessage();
         virtual void initializeComponentData(const void* data);
-        virtual void initAfterComponentAssigment();
-
 
 
     private:
         CKeyboard();
         CKeyboard(const CKeyboard &orig) = delete;
+
+        CTransform* cTransform;
+        CCamera *camera;
+        GameEngine* engine;
 };
 
 #endif
