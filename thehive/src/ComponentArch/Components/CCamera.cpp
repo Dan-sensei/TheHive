@@ -61,6 +61,9 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool
     newRotation.Y += newVX/CAMERA_ATENUATION;
     newRotation.Z = 0;
 
+    /////////////////////////////////////////////////////////////////
+    // HORIZONTAL AXIS
+    /////////////////////////////////////////////////////////////////
     // Now is applied the rotation on the HORIZONTAL AXIS
     // Having the rotation center on the camera position
     gg::Vector3f nextModelPosition = cam->getPosition();
@@ -90,23 +93,25 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool
         )
     );
 
-
+    /////////////////////////////////////////////////////////////////
+    // VERTICAL AXIS
+    /////////////////////////////////////////////////////////////////
     // Now it's time to set the rotation on the VERTICAL AXIS
-    gg::Vector3f finalModelPosition = cam->getPosition();
+    gg::Vector3f finalCameraPosition = cam->getPosition();
 
     dist = RADIUS+2;
     angle = -newRotation.X*CAMERA_ATENUATION/400;
     float newY = dist * sin(angle);
     newZ = dist * cos(angle);
 
-    finalModelPosition.Y += newY;
-    finalModelPosition.Z += newZ;
+    finalCameraPosition.Y += newY;
+    finalCameraPosition.Z += newZ;
 
     // Now set the 'OFFSET' to the nextPosition to cheat the player eyes
     gg::Vector3f finalYRVector(
-        nextPosition.X-finalModelPosition.X,
-        nextPosition.Y-finalModelPosition.Y,
-        nextPosition.Z-finalModelPosition.Z
+        nextPosition.X-finalCameraPosition.X,
+        nextPosition.Y-finalCameraPosition.Y,
+        nextPosition.Z-finalCameraPosition.Z
     );
 
     // FIRST we have to set the camera position
@@ -136,6 +141,7 @@ void CCamera::updateCameraTarget(uint16_t entity,gg::Vector3f nextPosition, bool
         cameraPositionBeforeLockRotation = cam->getPosition();
         mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
     }
+
 }
 
 gg::Vector3f CCamera::getCameraPosition(){
@@ -156,6 +162,9 @@ gg::Vector3f CCamera::getCameraPositionBeforeLockRotation(){
     return cameraPositionBeforeLockRotation;
 }
 
+void CCamera::setCameraPositionBeforeLockRotation(gg::Vector3f vector){
+    cameraPositionBeforeLockRotation = vector;
+}
 
 
 

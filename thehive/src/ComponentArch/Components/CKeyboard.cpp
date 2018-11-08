@@ -1,7 +1,4 @@
 #include "CKeyboard.hpp"
-#include <Singleton.hpp>
-#include <ComponentArch/ObjectManager.hpp>
-#include <GameEngine/GameEngine.hpp>
 
 #define MAX_ANGLE 12.f
 
@@ -28,7 +25,7 @@ void CKeyboard::initializeComponentData(const void* data){
 /*      Init     */
 void CKeyboard::initAfterComponentAssigment() {
     std::cout << "Init Component" << '\n';
-
+    // moveFunctions[gg::GG_W] =
 }
 
 gg::EMessageStatus CKeyboard::processMessage() {
@@ -48,6 +45,7 @@ gg::EMessageStatus CKeyboard::processMessage() {
 
             // Vector direccion camara-heroe
             gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
+            gg::Vector3f cV2 = cV;
             gg::Vector3f hV = cTransform->getPosition();
                 cV.X -= hV.X;
                 cV.Y -= hV.Y;
@@ -61,8 +59,8 @@ gg::EMessageStatus CKeyboard::processMessage() {
             // Vector perpendicular al vector direccion
             gg::Vector3f ppV(-cV.Z,0,cV.X);
 
-            gg::Vector2f DASH_SPEED(cV.X*4,cV.Z*4);
-            gg::Vector2f RUNNING_SPEED(cV.X*1.05,cV.Z*1.05);
+            DASH_SPEED = gg::Vector2f(cV.X*4,cV.Z*4);
+            RUNNING_SPEED = gg::Vector2f(cV.X*1.05,cV.Z*1.05);
 
             if(engine->key(gg::GG_W)){
                 nextPosition.X -= cV.X;
@@ -75,6 +73,11 @@ gg::EMessageStatus CKeyboard::processMessage() {
                     nextPosition.X -= RUNNING_SPEED.X;
                     nextPosition.Z -= RUNNING_SPEED.Y;
                 }
+                if(engine->key(ROTATE_KEY)){
+                    cV2.X-=cV.X;
+                    cV2.Z-=cV.Z;
+                    camera->setCameraPositionBeforeLockRotation(cV2);
+                };
             }
             else if(engine->key(gg::GG_S)){
                 nextPosition.X += cV.X;
@@ -87,6 +90,11 @@ gg::EMessageStatus CKeyboard::processMessage() {
                     nextPosition.X += RUNNING_SPEED.X;
                     nextPosition.Z += RUNNING_SPEED.Y;
                 }
+                if(engine->key(ROTATE_KEY)){
+                    cV2.X+=cV.X;
+                    cV2.Z+=cV.Z;
+                    camera->setCameraPositionBeforeLockRotation(cV2);
+                };
             }
 
             DASH_SPEED = gg::Vector2f(ppV.X*4,ppV.Z*4);
@@ -103,6 +111,11 @@ gg::EMessageStatus CKeyboard::processMessage() {
                     nextPosition.X -= RUNNING_SPEED.X;
                     nextPosition.Z -= RUNNING_SPEED.Y;
                 }
+                if(engine->key(ROTATE_KEY)){
+                    cV2.X-=ppV.X;
+                    cV2.Z-=ppV.Z;
+                    camera->setCameraPositionBeforeLockRotation(cV2);
+                };
             }
             else if(engine->key(gg::GG_D)){
                 nextPosition.X += ppV.X;
@@ -115,10 +128,16 @@ gg::EMessageStatus CKeyboard::processMessage() {
                     nextPosition.X += RUNNING_SPEED.X;
                     nextPosition.Z += RUNNING_SPEED.Y;
                 }
+                if(engine->key(ROTATE_KEY)){
+                    cV2.X+=ppV.X;
+                    cV2.Z+=ppV.Z;
+                    camera->setCameraPositionBeforeLockRotation(cV2);
+                };
             }
 
-            if(engine->key(ROTATE_KEY))
+            if(engine->key(ROTATE_KEY)){
                 heroRotation = false;
+            }
 
             // And we update it accoding to the keyboard input
             // cTransform->setPosition(nextPosition);
