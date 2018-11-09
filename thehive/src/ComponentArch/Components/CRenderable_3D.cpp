@@ -6,24 +6,18 @@
 
 CRenderable_3D::CRenderable_3D()
 :_3DModel(), cTransform(nullptr)
-{
-
-}
+{}
 
 CRenderable_3D::CRenderable_3D(const CRenderable_3D &orig){
     _3DModel = orig._3DModel;
 }
 
-CRenderable_3D::~CRenderable_3D() {
-
-}
+CRenderable_3D::~CRenderable_3D() {}
 
 void CRenderable_3D::initComponent() {
-    //  We wait for the M_UPDATE message
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RENDERABLE_3D, gg::M_UPDATE);
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RENDERABLE_3D, gg::M_SETPTRS);
 }
-
 
 
 void CRenderable_3D::initializeComponentData(const void* data){

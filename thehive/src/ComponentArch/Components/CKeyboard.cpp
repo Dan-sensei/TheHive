@@ -1,7 +1,8 @@
 #include "CKeyboard.hpp"
 #include <Singleton.hpp>
-#include <ComponentArch/ObjectManager.hpp>
 #include <GameEngine/GameEngine.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+#include <Util.hpp>
 
 #define MAX_ANGLE 12.f
 
@@ -27,10 +28,10 @@ void CKeyboard::initComponent() {
 
 void CKeyboard::initializeComponentData(const void* data){
     //  We check if this entity has the TRANSFORM component
+    engine = Singleton<GameEngine>::Instance();
     camera = static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
 }
-
 
 
 gg::EMessageStatus CKeyboard::processMessage(const Message &m) {
@@ -46,7 +47,6 @@ gg::EMessageStatus CKeyboard::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CKeyboard::MHandler_SETPTRS(){
-    engine = Singleton<GameEngine>::Instance();
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
 
     return gg::ST_TRUE;

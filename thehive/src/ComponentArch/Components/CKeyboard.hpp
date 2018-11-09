@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <map>
-#include <Singleton.hpp>
 
 #include <GameEngine/GameEngine.hpp>
 #include <GameEngine/KEYCODES.hpp>
@@ -16,6 +15,7 @@
 class CCamera;
 class CTransform;
 class GameEngine;
+class ObjectManager;
 
 class CKeyboard : public IComponent {
     friend class ObjectManager;
