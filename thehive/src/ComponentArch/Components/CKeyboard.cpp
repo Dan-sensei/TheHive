@@ -36,8 +36,12 @@ gg::EMessageStatus CKeyboard::processMessage() {
         gg::Vector3f nextPosition = camera->getLastCameraPosition();
         bool heroRotation = true;
 
+        // TODO:
+        // - Poner de nuevo el movimiento arreglado cuando bloqueas la rotacion del personaje
+
         // Vector direccion camara-heroe
         gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
+        gg::Vector3f cV2 = cV;
         gg::Vector3f hV = cTransform->getPosition();
             cV.X -= hV.X;
             cV.Y -= hV.Y;
@@ -65,6 +69,11 @@ gg::EMessageStatus CKeyboard::processMessage() {
                 nextPosition.X -= RUNNING_SPEED.X;
                 nextPosition.Z -= RUNNING_SPEED.Y;
             }
+            if(engine->key(ROTATE_KEY)){
+                cV2.X-=cV.X;
+                cV2.Z-=cV.Z;
+                camera->setCameraPositionBeforeLockRotation(cV2);
+            };
         }
         else if(engine->key(gg::GG_S)){
             nextPosition.X += cV.X;
@@ -77,6 +86,11 @@ gg::EMessageStatus CKeyboard::processMessage() {
                 nextPosition.X += RUNNING_SPEED.X;
                 nextPosition.Z += RUNNING_SPEED.Y;
             }
+            if(engine->key(ROTATE_KEY)){
+                cV2.X+=cV.X;
+                cV2.Z+=cV.Z;
+                camera->setCameraPositionBeforeLockRotation(cV2);
+            };
         }
 
         DASH_SPEED = gg::Vector2f(ppV.X*4,ppV.Z*4);
@@ -93,6 +107,11 @@ gg::EMessageStatus CKeyboard::processMessage() {
                 nextPosition.X -= RUNNING_SPEED.X;
                 nextPosition.Z -= RUNNING_SPEED.Y;
             }
+            if(engine->key(ROTATE_KEY)){
+                cV2.X-=ppV.X;
+                cV2.Z-=ppV.Z;
+                camera->setCameraPositionBeforeLockRotation(cV2);
+            };
         }
         else if(engine->key(gg::GG_D)){
             nextPosition.X += ppV.X;
@@ -105,6 +124,11 @@ gg::EMessageStatus CKeyboard::processMessage() {
                 nextPosition.X += RUNNING_SPEED.X;
                 nextPosition.Z += RUNNING_SPEED.Y;
             }
+            if(engine->key(ROTATE_KEY)){
+                cV2.X+=ppV.X;
+                cV2.Z+=ppV.Z;
+                camera->setCameraPositionBeforeLockRotation(cV2);
+            };
         }
 
         if(engine->key(ROTATE_KEY))

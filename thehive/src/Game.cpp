@@ -140,6 +140,9 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
     }
 
+
+    
+
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
     //printRawMem(p, 16, 10);
