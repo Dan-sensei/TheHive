@@ -5,7 +5,7 @@
 
 #define MAX_ANGLE 12.f
 
-#define DASH_KEY gg::GG_F
+#define DASH_KEY gg::GG_ALT
 #define ROTATE_KEY gg::GG_LCONTROL
 #define RUN_KEY gg::GG_LSHIFT
 
