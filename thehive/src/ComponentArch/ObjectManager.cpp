@@ -29,6 +29,10 @@ ObjectManager::ObjectManager()
 //  Iterates over every component desallocating memory
 //========================================================================
 ObjectManager::~ObjectManager() {
+
+}
+
+void ObjectManager::clin(){
     std::cout << "Destruyendo todos los componentes..." << '\n';
     uint8_t i = gg::NUM_COMPONENTS;
     while (i--){
@@ -36,8 +40,9 @@ ObjectManager::~ObjectManager() {
 
         while(it!=TypeToComponentMap[i].end()){
             std::cout << "  -Eliminando componente " << (int)i << " de entidad " << it->first << '\n';
-            it->second->~IComponent();
-            memory.deallocate(it->second);
+            //it->second->~IComponent();
+            //memory.deallocate(it->second);
+            delete it->second;
             ++it;
         };
     }
@@ -80,6 +85,14 @@ uint16_t ObjectManager::createEntity() {
 }
 
 
+void ObjectManager::removeEntity(uint16_t targetID){
+    nextAvailableEntityID.push(targetID);
+
+    uint8_t i = gg::NUM_COMPONENTS;
+    while (i--) removeComponentFromEntity(static_cast<gg::EComponentType>(i), targetID);
+}
+
+
 void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t EntityID, const void* initData) {
     IComponent* newComponent;
 
@@ -103,7 +116,18 @@ void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t Entit
     newComponent->initializeComponentData(initData);
 }
 
+void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID){
+    auto foundComponent = TypeToComponentMap[type].find(EntityID);
 
+    if(foundComponent == TypeToComponentMap[type].end())
+        return;
+
+    delete foundComponent->second;
+    TypeToComponentMap[type].erase(foundComponent);
+
+    Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);
+    sendMessageToEntity(EntityID, recalculatePointersToAnotherComponents);
+}
 
 void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType) {
     //  We just insert in the array of vectors, the component type in the messageTYpe array position
@@ -111,14 +135,14 @@ void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType
 }
 
 
-void ObjectManager::sendMessageToAllEntities(const gg::MessageType &mType){
+void ObjectManager::sendMessageToAllEntities(const Message &m){
     // We iterate over every component in the map that expects to receive that kind of message
 
-    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[mType].begin();
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
 
     // First we search for a component type that expects that message type
-    while(componentsIterator != MessageToListeningComponents[mType].end()){
+    while(componentsIterator != MessageToListeningComponents[m.mType].end()){
 
         //  Found one!
         std::map<uint16_t, IComponent*>::iterator entitiesEnd = TypeToComponentMap[*componentsIterator].end();
@@ -127,7 +151,7 @@ void ObjectManager::sendMessageToAllEntities(const gg::MessageType &mType){
         //  Now we iterate over every entity that contains that component type
         while(entitiesIterator != entitiesEnd) {
             //  We process the message
-            entitiesIterator->second->processMessage();
+            entitiesIterator->second->processMessage(m);
             ++entitiesIterator;
         }
         ++componentsIterator;
@@ -135,12 +159,12 @@ void ObjectManager::sendMessageToAllEntities(const gg::MessageType &mType){
 }
 
 
-void ObjectManager::sendMessageToEntity(uint16_t EntityID, const gg::MessageType &mType){
+void ObjectManager::sendMessageToEntity(uint16_t EntityID, const Message &m){
 
     // Same as sendMessageToAllEntities, but just for one EntityID
-    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[mType].begin();
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
     std::map<uint16_t, IComponent*> entitiesMap;
-    while(componentsIterator != MessageToListeningComponents[mType].end()){
+    while(componentsIterator != MessageToListeningComponents[m.mType].end()){
 
         entitiesMap = TypeToComponentMap[*componentsIterator];
 
@@ -148,7 +172,7 @@ void ObjectManager::sendMessageToEntity(uint16_t EntityID, const gg::MessageType
         EntityFound = entitiesMap.find(EntityID);
 
         if(EntityFound != entitiesMap.end()){
-            EntityFound->second->processMessage();
+            EntityFound->second->processMessage(m);
         }
 
         ++componentsIterator;

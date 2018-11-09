@@ -5,10 +5,12 @@
 #include <map>
 #include <Singleton.hpp>
 
+#include <GameEngine/GameEngine.hpp>
 #include <GameEngine/KEYCODES.hpp>
+
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/ObjectManager.hpp>
-#include <GameEngine/GameEngine.hpp>
+#include <ComponentArch/Message.hpp>
 
 
 class CCamera;
@@ -22,8 +24,12 @@ class CKeyboard : public IComponent {
 
         // Functions of IComponent
         static void initComponent();
-        virtual gg::EMessageStatus processMessage();
+        virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void initializeComponentData(const void* data);
+
+        // Handlers
+        gg::EMessageStatus MHandler_SETPTRS ();
+        gg::EMessageStatus MHandler_UPDATE  ();
 
 
     private:

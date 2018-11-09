@@ -142,16 +142,14 @@ void GameEngine::setCursorPosition(int x, int y){
 //  ---
 //  Adds a 3D model to the scene on the desired position or 0, 0, 0 by default
 //==================================================================================
-Model GameEngine::createModel(const std::string &path, const gg::Vector3f &position /* = {0,0,0} */) {
+void GameEngine::createModel(Model &model, const std::string &path, const gg::Vector3f &position /* = {0,0,0} */) {
 
-    Model newModel;
-    newModel.mModel = smgr->addAnimatedMeshSceneNode(smgr->getMesh(path.c_str()));
+    model.mModel = smgr->addAnimatedMeshSceneNode(smgr->getMesh(path.c_str()));
 
-    if(newModel.mModel){
-        newModel.mModel->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+    if(model.mModel){
+        model.mModel->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         //newModel.mModel->setMD2Animation(scene::EMAT_STAND);
     }
-    return newModel;
 }
 
 bool GameEngine::key(gg::KEYCODES keyCode){

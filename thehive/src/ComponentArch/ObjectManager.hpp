@@ -3,7 +3,7 @@
 
 #include "IComponent.hpp"
 #include "Enum.hpp"
-#include "MessageTypes.hpp"
+#include "Message.hpp"
 #include <Arena.hpp>
 
 #include "Components/CTransform.hpp"
@@ -35,10 +35,21 @@ class ObjectManager{
         uint16_t createEntity();
 
         //  ---
+        //  Removes all the componentes from the given EntityID, and adds that
+        //  ID to the nextAvailableEntityID stack
+        //========================================================================
+        void removeEntity(uint16_t targetID);
+
+        //  ---
         //  Adds a component type to a given Entity (ID). It optionally can
         //  initialize the component data
         //========================================================================
         void addComponentToEntity(gg::EComponentType type, uint16_t EntityID, const void* initData = nullptr);
+
+        //  ---
+        //  Delete component from given EntityID
+        //========================================================================
+        void removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID);
 
         //  ---
         //  Defines wich kind of messages will receive each type of component
@@ -55,13 +66,18 @@ class ObjectManager{
         //  Sends a message to every component of every entity in the system
         //  that expects to receive that message type
         //========================================================================
-        void sendMessageToAllEntities(const gg::MessageType &mType);
+        void sendMessageToAllEntities(const Message &m);
 
         //  ---
         //  Sends a message to every component of the same entity that expects
         //  to receive that message type
         //========================================================================
-        void sendMessageToEntity(uint16_t EntityID, const gg::MessageType &mType);
+        void sendMessageToEntity(uint16_t EntityID, const Message &m);
+
+        //  ---
+        //  Cleans the maps
+        //========================================================================
+        void clin();
 
     private:
         ObjectManager();

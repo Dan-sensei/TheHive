@@ -1,7 +1,8 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-#include "GameEngine/GameEngine.hpp"
+class GameEngine;
+class ObjectManager;
 
 #include <iostream>
 
@@ -15,7 +16,8 @@ public:
     void CLIN();
 
 private:
-    GameEngine* engine;
+    GameEngine* Engine;
+    ObjectManager* Manager;
 };
 
 

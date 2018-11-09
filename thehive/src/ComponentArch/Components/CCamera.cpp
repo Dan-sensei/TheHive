@@ -7,14 +7,16 @@
 #define HEIGHT 10
 #define RADIUS 12
 
-CCamera::CCamera(){
+CCamera::CCamera()
+:mod(nullptr)
+{
 }
 
 
 CCamera::~CCamera(){}
 
 void CCamera::initComponent(){
-    // Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CAMERA, gg::M_UPDATE);
+    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CAMERA, gg::M_SETPTRS);
 }
 
 void CCamera::initializeComponentData(const void* data){
@@ -25,11 +27,28 @@ void CCamera::initializeComponentData(const void* data){
 
     lastCameraPosition = engine->getCamera()->getPosition();
     cameraPositionBeforeLockRotation = lastCameraPosition;
-    mod = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM, getEntityID()));
+
+    MHandler_SETPTRS();
 }
 
+gg::EMessageStatus CCamera::processMessage(const Message &m) {
+
+    if(m.mType == gg::M_SETPTRS)    return MHandler_SETPTRS ();
+
+    return gg::ST_ERROR;
+}
+
+//  Message handler functions_______________________________________________________________
+//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+
+gg::EMessageStatus CCamera::MHandler_SETPTRS(){
+    mod = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM, getEntityID()));
+    return gg::ST_TRUE;
+}
+
+
 // void CCamera::updateCameraTarget(Camera *cam, Model *mod, gg::Vector3f nextPosition){
-void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation){
+void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     lastCameraPosition = nextPosition;
 
     cam->bindTargetAndRotation(true);
@@ -157,11 +176,4 @@ gg::Vector3f CCamera::getCameraPositionBeforeLockRotation(){
 void CCamera::setCameraPositionBeforeLockRotation(gg::Vector3f vector){
     cameraPositionBeforeLockRotation = vector;
 }
-
-
-
-
-
-
-
 

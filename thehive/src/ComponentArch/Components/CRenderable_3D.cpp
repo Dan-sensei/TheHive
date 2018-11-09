@@ -21,23 +21,35 @@ CRenderable_3D::~CRenderable_3D() {
 void CRenderable_3D::initComponent() {
     //  We wait for the M_UPDATE message
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RENDERABLE_3D, gg::M_UPDATE);
+    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RENDERABLE_3D, gg::M_SETPTRS);
 }
+
+
 
 void CRenderable_3D::initializeComponentData(const void* data){
     if(data){
         InitCRenderable_3D* cData = (InitCRenderable_3D*)data;
 
-        _3DModel = Singleton<GameEngine>::Instance()->createModel(cData->pathToModel);
+        Singleton<GameEngine>::Instance()->createModel(_3DModel, cData->pathToModel);
         _3DModel.assignMaterial(cData->material);
     }
-
-    //  We check if this entity has the TRANSFORM component
-    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    MHandler_SETPTRS();
 }
 
 
-gg::EMessageStatus CRenderable_3D::processMessage() {
+gg::EMessageStatus CRenderable_3D::processMessage(const Message &m) {
 
+    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE();
+    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS();
+
+    return gg::ST_ERROR;
+}
+
+
+//  Message handler functions_______________________________________________________________
+//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+
+gg::EMessageStatus CRenderable_3D::MHandler_UPDATE(){
     if(cTransform){
         //  If exists, we get its position, and asign it to the _3DModel
         _3DModel.setPosition(cTransform->getPosition());
@@ -47,4 +59,10 @@ gg::EMessageStatus CRenderable_3D::processMessage() {
     }
 
     return gg::ST_ERROR;
+}
+
+gg::EMessageStatus CRenderable_3D::MHandler_SETPTRS(){
+    //  We check if this entity has the TRANSFORM component
+    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    return gg::ST_TRUE;
 }

@@ -2,7 +2,7 @@
 #define _ICOMPONENT_H
 
 #include "Enum.hpp"
-#include "MessageTypes.hpp"
+#include "Message.hpp"
 #include <cstdint>
 
 class IComponent{
@@ -22,12 +22,13 @@ class IComponent{
         //  ---
         //  Process the message and returns a message status
         //========================================================================
-        virtual gg::EMessageStatus processMessage();
+        virtual gg::EMessageStatus processMessage(const Message &m);
 
         //  ---
         //  Initializes the component data the moment the component is created
         //========================================================================
         virtual void initializeComponentData(const void* data) = 0;
+
 
 
     protected:
