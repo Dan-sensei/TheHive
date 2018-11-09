@@ -98,9 +98,9 @@ void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t Entit
     //  And insert in the map, the ID with is assigned component
     TypeToComponentMap[type].insert(std::make_pair(EntityID, newComponent));
 
-    //  Optionally if we pass the initData for the component, we call the method
+    //  We pass the initData for the component, we call the method
     //  of the component wich uses this data
-    if(initData) newComponent->initializeComponentData(initData);
+    newComponent->initializeComponentData(initData);
 }
 
 
@@ -167,18 +167,6 @@ IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const u
 
     //  If not
     return nullptr; //  <- We return nullptr
-}
-
-void ObjectManager::LastPreprocessingInitData(){
-    uint8_t i = gg::NUM_COMPONENTS;
-    while (i--){
-        std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
-
-        while(it!=TypeToComponentMap[i].end()){
-            it->second->initAfterComponentAssigment();
-            ++it;
-        }
-    }
 }
 
 //  ---

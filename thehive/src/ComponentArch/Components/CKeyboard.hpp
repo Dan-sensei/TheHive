@@ -10,6 +10,11 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <GameEngine/GameEngine.hpp>
 
+
+class CCamera;
+class CTransform;
+class GameEngine;
+
 class CKeyboard : public IComponent {
     friend class ObjectManager;
     public:
@@ -19,15 +24,16 @@ class CKeyboard : public IComponent {
         static void initComponent();
         virtual gg::EMessageStatus processMessage();
         virtual void initializeComponentData(const void* data);
-        virtual void initAfterComponentAssigment();
-
 
 
     private:
         CKeyboard();
         CKeyboard(const CKeyboard &orig) = delete;
 
-        // std::map<gg::KEYCODES, gg::Vector3f (*)(void)> moveFunctions;
+
+        CTransform* cTransform;
+        CCamera *camera;
+        GameEngine* engine;
         gg::Vector2f DASH_SPEED;
         gg::Vector2f RUNNING_SPEED;
 };

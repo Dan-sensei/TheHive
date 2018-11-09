@@ -7,10 +7,8 @@
 
 CTransform::CTransform()
 :x(0),  y(0),  z(0),
-rx(0), ry(0), rz(0),
-sx(0), sy(0), sz(0)
+rx(0), ry(0), rz(0)
 {
-
 }
 
 CTransform::CTransform(const CTransform &orig){
@@ -21,10 +19,6 @@ CTransform::CTransform(const CTransform &orig){
     rx = orig.rx;
     ry = orig.ry;
     rz = orig.rz;
-
-    sx = orig.sx;
-    sy = orig.sy;
-    sz = orig.sz;
 }
 
 CTransform::~CTransform(){
@@ -33,10 +27,6 @@ CTransform::~CTransform(){
 
 void CTransform::initComponent(){}
 
-/*      Init     */
-void CTransform::initAfterComponentAssigment() {
-    std::cout << "Init Transform" << '\n';
-}
 
 void CTransform::setPosition(const gg::Vector3f &position){
     x = position.X;
@@ -48,12 +38,6 @@ void CTransform::setRotation(const gg::Vector3f &rotation){
     rx = rotation.X;
     ry = rotation.Y;
     rz = rotation.Z;
-}
-
-void CTransform::setScale(const gg::Vector3f &scale){
-    sx = scale.X;
-    sy = scale.Y;
-    sz = scale.Z;
 }
 
 void CTransform::initializeComponentData(const void* data) {
@@ -70,10 +54,6 @@ void CTransform::initializeComponentData(const void* data) {
     rx = cData->rx;
     ry = cData->ry;
     rz = cData->rz;
-
-    sx = cData->sx;
-    sy = cData->sy;
-    sz = cData->sz;
 }
 
 //  ---

@@ -10,13 +10,11 @@ struct InitCTransform{
 
     InitCTransform(
         float  _x, float  _y, float  _z,
-        float _rx, float _ry, float _rz,
-        float _sx, float _sy, float _sz
+        float _rx, float _ry, float _rz
     );
 
     float  x,  y,  z;
     float rx, ry, rz;
-    float sx, sy, sz;
 };
 
 //struct ICKeyboard{

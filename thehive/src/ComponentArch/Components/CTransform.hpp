@@ -9,13 +9,10 @@ class CTransform : public IComponent {
     public:
         virtual ~CTransform();
 
-
         //  Functions of IComponent
         static void initComponent();
         //virtual gg::EMessageStatus processMessage();
         virtual void initializeComponentData(const void* data);
-        virtual void initAfterComponentAssigment();
-
 
 
         // Functions of this component
@@ -32,7 +29,6 @@ class CTransform : public IComponent {
 
         float  x,  y,  z;
         float rx, ry, rz;
-        float sx, sy, sz;
 
 };
 

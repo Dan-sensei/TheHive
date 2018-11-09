@@ -5,6 +5,11 @@
 #include <cstdint>
 #include <cmath>
 
+class GameEngine;
+class ObjectManager;
+class Camera;
+class CTransform;
+
 class CCamera : public IComponent {
 friend class ObjectManager;
 public:
@@ -12,10 +17,9 @@ public:
 
     // Functions of IComponent
     static void initComponent();
-    virtual void initializeComponentData(const void* data);
-    virtual void initAfterComponentAssigment();
+    virtual void initializeComponentData(const void *);
 
-    void updateCameraTarget(uint16_t,gg::Vector3f,bool);
+    void updateCameraTarget(gg::Vector3f, bool);
     gg::Vector3f getCameraPosition();
     gg::Vector3f getCameraTarget();
 
@@ -28,6 +32,10 @@ private:
     gg::Vector3f lastCameraPosition;
     gg::Vector3f cameraPositionBeforeLockRotation;
 
+    GameEngine *engine;
+    ObjectManager *manager;
+    Camera* cam;
+    CTransform *mod;
 };
 
 
