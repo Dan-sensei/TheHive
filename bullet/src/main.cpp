@@ -15,6 +15,7 @@ subject to the following restrictions:
 
 ///-----includes_start-----
 #include <stdio.h>
+#include <string>
 
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
@@ -22,6 +23,7 @@ subject to the following restrictions:
 
 #include "ggDynWorld.hpp"
 #include "ggRigidBody.hpp"
+#include "ggBodyFromFile.hpp"
 #include "Singleton.hpp"
 
 /// This is a Hello World program for running a basic Bullet physics simulation
@@ -35,11 +37,14 @@ int main(int argc, char** argv){
     // Cubo de lado 1, masa 1 e inercia 0
     ggRigidBody* cubo1 = new ggRigidBody(0,10,0);
 
+    // ggBodyFromFile* prueba = new ggBodyFromFile("/home/pablomanez/Documentos/GitHub/The-Hive/bullet/src/ejemplo.bullet");
+    ggBodyFromFile* prueba = new ggBodyFromFile("./ejemplo.bullet");
+
     // SIMULACION
-	for (int i = 0; i < 200; i++){
-		world->stepSimulation(1.f / 60.f, 10);
-        world->printObjects(1);
-	}
+	// for (int i = 0; i < 200; i++){
+	// 	world->stepSimulation(1.f / 60.f, 10);
+    //     world->printObjects(1);
+	// }
 
     world->clean();
 }

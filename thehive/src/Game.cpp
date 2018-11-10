@@ -15,6 +15,7 @@
 #include "EventSystem/Agent.hpp"
 #include "EventSystem/GameState.hpp"
 
+#include "Bullet/ggDynWorld.hpp"
 
 
 #define MOVEMENT_SPEED 1.f
@@ -51,6 +52,9 @@ Game::Game(){
 
     Manager = Singleton<ObjectManager>::Instance();
     Manager->initObjectManager();
+
+    world = Singleton<ggDynWorld>::Instance();
+    world->inito();
 }
 
 Game::~Game(){
@@ -138,12 +142,16 @@ void Game::RUN(){
     {
         Material AgujeroNegro("assets/Textures/ice.bmp");
         InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea.obj", AgujeroNegro);
+        InitCRigidBody RBTrainingArea(0,0,0, 1,5,1, 0);
+        InitCTransform CTransformTraining(0,0,0,0,0,0);
         uint16_t TrainingArea = Manager->createEntity();
         Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
+        Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
+        Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &RBTrainingArea);
     }
 
 
-    
+
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -158,6 +166,7 @@ void Game::RUN(){
     std::cout << "BEGIN GAME LOOP" << '\n';
     while(Engine->isWindowOpen()) {
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
+        // world->stepSimulation(1.f / 60.f, 10);
         Engine->Dro();
         Engine->DisplayFPS();
     }

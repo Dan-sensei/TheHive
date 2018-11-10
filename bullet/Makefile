@@ -8,7 +8,7 @@ OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 
 ADDITIONAL_LIB :=  -L ./lib
 ADDITIONAL_H :=  -I ./include -I ./src -I /usr/include/bullet
-LIBRARIES := -lGL -lGLEW -lglfw -lassimp -lIrrlicht -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry 
+LIBRARIES := -lGL -lGLEW -lglfw -lassimp -lIrrlicht -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader
 
 COMPILER := g++
 

@@ -12,3 +12,14 @@ InitCRenderable_3D::InitCRenderable_3D(
     const Material &mat
 ) : pathToModel(_pathToModel), material(mat)
 {}
+
+InitCRigidBody::InitCRigidBody(
+    float _x,   float _y,   float _z,
+    float _sX,  float _sY,  float _sZ,
+    float _mass,
+    float _iX,  float _iY,  float _iZ
+) : x(_x),      y(_y),      z(_z),
+    sX(_sX),    sY(_sY),    sZ(_sZ),
+    mass(_mass),
+    iX(_iX),    iY(_iY),    iZ(_iZ)
+{}

@@ -3,6 +3,7 @@
 
 class GameEngine;
 class ObjectManager;
+class ggDynWorld;
 
 #include <iostream>
 
@@ -18,6 +19,7 @@ public:
 private:
     GameEngine* Engine;
     ObjectManager* Manager;
+    ggDynWorld* world;
 };
 
 

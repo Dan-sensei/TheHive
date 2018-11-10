@@ -7,8 +7,10 @@
 
 class ggDynWorld {
 public:
-    ggDynWorld (float=0, float=-10, float=0);
+    ggDynWorld ();
     virtual ~ggDynWorld ();
+
+    void inito(float=0, float=-10, float=0);
 
     void addRigidBody(btRigidBody*);
     void addShape(btCollisionShape*);
@@ -16,10 +18,6 @@ public:
 
     void printObjects(int);
     void clean();
-
-
-    // TESTS
-    btDiscreteDynamicsWorld* getDynamicsWorld() {return dynamicsWorld;}
 private:
     // Contiene la configuracion por defecto para las colisiones
     // Es modificable arrobaDani

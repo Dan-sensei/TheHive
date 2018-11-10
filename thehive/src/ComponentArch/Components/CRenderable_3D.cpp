@@ -26,6 +26,8 @@ void CRenderable_3D::initializeComponentData(const void* data){
 
         Singleton<GameEngine>::Instance()->createModel(_3DModel, cData->pathToModel);
         _3DModel.assignMaterial(cData->material);
+
+        // std::cout << _3DModel.getScale().X << "," << _3DModel.getScale().Y << "," << _3DModel.getScale().Z << '\n';
     }
     MHandler_SETPTRS();
 }

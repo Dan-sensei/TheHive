@@ -23,6 +23,7 @@ class Model{
         //=============================================================
         gg::Vector3f getPosition();
         gg::Vector3f getRotation();
+        gg::Vector3f getScale();
 
         //  ---
         //  We assign the material to the model

@@ -32,5 +32,18 @@ struct InitCRenderable_3D{
     Material material;
 };
 
+struct InitCRigidBody{
+    InitCRigidBody(
+        float=0, float=0, float=0,  // Origen   x,y,z
+        float=1, float=1, float=1,  // Tamanyo  sX,sY,sZ
+        float=1,                // Masa     mass
+        float=0, float=0, float=0   // Inercia  iX,iY,iZ
+    );
+
+    float x, y, z;
+    float sX,sY,sZ;
+    float mass;
+    float iX, iY, iZ;
+};
 
 #endif

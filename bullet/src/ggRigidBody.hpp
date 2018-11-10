@@ -23,7 +23,6 @@ private:
     btCollisionShape*   shape;
     btTransform         transform;
     btRigidBody*        body;
-
 };
 
 
