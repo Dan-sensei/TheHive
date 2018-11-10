@@ -12,7 +12,7 @@ IComponent::~IComponent(){
 }
 
 
-gg::EMessageStatus IComponent::processMessage(){
+gg::EMessageStatus IComponent::processMessage(const Message &m){
     return gg::ST_IGNORED;
 }
 

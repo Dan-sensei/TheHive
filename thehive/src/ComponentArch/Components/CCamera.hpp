@@ -2,8 +2,10 @@
 #define _CCAMERA_H
 
 #include <ComponentArch/IComponent.hpp>
+#include <ComponentArch/Message.hpp>
 #include <cstdint>
 #include <cmath>
+
 
 class GameEngine;
 class ObjectManager;
@@ -18,6 +20,10 @@ public:
     // Functions of IComponent
     static void initComponent();
     virtual void initializeComponentData(const void *);
+    virtual gg::EMessageStatus processMessage(const Message &m);
+
+    //  Handlers
+    gg::EMessageStatus MHandler_SETPTRS();
 
     void updateCameraTarget(gg::Vector3f, bool);
     gg::Vector3f getCameraPosition();
@@ -35,6 +41,7 @@ private:
     GameEngine *engine;
     ObjectManager *manager;
     Camera* cam;
+
     CTransform *mod;
 };
 

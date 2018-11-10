@@ -49,7 +49,7 @@ class GameEngine{
         //  ---
         //  Creates and returns a model object. It optionally accepts a position
         //==================================================================================
-        Model createModel(const std::string &path, const gg::Vector3f &position = {0,0,0});
+        void createModel(Model &model, const std::string &path, const gg::Vector3f &position = {0,0,0});
 
         bool key(gg::KEYCODES keyCode);
 

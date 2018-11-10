@@ -45,9 +45,12 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 //============================================================================================
 
 Game::Game(){
-    engine = Singleton<GameEngine>::Instance();
-    engine->Starto();
-    engine->HideCursor(true);
+    Engine = Singleton<GameEngine>::Instance();
+    Engine->Starto();
+    Engine->HideCursor(true);
+
+    Manager = Singleton<ObjectManager>::Instance();
+    Manager->initObjectManager();
 }
 
 Game::~Game(){
@@ -106,15 +109,12 @@ void Game::RUN(){
     delete pAgent3;
     delete pAgent4;
     //
-    engine->createCamera(gg::Vector3f(0, 0, 0), gg::Vector3f(0, 0, 50));
+    Engine->createCamera(gg::Vector3f(0, 0, 0), gg::Vector3f(0, 0, 50));
     // Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
     ////camera.setPosition(gg::Vector3f(-50, 0, 100));
     ////camera.setTarget(gg::Vector3f(0, 0, 50));
 
     //uint8_t* p;
-
-    ObjectManager* Manager = Singleton<ObjectManager>::Instance();
-    Manager->initObjectManager();
 
     {
         uint16_t hero = Manager->createEntity();
@@ -125,12 +125,14 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::KEYBOARD, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
+        //Manager->removeComponentFromEntity(gg::RENDERABLE_3D, hero);
 
         uint16_t cube1 = Manager->createEntity();
         InitCTransform CTransformCube1(50,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube1("assets/Models/Cube.obj", moradoDeLos80);
         Manager->addComponentToEntity(gg::TRANSFORM, cube1, &CTransformCube1);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
+        //Manager->removeEntity(cube1);
     }
 
     {
@@ -154,13 +156,14 @@ void Game::RUN(){
     //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
     std::cout << "BEGIN GAME LOOP" << '\n';
-    while(engine->isWindowOpen()) {
+    while(Engine->isWindowOpen()) {
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
-        engine->Dro();
-        engine->DisplayFPS();
+        Engine->Dro();
+        Engine->DisplayFPS();
     }
 }
 
 void Game::CLIN(){
-    engine->clean();
+    Manager->clin();
+    Engine->clean();
 }

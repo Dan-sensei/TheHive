@@ -11,7 +11,7 @@ Model::Model(const Model &orig){
 }
 
 Model::~Model(){
-
+    mModel->remove();
 }
 
 //  ---
