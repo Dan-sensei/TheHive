@@ -1,9 +1,12 @@
 #ifndef GGRIGIDBODY_H
 #define GGRIGIDBODY_H
 
+#include <iostream>
+
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
+
 
 #include "Singleton.hpp"
 #include "ggDynWorld.hpp"

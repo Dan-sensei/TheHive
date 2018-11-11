@@ -15,6 +15,9 @@ public:
     void addRigidBody(btRigidBody*);
     void addShape(btCollisionShape*);
     void stepSimulation(float, int=1, float=1./60.);
+    void setGravity(float,float,float);
+
+    btDiscreteDynamicsWorld* getDynamicsWorld();
 
     void printObjects(int);
     void clean();

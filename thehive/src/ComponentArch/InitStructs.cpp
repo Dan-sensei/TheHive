@@ -14,11 +14,14 @@ InitCRenderable_3D::InitCRenderable_3D(
 {}
 
 InitCRigidBody::InitCRigidBody(
+    bool _loadedFromPath, std::string _path,
     float _x,   float _y,   float _z,
     float _sX,  float _sY,  float _sZ,
     float _mass,
     float _iX,  float _iY,  float _iZ
-) : x(_x),      y(_y),      z(_z),
+) : loadedFromPath(_loadedFromPath),
+    path(_path),
+    x(_x),      y(_y),      z(_z),
     sX(_sX),    sY(_sY),    sZ(_sZ),
     mass(_mass),
     iX(_iX),    iY(_iY),    iZ(_iZ)

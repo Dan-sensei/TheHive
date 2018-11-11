@@ -79,3 +79,11 @@ void ggDynWorld::clean(){
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	collisionShapes.clear();
 }
+
+void ggDynWorld::setGravity(float x, float y, float z){
+    dynamicsWorld->setGravity(btVector3(x,y,z));
+}
+
+btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
+    return dynamicsWorld;
+}

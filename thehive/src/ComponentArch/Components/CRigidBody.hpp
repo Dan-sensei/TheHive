@@ -11,6 +11,7 @@
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
+#include <BulletWorldImporter/btBulletWorldImporter.h>
 
 #include <Bullet/ggDynWorld.hpp>
 

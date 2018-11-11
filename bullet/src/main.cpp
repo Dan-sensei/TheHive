@@ -35,16 +35,18 @@ int main(int argc, char** argv){
     ggRigidBody* plano = new ggRigidBody(0,0,0, 1,5,1, 0);
 
     // Cubo de lado 1, masa 1 e inercia 0
-    ggRigidBody* cubo1 = new ggRigidBody(0,10,0);
+    ggRigidBody* cubo1 = new ggRigidBody(0,100,0);
 
-    // ggBodyFromFile* prueba = new ggBodyFromFile("/home/pablomanez/Documentos/GitHub/The-Hive/bullet/src/ejemplo.bullet");
-    ggBodyFromFile* prueba = new ggBodyFromFile("./ejemplo.bullet");
+    // LA RUTA ES ABSOLUTA!!!!
+    ggBodyFromFile* prueba = new ggBodyFromFile("/home/pablomanez/Documentos/The-Hive/bullet/src/ejemplo.bullet");
+    // ggBodyFromFile* prueba = new ggBodyFromFile("/home/pablomanez/Documentos/The-Hive/thehive/assets/BoundingBoxes/trainingArea.bullet");
+    // ggBodyFromFile* prueba = new ggBodyFromFile("//src/ejemplo.bullet");
 
     // SIMULACION
-	// for (int i = 0; i < 200; i++){
-	// 	world->stepSimulation(1.f / 60.f, 10);
-    //     world->printObjects(1);
-	// }
+	for (int i = 0; i < 200; i++){
+		world->stepSimulation(1.f / 60.f, 10);
+        world->printObjects(0);
+	}
 
     world->clean();
 }

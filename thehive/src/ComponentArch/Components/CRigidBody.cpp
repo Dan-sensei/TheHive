@@ -27,8 +27,24 @@ void CRigidBody::initializeComponentData(const void* data){
         // Puntero al mundo de fisicas
         world = Singleton<ggDynWorld>::Instance();
 
+        if(cData->loadedFromPath){
+            btBulletWorldImporter*  fileLoader = new btBulletWorldImporter(world->getDynamicsWorld());
+            if(! ( fileLoader->loadFile(cData->path.c_str()) ) )
+                return;
+
+            // TODO:
+            //      Cambio a bucle, por si fileLoader carga distintos cuerpos de colisiones?
+            btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
+            body = btRigidBody::upcast(obj);
+            shape = body->getCollisionShape();
+            
+        }
+        else{
+            shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
+        }
+
         // AQUI SE DEFINEN LAS DIMENSIONES
-        shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
+        // shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
 
         // Hago pushback en el vector de 'shapes'
         world->addShape(shape);
@@ -41,7 +57,8 @@ void CRigidBody::initializeComponentData(const void* data){
         // MASS==0 ---> RIGIDBODY ES ESTATICO
         btScalar mass(cData->mass);
         bool isDynamic = (mass != 0.f);
-        btVector3 localInertia(cData->iX,cData->iY,cData->iZ);
+        // btVector3 localInertia(cData->iX,cData->iY,cData->iZ);
+        btVector3 localInertia;
         if (isDynamic)
             shape->calculateLocalInertia(mass, localInertia);
 
@@ -53,6 +70,7 @@ void CRigidBody::initializeComponentData(const void* data){
 
         // Add the body to the dynamics world
         world->addRigidBody(body);
+
     }
     engine = Singleton<GameEngine>::Instance();
 
@@ -82,5 +100,18 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+
+    if(cTransform){
+        cTransform->setPosition(
+            gg::Vector3f(
+                static_cast<float>(trans.getOrigin().getX()),
+                static_cast<float>(trans.getOrigin().getY()),
+                static_cast<float>(trans.getOrigin().getZ())
+            )
+        );
+    }
+
     return gg::ST_TRUE;
 }

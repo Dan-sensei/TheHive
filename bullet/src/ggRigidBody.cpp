@@ -13,6 +13,9 @@ ggRigidBody::ggRigidBody(
     // AQUI SE DEFINEN LAS DIMENSIONES
     shape = new btBoxShape(btVector3(btScalar(_sX), btScalar(_sY), btScalar(_sZ)));
 
+    std::cout << "  shape type = " << shape->getShapeType() << '\n';
+    std::cout << "  shape type = " << shape->getName() << '\n' << '\n';
+
     // Hago push_back en el vector de 'shapes'
     world->addShape(shape);
 

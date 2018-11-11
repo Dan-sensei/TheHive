@@ -134,24 +134,23 @@ void Game::RUN(){
         uint16_t cube1 = Manager->createEntity();
         InitCTransform CTransformCube1(50,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube1("assets/Models/Cube.obj", moradoDeLos80);
+        InitCRigidBody CRigidBodyCube1(true,"assets/BoundingBoxes/Cube.bullet",  0,25,0, -1,-1,-1, 1, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, cube1, &CTransformCube1);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
+        Manager->addComponentToEntity(gg::RIGID_BODY, cube1, &CRigidBodyCube1);
         //Manager->removeEntity(cube1);
     }
 
     {
-        Material AgujeroNegro("assets/Textures/ice.bmp");
-        InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea.obj", AgujeroNegro);
-        InitCRigidBody RBTrainingArea(0,0,0, 1,5,1, 0);
-        InitCTransform CTransformTraining(0,0,0,0,0,0);
         uint16_t TrainingArea = Manager->createEntity();
+        Material AgujeroNegro("assets/Textures/ice.bmp");
+        InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea2.obj", AgujeroNegro);
+        InitCTransform CTransformTraining(0,-1,0,0,0,0);
+        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/trainingArea.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
         Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
-        Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &RBTrainingArea);
+        Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
     }
-
-
-
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -163,10 +162,11 @@ void Game::RUN(){
 
     //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
+    world->setGravity(0,-10,0);
     std::cout << "BEGIN GAME LOOP" << '\n';
     while(Engine->isWindowOpen()) {
+        world->stepSimulation(1.f / 60.f, 10);
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
-        // world->stepSimulation(1.f / 60.f, 10);
         Engine->Dro();
         Engine->DisplayFPS();
     }

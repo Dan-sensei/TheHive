@@ -5,16 +5,24 @@ ggBodyFromFile::~ggBodyFromFile(){}
 ggBodyFromFile::ggBodyFromFile(std::string _path){
     ggDynWorld* world = Singleton<ggDynWorld>::Instance();
 
-    std::cout << "Get: " << _path << '\n';
 
     fileLoader = new btBulletWorldImporter(world->getDynamicsWorld());
-    fileLoader->loadFile(_path.c_str());
+    if(! ( fileLoader->loadFile(_path.c_str()) ) )
+        return;
+
+    std::cout << "Get: " << _path << '\n';
+
+    btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
+    body = btRigidBody::upcast(obj);
+    world->addRigidBody(body);
 
     for(int i=0; i < fileLoader->getNumRigidBodies(); i++){
     	btCollisionObject* obj = fileLoader->getRigidBodyByIndex(i);
-    	btRigidBody* body = btRigidBody::upcast(obj);
+        btRigidBody* body = btRigidBody::upcast(obj);
 
     	// properties
+        std::cout << "  shape type = " << body->getCollisionShape()->getShapeType() << '\n';
+        std::cout << "  shape name = " << body->getCollisionShape()->getName() << '\n';
     	printf("  object name = %s\n", fileLoader->getNameForPointer(body));	// The Blender object name
         printf("  get position = (%4.3f,%4.3f,%4.3f)\n",
     		body->getCenterOfMassPosition().getX(),
@@ -33,43 +41,4 @@ ggBodyFromFile::ggBodyFromFile(std::string _path){
     	}
     	printf("\n");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // // AQUI SE DEFINEN LAS DIMENSIONES
-    // shape = new btBoxShape(btVector3(btScalar(_sX), btScalar(_sY), btScalar(_sZ)));
-    //
-    // // Hago push_back en el vector de 'shapes'
-    // world->addShape(shape);
-    //
-    // // AQUI SE DEFINE LA POSICION
-    // transform.setIdentity();
-    // transform.setOrigin(btVector3(_x,_y,_z));
-    //
-    // // MASS!=0 ---> RIGIDBODY ES DINAMICO
-    // // MASS==0 ---> RIGIDBODY ES ESTATICO
-    // btScalar mass(_mass);
-    // bool isDynamic = (mass != 0.f);
-    // btVector3 localInertia(_iX,_iY,_iZ);
-    // if (isDynamic)
-    //     shape->calculateLocalInertia(mass, localInertia);
-    //
-    // // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
-    //     // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-    // btDefaultMotionState* myMotionState = new btDefaultMotionState(transform);
-    // btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
-    // body = new btRigidBody(rbInfo);
-    //
-    // // Add the body to the dynamics world
-    // world->addRigidBody(body);
 }
