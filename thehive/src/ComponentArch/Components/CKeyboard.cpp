@@ -57,7 +57,8 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     if(!cTransform || !camera)  return gg::ST_ERROR;
 
     //  If exists, we get its position
-    gg::Vector3f nextPosition = camera->getLastCameraPosition();
+    // gg::Vector3f nextPosition = camera->getlastHeroPosition();
+    gg::Vector3f nextPosition = camera->getlastHeroPosition();
     bool heroRotation = true;
 
     // Vector direccion camara-heroe

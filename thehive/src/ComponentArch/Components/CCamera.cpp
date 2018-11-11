@@ -25,10 +25,10 @@ void CCamera::initializeComponentData(const void* data){
     manager = Singleton<ObjectManager>::Instance();
     cam = engine->getCamera();
 
-    lastCameraPosition = engine->getCamera()->getPosition();
-    cameraPositionBeforeLockRotation = lastCameraPosition;
-
     MHandler_SETPTRS();
+
+    lastHeroPosition = mod->getPosition();
+    cameraPositionBeforeLockRotation = engine->getCamera()->getPosition();
 }
 
 gg::EMessageStatus CCamera::processMessage(const Message &m) {
@@ -49,7 +49,7 @@ gg::EMessageStatus CCamera::MHandler_SETPTRS(){
 
 // void CCamera::updateCameraTarget(Camera *cam, Model *mod, gg::Vector3f nextPosition){
 void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
-    lastCameraPosition = nextPosition;
+    lastHeroPosition = nextPosition;
 
     cam->bindTargetAndRotation(true);
 
@@ -165,8 +165,8 @@ gg::Vector3f CCamera::getCameraTarget(){
     return engine->getCamera()->getTarget();
 }
 
-gg::Vector3f CCamera::getLastCameraPosition(){
-    return lastCameraPosition;
+gg::Vector3f CCamera::getlastHeroPosition(){
+    return lastHeroPosition;
 }
 
 gg::Vector3f CCamera::getCameraPositionBeforeLockRotation(){
@@ -176,4 +176,3 @@ gg::Vector3f CCamera::getCameraPositionBeforeLockRotation(){
 void CCamera::setCameraPositionBeforeLockRotation(gg::Vector3f vector){
     cameraPositionBeforeLockRotation = vector;
 }
-

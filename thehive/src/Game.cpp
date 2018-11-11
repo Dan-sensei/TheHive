@@ -123,7 +123,7 @@ void Game::RUN(){
     {
         uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-        InitCTransform CTransformInitData(0, 0, 10, 0, 0, 0);
+        InitCTransform CTransformInitData(0, 0, 0, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);

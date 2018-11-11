@@ -29,13 +29,13 @@ public:
     gg::Vector3f getCameraPosition();
     gg::Vector3f getCameraTarget();
 
-    gg::Vector3f getLastCameraPosition();
+    gg::Vector3f getlastHeroPosition();
     gg::Vector3f getCameraPositionBeforeLockRotation();
     void setCameraPositionBeforeLockRotation(gg::Vector3f);
 
 private:
     CCamera();
-    gg::Vector3f lastCameraPosition;
+    gg::Vector3f lastHeroPosition;
     gg::Vector3f cameraPositionBeforeLockRotation;
 
     GameEngine *engine;
