@@ -4,7 +4,7 @@
 #include <ComponentArch/InitStructs.hpp>
 
 #define CAMERA_ATENUATION 7
-#define HEIGHT 10
+#define HEIGHT 5
 #define RADIUS 12
 
 CCamera::CCamera()
@@ -97,14 +97,15 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
         nextPosition.Z-nextModelPosition.Z
     );
 
-    // And set the entity position
-    mod->setPosition(
-        gg::Vector3f(
-            nextModelPosition.X+finalXRVector.X,
-            nextModelPosition.Y+finalXRVector.Y,
-            nextModelPosition.Z+finalXRVector.Z
-        )
-    );
+    // We dont set the body position NOW
+    // In the CKeyboard manager we applied the force/impulse to the body
+    // mod->setPosition(
+    //     gg::Vector3f(
+    //         nextModelPosition.X+finalXRVector.X,
+    //         nextModelPosition.Y+finalXRVector.Y,
+    //         nextModelPosition.Z+finalXRVector.Z
+    //     )
+    // );
 
     /////////////////////////////////////////////////////////////////
     // VERTICAL AXIS

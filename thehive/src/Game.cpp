@@ -113,7 +113,7 @@ void Game::RUN(){
     delete pAgent3;
     delete pAgent4;
     //
-    Engine->createCamera(gg::Vector3f(0, 0, 0), gg::Vector3f(0, 0, 50));
+    Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
     // Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
     ////camera.setPosition(gg::Vector3f(-50, 0, 100));
     ////camera.setTarget(gg::Vector3f(0, 0, 50));
@@ -123,22 +123,24 @@ void Game::RUN(){
     {
         uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-        InitCTransform CTransformInitData(0, 0, 0, 0, 0, 0);
+        InitCTransform CTransformInitData(0, 4, 0, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
+        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/hero.bullet",  0,20,0, -1,-1,-1, 1, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
-        Manager->addComponentToEntity(gg::KEYBOARD, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
-        //Manager->removeComponentFromEntity(gg::RENDERABLE_3D, hero);
+        Manager->addComponentToEntity(gg::RIGID_BODY, hero, &CRigidBodyHero);
+        Manager->addComponentToEntity(gg::KEYBOARD, hero);
+        // Manager->removeComponentFromEntity(gg::RENDERABLE_3D, hero);
 
         uint16_t cube1 = Manager->createEntity();
         InitCTransform CTransformCube1(50,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube1("assets/Models/Cube.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyCube1(true,"assets/BoundingBoxes/Cube.bullet",  0,25,0, -1,-1,-1, 1, 0,0,0);
+        InitCRigidBody CRigidBodyCube1(true,"assets/BoundingBoxes/Cube.bullet",  10,20,0, 5,5,5, 1, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, cube1, &CTransformCube1);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube1, &CRigidBodyCube1);
-        //Manager->removeEntity(cube1);
+        // Manager->removeEntity(cube1);
     }
 
     {
@@ -162,10 +164,12 @@ void Game::RUN(){
 
     //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
-    world->setGravity(0,-10,0);
+    // Se debe poner la gravedad, aunque al iniciar el mundo tambien se haga
+    // Las llamadas que cargan los .bullet se ve que la trastocan
+    world->setGravity(0,-100,0);
     std::cout << "BEGIN GAME LOOP" << '\n';
     while(Engine->isWindowOpen()) {
-        world->stepSimulation(1.f / 60.f, 10);
+        world->stepSimulation(1.f / 60.f, 10.f);
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
         Engine->Dro();
         Engine->DisplayFPS();

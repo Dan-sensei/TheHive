@@ -37,7 +37,7 @@ void CRigidBody::initializeComponentData(const void* data){
             btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
             body = btRigidBody::upcast(obj);
             shape = body->getCollisionShape();
-            
+
         }
         else{
             shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
@@ -67,6 +67,10 @@ void CRigidBody::initializeComponentData(const void* data){
         btDefaultMotionState* myMotionState = new btDefaultMotionState(transform);
         btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
         body = new btRigidBody(rbInfo);
+
+        // We apply the gravity of the world
+        body->setGravity(btVector3(0,-10,0));
+        body->applyGravity();
 
         // Add the body to the dynamics world
         world->addRigidBody(body);
@@ -114,4 +118,23 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     }
 
     return gg::ST_TRUE;
+}
+
+void CRigidBody::applyCentralImpulse(gg::Vector3f vec){
+    body->applyCentralImpulse(btVector3(vec.X,vec.Y,vec.Z));
+}
+
+void CRigidBody::applyCentralForce(gg::Vector3f vec){
+    body->applyCentralForce(btVector3(vec.X,vec.Y,vec.Z));
+}
+
+gg::Vector3f CRigidBody::getBodyPosition(){
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+
+    return gg::Vector3f(
+        static_cast<float>(trans.getOrigin().getX()),
+        static_cast<float>(trans.getOrigin().getY()),
+        static_cast<float>(trans.getOrigin().getZ())
+    );
 }
