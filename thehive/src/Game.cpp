@@ -125,7 +125,7 @@ void Game::RUN(){
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
         InitCTransform CTransformInitData(0, 4, 0, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/hero.bullet",  0,20,0, -1,-1,-1, 1, 0,0,0);
+        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/hero.bullet",  0,20,0, -1,-1,-1, 50, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
@@ -136,21 +136,31 @@ void Game::RUN(){
         uint16_t cube1 = Manager->createEntity();
         InitCTransform CTransformCube1(50,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube1("assets/Models/Cube.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyCube1(true,"assets/BoundingBoxes/Cube.bullet",  10,20,0, 5,5,5, 1, 0,0,0);
+        InitCRigidBody CRigidBodyCube1(true,"assets/BoundingBoxes/Cube.bullet",  10,20,0, -1,-1,-1, 1, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, cube1, &CTransformCube1);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube1, &CRigidBodyCube1);
+        // Manager->removeEntity(cube1);
+
+        uint16_t cube2 = Manager->createEntity();
+        InitCTransform CTransformCube2(0,0,0,0,0,0);
+        InitCRenderable_3D CRenderableCube2("assets/Models/cuboGrande.obj", moradoDeLos80);
+        InitCRigidBody CRigidBodyCube2(true,"assets/BoundingBoxes/cuboGrande.bullet", 0,100,50, -1,-1,-1, 100, 0,0,0);
+        Manager->addComponentToEntity(gg::TRANSFORM, cube2, &CTransformCube2);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, cube2, &CRenderableCube2);
+        Manager->addComponentToEntity(gg::RIGID_BODY, cube2, &CRigidBodyCube2);
         // Manager->removeEntity(cube1);
     }
 
     {
         uint16_t TrainingArea = Manager->createEntity();
         Material AgujeroNegro("assets/Textures/ice.bmp");
+        InitCTransform CTransformTraining(0,0,0,0,0,0);
         InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea2.obj", AgujeroNegro);
-        InitCTransform CTransformTraining(0,-1,0,0,0,0);
-        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/trainingArea.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0);
-        Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
+        // InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/trainingArea.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0);
+        InitCRigidBody CRigidBodyTraining(false,"",  0,0,0, 500,2,500, 0, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
         Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
     }
 
@@ -179,4 +189,5 @@ void Game::RUN(){
 void Game::CLIN(){
     Manager->clin();
     Engine->clean();
+    world->clean();
 }

@@ -124,7 +124,7 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
         impulse.X *= 1.05;
         impulse.Z *= 1.05;
     }
-    else if(engine->key(RUN_KEY)){
+    if(engine->key(RUN_KEY)){
         impulse.X *= 1.02;
         impulse.Z *= 1.02;
     }
@@ -133,11 +133,16 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
         impulse.Y = 5;
     }
 
-    // cRigidBody->applyCentralForce(impulse);
-    cRigidBody->applyCentralImpulse(impulse);
+    impulse.X *= 90;
+    impulse.Y *= 90;
+    impulse.Z *= 90;
+    if(cRigidBody){
+        cRigidBody->applyCentralImpulse(impulse);
 
-    // And we update it accoding to the keyboard input
-    camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
+        // And we update it accoding to the keyboard input
+        camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
+    }
+
 
     return gg::ST_TRUE;
 

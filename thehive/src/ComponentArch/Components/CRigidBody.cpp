@@ -7,7 +7,6 @@ CRigidBody::CRigidBody()
 }
 
 CRigidBody::~CRigidBody() {
-
 }
 
 void CRigidBody::initComponent() {
@@ -29,8 +28,10 @@ void CRigidBody::initializeComponentData(const void* data){
 
         if(cData->loadedFromPath){
             btBulletWorldImporter*  fileLoader = new btBulletWorldImporter(world->getDynamicsWorld());
-            if(! ( fileLoader->loadFile(cData->path.c_str()) ) )
+            if(! ( fileLoader->loadFile(cData->path.c_str()) ) ){
+                delete fileLoader;
                 return;
+            }
 
             // TODO:
             //      Cambio a bucle, por si fileLoader carga distintos cuerpos de colisiones?
@@ -38,6 +39,7 @@ void CRigidBody::initializeComponentData(const void* data){
             body = btRigidBody::upcast(obj);
             shape = body->getCollisionShape();
 
+            delete fileLoader;
         }
         else{
             shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
@@ -52,6 +54,7 @@ void CRigidBody::initializeComponentData(const void* data){
         // AQUI SE DEFINE LA POSICION
         transform.setIdentity();
         transform.setOrigin(btVector3(cData->x,cData->y,cData->z));
+        transform.setRotation(btQuaternion(btVector3(0, 1, 0), SIMD_PI * 0.03));
 
         // MASS!=0 ---> RIGIDBODY ES DINAMICO
         // MASS==0 ---> RIGIDBODY ES ESTATICO
@@ -74,9 +77,7 @@ void CRigidBody::initializeComponentData(const void* data){
 
         // Add the body to the dynamics world
         world->addRigidBody(body);
-
     }
-    engine = Singleton<GameEngine>::Instance();
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
@@ -116,6 +117,7 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
             )
         );
     }
+
 
     return gg::ST_TRUE;
 }
