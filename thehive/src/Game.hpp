@@ -2,6 +2,8 @@
 #define _GAME_H
 
 class GameEngine;
+class CTriggerSystem;
+
 class ObjectManager;
 
 #include <iostream>
@@ -17,6 +19,8 @@ public:
 
 private:
     GameEngine* Engine;
+    CTriggerSystem* EventSystem;
+
     ObjectManager* Manager;
 };
 

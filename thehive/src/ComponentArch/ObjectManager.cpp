@@ -20,6 +20,8 @@ ObjectManager::ObjectManager()
     ComponentConstructorVector[1]= &ObjectManager::createKeyboardComponent;
     ComponentConstructorVector[2]= &ObjectManager::createRenderable_3DComponent;
     ComponentConstructorVector[3]= &ObjectManager::createCameraComponent;
+    ComponentConstructorVector[4]= &ObjectManager::createAgentComponent;
+
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
 }
@@ -209,6 +211,10 @@ IComponent* ObjectManager::createRenderable_3DComponent     ()   {
 IComponent* ObjectManager::createCameraComponent            ()   {
     return new CCamera;
 }
+IComponent* ObjectManager::createAgentComponent            ()   {
+    return new CAgent;
+}
+
 //IComponent* ObjectManager::createColliderComponent     ();
 //IComponent* ObjectManager::createHealthComponent       ();
 //IComponent* ObjectManager::createRespectComponent      ();

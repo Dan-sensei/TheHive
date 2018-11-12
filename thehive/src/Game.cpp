@@ -12,7 +12,10 @@
 #include "Util.hpp"
 #include "Singleton.hpp"
 
-#include "EventSystem/Agent.hpp"
+#include "ComponentArch/Components/CAgent.hpp"
+#include <EventSystem/EnumTriggerType.hpp>
+
+
 #include "EventSystem/GameState.hpp"
 
 
@@ -46,6 +49,8 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 
 Game::Game(){
     Engine = Singleton<GameEngine>::Instance();
+    EventSystem = Singleton<CTriggerSystem>::Instance();
+
     Engine->Starto();
     Engine->HideCursor(true);
 
@@ -60,7 +65,7 @@ Game::~Game(){
 void Game::RUN(){
 
 
-    //
+    /*
     CAgent* pAgent=NULL;
     CAgent* pAgent1=NULL;
     CAgent* pAgent2=NULL;
@@ -108,23 +113,31 @@ void Game::RUN(){
     delete pAgent2;
     delete pAgent3;
     delete pAgent4;
-    //
+    */
     Engine->createCamera(gg::Vector3f(0, 0, 0), gg::Vector3f(0, 0, 50));
     // Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
     ////camera.setPosition(gg::Vector3f(-50, 0, 100));
     ////camera.setTarget(gg::Vector3f(0, 0, 50));
 
     //uint8_t* p;
+//add inf triggers
+    //{
+        EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(-40,0,0), 20, 0,false);
+
+    //}
 
     {
         uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
         InitCTransform CTransformInitData(0, 0, 10, 0, 0, 0);
+        InitCAgent flagsheroe(kTrig_Explosion);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::KEYBOARD, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
+        Manager->addComponentToEntity(gg::CAGENT, hero,&flagsheroe);
+
         //Manager->removeComponentFromEntity(gg::RENDERABLE_3D, hero);
 
         uint16_t cube1 = Manager->createEntity();
@@ -157,6 +170,7 @@ void Game::RUN(){
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
         Engine->Dro();
         Engine->DisplayFPS();
+        EventSystem->Update();
     }
 }
 

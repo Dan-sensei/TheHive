@@ -11,6 +11,7 @@ namespace gg{
         //HEALTH,
         //RESPECT,
         //DANINOSABEPROGRAMAR
+        CAGENT,
         NUM_COMPONENTS
     };
 

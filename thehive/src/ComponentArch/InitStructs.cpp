@@ -12,3 +12,7 @@ InitCRenderable_3D::InitCRenderable_3D(
     const Material &mat
 ) : pathToModel(_pathToModel), material(mat)
 {}
+InitCAgent::InitCAgent(
+    EnumTriggerType _flags
+) : flags(_flags)
+{}

@@ -10,6 +10,7 @@
 #include "Components/CKeyboard.hpp"
 #include "Components/CRenderable_3D.hpp"
 #include "Components/CCamera.hpp"
+#include "Components/CAgent.hpp"
 
 #include <stack>
 #include <map>
@@ -94,6 +95,8 @@ class ObjectManager{
         IComponent* createKeyboardComponent         ();
         IComponent* createRenderable_3DComponent    ();
         IComponent* createCameraComponent           ();
+        IComponent* createAgentComponent           ();
+
 
 
         using pConstructor = IComponent* (ObjectManager::*)(void);
@@ -146,6 +149,3 @@ class ObjectManager{
 };
 
 #endif
-
-
-

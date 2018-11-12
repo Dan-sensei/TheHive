@@ -8,7 +8,8 @@
 //#include <curses.h>
 //#include <unistd.h>
 //#include <vector>
-#include "Agent.hpp"
+#include "ComponentArch/Components/CAgent.hpp"
+#include <EventSystem/GameState.hpp>
 
 
 CTriggerSystem::CTriggerSystem(){
@@ -54,6 +55,7 @@ void CTriggerSystem::RemoveTrigger(unsigned long nTriggerID)
 
 void CTriggerSystem::Update()
 {
+
   CAgent* pAgent=NULL;
   float fDistance=0.f;
 
@@ -89,17 +91,23 @@ void CTriggerSystem::Update()
   }
   //Trigger agents
   //int g_nNumAgents=20;//numero actual de agentes
-  irr::core::list<CAgent*>::Iterator it2 ;
+  std::list<CAgent*>::iterator it2 ;
   it2=CAgent::hola.begin();
   for(unsigned long i=0; i<CAgent::hola.size();++i)
   {
     pAgent=*it2;
     //pAgent->SetNextTriggerUpdate(nCurTime);
     //llop thru exixting trigger records
+    //std::cout << "agente" << pAgent->nCAgentID << "("<<pAgent->GetPosition().X<<"," <<pAgent->GetPosition().Y<<","<<pAgent->GetPosition().Z<<")"<< '\n';
+
+
     for(it=m_mapTriggerMap.begin();
         it!=m_mapTriggerMap.end();++it)
     {
+
       pRec=it->second;
+     // std::cout << "trigger" << pRec->idSource << "("<<pRec->vPos.X<<"," <<pRec->vPos.Y<<","<<pRec->vPos.Z<<")"<< '\n';
+
       //Does agent respond to trigger?
       if(!(pRec->eTriggerType & pAgent->GetTriggerFlags()))
         continue;

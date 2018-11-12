@@ -12,7 +12,6 @@
 #include <chrono>
 
 static unsigned long id=0;
-#include <irrlicht/irrList.h>
 #include "Util.hpp"
 
 #include "EnumTriggerType.hpp"
