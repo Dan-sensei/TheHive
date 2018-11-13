@@ -1,0 +1,74 @@
+include MakeColors
+
+BUILD	:= build/
+
+SOURCES := $(shell find src/ -type f -name "*.cpp")
+OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
+OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
+
+ADDITIONAL_LIB :=  -L ./lib
+ADDITIONAL_H :=  -I ./include -I ./src -I /usr/include/bullet
+LIBRARIES := -lGL -lGLEW -lglfw -lassimp -lIrrlicht -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader
+
+COMPILER := g++
+
+EXE := main
+
+$(EXE): $(OBJECTS)
+	$(call br)
+	$(call printInfo, "Generating")
+	$(call printWarning, $(EXE))
+	$(call printInfo,"...")
+	@$(COMPILER) -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
+	$(call printObj,  "Finished!")
+	$(call br)
+	$(call br)
+
+$(OBJECTS): $(BUILD)%.o : %.cpp
+	 @mkdir -p ${@D}
+
+	$(call printInfo, "-Compiling")
+	$(call printObj, $^)
+	@$(COMPILER) -o $@ -c $< $(ADDITIONAL_H)
+	$(call printSuccess,  "[OK]")
+	$(call br)
+
+clean:
+	$(call printWarning, "Deleting" )
+	$(call printObj,$(BUILD))
+	$(call printWarning,"..." )
+	@rm -rf $(BUILD)
+	$(call printSuccess,  "[OK]")
+	$(call br)
+	$(call printWarning, "Deleting" )
+	$(call printObj,$(EXE))
+	@rm -f $(EXE)
+	$(call printSuccess,  "[OK]")
+	$(call br)
+
+init:
+	./$(EXE)
+
+molon:
+	$(call br)
+	$(call printObj, "Titulo:" )
+	$(call printWarning,"THE" "HIVE")
+	$(call br)
+	$(call printObj, "Language:" )
+	$(call printWarning,"C++")
+	$(call br)
+	$(call printObj, "Compiler:" )
+	$(call printWarning,$(COMPILER))
+	$(call br)
+	$(call br)
+
+info:
+	$(call br)
+	$(call printWarning, "Files:")
+	$(call br)
+	$(call br)
+	$(call objColor)
+	@$(foreach var,$(SOURCES), echo " "$(var); )
+	$(call noColor)
+
+	$(call br)

@@ -11,6 +11,7 @@
 #include "Components/CRenderable_3D.hpp"
 #include "Components/CCamera.hpp"
 #include "Components/CAgent.hpp"
+#include "Components/CRigidBody.hpp"
 
 #include <stack>
 #include <map>
@@ -95,8 +96,8 @@ class ObjectManager{
         IComponent* createKeyboardComponent         ();
         IComponent* createRenderable_3DComponent    ();
         IComponent* createCameraComponent           ();
-        IComponent* createAgentComponent           ();
-
+        IComponent* createAgentComponent            ();
+        IComponent* createRigidBodyComponent        ();
 
 
         using pConstructor = IComponent* (ObjectManager::*)(void);

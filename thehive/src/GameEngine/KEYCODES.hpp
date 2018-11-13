@@ -35,6 +35,7 @@ namespace gg{
         GG_LCONTROL = irr::EKEY_CODE::KEY_LCONTROL,
         GG_LSHIFT = irr::EKEY_CODE::KEY_LSHIFT,
         GG_ALT = irr::EKEY_CODE::KEY_LMENU,
+        GG_SPACEBAR = irr::EKEY_CODE::KEY_SPACE,
 
         GG_0 = irr::EKEY_CODE::KEY_KEY_0,
         GG_1 = irr::EKEY_CODE::KEY_KEY_1,

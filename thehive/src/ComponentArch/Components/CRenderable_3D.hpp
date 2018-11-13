@@ -5,6 +5,7 @@
 #include <ComponentArch/Message.hpp>
 #include <GameEngine/Model.hpp>
 #include <map>
+#include <iostream>
 
 class CTransform;
 

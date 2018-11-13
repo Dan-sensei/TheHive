@@ -37,5 +37,23 @@ struct InitCRenderable_3D{
     Material material;
 };
 
+struct InitCRigidBody{
+    InitCRigidBody(
+        bool=false, std::string="",
+        float=0, float=0, float=0,  // Origen   x,y,z
+        float=1, float=1, float=1,  // Tamanyo  sX,sY,sZ
+        float=1,                    // Masa     mass
+        float=0, float=0, float=0,  // Inercia  iX,iY,iZ
+        float=0                     // Friccion
+    );
+
+    bool loadedFromPath;
+    std::string path;
+    float x, y, z;
+    float sX,sY,sZ;
+    float mass;
+    float iX, iY, iZ;
+    float friction;
+};
 
 #endif

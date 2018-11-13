@@ -5,6 +5,7 @@ class GameEngine;
 class CTriggerSystem;
 
 class ObjectManager;
+class ggDynWorld;
 
 #include <iostream>
 
@@ -22,6 +23,7 @@ private:
     CTriggerSystem* EventSystem;
 
     ObjectManager* Manager;
+    ggDynWorld* world;
 };
 
 

@@ -14,6 +14,7 @@
 
 class CCamera;
 class CTransform;
+class CRigidBody;
 class GameEngine;
 class ObjectManager;
 
@@ -38,6 +39,7 @@ class CKeyboard : public IComponent {
 
 
         CTransform* cTransform;
+        CRigidBody* cRigidBody;
         CCamera *camera;
         GameEngine* engine;
         gg::Vector2f DASH_SPEED;

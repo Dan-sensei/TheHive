@@ -20,7 +20,8 @@ ObjectManager::ObjectManager()
     ComponentConstructorVector[1]= &ObjectManager::createKeyboardComponent;
     ComponentConstructorVector[2]= &ObjectManager::createRenderable_3DComponent;
     ComponentConstructorVector[3]= &ObjectManager::createCameraComponent;
-    ComponentConstructorVector[4]= &ObjectManager::createAgentComponent;
+    ComponentConstructorVector[4]= &ObjectManager::createRigidBodyComponent;
+    ComponentConstructorVector[5]= &ObjectManager::createAgentComponent;
 
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
@@ -58,6 +59,7 @@ void ObjectManager::initObjectManager() {
     CKeyboard::initComponent();
     CRenderable_3D::initComponent();
     CCamera::initComponent();
+    CRigidBody::initComponent();
 }
 
 
@@ -213,6 +215,9 @@ IComponent* ObjectManager::createCameraComponent            ()   {
 }
 IComponent* ObjectManager::createAgentComponent            ()   {
     return new CAgent;
+}
+IComponent* ObjectManager::createRigidBodyComponent            ()   {
+    return new CRigidBody;
 }
 
 //IComponent* ObjectManager::createColliderComponent     ();

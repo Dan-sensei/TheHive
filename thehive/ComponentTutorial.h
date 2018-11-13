@@ -15,7 +15,7 @@ Registrar el tipo de componente en Enum.hpp
 
 
 ->Clase<-
-C[Nombre] -> Respetar nombre de clases, empieza por "C" Seguido del nombre
+C[Nombre] -> Respeta hermano el nombre de las clases, empieza por "C" Seguido del nombre
 
     Mirar "CPlantilla.hpp" y "CPlantilla.cpp"
 

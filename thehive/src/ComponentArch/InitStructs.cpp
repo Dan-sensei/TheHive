@@ -12,7 +12,24 @@ InitCRenderable_3D::InitCRenderable_3D(
     const Material &mat
 ) : pathToModel(_pathToModel), material(mat)
 {}
+
 InitCAgent::InitCAgent(
     EnumTriggerType _flags
 ) : flags(_flags)
+{}
+
+InitCRigidBody::InitCRigidBody(
+    bool _loadedFromPath, std::string _path,
+    float _x,   float _y,   float _z,
+    float _sX,  float _sY,  float _sZ,
+    float _mass,
+    float _iX,  float _iY,  float _iZ,
+    float _friction
+) : loadedFromPath(_loadedFromPath),
+path(_path),
+x(_x),      y(_y),      z(_z),
+sX(_sX),    sY(_sY),    sZ(_sZ),
+mass(_mass),
+iX(_iX),    iY(_iY),    iZ(_iZ),
+friction(_friction)
 {}

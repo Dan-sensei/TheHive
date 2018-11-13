@@ -57,6 +57,18 @@ gg::Vector3f Model::getRotation(){
     return currentRotationGG;
 }
 
+gg::Vector3f Model::getScale(){
+    gg::Vector3f currentScaleGG;
+    irr::core::vector3df currentScaleIRR = mModel->getScale();
+
+    // Convert the Irrlicht vector to GG vector
+    currentScaleGG.X = currentScaleIRR.X;
+    currentScaleGG.Y = currentScaleIRR.Y;
+    currentScaleGG.Z = currentScaleIRR.Z;
+
+    return currentScaleGG;
+}
+
 //  ---
 //  We assign the material to the model
 //==================================================================================
