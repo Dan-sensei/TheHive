@@ -92,16 +92,28 @@ btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
     return dynamicsWorld;
 }
 
-void ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f to){
-    #define RANGE_FACTOR 1.f
-    to = gg::Vector3f(-to.X*RANGE_FACTOR,from.Y*RANGE_FACTOR,to.Z*RANGE_FACTOR);
+void ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
+    #define RANGE_FACTOR 90.f
+    #define PI 3.14159265359
+    // from -> Camera position
+    // to   -> Camera rotation
+
+    gg::Vector3f to = gg::Vector3f(
+        (sin(rot.Y*PI/180)*RANGE_FACTOR)+from.X,
+        -(sin(rot.X*PI/180)*RANGE_FACTOR)+from.Y,
+        (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*RANGE_FACTOR)+from.Z
+    );
+
+    // std::cout << "FROM: "<< from.X << "," << from.Y << "," << from.Z << '\n';
+    // std::cout << "ROT:  "<< rot.X << "," << rot.Y << "," << rot.Z << '\n';
+    // std::cout << "TO:   " << to.X << "," << to.Y << "," << to.Z << '\n';
 
     btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
 
     dynamicsWorld->rayTest(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z),callBack);
 
     if(callBack.hasHit()){
-        printf("Collision at: <%.2f, %.2f, %.2f>\n", callBack.m_hitPointWorld.getX(), callBack.m_hitPointWorld.getY(), callBack.m_hitPointWorld.getZ());
+        // printf("Collision at: <%.2f, %.2f, %.2f>\n", callBack.m_hitPointWorld.getX(), callBack.m_hitPointWorld.getY(), callBack.m_hitPointWorld.getZ());
         CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
         cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
     }

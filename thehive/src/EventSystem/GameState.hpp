@@ -51,11 +51,14 @@ class CTriggerSystem
 {
   friend class Singleton<CTriggerSystem>;
 public:
-  ~CTriggerSystem();
-  unsigned long RegisterTriger(EnumTriggerType _eTriggerType,
-  unsigned long _nPriority,unsigned long _idSource,
-  const gg::Vector3f& _vPos, float _fRadius, float _fDuration,
-  bool _bDynamicSourcePos);
+    ~CTriggerSystem();
+    unsigned long RegisterTriger(EnumTriggerType _eTriggerType,
+        unsigned long _nPriority,unsigned long _idSource,
+        const gg::Vector3f& _vPos, float _fRadius, float _fDuration,
+        bool _bDynamicSourcePos);
+
+    void clin();
+
 
 
   void RemoveTrigger(unsigned long nTriggerID);

@@ -91,7 +91,7 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f force;
 
-    world->handleRayCast(camera->getCameraPositionBeforeLockRotation(),nextPosition);
+    world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
 
     if(engine->key(gg::GG_W)){
         force = gg::Vector3f(-cV.X,0,-cV.Z);

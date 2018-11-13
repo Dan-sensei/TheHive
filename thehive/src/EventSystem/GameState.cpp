@@ -20,22 +20,22 @@ CTriggerSystem::~CTriggerSystem(){
 }
 
 unsigned long CTriggerSystem::RegisterTriger(
-  EnumTriggerType _eTriggerType, unsigned long _nPriority,
-  unsigned long _idSource,const gg::Vector3f& _vPos, float _fRadius,
-  float _fDuration,bool _bDynamicSourcePos)
+    EnumTriggerType _eTriggerType, unsigned long _nPriority,
+    unsigned long _idSource,const gg::Vector3f& _vPos, float _fRadius,
+    float _fDuration,bool _bDynamicSourcePos)
 {
 
 
 
 
   //Create a trigger record, and fill it in
-  TriggerRecordStruct* pTriggerRecord =
-  new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos);
-  //Trigger records are sorted by priority
-  m_mapTriggerMap.insert(TRIGGER_MAP::value_type(_nPriority,pTriggerRecord));
+TriggerRecordStruct* pTriggerRecord =
+    new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos);
+    //Trigger records are sorted by priority
+    m_mapTriggerMap.insert(TRIGGER_MAP::value_type(_nPriority,pTriggerRecord));
 
-  //return unique id for this triger
-  return pTriggerRecord->nTriggerID;
+    //return unique id for this triger
+    return pTriggerRecord->nTriggerID;
 
 }
 
@@ -148,6 +148,14 @@ TriggerRecordStruct::TriggerRecordStruct(EnumTriggerType _eTriggerType,unsigned 
   bDynamicSourcePos=_bDynamicSourcePos;
 
 
+}
+
+void CTriggerSystem::clin(){
+    TRIGGER_MAP::iterator it=m_mapTriggerMap.begin();
+    while(it!=m_mapTriggerMap.end()){
+        delete(it->second);
+        ++it;
+    }
 }
 
 //Pruebas

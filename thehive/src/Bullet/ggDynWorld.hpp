@@ -13,6 +13,8 @@ class CTransform;
 #include <ComponentArch/ObjectManager.hpp>
 // class ObjectManager;
 
+#include <cmath>
+
 class ggDynWorld {
 public:
     ggDynWorld ();

@@ -27,6 +27,7 @@ public:
 
     void updateCameraTarget(gg::Vector3f, bool);
     gg::Vector3f getCameraPosition();
+    gg::Vector3f getCameraRotation();
     gg::Vector3f getCameraTarget();
 
     gg::Vector3f getlastHeroPosition();

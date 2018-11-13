@@ -162,6 +162,11 @@ gg::Vector3f CCamera::getCameraPosition(){
     return engine->getCamera()->getPosition();
 }
 
+gg::Vector3f CCamera::getCameraRotation(){
+    GameEngine *engine = Singleton<GameEngine>::Instance();
+    return engine->getCamera()->getRotation();
+}
+
 gg::Vector3f CCamera::getCameraTarget(){
     GameEngine *engine = Singleton<GameEngine>::Instance();
     return engine->getCamera()->getTarget();

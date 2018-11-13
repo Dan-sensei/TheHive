@@ -126,10 +126,7 @@ void Game::RUN(){
 
     //uint8_t* p;
     //add inf triggers
-    //{
-        EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(-40,0,0), 20, 0,false);
-
-    //}
+    EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(-40,0,0), 20, 0,false);
     {
         uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
@@ -164,6 +161,7 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::RIGID_BODY, cube2, &CRigidBodyCube2);
         // Manager->removeEntity(cube1);
 
+        // Se usa para el RAYCASTING
         uint16_t cube3 = Manager->createEntity();
         InitCTransform CTransformCube3(0,20,0,0,0,0);
         InitCRenderable_3D CRenderableCube3("assets/Models/Cube.obj", moradoDeLos80);
@@ -210,4 +208,5 @@ void Game::CLIN(){
     Manager->clin();
     Engine->clean();
     world->clean();
+    EventSystem->clin();
 }
