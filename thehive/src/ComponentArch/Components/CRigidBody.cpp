@@ -78,6 +78,7 @@ void CRigidBody::initializeComponentData(const void* data){
             body->setFriction(btScalar(cData->friction));
         }
 
+
         // Add the body to the dynamics world
         world->addRigidBody(body);
     }
@@ -120,15 +121,21 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
             )
         );
 
-        trans = body->getCenterOfMassTransform();
-        btQuaternion rot = trans.getRotation();
-        cTransform->setRotation(
-            gg::Vector3f(
-                static_cast<float>(rot.getAxis().getX()),
-                static_cast<float>(rot.getAxis().getY()),
-                static_cast<float>(rot.getAxis().getZ())
-            )
-        );
+        // trans = body->getCenterOfMassTransform();
+        // btQuaternion rot = trans.getRotation();
+        // cTransform->setRotation(
+        //     gg::Vector3f(
+        //         static_cast<float>(rot.getAxis().getX()),
+        //         static_cast<float>(rot.getAxis().getY()),
+        //         static_cast<float>(rot.getAxis().getZ())
+        //     )
+        // );
+
+        // btTransform tr = m_dynamicsWorld->getCollisionObjectArray()[1]->getWorldTransform();
+		// static float angle = 0.f;
+		// angle += 0.01f;
+		// tr.setRotation(btQuaternion(btVector3(0, 1, 0), angle));
+		// m_dynamicsWorld->getCollisionObjectArray()[1]->setWorldTransform(tr);
     }
 
 

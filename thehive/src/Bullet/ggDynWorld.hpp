@@ -5,6 +5,14 @@
 #include <btBulletCollisionCommon.h>
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
 
+#include <GameEngine/GameEngine.hpp>
+#include <Singleton.hpp>
+
+#include <ComponentArch/IComponent.hpp>
+class CTransform;
+#include <ComponentArch/ObjectManager.hpp>
+// class ObjectManager;
+
 class ggDynWorld {
 public:
     ggDynWorld ();
@@ -18,6 +26,8 @@ public:
     void setGravity(float,float,float);
 
     btDiscreteDynamicsWorld* getDynamicsWorld();
+
+    void handleRayCast(gg::Vector3f,gg::Vector3f);
 
     void printObjects(int);
     void clean();
@@ -38,6 +48,7 @@ private:
     // El mundo donde pasan los eventos
     // Ademas, tiene una lista de TODOS los cuerpos
     btDiscreteDynamicsWorld* dynamicsWorld;
+    btCollisionWorld* collisionWorld;
 
     // ------------------------- //
     // IMPORTANTE: CUERPO!=FORMA //
@@ -45,8 +56,6 @@ private:
 
     // Vector que contiene todas las 'FORMAS' (cuadrados, circulos, ...)
     btAlignedObjectArray<btCollisionShape*> collisionShapes;
-
-
 };
 
 

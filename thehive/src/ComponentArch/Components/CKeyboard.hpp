@@ -5,6 +5,7 @@
 #include <map>
 
 #include <GameEngine/GameEngine.hpp>
+#include <Bullet/ggDynWorld.hpp>
 #include <GameEngine/KEYCODES.hpp>
 
 #include <ComponentArch/IComponent.hpp>
@@ -17,6 +18,7 @@ class CTransform;
 class CRigidBody;
 class GameEngine;
 class ObjectManager;
+class ggDynWorld;
 
 class CKeyboard : public IComponent {
     friend class ObjectManager;
@@ -37,13 +39,12 @@ class CKeyboard : public IComponent {
         CKeyboard();
         CKeyboard(const CKeyboard &orig) = delete;
 
+        GameEngine* engine;
+        ggDynWorld* world;
 
         CTransform* cTransform;
         CRigidBody* cRigidBody;
         CCamera *camera;
-        GameEngine* engine;
-        gg::Vector2f DASH_SPEED;
-        gg::Vector2f RUNNING_SPEED;
 };
 
 #endif

@@ -34,6 +34,7 @@ void CKeyboard::initComponent() {
 void CKeyboard::initializeComponentData(const void* data){
     //  We check if this entity has the TRANSFORM component
     engine = Singleton<GameEngine>::Instance();
+    world = Singleton<ggDynWorld>::Instance();
     camera = static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
 }
@@ -90,6 +91,8 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f force;
 
+    world->handleRayCast(camera->getCameraPositionBeforeLockRotation(),nextPosition);
+
     if(engine->key(gg::GG_W)){
         force = gg::Vector3f(-cV.X,0,-cV.Z);
         // if(engine->key(ROTATE_KEY)){
@@ -145,6 +148,10 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
 
     cRigidBody->applyCentralForce(force);
 
+    // COPIA-PEGA DE LA DOCUMENTACION:
+    // Bullet automatically deactivates dynamic rigid bodies, when the velocity is below a threshold for a given time.
+    // Deactivated (sleeping) rigid bodies don't take any processing time, except a minor broadphase collision detection impact
+    // (to allow active objects to activate/wake up sleeping objects)
     cRigidBody->activate(true);
 
     // And we update it accoding to the keyboard input

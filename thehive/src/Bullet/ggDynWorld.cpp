@@ -13,6 +13,9 @@ void ggDynWorld::addShape(btCollisionShape* shape){
 
 void ggDynWorld::stepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep){
     dynamicsWorld->stepSimulation(timeStep,maxSubSteps,fixedTimeStep);
+
+    // dynamicsWorld->updateAabbs();
+    // dynamicsWorld->computeOverlappingPairs();
 }
 
 void ggDynWorld::printObjects(int _end){
@@ -36,6 +39,7 @@ void ggDynWorld::inito(float _gX, float _gY, float _gZ){
     overlappingPairCache    = new btDbvtBroadphase();
     solver                  = new btSequentialImpulseConstraintSolver;
     dynamicsWorld           = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+    collisionWorld          = new btCollisionWorld(dispatcher, overlappingPairCache, collisionConfiguration);
 
     dynamicsWorld->setGravity(btVector3(_gX, _gY, _gZ));
 }
@@ -86,4 +90,24 @@ void ggDynWorld::setGravity(float x, float y, float z){
 
 btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
     return dynamicsWorld;
+}
+
+void ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f to){
+    #define RANGE_FACTOR 1.f
+    to = gg::Vector3f(-to.X*RANGE_FACTOR,from.Y*RANGE_FACTOR,to.Z*RANGE_FACTOR);
+
+    btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
+
+    dynamicsWorld->rayTest(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z),callBack);
+
+    if(callBack.hasHit()){
+        printf("Collision at: <%.2f, %.2f, %.2f>\n", callBack.m_hitPointWorld.getX(), callBack.m_hitPointWorld.getY(), callBack.m_hitPointWorld.getZ());
+        CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
+        cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
+    }
+
+
+
+
+
 }

@@ -17,6 +17,7 @@
 
 class GameEngine;        //  [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 class ObjectManager;     //  [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
+class ggDynWorld;
 
 //  Forward declaration de otras componentes que incluyas
 class CTransform;
@@ -42,6 +43,7 @@ class CRigidBody : public IComponent {
 
         void setLinearVelocity(gg::Vector3f);
 
+        // 'Despierta' de nuevo el objeto para que les puedan ser aplicadas fuerzas
         void activate(bool);
 
         gg::Vector3f getBodyPosition();

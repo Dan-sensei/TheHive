@@ -163,6 +163,12 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube2, &CRenderableCube2);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube2, &CRigidBodyCube2);
         // Manager->removeEntity(cube1);
+
+        uint16_t cube3 = Manager->createEntity();
+        InitCTransform CTransformCube3(0,20,0,0,0,0);
+        InitCRenderable_3D CRenderableCube3("assets/Models/Cube.obj", moradoDeLos80);
+        Manager->addComponentToEntity(gg::TRANSFORM, cube3, &CTransformCube3);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, cube3, &CRenderableCube3);
     }
 
     {
