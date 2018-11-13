@@ -13,6 +13,7 @@
 
 #define DASH_FACTOR     1.2f
 #define RUN_FACTOR      1.1f
+#define FORCE_FACTOR    7000.f
 
 CKeyboard::CKeyboard()
 :cTransform(nullptr)
@@ -82,10 +83,10 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     gg::Vector3f ppV(-cV.Z,0,cV.X);
 
     // Vector que tendrá el impulso para aplicar al body
-    gg::Vector3f impulse;
+    gg::Vector3f force;
 
     if(engine->key(gg::GG_W)){
-        impulse = gg::Vector3f(-cV.X,0,-cV.Z);
+        force = gg::Vector3f(-cV.X,0,-cV.Z);
         // if(engine->key(ROTATE_KEY)){
         //     cV2.X-=cV.X;
         //     cV2.Z-=cV.Z;
@@ -93,7 +94,7 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
         // };
     }
     else if(engine->key(gg::GG_S)){
-        impulse = gg::Vector3f(+cV.X,0,+cV.Z);
+        force = gg::Vector3f(+cV.X,0,+cV.Z);
         // if(engine->key(ROTATE_KEY)){
         //     cV2.X+=cV.X;
         //     cV2.Z+=cV.Z;
@@ -102,7 +103,7 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     }
 
     if(engine->key(gg::GG_A)){
-        impulse = gg::Vector3f(-ppV.X,0,-ppV.Z);
+        force = gg::Vector3f(-ppV.X,0,-ppV.Z);
         // if(engine->key(ROTATE_KEY)){
         //     cV2.X-=ppV.X;
         //     cV2.Z-=ppV.Z;
@@ -110,7 +111,7 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
         // };
     }
     else if(engine->key(gg::GG_D)){
-        impulse = gg::Vector3f(+ppV.X,0,+ppV.Z);
+        force = gg::Vector3f(+ppV.X,0,+ppV.Z);
         // if(engine->key(ROTATE_KEY)){
         //     cV2.X+=ppV.X;
         //     cV2.Z+=ppV.Z;
@@ -121,29 +122,26 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
         heroRotation = false;
 
     if(engine->key(DASH_KEY)){
-        impulse.X *= 1.05;
-        impulse.Z *= 1.05;
+        force.X *= 1.05;
+        force.Z *= 1.05;
     }
     if(engine->key(RUN_KEY)){
-        impulse.X *= 1.02;
-        impulse.Z *= 1.02;
+        force.X *= 1.02;
+        force.Z *= 1.02;
     }
 
     if(engine->key(JUMP_KEY)){
-        impulse.Y = 5;
+        force.Y = 6;
     }
 
-    impulse.X *= 90;
-    impulse.Y *= 90;
-    impulse.Z *= 90;
-    if(cRigidBody){
-        cRigidBody->applyCentralImpulse(impulse);
+    force.X *= FORCE_FACTOR;
+    force.Y *= FORCE_FACTOR;
+    force.Z *= FORCE_FACTOR;
 
-        // And we update it accoding to the keyboard input
-        camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
-    }
+    cRigidBody->applyCentralForce(force);
 
-
+    // And we update it accoding to the keyboard input
+    camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
     return gg::ST_TRUE;
 
 }

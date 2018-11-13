@@ -54,7 +54,6 @@ void CRigidBody::initializeComponentData(const void* data){
         // AQUI SE DEFINE LA POSICION
         transform.setIdentity();
         transform.setOrigin(btVector3(cData->x,cData->y,cData->z));
-        transform.setRotation(btQuaternion(btVector3(0, 1, 0), SIMD_PI * 0.03));
 
         // MASS!=0 ---> RIGIDBODY ES DINAMICO
         // MASS==0 ---> RIGIDBODY ES ESTATICO
@@ -72,8 +71,12 @@ void CRigidBody::initializeComponentData(const void* data){
         body = new btRigidBody(rbInfo);
 
         // We apply the gravity of the world
-        body->setGravity(btVector3(0,-10,0));
-        body->applyGravity();
+        // body->setGravity(btVector3(0,-10,0));
+        // body->applyGravity();
+
+        if(cData->friction){
+            body->setFriction(btScalar(cData->friction));
+        }
 
         // Add the body to the dynamics world
         world->addRigidBody(body);
@@ -116,6 +119,16 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
                 static_cast<float>(trans.getOrigin().getZ())
             )
         );
+
+        // btQuaternion rot = trans.getRotation();
+        // std::cout << rot.getAxis().getX() << "," << rot.getAxis().getX() << "," << rot.y() << "," << rot.z() << '\n';
+        // cTransform->setRotation(
+        //     gg::Vector3f(
+        //         static_cast<float>(rot.getAxis().getX()),
+        //         static_cast<float>(rot.getAxis().getY()),
+        //         static_cast<float>(rot.getAxis().getZ())
+        //     )
+        // );
     }
 
 
@@ -128,6 +141,10 @@ void CRigidBody::applyCentralImpulse(gg::Vector3f vec){
 
 void CRigidBody::applyCentralForce(gg::Vector3f vec){
     body->applyCentralForce(btVector3(vec.X,vec.Y,vec.Z));
+}
+
+void CRigidBody::applyTorque(gg::Vector3f vec){
+    body->applyTorque(btVector3(vec.X,vec.Y,vec.Z));
 }
 
 gg::Vector3f CRigidBody::getBodyPosition(){

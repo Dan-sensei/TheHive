@@ -38,7 +38,8 @@ struct InitCRigidBody{
         float=0, float=0, float=0,  // Origen   x,y,z
         float=1, float=1, float=1,  // Tamanyo  sX,sY,sZ
         float=1,                    // Masa     mass
-        float=0, float=0, float=0   // Inercia  iX,iY,iZ
+        float=0, float=0, float=0,  // Inercia  iX,iY,iZ
+        float=0                     // Friccion
     );
 
     bool loadedFromPath;
@@ -47,6 +48,7 @@ struct InitCRigidBody{
     float sX,sY,sZ;
     float mass;
     float iX, iY, iZ;
+    float friction;
 };
 
 #endif

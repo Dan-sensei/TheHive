@@ -38,6 +38,7 @@ class CRigidBody : public IComponent {
         // Funciones de CRigidBody
         void applyCentralForce(gg::Vector3f);
         void applyCentralImpulse(gg::Vector3f);
+        void applyTorque(gg::Vector3f);
         gg::Vector3f getBodyPosition();
     private:
         CRigidBody();                //  No queremos que alguien lo construya fuera (Limón)

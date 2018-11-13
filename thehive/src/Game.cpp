@@ -119,13 +119,12 @@ void Game::RUN(){
     ////camera.setTarget(gg::Vector3f(0, 0, 50));
 
     //uint8_t* p;
-
     {
         uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
         InitCTransform CTransformInitData(0, 4, 0, 0, 0, 0);
-        InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/hero.bullet",  0,20,0, -1,-1,-1, 50, 0,0,0);
+        InitCRenderable_3D CRenderable_3DInitData("assets/Models/Cube.obj", moradoDeLos80);
+        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  0,20,0, -1,-1,-1, 50, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
@@ -158,7 +157,7 @@ void Game::RUN(){
         InitCTransform CTransformTraining(0,0,0,0,0,0);
         InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea2.obj", AgujeroNegro);
         // InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/trainingArea.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0);
-        InitCRigidBody CRigidBodyTraining(false,"",  0,0,0, 500,2,500, 0, 0,0,0);
+        InitCRigidBody CRigidBodyTraining(false,"",  0,0,0, 500,2,500, 0, 0,0,0, 0.7);
         Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
         Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
@@ -176,7 +175,7 @@ void Game::RUN(){
 
     // Se debe poner la gravedad, aunque al iniciar el mundo tambien se haga
     // Las llamadas que cargan los .bullet se ve que la trastocan
-    world->setGravity(0,-100,0);
+    world->setGravity(0,-200,0);
     std::cout << "BEGIN GAME LOOP" << '\n';
     while(Engine->isWindowOpen()) {
         world->stepSimulation(1.f / 60.f, 10.f);

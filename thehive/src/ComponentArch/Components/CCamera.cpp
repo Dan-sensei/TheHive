@@ -149,10 +149,11 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
         cam->setRotation(backupRotation);
 
     // If heroRotation is FALSE, the hero won't move with the camera rotation
-    // if(heroRotation){
+    if(heroRotation){
         cameraPositionBeforeLockRotation = cam->getPosition();
-        mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
-    // }
+        // static_cast<CRigidBody*>(manager->getComponent(gg::RIGID_BODY, getEntityID()))->applyTorque(gg::Vector3f(1000,newRotation.Y,0));
+        // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
+    }
 
 }
 
