@@ -130,8 +130,13 @@ void CTriggerSystem::Update()
     it2++;
   }
 }
-TriggerRecordStruct::TriggerRecordStruct(EnumTriggerType _eTriggerType,unsigned long _idSource,const gg::Vector3f _vPos,float _fRadius,
-                    unsigned long _fDuration,bool _bDynamicSourcePos)
+TriggerRecordStruct::TriggerRecordStruct(
+    EnumTriggerType     _eTriggerType,
+    unsigned long       _idSource,
+    const gg::Vector3f  _vPos,
+    float               _fRadius,
+    unsigned long       _fDuration,
+    bool                _bDynamicSourcePos)
 {
   eTriggerType=_eTriggerType;
   nTriggerID=id;

@@ -15,6 +15,7 @@ void CRigidBody::initComponent() {
 
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_UPDATE);
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_SETPTRS);
+    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_XPLOTATO);
 
 }
 
@@ -90,8 +91,9 @@ void CRigidBody::initializeComponentData(const void* data){
 
 gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if      (m.mType == gg::M_UPDATE)       return MHandler_UPDATE  ();
+    else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO();
+    else if (m.mType == gg::M_SETPTRS)      return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -99,6 +101,12 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+
+gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(){
+    body->applyCentralForce(btVector3(0,42000,0));
+
+    return gg::ST_TRUE;
+}
 
 gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
     // Inicializando punteros

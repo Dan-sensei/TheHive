@@ -35,6 +35,7 @@ class CRigidBody : public IComponent {
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
         gg::EMessageStatus MHandler_UPDATE  ();
+        gg::EMessageStatus MHandler_XPLOTATO();
 
         // Funciones de CRigidBody
         void applyCentralForce(gg::Vector3f);

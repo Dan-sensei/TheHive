@@ -126,13 +126,13 @@ void Game::RUN(){
 
     //uint8_t* p;
     //add inf triggers
-    EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(-40,0,0), 20, 0,false);
+    EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
     {
         uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
         InitCTransform CTransformInitData(0, 4, 0, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/Cube.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  0,20,0, -1,-1,-1, 50, 0,0,0);
+        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  50,20,0, -1,-1,-1, 50, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
@@ -140,7 +140,7 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::KEYBOARD, hero);
 
         InitCAgent flagsheroe(kTrig_Explosion);
-        Manager->addComponentToEntity(gg::CAGENT, hero,&flagsheroe);
+        Manager->addComponentToEntity(gg::CAGENT, hero, &flagsheroe);
 
 
         uint16_t cube1 = Manager->createEntity();
@@ -200,7 +200,7 @@ void Game::RUN(){
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
         Engine->Dro();
         Engine->DisplayFPS();
-        //EventSystem->Update();
+        EventSystem->Update();
     }
 }
 

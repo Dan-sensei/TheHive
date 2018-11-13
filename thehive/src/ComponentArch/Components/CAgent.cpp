@@ -12,11 +12,36 @@ std::list <CAgent*>  CAgent::hola;
 
 
 void  CAgent::SetNextTriggerUpdate(unsigned long _nCurTime){}
-unsigned long  CAgent::GetTriggerFlags(){return dwTriggerFlags;}
-gg::Vector3f CAgent::GetPosition(){return cTransform->getPosition();}
+
+unsigned long  CAgent::GetTriggerFlags(){
+    return dwTriggerFlags;
+}
+
+gg::Vector3f CAgent::GetPosition(){
+    return cTransform->getPosition();
+}
+
 bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
-  //std::cout << "Id agente:"<<nCAgentID << " ha entrado"<<std::endl;
-  return true;
+    // std::cout << "Id agente:"<<nCAgentID << " ha entrado"<<std::endl;
+    ObjectManager* oManager = Singleton<ObjectManager>::Instance();
+
+    if(_pRec->eTriggerType & kTrig_Explosion){
+        Message mes(gg::M_XPLOTATO,_pRec);
+        oManager->sendMessageToEntity(nCAgentID,mes);
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+    return true;
 }
 
 //CAgent::CAgent(unsigned long _dwTriggerFlags,gg::Vector3f _vPos){

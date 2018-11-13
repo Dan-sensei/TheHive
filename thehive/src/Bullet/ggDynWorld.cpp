@@ -92,12 +92,12 @@ btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
     return dynamicsWorld;
 }
 
-void ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
+gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
     #define RANGE_FACTOR 90.f
     #define PI 3.14159265359
     // from -> Camera position
     // to   -> Camera rotation
-
+    gg::Vector3f ret(-1,-1,-1);
     gg::Vector3f to = gg::Vector3f(
         (sin(rot.Y*PI/180)*RANGE_FACTOR)+from.X,
         -(sin(rot.X*PI/180)*RANGE_FACTOR)+from.Y,
@@ -114,12 +114,13 @@ void ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
 
     if(callBack.hasHit()){
         // printf("Collision at: <%.2f, %.2f, %.2f>\n", callBack.m_hitPointWorld.getX(), callBack.m_hitPointWorld.getY(), callBack.m_hitPointWorld.getZ());
+    // <DEBUG VISUAL>
         CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
         cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
+    // </DEBUG VISUAL>
+
+        ret = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
+
     }
-
-
-
-
-
+    return ret;
 }

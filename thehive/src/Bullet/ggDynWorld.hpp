@@ -29,7 +29,7 @@ public:
 
     btDiscreteDynamicsWorld* getDynamicsWorld();
 
-    void handleRayCast(gg::Vector3f,gg::Vector3f);
+    gg::Vector3f handleRayCast(gg::Vector3f,gg::Vector3f);
 
     void printObjects(int);
     void clean();

@@ -26,6 +26,7 @@ struct InitCAgent{
     InitCAgent(EnumTriggerType _flags);
     EnumTriggerType flags;
 };
+
 struct InitCRenderable_3D{
 
     InitCRenderable_3D(

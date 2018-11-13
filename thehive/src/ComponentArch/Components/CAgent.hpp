@@ -11,6 +11,7 @@
 #include <EventSystem/EnumTriggerType.hpp>
 #include <EventSystem/GameState.hpp>
 
+#include <ComponentArch/Message.hpp>
 
 
                                                 //            punteros a otras componentes

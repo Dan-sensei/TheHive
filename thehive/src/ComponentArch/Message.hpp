@@ -9,6 +9,7 @@ namespace gg{
         M_SETPTRS,
         M_TRANSFORM,
         M_DAMAGE,
+        M_XPLOTATO,
         MESSAGE_TYPE_COUNT
     };
 
