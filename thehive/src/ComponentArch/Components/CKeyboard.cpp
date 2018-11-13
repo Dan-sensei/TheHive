@@ -62,6 +62,11 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
 
     if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
 
+    // -----------------------------------------------------------------------------
+    // Echarle un vistazo!
+    // CommonWindowInterface* window = m_guiHelper->getAppInterface()->m_window;
+    // -----------------------------------------------------------------------------
+
     //  If exists, we get its position
     gg::Vector3f nextPosition = camera->getlastHeroPosition();
     bool heroRotation = true;
@@ -139,6 +144,8 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     force.Z *= FORCE_FACTOR;
 
     cRigidBody->applyCentralForce(force);
+
+    cRigidBody->activate(true);
 
     // And we update it accoding to the keyboard input
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);

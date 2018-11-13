@@ -39,7 +39,13 @@ class CRigidBody : public IComponent {
         void applyCentralForce(gg::Vector3f);
         void applyCentralImpulse(gg::Vector3f);
         void applyTorque(gg::Vector3f);
+
+        void setLinearVelocity(gg::Vector3f);
+
+        void activate(bool);
+
         gg::Vector3f getBodyPosition();
+
     private:
         CRigidBody();                //  No queremos que alguien lo construya fuera (Limón)
         CRigidBody(const CRigidBody &orig) = delete;

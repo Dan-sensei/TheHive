@@ -64,8 +64,8 @@ void CRigidBody::initializeComponentData(const void* data){
         if (isDynamic)
             shape->calculateLocalInertia(mass, localInertia);
 
-        // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
-            // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+        // // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
+        // // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
         btDefaultMotionState* myMotionState = new btDefaultMotionState(transform);
         btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
         body = new btRigidBody(rbInfo);
@@ -120,15 +120,15 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
             )
         );
 
-        // btQuaternion rot = trans.getRotation();
-        // std::cout << rot.getAxis().getX() << "," << rot.getAxis().getX() << "," << rot.y() << "," << rot.z() << '\n';
-        // cTransform->setRotation(
-        //     gg::Vector3f(
-        //         static_cast<float>(rot.getAxis().getX()),
-        //         static_cast<float>(rot.getAxis().getY()),
-        //         static_cast<float>(rot.getAxis().getZ())
-        //     )
-        // );
+        trans = body->getCenterOfMassTransform();
+        btQuaternion rot = trans.getRotation();
+        cTransform->setRotation(
+            gg::Vector3f(
+                static_cast<float>(rot.getAxis().getX()),
+                static_cast<float>(rot.getAxis().getY()),
+                static_cast<float>(rot.getAxis().getZ())
+            )
+        );
     }
 
 
@@ -145,6 +145,14 @@ void CRigidBody::applyCentralForce(gg::Vector3f vec){
 
 void CRigidBody::applyTorque(gg::Vector3f vec){
     body->applyTorque(btVector3(vec.X,vec.Y,vec.Z));
+}
+
+void CRigidBody::setLinearVelocity(gg::Vector3f vec){
+    body->setLinearVelocity(btVector3(vec.X,vec.Y,vec.Z));
+}
+
+void CRigidBody::activate(bool b){
+    body->activate(b);
 }
 
 gg::Vector3f CRigidBody::getBodyPosition(){
