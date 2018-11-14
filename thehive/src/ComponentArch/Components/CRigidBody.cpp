@@ -74,6 +74,7 @@ void CRigidBody::initializeComponentData(const void* data){
         // We apply the gravity of the world
         // body->setGravity(btVector3(0,-10,0));
         // body->applyGravity();
+        world->setGravity(0,-200,0);
 
         if(cData->friction){
             body->setFriction(btScalar(cData->friction));

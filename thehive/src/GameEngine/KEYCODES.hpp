@@ -48,6 +48,8 @@ namespace gg{
         GG_8 = irr::EKEY_CODE::KEY_KEY_8,
         GG_9 = irr::EKEY_CODE::KEY_KEY_9,
 
+        GG_LCLICK = irr::EKEY_CODE::KEY_RBUTTON,
+
         GG_KEYCOUNT
     };
 }

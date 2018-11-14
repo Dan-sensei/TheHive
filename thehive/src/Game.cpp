@@ -133,11 +133,13 @@ void Game::RUN(){
         InitCTransform CTransformInitData(0, 4, 0, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/Cube.obj", moradoDeLos80);
         InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  50,20,0, -1,-1,-1, 50, 0,0,0);
+        InitCGun CGunHero(10,1,50);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
         Manager->addComponentToEntity(gg::RIGID_BODY, hero, &CRigidBodyHero);
         Manager->addComponentToEntity(gg::KEYBOARD, hero);
+        Manager->addComponentToEntity(gg::GUN, hero, &CGunHero);
 
         InitCAgent flagsheroe(kTrig_Explosion);
         Manager->addComponentToEntity(gg::CAGENT, hero, &flagsheroe);

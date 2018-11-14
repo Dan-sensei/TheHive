@@ -11,6 +11,7 @@ namespace gg{
         RIGID_BODY,
         CAGENT,
         GRANADE,
+        GUN,
         NUM_COMPONENTS
     };
 

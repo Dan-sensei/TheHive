@@ -1,5 +1,8 @@
 #include "ggDynWorld.hpp"
 
+#define RANGE_FACTOR 90.f
+#define PI 3.14159265359
+
 ggDynWorld::ggDynWorld(){}
 ggDynWorld::~ggDynWorld(){}
 
@@ -93,8 +96,6 @@ btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
 }
 
 gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
-    #define RANGE_FACTOR 90.f
-    #define PI 3.14159265359
     // from -> Camera position
     // to   -> Camera rotation
     gg::Vector3f ret(-1,-1,-1);
@@ -103,10 +104,6 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
         -(sin(rot.X*PI/180)*RANGE_FACTOR)+from.Y,
         (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*RANGE_FACTOR)+from.Z
     );
-
-    // std::cout << "FROM: "<< from.X << "," << from.Y << "," << from.Z << '\n';
-    // std::cout << "ROT:  "<< rot.X << "," << rot.Y << "," << rot.Z << '\n';
-    // std::cout << "TO:   " << to.X << "," << to.Y << "," << to.Z << '\n';
 
     btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
 
@@ -123,4 +120,17 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
 
     }
     return ret;
+}
+
+gg::Vector3f ggDynWorld::handleRayCastWithoutCollision(gg::Vector3f from, gg::Vector3f rot){
+    // from -> Camera position
+    // to   -> Camera rotation
+    gg::Vector3f ret(-1,-1,-1);
+    gg::Vector3f to = gg::Vector3f(
+        (sin(rot.Y*PI/180)*RANGE_FACTOR)+from.X,
+        -(sin(rot.X*PI/180)*RANGE_FACTOR)+from.Y,
+        (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*RANGE_FACTOR)+from.Z
+    );
+
+    return to;
 }

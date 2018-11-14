@@ -31,7 +31,7 @@ void CPlantilla::initComponent() {
 void CPlantilla::initializeComponentData(const void* data){
 
     if(data){
-        InitPlantilla cData = (InitPlantilla*)data;
+        InitPlantilla* cData = (InitPlantilla*)data;
         // Si le pasamos cosas, convertimos el void* a la estructura inicializadora para acceder a los elementos
         cData->valor1;
         ...

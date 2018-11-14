@@ -23,6 +23,7 @@ ObjectManager::ObjectManager()
     ComponentConstructorVector[4]= &ObjectManager::createRigidBodyComponent;
     ComponentConstructorVector[5]= &ObjectManager::createAgentComponent;
     ComponentConstructorVector[6]= &ObjectManager::createGranadeComponent;
+    ComponentConstructorVector[7]= &ObjectManager::createGunComponent;
 
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
@@ -148,19 +149,16 @@ void ObjectManager::sendMessageToAllEntities(const Message &m){
 
     std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
-    std::cout<<"primerito"<<'\n';
     // First we search for a component type that expects that message type
     while(componentsIterator != MessageToListeningComponents[m.mType].end()){
 
         //  Found one!
         std::map<uint16_t, IComponent*>::iterator entitiesEnd = TypeToComponentMap[*componentsIterator].end();
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
-        std::cout<<"segundito"<<'\n';
         //  Now we iterate over every entity that contains that component type
         while(entitiesIterator != entitiesEnd) {
             //  We process the message
             entitiesIterator->second->processMessage(m);
-            std::cout<<"boom"<<'\n';
             ++entitiesIterator;
         }
 
@@ -219,14 +217,17 @@ IComponent* ObjectManager::createRenderable_3DComponent     ()   {
 IComponent* ObjectManager::createCameraComponent            ()   {
     return new CCamera;
 }
-IComponent* ObjectManager::createAgentComponent            ()   {
+IComponent* ObjectManager::createAgentComponent             ()   {
     return new CAgent;
 }
-IComponent* ObjectManager::createRigidBodyComponent            ()   {
+IComponent* ObjectManager::createRigidBodyComponent         ()   {
     return new CRigidBody;
 }
-IComponent* ObjectManager::createGranadeComponent            ()   {
+IComponent* ObjectManager::createGranadeComponent           ()   {
     return new CGranade;
+}
+IComponent* ObjectManager::createGunComponent               ()   {
+    return new CGun;
 }
 //IComponent* ObjectManager::createColliderComponent     ();
 //IComponent* ObjectManager::createHealthComponent       ();

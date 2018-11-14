@@ -26,10 +26,16 @@ InitCRigidBody::InitCRigidBody(
     float _iX,  float _iY,  float _iZ,
     float _friction
 ) : loadedFromPath(_loadedFromPath),
-path(_path),
-x(_x),      y(_y),      z(_z),
-sX(_sX),    sY(_sY),    sZ(_sZ),
-mass(_mass),
-iX(_iX),    iY(_iY),    iZ(_iZ),
-friction(_friction)
+    path(_path),
+    x(_x),      y(_y),      z(_z),
+    sX(_sX),    sY(_sY),    sZ(_sZ),
+    mass(_mass),
+    iX(_iX),    iY(_iY),    iZ(_iZ),
+    friction(_friction)
+{}
+
+InitCGun::InitCGun(
+    float _dmg, float _cdc, int _t_bullets
+) : dmg(_dmg), cadence(_cdc),
+    total_bullets(_t_bullets)
 {}

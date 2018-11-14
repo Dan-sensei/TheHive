@@ -57,4 +57,17 @@ struct InitCRigidBody{
     float friction;
 };
 
+struct InitCGun{
+    InitCGun(
+        float, float, int
+    );
+
+    float dmg;
+    float cadence;
+    int total_bullets;
+    // float v_factor;
+
+};
+
+
 #endif

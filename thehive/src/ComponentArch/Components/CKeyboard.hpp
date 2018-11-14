@@ -16,6 +16,8 @@
 class CCamera;
 class CTransform;
 class CRigidBody;
+class CGun;
+
 class GameEngine;
 class ObjectManager;
 class ggDynWorld;
