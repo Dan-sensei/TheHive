@@ -30,6 +30,7 @@ class CGun : public IComponent {
 
         // Funciones propias de CGun
         void shoot(gg::Vector3f);
+        int getBullets();
 
     private:
         CGun();                //  No queremos que alguien lo construya fuera (Limón)

@@ -169,6 +169,7 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
 
     // DISPARO -> NO VA EL CLICK IZQUIERDO =D
+    world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
     gg::Vector3f rayPos = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
     if(engine->key(gg::GG_E)){
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));

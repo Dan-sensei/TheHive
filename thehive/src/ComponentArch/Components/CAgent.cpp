@@ -28,13 +28,19 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
     if(_pRec->eTriggerType & kTrig_Explosion){
         Message mes(gg::M_XPLOTATO,_pRec);
         oManager->sendMessageToEntity(nCAgentID,mes);
-
-
-
-
-
     }
+    else if(_pRec->eTriggerType & kTrig_Gunfire){
+        if(oManager->getComponent(gg::GUN,nCAgentID))
+            if(static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID))->getBullets())
+                return false;
 
+        if(oManager->getComponent(gg::GUN,nCAgentID))
+            oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
+
+        // NO TIENE BALAS O ARMA
+        InitCGun CGunHero(10,1,50);
+        oManager->addComponentToEntity(gg::GUN, nCAgentID, &CGunHero);
+    }
 
 
 

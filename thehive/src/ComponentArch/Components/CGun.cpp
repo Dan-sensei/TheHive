@@ -61,7 +61,10 @@ void CGun::shoot(gg::Vector3f to){
     vel.Y *= VEL_FACTOR;
     vel.Z *= VEL_FACTOR;
     rb->applyCentralForce(gg::Vector3f(vel.X,vel.Y,vel.Z));
+}
 
+int CGun::getBullets(){
+    return total_bullets;
 }
 
 void CGun::initializeComponentData(const void* data){

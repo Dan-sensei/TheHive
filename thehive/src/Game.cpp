@@ -15,8 +15,7 @@
 #include "ComponentArch/Components/CAgent.hpp"
 #include <EventSystem/EnumTriggerType.hpp>
 
-
-#include "EventSystem/GameState.hpp"
+#include "EventSystem/CTriggerSystem.hpp"
 
 #include "Bullet/ggDynWorld.hpp"
 
@@ -127,24 +126,32 @@ void Game::RUN(){
     //uint8_t* p;
     //add inf triggers
     EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
+    EventSystem->RegisterTriger(kTrig_Gunfire,  1,2,gg::Vector3f(100,5,50), 5, 0,false);
     {
         uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+        Material pipaDeLos90("assets/Textures/arma.jpeg");
         InitCTransform CTransformInitData(0, 4, 0, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/Cube.obj", moradoDeLos80);
         InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  50,20,0, -1,-1,-1, 50, 0,0,0);
-        InitCGun CGunHero(10,1,50);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
         Manager->addComponentToEntity(gg::RIGID_BODY, hero, &CRigidBodyHero);
         Manager->addComponentToEntity(gg::KEYBOARD, hero);
-        Manager->addComponentToEntity(gg::GUN, hero, &CGunHero);
 
-        InitCAgent flagsheroe(kTrig_Explosion);
-        Manager->addComponentToEntity(gg::CAGENT, hero, &flagsheroe);
+        // InitCGun CGunHero(10,1,50);
+        // Manager->addComponentToEntity(gg::GUN, hero, &CGunHero);
 
+        // InitCAgent flagsheroe(kTrig_Explosion);
+        // Manager->addComponentToEntity(gg::CAGENT, hero, &flagsheroe);
 
+        InitCAgent agentArma1(kTrig_Gunfire);
+        Manager->addComponentToEntity(gg::CAGENT, hero, &agentArma1);
+
+        // ---------------------------------------
+
+        // Cubo pequeño
         uint16_t cube1 = Manager->createEntity();
         InitCTransform CTransformCube1(50,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube1("assets/Models/Cube.obj", moradoDeLos80);
@@ -154,6 +161,7 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::RIGID_BODY, cube1, &CRigidBodyCube1);
         // Manager->removeEntity(cube1);
 
+        // Cubo grande
         uint16_t cube2 = Manager->createEntity();
         InitCTransform CTransformCube2(0,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube2("assets/Models/cuboGrande.obj", moradoDeLos80);
@@ -163,12 +171,24 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::RIGID_BODY, cube2, &CRigidBodyCube2);
         // Manager->removeEntity(cube1);
 
-        // Se usa para el RAYCASTING
+        // Se usa para el RAYCASTING para el debug visual
+        // QUE ESTE SIEMPRE EN LA POSICION 4 DE CREACION
         uint16_t cube3 = Manager->createEntity();
         InitCTransform CTransformCube3(0,20,0,0,0,0);
         InitCRenderable_3D CRenderableCube3("assets/Models/Cube.obj", moradoDeLos80);
         Manager->addComponentToEntity(gg::TRANSFORM, cube3, &CTransformCube3);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube3, &CRenderableCube3);
+
+
+        // Entidad tipo arma
+        // En cuanto pasa el heroe por encima, se le anyade una componente arma, si no la tiene
+        uint16_t Arma1 = Manager->createEntity();
+        InitCTransform CTransformArma1(100,5,50,0,0,0);
+        InitCRenderable_3D CRenderableArma1("assets/Models/Cube.obj", pipaDeLos90);
+        Manager->addComponentToEntity(gg::TRANSFORM, Arma1, &CTransformArma1);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, Arma1, &CRenderableArma1);
+
+
     }
 
     {
@@ -200,9 +220,9 @@ void Game::RUN(){
     while(Engine->isWindowOpen()) {
         world->stepSimulation(1.f / 60.f, 10.f);
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
+        EventSystem->Update();
         Engine->Dro();
         Engine->DisplayFPS();
-        EventSystem->Update();
     }
 }
 
