@@ -6,8 +6,8 @@
 #include "CTransform.hpp"
 
 
-CGranade::CGranade(){
-
+CGranade::CGranade() {
+    begin = std::chrono::high_resolution_clock::now();
 }
 
 CGranade::CGranade(const CGranade &orig){
@@ -56,7 +56,7 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
         auto elapsedtime = end - begin; //The difference between both crhonos is the elapsed time
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count(); //Calculate the elapsed time as milisecons
         if(ms<1200){  //we control the time that we want the granade to move
-            nextPosition.Z += 0.6;/* message */
+            nextPosition.Z += 0.6;
             nextPosition.X+=0.6;
             if(nextPosition.Y>0){ //check if the granade is under the ground
                 nextPosition.Y-=0.2;
@@ -64,10 +64,9 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
             cTransform->setPosition(nextPosition); //update the position of the granade
         }
         else{
-            
+            Manager->removeEntity(getEntityID());
         }
 
     }
     return gg::ST_TRUE;
-
 }

@@ -19,11 +19,11 @@ class CGranade: public IComponent {
 
         gg::EMessageStatus MHandler_SETPTRS();
         gg::EMessageStatus MHandler_UPDATE();
-        
+
     private:
         CGranade();
         CGranade(const CGranade &orig);
-        std::chrono::high_resolution_clock::time_point  begin= std::chrono::high_resolution_clock::now();;
+        std::chrono::high_resolution_clock::time_point  begin;
         double elapsedtime;
         CTransform* cTransform;
         GameEngine* engine;

@@ -148,20 +148,17 @@ void ObjectManager::sendMessageToAllEntities(const Message &m){
 
     std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
-    std::cout<<"primerito"<<'\n';
     // First we search for a component type that expects that message type
     while(componentsIterator != MessageToListeningComponents[m.mType].end()){
 
         //  Found one!
-        std::map<uint16_t, IComponent*>::iterator entitiesEnd = TypeToComponentMap[*componentsIterator].end();
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
-        std::cout<<"segundito"<<'\n';
         //  Now we iterate over every entity that contains that component type
-        while(entitiesIterator != entitiesEnd) {
-            //  We process the message
-            entitiesIterator->second->processMessage(m);
-            std::cout<<"boom"<<'\n';
+        while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
+            auto current = entitiesIterator;
             ++entitiesIterator;
+            //  We process the message
+            current->second->processMessage(m);
         }
 
         ++componentsIterator;
