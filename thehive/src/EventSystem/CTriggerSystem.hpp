@@ -1,5 +1,5 @@
-#ifndef _GAMESTATE_H
-#define _GAMESTATE_H
+#ifndef _CTRIGGERSYSTEM_H
+#define _CTRIGGERSYSTEM_H
 
 #include <map>
 #include <iostream>

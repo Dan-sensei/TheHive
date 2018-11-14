@@ -9,7 +9,7 @@
 
 #include <Util.hpp>
 #include <EventSystem/EnumTriggerType.hpp>
-#include <EventSystem/GameState.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
 
 #include <ComponentArch/Message.hpp>
 

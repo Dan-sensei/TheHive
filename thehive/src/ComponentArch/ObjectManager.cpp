@@ -23,6 +23,7 @@ ObjectManager::ObjectManager()
     ComponentConstructorVector[4]= &ObjectManager::createRigidBodyComponent;
     ComponentConstructorVector[5]= &ObjectManager::createAgentComponent;
     ComponentConstructorVector[6]= &ObjectManager::createGranadeComponent;
+    ComponentConstructorVector[7]= &ObjectManager::createGunComponent;
 
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
@@ -216,14 +217,17 @@ IComponent* ObjectManager::createRenderable_3DComponent     ()   {
 IComponent* ObjectManager::createCameraComponent            ()   {
     return new CCamera;
 }
-IComponent* ObjectManager::createAgentComponent            ()   {
+IComponent* ObjectManager::createAgentComponent             ()   {
     return new CAgent;
 }
-IComponent* ObjectManager::createRigidBodyComponent            ()   {
+IComponent* ObjectManager::createRigidBodyComponent         ()   {
     return new CRigidBody;
 }
-IComponent* ObjectManager::createGranadeComponent            ()   {
+IComponent* ObjectManager::createGranadeComponent           ()   {
     return new CGranade;
+}
+IComponent* ObjectManager::createGunComponent               ()   {
+    return new CGun;
 }
 //IComponent* ObjectManager::createColliderComponent     ();
 //IComponent* ObjectManager::createHealthComponent       ();

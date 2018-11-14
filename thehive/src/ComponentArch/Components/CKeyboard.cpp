@@ -10,6 +10,7 @@
 #define DASH_KEY        gg::GG_ALT
 #define RUN_KEY         gg::GG_LSHIFT
 #define JUMP_KEY        gg::GG_SPACEBAR
+#define LCLICK          gg::GG_LCLICK
 
 #define DASH_FACTOR     1.2f
 #define RUN_FACTOR      1.1f
@@ -93,8 +94,6 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f force;
 
-    world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
-
     if(engine->key(gg::GG_W)){
         force = gg::Vector3f(-cV.X,0,-cV.Z);
         // if(engine->key(ROTATE_KEY)){
@@ -136,7 +135,7 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
              Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
              Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
              Manager->addComponentToEntity(gg::GRANADE, holyBomb);
-             
+
              GranadeCreate=true;
     }
     if(engine->key(ROTATE_KEY))
@@ -158,7 +157,6 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     force.X *= FORCE_FACTOR;
     force.Y *= FORCE_FACTOR;
     force.Z *= FORCE_FACTOR;
-
     cRigidBody->applyCentralForce(force);
 
     // COPIA-PEGA DE LA DOCUMENTACION:
@@ -169,6 +167,17 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
 
     // And we update it accoding to the keyboard input
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
+
+    // DISPARO -> NO VA EL CLICK IZQUIERDO =D
+    world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+    gg::Vector3f rayPos = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
+    if(engine->key(gg::GG_E)){
+        CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
+        if(gun){
+            gun->shoot(rayPos);
+        }
+
+    }
     return gg::ST_TRUE;
 
 }

@@ -9,7 +9,7 @@
 //#include <unistd.h>
 //#include <vector>
 #include "ComponentArch/Components/CAgent.hpp"
-#include <EventSystem/GameState.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
 
 
 CTriggerSystem::CTriggerSystem(){
