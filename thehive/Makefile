@@ -29,7 +29,7 @@ $(OBJECTS): $(BUILD)%.o : %.cpp
 
 	$(call printInfo, "-Compiling")
 	$(call printObj, $^)
-	@$(COMPILER) -o $@ -c $< $(ADDITIONAL_H)
+	@$(COMPILER) -g -o $@ -c $< $(ADDITIONAL_H)
 	$(call printSuccess,  "[OK]")
 	$(call br)
 

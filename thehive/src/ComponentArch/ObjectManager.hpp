@@ -12,6 +12,7 @@
 #include "Components/CCamera.hpp"
 #include "Components/CAgent.hpp"
 #include "Components/CRigidBody.hpp"
+#include "Components/CGranade.hpp"
 
 #include <stack>
 #include <map>
@@ -98,6 +99,7 @@ class ObjectManager{
         IComponent* createCameraComponent           ();
         IComponent* createAgentComponent            ();
         IComponent* createRigidBodyComponent        ();
+        IComponent* createGranadeComponent        ();
 
 
         using pConstructor = IComponent* (ObjectManager::*)(void);

@@ -18,7 +18,7 @@
 CKeyboard::CKeyboard()
 :cTransform(nullptr)
 {
-
+  GranadeCreate=false;
 }
 
 CKeyboard::~CKeyboard() {
@@ -37,6 +37,8 @@ void CKeyboard::initializeComponentData(const void* data){
     world = Singleton<ggDynWorld>::Instance();
     camera = static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
+    Manager = Singleton<ObjectManager>::Instance();
+
 }
 
 
@@ -125,6 +127,17 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
         //     cV2.Z+=ppV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // }
+    }
+    if(engine->key(gg::GG_G)&&GranadeCreate==false){
+      Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+      uint16_t holyBomb = Manager->createEntity();
+             InitCTransform CTransformHolyBomb(2,8,5,0,0,0);
+             InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
+             Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
+             Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
+             Manager->addComponentToEntity(gg::GRANADE, holyBomb);
+             
+             GranadeCreate=true;
     }
     if(engine->key(ROTATE_KEY))
         heroRotation = false;

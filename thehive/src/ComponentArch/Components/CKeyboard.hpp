@@ -45,6 +45,8 @@ class CKeyboard : public IComponent {
         CTransform* cTransform;
         CRigidBody* cRigidBody;
         CCamera *camera;
+        bool GranadeCreate;
+        ObjectManager* Manager;
 };
 
 #endif

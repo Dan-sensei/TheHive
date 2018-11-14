@@ -9,10 +9,8 @@ namespace gg{
         RENDERABLE_3D,
         CAMERA,
         RIGID_BODY,
-        //HEALTH,
-        //RESPECT,
-        //DANINOSABEPROGRAMAR
         CAGENT,
+        GRANADE,
         NUM_COMPONENTS
     };
 

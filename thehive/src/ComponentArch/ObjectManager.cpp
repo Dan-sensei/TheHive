@@ -22,6 +22,7 @@ ObjectManager::ObjectManager()
     ComponentConstructorVector[3]= &ObjectManager::createCameraComponent;
     ComponentConstructorVector[4]= &ObjectManager::createRigidBodyComponent;
     ComponentConstructorVector[5]= &ObjectManager::createAgentComponent;
+    ComponentConstructorVector[6]= &ObjectManager::createGranadeComponent;
 
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
@@ -60,6 +61,7 @@ void ObjectManager::initObjectManager() {
     CRenderable_3D::initComponent();
     CCamera::initComponent();
     CRigidBody::initComponent();
+    CGranade::initComponent();
 }
 
 
@@ -126,11 +128,13 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
     if(foundComponent == TypeToComponentMap[type].end())
         return;
 
+    std::cout << "B Component " << type << '\n';
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);
     sendMessageToEntity(EntityID, recalculatePointersToAnotherComponents);
+    std::cout << "Deleting" << '\n';
 }
 
 void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType) {
@@ -144,20 +148,22 @@ void ObjectManager::sendMessageToAllEntities(const Message &m){
 
     std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
-
+    std::cout<<"primerito"<<'\n';
     // First we search for a component type that expects that message type
     while(componentsIterator != MessageToListeningComponents[m.mType].end()){
 
         //  Found one!
         std::map<uint16_t, IComponent*>::iterator entitiesEnd = TypeToComponentMap[*componentsIterator].end();
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
-
+        std::cout<<"segundito"<<'\n';
         //  Now we iterate over every entity that contains that component type
         while(entitiesIterator != entitiesEnd) {
             //  We process the message
             entitiesIterator->second->processMessage(m);
+            std::cout<<"boom"<<'\n';
             ++entitiesIterator;
         }
+
         ++componentsIterator;
     }
 }
@@ -219,7 +225,9 @@ IComponent* ObjectManager::createAgentComponent            ()   {
 IComponent* ObjectManager::createRigidBodyComponent            ()   {
     return new CRigidBody;
 }
-
+IComponent* ObjectManager::createGranadeComponent            ()   {
+    return new CGranade;
+}
 //IComponent* ObjectManager::createColliderComponent     ();
 //IComponent* ObjectManager::createHealthComponent       ();
 //IComponent* ObjectManager::createRespectComponent      ();
