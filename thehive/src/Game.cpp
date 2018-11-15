@@ -125,7 +125,7 @@ void Game::RUN(){
 
     //uint8_t* p;
     //add inf triggers
-    EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
+    //EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
     EventSystem->RegisterTriger(kTrig_Gunfire,  1,2,gg::Vector3f(100,5,50), 5, 0,false);
     {
         uint16_t hero = Manager->createEntity();
@@ -145,9 +145,8 @@ void Game::RUN(){
 
         // InitCAgent flagsheroe(kTrig_Explosion);
         // Manager->addComponentToEntity(gg::CAGENT, hero, &flagsheroe);
-
-        InitCAgent agentArma1(kTrig_Gunfire);
-        Manager->addComponentToEntity(gg::CAGENT, hero, &agentArma1);
+        //InitCAgent agentArma1(kTrig_Gunfire|kTrig_Explosion);
+        //Manager->addComponentToEntity(gg::CAGENT, hero, &agentArma1);
 
         // ---------------------------------------
 
@@ -159,16 +158,22 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::TRANSFORM, cube1, &CTransformCube1);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube1, &CRigidBodyCube1);
+
+
+
         // Manager->removeEntity(cube1);
 
         // Cubo grande
         uint16_t cube2 = Manager->createEntity();
         InitCTransform CTransformCube2(0,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube2("assets/Models/cuboGrande.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyCube2(true,"assets/BoundingBoxes/cuboGrande.bullet", 0,100,50, -1,-1,-1, 100, 0,0,0);
+        //InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  50,20,0, -1,-1,-1, 50, 0,0,0);
+        InitCRigidBody CRigidBodyCube2(true,"assets/BoundingBoxes/cuboGrande.bullet", 0,100,50, -1,-1,-1, 50, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, cube2, &CTransformCube2);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube2, &CRenderableCube2);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube2, &CRigidBodyCube2);
+        InitCAgent objetoExplosion(kTrig_Explosion);
+        Manager->addComponentToEntity(gg::CAGENT, cube2, &objetoExplosion);
         // Manager->removeEntity(cube1);
 
         // Se usa para el RAYCASTING para el debug visual

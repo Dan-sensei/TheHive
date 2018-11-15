@@ -99,6 +99,7 @@ void CTriggerSystem::Update()
     //pAgent->SetNextTriggerUpdate(nCurTime);
     //llop thru exixting trigger records
     //std::cout << "agente" << pAgent->nCAgentID << "("<<pAgent->GetPosition().X<<"," <<pAgent->GetPosition().Y<<","<<pAgent->GetPosition().Z<<")"<< '\n';
+    //std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
 
 
     for(it=m_mapTriggerMap.begin();
@@ -123,6 +124,8 @@ void CTriggerSystem::Update()
       //to the trigger
       if(pAgent->HandleTrig(pRec))
       {
+          std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
+
         //Listen to highest priority trig at any instant
         break;
       }

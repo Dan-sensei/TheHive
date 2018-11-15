@@ -4,6 +4,9 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/InitStructs.hpp>
 #include "CTransform.hpp"
+#include <EventSystem/EnumTriggerType.hpp>
+#include "EventSystem/CTriggerSystem.hpp"
+
 
 
 CGranade::CGranade() {
@@ -25,7 +28,7 @@ void CGranade::initComponent() {
 
 void CGranade::initializeComponentData(const void* data){
 
-
+    EventSystem = Singleton<CTriggerSystem>::Instance();
     engine = Singleton<GameEngine>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
 
@@ -64,8 +67,11 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
             cTransform->setPosition(nextPosition); //update the position of the granade
         }
         else{
+            EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(nextPosition.X,nextPosition.Y,nextPosition.Z), 900, 2000,false);
+
             Manager->removeEntity(getEntityID());
         }
+
 
     }
     return gg::ST_TRUE;

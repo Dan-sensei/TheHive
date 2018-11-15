@@ -82,7 +82,20 @@ template <typename T>
 float gg::Util::DIST(T v1,T v2){
     return sqrt(((v1.X-v2.X)*(v1.X-v2.X)+(v1.Y-v2.Y)*(v1.Y-v2.Y)+(v1.Z-v2.Z)*(v1.Z-v2.Z)));
 }
+/*
+template <typename T>
+float gg::Util::Modulo(T v1){
+    return sqrt(((v1.X)*(v1.X)+(v1.Y)*(v1.Y)+(v1.Z)*(v1.Z)));
+}
 
+template <typename T>
+void gg::Util::Normalice(T &v1){
+    float modulo=Modulo(v1);
+    v1.X=v1.X/modulo;
+    v1.Y=v1.Y/modulo;
+    v1.Z=v1.Z/modulo;
+}
+*/
 
 template float gg::Util::DIST<gg::Vector3f>(gg::Vector3f v1, gg::Vector3f v2);
 //template float gg::Util::DIST<gg::Vector3u8>(gg::Vector3u8 v1, gg::Vector3u8 v2);

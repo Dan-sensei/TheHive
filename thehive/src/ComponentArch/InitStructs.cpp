@@ -14,7 +14,7 @@ InitCRenderable_3D::InitCRenderable_3D(
 {}
 
 InitCAgent::InitCAgent(
-    EnumTriggerType _flags
+    unsigned long _flags
 ) : flags(_flags)
 {}
 

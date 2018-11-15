@@ -26,6 +26,8 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
     ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
     if(_pRec->eTriggerType & kTrig_Explosion){
+        //std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
+        //std::cout << "usando handler despues" << nCAgentID<< '\n';
         Message mes(gg::M_XPLOTATO,_pRec);
         oManager->sendMessageToEntity(nCAgentID,mes);
     }

@@ -7,6 +7,8 @@
 class CTransform;
 class ObjectManager;
 class GameEngine;
+class CTriggerSystem;
+
 class CGranade: public IComponent {
     friend class ObjectManager;
     public:
@@ -28,6 +30,8 @@ class CGranade: public IComponent {
         CTransform* cTransform;
         GameEngine* engine;
         ObjectManager* Manager;
+        CTriggerSystem* EventSystem;
+
 
 };
 

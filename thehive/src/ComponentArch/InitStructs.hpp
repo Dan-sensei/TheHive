@@ -3,7 +3,6 @@
 
 #include <string>
 #include <GameEngine/Material.hpp>
-#include <EventSystem/EnumTriggerType.hpp>
 
 
 //  Init Data structs for every component type
@@ -23,8 +22,8 @@ struct InitCTransform{
 //
 //};
 struct InitCAgent{
-    InitCAgent(EnumTriggerType _flags);
-    EnumTriggerType flags;
+    InitCAgent(unsigned long _flags);
+    unsigned long flags;
 };
 
 struct InitCRenderable_3D{

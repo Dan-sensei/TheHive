@@ -104,7 +104,13 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(){
-    body->applyCentralForce(btVector3(0,42000,0));
+    std::cout << "recibiendo mensaje" << getEntityID()<< '\n';
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+    std::cout << trans.getOrigin().getY() << '\n';
+
+
+    body->applyCentralForce(btVector3(0,4200000,0));
 
     return gg::ST_TRUE;
 }
@@ -118,6 +124,8 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
+    //body->applyCentralForce(btVector3(0,42000,0));
+
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);
 

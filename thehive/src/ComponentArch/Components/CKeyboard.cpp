@@ -130,7 +130,7 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
     if(engine->key(gg::GG_G)&&GranadeCreate==false){
       Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
       uint16_t holyBomb = Manager->createEntity();
-             InitCTransform CTransformHolyBomb(2,8,5,0,0,0);
+             InitCTransform CTransformHolyBomb(cTransform->getPosition().X,cTransform->getPosition().Y,cTransform->getPosition().Z,0,0,0);
              InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
              Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
              Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
