@@ -13,6 +13,8 @@ class CTransform;
 #include <ComponentArch/ObjectManager.hpp>
 // class ObjectManager;
 
+#include <Bullet/GLDebugDrawer.h>
+
 #include <cmath>
 
 class ggDynWorld {
@@ -32,9 +34,14 @@ public:
     gg::Vector3f handleRayCast(gg::Vector3f,gg::Vector3f);
     gg::Vector3f handleRayCastWithoutCollision(gg::Vector3f,gg::Vector3f);
 
+    void setDebug(bool _d){debug=_d;}
+    void debugDrawWorld();
+
     void printObjects(int);
     void clean();
 private:
+    bool debug;
+
     // Contiene la configuracion por defecto para las colisiones
     // Es modificable arrobaDani
     btDefaultCollisionConfiguration* collisionConfiguration;
@@ -52,6 +59,7 @@ private:
     // Ademas, tiene una lista de TODOS los cuerpos
     btDiscreteDynamicsWorld* dynamicsWorld;
     btCollisionWorld* collisionWorld;
+    btIDebugDraw* debugDrawer;
 
     // ------------------------- //
     // IMPORTANTE: CUERPO!=FORMA //

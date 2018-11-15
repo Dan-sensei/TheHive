@@ -133,7 +133,7 @@ void Game::RUN(){
         Material pipaDeLos90("assets/Textures/arma.jpeg");
         InitCTransform CTransformInitData(0, 4, 0, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/Cube.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  50,20,0, -1,-1,-1, 50, 0,0,0);
+        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  50,100,0, -1,-1,-1, 50, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
@@ -197,11 +197,11 @@ void Game::RUN(){
 
     {
         uint16_t TrainingArea = Manager->createEntity();
-        Material AgujeroNegro("assets/Textures/ice.bmp");
+        Material yelo("assets/Textures/ice.bmp");
         InitCTransform CTransformTraining(0,0,0,0,0,0);
-        InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea2.obj", AgujeroNegro);
-        // InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/trainingArea.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0);
-        InitCRigidBody CRigidBodyTraining(false,"",  0,0,0, 500,2,500, 0, 0,0,0, 0.7);
+        InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea2.obj", yelo);
+        // InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/SIUDA_CANAL.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0);
+        InitCRigidBody CRigidBodyTraining(false,"",  0,0,0, 200,2,200, 0, 0,0,0, 0.7);
         Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
         Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
@@ -214,17 +214,15 @@ void Game::RUN(){
 
     //Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
     //Model tioPablomanesQueNoEstaTanMal = engine.createModel("assets/Models/obradearte/algo.obj");
-
     //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
-    // Se debe poner la gravedad, aunque al iniciar el mundo tambien se haga
-    // Las llamadas que cargan los .bullet se ve que la trastocan
-    world->setGravity(0,-200,0);
     std::cout << "BEGIN GAME LOOP" << '\n';
+    world->setDebug(true);
     while(Engine->isWindowOpen()) {
         world->stepSimulation(1.f / 60.f, 10.f);
-        Manager->sendMessageToAllEntities(gg::M_UPDATE);
+
         EventSystem->Update();
+        Manager->sendMessageToAllEntities(gg::M_UPDATE);
         Engine->Dro();
         Engine->DisplayFPS();
     }

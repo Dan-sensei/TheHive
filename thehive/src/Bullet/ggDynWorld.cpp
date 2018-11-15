@@ -3,7 +3,9 @@
 #define RANGE_FACTOR 90.f
 #define PI 3.14159265359
 
-ggDynWorld::ggDynWorld(){}
+ggDynWorld::ggDynWorld(){
+    debugDrawer = Singleton<GLDebugDrawer>::Instance();
+}
 ggDynWorld::~ggDynWorld(){}
 
 void ggDynWorld::addRigidBody(btRigidBody* body){
@@ -19,6 +21,14 @@ void ggDynWorld::stepSimulation(float timeStep, int maxSubSteps, float fixedTime
 
     // dynamicsWorld->updateAabbs();
     // dynamicsWorld->computeOverlappingPairs();
+}
+
+void ggDynWorld::debugDrawWorld(){
+    if(debug){
+        debugDrawer->setDebugMode(1);
+        dynamicsWorld->setDebugDrawer(debugDrawer);
+        dynamicsWorld->debugDrawWorld();
+    }
 }
 
 void ggDynWorld::printObjects(int _end){
@@ -112,8 +122,8 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
     if(callBack.hasHit()){
         // printf("Collision at: <%.2f, %.2f, %.2f>\n", callBack.m_hitPointWorld.getX(), callBack.m_hitPointWorld.getY(), callBack.m_hitPointWorld.getZ());
     // <DEBUG VISUAL>
-        CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
-        cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
+        // CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
+        // cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
     // </DEBUG VISUAL>
 
         ret = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
