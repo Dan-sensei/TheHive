@@ -14,6 +14,7 @@
 #include "EventListener.hpp"
 #include "Model.hpp"
 #include "Material.hpp"
+#include <Bullet/ggDynWorld.hpp>
 
 template <typename T>
 class Singleton;
@@ -45,6 +46,8 @@ class GameEngine{
         int getCursorX();
         int getCursorY();
         void setCursorPosition(int,int);
+
+        void draw3DLine(const gg::Vector3f&, const gg::Vector3f&, const float[4]);
 
         //  ---
         //  Creates and returns a model object. It optionally accepts a position
