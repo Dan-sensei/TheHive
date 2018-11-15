@@ -10,7 +10,7 @@ ggBodyFromFile::ggBodyFromFile(std::string _path){
     if(! ( fileLoader->loadFile(_path.c_str()) ) )
         return;
 
-    std::cout << "Get: " << _path << '\n';
+    // std::cout << "Get: " << _path << '\n';
 
     btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
     body = btRigidBody::upcast(obj);
@@ -21,8 +21,8 @@ ggBodyFromFile::ggBodyFromFile(std::string _path){
         btRigidBody* body = btRigidBody::upcast(obj);
 
     	// properties
-        std::cout << "  shape type = " << body->getCollisionShape()->getShapeType() << '\n';
-        std::cout << "  shape name = " << body->getCollisionShape()->getName() << '\n';
+        // std::cout << "  shape type = " << body->getCollisionShape()->getShapeType() << '\n';
+        // std::cout << "  shape name = " << body->getCollisionShape()->getName() << '\n';
     	printf("  object name = %s\n", fileLoader->getNameForPointer(body));	// The Blender object name
         printf("  get position = (%4.3f,%4.3f,%4.3f)\n",
     		body->getCenterOfMassPosition().getX(),

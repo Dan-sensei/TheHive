@@ -4,6 +4,7 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <Util.hpp>
 
+#define VEL_FACTOR      9000.f
 #define MAX_ANGLE       12.f
 
 #define ROTATE_KEY      gg::GG_LCONTROL
@@ -127,17 +128,6 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // }
     }
-    if(engine->key(gg::GG_G)&&GranadeCreate==false){
-        Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-        uint16_t holyBomb = Manager->createEntity();
-        InitCTransform CTransformHolyBomb(cTransform->getPosition().X,cTransform->getPosition().Y,cTransform->getPosition().Z,0,0,0);
-        InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
-        Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
-        Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
-        Manager->addComponentToEntity(gg::GRANADE, holyBomb);
-
-        // GranadeCreate=true;
-    }
     if(engine->key(ROTATE_KEY))
         heroRotation = false;
 
@@ -169,7 +159,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
 
     // DISPARO -> NO VA EL CLICK IZQUIERDO =D
-    world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+    gg::Vector3f ESTEVECTORNOSEUSAPARANADA = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
     gg::Vector3f rayPos = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
     if(engine->key(gg::GG_E)){
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
@@ -178,6 +168,40 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         }
 
     }
+    if(engine->key(gg::GG_G)&&GranadeCreate==false){
+        gg::Vector3f gPos = cTransform->getPosition();
+        gg::Vector3f from = gPos;
+        gg::Vector3f to = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
+        gg::Vector3f vel(
+            to.X-from.X,
+            to.Y-from.Y,
+            to.Z-from.Z
+        );
+
+        float length = sqrt(vel.X*vel.X + vel.Y*vel.Y + vel.Z*vel.Z);
+            vel.X /= length;
+            vel.Y /= length;
+            vel.Z /= length;
+
+        uint16_t holyBomb = Manager->createEntity();
+        Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+        InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
+        InitCTransform CTransformHolyBomb(0,0,0, 0,0,0);
+        InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
+        Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
+        Manager->addComponentToEntity(gg::GRANADE, holyBomb);
+        Manager->addComponentToEntity(gg::RIGID_BODY, holyBomb, &CRigidBodyHolyBomb);
+
+        CRigidBody* rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, holyBomb));
+        vel.X *= VEL_FACTOR;
+        vel.Y *= VEL_FACTOR;
+        vel.Z *= VEL_FACTOR;
+        rb->applyCentralForce(gg::Vector3f(vel.X,vel.Y,vel.Z));
+
+        GranadeCreate=true;
+    }
+
     return gg::ST_TRUE;
 
 }

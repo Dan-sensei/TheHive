@@ -13,30 +13,28 @@
 
 
 CTriggerSystem::CTriggerSystem(){
-
+    lastIdGiven = 0;
 }
-CTriggerSystem::~CTriggerSystem(){
-
-}
+CTriggerSystem::~CTriggerSystem(){}
 
 unsigned long CTriggerSystem::RegisterTriger(
-    EnumTriggerType _eTriggerType, unsigned long _nPriority,
-    unsigned long _idSource,const gg::Vector3f& _vPos, float _fRadius,
-    float _fDuration,bool _bDynamicSourcePos)
+    EnumTriggerType _eTriggerType,
+    unsigned long _nPriority,
+    unsigned long _idSource,
+    const gg::Vector3f& _vPos,
+    float _fRadius,
+    float _fDuration,
+    bool _bDynamicSourcePos)
 {
+    //Create a trigger record, and fill it in
+    TriggerRecordStruct* pTriggerRecord = new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos);
+    lastIdGiven++;
 
-
-
-
-  //Create a trigger record, and fill it in
-TriggerRecordStruct* pTriggerRecord =
-    new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos);
     //Trigger records are sorted by priority
     m_mapTriggerMap.insert(TRIGGER_MAP::value_type(_nPriority,pTriggerRecord));
 
     //return unique id for this triger
     return pTriggerRecord->nTriggerID;
-
 }
 
 
@@ -98,8 +96,8 @@ void CTriggerSystem::Update()
     pAgent=*it2;
     //pAgent->SetNextTriggerUpdate(nCurTime);
     //llop thru exixting trigger records
-    //std::cout << "agente" << pAgent->nCAgentID << "("<<pAgent->GetPosition().X<<"," <<pAgent->GetPosition().Y<<","<<pAgent->GetPosition().Z<<")"<< '\n';
-    //std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
+    //// std::cout << "agente" << pAgent->nCAgentID << "("<<pAgent->GetPosition().X<<"," <<pAgent->GetPosition().Y<<","<<pAgent->GetPosition().Z<<")"<< '\n';
+    //// std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
 
 
     for(it=m_mapTriggerMap.begin();
@@ -107,7 +105,7 @@ void CTriggerSystem::Update()
     {
 
       pRec=it->second;
-     // std::cout << "trigger" << pRec->idSource << "("<<pRec->vPos.X<<"," <<pRec->vPos.Y<<","<<pRec->vPos.Z<<")"<< '\n';
+     // // std::cout << "trigger" << pRec->idSource << "("<<pRec->vPos.X<<"," <<pRec->vPos.Y<<","<<pRec->vPos.Z<<")"<< '\n';
 
       //Does agent respond to trigger?
       if(!(pRec->eTriggerType & pAgent->GetTriggerFlags()))
@@ -124,7 +122,7 @@ void CTriggerSystem::Update()
       //to the trigger
       if(pAgent->HandleTrig(pRec))
       {
-          // std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
+          // // std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
 
         //Listen to highest priority trig at any instant
         break;
@@ -133,6 +131,7 @@ void CTriggerSystem::Update()
     it2++;
   }
 }
+
 TriggerRecordStruct::TriggerRecordStruct(
     EnumTriggerType     _eTriggerType,
     unsigned long       _idSource,
@@ -141,21 +140,19 @@ TriggerRecordStruct::TriggerRecordStruct(
     unsigned long       _fDuration,
     bool                _bDynamicSourcePos)
 {
-  eTriggerType=_eTriggerType;
-  nTriggerID=id;
-  id++;
-  idSource=_idSource;
-  vPos=_vPos;
-  fRadius=_fRadius;
+    eTriggerType=_eTriggerType;
+    nTriggerID=id;
+    // id++;
+    idSource=_idSource;
+    vPos=_vPos;
+    fRadius=_fRadius;
 
-   std::chrono::high_resolution_clock::time_point  begin = std::chrono::high_resolution_clock::now();
-
-
-  nTimeStamp=std::chrono::high_resolution_clock::now();;// eso o sucedaneo
-  nExpirationTime=_fDuration;
-  bDynamicSourcePos=_bDynamicSourcePos;
+    std::chrono::high_resolution_clock::time_point  begin = std::chrono::high_resolution_clock::now();
 
 
+    nTimeStamp=std::chrono::high_resolution_clock::now();;// eso o sucedaneo
+    nExpirationTime=_fDuration;
+    bDynamicSourcePos=_bDynamicSourcePos;
 }
 
 void CTriggerSystem::clin(){

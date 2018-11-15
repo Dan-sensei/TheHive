@@ -26,13 +26,13 @@ void CGun::initComponent() {
 
 void CGun::shoot(gg::Vector3f to){
     if(!total_bullets){
-        // std::cout << "NO QUEDAN BALAS" << '\n';
+        // // std::cout << "NO QUEDAN BALAS" << '\n';
         return;
     }
 
     total_bullets--;
 
-    // std::cout << "PIM!!! -> " << total_bullets << '\n';
+    // // std::cout << "PIM!!! -> " << total_bullets << '\n';
     // Vector direccion normalizado, JUGADOR-TO
     gg::Vector3f from = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,getEntityID()))->getPosition();
     gg::Vector3f vel(

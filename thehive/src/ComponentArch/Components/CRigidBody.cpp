@@ -7,6 +7,9 @@ CRigidBody::CRigidBody()
 }
 
 CRigidBody::~CRigidBody() {
+    world->removeRigidBody(body);
+    delete body;
+    delete myMotionState;
 }
 
 void CRigidBody::initComponent() {
@@ -29,7 +32,7 @@ void CRigidBody::initializeComponentData(const void* data){
 
         if(cData->loadedFromPath){
             btBulletWorldImporter*  fileLoader = new btBulletWorldImporter(world->getDynamicsWorld());
-            if(! ( fileLoader->loadFile(cData->path.c_str()) ) ){
+            if(! ( fileLoader->loadFile(cData->path.c_str()),"algo" ) ){
                 delete fileLoader;
                 return;
             }
@@ -67,7 +70,7 @@ void CRigidBody::initializeComponentData(const void* data){
 
         // // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
         // // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-        btDefaultMotionState* myMotionState = new btDefaultMotionState(transform);
+        myMotionState = new btDefaultMotionState(transform);
         btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
         body = new btRigidBody(rbInfo);
 
@@ -104,7 +107,7 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(){
-    body->applyCentralForce(btVector3(0,5000,0));
+    body->applyCentralForce(btVector3(0,42000,0));
 
     return gg::ST_TRUE;
 }

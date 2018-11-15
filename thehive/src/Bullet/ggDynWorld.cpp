@@ -12,6 +12,14 @@ void ggDynWorld::addRigidBody(btRigidBody* body){
     dynamicsWorld->addRigidBody(body);
 }
 
+void ggDynWorld::removeRigidBody(btRigidBody *body){
+    dynamicsWorld->removeRigidBody(body);
+}
+
+void ggDynWorld::removeCollisionObject(btCollisionObject *obj){
+    dynamicsWorld->removeCollisionObject(obj);
+}
+
 void ggDynWorld::addShape(btCollisionShape* shape){
     collisionShapes.push_back(shape);
 }

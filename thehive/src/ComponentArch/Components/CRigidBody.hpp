@@ -56,13 +56,15 @@ class CRigidBody : public IComponent {
         GameEngine* engine;
         ggDynWorld* world;
 
+
         //  Punteros a otras componentes
         CTransform* cTransform;
 
         //  Variables de esta componente
-        btCollisionShape*   shape;
-        btTransform         transform;
-        btRigidBody*        body;
+        btDefaultMotionState*   myMotionState;
+        btCollisionShape*       shape;
+        btTransform             transform;
+        btRigidBody*            body;
 };
 
 #endif

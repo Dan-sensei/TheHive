@@ -38,13 +38,13 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::clin(){
-    std::cout << "Destruyendo todos los componentes..." << '\n';
+    // std::cout << "Destruyendo todos los componentes..." << '\n';
     uint8_t i = gg::NUM_COMPONENTS;
     while (i--){
         std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
 
         while(it!=TypeToComponentMap[i].end()){
-            std::cout << "  -Eliminando componente " << (int)i << " de entidad " << it->first << '\n';
+            // std::cout << "  -Eliminando componente " << (int)i << " de entidad " << it->first << '\n';
             //it->second->~IComponent();
             //memory.deallocate(it->second);
             delete it->second;
@@ -110,7 +110,7 @@ void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t Entit
     if(constructor != nullptr)
         newComponent = (this->*constructor)();
 
-    //std::cout << "  -Adding componente " << type << " to entity " << EntityID << '\n';
+    //// std::cout << "  -Adding componente " << type << " to entity " << EntityID << '\n';
 
     //  We set the entityID to that component
     newComponent->setEntityID(EntityID);
@@ -129,13 +129,13 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
     if(foundComponent == TypeToComponentMap[type].end())
         return;
 
-    std::cout << "B Component " << type << '\n';
+    // std::cout << "B Component " << type << '\n';
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);
     sendMessageToEntity(EntityID, recalculatePointersToAnotherComponents);
-    std::cout << "Deleting" << '\n';
+    // std::cout << "Deleting" << '\n';
 }
 
 void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType) {

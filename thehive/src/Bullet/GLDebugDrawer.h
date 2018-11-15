@@ -23,7 +23,7 @@ public:
 
 	virtual void	drawLine(const btVector3& _from,const btVector3& _to,const btVector3& _color);
 
-	virtual void	drawSphere (const btVector3& p, btScalar radius, const btVector3& color){std::cout << "/* message */" << '\n';}
+	virtual void	drawSphere (const btVector3& p, btScalar radius, const btVector3& color){}
 
 	virtual void	drawTriangle(const btVector3& a,const btVector3& b,const btVector3& c,const btVector3& color,btScalar alpha){}
 

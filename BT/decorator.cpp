@@ -2,7 +2,7 @@
 
 decorator::decorator(behavior* child) : m_pChild(child){
    // Constructor
-   std::cout << "Soy el constructor de decorator" << '\n';
+   // std::cout << "Soy el constructor de decorator" << '\n';
 }
 
 Status decorator::update(){

@@ -47,32 +47,36 @@ typedef std::multimap<unsigned short, TriggerRecordStruct*,
 template <typename T>
 class Singleton;
 
-class CTriggerSystem
-{
-  friend class Singleton<CTriggerSystem>;
+class CTriggerSystem{
+    friend class Singleton<CTriggerSystem>;
 public:
     ~CTriggerSystem();
-    unsigned long RegisterTriger(EnumTriggerType _eTriggerType,
-        unsigned long _nPriority,unsigned long _idSource,
-        const gg::Vector3f& _vPos, float _fRadius, float _fDuration,
+    unsigned long RegisterTriger(
+        EnumTriggerType _eTriggerType,
+        unsigned long _nPriority,
+        unsigned long _idSource,
+        const gg::Vector3f& _vPos,
+        float _fRadius,
+        float _fDuration,
         bool _bDynamicSourcePos);
 
     void clin();
 
 
 
-  void RemoveTrigger(unsigned long nTriggerID);
-  void Update();
+    void RemoveTrigger(unsigned long nTriggerID);
+    void Update();
 
 private:
-  CTriggerSystem();
-  CTriggerSystem(const CTriggerSystem &orig) = delete;
-  void operator=(const CTriggerSystem &orig) = delete;
+    CTriggerSystem();
+    CTriggerSystem(const CTriggerSystem &orig) = delete;
+    void operator=(const CTriggerSystem &orig) = delete;
 
+    unsigned long lastIdGiven;
 
-  TRIGGER_MAP m_mapTriggerMap;
+    TRIGGER_MAP m_mapTriggerMap;
 
-  bool m_bTriggerCriticalSection;
+    bool m_bTriggerCriticalSection;
 };
 //void  CAgent::SetNextTriggerUpdate(unsigned long _nCurTime){}
 //unsigned long  CAgent::GetTriggerFlags(){return 0;}

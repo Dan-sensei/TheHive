@@ -22,12 +22,12 @@ gg::Vector3f CAgent::GetPosition(){
 }
 
 bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
-    // std::cout << "Id agente:"<<nCAgentID << " ha entrado"<<std::endl;
+    // // std::cout << "Id agente:"<<nCAgentID << " ha entrado"<<std::endl;
     ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
     if(_pRec->eTriggerType & kTrig_Explosion){
-        //std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
-        //std::cout << "usando handler despues" << nCAgentID<< '\n';
+        //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
+        //// std::cout << "usando handler despues" << nCAgentID<< '\n';
         Message mes(gg::M_XPLOTATO,_pRec);
         oManager->sendMessageToEntity(nCAgentID,mes);
     }
@@ -60,10 +60,10 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
 //    vPos=_vPos;
 //}
 void CAgent::addAgent(CAgent* agente){
-  hola.push_back(agente);
+    hola.push_back(agente);
 }
 void CAgent::removeAgent(std::list<CAgent*>::iterator ite){
-  hola.erase(ite);
+    hola.erase(ite);
 }
 CAgent::CAgent()
 :cTransform(nullptr)
