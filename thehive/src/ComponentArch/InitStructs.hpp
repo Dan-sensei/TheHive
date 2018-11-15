@@ -18,7 +18,7 @@ struct InitCTransform{
     float rx, ry, rz;
 };
 
-//struct ICKeyboard{
+//struct ICPlayerController{
 //
 //};
 struct InitCAgent{

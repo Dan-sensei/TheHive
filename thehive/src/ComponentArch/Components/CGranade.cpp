@@ -1,12 +1,14 @@
 #include "CGranade.hpp"
+#include "CTransform.hpp"
+
 #include <Singleton.hpp>
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
+
 #include <ComponentArch/InitStructs.hpp>
-#include "CTransform.hpp"
+
 #include <EventSystem/EnumTriggerType.hpp>
 #include "EventSystem/CTriggerSystem.hpp"
-
 
 
 CGranade::CGranade() {
@@ -53,26 +55,23 @@ gg::EMessageStatus CGranade::MHandler_SETPTRS(){
 
 gg::EMessageStatus CGranade::MHandler_UPDATE(){
     if(cTransform){
+        gg::Vector3f currentPosition = cTransform->getPosition();
 
-        gg::Vector3f nextPosition = cTransform->getPosition();
         auto end = std::chrono::high_resolution_clock::now(); //Start de another chrono tu see the processor time now
         auto elapsedtime = end - begin; //The difference between both crhonos is the elapsed time
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count(); //Calculate the elapsed time as milisecons
+
         if(ms<1200){  //we control the time that we want the granade to move
-            nextPosition.Z += 0.6;
-            nextPosition.X+=0.6;
-            if(nextPosition.Y>0){ //check if the granade is under the ground
-                nextPosition.Y-=0.2;
-            }
-            cTransform->setPosition(nextPosition); //update the position of the granade
+            currentPosition.X   += 0.6;
+            currentPosition.Z   += 0.6;
+            cTransform->setPosition(currentPosition); //update the position of the granade
         }
         else{
-            EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(nextPosition.X,nextPosition.Y,nextPosition.Z), 900, 2000,false);
+            EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(currentPosition.X,currentPosition.Y,currentPosition.Z), 100, 2000,false);
 
             Manager->removeEntity(getEntityID());
         }
-
-
     }
+
     return gg::ST_TRUE;
 }

@@ -159,8 +159,6 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube1, &CRigidBodyCube1);
 
-
-
         // Manager->removeEntity(cube1);
 
         // Cubo grande
@@ -172,6 +170,7 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::TRANSFORM, cube2, &CTransformCube2);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube2, &CRenderableCube2);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube2, &CRigidBodyCube2);
+
         InitCAgent objetoExplosion(kTrig_Explosion);
         Manager->addComponentToEntity(gg::CAGENT, cube2, &objetoExplosion);
         // Manager->removeEntity(cube1);

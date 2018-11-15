@@ -24,7 +24,7 @@ C[Nombre] -> Respeta hermano el nombre de las clases, empieza por "C" Seguido de
     [Obligatorio]   Incluir el .hpp de la nueva componente
 
         #include "Components/CTransform.hpp"
-        #include "Components/CKeyboard.hpp"
+        #include "Components/CPlayerController.hpp"
         #include "Components/CRenderable_3D.hpp"
         #include "Components/CNewComponent.hpp"
 
@@ -55,7 +55,7 @@ C[Nombre] -> Respeta hermano el nombre de las clases, empieza por "C" Seguido de
         void ObjectManager::initObjectManager() {
 
             CTransform::initComponent();
-            CKeyboard::initComponent();
+            CPlayerController::initComponent();
             CRenderable_3D::initComponent();
             CNewComponent::initComponent();     <<-------
 

@@ -7,7 +7,7 @@
 #include <Arena.hpp>
 
 #include "Components/CTransform.hpp"
-#include "Components/CKeyboard.hpp"
+#include "Components/CPlayerController.hpp"
 #include "Components/CRenderable_3D.hpp"
 #include "Components/CCamera.hpp"
 #include "Components/CAgent.hpp"

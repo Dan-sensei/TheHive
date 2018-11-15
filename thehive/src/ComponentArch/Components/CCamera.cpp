@@ -98,7 +98,7 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     );
 
     // We dont set the body position NOW
-    // In the CKeyboard manager we applied the force/impulse to the body
+    // In the CPlayerController manager we applied the force/impulse to the body
     // mod->setPosition(
     //     gg::Vector3f(
     //         nextModelPosition.X+finalXRVector.X,

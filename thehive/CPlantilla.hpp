@@ -1,5 +1,5 @@
-#ifndef _CKEYBOARD_H
-#define _CKEYBOARD_H
+#ifndef _CPlayerController_H
+#define _CPlayerController_H
 
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
@@ -12,10 +12,10 @@ class ObjectManager;     //  [OPCIONAL] Si necesitas acceder a algún método de
 class CCamera;           //  Forward declaration de otras componentes que incluyas
 class CTransform;
 
-class CKeyboard : public IComponent {
+class CPlayerController : public IComponent {
     friend class ObjectManager;                 // Con esto le decimos que sólo ObjectManager puede crear esta componente
     public:
-        virtual ~CKeyboard();
+        virtual ~CPlayerController();
 
         // Functions of IComponent
         static void initComponent();
@@ -27,8 +27,8 @@ class CKeyboard : public IComponent {
         gg::EMessageStatus MHandler_UPDATE  ();
 
     private:
-        CKeyboard();                //  No queremos que alguien lo construya fuera (Limón)
-        CKeyboard(const CKeyboard &orig) = delete;
+        CPlayerController();                //  No queremos que alguien lo construya fuera (Limón)
+        CPlayerController(const CPlayerController &orig) = delete;
 
 
         CCamera *camera;

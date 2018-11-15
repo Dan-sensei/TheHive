@@ -1,4 +1,4 @@
-#include "CKeyboard.hpp"
+#include "CPlayerController.hpp"
 #include <Singleton.hpp>
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
@@ -16,23 +16,23 @@
 #define RUN_FACTOR      1.1f
 #define FORCE_FACTOR    7000.f
 
-CKeyboard::CKeyboard()
+CPlayerController::CPlayerController()
 :cTransform(nullptr)
 {
   GranadeCreate=false;
 }
 
-CKeyboard::~CKeyboard() {
+CPlayerController::~CPlayerController() {
 
 }
 
-void CKeyboard::initComponent() {
+void CPlayerController::initComponent() {
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::KEYBOARD, gg::M_UPDATE);
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::KEYBOARD, gg::M_SETPTRS);
 
 }
 
-void CKeyboard::initializeComponentData(const void* data){
+void CPlayerController::initializeComponentData(const void* data){
     //  We check if this entity has the TRANSFORM component
     engine = Singleton<GameEngine>::Instance();
     world = Singleton<ggDynWorld>::Instance();
@@ -43,7 +43,7 @@ void CKeyboard::initializeComponentData(const void* data){
 }
 
 
-gg::EMessageStatus CKeyboard::processMessage(const Message &m) {
+gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 
     if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
     else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
@@ -55,14 +55,14 @@ gg::EMessageStatus CKeyboard::processMessage(const Message &m) {
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
-gg::EMessageStatus CKeyboard::MHandler_SETPTRS(){
+gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
     cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
 
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
+gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
 
@@ -128,15 +128,15 @@ gg::EMessageStatus CKeyboard::MHandler_UPDATE(){
         // }
     }
     if(engine->key(gg::GG_G)&&GranadeCreate==false){
-      Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-      uint16_t holyBomb = Manager->createEntity();
-             InitCTransform CTransformHolyBomb(cTransform->getPosition().X,cTransform->getPosition().Y,cTransform->getPosition().Z,0,0,0);
-             InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
-             Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
-             Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
-             Manager->addComponentToEntity(gg::GRANADE, holyBomb);
+        Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+        uint16_t holyBomb = Manager->createEntity();
+        InitCTransform CTransformHolyBomb(cTransform->getPosition().X,cTransform->getPosition().Y,cTransform->getPosition().Z,0,0,0);
+        InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
+        Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
+        Manager->addComponentToEntity(gg::GRANADE, holyBomb);
 
-             GranadeCreate=true;
+        // GranadeCreate=true;
     }
     if(engine->key(ROTATE_KEY))
         heroRotation = false;

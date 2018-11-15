@@ -58,7 +58,7 @@ void ObjectManager::clin(){
 //========================================================================
 void ObjectManager::initObjectManager() {
     CTransform::initComponent();
-    CKeyboard::initComponent();
+    CPlayerController::initComponent();
     CRenderable_3D::initComponent();
     CCamera::initComponent();
     CRigidBody::initComponent();
@@ -209,7 +209,7 @@ IComponent* ObjectManager::createTransformComponent         ()   {
     return new CTransform;
 }
 IComponent* ObjectManager::createKeyboardComponent          ()   {
-    return new CKeyboard;
+    return new CPlayerController;
 }
 IComponent* ObjectManager::createRenderable_3DComponent     ()   {
     return new CRenderable_3D;

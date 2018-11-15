@@ -1,5 +1,5 @@
-#ifndef _CKEYBOARD_H
-#define _CKEYBOARD_H
+#ifndef _CPLAYERCONTROLLER_H
+#define _CPLAYERCONTROLLER_H
 
 #include <cmath>
 #include <map>
@@ -12,7 +12,6 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Message.hpp>
 
-
 class CCamera;
 class CTransform;
 class CRigidBody;
@@ -22,10 +21,10 @@ class GameEngine;
 class ObjectManager;
 class ggDynWorld;
 
-class CKeyboard : public IComponent {
+class CPlayerController : public IComponent {
     friend class ObjectManager;
     public:
-        virtual ~CKeyboard();
+        virtual ~CPlayerController();
 
         // Functions of IComponent
         static void initComponent();
@@ -38,8 +37,8 @@ class CKeyboard : public IComponent {
 
 
     private:
-        CKeyboard();
-        CKeyboard(const CKeyboard &orig) = delete;
+        CPlayerController();
+        CPlayerController(const CPlayerController &orig) = delete;
 
         GameEngine* engine;
         ggDynWorld* world;

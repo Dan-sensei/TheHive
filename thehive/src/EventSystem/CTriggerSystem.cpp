@@ -124,7 +124,7 @@ void CTriggerSystem::Update()
       //to the trigger
       if(pAgent->HandleTrig(pRec))
       {
-          std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
+          // std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
 
         //Listen to highest priority trig at any instant
         break;
