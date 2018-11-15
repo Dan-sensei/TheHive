@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <queue>
+#include <string>
 
 enum Type{
     OPEN = 0,
@@ -12,19 +13,20 @@ enum Type{
 };
 
 struct Connection{
-    Connection(uint16_t _From = 0, uint16_t _To = 0, float _Value = 0);
+    Connection(uint16_t _From = 0, uint16_t _To = 0, float _Value = 0, std::string _Name = "None");
     Connection(const Connection &orig);
     uint16_t From;
     uint16_t To;
     float Value;
+    std::string Name;
 };
 
 struct Node{
+    Node();
     Node(uint16_t _ID);
     Node(const Node &orig);
-    void AddConnection(const Connection &connection);
     uint16_t ID;
-    std::vector<Connection> Connections;
+    Connection Bitconnect;
     float RealCost;
     float Heuristic;
     float EstimatedCost;
@@ -43,10 +45,12 @@ class Pathfinding{
         ~Pathfinding();
 
         void A_Estrella();
+        float CalculateHeuristic();
         void print();
     private:
 
         std::vector<Node> GRAPH;
+        std::vector<Connection> GConnections[7];
         std::priority_queue<Node, std::vector<Node>, Comparator> OpenList;
 
 };

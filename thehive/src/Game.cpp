@@ -11,6 +11,7 @@
 #include "Game.hpp"
 #include "Util.hpp"
 #include "Singleton.hpp"
+#include "GameAI/Pathfinding.hpp"
 
 #include "EventSystem/Agent.hpp"
 #include "EventSystem/GameState.hpp"
@@ -59,6 +60,9 @@ Game::~Game(){
 
 void Game::RUN(){
 
+    Pathfinding test;
+    test.A_Estrella();
+    return;
 
     //
     CAgent* pAgent=NULL;
