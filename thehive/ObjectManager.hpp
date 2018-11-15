@@ -82,7 +82,7 @@ class ObjectManager{
         //IComponent* createRespectComponent      ();
 
 
-        typedef IComponent* (ObjectManager::*pConstructor)(void);
+        using pConstructor = IComponent* (ObjectManager::*)(void);
         pConstructor ComponentConstructorVector[gg::NUM_COMPONENTS];
 
 
@@ -122,7 +122,7 @@ class ObjectManager{
         //
         //========================================================================
         std::vector<gg::EComponentType> MessageToListeningComponents[gg::MESSAGE_TYPE_COUNT];
-        
+
         std::stack<uint16_t> nextAvailableEntityID;
 
         //  ---
@@ -132,6 +132,3 @@ class ObjectManager{
 };
 
 #endif
-
-
-

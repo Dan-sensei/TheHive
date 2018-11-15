@@ -1,79 +1,58 @@
 #include <iostream>
 
-#include "behaviorTree.hpp"
+#include "BehaviorTree.hpp"
 #include "Filter.hpp"
-#include "hoja.hpp"
-#include "hoja0.hpp"
-
-#include "inverso.hpp"//si
+#include "Andar_rand.hpp"
+#include "Comer.hpp"
+#include "Girar.hpp"
+#include "Mover.hpp"
+#include "Rango_visual.hpp"
+#include "Inverso.hpp"
 #include "Repetidor.hpp"
 #include "Selector.hpp"
-#include "sequence.hpp"//si
+#include "Sequence.hpp"
 #include "Succeeder.hpp"
 #include "UntilFail.hpp"
-
-#include "ActiveSelector.hpp"//important
-#include "Monitor.hpp"//important
-
+#include "ActiveSelector.hpp"
+#include "Monitor.hpp"
 #include "Parallel.hpp"
-
-
-
-
 
 int main() {
 
-
-hoja* hoja1=new hoja();
-hoja* hoja2=new hoja();
-hoja* hoja3=new hoja();
-hoja0* hoja4=new hoja0();
-
-
-
-inverso* inv1 = new inverso(hoja3);
+    Andar_rand* andar_r=new Andar_rand();
+    Rango_visual* rango=new Rango_visual();
+    Girar* giro=new Girar();
+    Mover* move_to=new Mover();
+    Comer* com=new Comer();
 
 
-sequence*  sec1=new sequence();
+    Sequence*  sec1=new Sequence();
+    Sequence*  sec2=new Sequence();
 
-sec1->addChild(hoja1);
-sec1->addChild(hoja4);
-sec1->addChild(hoja2);
-sec1->addChild(inv1);
+    sec2->addChild(rango);
+    sec2->addChild(giro);
 
+    sec1->addChild(sec2);
+    sec1->addChild(move_to);
+    sec1->addChild(com);
 
+    Selector* selec1= new Selector();
+    selec1->addChild(andar_r);
+    selec1->addChild(sec1);
 
-BehaviorTree BT(sec1);
+    BehaviorTree BT(selec1);
 
-std::cout << "tick 1" << '\n';
-BT.tick();
-std::cout << "tick 2" << '\n';
-BT.tick();
-std::cout << "tick 3" << '\n';
-BT.tick();
-std::cout << "tick 4" << '\n';
-BT.tick();
+    std::cout << "tick 1" << '\n';
+    BT.tick();
 
-delete sec1;
-delete hoja1;
-delete hoja2;
-delete hoja3;
-delete hoja4;
-delete inv1;
+    delete sec1;
+    delete sec2;
+    delete selec1;
+    delete com;
+    delete move_to;
+    delete giro;
+    delete rango;
+    delete andar_r;
 
-
-
-   // Ejemplo con decorator
-   /*
-   bhprueba* bh1     = new bhprueba();
-   decorator* dec    = new decorator(bh1);
-
-   dec->update();
-   dec->update();
-   dec->update();
-   dec->update();
-
-   dec->update();
-   // */
-   return 0;
+    return 0;
 }

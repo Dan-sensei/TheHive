@@ -1,22 +1,11 @@
-#ifndef Succeeder_H
-#define Succeeder_H
+#ifndef SUCCEEDER_H
+#define SUCCEEDER_H
 
 #include <iostream>
+#include "Decorator.hpp"
 
-#include "decorator.hpp"
-
-// Rama del arbol con solo un hijo
-// Los comportamientos del hijo pueden repetirse n veces si se quiere
-
-//-----------------------------------------//
-// Esta es la estructura de cada DECORATOR //
-//-----------------------------------------//
-class Succeeder : public decorator{
-public:
- Status update();
-
+class Succeeder : public Decorator{
+    public:
+        Status update();
 };
-
-
-
-#endif /* DECORATOR_H */
+#endif

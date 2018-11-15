@@ -1,16 +1,13 @@
-#ifndef Filter_HPP
-#define Filter_HPP
+#ifndef FILTER_HPP
+#define FILTER_HPP
 
-#include "sequence.hpp"
+#include "Sequence.hpp"
 
-
-class Filter : public sequence{
-//public:
- //Status update();
-protected:
-  void addAction(behavior* hijo);
-  void addCondition(behavior* hijo);
-
+class Filter : public Sequence{
+    //public:
+     //Status update();
+    protected:
+      void addAction(Behavior* hijo);
+      void addCondition(Behavior* hijo);
 };
-
-#endif /* end of include guard: SEQUENCE_HPP */
+#endif

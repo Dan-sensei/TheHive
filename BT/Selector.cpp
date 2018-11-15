@@ -1,13 +1,10 @@
-
-
 #include "Selector.hpp"
 
-
- void Selector::onInitialize() {
+void Selector::onInitialize() {
   m_CurrentChild=m_Children.begin();
 }
 
- Status Selector::update() {
+Status Selector::update() {
   while (true) {
     Status s=(*m_CurrentChild)->tick();
     if(s != BH_FAILURE)//{

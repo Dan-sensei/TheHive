@@ -1,9 +1,9 @@
 #ifndef hoja0_HPP
 #define hoja0_HPP
 
-#include "behavior.hpp"
+#include "Behavior.hpp"
 #include <iostream>
-  class hoja0 : public behavior {
+  class hoja0 : public Behavior {
 
 public:
   hoja0();

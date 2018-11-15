@@ -1,10 +1,12 @@
+#include "Composite.hpp"
 
-#include "composite.hpp"
- void composite::addChild(behavior* hijo){
+
+void Composite::addChild(Behavior* hijo){
   m_Children.push_back(hijo);
 }
- void composite::removeChild(behavior* hijo){
-  behaviors::iterator m_CurrentChild;
+
+void Composite::removeChild(Behavior* hijo){
+  Behaviors::iterator m_CurrentChild;
   m_CurrentChild=m_Children.begin();
   while(m_CurrentChild!=m_Children.end()){
     if(*m_CurrentChild==hijo){
@@ -14,6 +16,7 @@
     m_CurrentChild++;
   }
 }
- void composite::clearChildren(){
-m_Children.clear();
+
+void Composite::clearChildren(){
+    m_Children.clear();
 }
