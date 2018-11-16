@@ -1,9 +1,13 @@
 #include "CRigidBody.hpp"
+#include <vector>
+
+#define PI 3.14159265359
+
+std::vector<const char*> names;
 
 CRigidBody::CRigidBody()
 :cTransform(nullptr)
 {
-
 }
 
 CRigidBody::~CRigidBody() {
@@ -32,7 +36,7 @@ void CRigidBody::initializeComponentData(const void* data){
 
         if(cData->loadedFromPath){
             btBulletWorldImporter*  fileLoader = new btBulletWorldImporter(world->getDynamicsWorld());
-            if(! ( fileLoader->loadFile(cData->path.c_str()),"algo" ) ){
+            if(! ( fileLoader->loadFile(cData->path.c_str())) ){
                 delete fileLoader;
                 return;
             }
@@ -121,8 +125,6 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
-    //body->applyCentralForce(btVector3(0,42000,0));
-
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);
 
@@ -135,23 +137,18 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
             )
         );
 
-        // trans = body->getCenterOfMassTransform();
-        // btQuaternion rot = trans.getRotation();
-        // cTransform->setRotation(
-        //     gg::Vector3f(
-        //         static_cast<float>(rot.getAxis().getX()),
-        //         static_cast<float>(rot.getAxis().getY()),
-        //         static_cast<float>(rot.getAxis().getZ())
-        //     )
-        // );
+        btQuaternion rot = trans.getRotation();
+        float _X, _Y, _Z;
+        rot.getEulerZYX(_Z,_Y,_X);
+        cTransform->setRotation(
+            gg::Vector3f(
+                static_cast<float>(_X/PI*180),
+                static_cast<float>(_Y/PI*180),
+                static_cast<float>(_Z/PI*180)
+            )
+        );
 
-        // btTransform tr = m_dynamicsWorld->getCollisionObjectArray()[1]->getWorldTransform();
-		// static float angle = 0.f;
-		// angle += 0.01f;
-		// tr.setRotation(btQuaternion(btVector3(0, 1, 0), angle));
-		// m_dynamicsWorld->getCollisionObjectArray()[1]->setWorldTransform(tr);
     }
-
 
     return gg::ST_TRUE;
 }

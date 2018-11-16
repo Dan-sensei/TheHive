@@ -47,7 +47,6 @@ gg::EMessageStatus CCamera::MHandler_SETPTRS(){
 }
 
 
-// void CCamera::updateCameraTarget(Camera *cam, Model *mod, gg::Vector3f nextPosition){
 void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     lastHeroPosition = nextPosition;
 
@@ -99,13 +98,6 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
 
     // We dont set the body position NOW
     // In the CPlayerController manager we applied the force/impulse to the body
-    // mod->setPosition(
-    //     gg::Vector3f(
-    //         nextModelPosition.X+finalXRVector.X,
-    //         nextModelPosition.Y+finalXRVector.Y,
-    //         nextModelPosition.Z+finalXRVector.Z
-    //     )
-    // );
 
     /////////////////////////////////////////////////////////////////
     // VERTICAL AXIS

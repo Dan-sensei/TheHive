@@ -63,7 +63,7 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
 
         if(ms>1200){  //we control the time that we want the granade to move
             EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(currentPosition.X,currentPosition.Y,currentPosition.Z), 20, 50,false);
-
+            
             Manager->removeEntity(getEntityID());
         }
     }

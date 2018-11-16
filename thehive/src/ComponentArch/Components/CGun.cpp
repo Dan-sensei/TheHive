@@ -26,7 +26,6 @@ void CGun::initComponent() {
 
 void CGun::shoot(gg::Vector3f to){
     if(!total_bullets){
-        // // std::cout << "NO QUEDAN BALAS" << '\n';
         return;
     }
 
@@ -51,9 +50,9 @@ void CGun::shoot(gg::Vector3f to){
     Material material("assets/Models/obradearte/prueba1.png");
     InitCRenderable_3D bModel("assets/Models/bullet.obj", material);
     InitCTransform bTransform(from.X,from.Y,from.Z, 0,0,0);
+    InitCRigidBody bCollide(true,"assets/BoundingBoxes/bullet.bullet",  from.X,from.Y+DIST_OFFSET,from.Z, .5,.5,.5, 1, 0,0,0, 2);
     manager->addComponentToEntity(gg::TRANSFORM, bullet, &bTransform);
     manager->addComponentToEntity(gg::RENDERABLE_3D, bullet, &bModel);
-    InitCRigidBody bCollide(true,"assets/BoundingBoxes/bullet.bullet",  from.X,from.Y+DIST_OFFSET,from.Z, .5,.5,.5, 1, 0,0,0, 2);
     manager->addComponentToEntity(gg::RIGID_BODY, bullet, &bCollide);
 
     CRigidBody* rb = static_cast<CRigidBody*>(manager->getComponent(gg::RIGID_BODY, bullet));

@@ -186,7 +186,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         uint16_t holyBomb = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
         InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
-        InitCTransform CTransformHolyBomb(0,0,0, 0,0,0);
+        InitCTransform CTransformHolyBomb(gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
         InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
@@ -199,7 +199,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         vel.Z *= VEL_FACTOR;
         rb->applyCentralForce(gg::Vector3f(vel.X,vel.Y,vel.Z));
 
-        GranadeCreate=true;
+        // GranadeCreate=true;
     }
 
     return gg::ST_TRUE;

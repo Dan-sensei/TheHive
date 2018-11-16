@@ -125,8 +125,8 @@ void Game::RUN(){
 
     //uint8_t* p;
     //add inf triggers
-    EventSystem->RegisterTriger(kTrig_Gunfire,  1,2,gg::Vector3f(100,5,50), 5, 0,false);
-    EventSystem->RegisterTriger(kTrig_Explosion,1,3,gg::Vector3f(0,0,0), 20, 0,false);
+    EventSystem->RegisterTriger(kTrig_Gunfire,  1,0,gg::Vector3f(100,5,50), 5, 0,false);
+    EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
     {
         uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
