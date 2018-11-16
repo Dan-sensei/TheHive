@@ -78,6 +78,19 @@ namespace gg{
         Vector3f(const Vector3f &orig);
 
         float X, Y, Z;
+        gg::Vector3f operator+ (Vector3f v1);
+        gg::Vector3f operator- (Vector3f v1);
+        gg::Vector3f operator* (float v1);
+        gg::Vector3f operator* (Vector3f v1);
+        void operator+= (Vector3f v1);
+        void operator-= (Vector3f v1);
+        void operator*= (float v1);
+        void operator*= (Vector3f v1);
+        void operator<< (Vector3f v1);
+
+
+        //template <typename T>
+        //T operator+ (T v1);
     };
 
     struct Vector2f{
@@ -91,9 +104,24 @@ namespace gg{
     public:
         template <typename T>
         static float DIST(T v1,T v2);
+        template <typename T>
+        static float Modulo(T v1);
+        template <typename T>
+        static T Normalice(T v1);
+        //template <typename T>
+        //T operator+ (T v1);
+        //template <typename T>
+        //T operator + (const T v1);
+        //Vector3f operator+ ( Vector3f v1){
+        //    Vector3f res( v1.X+X,v1.Y+Y,v1.Z+Z);
+        //    return res;
+        //}
 
     };
 
-}
+
+};
+//template <typename T>
+//T gg::T::operator+ (T v1);
 
 #endif

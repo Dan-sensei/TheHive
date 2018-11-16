@@ -1,5 +1,6 @@
 #include "Util.hpp"
 #include <math.h>
+#include <iostream>
 
 
 gg::Vector3u8::Vector3u8(uint8_t _X, uint8_t _Y, uint8_t _Z)
@@ -82,20 +83,73 @@ template <typename T>
 float gg::Util::DIST(T v1,T v2){
     return sqrt(((v1.X-v2.X)*(v1.X-v2.X)+(v1.Y-v2.Y)*(v1.Y-v2.Y)+(v1.Z-v2.Z)*(v1.Z-v2.Z)));
 }
-/*
+
+
 template <typename T>
 float gg::Util::Modulo(T v1){
     return sqrt(((v1.X)*(v1.X)+(v1.Y)*(v1.Y)+(v1.Z)*(v1.Z)));
 }
 
 template <typename T>
-void gg::Util::Normalice(T &v1){
-    float modulo=Modulo(v1);
+T gg::Util::Normalice(T v1){
+    float modulo=gg::Util::Modulo(v1);
     v1.X=v1.X/modulo;
     v1.Y=v1.Y/modulo;
     v1.Z=v1.Z/modulo;
 }
-*/
+//template <typename T>
+//T gg::Util::operator +( T v1, T v2)
+//{
+//    T res( v1.X+v2.X,v1.Y+v2.Y,v1.Z+v2.Z);
+//    return res;
+//}
+gg::Vector3f gg::Vector3f::operator+ ( Vector3f v1){
+    return Vector3f( v1.X+X,v1.Y+Y,v1.Z+Z);
+}
+gg::Vector3f gg::Vector3f::operator- ( Vector3f v1){
+    return Vector3f( v1.X-X,v1.Y-Y,v1.Z-Z);
+}
+void gg::Vector3f::operator+= ( Vector3f v1){
+X+=v1.X;
+X+=v1.Y;
+X+=v1.Z;
+}
+void gg::Vector3f::operator-= ( Vector3f v1){
+X-=v1.X;
+X-=v1.Y;
+X-=v1.Z;
+}
+void gg::Vector3f::operator*= ( Vector3f v1){
+X*=v1.X;
+X*=v1.Y;
+X*=v1.Z;
+}
+void gg::Vector3f::operator<< (Vector3f v1){
+std::cout << "(" << v1.X<< "," << v1.Y << "," << v1.Z<<")"<< '\n';
+}
+void gg::Vector3f::operator*= ( float v1){
+X*=v1;
+X*=v1;
+X*=v1;
+}
+gg::Vector3f gg::Vector3f::operator* ( Vector3f v1){
+    return Vector3f( v1.X*X,v1.Y*Y,v1.Z*Z);
+}
+gg::Vector3f gg::Vector3f::operator* ( float v1){
+    return Vector3f( v1*X,v1*Y,v1*Z);
+}
+//template <typename T>
+//T gg::T::operator+ ( T v1,)
+//{
+//    T res( v1.X+X,v1.Y+Y,v1.Z+Z);
+//    return res;
+//}
 
 template float gg::Util::DIST<gg::Vector3f>(gg::Vector3f v1, gg::Vector3f v2);
+template float gg::Util::Modulo<gg::Vector3f>(gg::Vector3f v1);
+template gg::Vector3f gg::Util::Normalice<gg::Vector3f>(gg::Vector3f v1);
+//template gg::Vector3f gg::Vector3f::operator+ (Vector3f v1);
+
+
+
 //template float gg::Util::DIST<gg::Vector3u8>(gg::Vector3u8 v1, gg::Vector3u8 v2);
