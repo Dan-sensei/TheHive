@@ -116,10 +116,10 @@ gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(const Message &m){
         if(cTransform){
             //cTransform->getBodyPosition();//v1
             //cdata->vPos;//v2
-            float distancia=gg::Util::DIST(cTransform->getPosition(),cdata->vPos);
+            float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
             //float ratio=1-distancia/fRadius;
             float fuerzabomba=46000;
-            gg::Vector3f sol = gg::Util::Normalice(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
+            gg::Vector3f sol = gg::Normalice(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
             body->applyCentralForce(btVector3(sol.X,sol.Y,sol.Z));
             /*
             gg::Vector3f vect(33,66,99);
@@ -127,7 +127,7 @@ gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(const Message &m){
 
             gg::Vector3f suma=vect*vect2;
             std::cout << "antes" <<suma.X<<suma.Y<<suma.Z<< '\n';
-            gg::Util::Normalice(vect);
+            gg::Normalice(vect);
             *///pruebas
             //body->applyCentralForce(btVector3(0,46000000,0));
         }
