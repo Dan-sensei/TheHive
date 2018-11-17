@@ -23,18 +23,19 @@ struct Connection{
 
 struct Node{
     Node();
-    Node(uint16_t _ID);
+    Node(uint16_t _ID, float _X, float _Y);
     Node(const Node &orig);
     uint16_t ID;
     Connection Bitconnect;
     float RealCost;
     float Heuristic;
     float EstimatedCost;
+    float X, Y;
     Type Status;
 };
 
 struct Comparator{
-    uint16_t operator() (const Node &N1, const Node &N2);
+    bool operator() (const Node* N1, const Node* N2);
 };
 
 class Pathfinding{
@@ -44,14 +45,15 @@ class Pathfinding{
         Pathfinding(const Pathfinding &orig);
         ~Pathfinding();
 
+        void AddConnection(uint16_t From, uint16_t To);
         void A_Estrella();
         float CalculateHeuristic();
         void print();
     private:
 
         std::vector<Node> GRAPH;
-        std::vector<Connection> GConnections[7];
-        std::priority_queue<Node, std::vector<Node>, Comparator> OpenList;
+        std::vector<Connection> GConnections[10];
+        std::priority_queue<Node*, std::vector<Node*>, Comparator> OpenList;
 
 };
 

@@ -1,5 +1,6 @@
 #include "Pathfinding.hpp"
 #include <iostream>
+#include <cmath>
 
 //  CONNECTION  --
 Connection::Connection(uint16_t _From, uint16_t _To, float _Value, std::string _Name)
@@ -15,10 +16,10 @@ Connection::Connection(const Connection &orig) {
 
 //  NODE    --
 Node::Node()
-:ID(UINT16_MAX), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED)
+:ID(UINT16_MAX), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED), X(0.f), Y(0.f)
 {}
-Node::Node(uint16_t _ID)
-:ID(_ID), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED)
+Node::Node(uint16_t _ID, float _X, float _Y)
+:ID(_ID), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED), X(_X), Y(_Y)
 {}
 
 Node::Node(const Node &orig){
@@ -29,72 +30,64 @@ Node::Node(const Node &orig){
     RealCost        =   orig.RealCost;
     EstimatedCost   =   orig.EstimatedCost;
     Status          =   orig.Status;
+    X               =   orig.X;
+    Y               =   orig.Y;
 }
 
 
 //  COMPARATOR
-uint16_t Comparator::operator()(const Node &N1, const Node &N2){
-    return N1.RealCost < N2.RealCost ? N1.ID : N2.ID;
+bool Comparator::operator()(const Node* N1, const Node* N2){
+    return N1->RealCost > N2->RealCost;
 }
 
+#define GOAL 9
 Pathfinding::Pathfinding(){
-    {
-        //  NODO A
-        GRAPH.emplace_back(0);
-        Connection AB(0, 1, 1.3f, "AB");
-        Connection AC(0, 2, 1.1f, "AC");
-        GRAPH.back().Heuristic = 4.2f;
-        GConnections[0].push_back(AB);
-        GConnections[0].push_back(AC);
-    }
 
+        //  NODO A         ID   X  Y
+        GRAPH.emplace_back(0,    0,  0);
+        GRAPH.emplace_back(1,    7,  3);
+        GRAPH.emplace_back(2,    3,  7);
+        GRAPH.emplace_back(3,   13,  5);
+        GRAPH.emplace_back(4,   11,  9);
+        GRAPH.emplace_back(5,    6, 13);
+        GRAPH.emplace_back(6,   10, 16);
+        GRAPH.emplace_back(7,   18,  7);
+        GRAPH.emplace_back(8,   17, 14);
+        GRAPH.emplace_back(9,   16, 18);
 
-    {
-        //  NODO B
-        GRAPH.emplace_back(1);
-        Connection BD(1, 3, 1.5f, "BD");
-        Connection BE(1, 4, 1.7f, "BE");
-        GRAPH.back().Heuristic = 3.2f;
-        GConnections[1].push_back(BD);
-        GConnections[1].push_back(BE);
-    }
+        AddConnection(0, 1);
+        AddConnection(0, 2);
 
-    {
-        //  NODO C
-        GRAPH.emplace_back(2);
-        Connection CE(2, 4, 1.5f, "CE");
-        Connection CF(2, 5, 1.6f, "CF");
-        GRAPH.back().Heuristic = 3.7f;
-        GConnections[2].push_back(CE);
-        GConnections[2].push_back(CF);
-    }
+        AddConnection(1, 3);
 
-    {
-        //  NODO D
-        GRAPH.emplace_back(3);
-        GRAPH.back().Heuristic = 2.8f;
-    }
+        AddConnection(2, 4);
+        AddConnection(2, 5);
 
-    {
-        //  NODO E
-        GRAPH.emplace_back(4);
-        Connection EG(4, 6, 1.4f, "EG");
-        GRAPH.back().Heuristic = 1.6f;
-        GConnections[2].push_back(EG);
-    }
+        AddConnection(3, 4);
+        AddConnection(3, 7);
 
-    {
-        //  NODO F
-        GRAPH.emplace_back(5);
-        GRAPH.back().Heuristic = 1.4f;
-    }
+        AddConnection(4, 6);
+        //AddConnection(4, 9);
 
-    {
-        //  NODO G
-        GRAPH.emplace_back(6);
-        GRAPH.back().Heuristic = 0.0f;
-    }
+        AddConnection(5, 4);
+        AddConnection(5, 6);
 
+        AddConnection(6, 9);
+
+        AddConnection(7, 8);
+
+        AddConnection(8, 9);
+
+        std::cout << "GRAPH CREATED!" << '\n';
+
+        std::cout << "Connections:" << '\n';
+        for(uint16_t i = 0; i < 10; ++i){
+            std::cout << "[" << i << "] => ";
+            for(uint16_t j = 0; j < GConnections[i].size(); ++j){
+                std::cout << GConnections[i][j].Name << " ";
+            }
+            std::cout << '\n';
+        }
 }
 
 Pathfinding::Pathfinding(const Pathfinding &orig){
@@ -106,32 +99,42 @@ Pathfinding::~Pathfinding(){
 }
 
 
+void Pathfinding::AddConnection(uint16_t From, uint16_t To){
+    float IncX = GRAPH[To].X - GRAPH[From].X;
+    float IncY = GRAPH[To].Y - GRAPH[From].Y;
+    float Value = sqrt(IncX*IncX + IncY*IncY);
+    std::string Name = std::to_string(From) + std::to_string(To);
+    Connection newC(From, To, Value, Name);
+    GConnections[From].push_back(newC);
+}
+
 
 
 void Pathfinding::A_Estrella(){
-    GRAPH[0].Status = Type::OPEN;
-    OpenList.push(GRAPH[0]);
 
-    Node CurrentNode;
+    GRAPH[0].Status = Type::OPEN;
+    OpenList.push(&GRAPH[0]);
+
+    Node* CurrentNode;
 
     while(OpenList.size() > 0){
         CurrentNode    =   OpenList.top();
         OpenList.pop();
 
-        if(CurrentNode.ID == 6) // GOAL
+        if(CurrentNode->ID == GOAL) // GOAL
             break;
 
-        std::vector<Connection> Connections = GConnections[CurrentNode.ID];
+        std::vector<Connection> Connections = GConnections[CurrentNode->ID];
         for(Connection c : Connections) {
 
-            float costToNode = CurrentNode.RealCost + c.Value;
-            if      (GRAPH[c.To].Status == Type::CLOSED)    {
+            float costToNode = CurrentNode->RealCost + c.Value;
+            if (GRAPH[c.To].Status == Type::CLOSED) {
 
                 if(GRAPH[c.To].RealCost <= costToNode)
                     continue;
 
                 GRAPH[c.To].Status = Type::OPEN;
-                OpenList.push(GRAPH[c.To]);
+                OpenList.push(&GRAPH[c.To]);
 
             }
             else if (GRAPH[c.To].Status == Type::OPEN)      {
@@ -144,22 +147,22 @@ void Pathfinding::A_Estrella(){
                 GRAPH[c.To].EstimatedCost = costToNode + GRAPH[c.To].Heuristic;
 
                 GRAPH[c.To].Status = Type::OPEN;
-                OpenList.push(GRAPH[c.To]);
+                OpenList.push(&GRAPH[c.To]);
             }
         } //FOR-LOOP end
 
-        GRAPH[CurrentNode.ID].Status = Type::CLOSED;
+        CurrentNode->Status = Type::CLOSED;
     }
 
-    if(CurrentNode.ID != 6){
+    if(CurrentNode->ID != GOAL){
         std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
         std::vector<Connection> path;
-        while(CurrentNode.ID != 0){
-            path.push_back(CurrentNode.Bitconnect);
+        while(CurrentNode->ID != 0){
+            path.push_back(CurrentNode->Bitconnect);
             //std::cout << CurrentNode.Bitconnect.Name << " - ";
-            CurrentNode = GRAPH[CurrentNode.Bitconnect.From];
+            CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
         }
 
         std::cout << "CAMINO: " << '\n';

@@ -1,5 +1,6 @@
 
 #include "Game.hpp"
+#include "GameAI/Pathfinding.hpp"
 
 
 
@@ -21,6 +22,11 @@
 
 //#include<>
 int main(int argc, char const *argv[]) {
+
+
+    Pathfinding test;
+    test.A_Estrella();
+    return 0;
 
     Game THE_HIVE;
 
