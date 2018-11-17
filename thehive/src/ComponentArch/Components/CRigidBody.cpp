@@ -100,7 +100,7 @@ void CRigidBody::initializeComponentData(const void* data){
 gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
     if      (m.mType == gg::M_UPDATE)       return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO();
+    else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO(m);
     else if (m.mType == gg::M_SETPTRS)      return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
@@ -110,9 +110,28 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
-gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(){
-    body->applyCentralForce(btVector3(0,42000,0));
+gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(const Message &m){
+    if(m.mData){
+        TriggerRecordStruct* cdata=(TriggerRecordStruct*)m.mData;
+        if(cTransform){
+            //cTransform->getBodyPosition();//v1
+            //cdata->vPos;//v2
+            float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
+            //float ratio=1-distancia/fRadius;
+            float fuerzabomba=46000;
+            gg::Vector3f sol = gg::Normalice(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
+            body->applyCentralForce(btVector3(sol.X,sol.Y,sol.Z));
+            /*
+            gg::Vector3f vect(33,66,99);
+            gg::Vector3f vect2(33,66,99);
 
+            gg::Vector3f suma=vect*vect2;
+            std::cout << "antes" <<suma.X<<suma.Y<<suma.Z<< '\n';
+            gg::Normalice(vect);
+            *///pruebas
+            //body->applyCentralForce(btVector3(0,46000000,0));
+        }
+    }
     return gg::ST_TRUE;
 }
 

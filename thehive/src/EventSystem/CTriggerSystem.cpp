@@ -115,7 +115,7 @@ void CTriggerSystem::Update()
         continue;
       //Check radius
       //
-      fDistance=gg::Util::DIST(pRec->vPos,pAgent->GetPosition());//funcion calcular la distancia
+      fDistance=gg::DIST(pRec->vPos,pAgent->GetPosition());//funcion calcular la distancia
       if(fDistance > pRec->fRadius)
         continue;
       //handletriger return true if the agent responded
