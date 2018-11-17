@@ -3,7 +3,6 @@
 #include "GameAI/Pathfinding.hpp"
 
 
-
 //class Dummy{
 //    public:
 //        Dummy(uint16_t _u, uint8_t _x, uint8_t _y)
@@ -19,13 +18,10 @@
 //        uint8_t x, y;
 //};
 
-
-//#include<>
 int main(int argc, char const *argv[]) {
 
-
     Pathfinding test;
-    test.A_Estrella();
+    //test.A_Estrella();
     return 0;
 
     Game THE_HIVE;
