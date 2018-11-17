@@ -159,19 +159,21 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
 
     // DISPARO -> NO VA EL CLICK IZQUIERDO =D
-    gg::Vector3f ESTEVECTORNOSEUSAPARANADA = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
-    gg::Vector3f rayPos = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
+    gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+    gg::Vector3f rayPos = world->getRaycastVector();
+
     if(engine->key(gg::GG_E)){
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
         if(gun){
-            gun->shoot(rayPos);
+            gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
         }
-
     }
+
+    // Graná
     if(engine->key(gg::GG_G)&&GranadeCreate==false){
         gg::Vector3f gPos = cTransform->getPosition();
         gg::Vector3f from = gPos;
-        gg::Vector3f to = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
+        gg::Vector3f to = world->getRaycastVector();
         gg::Vector3f vel(
             to.X-from.X,
             to.Y-from.Y,

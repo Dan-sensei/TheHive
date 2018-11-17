@@ -149,7 +149,7 @@ void Game::RUN(){
         uint16_t cube1 = Manager->createEntity();
         InitCTransform CTransformCube1(50,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube1("assets/Models/Cube.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyCube1(true,"assets/BoundingBoxes/Cube.bullet",  50,20,10, -1,-1,-1, 1, 0,0,0);
+        InitCRigidBody CRigidBodyCube1(true,"assets/BoundingBoxes/Cube.bullet",  50,20,10, -1,-1,-1, 100, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, cube1, &CTransformCube1);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube1, &CRenderableCube1);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube1, &CRigidBodyCube1);
@@ -162,7 +162,7 @@ void Game::RUN(){
         InitCTransform CTransformCube2(0,0,0,0,0,0);
         InitCRenderable_3D CRenderableCube2("assets/Models/cuboGrande.obj", moradoDeLos80);
         //InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  50,20,0, -1,-1,-1, 50, 0,0,0);
-        InitCRigidBody CRigidBodyCube2(true,"assets/BoundingBoxes/cuboGrande.bullet", 0,100,50, -1,-1,-1, 50, 0,0,0);
+        InitCRigidBody CRigidBodyCube2(true,"assets/BoundingBoxes/cuboGrande.bullet", 0,100,50, -1,-1,-1, 100, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, cube2, &CTransformCube2);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, cube2, &CRenderableCube2);
         Manager->addComponentToEntity(gg::RIGID_BODY, cube2, &CRigidBodyCube2);

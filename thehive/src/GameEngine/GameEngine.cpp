@@ -28,7 +28,8 @@ void GameEngine::Dro(){
     {
         driver->beginScene(true, true, irr::video::SColor(255,255,255,255));
         smgr->drawAll();
-        Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+            Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+            // Singleton<ggDynWorld>::Instance()->debugRaycast();
         driver->endScene();
     }
     else

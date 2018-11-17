@@ -39,6 +39,13 @@ void ggDynWorld::debugDrawWorld(){
     }
 }
 
+void ggDynWorld::debugRaycast(){
+    if(debug && raycastHitPosition.X!=-1){
+        float color[4] = {226,45,13,0};
+        Singleton<GameEngine>::Instance()->draw3DLine(cameraPosition,raycastHitPosition,color);
+    }
+}
+
 void ggDynWorld::printObjects(int _end){
 	for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= _end; j--){
 		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
@@ -103,6 +110,9 @@ void ggDynWorld::clean(){
 
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	collisionShapes.clear();
+
+    // Borrar variables creadas por nosotros
+    delete raycastCollisionBody;
 }
 
 void ggDynWorld::setGravity(float x, float y, float z){
@@ -116,12 +126,16 @@ btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
 gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
     // from -> Camera position
     // to   -> Camera rotation
-    gg::Vector3f ret(-1,-1,-1);
     gg::Vector3f to = gg::Vector3f(
         (sin(rot.Y*PI/180)*RANGE_FACTOR)+from.X,
         -(sin(rot.X*PI/180)*RANGE_FACTOR)+from.Y,
         (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*RANGE_FACTOR)+from.Z
     );
+
+    gg::Vector3f ret(-1,-1,-1);
+    cameraPosition = from;
+    raycastVector = to;
+    raycastCollisionBody = nullptr;
 
     btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
 
@@ -130,25 +144,30 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
     if(callBack.hasHit()){
         // printf("Collision at: <%.2f, %.2f, %.2f>\n", callBack.m_hitPointWorld.getX(), callBack.m_hitPointWorld.getY(), callBack.m_hitPointWorld.getZ());
     // <DEBUG VISUAL>
-        // CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
-        // cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
+        CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
+        cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
     // </DEBUG VISUAL>
-
         ret = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
 
+        raycastHitPosition = ret;
+        raycastCollisionBody = const_cast<btRigidBody*>(btRigidBody::upcast(callBack.m_collisionObject));
     }
     return ret;
 }
 
-gg::Vector3f ggDynWorld::handleRayCastWithoutCollision(gg::Vector3f from, gg::Vector3f rot){
-    // from -> Camera position
-    // to   -> Camera rotation
-    gg::Vector3f ret(-1,-1,-1);
-    gg::Vector3f to = gg::Vector3f(
-        (sin(rot.Y*PI/180)*RANGE_FACTOR)+from.X,
-        -(sin(rot.X*PI/180)*RANGE_FACTOR)+from.Y,
-        (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*RANGE_FACTOR)+from.Z
-    );
+void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f to,gg::Vector3f force){
+    if(!raycastCollisionBody)
+        return;
 
-    return to;
+    // std::cout << "PIM!" << '\n';
+    // std::cout << force.X << "," << force.Y << "," << force.Z << '\n';
+    raycastCollisionBody->activate(true);
+    raycastCollisionBody->applyCentralForce(btVector3(force.X,force.Y,force.Z));
+
+    // Debe de haber alguna forma de igualar bodys para saber el CRigidBody que estamos echando atras
+
+}
+
+gg::Vector3f ggDynWorld::getRaycastVector(){
+    return raycastVector;
 }
