@@ -170,7 +170,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     }
 
     // Graná
-    if(engine->key(gg::GG_G)&&GranadeCreate==false){
+    if(engine->key(gg::GG_G) && GranadeCreate==false){
         gg::Vector3f gPos = cTransform->getPosition();
         gg::Vector3f from = gPos;
         gg::Vector3f to = world->getRaycastVector();
@@ -188,7 +188,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         uint16_t holyBomb = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
         InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
-        InitCTransform CTransformHolyBomb(gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
+        InitCTransform CTransformHolyBomb(           gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
         InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);

@@ -144,6 +144,8 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
+    body->activate(true);
+
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);
 

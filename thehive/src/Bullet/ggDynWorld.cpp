@@ -110,9 +110,6 @@ void ggDynWorld::clean(){
 
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	collisionShapes.clear();
-
-    // Borrar variables creadas por nosotros
-    delete raycastCollisionBody;
 }
 
 void ggDynWorld::setGravity(float x, float y, float z){
@@ -161,7 +158,6 @@ void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f
 
     // std::cout << "PIM!" << '\n';
     // std::cout << force.X << "," << force.Y << "," << force.Z << '\n';
-    raycastCollisionBody->activate(true);
     raycastCollisionBody->applyCentralForce(btVector3(force.X,force.Y,force.Z));
 
     // Debe de haber alguna forma de igualar bodys para saber el CRigidBody que estamos echando atras
