@@ -155,9 +155,14 @@ void Game::RUN(){
 
     std::cout << "BEGIN GAME LOOP" << '\n';
     while(Engine->isWindowOpen()) {
+        Engine->BeginDro();
+
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
         Engine->Dro();
         Engine->DisplayFPS();
+        Engine->Draw3DLine(gg::Vector3f(0, 20, 0), gg::Vector3f(100, 20, 0));
+
+        Engine->EndDro();
     }
 }
 

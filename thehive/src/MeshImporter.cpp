@@ -3,8 +3,8 @@
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
-#include <cassert>
 #include <Util.hpp>
+#include <cmath>
 
 MeshImporter::MeshImporter(){
 
@@ -85,32 +85,31 @@ bool MeshImporter::importNavmesh(
                 Edges.push_back(NewEdge);
         }
 
-
-
         GRAPH.emplace_back(j, X/Face.mNumIndices, Y/Face.mNumIndices, Z/Face.mNumIndices);
     }
 
-    
-    std::cout << '\n' << "VERTEX: " << '\n';
-    for(int i = 0; i < vertex.size(); ++i)
-        std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
+    if(false) {
+        std::cout << '\n' << "VERTEX: " << '\n';
+        for(int i = 0; i < vertex.size(); ++i)
+            std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
 
-    std::cout << '\n';
+        std::cout << '\n';
 
-    std::cout << "INDEXES: " << '\n';
-    for(int i = 0; i < index.size(); ++i)
-        std::cout << " " << index[i];
+        std::cout << "INDEXES: " << '\n';
+        for(int i = 0; i < index.size(); ++i)
+            std::cout << " " << index[i];
 
-    std::cout << '\n' << '\n';
+        std::cout << '\n' << '\n';
 
-    std::cout << "EDGES: " << '\n';
-    for(int i = 0; i < Edges.size(); ++i)
-        std::cout << " " << Edges[i] << '\n';
+        std::cout << "EDGES: " << '\n';
+        for(int i = 0; i < Edges.size(); ++i)
+            std::cout << " " << Edges[i] << '\n';
 
-    std::cout << '\n' << '\n';
+        std::cout << '\n' << '\n';
 
-    std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
-    std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
+        std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
+        std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
+    }
 
     return true;
 }

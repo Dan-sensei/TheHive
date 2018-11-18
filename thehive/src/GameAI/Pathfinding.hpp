@@ -18,6 +18,7 @@ class Pathfinding{
         ~Pathfinding();
 
         void AddConnection(uint16_t From, uint16_t To);
+        float calculateDist(uint16_t N1, uint16_t N2);
         void A_Estrella();
         float CalculateHeuristic();
         void print();

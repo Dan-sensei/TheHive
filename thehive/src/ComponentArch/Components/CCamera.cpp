@@ -176,4 +176,3 @@ gg::Vector3f CCamera::getCameraPositionBeforeLockRotation(){
 void CCamera::setCameraPositionBeforeLockRotation(gg::Vector3f vector){
     cameraPositionBeforeLockRotation = vector;
 }
-

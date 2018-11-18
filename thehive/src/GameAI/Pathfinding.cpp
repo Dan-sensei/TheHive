@@ -1,8 +1,8 @@
 #include "Pathfinding.hpp"
 #include <iostream>
-#include <cmath>
 #include "MeshImporter.hpp"
 #include "Singleton.hpp"
+#include <cmath>
 
 
 
@@ -57,7 +57,12 @@ Pathfinding::Pathfinding(){
         //AddConnection(10, 11);
 
         bool loaded = Singleton<MeshImporter>::Instance()->importNavmesh("assets/NavMeshes/Test.obj", GRAPH, GConnections);
-
+        for(uint16_t i = 0; i < GConnections.size(); ++i){
+            for(uint16_t j = 0; j < GConnections[i].size(); ++j){
+                if(GConnections[i][j].Value == 0)
+                    GConnections[i][j].Value = calculateDist(GConnections[i][j].From, GConnections[i][j].To);
+            }
+        }
 
         std::cout << "GRAPH CREATED!" << '\n';
 
@@ -70,7 +75,7 @@ Pathfinding::Pathfinding(){
         for(uint16_t i = 0; i < GConnections.size(); ++i){
             std::cout << "[" << i << "] => ";
             for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-                std::cout << GConnections[i][j].Name << " ";
+                std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
             }
             std::cout << '\n';
         }
@@ -84,14 +89,19 @@ Pathfinding::~Pathfinding(){
 
 }
 
+float Pathfinding::calculateDist(uint16_t N1, uint16_t N2){
+    float IncX = GRAPH[N2].X - GRAPH[N1].X;
+    float IncY = GRAPH[N2].Y - GRAPH[N1].Y;
+    return sqrt(IncX*IncX + IncY*IncY);
+}
 
 void Pathfinding::AddConnection(uint16_t From, uint16_t To){
-    float IncX = GRAPH[To].X - GRAPH[From].X;
-    float IncY = GRAPH[To].Y - GRAPH[From].Y;
-    float Value = sqrt(IncX*IncX + IncY*IncY);
-    std::string Name = std::to_string(From) + std::to_string(To);
-    Connection newC(From, To, Value, Name);
-    GConnections[From].push_back(newC);
+    //float IncX = GRAPH[To].X - GRAPH[From].X;
+    //float IncY = GRAPH[To].Y - GRAPH[From].Y;
+    //float Value = sqrt(IncX*IncX + IncY*IncY);
+    //std::string Name = std::to_string(From) + std::to_string(To);
+    //Connection newC(From, To, Value, Name);
+    //GConnections[From].push_back(newC);
 }
 
 
