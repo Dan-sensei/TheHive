@@ -143,8 +143,8 @@ void GameEngine::setCursorPosition(int x, int y){
 
 // Para debuggear
 void GameEngine::draw3DLine(const gg::Vector3f &_start, const gg::Vector3f &_finish, const float _color[4]){
-    irr::core::vector3df start(_start.X,_start.Y,_start.Z);
-    irr::core::vector3df finish(_finish.X,_finish.Y,_finish.Z);
+    irr::core::vector3df start(_start.Z,_start.Y,_start.X);
+    irr::core::vector3df finish(_finish.Z,_finish.Y,_finish.X);
     irr::video::SColor color(_color[0],_color[1],_color[2],_color[3]);
 
     driver->draw3DLine(start,finish,color);

@@ -41,55 +41,88 @@ void CRigidBody::initializeComponentData(const void* data){
                 return;
             }
 
-            // TODO:
-            //      Cambio a bucle, por si fileLoader carga distintos cuerpos de colisiones?
+            std::cout << fileLoader->getNumCollisionShapes() << '\n';
+            // std::cout << fileLoader->getNumRigidBodies() << '\n';
             btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
             body = btRigidBody::upcast(obj);
             shape = body->getCollisionShape();
 
+            transform = obj->getWorldTransform();
+
+            transform.setOrigin(btVector3(cData->x,cData->y,cData->z));
+            myMotionState = new btDefaultMotionState(transform);
+            body->setMotionState(myMotionState);
+
+            // Hago pushback en el vector de 'shapes'
+            world->addShape(shape);
+
+            // MASS!=0 ---> RIGIDBODY ES DINAMICO
+            // MASS==0 ---> RIGIDBODY ES ESTATICO
+            btScalar mass(cData->mass);
+            bool isDynamic = (mass != 0.f);
+            btVector3 localInertia;
+            if (isDynamic)
+            shape->calculateLocalInertia(mass, localInertia);
+
+            // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
+            // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
+            body = new btRigidBody(rbInfo);
+
+            world->removeCollisionObject(obj);
+            delete obj;
             delete fileLoader;
+
+            // We apply the gravity of the world
+            // body->setGravity(btVector3(0,-10,0));
+            // body->applyGravity();
+
+            if(cData->friction){
+                body->setFriction(btScalar(cData->friction));
+            }
+
+            world->setGravity(0,-200,0);
+
+            // Add the body to the dynamics world
+            world->addRigidBody(body);
+
         }
         else{
             shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
-        }
 
-        // AQUI SE DEFINEN LAS DIMENSIONES
-        // shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
+            transform.setIdentity();
+            transform.setOrigin(btVector3(cData->x,cData->y,cData->z));
+            myMotionState = new btDefaultMotionState(transform);
 
-        // Hago pushback en el vector de 'shapes'
-        world->addShape(shape);
+            // Hago pushback en el vector de 'shapes'
+            world->addShape(shape);
 
-        // AQUI SE DEFINE LA POSICION
-        transform.setIdentity();
-        transform.setOrigin(btVector3(cData->x,cData->y,cData->z));
-
-        // MASS!=0 ---> RIGIDBODY ES DINAMICO
-        // MASS==0 ---> RIGIDBODY ES ESTATICO
-        btScalar mass(cData->mass);
-        bool isDynamic = (mass != 0.f);
-        // btVector3 localInertia(cData->iX,cData->iY,cData->iZ);
-        btVector3 localInertia;
-        if (isDynamic)
+            // MASS!=0 ---> RIGIDBODY ES DINAMICO
+            // MASS==0 ---> RIGIDBODY ES ESTATICO
+            btScalar mass(cData->mass);
+            bool isDynamic = (mass != 0.f);
+            btVector3 localInertia;
+            if (isDynamic)
             shape->calculateLocalInertia(mass, localInertia);
 
-        // // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
-        // // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-        myMotionState = new btDefaultMotionState(transform);
-        btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
-        body = new btRigidBody(rbInfo);
+            // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
+            // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
+            body = new btRigidBody(rbInfo);
 
-        // We apply the gravity of the world
-        // body->setGravity(btVector3(0,-10,0));
-        // body->applyGravity();
-        world->setGravity(0,-200,0);
+            // We apply the gravity of the world
+            // body->setGravity(btVector3(0,-10,0));
+            // body->applyGravity();
 
-        if(cData->friction){
-            body->setFriction(btScalar(cData->friction));
+            if(cData->friction){
+                body->setFriction(btScalar(cData->friction));
+            }
+
+            world->setGravity(0,-200,0);
+
+            // Add the body to the dynamics world
+            world->addRigidBody(body);
         }
-
-
-        // Add the body to the dynamics world
-        world->addRigidBody(body);
     }
 
     //  Inicializar punteros a otras compnentes
