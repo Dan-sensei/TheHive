@@ -5,7 +5,6 @@ OBJECTS := $(subst .cpp,.o,$(SOURCES))
 #mv $(OBJECTS) build
 ejecutable: $(OBJECTS)
 	g++ -o $@ $^
-	./$@
 
 #GENERALIZACION PARA CUALQUIER .o
 #PARA ESTE CASO! CADA .o DEPENDE DE SOLO UN .cpp QUE SE LLAMA IGUAL
@@ -13,7 +12,7 @@ ejecutable: $(OBJECTS)
 	g++ -o $@ -c $^
 
 clean:
-	rm $(OBJECTS)
+	@rm $(OBJECTS)
 
 #COMO UN ECHO/PRINT
 #LLAMARLO COMO make info

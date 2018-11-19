@@ -1,11 +1,11 @@
-#ifndef RANDOMSELECTOR_HPP
-#define RANDOMSELECTOR_HPP
+#ifndef RANDOMSEQUENCE_HPP
+#define RANDOMSEQUENCE_HPP
 
 #include "Composite.hpp"
 #include <cstdint>
 #include <iostream>
 
-class RandomSelector : public Composite{
+class RandomSequence : public Composite{
 //public:
  //Status update();
 protected:
