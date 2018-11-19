@@ -14,6 +14,7 @@
 
 #include "ComponentArch/Components/CAgent.hpp"
 #include <EventSystem/EnumTriggerType.hpp>
+#include "GameAI/Pathfinding.hpp"
 
 #include "EventSystem/CTriggerSystem.hpp"
 
@@ -21,6 +22,7 @@
 
 
 #define MOVEMENT_SPEED 1.f
+
 
 //Funciones de Fran Gallego para imprimir memoria por consola ==============================¬
 //                                                                                          |
@@ -127,21 +129,23 @@ void Game::RUN(){
     //add inf triggers
     EventSystem->RegisterTriger(kTrig_Gunfire,  1,0,gg::Vector3f(100,5,50), 5, 0,false);
     // EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
+    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+
+
+
     {
+        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  100,80,0, -1,-1,-1, 50, 0,0,0);
         uint16_t hero = Manager->createEntity();
-        Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-        Material pipaDeLos90("assets/Textures/arma.jpeg");
-        InitCTransform CTransformInitData(0, 4, 0, 0, 0, 0);
+        InitCTransform CTransformInitData(0, 0, 10, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/Cube.obj", moradoDeLos80);
-        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  50,5,0, -1,-1,-1, 50, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
         Manager->addComponentToEntity(gg::CAMERA, hero);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, hero, &CRenderable_3DInitData);
         Manager->addComponentToEntity(gg::RIGID_BODY, hero, &CRigidBodyHero);
-        Manager->addComponentToEntity(gg::KEYBOARD, hero);
+        Manager->addComponentToEntity(gg::PLAYERCONTROLLER, hero);
 
         InitCAgent agentHero(kTrig_Gunfire|kTrig_Explosion);
-        Manager->addComponentToEntity(gg::CAGENT, hero, &agentHero);
+        Manager->addComponentToEntity(gg::AGENT, hero, &agentHero);
 
         // ---------------------------------------
 
@@ -175,6 +179,10 @@ void Game::RUN(){
         // Manager->addComponentToEntity(gg::TRANSFORM, cube3, &CTransformCube3);
         // Manager->addComponentToEntity(gg::RENDERABLE_3D, cube3, &CRenderableCube3);
         //
+
+        //    Material pipaDeLos90("assets/Textures/arma.jpeg");
+
+
         // // Entidad tipo arma
         // // En cuanto pasa el heroe por encima, se le anyade una componente arma, si no la tiene
         // uint16_t Arma1 = Manager->createEntity();
@@ -191,12 +199,28 @@ void Game::RUN(){
         Material yelo("assets/Textures/ice.bmp");
         InitCTransform CTransformTraining(0,0,0,0,0,0);
         InitCRenderable_3D InitTrainingArea("assets/Models/prueba.obj", yelo);
-        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/prueba.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0, 0.2);
-        // InitCRigidBody CRigidBodyTraining(false,"",  0,0,0, 200,2,200, 0, 0,0,0, 0.7);
+        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/prueba.bullet",  100,75,0, -1,-1,-1, 0, 0,0,0, 0.2);
         Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
         Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
+
+        uint16_t Actor1 = Manager->createEntity();
+        Material Blue("assets/Textures/Blue.png");
+        InitCTransform Actor1Transform(-100,0,0,0,0,0);
+        InitCRenderable_3D CRenderableCube1("assets/Models/Actor.obj", Blue);
+        Manager->addComponentToEntity(gg::TRANSFORM, Actor1, &Actor1Transform);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, Actor1, &CRenderableCube1);
+        //Manager->addComponentToEntity(gg::PATHFINDING, Actor1);
     }
+
+     {
+         Material Wireframe("assets/NavMeshes/Navmesh.png");
+         uint16_t Navmesh = Manager->createEntity();
+         InitCTransform init(0,0,0,0,0,0);
+         InitCRenderable_3D InitTrainingArea("assets/NavMeshes/Test.obj", Wireframe);
+         Manager->addComponentToEntity(gg::TRANSFORM, Navmesh, &init);
+         Manager->addComponentToEntity(gg::RENDERABLE_3D, Navmesh, &InitTrainingArea);
+     }
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -210,12 +234,19 @@ void Game::RUN(){
     // std::cout << "BEGIN GAME LOOP" << '\n';
     world->setDebug(false);
     while(Engine->isWindowOpen()) {
+
         world->stepSimulation(1.f / 60.f, 10.f);
 
         EventSystem->Update();
+
+        Engine->BeginDro();
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
         Engine->Dro();
         Engine->DisplayFPS();
+        Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+        Singleton<Pathfinding>::Instance()->DroNodes();
+
+        Engine->EndDro();
     }
 }
 

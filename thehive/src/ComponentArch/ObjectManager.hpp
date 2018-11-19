@@ -14,6 +14,8 @@
 #include "Components/CRigidBody.hpp"
 #include "Components/CGranade.hpp"
 #include "Components/CGun.hpp"
+#include "Components/CPathfinding.hpp"
+
 
 #include <stack>
 #include <map>
@@ -101,13 +103,14 @@ class ObjectManager{
         //  component type
         //========================================================================
         IComponent* createTransformComponent        ();
-        IComponent* createKeyboardComponent         ();
+        IComponent* createPlayerControllerComponent ();
         IComponent* createRenderable_3DComponent    ();
         IComponent* createCameraComponent           ();
         IComponent* createAgentComponent            ();
         IComponent* createRigidBodyComponent        ();
         IComponent* createGranadeComponent          ();
         IComponent* createGunComponent              ();
+        IComponent* createPathfindingComponent      ();
 
 
         using pConstructor = IComponent* (ObjectManager::*)(void);

@@ -23,17 +23,21 @@ void GameEngine::Starto(){
 //  ---
 //  Draws the complete scene. If the windows is not active, CPU usage is decreased
 //==================================================================================
-void GameEngine::Dro(){
+void GameEngine::BeginDro(){
     if (device->isWindowActive())
     {
         driver->beginScene(true, true, irr::video::SColor(255,255,255,255));
-        smgr->drawAll();
-            Singleton<ggDynWorld>::Instance()->debugDrawWorld();
-            // Singleton<ggDynWorld>::Instance()->debugRaycast();
-        driver->endScene();
     }
     else
         device->yield();
+}
+
+void GameEngine::Dro(){
+    smgr->drawAll();
+}
+
+void GameEngine::EndDro(){
+    driver->endScene();
 }
 
 //  ---
@@ -173,4 +177,12 @@ bool GameEngine::key(gg::KEYCODES keyCode){
 //==================================================================================
 void GameEngine::clean(){
     device->drop();
+}
+
+void GameEngine::Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target) {
+    irr::video::SMaterial m;
+    m.Lighting = false;
+    driver->setMaterial(m);
+    driver->setTransform(irr::video::ETS_WORLD, irr::core::matrix4());
+    driver->draw3DLine(irr::core::vector3df(Origin.X, Origin.Y, Origin.Z), irr::core::vector3df(Target.X, Target.Y, Target.Z), irr::video::SColor(10, 10, 255, 1));
 }

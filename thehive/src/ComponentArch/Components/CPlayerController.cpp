@@ -28,8 +28,8 @@ CPlayerController::~CPlayerController() {
 }
 
 void CPlayerController::initComponent() {
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::KEYBOARD, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::KEYBOARD, gg::M_SETPTRS);
+    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::PLAYERCONTROLLER, gg::M_UPDATE);
+    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::PLAYERCONTROLLER, gg::M_SETPTRS);
 
 }
 
@@ -166,7 +166,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         gg::Vector3f gPos = cTransform->getPosition();
         gg::Vector3f from = gPos;
         gg::Vector3f to = world->getRaycastVector();
-        
+
         gg::Vector3f vel=to-from;
         vel = gg::Normalice(vel);
 

@@ -25,7 +25,9 @@ class GameEngine{
         ~GameEngine();
 
         void Starto();
+        void BeginDro();
         void Dro();
+        void EndDro();
         bool isWindowOpen();
         void DisplayFPS();
 
@@ -47,7 +49,10 @@ class GameEngine{
         int getCursorY();
         void setCursorPosition(int,int);
 
+
         void draw3DLine(const gg::Vector3f&, const gg::Vector3f&, const float[4]);
+        void Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target);
+
 
         //  ---
         //  Creates and returns a model object. It optionally accepts a position

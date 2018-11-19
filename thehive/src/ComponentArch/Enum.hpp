@@ -5,13 +5,17 @@ namespace gg{
 
     enum EComponentType{
         TRANSFORM = 0,
-        KEYBOARD,
+        PLAYERCONTROLLER,
         RENDERABLE_3D,
         CAMERA,
         RIGID_BODY,
-        CAGENT,
+        AGENT,
         GRANADE,
         GUN,
+        PATHFINDING,
+        //HEALTH,
+        //RESPECT,
+        //DANINOSABEPROGRAMAR
         NUM_COMPONENTS
     };
 
