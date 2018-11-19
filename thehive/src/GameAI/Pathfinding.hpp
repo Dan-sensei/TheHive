@@ -21,12 +21,15 @@ class Pathfinding{
         ~Pathfinding();
 
         void AddConnection(uint16_t From, uint16_t To);
-        float calculateDist(uint16_t N1, uint16_t N2);
-        void A_Estrella(uint16_t GOAL, std::stack<gg::Vector3f> &Output);
+        void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
+        void A_Estrella2(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
+        void resetGraph();
         float CalculateHeuristic();
         void print();
 
         void DroNodes();
+
+        uint16_t getGraphSize();
 
     private:
         Pathfinding();

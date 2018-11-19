@@ -213,14 +213,14 @@ void Game::RUN(){
         //Manager->addComponentToEntity(gg::PATHFINDING, Actor1);
     }
 
-     {
-         Material Wireframe("assets/NavMeshes/Navmesh.png");
-         uint16_t Navmesh = Manager->createEntity();
-         InitCTransform init(0,0,0,0,0,0);
-         InitCRenderable_3D InitTrainingArea("assets/NavMeshes/Test.obj", Wireframe);
-         Manager->addComponentToEntity(gg::TRANSFORM, Navmesh, &init);
-         Manager->addComponentToEntity(gg::RENDERABLE_3D, Navmesh, &InitTrainingArea);
-     }
+    {
+        Material Wireframe("assets/NavMeshes/Navmesh.png");
+        uint16_t Navmesh = Manager->createEntity();
+        InitCTransform init(0,0,0,0,0,0);
+        InitCRenderable_3D InitTrainingArea("assets/NavMeshes/Test.obj", Wireframe);
+        Manager->addComponentToEntity(gg::TRANSFORM, Navmesh, &init);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, Navmesh, &InitTrainingArea);
+    }
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -243,6 +243,7 @@ void Game::RUN(){
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
         Engine->Dro();
         Engine->DisplayFPS();
+
         Singleton<ggDynWorld>::Instance()->debugDrawWorld();
         Singleton<Pathfinding>::Instance()->DroNodes();
 

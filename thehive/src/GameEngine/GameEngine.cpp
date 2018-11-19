@@ -179,10 +179,11 @@ void GameEngine::clean(){
     device->drop();
 }
 
-void GameEngine::Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target) {
+void GameEngine::Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, uint16_t Color[4]) {
     irr::video::SMaterial m;
     m.Lighting = false;
+    m.Thickness = 5;
     driver->setMaterial(m);
     driver->setTransform(irr::video::ETS_WORLD, irr::core::matrix4());
-    driver->draw3DLine(irr::core::vector3df(Origin.X, Origin.Y, Origin.Z), irr::core::vector3df(Target.X, Target.Y, Target.Z), irr::video::SColor(10, 10, 255, 1));
+    driver->draw3DLine(irr::core::vector3df(Origin.X, Origin.Y, Origin.Z), irr::core::vector3df(Target.X, Target.Y, Target.Z), irr::video::SColor(Color[0], Color[1], Color[2], Color[3]));
 }

@@ -27,9 +27,9 @@ $(EXE): $(OBJECTS)
 $(OBJECTS): $(BUILD)%.o : %.cpp
 	 @mkdir -p ${@D}
 
+	@$(COMPILER) -g -o $@ -c $< $(ADDITIONAL_H)
 	$(call printInfo, "-Compiling")
 	$(call printObj, $^)
-	@$(COMPILER) -g -o $@ -c $< $(ADDITIONAL_H)
 	$(call printSuccess,  "[OK]")
 	$(call br)
 

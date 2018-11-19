@@ -51,7 +51,7 @@ class GameEngine{
 
 
         void draw3DLine(const gg::Vector3f&, const gg::Vector3f&, const float[4]);
-        void Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target);
+        void Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, uint16_t Color[4]);
 
 
         //  ---

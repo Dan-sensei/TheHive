@@ -31,6 +31,21 @@ Node::Node(const Node &orig){
     Position        =   orig.Position;
 }
 
+//  WAYPOINT
+Waypoint::Waypoint()
+:ID(0)
+{}
+
+Waypoint::Waypoint(const gg::Vector3f &_Position, uint16_t _ID){
+    Position = _Position;
+    ID = _ID;
+}
+
+Waypoint::Waypoint(const Waypoint &orig){
+    Position = orig.Position;
+    ID = orig.ID;
+}
+
 std::ostream& operator<<(std::ostream& os, const Node &N){
     os << "(" << N.Position.X<< "," << N.Position.Y << "," << N.Position.Z << ")";
     return os;

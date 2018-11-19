@@ -82,12 +82,15 @@ namespace gg{
         float X, Y, Z;
         Vector3f operator+ (const Vector3f &v1);
         Vector3f operator- (const Vector3f &v1);
-        Vector3f operator* (const float &v1);
+        Vector3f operator* (const float &multiplier);
         Vector3f operator* (const Vector3f &v1);
+        Vector3f operator/ (const float &divider);
+
         void operator+= (const Vector3f &v1);
         void operator-= (const Vector3f &v1);
         void operator*= (const float &v1);
         void operator*= (const Vector3f &v1);
+        void operator/= (const float &divider);
     };
 
 
@@ -110,6 +113,9 @@ namespace gg{
 
     template <typename T>
     T operator+=(const T &v1, const T &v2);
+
+    float genFloatRandom(float min, float max);
+    uint16_t genIntRandom(uint16_t min, uint16_t max);
 
 };
 

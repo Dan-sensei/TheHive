@@ -8,7 +8,7 @@
 #include <cmath>
 
 CPathfinding::CPathfinding()
-:cTransform(nullptr)
+:cTransform(nullptr), currentWaypointID(0)
 {
 
 }
@@ -47,33 +47,36 @@ gg::EMessageStatus CPathfinding::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-#define SPEED 1.f
+#define SPEED 0.8f
 
 gg::EMessageStatus CPathfinding::MHandler_UPDATE(){
 
     if(Waypoints.empty()){
-        std::cout << "GENEEATING WAYPOINTS" << '\n';
-        Singleton<Pathfinding>::Instance()->A_Estrella(6, Waypoints);
-        std::cout << "Waypoints " << Waypoints.size() << '\n';
+        Singleton<Pathfinding>::Instance()->resetGraph();
+        std::cout << "GENERATING WAYPOINTS" << '\n';
+        uint16_t target = gg::genIntRandom(0, Singleton<Pathfinding>::Instance()->getGraphSize());
+        std::cout << "CurrentWaypointID = " << currentWaypointID << " | Target = " << target << '\n';
+        Singleton<Pathfinding>::Instance()->A_Estrella(currentWaypointID, target, Waypoints);
+        std::cout << "Waypoints " << Waypoints.size() << '\n' << '\n';
+        std::cout << "-----------------------------------------------" << '\n';
     }
     else{
 
+        gg::Vector3f moveVector = Waypoints.top().Position - cTransform->getPosition();
 
-        gg::Vector3f moveVector = gg::Vector3f(Waypoints.top().X - cTransform->getPosition().X, Waypoints.top().Y - cTransform->getPosition().Y,Waypoints.top().Z - cTransform->getPosition().Z);
-        float modulo= sqrt(moveVector.X*moveVector.X + moveVector.Y*moveVector.Y + moveVector.Z*moveVector.Z);
+        float modulo= gg::Modulo(moveVector);
 
-        if(modulo <= SPEED){
+        if(modulo <= 3) {
+            currentWaypointID = Waypoints.top().ID;
             Waypoints.pop();
             return gg::ST_TRUE;
         }
 
-        moveVector.X=(moveVector.X/modulo)*SPEED;
-        moveVector.Y=(moveVector.Y/modulo)*SPEED;
-        moveVector.Z=(moveVector.Z/modulo)*SPEED;
+        moveVector = (moveVector / modulo) * SPEED;
 
-        gg::Vector3f nextPosition = gg::Vector3f(cTransform->getPosition().X+moveVector.X, cTransform->getPosition().Y+moveVector.Y, cTransform->getPosition().Z+moveVector.Z);
+
+        gg::Vector3f nextPosition = cTransform->getPosition() + moveVector;
         cTransform->setPosition(nextPosition);
-
     }
 
 

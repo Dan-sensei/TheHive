@@ -1,5 +1,6 @@
 #include "Util.hpp"
 #include <math.h>
+#include <random>
 
 
 //gg::Vector3u8::Vector3u8(uint8_t _X, uint8_t _Y, uint8_t _Z)
@@ -99,6 +100,11 @@ void gg::Vector3f::operator*= ( const Vector3f &v1){
     Y*=v1.Y;
     Z*=v1.Z;
 }
+void gg::Vector3f::operator/= ( const float &divider){
+    X/=divider;
+    Y/=divider;
+    Z/=divider;
+}
 
 
 void gg::Vector3f::operator*= ( const float &v1){
@@ -106,11 +112,14 @@ void gg::Vector3f::operator*= ( const float &v1){
     Y*=v1;
     Z*=v1;
 }
-gg::Vector3f gg::Vector3f::operator* ( const Vector3f &v1){
+gg::Vector3f gg::Vector3f::operator* ( const Vector3f &v1) {
     return Vector3f( v1.X*X,v1.Y*Y,v1.Z*Z);
 }
-gg::Vector3f gg::Vector3f::operator* ( const float &v1){
+gg::Vector3f gg::Vector3f::operator* ( const float &v1) {
     return Vector3f( v1*X,v1*Y,v1*Z);
+}
+gg::Vector3f gg::Vector3f::operator/ ( const float &divider) {
+    return Vector3f( X/divider, Y/divider, Z/divider);
 }
 
 template <typename T>
@@ -145,6 +154,24 @@ gg::Vector3f gg::Normalice<gg::Vector3f>(gg::Vector3f v1){
     v1.Y=v1.Y/modulo;
     v1.Z=v1.Z/modulo;
     return v1;
+}
+
+float gg::genFloatRandom(float min, float max){
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+
+    std::uniform_real_distribution<float> distribution(min, max);
+
+    return distribution(gen);
+}
+
+uint16_t gg::genIntRandom(uint16_t min, uint16_t max){
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+
+    std::uniform_int_distribution<int> distribution(min, max);
+
+    return distribution(gen);
 }
 
 

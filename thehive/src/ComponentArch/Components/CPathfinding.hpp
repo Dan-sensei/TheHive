@@ -4,6 +4,7 @@
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
+#include <GameAI/NavmeshStructs.hpp>
 #include <Util.hpp>
 #include <stack>
 
@@ -30,8 +31,8 @@ class CPathfinding : public IComponent {
         CPathfinding();
         CPathfinding(const CPathfinding &orig) = delete;
 
-        std::stack<gg::Vector3f> Waypoints;
-
+        std::stack<Waypoint> Waypoints;
+        uint16_t currentWaypointID;
 
         CTransform* cTransform;
         GameEngine* engine;
