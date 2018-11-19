@@ -59,6 +59,11 @@ CRigidBody::~CRigidBody() {
         // fileLoader = nullptr;
         // --------------------
     }
+    else{
+        // Cuando no carga desde fichero
+        // Borrar la boxshape que se ha creado
+        delete shape;
+    }
 }
 
 void CRigidBody::initComponent() {
