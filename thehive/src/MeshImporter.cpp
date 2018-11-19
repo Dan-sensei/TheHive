@@ -85,7 +85,7 @@ bool MeshImporter::importNavmesh(
                 Edges.push_back(NewEdge);
         }
 
-        GRAPH.emplace_back(j, X/Face.mNumIndices, Y/Face.mNumIndices, Z/Face.mNumIndices);
+        GRAPH.emplace_back(j, -X/Face.mNumIndices, Y/Face.mNumIndices, Z/Face.mNumIndices);
     }
 
     if(false) {

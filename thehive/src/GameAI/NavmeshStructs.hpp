@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 #include <iostream>
+#include <Util.hpp>
 
 enum Type{
     OPEN = 0,
@@ -31,7 +32,7 @@ struct Node{
     float RealCost;
     float Heuristic;
     float EstimatedCost;
-    float X, Y, Z;
+    gg::Vector3f Position;
     Type Status;
 };
 

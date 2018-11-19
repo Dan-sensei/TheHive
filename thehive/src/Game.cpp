@@ -14,10 +14,12 @@
 
 #include "EventSystem/Agent.hpp"
 #include "EventSystem/GameState.hpp"
+#include "GameAI/Pathfinding.hpp"
 
 
 
 #define MOVEMENT_SPEED 1.f
+
 
 //Funciones de Fran Gallego para imprimir memoria por consola ==============================¬
 //                                                                                          |
@@ -59,67 +61,10 @@ Game::~Game(){
 
 void Game::RUN(){
 
-
-
-    //
-    CAgent* pAgent=NULL;
-    CAgent* pAgent1=NULL;
-    CAgent* pAgent2=NULL;
-    CAgent* pAgent3=NULL;
-    CAgent* pAgent4=NULL;
-
-    pAgent=new CAgent(kTrig_Gunfire,gg::Vector3f(4,5,0));
-    CAgent::hola.push_back(pAgent);
-    std::cout << "Id agente 1:"<<pAgent->nCAgentID << std::endl;
-    pAgent1=new CAgent(kTrig_EnemyNear,gg::Vector3f(3,2,0));
-    CAgent::hola.push_back(pAgent1);
-    std::cout << "Id agente 1:"<<pAgent1->nCAgentID << std::endl;
-
-    pAgent2=new CAgent(kTrig_EnemyNear,gg::Vector3f(77,77,0));
-    CAgent::hola.push_back(pAgent2);
-    std::cout << "Id agente 1:"<<pAgent2->nCAgentID << std::endl;
-
-    pAgent3=new CAgent(kTrig_Gunfire,gg::Vector3f());
-    CAgent::hola.push_back(pAgent3);
-    std::cout << "Id agente 1:"<<pAgent3->nCAgentID << std::endl;
-
-    pAgent4=new CAgent(kTrig_EnemyNear|kTrig_Gunfire,gg::Vector3f(77,77,0));
-    CAgent::hola.push_back(pAgent4);
-    std::cout << "Id agente 1:"<<pAgent4->nCAgentID << std::endl;
-
-    CAgent::hola.size();
-    TriggerRecordStruct(kTrig_Explosion,6, gg::Vector3f(),4,2,false);
-    CTriggerSystem* sistemita = Singleton<CTriggerSystem>::Instance();
-    unsigned long id_puesto=sistemita->RegisterTriger(kTrig_Gunfire,3,0,gg::Vector3f(), 10, 2,false);
-    id_puesto=sistemita->RegisterTriger(kTrig_EnemyNear,1,0,gg::Vector3f(), 150, 2,false);
-    sistemita->Update();
-    sistemita->RemoveTrigger(id_puesto);
-
-                        //(EnumTriggerType _eTriggerType,unsigned long _idSource,const Vector _vPos,float _fRadius,
-                          //                  unsigned long _fDuration,bool _bDynamicSourcePos);
-    irr::core::list<CAgent*>::Iterator it =CAgent::hola.begin();
-
-    while(it!=CAgent::hola.end()){
-      std::cout << "Entre" << std::endl;
-
-      it++;
-    }
-    delete pAgent;
-    delete pAgent1;
-    delete pAgent2;
-    delete pAgent3;
-    delete pAgent4;
-    //
     Engine->createCamera(gg::Vector3f(0, 0, 0), gg::Vector3f(0, 0, 50));
-    // Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
-    ////camera.setPosition(gg::Vector3f(-50, 0, 100));
-    ////camera.setTarget(gg::Vector3f(0, 0, 50));
-
-    //uint8_t* p;
-
     {
-        uint16_t hero = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+        uint16_t hero = Manager->createEntity();
         InitCTransform CTransformInitData(0, 0, 10, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/obradearte/algo.obj", moradoDeLos80);
         Manager->addComponentToEntity(gg::TRANSFORM, hero, &CTransformInitData);
@@ -136,11 +81,29 @@ void Game::RUN(){
         //Manager->removeEntity(cube1);
     }
 
+    //{
+    //    Material AgujeroNegro("assets/Textures/ice.bmp");
+    //    InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea.obj", AgujeroNegro);
+    //    uint16_t TrainingArea = Manager->createEntity();
+    //    Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
+    //}
     {
-        Material AgujeroNegro("assets/Textures/ice.bmp");
-        InitCRenderable_3D InitTrainingArea("assets/Models/TrainingArea.obj", AgujeroNegro);
-        uint16_t TrainingArea = Manager->createEntity();
-        Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
+        uint16_t Actor1 = Manager->createEntity();
+        Material Blue("assets/Textures/Blue.png");
+        InitCTransform Actor1Transform(0,0,0,0,0,0);
+        InitCRenderable_3D CRenderableCube1("assets/Models/Actor.obj", Blue);
+        Manager->addComponentToEntity(gg::TRANSFORM, Actor1, &Actor1Transform);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, Actor1, &CRenderableCube1);
+        Manager->addComponentToEntity(gg::PATHFINDING, Actor1);
+    }
+
+    {
+        Material Wireframe("assets/NavMeshes/Navmesh.png");
+        uint16_t Navmesh = Manager->createEntity();
+        InitCTransform init(0,0,0,0,0,0);
+        InitCRenderable_3D InitTrainingArea("assets/NavMeshes/Test.obj", Wireframe);
+        Manager->addComponentToEntity(gg::TRANSFORM, Navmesh, &init);
+        Manager->addComponentToEntity(gg::RENDERABLE_3D, Navmesh, &InitTrainingArea);
     }
 
     // Print memory
@@ -160,7 +123,8 @@ void Game::RUN(){
         Manager->sendMessageToAllEntities(gg::M_UPDATE);
         Engine->Dro();
         Engine->DisplayFPS();
-        Engine->Draw3DLine(gg::Vector3f(0, 20, 0), gg::Vector3f(100, 20, 0));
+
+        Singleton<Pathfinding>::Instance()->DroNodes();
 
         Engine->EndDro();
     }

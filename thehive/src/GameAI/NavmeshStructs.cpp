@@ -14,10 +14,10 @@ Connection::Connection(const Connection &orig) {
 
 //  NODE    --
 Node::Node()
-:ID(UINT16_MAX), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED), X(0.f), Y(0.f), Z(0.f)
+:ID(UINT16_MAX), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED)
 {}
 Node::Node(uint16_t _ID, float _X, float _Y, float _Z)
-:ID(_ID), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED), X(_X), Y(_Y), Z(_Z)
+:ID(_ID), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED), Position(_X, _Y, _Z)
 {}
 
 Node::Node(const Node &orig){
@@ -28,12 +28,10 @@ Node::Node(const Node &orig){
     RealCost        =   orig.RealCost;
     EstimatedCost   =   orig.EstimatedCost;
     Status          =   orig.Status;
-    X               =   orig.X;
-    Y               =   orig.Y;
-    Z               =   orig.Z;
+    Position        =   orig.Position;
 }
 
 std::ostream& operator<<(std::ostream& os, const Node &N){
-    os << "(" << N.X<< "," << N.Y << "," << N.Z << ")";
+    os << "(" << N.Position.X<< "," << N.Position.Y << "," << N.Position.Z << ")";
     return os;
 }

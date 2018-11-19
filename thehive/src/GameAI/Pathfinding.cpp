@@ -3,7 +3,7 @@
 #include "MeshImporter.hpp"
 #include "Singleton.hpp"
 #include <cmath>
-
+#include <GameEngine/GameEngine.hpp>
 
 
 //  COMPARATOR
@@ -11,7 +11,6 @@ bool Comparator::operator()(const Node* N1, const Node* N2){
     return N1->RealCost > N2->RealCost;
 }
 
-#define GOAL 9
 Pathfinding::Pathfinding(){
 
         //  NODO A         ID   X  Y
@@ -81,18 +80,15 @@ Pathfinding::Pathfinding(){
         }
 }
 
-Pathfinding::Pathfinding(const Pathfinding &orig){
-
-}
-
 Pathfinding::~Pathfinding(){
 
 }
 
 float Pathfinding::calculateDist(uint16_t N1, uint16_t N2){
-    float IncX = GRAPH[N2].X - GRAPH[N1].X;
-    float IncY = GRAPH[N2].Y - GRAPH[N1].Y;
-    return sqrt(IncX*IncX + IncY*IncY);
+    float IncX = GRAPH[N2].Position.X - GRAPH[N1].Position.X;
+    float IncY = GRAPH[N2].Position.Y - GRAPH[N1].Position.Y;
+    float IncZ = GRAPH[N2].Position.Z - GRAPH[N1].Position.Z;
+    return sqrt(IncX*IncX + IncY*IncY + IncZ*IncZ);
 }
 
 void Pathfinding::AddConnection(uint16_t From, uint16_t To){
@@ -106,7 +102,7 @@ void Pathfinding::AddConnection(uint16_t From, uint16_t To){
 
 
 
-void Pathfinding::A_Estrella(){
+void Pathfinding::A_Estrella(uint16_t GOAL, std::stack<gg::Vector3f> &Output){
 
     GRAPH[0].Status = Type::OPEN;
     OpenList.push(&GRAPH[0]);
@@ -155,9 +151,12 @@ void Pathfinding::A_Estrella(){
     }
     else{
         std::vector<Connection> path;
+        std::stack<gg::Vector3f> Clin;
+        Output.swap(Clin);
         while(CurrentNode->ID != 0){
             path.push_back(CurrentNode->Bitconnect);
             //std::cout << CurrentNode.Bitconnect.Name << " - ";
+            Output.push(GRAPH[CurrentNode->Bitconnect.To].Position);
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
         }
 
@@ -167,8 +166,6 @@ void Pathfinding::A_Estrella(){
         while(i--) std::cout << path[i].Name << '-';
 
         std::cout << '\n';
-
-
     }
 
     printStats();
@@ -196,4 +193,13 @@ void Pathfinding::printStats(){
     std::cout << "OPEN:      " << OPEN << '\n';
     std::cout << "CLOSED:    " << CLOSED << '\n';
     std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
+}
+
+
+void Pathfinding::DroNodes(){
+    uint8_t i = GRAPH.size();
+    while(i--){
+        Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + 50, GRAPH[i].Position.Z));
+
+    }
 }

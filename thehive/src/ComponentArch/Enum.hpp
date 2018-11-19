@@ -8,6 +8,7 @@ namespace gg{
         KEYBOARD,
         RENDERABLE_3D,
         CAMERA,
+        PATHFINDING,
         //HEALTH,
         //RESPECT,
         //DANINOSABEPROGRAMAR

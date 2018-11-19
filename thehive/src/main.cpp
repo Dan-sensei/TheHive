@@ -20,10 +20,6 @@
 
 int main(int argc, char const *argv[]) {
 
-    Pathfinding test;
-    //test.A_Estrella();
-    //return 0;
-
     Game THE_HIVE;
 
     THE_HIVE.RUN();

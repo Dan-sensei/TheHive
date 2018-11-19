@@ -16,10 +16,11 @@ ObjectManager::ObjectManager()
 {
     nextAvailableEntityID.push(1);
 
-    ComponentConstructorVector[0]= &ObjectManager::createTransformComponent;
-    ComponentConstructorVector[1]= &ObjectManager::createKeyboardComponent;
-    ComponentConstructorVector[2]= &ObjectManager::createRenderable_3DComponent;
-    ComponentConstructorVector[3]= &ObjectManager::createCameraComponent;
+    ComponentConstructorVector[gg::TRANSFORM]       =   &ObjectManager::createTransformComponent;
+    ComponentConstructorVector[gg::KEYBOARD]        =   &ObjectManager::createKeyboardComponent;
+    ComponentConstructorVector[gg::RENDERABLE_3D]   =   &ObjectManager::createRenderable_3DComponent;
+    ComponentConstructorVector[gg::CAMERA]          =   &ObjectManager::createCameraComponent;
+    ComponentConstructorVector[gg::PATHFINDING]     =   &ObjectManager::createPathfindingComponent;
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
 }
@@ -56,6 +57,7 @@ void ObjectManager::initObjectManager() {
     CKeyboard::initComponent();
     CRenderable_3D::initComponent();
     CCamera::initComponent();
+    CPathfinding::initComponent();
 }
 
 
@@ -208,6 +210,9 @@ IComponent* ObjectManager::createRenderable_3DComponent     ()   {
 }
 IComponent* ObjectManager::createCameraComponent            ()   {
     return new CCamera;
+}
+IComponent* ObjectManager::createPathfindingComponent            ()   {
+    return new CPathfinding;
 }
 //IComponent* ObjectManager::createColliderComponent     ();
 //IComponent* ObjectManager::createHealthComponent       ();
