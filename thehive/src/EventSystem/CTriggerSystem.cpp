@@ -74,6 +74,7 @@ void CTriggerSystem::Update()
     if( (pRec->nExpirationTime!=0)&&
         (pRec->nExpirationTime < ms))
         {
+            CAgent::deletetrig(pRec);
           delete(pRec);
           it=m_mapTriggerMap.erase(it);
 
@@ -94,7 +95,13 @@ void CTriggerSystem::Update()
   for(unsigned long i=0; i<CAgent::hola.size();++i)
   {
     pAgent=*it2;
-    //pAgent->SetNextTriggerUpdate(nCurTime);
+    //hacer update eliminar
+    pAgent->updatetrig();
+
+
+    //auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(nCurTime - pRec->nTimeStamp).count();
+    //if(pAgent->SetNextTriggerUpdate(nCurTime))...
+    //pAgent->SetNextTriggerUpdate(nCurTime);//usado para controlar el ratio de update
     //llop thru exixting trigger records
     //// std::cout << "agente" << pAgent->nCAgentID << "("<<pAgent->GetPosition().X<<"," <<pAgent->GetPosition().Y<<","<<pAgent->GetPosition().Z<<")"<< '\n';
     //// std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
@@ -122,7 +129,8 @@ void CTriggerSystem::Update()
       //to the trigger
       if(pAgent->HandleTrig(pRec))
       {
-          // // std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
+
+          //std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
 
         //Listen to highest priority trig at any instant
         break;

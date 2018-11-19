@@ -83,6 +83,12 @@ class ObjectManager{
         //========================================================================
         void clin();
 
+
+
+        //german gay
+        bool checkEvent(uint16_t EntityID, const Message &m);
+
+
     private:
         ObjectManager();
         ObjectManager(const ObjectManager &orig) = delete;

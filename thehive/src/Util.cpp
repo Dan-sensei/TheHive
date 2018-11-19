@@ -82,7 +82,7 @@ gg::Vector3f gg::Vector3f::operator+ ( const Vector3f &v1){
     return Vector3f( v1.X+X,v1.Y+Y,v1.Z+Z);
 }
 gg::Vector3f gg::Vector3f::operator- ( const Vector3f &v1){
-    return Vector3f( v1.X-X,v1.Y-Y,v1.Z-Z);
+    return Vector3f( X-v1.X,Y-v1.Y,Z-v1.Z);
 }
 void gg::Vector3f::operator+= ( const Vector3f &v1){
     X+=v1.X;

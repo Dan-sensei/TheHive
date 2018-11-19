@@ -25,6 +25,12 @@ class CTransform;           //  Forward declaration de otras componentes que inc
 class CAgent : public IComponent {
     friend class ObjectManager;                 // Con esto le decimos que sólo ObjectManager puede crear esta componente
     public:
+//TriggerRecordStruct holiis;
+        std::list  <TriggerRecordStruct*>  holiiis;
+
+//        void update();
+        static void deletetrig(TriggerRecordStruct* _pRec);
+
 
 
 
@@ -34,13 +40,22 @@ class CAgent : public IComponent {
         unsigned long dwTriggerFlags;
         unsigned long nDeltaTime;
         //gg::Vector3f vPos;
+        void updatetrig();
+
+        bool onTriggerEnter(TriggerRecordStruct* _pRec);
+        void onTriggerStay(TriggerRecordStruct* _pRec);
+        void onTriggerExit(TriggerRecordStruct* _pRec);
+
+
+
+
         void SetNextTriggerUpdate(unsigned long _nCurTime);//updatear cada x tiempo
         unsigned long  GetTriggerFlags();
         gg::Vector3f GetPosition();
         bool HandleTrig(TriggerRecordStruct* _pRec);//manejar el trigger
         void addAgent(CAgent* agente);
         void removeAgent(std::list <CAgent*>::iterator ite);
-        //uint16_t getEntityID();
+        //uint16_t getEntityID();upda
 
         virtual ~CAgent();
 

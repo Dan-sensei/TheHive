@@ -61,8 +61,8 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
         auto elapsedtime = end - begin; //The difference between both crhonos is the elapsed time
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count(); //Calculate the elapsed time as milisecons
 
-        if(ms>2000){  //we control the time that we want the granade to move
-            EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(currentPosition.X,currentPosition.Y,currentPosition.Z), 50, 100,false);
+        if(ms>1200){  //we control the time that we want the granade to move
+            EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(currentPosition.X,currentPosition.Y,currentPosition.Z), 40, 50,false);
 
             Manager->removeEntity(getEntityID());
         }

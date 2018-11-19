@@ -185,12 +185,33 @@ gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(const Message &m){
         TriggerRecordStruct* cdata=(TriggerRecordStruct*)m.mData;
         if(cTransform){
             //cTransform->getBodyPosition();//v1
+            //std::cout << "empieza" << '\n';
+            //gg::Vector3f v1=cTransform->getPosition();
+            //std::cout << "v1: "<< v1 << '\n';
+            //gg::Vector3f v2=cdata->vPos;
+            //std::cout << "v2: "<< v2 << '\n';
+
             //cdata->vPos;//v2
             float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
-            //float ratio=1-distancia/fRadius;
-            float fuerzabomba=46000;
-            gg::Vector3f sol = gg::Normalice(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
-            body->applyCentralForce(btVector3(sol.X,sol.Y,sol.Z));
+            ////float ratio=1-distancia/fRadius;
+            //std::cout << "distancia: "<<distancia << '\n';
+            //std::cout << "v1-v2: "<< v1-v2 << '\n';
+            //std::cout << "normalizado(v1-v2): "<< gg::Normalice(v1-v2) << '\n';
+            //gg::Vector3f v3=gg::Normalice(v1-v2);
+
+            //std::cout << "modv3: "<<gg::Modulo(v3)  << '\n';
+
+            //std::cout << "ratio: "<< (1-distancia/cdata->fRadius) << '\n';
+
+
+            float fuerzabomba=80000;
+            gg::Vector3f sol =
+            gg::Normalice(cTransform->getPosition()-cdata->vPos)
+            *fuerzabomba*
+            (1-distancia/cdata->fRadius);
+            applyCentralForce(sol);
+            //gg::Vector3f vect(33,66,99);
+//std::cout << vect << '\n';
             /*
             gg::Vector3f vect(33,66,99);
             gg::Vector3f vect2(33,66,99);

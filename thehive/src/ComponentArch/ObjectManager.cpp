@@ -1,4 +1,5 @@
 #include "ObjectManager.hpp"
+//#include "Enum.hpp"
 #include <iostream>
                      //  2^16
 #define MAX_ENTITIES 65536
@@ -187,6 +188,26 @@ void ObjectManager::sendMessageToEntity(uint16_t EntityID, const Message &m){
     }
 }
 
+bool ObjectManager::checkEvent(uint16_t EntityID, const Message &m){
+
+    // Same as sendMessageToAllEntities, but just for one EntityID
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
+    std::map<uint16_t, IComponent*> entitiesMap;
+    while(componentsIterator != MessageToListeningComponents[m.mType].end()){
+
+        entitiesMap = TypeToComponentMap[*componentsIterator];
+
+        std::map<uint16_t, IComponent*>::iterator EntityFound;
+        EntityFound = entitiesMap.find(EntityID);
+
+        if(EntityFound != entitiesMap.end()){
+            if(EntityFound->second->processMessage(m)==gg::ST_FALSE)return false;
+        }
+
+        ++componentsIterator;
+    }
+    return true;
+}
 
 IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const uint16_t &EntityID){
     //  Searchs on the map of that componentType if that EntityID exists
