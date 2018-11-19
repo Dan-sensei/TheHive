@@ -11,9 +11,54 @@ CRigidBody::CRigidBody()
 }
 
 CRigidBody::~CRigidBody() {
+    delete myMotionState;
     world->removeRigidBody(body);
     delete body;
-    delete myMotionState;
+
+    // --------------------
+    // Delete de todo lo que he creado con el loadfile
+    // std::cout << "BEFORE----------" << '\n';
+    // std::cout << "Bvhs:             " << fileLoader->getNumBvhs() << '\n';
+    // std::cout << "Constraints:      " << fileLoader->getNumConstraints() << '\n';
+    // std::cout << "TriangleInfoMaps: " << fileLoader->getNumTriangleInfoMaps() << '\n';
+    // std::cout << "RigidBodies:      " << fileLoader->getNumRigidBodies() << '\n';
+    // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
+
+    if(fileLoader){
+        // for(int i=0 ; i<fileLoader->getNumBvhs() ; i++){
+        //     // Lo borro cuando CRigidBody se destruya
+        //     delete fileLoader->getBvhByIndex(i);
+        // }
+        // for(int i=0 ; i<fileLoader->getNumConstraints() ; i++){
+        //     delete fileLoader->getConstraintByIndex(i);
+        // }
+        // for(int i=0 ; i<fileLoader->getNumTriangleInfoMaps() ; i++){
+        //     delete fileLoader->getTriangleInfoMapByIndex(i);
+        // }
+        // for(int i=0 ; i<fileLoader->getNumRigidBodies() ; i++){
+        //     btCollisionObject* _obj = fileLoader->getRigidBodyByIndex(i);
+        //     btRigidBody* _body = btRigidBody::upcast(_obj);
+        //     // if(_body && _body->getMotionState()){
+        //     //     delete _body->getMotionState();
+        //     // }
+        //     world->removeCollisionObject(_obj);
+        //     delete _obj;
+        // }
+        // for(int i=0 ; i<fileLoader->getNumCollisionShapes() ; i++){
+        //     // delete fileLoader->getCollisionShapeByIndex(i);
+        // }
+        // std::cout << "AFTER-----------" << '\n';
+        // std::cout << "Bvhs:             " << fileLoader->getNumBvhs() << '\n';
+        // std::cout << "Constraints:      " << fileLoader->getNumConstraints() << '\n';
+        // std::cout << "TriangleInfoMaps: " << fileLoader->getNumTriangleInfoMaps() << '\n';
+        // std::cout << "RigidBodies:      " << fileLoader->getNumRigidBodies() << '\n';
+        // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
+        // delete obj;
+        fileLoader->deleteAllData();
+        delete fileLoader;
+        // fileLoader = nullptr;
+        // --------------------
+    }
 }
 
 void CRigidBody::initComponent() {
@@ -34,18 +79,19 @@ void CRigidBody::initializeComponentData(const void* data){
         // Puntero al mundo de fisicas
         world = Singleton<ggDynWorld>::Instance();
 
+        fileLoader = nullptr;
+
         if(cData->loadedFromPath){
-            btBulletWorldImporter*  fileLoader = new btBulletWorldImporter(world->getDynamicsWorld());
+            fileLoader = new btBulletWorldImporter();
             if(! ( fileLoader->loadFile(cData->path.c_str())) ){
-                delete fileLoader;
                 return;
             }
 
-            std::cout << fileLoader->getNumCollisionShapes() << '\n';
-            // std::cout << fileLoader->getNumRigidBodies() << '\n';
             btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
             body = btRigidBody::upcast(obj);
             shape = body->getCollisionShape();
+
+            // ------------------------
 
             transform = obj->getWorldTransform();
 
@@ -69,14 +115,6 @@ void CRigidBody::initializeComponentData(const void* data){
             btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
             body = new btRigidBody(rbInfo);
 
-            world->removeCollisionObject(obj);
-            delete obj;
-            delete fileLoader;
-
-            // We apply the gravity of the world
-            // body->setGravity(btVector3(0,-10,0));
-            // body->applyGravity();
-
             if(cData->friction){
                 body->setFriction(btScalar(cData->friction));
             }
@@ -85,7 +123,6 @@ void CRigidBody::initializeComponentData(const void* data){
 
             // Add the body to the dynamics world
             world->addRigidBody(body);
-
         }
         else{
             shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
@@ -177,7 +214,7 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
-    body->activate(true);
+    // body->activate(true);
 
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);
@@ -191,16 +228,18 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
             )
         );
 
-        btQuaternion rot = trans.getRotation();
-        float _X, _Y, _Z;
-        rot.getEulerZYX(_Z,_Y,_X);
-        cTransform->setRotation(
-            gg::Vector3f(
-                static_cast<float>(_X/PI*180),
-                static_cast<float>(_Y/PI*180),
-                static_cast<float>(_Z/PI*180)
-            )
-        );
+        if(body->getInvMass()){
+            btQuaternion rot = trans.getRotation();
+            float _X, _Y, _Z;
+            rot.getEulerZYX(_Z,_Y,_X);
+            cTransform->setRotation(
+                gg::Vector3f(
+                    static_cast<float>(_X/PI*180),
+                    static_cast<float>(_Y/PI*180),
+                    static_cast<float>(_Z/PI*180)
+                )
+            );
+        }
 
     }
 

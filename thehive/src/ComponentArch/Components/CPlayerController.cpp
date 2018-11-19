@@ -189,7 +189,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
         InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
         InitCTransform CTransformHolyBomb(           gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
-        InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
+        InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 3,3,3, 1, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
         Manager->addComponentToEntity(gg::GRANADE, holyBomb);

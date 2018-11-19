@@ -63,10 +63,13 @@ class CRigidBody : public IComponent {
         CTransform* cTransform;
 
         //  Variables de esta componente
-        btDefaultMotionState*   myMotionState;
-        btCollisionShape*       shape;
-        btTransform             transform;
-        btRigidBody*            body;
+        btDefaultMotionState*       myMotionState;
+        btCollisionShape*           shape;
+        btTransform                 transform;
+        btRigidBody*                body;
+
+        // Variables de 'ayuda'
+        btBulletWorldImporter*      fileLoader;
 };
 
 #endif

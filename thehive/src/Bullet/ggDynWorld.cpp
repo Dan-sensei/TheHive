@@ -80,19 +80,20 @@ void ggDynWorld::clean(){
 		btRigidBody* body = btRigidBody::upcast(obj);
 		if (body && body->getMotionState())
 		{
-			delete body->getMotionState();
+            // Al borrar los propios CRigidBody se hace delete de esto
+			// delete body->getMotionState();
 		}
 		dynamicsWorld->removeCollisionObject(obj);
 		delete obj;
 	}
 
 	//delete collision shapes
-	for (int j = 0; j < collisionShapes.size(); j++)
-	{
-		btCollisionShape* shape = collisionShapes[j];
-		collisionShapes[j] = 0;
-		delete shape;
-	}
+	// for (int j = 0; j < collisionShapes.size(); j++)
+	// {
+	// 	btCollisionShape* shape = collisionShapes[j];
+	// 	collisionShapes[j] = 0;
+	// 	delete shape;
+	// }
 
 	//delete dynamics world
 	delete dynamicsWorld;
@@ -110,6 +111,10 @@ void ggDynWorld::clean(){
 
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	collisionShapes.clear();
+
+    // btBulletWorldImporter*  fileLoader = new btBulletWorldImporter(dynamicsWorld);
+    // fileLoader->deleteAllData();
+    // delete fileLoader;
 }
 
 void ggDynWorld::setGravity(float x, float y, float z){
@@ -141,8 +146,8 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
     if(callBack.hasHit()){
         // printf("Collision at: <%.2f, %.2f, %.2f>\n", callBack.m_hitPointWorld.getX(), callBack.m_hitPointWorld.getY(), callBack.m_hitPointWorld.getZ());
     // <DEBUG VISUAL>
-        CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
-        cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
+        // CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, 4));
+        // cTransform->setPosition(gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ()));
     // </DEBUG VISUAL>
         ret = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
 
