@@ -10,6 +10,7 @@
 
 std::list <CAgent*>  CAgent::hola;
 
+//std::list  <TriggerRecordStruct*>  hola;
 
 void  CAgent::SetNextTriggerUpdate(unsigned long _nCurTime){}
 
@@ -20,18 +21,53 @@ unsigned long  CAgent::GetTriggerFlags(){
 gg::Vector3f CAgent::GetPosition(){
     return cTransform->getPosition();
 }
+void CAgent::updatetrig(){
+    //std::cout << "entra updatetrig" <<nCAgentID<< '\n';
 
-bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
-    // // std::cout << "Id agente:"<<nCAgentID << " ha entrado"<<std::endl;
+    std::list <TriggerRecordStruct*>::iterator it;
+    it=holiiis.begin();
+    TriggerRecordStruct* pTrig=NULL;
+    for(unsigned long e=0; e<holiiis.size();++e)
+    {
+        pTrig=*it;
+        float fDistance=gg::DIST(pTrig->vPos,GetPosition());//funcion calcular la distancia
+        //std::cout << "error" <<nCAgentID<< '\n';
+        if(fDistance > pTrig->fRadius){
+            //ejecutar ontriggerExit
+            //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
+            onTriggerExit(pTrig);
+
+            //ejecutar ontriggerExit
+            holiiis.erase(it);
+        }else{
+            onTriggerStay(pTrig);
+        }
+        it++;
+
+    }
+
+
+
+}
+
+bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
     ObjectManager* oManager = Singleton<ObjectManager>::Instance();
+    //oManager->checkEvent(nCAgentID,mes);
 
+
+    //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
     if(_pRec->eTriggerType & kTrig_Explosion){
+        //std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
         //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
         //// std::cout << "usando handler despues" << nCAgentID<< '\n';
         Message mes(gg::M_XPLOTATO,_pRec);
-        oManager->sendMessageToEntity(nCAgentID,mes);
+        if(!oManager->checkEvent(nCAgentID,mes)) return false;
+
+        //oManager->sendMessageToEntity(nCAgentID,mes);
+
     }
     else if(_pRec->eTriggerType & kTrig_Gunfire){
+        //std::cout << "OnTriggerEnter arma" << nCAgentID<<'\n';
         if(oManager->getComponent(gg::GUN,nCAgentID))
             if(static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID))->getBullets())
                 return false;
@@ -43,13 +79,88 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
         InitCGun CGunHero(10,1,50);
         oManager->addComponentToEntity(gg::GUN, nCAgentID, &CGunHero);
     }
+return true;
+
+}
+void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
+    //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
+    ObjectManager* oManager = Singleton<ObjectManager>::Instance();
+
+    if(_pRec->eTriggerType & kTrig_Explosion){
+        //std::cout << "OnTriggerStay  explosion" <<nCAgentID<< '\n';
+        //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
+        //// std::cout << "usando handler despues" << nCAgentID<< '\n';
+        Message mes(gg::M_XPLOTATO,_pRec);
+        oManager->sendMessageToEntity(nCAgentID,mes);
+    }
 
 
 
+}
+void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
+    //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
 
 
+}
+void CAgent::deletetrig(TriggerRecordStruct* _pRec){
 
-    return true;
+    std::list <CAgent*>::iterator it2 ;
+    std::list <TriggerRecordStruct*>::iterator it;
+
+    it2=CAgent::hola.begin();
+    CAgent* pAgent=NULL;
+    for(unsigned long i=0; i<CAgent::hola.size();++i)
+    {
+        pAgent=*it2;
+
+        it=pAgent->holiiis.begin();
+        TriggerRecordStruct* pTrig=NULL;
+        for(unsigned long e=0; e<pAgent->holiiis.size();++e)
+        {
+            pTrig=*it;
+            if(pTrig==_pRec){
+
+                //std::cout << "OnTriggerExit ni idea" << '\n';
+                pAgent->onTriggerExit(_pRec);
+                pAgent->holiiis.erase(it);
+                break;
+            }
+            it++;
+
+        }
+
+
+        it2++;
+    }
+
+}
+bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
+    //std::cout << "numero de trigs "<< holiiis.size() << '\n';
+
+    // // std::cout << "Id agente:"<<nCAgentID << " ha entrado"<<std::endl;
+    std::list <TriggerRecordStruct*>::iterator it;
+    it=holiiis.begin();
+    TriggerRecordStruct* pTrig=NULL;
+    //std::cout << "entra handler" <<nCAgentID<< '\n';
+    for(unsigned long i=0; i<holiiis.size();++i)
+    {
+        pTrig=*it;
+        if(pTrig==_pRec){
+            return false;
+        }
+        it++;
+
+    }
+    bool res=onTriggerEnter(_pRec);
+    if(res)
+    holiiis.push_back(_pRec);
+    //posible codigo init
+
+    //...
+    //update
+    //update(_pRec);
+    //holiiis;
+    return res;
 }
 
 //CAgent::CAgent(unsigned long _dwTriggerFlags,gg::Vector3f _vPos){
@@ -110,7 +221,21 @@ void CAgent::initializeComponentData(const void* data){
     MHandler_SETPTRS();
 }
 
-
+//void CAgent::update(){
+//    std::list <TriggerRecordStruct*>::iterator it;
+//    it=holiiis.begin();
+//    TriggerRecordStruct* pTrig=NULL;
+//    for(unsigned long i=0; i<holiiis.size();++i)
+//    {
+//        pTrig=*it;
+//        onTriggerStay(pTrig);
+//        it++;
+//
+//    }
+//
+//
+//
+//}
 gg::EMessageStatus CAgent::processMessage(const Message &m) {
 
     if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();

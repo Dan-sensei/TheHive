@@ -80,14 +80,8 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
     gg::Vector3f cV2 = cV;
     gg::Vector3f hV = cRigidBody->getBodyPosition();
-        cV.X -= hV.X;
-        cV.Y -= hV.Y;
-        cV.Z -= hV.Z;
-
-    float length = sqrt(cV.X*cV.X + cV.Y*cV.Y + cV.Z*cV.Z);
-        cV.X /= length;
-        cV.Y /= length;
-        cV.Z /= length;
+        cV-=hV;
+        cV=gg::Normalice(cV);
 
     // Vector perpendicular al vector direccion
     gg::Vector3f ppV(-cV.Z,0,cV.X);
@@ -144,9 +138,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         force.Y = 6;
     }
 
-    force.X *= FORCE_FACTOR;
-    force.Y *= FORCE_FACTOR;
-    force.Z *= FORCE_FACTOR;
+    force *= FORCE_FACTOR;
     cRigidBody->applyCentralForce(force);
 
     // COPIA-PEGA DE LA DOCUMENTACION:
@@ -172,16 +164,10 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         gg::Vector3f gPos = cTransform->getPosition();
         gg::Vector3f from = gPos;
         gg::Vector3f to = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
-        gg::Vector3f vel(
-            to.X-from.X,
-            to.Y-from.Y,
-            to.Z-from.Z
-        );
 
-        float length = sqrt(vel.X*vel.X + vel.Y*vel.Y + vel.Z*vel.Z);
-            vel.X /= length;
-            vel.Y /= length;
-            vel.Z /= length;
+        gg::Vector3f vel=to-from;
+        vel = gg::Normalice(vel);
+
 
         uint16_t holyBomb = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
@@ -194,10 +180,8 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         Manager->addComponentToEntity(gg::RIGID_BODY, holyBomb, &CRigidBodyHolyBomb);
 
         CRigidBody* rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, holyBomb));
-        vel.X *= VEL_FACTOR;
-        vel.Y *= VEL_FACTOR;
-        vel.Z *= VEL_FACTOR;
-        rb->applyCentralForce(gg::Vector3f(vel.X,vel.Y,vel.Z));
+        vel*= VEL_FACTOR;
+        rb->applyCentralForce(vel);
 
         // GranadeCreate=true;
     }

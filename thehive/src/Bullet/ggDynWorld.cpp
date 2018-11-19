@@ -143,7 +143,6 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
 gg::Vector3f ggDynWorld::handleRayCastWithoutCollision(gg::Vector3f from, gg::Vector3f rot){
     // from -> Camera position
     // to   -> Camera rotation
-    gg::Vector3f ret(-1,-1,-1);
     gg::Vector3f to = gg::Vector3f(
         (sin(rot.Y*PI/180)*RANGE_FACTOR)+from.X,
         -(sin(rot.X*PI/180)*RANGE_FACTOR)+from.Y,

@@ -62,8 +62,8 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count(); //Calculate the elapsed time as milisecons
 
         if(ms>1200){  //we control the time that we want the granade to move
-            EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(currentPosition.X,currentPosition.Y,currentPosition.Z), 20, 50,false);
-            
+            EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(currentPosition.X,currentPosition.Y,currentPosition.Z), 40, 50,false);
+
             Manager->removeEntity(getEntityID());
         }
     }
