@@ -151,20 +151,22 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
 
     // DISPARO -> NO VA EL CLICK IZQUIERDO =D
-    gg::Vector3f ESTEVECTORNOSEUSAPARANADA = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
-    gg::Vector3f rayPos = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
+    gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+    gg::Vector3f rayPos = world->getRaycastVector();
+
     if(engine->key(gg::GG_E)){
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
         if(gun){
-            gun->shoot(rayPos);
+            gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
         }
-
     }
-    if(engine->key(gg::GG_G)&&GranadeCreate==false){
+
+    // Graná
+    if(engine->key(gg::GG_G) && GranadeCreate==false){
         gg::Vector3f gPos = cTransform->getPosition();
         gg::Vector3f from = gPos;
-        gg::Vector3f to = world->handleRayCastWithoutCollision(camera->getCameraPosition(),camera->getCameraRotation());
-
+        gg::Vector3f to = world->getRaycastVector();
+        
         gg::Vector3f vel=to-from;
         vel = gg::Normalice(vel);
 
@@ -172,7 +174,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         uint16_t holyBomb = Manager->createEntity();
         Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
         InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
-        InitCTransform CTransformHolyBomb(gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
+        InitCTransform CTransformHolyBomb(           gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
         InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);

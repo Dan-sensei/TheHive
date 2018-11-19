@@ -32,13 +32,15 @@ public:
     btDiscreteDynamicsWorld* getDynamicsWorld();
 
     gg::Vector3f handleRayCast(gg::Vector3f,gg::Vector3f);
-    gg::Vector3f handleRayCastWithoutCollision(gg::Vector3f,gg::Vector3f);
+    gg::Vector3f getRaycastVector();
+    void applyForceToRaycastCollisionBody(gg::Vector3f,gg::Vector3f,gg::Vector3f);
 
     void removeRigidBody(btRigidBody*);
     void removeCollisionObject(btCollisionObject*);
 
     void setDebug(bool _d){debug=_d;}
     void debugDrawWorld();
+    void debugRaycast();
 
     void printObjects(int);
     void clean();
@@ -70,6 +72,12 @@ private:
 
     // Vector que contiene todas las 'FORMAS' (cuadrados, circulos, ...)
     btAlignedObjectArray<btCollisionShape*> collisionShapes;
+
+    // VARIABLES
+    gg::Vector3f cameraPosition;
+    gg::Vector3f raycastVector;
+    gg::Vector3f raycastHitPosition;
+    btRigidBody* raycastCollisionBody;
 };
 
 
