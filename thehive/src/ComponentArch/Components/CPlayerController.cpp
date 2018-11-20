@@ -40,6 +40,8 @@ void CPlayerController::initializeComponentData(const void* data){
     camera = static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
     Manager = Singleton<ObjectManager>::Instance();
+    pulsacion_granada=false;
+
 
 }
 
@@ -163,29 +165,34 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     // Graná
     if(engine->key(gg::GG_G) && GranadeCreate==false){
-        gg::Vector3f gPos = cTransform->getPosition();
-        gg::Vector3f from = gPos;
-        gg::Vector3f to = world->getRaycastVector();
-        
-        gg::Vector3f vel=to-from;
-        vel = gg::Normalice(vel);
+        if(pulsacion_granada==false){
+            pulsacion_granada=true;
+            gg::Vector3f gPos = cTransform->getPosition();
+            gg::Vector3f from = gPos;
+            gg::Vector3f to = world->getRaycastVector();
+
+            gg::Vector3f vel=to-from;
+            vel = gg::Normalice(vel);
 
 
-        uint16_t holyBomb = Manager->createEntity();
-        Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-        InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
-        InitCTransform CTransformHolyBomb(           gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
-        InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
-        Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
-        Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
-        Manager->addComponentToEntity(gg::GRANADE, holyBomb);
-        Manager->addComponentToEntity(gg::RIGID_BODY, holyBomb, &CRigidBodyHolyBomb);
+            uint16_t holyBomb = Manager->createEntity();
+            Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+            InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
+            InitCTransform CTransformHolyBomb(           gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
+            InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
+            Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
+            Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
+            Manager->addComponentToEntity(gg::GRANADE, holyBomb);
+            Manager->addComponentToEntity(gg::RIGID_BODY, holyBomb, &CRigidBodyHolyBomb);
 
-        CRigidBody* rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, holyBomb));
-        vel*= VEL_FACTOR;
-        rb->applyCentralForce(vel);
-
+            CRigidBody* rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, holyBomb));
+            vel*= VEL_FACTOR;
+            rb->applyCentralForce(vel);
+        }
         // GranadeCreate=true;
+    }
+    else{
+        pulsacion_granada=false;
     }
 
     return gg::ST_TRUE;
