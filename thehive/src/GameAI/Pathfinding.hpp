@@ -6,6 +6,7 @@
 #include <queue>
 #include "NavmeshStructs.hpp"
 #include <Util.hpp>
+#include <GameEngine/Billboard.hpp>
 
 template <typename T>
 class Singleton;
@@ -20,16 +21,16 @@ class Pathfinding{
     public:
         ~Pathfinding();
 
-        void AddConnection(uint16_t From, uint16_t To);
         void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
-        void A_Estrella2(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
         void resetGraph();
-        float CalculateHeuristic();
         void print();
 
         void DroNodes();
 
         uint16_t getGraphSize();
+
+        void SetDebug(bool flag);
+        bool isDebugging();
 
     private:
         Pathfinding();
@@ -41,6 +42,10 @@ class Pathfinding{
         std::vector<std::vector<Connection>> GConnections;
         std::priority_queue<Node*, std::vector<Node*>, Comparator> OpenList;
 
+        //Debug
+        std::vector<Billboard> IDs;
+        bool Debug;
+        uint16_t goal;
 };
 
 

@@ -131,8 +131,6 @@ void Game::RUN(){
     // EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
-
-
     {
         InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  100,80,0, -1,-1,-1, 50, 0,0,0);
         uint16_t hero = Manager->createEntity();
@@ -210,7 +208,7 @@ void Game::RUN(){
         InitCRenderable_3D CRenderableCube1("assets/Models/Actor.obj", Blue);
         Manager->addComponentToEntity(gg::TRANSFORM, Actor1, &Actor1Transform);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, Actor1, &CRenderableCube1);
-        //Manager->addComponentToEntity(gg::PATHFINDING, Actor1);
+        Manager->addComponentToEntity(gg::PATHFINDING, Actor1);
     }
 
     {
@@ -233,6 +231,7 @@ void Game::RUN(){
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
     world->setDebug(false);
+    Singleton<Pathfinding>::Instance()->SetDebug(true);
     while(Engine->isWindowOpen()) {
 
         world->stepSimulation(1.f / 60.f, 10.f);

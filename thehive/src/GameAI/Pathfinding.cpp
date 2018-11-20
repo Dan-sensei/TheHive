@@ -11,7 +11,9 @@ bool Comparator::operator()(const Node* N1, const Node* N2){
     return N1->EstimatedCost > N2->EstimatedCost;
 }
 
-Pathfinding::Pathfinding(){
+Pathfinding::Pathfinding()
+:Debug(false), goal(0)
+{
 
         //  NODO A         ID   X  Y
         //GRAPH.emplace_back(0,    0,  0);
@@ -78,23 +80,47 @@ Pathfinding::Pathfinding(){
             }
             std::cout << '\n';
         }
+
+        //std::cout << "Test" << '\n';
+        //GRAPH[0].EstimatedCost = 10;
+        //GRAPH[2].EstimatedCost = 20;
+        //OpenList.push(&GRAPH[0]);
+        //OpenList.push(&GRAPH[1]);
+
+        //std::cout << "ID : " << OpenList.top()->ID << " | ESTIMATED COST = " << OpenList.top()->EstimatedCost << '\n';
+
 }
 
 Pathfinding::~Pathfinding(){
 
 }
 
+void Pathfinding::SetDebug(bool flag){
+    Debug = flag;
 
-void Pathfinding::AddConnection(uint16_t From, uint16_t To){
-    //float IncX = GRAPH[To].X - GRAPH[From].X;
-    //float IncY = GRAPH[To].Y - GRAPH[From].Y;
-    //float Value = sqrt(IncX*IncX + IncY*IncY);
-    //std::string Name = std::to_string(From) + std::to_string(To);
-    //Connection newC(From, To, Value, Name);
-    //GConnections[From].push_back(newC);
+    if(flag && IDs.empty()){
+        IDs.reserve(GRAPH.size());
+        uint16_t i = GRAPH.size();
+        while(i--){
+
+            Singleton<GameEngine>::Instance()->createBillboard(IDs[i], GRAPH[i].Position + gg::Vector3f(0, 60, 0));
+            IDs[i].setText(std::to_string(i));
+            uint8_t color[4] = {1, 0, 0, 0};
+            IDs[i].setColor(color);
+
+        }
+    }
+    else if(!flag && !IDs.empty()){
+        IDs.clear();
+    }
+}
+
+bool Pathfinding::isDebugging(){
+    return Debug;
 }
 
 void Pathfinding::resetGraph(){
+    std::cout << "Reseting" << '\n';
     uint16_t i = GRAPH.size();
     while(i--){
         GRAPH[i].Status = Type::UNVISITED;
@@ -105,99 +131,18 @@ void Pathfinding::resetGraph(){
 }
 
 void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output){
-
+    goal = GOAL;
     resetGraph();
     OpenList = std::priority_queue<Node*, std::vector<Node*>, Comparator>();
 
-    {
-        uint16_t c = 0;
-        for(uint16_t i = 0; i < GRAPH.size(); ++i)
-            if(GRAPH[i].Status == Type::UNVISITED) ++c;
+    //{
+    //    uint16_t c = 0;
+    //    for(uint16_t i = 0; i < GRAPH.size(); ++i)
+    //        if(GRAPH[i].Status == Type::UNVISITED) ++c;
 
-        std::cout << "GRAPH UNVISITED: " << c << '\n';
-        std::cout << "       OPENLIST: " << OpenList.size() << '\n';
-    }
-
-    GRAPH[START].Status = Type::OPEN;
-    OpenList.push(&GRAPH[START]);
-
-    Node* CurrentNode;
-
-    while(OpenList.size() > 0){
-        CurrentNode    =   OpenList.top();
-        OpenList.pop();
-
-        if(CurrentNode->ID == GOAL) // GOAL
-            break;
-
-        std::vector<Connection> Connections = GConnections[CurrentNode->ID];
-        for(Connection c : Connections) {
-
-            float costToNode = CurrentNode->RealCost + c.Value;
-            if (GRAPH[c.To].Status == Type::CLOSED) {
-
-                if(GRAPH[c.To].RealCost <= costToNode)
-                    continue;
-
-                GRAPH[c.To].Status = Type::OPEN;
-                OpenList.push(&GRAPH[c.To]);
-
-            }
-            else if (GRAPH[c.To].Status == Type::OPEN)      {
-                if(GRAPH[c.To].RealCost <= costToNode)
-                    continue;
-            }
-            else {
-                GRAPH[c.To].RealCost = costToNode;
-                GRAPH[c.To].Bitconnect = c;
-                GRAPH[c.To].EstimatedCost = costToNode + GRAPH[c.To].Heuristic;
-
-                GRAPH[c.To].Status = Type::OPEN;
-                OpenList.push(&GRAPH[c.To]);
-            }
-        } //FOR-LOOP end
-
-        CurrentNode->Status = Type::CLOSED;
-    }
-
-    if(CurrentNode->ID != GOAL){
-        std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
-    }
-    else{
-        std::vector<Connection> path;
-        while(CurrentNode->ID != START){
-            path.push_back(CurrentNode->Bitconnect);
-            //std::cout << CurrentNode.Bitconnect.Name << " - ";
-            //Waypoint wp(GRAPH[CurrentNode->Bitconnect.To].Position, CurrentNode->ID);
-            //Output.push(wp);
-            CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
-        }
-
-        std::cout << "CAMINO: " << '\n';
-
-        uint8_t i = path.size();
-        while(i--) std::cout << path[i].Name << '-';
-
-        std::cout << '\n';
-    }
-
-    printStats();
-    std::cout << "-----------------------------------------------" << '\n';
-}
-
-void Pathfinding::A_Estrella2(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output){
-
-    resetGraph();
-    OpenList = std::priority_queue<Node*, std::vector<Node*>, Comparator>();
-
-    {
-        uint16_t c = 0;
-        for(uint16_t i = 0; i < GRAPH.size(); ++i)
-            if(GRAPH[i].Status == Type::UNVISITED) ++c;
-
-        std::cout << "GRAPH UNVISITED: " << c << '\n';
-        std::cout << "       OPENLIST: " << OpenList.size() << '\n';
-    }
+    //    std::cout << "GRAPH UNVISITED: " << c << '\n';
+    //    std::cout << "       OPENLIST: " << OpenList.size() << '\n';
+    //}
 
     GRAPH[START].EstimatedCost = gg::DIST(GRAPH[START].Position, GRAPH[GOAL].Position);
     GRAPH[START].Status = Type::OPEN;
@@ -214,34 +159,33 @@ void Pathfinding::A_Estrella2(uint16_t START, uint16_t GOAL, std::stack<Waypoint
 
         std::vector<Connection> Connections = GConnections[CurrentNode->ID];
         for(Connection c : Connections) {
-            float Heuristic = 0.f;
             float costToNode = CurrentNode->RealCost + c.Value;
-            if (GRAPH[c.To].Status == Type::CLOSED) {
+            Node* targetNode = &GRAPH[c.To];
+            if (targetNode->Status == Type::CLOSED) {
 
-                if(GRAPH[c.To].RealCost <= costToNode)
+                if(targetNode->RealCost <= costToNode)
                     continue;
 
-                GRAPH[c.To].Status = Type::OPEN;
-                OpenList.push(&GRAPH[c.To]);
+                targetNode->Status = Type::OPEN;
+                OpenList.push(targetNode);
 
-                Heuristic = GRAPH[c.To].EstimatedCost - GRAPH[c.To].RealCost;
+                targetNode->EstimatedCost = targetNode->EstimatedCost - targetNode->RealCost;
 
             }
-            else if (GRAPH[c.To].Status == Type::OPEN)      {
-                if(GRAPH[c.To].RealCost <= costToNode)
+            else if (targetNode->Status == Type::OPEN)      {
+                if(targetNode->RealCost <= costToNode)
                     continue;
 
-                Heuristic = GRAPH[c.To].EstimatedCost - GRAPH[c.To].RealCost;
+                targetNode->EstimatedCost = targetNode->EstimatedCost - targetNode->RealCost;
             }
-            else {                       //  Heurístic: Euclidean Distance
-                Heuristic = costToNode + gg::DIST(GRAPH[c.To].Position, GRAPH[GOAL].Position);
-                GRAPH[c.To].Status = Type::OPEN;
-                OpenList.push(&GRAPH[c.To]);
+            else {                                       //  Heurístic: Euclidean Distance
+                targetNode->EstimatedCost = costToNode + gg::DIST(targetNode->Position, GRAPH[GOAL].Position);
+                targetNode->Status = Type::OPEN;
+                OpenList.push(targetNode);
             }
 
-            GRAPH[c.To].RealCost = costToNode;
-            GRAPH[c.To].Bitconnect = c;
-            GRAPH[c.To].EstimatedCost = costToNode + Heuristic;
+            targetNode->RealCost = costToNode;
+            targetNode->Bitconnect = c;
 
         } //FOR-LOOP end
 
@@ -252,33 +196,26 @@ void Pathfinding::A_Estrella2(uint16_t START, uint16_t GOAL, std::stack<Waypoint
         std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
-        std::vector<Connection> path;
-        while(CurrentNode->ID != START){
-            path.push_back(CurrentNode->Bitconnect);
-            //std::cout << CurrentNode.Bitconnect.Name << " - ";
-            //Waypoint wp(GRAPH[CurrentNode->Bitconnect.To].Position, CurrentNode->ID);
-            //Output.push(wp);
+        //std::vector<Connection> path;
+        while(CurrentNode->ID != START) {
+            //path.push_back(CurrentNode->Bitconnect);
+            Waypoint wp(GRAPH[CurrentNode->Bitconnect.To].Position, CurrentNode->ID);
+            Output.push(wp);
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
         }
 
-        std::cout << "CAMINO: " << '\n';
+        //std::cout << "CAMINO: " << '\n';
 
-        uint8_t i = path.size();
-        while(i--) std::cout << path[i].Name << '-';
+        //uint8_t i = path.size();
+        //while(i--) std::cout << path[i].Name << '-';
 
-        std::cout << '\n';
+        //std::cout << '\n';
     }
 
     printStats();
-    std::cout << "-----------------------------------------------" << '\n';
 }
 
 
-float CalculateHeuristic() {
-
-
-    return 0;
-}
 
 uint16_t Pathfinding::getGraphSize(){
     return GRAPH.size();
@@ -304,28 +241,41 @@ void Pathfinding::printStats(){
 
 
 void Pathfinding::DroNodes(){
+    if(!Debug) return;
     uint16_t color[4];
     uint8_t i = GRAPH.size();
+    uint8_t length = 50;
     while(i--){
-        if(GRAPH[i].Status = Type::UNVISITED){
+        if(i==goal){
+             length = 100;
+             color[0] = 1;
+             color[1] = 212;
+             color[2] = 175;
+             color[3] = 55;
+             goto dro;
+        }
+        else length = 50;
+
+        if(GRAPH[i].Status == Type::UNVISITED){
             color[0] = 1;
             color[1] = 50;
             color[2] = 50;
             color[3] = 50;
         }
-        else if (GRAPH[i].Status = Type::CLOSED){
+        else if (GRAPH[i].Status == Type::CLOSED){
             color[0] = 1;
-            color[1] = 255;
-            color[2] = 10;
+            color[1] = 204;
+            color[2] = 51;
             color[3] = 10;
         }
         else{
             color[0] = 1;
-            color[1] = 10;
-            color[2] = 10;
-            color[3] = 255;
+            color[1] = 0;
+            color[2] = 102;
+            color[3] = 204;
         }
-        Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + 50, GRAPH[i].Position.Z), color);
+        dro:
+        Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
 
     }
 }

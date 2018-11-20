@@ -13,6 +13,7 @@
 #include "Util.hpp"
 #include "EventListener.hpp"
 #include "Model.hpp"
+#include "Billboard.hpp"
 #include "Material.hpp"
 #include <Bullet/ggDynWorld.hpp>
 
@@ -51,13 +52,18 @@ class GameEngine{
 
 
         void draw3DLine(const gg::Vector3f&, const gg::Vector3f&, const float[4]);
-        void Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, uint16_t Color[4]);
+        void Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, uint16_t Color[4], float thickness);
 
 
         //  ---
         //  Creates and returns a model object. It optionally accepts a position
         //==================================================================================
         void createModel(Model &model, const std::string &path, const gg::Vector3f &position = {0,0,0});
+
+        //  ---
+        //  Creates and returns a billboard object. It optionally accepts a position
+        //==================================================================================
+        void createBillboard(Billboard &billboard, const gg::Vector3f &position = {0,0,0});
 
         bool key(gg::KEYCODES keyCode);
 

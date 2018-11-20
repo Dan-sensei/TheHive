@@ -24,13 +24,7 @@
 
 //#include<>
 int main(int argc, char const *argv[]) {
-    //std::stack<Waypoint> WP;
-    //Singleton<Pathfinding>::Instance()->A_Estrella2(0, 20, WP);
-    //Singleton<Pathfinding>::Instance()->A_Estrella(0, 20, WP);
 
-
-
-    //return 0;
     Game THE_HIVE;
 
     THE_HIVE.RUN();
@@ -38,3 +32,5 @@ int main(int argc, char const *argv[]) {
 
     return 0;
 }
+//[0-3]-[3-5]-[5-8]-[8-18]-[18-17]-[17-16]-[16-15]-[15-13]-[13-11]-[11-22]-[22-23]-[23-21]-[21-20]
+//[0-3]-[3-5]-[5-4]-[4-9]-[9-19]-[19-20]

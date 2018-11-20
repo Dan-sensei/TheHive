@@ -47,7 +47,7 @@ gg::EMessageStatus CPathfinding::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-#define SPEED 0.8f
+#define SPEED 5.f
 
 gg::EMessageStatus CPathfinding::MHandler_UPDATE(){
 
@@ -77,6 +77,28 @@ gg::EMessageStatus CPathfinding::MHandler_UPDATE(){
 
         gg::Vector3f nextPosition = cTransform->getPosition() + moveVector;
         cTransform->setPosition(nextPosition);
+
+        if(Singleton<Pathfinding>::Instance()->isDebugging()){
+            std::stack<Waypoint> debug = Waypoints;
+            uint16_t color[4];
+            color[0] = 1;
+            color[1] = 10;
+            color[2] = 255;
+            color[3] = 200;
+
+            Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 40, 0), color, 2);
+            while(!debug.empty()){
+                Waypoint first = debug.top();
+                debug.pop();
+                if(debug.empty())
+                    break;
+
+                Waypoint second = debug.top();
+                Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 40, 0), second.Position + gg::Vector3f(0, 40, 0), color, 2);
+            }
+
+        }
+
     }
 
 

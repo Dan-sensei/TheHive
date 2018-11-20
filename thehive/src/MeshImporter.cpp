@@ -69,9 +69,9 @@ bool MeshImporter::importNavmesh(
 
             uint16_t it = 0;
             bool found = false;
-            while(it < Edges.size()){
+            while(it < Edges.size()) {
 
-                if(NewEdge == Edges[it]){
+                if(NewEdge == Edges[it]) {
                     Connections[j].emplace_back(j, Edges[it].face, 0, "[" + std::to_string(j) + "-" + std::to_string(Edges[it].face) + "]");
                     Connections[Edges[it].face].emplace_back(Edges[it].face, j, 0, "[" + std::to_string(Edges[it].face) + "-" + std::to_string(j) + "]");
                     found = true;

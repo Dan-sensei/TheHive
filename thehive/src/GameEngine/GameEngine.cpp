@@ -18,6 +18,7 @@ void GameEngine::Starto(){
     driver = device->getVideoDriver();
     smgr = device->getSceneManager();
     Material::driver = driver;
+
 }
 
 //  ---
@@ -168,6 +169,16 @@ void GameEngine::createModel(Model &model, const std::string &path, const gg::Ve
     }
 }
 
+//  ---
+//  Adds a billboard to the scene on the desired position or 0, 0, 0 by default
+//==================================================================================
+void GameEngine::createBillboard(Billboard &billboard, const gg::Vector3f &position /* = {0,0,0} */) {
+    irr::gui::IGUIFont *font = device->getGUIEnvironment()->getBuiltInFont();
+    billboard.billboard = smgr->addBillboardTextSceneNode(font, L"CUANTOS ARRECIFES TENES");
+    billboard.billboard->setPosition(irr::core::vector3df(position.X, position.Y, position.Z));
+}
+
+
 bool GameEngine::key(gg::KEYCODES keyCode){
     return listener.IsKeyDown(keyCode);
 }
@@ -179,10 +190,10 @@ void GameEngine::clean(){
     device->drop();
 }
 
-void GameEngine::Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, uint16_t Color[4]) {
+void GameEngine::Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, uint16_t Color[4], float thickness) {
     irr::video::SMaterial m;
     m.Lighting = false;
-    m.Thickness = 5;
+    m.Thickness = thickness;
     driver->setMaterial(m);
     driver->setTransform(irr::video::ETS_WORLD, irr::core::matrix4());
     driver->draw3DLine(irr::core::vector3df(Origin.X, Origin.Y, Origin.Z), irr::core::vector3df(Target.X, Target.Y, Target.Z), irr::video::SColor(Color[0], Color[1], Color[2], Color[3]));
