@@ -2,6 +2,7 @@
 #include <vector>
 
 #define PI 3.14159265359
+#define FORCE_FACTOR    200.f
 
 std::vector<const char*> names;
 
@@ -124,8 +125,6 @@ void CRigidBody::initializeComponentData(const void* data){
                 body->setFriction(btScalar(cData->friction));
             }
 
-            world->setGravity(0,-200,0);
-
             // Add the body to the dynamics world
             world->addRigidBody(body);
         }
@@ -160,12 +159,11 @@ void CRigidBody::initializeComponentData(const void* data){
                 body->setFriction(btScalar(cData->friction));
             }
 
-            world->setGravity(0,-200,0);
-
             // Add the body to the dynamics world
             world->addRigidBody(body);
         }
     }
+    world->setGravity(0,-10,0);
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
@@ -209,10 +207,9 @@ gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(const Message &m){
             //std::cout << "ratio: "<< (1-distancia/cdata->fRadius) << '\n';
 
 
-            float fuerzabomba=80000;
             gg::Vector3f sol =
             gg::Normalice(cTransform->getPosition()-cdata->vPos)
-            *fuerzabomba*
+            *FORCE_FACTOR*
             (1-distancia/cdata->fRadius);
             applyCentralForce(sol);
             //gg::Vector3f vect(33,66,99);
