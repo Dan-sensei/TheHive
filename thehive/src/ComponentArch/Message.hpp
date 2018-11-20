@@ -9,7 +9,7 @@ namespace gg{
         M_SETPTRS,
         M_TRANSFORM,
         M_DAMAGE,
-        M_XPLOTATO,
+        //M_XPLOTATO,
         // M_PICKGUN
         MESSAGE_TYPE_COUNT
     };

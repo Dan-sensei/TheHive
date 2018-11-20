@@ -72,7 +72,7 @@ void CRigidBody::initComponent() {
 
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_UPDATE);
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_SETPTRS);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_XPLOTATO);
+    //Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_XPLOTATO);
 
 }
 
@@ -175,7 +175,7 @@ void CRigidBody::initializeComponentData(const void* data){
 gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
     if      (m.mType == gg::M_UPDATE)       return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO(m);
+    //else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO(m);
     else if (m.mType == gg::M_SETPTRS)      return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
@@ -185,50 +185,40 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
-gg::EMessageStatus CRigidBody::MHandler_XPLOTATO(const Message &m){
-    if(m.mData){
-        TriggerRecordStruct* cdata=(TriggerRecordStruct*)m.mData;
-        if(cTransform){
-            //cTransform->getBodyPosition();//v1
-            //std::cout << "empieza" << '\n';
-            //gg::Vector3f v1=cTransform->getPosition();
-            //std::cout << "v1: "<< v1 << '\n';
-            //gg::Vector3f v2=cdata->vPos;
-            //std::cout << "v2: "<< v2 << '\n';
+void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
+    if(cTransform){
 
-            //cdata->vPos;//v2
-            float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
-            ////float ratio=1-distancia/fRadius;
-            //std::cout << "distancia: "<<distancia << '\n';
-            //std::cout << "v1-v2: "<< v1-v2 << '\n';
-            //std::cout << "normalizado(v1-v2): "<< gg::Normalice(v1-v2) << '\n';
-            //gg::Vector3f v3=gg::Normalice(v1-v2);
+        //cdata->vPos;//v2
+        float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
+        ////float ratio=1-distancia/fRadius;
+        //std::cout << "distancia: "<<distancia << '\n';
+        //std::cout << "v1-v2: "<< v1-v2 << '\n';
+        //std::cout << "normalizado(v1-v2): "<< gg::Normalice(v1-v2) << '\n';
+        //gg::Vector3f v3=gg::Normalice(v1-v2);
 
-            //std::cout << "modv3: "<<gg::Modulo(v3)  << '\n';
+        //std::cout << "modv3: "<<gg::Modulo(v3)  << '\n';
 
-            //std::cout << "ratio: "<< (1-distancia/cdata->fRadius) << '\n';
+        //std::cout << "ratio: "<< (1-distancia/cdata->fRadius) << '\n';
 
 
-            float fuerzabomba=80000;
-            gg::Vector3f sol =
-            gg::Normalice(cTransform->getPosition()-cdata->vPos)
-            *fuerzabomba*
-            (1-distancia/cdata->fRadius);
-            applyCentralForce(sol);
-            //gg::Vector3f vect(33,66,99);
+        float fuerzabomba=cdata->data.find(kDat_damage);
+        gg::Vector3f sol =
+        gg::Normalice(cTransform->getPosition()-cdata->vPos)
+        *fuerzabomba*
+        (1-distancia/cdata->fRadius);
+        applyCentralForce(sol);
+        //gg::Vector3f vect(33,66,99);
 //std::cout << vect << '\n';
-            /*
-            gg::Vector3f vect(33,66,99);
-            gg::Vector3f vect2(33,66,99);
+        /*
+        gg::Vector3f vect(33,66,99);
+        gg::Vector3f vect2(33,66,99);
 
-            gg::Vector3f suma=vect*vect2;
-            std::cout << "antes" <<suma.X<<suma.Y<<suma.Z<< '\n';
-            gg::Normalice(vect);
-            *///pruebas
-            //body->applyCentralForce(btVector3(0,46000000,0));
-        }
+        gg::Vector3f suma=vect*vect2;
+        std::cout << "antes" <<suma.X<<suma.Y<<suma.Z<< '\n';
+        gg::Normalice(vect);
+        *///pruebas
+        //body->applyCentralForce(btVector3(0,46000000,0));
     }
-    return gg::ST_TRUE;
 }
 
 gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){

@@ -6,6 +6,7 @@
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <Singleton.hpp>
 #include <list>
+#include "ComponentArch/Message.hpp"
 
 
 std::list <CAgent*>  CAgent::hola;
@@ -31,21 +32,26 @@ void CAgent::updatetrig(){
     {
         pTrig=*it;
         float fDistance=gg::DIST(pTrig->vPos,GetPosition());//funcion calcular la distancia
-        //std::cout << "error" <<nCAgentID<< '\n';
-        if(fDistance > pTrig->fRadius){
+        //std::cout << "radio" <<pTrig->fRadius<< '\n';
+        //std::cout << "fDistance" <<fDistance<< '\n';
+        float distancia=pTrig->fRadius;
+        if(fDistance > (pTrig->fRadius)){
             //ejecutar ontriggerExit
             //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
+            //std::cout << "peta" <<nCAgentID<< '\n';
             onTriggerExit(pTrig);
 
             //ejecutar ontriggerExit
             holiiis.erase(it);
         }else{
+            //std::cout << "peta" <<nCAgentID<< '\n';
             onTriggerStay(pTrig);
         }
         it++;
 
     }
 
+    //std::cout << "sale updatetrig" <<nCAgentID<< '\n';
 
 
 }
@@ -60,8 +66,16 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         //std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
         //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
         //// std::cout << "usando handler despues" << nCAgentID<< '\n';
-        Message mes(gg::M_XPLOTATO,_pRec);
-        if(!oManager->checkEvent(nCAgentID,mes)) return false;
+        //Message mes(gg::M_XPLOTATO,_pRec);
+        if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
+            //std::cout << "core si" << '\n';
+            static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
+            //std::cout << "core no" << '\n';
+
+        }
+
+
+        //if(!oManager->checkEvent(nCAgentID,mes)) return false;
 
         //oManager->sendMessageToEntity(nCAgentID,mes);
 
@@ -83,16 +97,17 @@ return true;
 
 }
 void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
+    //std::cout << "OnTriggerStay  entra" <<nCAgentID<< '\n';
     //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
     ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
     if(_pRec->eTriggerType & kTrig_Explosion){
-        //std::cout << "OnTriggerStay  explosion" <<nCAgentID<< '\n';
         //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
         //// std::cout << "usando handler despues" << nCAgentID<< '\n';
-        Message mes(gg::M_XPLOTATO,_pRec);
-        oManager->sendMessageToEntity(nCAgentID,mes);
+        if(oManager->getComponent(gg::RIGID_BODY,nCAgentID))
+            static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
     }
+    //std::cout << "OnTriggerStay  sale" <<nCAgentID<< '\n';
 
 
 
@@ -112,6 +127,7 @@ void CAgent::deletetrig(TriggerRecordStruct* _pRec){
     for(unsigned long i=0; i<CAgent::hola.size();++i)
     {
         pAgent=*it2;
+        //std::cout << "entra delete" <<pAgent->nCAgentID<< '\n';
 
         it=pAgent->holiiis.begin();
         TriggerRecordStruct* pTrig=NULL;
@@ -151,6 +167,11 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
         it++;
 
     }
+
+    //MessageXplotato* exp =(MessageXplotato*) _pRec->data;
+    //std::cout << "hanlder" << '\n';
+    //std::cout << exp->damage << '\n';
+
     bool res=onTriggerEnter(_pRec);
     if(res)
     holiiis.push_back(_pRec);

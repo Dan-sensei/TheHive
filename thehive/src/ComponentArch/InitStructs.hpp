@@ -56,6 +56,19 @@ struct InitCRigidBody{
     float friction;
 };
 
+
+struct InitCGrenade{
+    InitCGrenade(
+        float _damage,float _radius,float _tipo
+    );
+    float damage;
+    float radius;
+    float tipo;
+};
+
+
+
+
 struct InitCGun{
     InitCGun(
         float, float, int

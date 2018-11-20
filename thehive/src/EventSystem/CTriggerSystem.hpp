@@ -15,6 +15,7 @@ static unsigned long id=0;
 #include "Util.hpp"
 
 #include "EnumTriggerType.hpp"
+#include "TData.hpp"
 
 
 //static void addAgent(CAgent* agente);
@@ -28,9 +29,11 @@ struct TriggerRecordStruct
         const gg::Vector3f _vPos,
         float _fRadius,
         unsigned long _fDuration,
-        bool _bDynamicSourcePos
+        bool _bDynamicSourcePos,
+        TData _data
     );
-
+    TriggerRecordStruct(const TriggerRecordStruct &orig);
+    TData data;
     EnumTriggerType eTriggerType;
     gg::Vector3f vPos;
     unsigned long nTriggerID;
@@ -58,7 +61,8 @@ public:
         const gg::Vector3f& _vPos,
         float _fRadius,
         float _fDuration,
-        bool _bDynamicSourcePos);
+        bool _bDynamicSourcePos,
+        TData _data);
 
     void clin();
 

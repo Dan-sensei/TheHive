@@ -68,55 +68,7 @@ Game::~Game(){
 void Game::RUN(){
 
 
-    /*
-    CAgent* pAgent=NULL;
-    CAgent* pAgent1=NULL;
-    CAgent* pAgent2=NULL;
-    CAgent* pAgent3=NULL;
-    CAgent* pAgent4=NULL;
 
-    pAgent=new CAgent(kTrig_Gunfire,gg::Vector3f(4,5,0));
-    CAgent::hola.push_back(pAgent);
-    // std::cout << "Id agente 1:"<<pAgent->nCAgentID << std::endl;
-    pAgent1=new CAgent(kTrig_EnemyNear,gg::Vector3f(3,2,0));
-    CAgent::hola.push_back(pAgent1);
-    // std::cout << "Id agente 1:"<<pAgent1->nCAgentID << std::endl;
-
-    pAgent2=new CAgent(kTrig_EnemyNear,gg::Vector3f(77,77,0));
-    CAgent::hola.push_back(pAgent2);
-    // std::cout << "Id agente 1:"<<pAgent2->nCAgentID << std::endl;
-
-    pAgent3=new CAgent(kTrig_Gunfire,gg::Vector3f());
-    CAgent::hola.push_back(pAgent3);
-    // std::cout << "Id agente 1:"<<pAgent3->nCAgentID << std::endl;
-
-    pAgent4=new CAgent(kTrig_EnemyNear|kTrig_Gunfire,gg::Vector3f(77,77,0));
-    CAgent::hola.push_back(pAgent4);
-    // std::cout << "Id agente 1:"<<pAgent4->nCAgentID << std::endl;
-
-    CAgent::hola.size();
-    TriggerRecordStruct(kTrig_Explosion,6, gg::Vector3f(),4,2,false);
-    CTriggerSystem* sistemita = Singleton<CTriggerSystem>::Instance();
-    unsigned long id_puesto=sistemita->RegisterTriger(kTrig_Gunfire,3,0,gg::Vector3f(), 10, 2,false);
-    id_puesto=sistemita->RegisterTriger(kTrig_EnemyNear,1,0,gg::Vector3f(), 150, 2,false);
-    sistemita->Update();
-    sistemita->RemoveTrigger(id_puesto);
-
-                        //(EnumTriggerType _eTriggerType,unsigned long _idSource,const Vector _vPos,float _fRadius,
-                          //                  unsigned long _fDuration,bool _bDynamicSourcePos);
-    irr::core::list<CAgent*>::Iterator it =CAgent::hola.begin();
-
-    while(it!=CAgent::hola.end()){
-      // std::cout << "Entre" << std::endl;
-
-      it++;
-    }
-    delete pAgent;
-    delete pAgent1;
-    delete pAgent2;
-    delete pAgent3;
-    delete pAgent4;
-    */
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
     // Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
@@ -125,7 +77,7 @@ void Game::RUN(){
 
     //uint8_t* p;
     //add inf triggers
-    EventSystem->RegisterTriger(kTrig_Gunfire,  1,0,gg::Vector3f(100,5,50), 5, 0,false);
+    //EventSystem->RegisterTriger(kTrig_Gunfire,  1,0,gg::Vector3f(100,5,50), 5, 0,false,NULL);
     // EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
     {
         uint16_t hero = Manager->createEntity();
@@ -141,6 +93,7 @@ void Game::RUN(){
         Manager->addComponentToEntity(gg::KEYBOARD, hero);
 
         InitCAgent agentHero(kTrig_Gunfire|kTrig_Explosion);
+        //InitCAgent agentHero(kTrig_Gunfire);
         Manager->addComponentToEntity(gg::CAGENT, hero, &agentHero);
 
         // ---------------------------------------

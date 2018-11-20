@@ -23,6 +23,9 @@ class CGranade: public IComponent {
         gg::EMessageStatus MHandler_UPDATE();
 
     private:
+        float damage;
+        float radius;
+        float tipo;
         CGranade();
         CGranade(const CGranade &orig);
         std::chrono::high_resolution_clock::time_point  begin;
