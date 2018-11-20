@@ -57,7 +57,7 @@ Pathfinding::Pathfinding()
         //AddConnection(10, 9);
         //AddConnection(10, 11);
 
-        bool loaded = Singleton<MeshImporter>::Instance()->importNavmesh("assets/NavMeshes/Test.obj", GRAPH, GConnections);
+        bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/Test.obj", GRAPH, GConnections);
         for(uint16_t i = 0; i < GConnections.size(); ++i){
             for(uint16_t j = 0; j < GConnections[i].size(); ++j){
                 if(GConnections[i][j].Value == 0)
@@ -157,8 +157,8 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
         if(CurrentNode->ID == GOAL) // GOAL
             break;
 
-        std::vector<Connection> Connections = GConnections[CurrentNode->ID];
-        for(Connection c : Connections) {
+        std::vector<Connection>* Connections = &GConnections[CurrentNode->ID];
+        for(Connection c : *Connections) {
             float costToNode = CurrentNode->RealCost + c.Value;
             Node* targetNode = &GRAPH[c.To];
             if (targetNode->Status == Type::CLOSED) {
@@ -277,5 +277,16 @@ void Pathfinding::DroNodes(){
         dro:
         Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
 
+    }
+
+    color[0] = 1;
+    color[1] = 0;
+    color[2] = 153;
+    color[3] = 153;
+    //  Connections
+    for(uint16_t i = 0; i < GConnections.size(); ++i){
+        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
+            Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 20, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 20, 0), color, 2);
+        }
     }
 }

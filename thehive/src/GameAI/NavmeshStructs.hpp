@@ -25,7 +25,7 @@ struct Connection{
 
 struct Node{
     Node();
-    Node(uint16_t _ID, float _X, float _Y, float _Z);
+    Node(uint16_t _ID, const gg::Vector3f &_Position);
     Node(const Node &orig);
 
     Connection Bitconnect;

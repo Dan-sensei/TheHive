@@ -12,11 +12,13 @@ class Singleton;
 
 struct Edge{
     Edge();
-    Edge(uint16_t _e1, uint16_t _e2, uint16_t _face);
+    Edge(uint16_t _e1, uint16_t _e2);
     Edge(const Edge &orig);
     uint16_t e1 = 0;
     uint16_t e2 = 0;
-    uint16_t face = 0;
+    uint16_t face1 = 0;
+    uint16_t face2 = 0;
+    uint16_t ID = 0;
     bool operator==(const Edge &orig);
 };
 
@@ -27,6 +29,12 @@ class MeshImporter{
     public:
 
         bool importNavmesh(
+            const std::string& pFile,
+            std::vector<Node> &GRAPH,
+            std::vector<std::vector<Connection>> &Connections
+        );
+
+        bool importNavmeshV2(
             const std::string& pFile,
             std::vector<Node> &GRAPH,
             std::vector<std::vector<Connection>> &Connections

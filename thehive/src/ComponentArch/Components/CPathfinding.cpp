@@ -47,7 +47,7 @@ gg::EMessageStatus CPathfinding::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-#define SPEED 5.f
+#define SPEED 1.f
 
 gg::EMessageStatus CPathfinding::MHandler_UPDATE(){
 

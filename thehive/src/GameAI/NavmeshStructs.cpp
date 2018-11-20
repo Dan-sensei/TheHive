@@ -16,8 +16,8 @@ Connection::Connection(const Connection &orig) {
 Node::Node()
 :ID(UINT16_MAX), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED)
 {}
-Node::Node(uint16_t _ID, float _X, float _Y, float _Z)
-:ID(_ID), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED), Position(_X, _Y, _Z)
+Node::Node(uint16_t _ID, const gg::Vector3f &_Position)
+:ID(_ID), Bitconnect(), RealCost(0.f), Heuristic(0.f), EstimatedCost(0.f), Status(Type::UNVISITED), Position(_Position)
 {}
 
 Node::Node(const Node &orig){
