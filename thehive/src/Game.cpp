@@ -148,10 +148,10 @@ void Game::RUN(){
 
     {
         uint16_t TrainingArea = Manager->createEntity();
-        Material yelo("assets/Textures/ice.bmp");
+        Material testura("assets/Textures/Domino.jpg");
         InitCTransform CTransformTraining(0,0,0,0,0,0);
-        InitCRenderable_3D InitTrainingArea("assets/Models/prueba.obj", yelo);
-        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/prueba.bullet",  100,75,0, -1,-1,-1, 0, 0,0,0, 0.2);
+        InitCRenderable_3D InitTrainingArea("assets/Models/SIUDA_CANAL.obj", testura);
+        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/SIUDA_CANAL.bullet",  100,75,0, -1,-1,-1, 0, 0,0,0, 0.2);
         Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
         Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
