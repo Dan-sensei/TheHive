@@ -17,14 +17,15 @@ ObjectManager::ObjectManager()
 {
     nextAvailableEntityID.push(1);
 
-    ComponentConstructorVector[0]= &ObjectManager::createTransformComponent;
-    ComponentConstructorVector[1]= &ObjectManager::createKeyboardComponent;
-    ComponentConstructorVector[2]= &ObjectManager::createRenderable_3DComponent;
-    ComponentConstructorVector[3]= &ObjectManager::createCameraComponent;
-    ComponentConstructorVector[4]= &ObjectManager::createRigidBodyComponent;
-    ComponentConstructorVector[5]= &ObjectManager::createAgentComponent;
-    ComponentConstructorVector[6]= &ObjectManager::createGranadeComponent;
-    ComponentConstructorVector[7]= &ObjectManager::createGunComponent;
+    ComponentConstructorVector[gg::TRANSFORM]= &ObjectManager::createTransformComponent;
+    ComponentConstructorVector[gg::PLAYERCONTROLLER]= &ObjectManager::createPlayerControllerComponent;
+    ComponentConstructorVector[gg::RENDERABLE_3D]= &ObjectManager::createRenderable_3DComponent;
+    ComponentConstructorVector[gg::CAMERA]= &ObjectManager::createCameraComponent;
+    ComponentConstructorVector[gg::RIGID_BODY]= &ObjectManager::createRigidBodyComponent;
+    ComponentConstructorVector[gg::AGENT]= &ObjectManager::createAgentComponent;
+    ComponentConstructorVector[gg::GRANADE]= &ObjectManager::createGranadeComponent;
+    ComponentConstructorVector[gg::GUN]= &ObjectManager::createGunComponent;
+    ComponentConstructorVector[gg::PATHFINDING]= &ObjectManager::createPathfindingComponent;
 
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
@@ -64,6 +65,7 @@ void ObjectManager::initObjectManager() {
     CCamera::initComponent();
     CRigidBody::initComponent();
     CGranade::initComponent();
+    CPathfinding::initComponent();
 }
 
 
@@ -229,7 +231,7 @@ IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const u
 IComponent* ObjectManager::createTransformComponent         ()   {
     return new CTransform;
 }
-IComponent* ObjectManager::createKeyboardComponent          ()   {
+IComponent* ObjectManager::createPlayerControllerComponent  ()   {
     return new CPlayerController;
 }
 IComponent* ObjectManager::createRenderable_3DComponent     ()   {
@@ -238,6 +240,7 @@ IComponent* ObjectManager::createRenderable_3DComponent     ()   {
 IComponent* ObjectManager::createCameraComponent            ()   {
     return new CCamera;
 }
+
 IComponent* ObjectManager::createAgentComponent             ()   {
     return new CAgent;
 }
@@ -249,6 +252,9 @@ IComponent* ObjectManager::createGranadeComponent           ()   {
 }
 IComponent* ObjectManager::createGunComponent               ()   {
     return new CGun;
+}
+IComponent* ObjectManager::createPathfindingComponent            ()   {
+    return new CPathfinding;
 }
 //IComponent* ObjectManager::createColliderComponent     ();
 //IComponent* ObjectManager::createHealthComponent       ();
