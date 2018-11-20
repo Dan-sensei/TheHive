@@ -163,7 +163,8 @@ void Game::RUN(){
     // std::cout << "BEGIN GAME LOOP" << '\n';
     world->setDebug(false);
     while(Engine->isWindowOpen()) {
-        world->stepSimulation(1.f / 60.f, 10.f);
+
+        world->stepSimulation(1.f / 11.f, 10.f);
 
         EventSystem->Update();
         Manager->sendMessageToAllEntities(gg::M_UPDATE);

@@ -4,7 +4,7 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <Util.hpp>
 
-#define VEL_FACTOR      9000.f
+#define VEL_FACTOR      200.f
 #define MAX_ANGLE       12.f
 
 #define ROTATE_KEY      gg::GG_LCONTROL
@@ -15,7 +15,7 @@
 
 #define DASH_FACTOR     1.2f
 #define RUN_FACTOR      1.1f
-#define FORCE_FACTOR    7000.f
+#define FORCE_FACTOR    200.f
 
 CPlayerController::CPlayerController()
 :cTransform(nullptr)
@@ -137,7 +137,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     }
 
     if(engine->key(JUMP_KEY)){
-        force.Y = 6;
+        force.Y = 10;
     }
 
     force *= FORCE_FACTOR;
@@ -175,11 +175,11 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
             vel = gg::Normalice(vel);
 
             uint16_t holyBomb = Manager->createEntity();
-            InitCGrenade CHolyBomb(80000,40,1);
+            InitCGrenade CHolyBomb(FORCE_FACTOR*20,40,1);
             Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
             InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
             InitCTransform CTransformHolyBomb(           gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
-            InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 3,3,3, 1, 0,0,0);
+            InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
             Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
             Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
             Manager->addComponentToEntity(gg::GRANADE,holyBomb ,&CHolyBomb);

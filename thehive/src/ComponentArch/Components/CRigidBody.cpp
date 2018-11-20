@@ -2,6 +2,7 @@
 #include <vector>
 
 #define PI 3.14159265359
+#define FORCE_FACTOR    200.f
 
 std::vector<const char*> names;
 
@@ -124,8 +125,6 @@ void CRigidBody::initializeComponentData(const void* data){
                 body->setFriction(btScalar(cData->friction));
             }
 
-            world->setGravity(0,-200,0);
-
             // Add the body to the dynamics world
             world->addRigidBody(body);
         }
@@ -160,12 +159,11 @@ void CRigidBody::initializeComponentData(const void* data){
                 body->setFriction(btScalar(cData->friction));
             }
 
-            world->setGravity(0,-200,0);
-
             // Add the body to the dynamics world
             world->addRigidBody(body);
         }
     }
+    world->setGravity(0,-10,0);
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();

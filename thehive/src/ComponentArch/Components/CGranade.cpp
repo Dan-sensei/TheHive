@@ -12,7 +12,7 @@
 #include "ComponentArch/Message.hpp"
 
 #include <EventSystem/TData.hpp>
-#define VEL_FACTOR      9000.f
+#define VEL_FACTOR      200.f
 
 
 
@@ -106,7 +106,7 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
                 CRigidBody* rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, holyBomb));
                 vel*= VEL_FACTOR*decrecimiento;
                 rb->applyCentralForce(vel);
-/*
+
                 //segunda granada Z-
                 vel=gg::Vector3f(0,ymas,-1);
 
@@ -158,7 +158,7 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
                 rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, holyBomb));
                 vel*= VEL_FACTOR*decrecimiento;
                 rb->applyCentralForce(vel);
-*/
+
 
             }
 
