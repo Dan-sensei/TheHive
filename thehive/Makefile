@@ -2,14 +2,15 @@ include MakeColors
 
 BUILD	:= build/
 
-SOURCES := $(wildcard *.cpp)
-OBJECTS := $(addsuffix .o,$(basename $(SOURCES)))
+SOURCES := $(shell find src/ -type f -name "*.cpp")
+OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
 OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 
 ADDITIONAL_LIB :=  -L ./lib
-ADDITIONAL_H :=  -I ./include
-LIBRARIES := -lGL -lGLEW -lglfw -lassimp -lSOIL2 -lIrrlicht
+ADDITIONAL_H :=  -I ./include -I ./src -I /usr/include/bullet
+LIBRARIES := -lGL -lGLEW -lGLU -lglut -lglfw -lassimp -lSOIL2 -lIrrlicht -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader -lBullet2FileLoader
 
+COMPILER := g++
 
 EXE := main
 
@@ -18,26 +19,56 @@ $(EXE): $(OBJECTS)
 	$(call printInfo, "Generating")
 	$(call printWarning, $(EXE))
 	$(call printInfo,"...")
-	@g++ -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
+	@$(COMPILER) -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
 	$(call printObj,  "Finished!")
 	$(call br)
 	$(call br)
 
+$(OBJECTS): $(BUILD)%.o : %.cpp
+	 @mkdir -p ${@D}
 
-%.o: ../%.cpp
 	$(call printInfo, "-Compiling")
-	$(call printObj, $(notdir $^))
-	@g++ -o $@ -c $^ $(ADDITIONAL_H)
+	$(call printObj, $^)
+	@$(COMPILER) -g -o $@ -c $< $(ADDITIONAL_H)
 	$(call printSuccess,  "[OK]")
 	$(call br)
 
 clean:
-	$(call printWarning, "Borrando" "archivos" ".o...")
+	$(call printWarning, "Deleting" )
+	$(call printObj,$(BUILD))
+	$(call printWarning,"..." )
+	@rm -rf $(BUILD)
+	$(call printSuccess,  "[OK]")
 	$(call br)
-	@rm -f $(OBJECTS)
+	$(call printWarning, "Deleting" )
+	$(call printObj,$(EXE))
+	@rm -f $(EXE)
+	$(call printSuccess,  "[OK]")
+	$(call br)
 
 init:
 	./$(EXE)
 
+molon:
+	$(call br)
+	$(call printObj, "Titulo:" )
+	$(call printWarning,"THE" "HIVE")
+	$(call br)
+	$(call printObj, "Language:" )
+	$(call printWarning,"C++")
+	$(call br)
+	$(call printObj, "Compiler:" )
+	$(call printWarning,$(COMPILER))
+	$(call br)
+	$(call br)
+
 info:
-	$(info $(OBJECTS))
+	$(call br)
+	$(call printWarning, "Files:")
+	$(call br)
+	$(call br)
+	$(call objColor)
+	@$(foreach var,$(SOURCES), echo " "$(var); )
+	$(call noColor)
+
+	$(call br)

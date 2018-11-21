@@ -1,0 +1,2 @@
+import PhysicsConstraints
+PhysicsConstraints.exportBulletFile("/home/pablomanez/Escritorio/trainingArea.bullet")
