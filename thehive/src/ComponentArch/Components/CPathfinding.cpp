@@ -51,6 +51,8 @@ gg::EMessageStatus CPathfinding::MHandler_SETPTRS(){
 
 gg::EMessageStatus CPathfinding::MHandler_UPDATE(){
 
+    if(!cTransform) return gg::ST_ERROR;
+
     if(Waypoints.empty()){
         Singleton<Pathfinding>::Instance()->resetGraph();
         std::cout << "GENERATING WAYPOINTS" << '\n';

@@ -2,7 +2,6 @@
 #include <iostream>
 #include "MeshImporter.hpp"
 #include "Singleton.hpp"
-#include <cmath>
 #include <GameEngine/GameEngine.hpp>
 
 
@@ -68,7 +67,7 @@ Pathfinding::Pathfinding()
         std::cout << "GRAPH CREATED!" << '\n';
 
         std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
-        for(uint8_t i = 0; i < GRAPH.size(); ++i){
+        for(uint16_t i = 0; i < GRAPH.size(); ++i){
             std::cout << "  -- " << i << " " << GRAPH[i] << '\n';
         }
 
@@ -199,8 +198,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
         //std::vector<Connection> path;
         while(CurrentNode->ID != START) {
             //path.push_back(CurrentNode->Bitconnect);
-            Waypoint wp(GRAPH[CurrentNode->Bitconnect.To].Position, CurrentNode->ID);
-            Output.push(wp);
+            Output.emplace(GRAPH[CurrentNode->Bitconnect.To].Position, CurrentNode->ID);
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
         }
 
@@ -212,7 +210,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
         //std::cout << '\n';
     }
 
-    printStats();
+    //printStats();
 }
 
 
@@ -279,11 +277,11 @@ void Pathfinding::DroNodes(){
 
     }
 
+    //  Connections
     color[0] = 1;
     color[1] = 0;
     color[2] = 153;
     color[3] = 153;
-    //  Connections
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
             Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 20, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 20, 0), color, 2);

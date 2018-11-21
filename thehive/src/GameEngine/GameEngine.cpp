@@ -18,7 +18,7 @@ void GameEngine::Starto(){
     driver = device->getVideoDriver();
     smgr = device->getSceneManager();
     Material::driver = driver;
-
+    ScreenConsole::IrrlichtDevice = device;
 }
 
 //  ---

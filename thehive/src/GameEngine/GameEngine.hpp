@@ -6,6 +6,7 @@
 #include <irrlicht/irrlicht.h>
 #include <irrlicht/Keycodes.h>
 #include <irrlicht/SKeyMap.h>
+#include "ScreenConsole.hpp"
 
 #include "KEYCODES.hpp"
 #include "ENode.hpp"
@@ -82,4 +83,5 @@ class GameEngine{
         EventListener listener;
         Camera G_Camera;
     };
+
 #endif

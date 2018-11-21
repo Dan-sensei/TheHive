@@ -117,6 +117,16 @@ namespace gg{
     float genFloatRandom(float min, float max);
     uint16_t genIntRandom(uint16_t min, uint16_t max);
 
+
+    struct Color{
+        Color();
+        Color(uint8_t _R, uint8_t _G, uint8_t _B);
+        Color(uint8_t _R, uint8_t _G, uint8_t _B, float _Alpha);
+        Color(const Color &orig);
+
+        uint8_t R, G, B;
+        float Alpha;
+    };
 };
 
 std::ostream& operator<<(std::ostream& os, const gg::Vector3f &v1);

@@ -19,7 +19,7 @@
 #include "EventSystem/CTriggerSystem.hpp"
 
 #include "Bullet/ggDynWorld.hpp"
-
+#include "GameEngine/ScreenConsole.hpp"
 
 #define MOVEMENT_SPEED 1.f
 
@@ -230,6 +230,8 @@ void Game::RUN(){
     //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
+    gg::cout("Testing", gg::Color(255, 0, 0, 1));
+
     world->setDebug(false);
     Singleton<Pathfinding>::Instance()->SetDebug(true);
     while(Engine->isWindowOpen()) {
@@ -245,6 +247,7 @@ void Game::RUN(){
 
         Singleton<ggDynWorld>::Instance()->debugDrawWorld();
         Singleton<Pathfinding>::Instance()->DroNodes();
+        Singleton<ScreenConsole>::Instance()->DisplayDebug();
 
         Engine->EndDro();
     }

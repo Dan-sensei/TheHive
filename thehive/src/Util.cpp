@@ -156,6 +156,22 @@ gg::Vector3f gg::Normalice<gg::Vector3f>(gg::Vector3f v1){
     return v1;
 }
 
+gg::Color::Color()
+:R(0), G(0), B(0), Alpha(1)
+{}
+gg::Color::Color(uint8_t _R, uint8_t _G, uint8_t _B)
+:R(_R), G(_G), B(_B), Alpha(1)
+{}
+gg::Color::Color(uint8_t _R, uint8_t _G, uint8_t _B, float _Alpha)
+:R(_R), G(_G), B(_B), Alpha(_Alpha)
+{}
+gg::Color::Color(const Color &orig){
+    R = orig.R;
+    G = orig.G;
+    B = orig.B;
+    Alpha = orig.Alpha;
+}
+
 float gg::genFloatRandom(float min, float max){
     std::random_device rd;
     std::default_random_engine gen(rd());
