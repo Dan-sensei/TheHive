@@ -2,8 +2,10 @@
 #include <random>
 
 //el selector genera un radom cuando se inicializa el selector
+RandomSelector::RandomSelector(){}
+RandomSelector::RandomSelector(const RandomSelector &orig):Composite(orig)
+{}
  void RandomSelector::onInitialize() {
-     std::cout << "initRS" << '\n';
 
         max = m_Children.size()-1;
         int cont = 0;
@@ -50,7 +52,6 @@ secuencia.clear();
 }
 
  Status RandomSelector::update() {
-std::cout << "updateRS" << '\n';
      int cont=0;
 
      while (true) {

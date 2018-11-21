@@ -34,7 +34,12 @@ CAIEnem::CAIEnem()
 }
 
 CAIEnem::~CAIEnem() {
-
+    for (size_t i = 0; i < m_Children.size(); i++) {
+        std::cout << "borra" << i<<'\n';
+        delete m_Children[i];
+    }
+    std::cout << "llega" << '\n';
+    delete BT;
 }
 void CAIEnem::enemyseen(TriggerRecordStruct* cdata){
 //
@@ -60,29 +65,40 @@ void CAIEnem::initializeComponentData(const void* data){
             agresividad=cdata->agresividad;
             playerPos=cdata->playerPos;
             playerSeen=cdata->playerSeen;
-/*
+
             Action* andar_r= new Action(ANDAR_RAND);
             Action* rango= new Action(RANGO);
             Action* giro= new Action(GIRAR);
             Action* move_to= new Action(MOVER);
             Action* com= new Action(COMER);
 
+            m_Children.push_back(andar_r);
+            m_Children.push_back(rango);
+            m_Children.push_back(giro);
+            m_Children.push_back(move_to);
+            m_Children.push_back(com);
+
             RandomSequence* sec1= new RandomSequence();
             sec1->addChild(rango);
             sec1->addChild(giro);
+            m_Children.push_back(sec1);
 
             RandomSequence*  sec2= new RandomSequence();
             sec2->addChild(sec1);
             sec2->addChild(move_to);
             sec2->addChild(com);
+            m_Children.push_back(sec2);
+
 
             RandomSelector* selec1=  new RandomSelector();
             selec1->addChild(andar_r);
             selec1->addChild(sec2);
+            m_Children.push_back(selec1);
 
-            BT=BehaviorTree(selec1);
 
-*/
+            BT= new BehaviorTree(selec1);
+
+//BT->tick();
 
 
             //des/activar eventos sonoros
@@ -139,12 +155,14 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
     // UPDATE
     //setposition
     //CAIEnem(cTransform->getPosition);
-    //if(enfado==0){
-    //    enfado ++;
-    //    BT.tick();
-    //    BT.tick();
+    if(enfado==0){
+        enfado ++;
+        //BT.tick();
+        //BT.tick();
+        //BT->tick();
+        //BT->tick();
 
-    //}
+    }
     //std::cout << "updatetrig" << '\n';
 
     return gg::ST_TRUE;

@@ -10,7 +10,7 @@ class Action : public Behavior {
     public:
       Action(Hojas task);
       virtual ~Action();
-
+Action(const Action &orig);
        // behavior() : m_eStatus(BH_INVALID)  {}    // Constructor. No se declara en la interfaz, sino en sus hijos, SUPONGO
        virtual void onInitialize();             // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update
        virtual Status update() ;              // Update del comportamiento. Llamado cada vez que el comportamiento es actualizado
@@ -22,7 +22,6 @@ class Action : public Behavior {
        void rango_visual();
        void move_to();
        void girar_enemigo();
-
    private:
 
        using pFunc = void(Action::*)();

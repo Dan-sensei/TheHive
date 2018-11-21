@@ -6,10 +6,13 @@
 
 class Composite : public Behavior {
     public:
+        Composite(const Composite &orig);
+        Composite();
+
        virtual void addChild(Behavior* hijo);
        virtual void removeChild(Behavior* hijo);
        virtual void clearChildren();
-       ~Composite();
+       virtual ~Composite();
 
     protected:
        using Behaviors = std::vector<Behavior*>;

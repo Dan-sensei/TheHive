@@ -5,6 +5,7 @@
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
 #include <cstdint>
 #include <list>
+#include <vector>
 //#include <irrlicht>
 
 #include <Util.hpp>
@@ -40,7 +41,7 @@ class CAIEnem : public IComponent {
 
         bool playerOnRange;
         float enfado;
-        BehaviorTree BT;
+        BehaviorTree* BT;
 
 
         void enemyseen(TriggerRecordStruct* cdata);
@@ -63,6 +64,8 @@ class CAIEnem : public IComponent {
         CAIEnem(const CAIEnem &orig) = delete;
         //CAIEnem(unsigned long _dwTriggerFlags,gg::Vector3f _vPos);
 
+        using Behaviors = std::vector<Behavior*>;
+        Behaviors m_Children;
 
 
         GameEngine* engine;

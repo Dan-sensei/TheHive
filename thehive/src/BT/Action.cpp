@@ -1,7 +1,10 @@
 #include "Action.hpp"
+#include <iostream>
 
 
-
+Action::Action(const Action &orig){
+    Action(orig.tarea);
+}
 Action::Action(Hojas task){
 
     VectorAcciones[ANDAR_RAND] = &Action::andar_random;

@@ -30,7 +30,6 @@ Status Behavior::getStatus(){
 }
 
 void Behavior::onInitialize(){
-
 }             // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update
 Status Behavior::update() {return BH_SUCCESS;}              // Update del comportamiento. Llamado cada vez que el comportamiento es actualizado
 void Behavior::onTerminate(Status){}

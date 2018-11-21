@@ -77,7 +77,7 @@ void Game::RUN(){
 
 
 
-
+/*
 
         Action andar_r= Action(ANDAR_RAND);
         Action rango= Action(RANGO);
@@ -103,7 +103,7 @@ void Game::RUN(){
         BT.tick();
         BT.tick();
 std::cout << "bt generado" << '\n';
-
+*/
 
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));

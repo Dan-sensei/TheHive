@@ -16,7 +16,7 @@ class Decorator : public Behavior {
     public:
        Decorator(Behavior* _m_pChild);
        Decorator();
-       ~Decorator();
+       virtual ~Decorator();
        // Sobreescribir los metodos de la interfaz
        //virtual Status update();
 };

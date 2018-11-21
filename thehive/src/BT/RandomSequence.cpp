@@ -2,9 +2,11 @@
 #include <random>
 
 //el Sequence genera un radom cuando se inicializa el Sequence
+RandomSequence::RandomSequence(){}
+RandomSequence::RandomSequence(const RandomSequence &orig):Composite(orig)
+{}
  void RandomSequence::onInitialize() {
 
-     std::cout << "estoy" << '\n';
         max = m_Children.size()-1;
         int cont = 0;
 

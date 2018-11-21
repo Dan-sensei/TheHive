@@ -6,9 +6,11 @@
 #include <iostream>
 
 class RandomSelector : public Composite{
-//public:
+public:
  //Status update();
+ RandomSelector();
 protected:
+    RandomSelector(const RandomSelector &orig);
   Behaviors::iterator m_CurrentChild;
   std::vector<int> secuencia;
   int max;
