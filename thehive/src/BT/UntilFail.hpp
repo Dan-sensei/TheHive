@@ -8,4 +8,4 @@ class UntilFail : public Decorator{
     public:
      Status update();
 };
-#endif 
+#endif

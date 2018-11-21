@@ -3,6 +3,9 @@
 
 #include <string>
 #include <GameEngine/Material.hpp>
+#include <ComponentArch/Enum.hpp>
+#include <Util.hpp>
+
 
 
 //  Init Data structs for every component type
@@ -21,6 +24,19 @@ struct InitCTransform{
 //struct ICPlayerController{
 //
 //};
+
+struct InitCAIEnem{
+    InitCAIEnem(
+        gg::EEnemyType _type,
+        float _agresividad,
+        gg::Vector3f _playerPos,
+        bool _playerSeen
+    );
+    gg::EEnemyType type;
+    float agresividad;
+    gg::Vector3f playerPos;
+    bool playerSeen;
+};
 struct InitCAgent{
     InitCAgent(unsigned long _flags);
     unsigned long flags;

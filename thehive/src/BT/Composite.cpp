@@ -20,3 +20,5 @@ void Composite::removeChild(Behavior* hijo){
 void Composite::clearChildren(){
     m_Children.clear();
 }
+Composite::~Composite(){
+}

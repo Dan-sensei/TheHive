@@ -63,20 +63,20 @@ Pathfinding::Pathfinding(){
             }
         }
 
-        std::cout << "GRAPH CREATED!" << '\n';
+        //std::cout << "GRAPH CREATED!" << '\n';
 
-        std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
+        //std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
         for(uint8_t i = 0; i < GRAPH.size(); ++i){
-            std::cout << "  -- " << i << " " << GRAPH[i] << '\n';
+            //std::cout << "  -- " << i << " " << GRAPH[i] << '\n';
         }
 
-        std::cout << "Connections:" << '\n';
+        //std::cout << "Connections:" << '\n';
         for(uint16_t i = 0; i < GConnections.size(); ++i){
-            std::cout << "[" << i << "] => ";
+            //std::cout << "[" << i << "] => ";
             for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-                std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
+                //std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
             }
-            std::cout << '\n';
+            //std::cout << '\n';
         }
 }
 
@@ -147,7 +147,7 @@ void Pathfinding::A_Estrella(uint16_t GOAL, std::stack<gg::Vector3f> &Output){
     }
 
     if(CurrentNode->ID != GOAL){
-        std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
+        //std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
         std::vector<Connection> path;
@@ -160,12 +160,13 @@ void Pathfinding::A_Estrella(uint16_t GOAL, std::stack<gg::Vector3f> &Output){
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
         }
 
-        std::cout << "CAMINO: " << '\n';
+        //std::cout << "CAMINO: " << '\n';
 
         uint8_t i = path.size();
-        while(i--) std::cout << path[i].Name << '-';
+        while(i--){ std::cout << path[i].Name << '-';
+    }
 
-        std::cout << '\n';
+        //std::cout << '\n';
     }
 
     printStats();
@@ -189,10 +190,10 @@ void Pathfinding::printStats(){
         else if(GRAPH[i].Status == Type::UNVISITED)
             ++UNVISITED;
     }
-    std::cout << '\n';
-    std::cout << "OPEN:      " << OPEN << '\n';
-    std::cout << "CLOSED:    " << CLOSED << '\n';
-    std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
+    //std::cout << '\n';
+    //std::cout << "OPEN:      " << OPEN << '\n';
+    //std::cout << "CLOSED:    " << CLOSED << '\n';
+    //std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
 }
 
 

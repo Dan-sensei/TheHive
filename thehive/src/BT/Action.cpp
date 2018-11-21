@@ -14,7 +14,9 @@ Action::Action(Hojas task){
 
 }
 
-Action::~Action(){}
+Action::~Action(){
+    //VectorAcciones eliminar
+}
 
 void Action::onInitialize(){
     s = BH_INVALID;

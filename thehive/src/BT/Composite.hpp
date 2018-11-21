@@ -9,8 +9,10 @@ class Composite : public Behavior {
        virtual void addChild(Behavior* hijo);
        virtual void removeChild(Behavior* hijo);
        virtual void clearChildren();
+       ~Composite();
+
     protected:
-       typedef std::vector<Behavior*> Behaviors;
+       using Behaviors = std::vector<Behavior*>;
        Behaviors m_Children;
 };
 #endif

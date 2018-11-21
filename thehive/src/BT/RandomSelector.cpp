@@ -1,14 +1,15 @@
-#include "RandomSequence.hpp"
+#include "RandomSelector.hpp"
 #include <random>
 
-//el Sequence genera un radom cuando se inicializa el Sequence
- void RandomSequence::onInitialize() {
+//el selector genera un radom cuando se inicializa el selector
+ void RandomSelector::onInitialize() {
+     std::cout << "initRS" << '\n';
 
         max = m_Children.size()-1;
         int cont = 0;
 
         m_CurrentChild=m_Children.begin();
-
+secuencia.clear();
         for(int i=0;i<=max;i++)
             secuencia.push_back(-1);
 
@@ -28,7 +29,6 @@
             }
 
 
-
             if(!incluido){
                 for(int i=0;i<=max;i++){
                     if(secuencia[i]==-1 && !incluido){
@@ -37,8 +37,7 @@
                         incluido=true;
                         secuencia[i]=x;
 
-                        std::cout<<"El random es"<< x<<'\n';
-
+                        std::cout<<"El random es "<< x<<'\n';
 
                     }
                 }
@@ -50,15 +49,15 @@
          }
 }
 
- Status RandomSequence::update() {
-
+ Status RandomSelector::update() {
+std::cout << "updateRS" << '\n';
      int cont=0;
 
      while (true) {
 
         Status s=(*m_CurrentChild)->tick();
 
-        if(s != BH_SUCCESS)
+        if(s != BH_FAILURE)
           return s;
 
         else{
@@ -73,9 +72,12 @@
                 }
             }
             else{
-                 return BH_SUCCESS;
+                 return BH_FAILURE;
             }
         }
     }
   return BH_INVALID;
+}
+void RandomSelector::onTerminate(Status state){
+  std::cout << "RandomSelector onTerminate" << state << '\n';
 }

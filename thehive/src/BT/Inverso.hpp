@@ -8,7 +8,7 @@ class Inverso : public Decorator{
     public:
       Inverso(Behavior* _m_pChild);
       Inverso();
-      ~Inverso();
+      virtual ~Inverso();
       virtual void onTerminate(Status state);
       virtual Status update();
       //virtual void onInitialize();             // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update

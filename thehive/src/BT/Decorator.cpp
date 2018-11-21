@@ -5,4 +5,5 @@ Decorator::Decorator(Behavior* _m_pChild){
 }
 
 Decorator::Decorator(){}
-Decorator::~Decorator(){}
+Decorator::~Decorator(){
+}

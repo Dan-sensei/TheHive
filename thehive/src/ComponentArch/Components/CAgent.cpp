@@ -93,7 +93,14 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         // NO TIENE BALAS O ARMA
         InitCGun CGunHero(10,1,50);
         oManager->addComponentToEntity(gg::GUN, nCAgentID, &CGunHero);
+    }else if(_pRec->eTriggerType & kTrig_EnemyNear){
+        //CAIEnem->enemyseen();
+
     }
+
+
+
+
 return true;
 
 }

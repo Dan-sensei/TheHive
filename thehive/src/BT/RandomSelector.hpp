@@ -14,6 +14,8 @@ protected:
   int max;
   virtual void onInitialize();
   virtual Status update();
+  virtual void onTerminate(Status state);
+
 
 };
 

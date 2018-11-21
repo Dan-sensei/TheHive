@@ -9,7 +9,7 @@ class Action : public Behavior {
 
     public:
       Action(Hojas task);
-      ~Action();
+      virtual ~Action();
 
        // behavior() : m_eStatus(BH_INVALID)  {}    // Constructor. No se declara en la interfaz, sino en sus hijos, SUPONGO
        virtual void onInitialize();             // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update

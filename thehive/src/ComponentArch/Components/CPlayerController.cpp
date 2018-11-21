@@ -2,6 +2,7 @@
 #include <Singleton.hpp>
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
 
 #define VEL_FACTOR      200.f
@@ -157,6 +158,11 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     gg::Vector3f rayPos = world->getRaycastVector();
 
     if(engine->key(gg::GG_E)){
+        //
+
+
+        Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),2000,TData());
+        //
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
         if(gun){
             gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);

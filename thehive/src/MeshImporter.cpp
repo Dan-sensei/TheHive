@@ -47,7 +47,7 @@ bool MeshImporter::importNavmesh(
         vertex.emplace_back(vertices[j].x, vertices[j].y, vertices[j].z);
     }
 
-    std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
+    //std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
 
     Connections.resize(meshes[0]->mNumFaces);
 
