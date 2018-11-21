@@ -71,6 +71,7 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
             //std::cout << "core si" << '\n';
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
             //std::cout << "core no" << '\n';
+            return true;
 
         }
 
@@ -104,8 +105,10 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
     if(_pRec->eTriggerType & kTrig_Explosion){
         //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
         //// std::cout << "usando handler despues" << nCAgentID<< '\n';
-        if(oManager->getComponent(gg::RIGID_BODY,nCAgentID))
+        if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
+            return;
+        }
     }
     //std::cout << "OnTriggerStay  sale" <<nCAgentID<< '\n';
 
