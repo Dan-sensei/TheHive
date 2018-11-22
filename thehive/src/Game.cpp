@@ -132,7 +132,7 @@ void Game::RUN(){
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
     {
-        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  100,80,0, -1,-1,-1, 50, 0,0,0);
+        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  700,180,0, -1,-1,-1, 50, 0,0,0);
         uint16_t hero = Manager->createEntity();
         InitCTransform CTransformInitData(0, 0, 10, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/Cube.obj", moradoDeLos80);
@@ -197,27 +197,31 @@ void Game::RUN(){
         Material yelo("assets/Textures/ice.bmp");
         InitCTransform CTransformTraining(0,0,0,0,0,0);
         InitCRenderable_3D InitTrainingArea("assets/Models/prueba.obj", yelo);
-        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/prueba.bullet",  100,75,0, -1,-1,-1, 0, 0,0,0, 0.2);
+        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/prueba.bullet",  700,175,0, -1,-1,-1, 0, 0,0,0, 0.2);
         Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
         Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
 
         uint16_t Actor1 = Manager->createEntity();
         Material Blue("assets/Textures/Blue.png");
-        InitCTransform Actor1Transform(-100,0,0,0,0,0);
+        InitCTransform Actor1Transform(300,0,700,0,0,0);
         InitCRenderable_3D CRenderableCube1("assets/Models/Actor.obj", Blue);
+        InitCRigidBody CRigidBodyActor1(true,"assets/BoundingBoxes/Cube.bullet",  100,83,13, -1,-1,-1, 50, 0,0,0);
         Manager->addComponentToEntity(gg::TRANSFORM, Actor1, &Actor1Transform);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, Actor1, &CRenderableCube1);
+        //Manager->addComponentToEntity(gg::RIGID_BODY, Actor1, &CRigidBodyActor1);
         Manager->addComponentToEntity(gg::PATHFINDING, Actor1);
     }
 
     {
-        Material Wireframe("assets/NavMeshes/Navmesh.png");
+        Material Wireframe("assets/NavMeshes/L4D2Nav.png");
         uint16_t Navmesh = Manager->createEntity();
         InitCTransform init(0,0,0,0,0,0);
-        InitCRenderable_3D InitTrainingArea("assets/NavMeshes/Test.obj", Wireframe);
+        InitCRenderable_3D InitTrainingArea("assets/NavMeshes/L4D2Nav.obj", Wireframe);
+        //InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/PathMesh.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0, 0.2);
         Manager->addComponentToEntity(gg::TRANSFORM, Navmesh, &init);
         Manager->addComponentToEntity(gg::RENDERABLE_3D, Navmesh, &InitTrainingArea);
+        //Manager->addComponentToEntity(gg::RIGID_BODY, Navmesh, &CRigidBodyTraining);
     }
 
     // Print memory

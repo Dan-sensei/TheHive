@@ -2,13 +2,15 @@
 #include <Singleton.hpp>
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
+#include "CRigidBody.hpp"
 #include "CTransform.hpp"
+#include <cmath>
 
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 
 CPathfinding::CPathfinding()
-:cTransform(nullptr), currentWaypointID(0)
+:cTransform(nullptr), currentWaypointID(11)
 {
 
 }
@@ -42,12 +44,13 @@ gg::EMessageStatus CPathfinding::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CPathfinding::MHandler_SETPTRS(){
+    //cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
 
     return gg::ST_TRUE;
 }
 
-#define SPEED 1.f
+#define SPEED 5.f
 
 gg::EMessageStatus CPathfinding::MHandler_UPDATE(){
 
@@ -63,21 +66,40 @@ gg::EMessageStatus CPathfinding::MHandler_UPDATE(){
         std::cout << "-----------------------------------------------" << '\n';
     }
     else{
-
-        gg::Vector3f moveVector = Waypoints.top().Position - cTransform->getPosition();
+        gg::Vector3f* target = &Waypoints.top().Position;
+        gg::Vector3f moveVector = *target - cTransform->getPosition();
 
         float modulo= gg::Modulo(moveVector);
-
+        //if((target->Y > cTransform->getPosition().Y && modulo < 3) || modulo <= Waypoints.top().Radius) {
         if(modulo <= 3) {
             currentWaypointID = Waypoints.top().ID;
             Waypoints.pop();
             return gg::ST_TRUE;
         }
 
-        moveVector = (moveVector / modulo) * SPEED;
+        moveVector = (moveVector / modulo)*SPEED;
 
 
         gg::Vector3f nextPosition = cTransform->getPosition() + moveVector;
+        // float dot = moveVector.X*cTransform->getPosition().X + moveVector.Y*cTransform->getPosition().Y;
+        // float det = moveVector.X*cTransform->getPosition().Y - moveVector.Y*cTransform->getPosition().X;
+        // float angle = atan2(det, dot);
+        //
+        // gg::Vector3f force = gg::Vector3f();
+        // if(abs(cos(angle)) < 0.1)
+        //     force = cRigidBody->getVelocity() * gg::Vector3f(-1,1,-1);
+        // else{
+        //     if(gg::Modulo(cRigidBody->getVelocity()) < 40)
+        //         force = moveVector*5000;
+        // }
+
+        //gg::cout("Speed = " + std::to_string(gg::Modulo(cRigidBody->getVelocity())));
+        //gg::cout(std::to_string(abs(cos(angle))));
+
+        //gg::cout("X " + std::to_string(force.Z) + " | Y " + std::to_string(force.Y) + " | Z " + std::to_string(force.Z));
+
+        //cRigidBody->applyCentralForce(force);
+
         cTransform->setPosition(nextPosition);
 
         if(Singleton<Pathfinding>::Instance()->isDebugging()){

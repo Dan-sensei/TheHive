@@ -10,6 +10,7 @@
 
 
 class GameEngine;
+class CRigidBody;
 class CTransform;
 
 class CPathfinding : public IComponent {
@@ -34,6 +35,7 @@ class CPathfinding : public IComponent {
         std::stack<Waypoint> Waypoints;
         uint16_t currentWaypointID;
 
+        CRigidBody* cRigidBody;
         CTransform* cTransform;
         GameEngine* engine;
 };

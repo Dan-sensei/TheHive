@@ -37,6 +37,7 @@ class Pathfinding{
         Pathfinding(const Pathfinding &orig) = delete;
         Pathfinding operator=(const Pathfinding &orig) = delete;
 
+        void Funneling(Node* CurrentNode, uint16_t START, std::stack<Waypoint> &Output);
         void printStats();
         std::vector<Node> GRAPH;
         std::vector<std::vector<Connection>> GConnections;

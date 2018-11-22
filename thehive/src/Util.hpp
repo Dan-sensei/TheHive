@@ -91,6 +91,8 @@ namespace gg{
         void operator*= (const float &v1);
         void operator*= (const Vector3f &v1);
         void operator/= (const float &divider);
+
+        bool operator== (const Vector3f &v);
     };
 
 

@@ -31,6 +31,7 @@ class ScreenConsole{
 
 namespace gg{
     void cout (const std::string &Text, const gg::Color &color = Color());
+    void cout (const gg::Vector3f &Vector, const gg::Color &color = Color());
 };
 
 #endif

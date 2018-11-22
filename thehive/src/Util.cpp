@@ -122,6 +122,10 @@ gg::Vector3f gg::Vector3f::operator/ ( const float &divider) {
     return Vector3f( X/divider, Y/divider, Z/divider);
 }
 
+bool gg::Vector3f::operator==(const gg::Vector3f &v){
+    return (X == v.X && Y == v.Y && Z == v.Z);
+}
+
 template <typename T>
 float DIST(const T &v1, const T &v2){   return 0; }
 template <typename T>

@@ -56,7 +56,7 @@ Pathfinding::Pathfinding()
         //AddConnection(10, 9);
         //AddConnection(10, 11);
 
-        bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/Test.obj", GRAPH, GConnections);
+        bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/L4D2Nav.obj", GRAPH, GConnections);
         for(uint16_t i = 0; i < GConnections.size(); ++i){
             for(uint16_t j = 0; j < GConnections[i].size(); ++j){
                 if(GConnections[i][j].Value == 0)
@@ -75,11 +75,13 @@ Pathfinding::Pathfinding()
         for(uint16_t i = 0; i < GConnections.size(); ++i){
             std::cout << "[" << i << "] => ";
             for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-                std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
+                std::cout << "[" + std::to_string(GConnections[i][j].From) + "-" + std::to_string(GConnections[i][j].To) + "]" << " = " << GConnections[i][j].Value << " | ";
             }
             std::cout << '\n';
         }
 
+        std::cout << "3 -> 20" << '\n';
+        
         //std::cout << "Test" << '\n';
         //GRAPH[0].EstimatedCost = 10;
         //GRAPH[2].EstimatedCost = 20;
@@ -103,7 +105,7 @@ void Pathfinding::SetDebug(bool flag){
         while(i--){
 
             Singleton<GameEngine>::Instance()->createBillboard(IDs[i], GRAPH[i].Position + gg::Vector3f(0, 60, 0));
-            IDs[i].setText(std::to_string(i));
+            IDs[i].setText(std::to_string(i) );
             uint8_t color[4] = {1, 0, 0, 0};
             IDs[i].setColor(color);
 
@@ -192,31 +194,34 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     }
 
     if(CurrentNode->ID != GOAL){
-        std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
+        gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR [" + std::to_string(START)+","+std::to_string(GOAL)+"]");
     }
     else{
-        //std::vector<Connection> path;
-        while(CurrentNode->ID != START) {
-            //path.push_back(CurrentNode->Bitconnect);
-            Output.emplace(GRAPH[CurrentNode->Bitconnect.To].Position, CurrentNode->ID);
-            CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
-        }
-
-        //std::cout << "CAMINO: " << '\n';
-
-        //uint8_t i = path.size();
-        //while(i--) std::cout << path[i].Name << '-';
-
-        //std::cout << '\n';
+        Funneling(CurrentNode, START, Output);
     }
 
-    //printStats();
+    printStats();
 }
 
+void Pathfinding::Funneling(Node* CurrentNode, uint16_t START, std::stack<Waypoint> &Output){
 
+    while(CurrentNode->ID != START) {
+        //path.push_back(CurrentNode->Bitconnect);
+        Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
+        Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
+        CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
+    }
+
+}
+
+float funnelCheck (gg::Vector3f origin, gg::Vector3f current, gg::Vector3f target){
+    gg::Vector3f oc = current - origin;
+    gg::Vector3f ot =  target - origin;
+    return ot.X*oc.Y*0;
+}
 
 uint16_t Pathfinding::getGraphSize(){
-    return GRAPH.size();
+    return GRAPH.size()-1;
 }
 
 void Pathfinding::printStats(){

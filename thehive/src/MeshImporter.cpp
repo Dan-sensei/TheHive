@@ -126,9 +126,7 @@ bool MeshImporter::importNavmeshV2(
 
     Assimp::Importer importer;
 
-    const aiScene* scene = importer.ReadFile( pFile,
-    aiProcess_JoinIdenticalVertices  |
-    aiProcess_SortByPType);
+    const aiScene* scene = importer.ReadFile( pFile,0);
 
 
     if( !scene)
@@ -142,7 +140,6 @@ bool MeshImporter::importNavmeshV2(
 
     vertices   =   meshes[0]->mVertices;
        faces   =   meshes[0]->mFaces;
-
 
     for(uint16_t j = 0; j < meshes[0]->mNumVertices; ++j){
         vertex.emplace_back(vertices[j].x, vertices[j].y, vertices[j].z);
@@ -171,16 +168,22 @@ bool MeshImporter::importNavmeshV2(
 
             auto it = Edges.begin();
             bool found = false;
-            std::cout << "EDGES SIZE "<< Edges.size() << '\n';
             while(it != Edges.end()) {
                 //std::cout << "FOUND!" << '\n';
 
-                if(NewEdge == *it) {
+                if(
+                    (vertex[NewEdge.vertex1] == vertex [(*it).vertex1]    &&
+                     vertex[NewEdge.vertex2] == vertex [(*it).vertex2])
+                     ||
+                     (vertex[NewEdge.vertex1] == vertex [(*it).vertex2]    &&
+                      vertex[NewEdge.vertex2] == vertex [(*it).vertex1])
+                ) {
                     (*it).ID = ID_Counter;
                     FACES[j].push_back(*it);
                     FACES[(*it).face].push_back(*it);
 
-                    GRAPH.emplace_back(ID_Counter, gg::Vector3f((vertex[(*it).e1] + vertex[(*it).e2])/2) * gg::Vector3f(-1,1,1));
+                    gg::Vector3f NodeCoords = gg::Vector3f((vertex[(*it).vertex1] + vertex[(*it).vertex2])/2);
+                    GRAPH.emplace_back(ID_Counter, NodeCoords * gg::Vector3f(-1,1,1), gg::DIST(NodeCoords, vertex[(*it).vertex1]));
                     found = true;
                     ++ID_Counter;
                     Edges.erase(it);
@@ -201,13 +204,13 @@ bool MeshImporter::importNavmeshV2(
             for(uint16_t j = 0; j < FACES[i].size(); ++j){
                 for(uint16_t k = 0; k < FACES[i].size(); ++k){
                     if(FACES[i][j].ID != FACES[i][k].ID)
-                        Connections[FACES[i][j].ID].emplace_back(FACES[i][j].ID, FACES[i][k].ID, 0, "[" + std::to_string(FACES[i][j].ID) + "-" + std::to_string(FACES[i][k].ID) + "]");
+                        Connections[FACES[i][j].ID].emplace_back(FACES[i][j].ID, FACES[i][k].ID, 0, vertex[FACES[i][j].vertex1], vertex[FACES[i][j].vertex2]);
                 }
             }
         }
     }
 
-    if(false) {
+    if(true) {
         std::cout << '\n' << "VERTEX: " << '\n';
         for(int i = 0; i < vertex.size(); ++i)
             std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
@@ -235,25 +238,25 @@ bool MeshImporter::importNavmeshV2(
 
 
 Edge::Edge()
-:e1(0), e2(0), face(0), ID(0)
+:vertex1(0), vertex2(0), face(0), ID(0)
 {}
 
 Edge::Edge(const Edge &orig){
-    e1 = orig.e1;
-    e2 = orig.e2;
+    vertex1 = orig.vertex1;
+    vertex2 = orig.vertex2;
     face = orig.face;
     ID = orig.ID;
 }
 
-Edge::Edge(uint16_t _e1, uint16_t _e2)
-:e1(_e1), e2(_e2), ID(0)
+Edge::Edge(uint16_t _vertex1, uint16_t _vertex2)
+:vertex1(_vertex1), vertex2(_vertex2), ID(0)
 {}
 
-bool Edge::operator==(const Edge &Edge2){
-    return ((e1 == Edge2.e1 && e2 == Edge2.e2) || (e1 == Edge2.e2 && e2 == Edge2.e1));
+bool Edge::operator==(const Edge &Edgvertex2){
+    return ((vertex1 == Edgvertex2.vertex1 && vertex2 == Edgvertex2.vertex2) || (vertex1 == Edgvertex2.vertex2 && vertex2 == Edgvertex2.vertex1));
 }
 
 std::ostream& operator<<(std::ostream& os, const Edge &E){
-    os << "[" << E.e1 << "," << E.e2 << "]";
+    os << "[" << E.vertex1 << "," << E.vertex2 << "]";
     return os;
 }

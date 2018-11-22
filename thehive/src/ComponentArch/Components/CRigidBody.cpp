@@ -167,6 +167,7 @@ void CRigidBody::initializeComponentData(const void* data){
         }
     }
 
+    body->setAngularFactor(btVector3(0, 1, 0));
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
 }
@@ -301,4 +302,8 @@ gg::Vector3f CRigidBody::getBodyPosition(){
         static_cast<float>(trans.getOrigin().getY()),
         static_cast<float>(trans.getOrigin().getZ())
     );
+}
+
+gg::Vector3f CRigidBody::getVelocity(){
+    return gg::Vector3f(body->getLinearVelocity().getX(), body->getLinearVelocity().getY(), body->getLinearVelocity().getZ());
 }

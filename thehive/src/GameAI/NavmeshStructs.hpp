@@ -14,10 +14,11 @@ enum Type{
 
 
 struct Connection{
-    Connection(uint16_t _From = 0, uint16_t _To = 0, float _Value = 0, std::string _Name = "None");
+    Connection(uint16_t _From = 0, uint16_t _To = 0, float _Value = 0, const gg::Vector3f &_Vertex1 = gg::Vector3f(), const gg::Vector3f &_Vertex2 = gg::Vector3f());
     Connection(const Connection &orig);
 
-    std::string Name;
+    gg::Vector3f Vertex1;
+    gg::Vector3f Vertex2;
     float Value;
     uint16_t From;
     uint16_t To;
@@ -25,7 +26,7 @@ struct Connection{
 
 struct Node{
     Node();
-    Node(uint16_t _ID, const gg::Vector3f &_Position);
+    Node(uint16_t _ID, const gg::Vector3f &_Position, float _Radius);
     Node(const Node &orig);
 
     Connection Bitconnect;
@@ -33,16 +34,18 @@ struct Node{
     float RealCost;
     float Heuristic;
     float EstimatedCost;
+    float Radius;
     Type Status;
     uint16_t ID;
 };
 
 struct Waypoint{
     Waypoint();
-    Waypoint(const gg::Vector3f &_Position, uint16_t _ID);
+    Waypoint(const gg::Vector3f &_Position, uint16_t _ID, float _Radius);
     Waypoint(const Waypoint &orig);
 
     gg::Vector3f Position;
+    float Radius;
     uint16_t ID;
 };
 

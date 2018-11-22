@@ -3,6 +3,8 @@
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <Util.hpp>
+#include <string>
+// #include <GameEngine/ScreenConsole.hpp>
 
 #define VEL_FACTOR      9000.f
 #define MAX_ANGLE       12.f
@@ -185,9 +187,12 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         vel*= VEL_FACTOR;
         rb->applyCentralForce(vel);
 
-        // GranadeCreate=true;
+    // GranadeCreate=true;
     }
-
+    // float X = cTransform->getPosition().X;
+    // float Y = cTransform->getPosition().Y;
+    // float Z = cTransform->getPosition().Z;
+    // gg::cout("X = "+std::to_string(X)+" | Y = "+std::to_string(Y)+" | Z = "+std::to_string(Z) );
     return gg::ST_TRUE;
 
 }

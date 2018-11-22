@@ -12,10 +12,10 @@ class Singleton;
 
 struct Edge{
     Edge();
-    Edge(uint16_t _e1, uint16_t _e2);
+    Edge(uint16_t _vertex1, uint16_t _vertex2);
     Edge(const Edge &orig);
-    uint16_t e1 = 0;
-    uint16_t e2 = 0;
+    uint16_t vertex1 = 0;
+    uint16_t vertex2 = 0;
     uint16_t face = 0;
     uint16_t ID = 0;
     bool operator==(const Edge &orig);
