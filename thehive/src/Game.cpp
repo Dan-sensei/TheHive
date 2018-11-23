@@ -21,6 +21,12 @@
 #include "Bullet/ggDynWorld.hpp"
 #include "GameEngine/ScreenConsole.hpp"
 
+#include "BT/BehaviorTree.hpp"
+#include "BT/RandomSelector.hpp"
+#include "BT/RandomSequence.hpp"
+#include "BT/Action.hpp"
+
+
 #define MOVEMENT_SPEED 1.f
 
 
@@ -72,6 +78,35 @@ void Game::RUN(){
 
 
 
+/*
+
+        Action andar_r= Action(ANDAR_RAND);
+        Action rango= Action(RANGO);
+        Action giro= Action(GIRAR);
+        Action move_to= Action(MOVER);
+        Action com= Action(COMER);
+
+        RandomSequence sec1= RandomSequence();
+        sec1.addChild(&rango);
+        sec1.addChild(&giro);
+
+        RandomSequence  sec2= RandomSequence();
+        sec2.addChild(&sec1);
+        sec2.addChild(&move_to);
+        sec2.addChild(&com);
+
+        RandomSelector selec1=  RandomSelector();
+        selec1.addChild(&andar_r);
+        selec1.addChild(&sec2);
+
+        BehaviorTree BT(&selec1);
+
+        BT.tick();
+        BT.tick();
+std::cout << "bt generado" << '\n';
+*/
+
+
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
     // Camera camera = engine->createCamera(gg::Vector3f(50, 0, -100), gg::Vector3f(0, 0, 50));
     ////camera.setPosition(gg::Vector3f(-50, 0, 100));
@@ -82,6 +117,21 @@ void Game::RUN(){
     //EventSystem->RegisterTriger(kTrig_Gunfire,  1,0,gg::Vector3f(100,5,50), 5, 0,false,NULL);
     // EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(0,0,0), 20, 0,false);
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+
+{
+
+    InitCRigidBody CRigidBodyEnemy(true,"assets/BoundingBoxes/Cube.bullet",  710,180,0, -1,-1,-1, 50, 0,0,0);
+    uint16_t Enemy = Manager->createEntity();
+    InitCTransform CTransformInitDataEnemy(0, 0, 10, 0, 0, 0);
+    InitCRenderable_3D CRenderable_3DInitDataEnemy("assets/Models/Cube.obj", moradoDeLos80);
+    InitCAgent agentEnemy(kTrig_EnemyNear);
+    Manager->addComponentToEntity(gg::TRANSFORM, Enemy, &CTransformInitDataEnemy);
+    Manager->addComponentToEntity(gg::RENDERABLE_3D, Enemy, &CRenderable_3DInitDataEnemy);
+    Manager->addComponentToEntity(gg::RIGID_BODY, Enemy, &CRigidBodyEnemy);
+    Manager->addComponentToEntity(gg::AGENT, Enemy, &agentEnemy);
+    InitCAIEnem cIAEnem(gg::SOLDIER,30,gg::Vector3f(),false);
+    Manager->addComponentToEntity(gg::AIENEM, Enemy, &cIAEnem);
+}
 
     {
         InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  700,180,0, -1,-1,-1, 50, 0,0,0);

@@ -17,6 +17,13 @@ InitCAgent::InitCAgent(
     unsigned long _flags
 ) : flags(_flags)
 {}
+InitCAIEnem::InitCAIEnem(
+    gg::EEnemyType _type,
+    float _agresividad,
+    gg::Vector3f _playerPos,
+    bool _playerSeen
+) : type(_type),agresividad(_agresividad),playerPos(_playerPos),playerSeen(_playerSeen)
+{}
 
 InitCRigidBody::InitCRigidBody(
     bool _loadedFromPath, std::string _path,

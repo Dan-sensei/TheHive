@@ -15,6 +15,7 @@
 #include "Components/CGranade.hpp"
 #include "Components/CGun.hpp"
 #include "Components/CPathfinding.hpp"
+#include "Components/CAIEnem.hpp"
 
 
 #include <stack>
@@ -111,6 +112,7 @@ class ObjectManager{
         IComponent* createGranadeComponent          ();
         IComponent* createGunComponent              ();
         IComponent* createPathfindingComponent      ();
+        IComponent* createAIEnemComponent           ();
 
 
         using pConstructor = IComponent* (ObjectManager::*)(void);

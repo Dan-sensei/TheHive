@@ -13,10 +13,15 @@ namespace gg{
         GRANADE,
         GUN,
         PATHFINDING,
+        AIENEM,
         //HEALTH,
         //RESPECT,
         //DANINOSABEPROGRAMAR
         NUM_COMPONENTS
+    };
+    enum EEnemyType{
+        SOLDIER,
+        NUM_ENEMY
     };
 
     enum EMessageStatus{

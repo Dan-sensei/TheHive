@@ -132,7 +132,7 @@ bool MeshImporter::importNavmeshV2(
     if( !scene)
         return false;
 
-    std::cout << "Loading model '" << pFile << "'" << '\n';
+    //std::cout << "Loading model '" << pFile << "'" << '\n';
 
     aiMesh **meshes = scene->mMeshes;
     aiVector3D* vertices;
@@ -145,7 +145,7 @@ bool MeshImporter::importNavmeshV2(
         vertex.emplace_back(vertices[j].x, vertices[j].y, vertices[j].z);
     }
 
-    std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
+    //std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
 
     Connections.resize(meshes[0]->mNumFaces);
 
@@ -154,7 +154,7 @@ bool MeshImporter::importNavmeshV2(
     std::vector<std::vector<Edge>> FACES;
     FACES.resize(meshes[0]->mNumFaces);
 
-    std::cout << "FACES SIZE = " << FACES.size() << '\n';
+    //std::cout << "FACES SIZE = " << FACES.size() << '\n';
     for(uint16_t j = 0; j < meshes[0]->mNumFaces; ++j) {
 
         const aiFace& Face = faces[j];
@@ -211,17 +211,17 @@ bool MeshImporter::importNavmeshV2(
     }
 
     if(true) {
-        std::cout << '\n' << "VERTEX: " << '\n';
-        for(int i = 0; i < vertex.size(); ++i)
-            std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
+        //std::cout << '\n' << "VERTEX: " << '\n';
+        //for(int i = 0; i < vertex.size(); ++i)
+            //std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
 
-        std::cout << '\n';
+        //std::cout << '\n';
 
-        std::cout << "INDEXES: " << '\n';
-        for(int i = 0; i < index.size(); ++i)
-            std::cout << " " << index[i];
+        //std::cout << "INDEXES: " << '\n';
+        //for(int i = 0; i < index.size(); ++i)
+            //std::cout << " " << index[i];
 
-        std::cout << '\n' << '\n';
+        //std::cout << '\n' << '\n';
 
         //std::cout << "EDGES: " << '\n';
         //for(int i = 0; i < Edges.size(); ++i)
@@ -229,8 +229,8 @@ bool MeshImporter::importNavmeshV2(
 
         //std::cout << '\n' << '\n';
 
-        std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
-        std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
+        //std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
+        //std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
     }
 
     return true;
