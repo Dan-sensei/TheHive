@@ -33,6 +33,10 @@ InitCRigidBody::InitCRigidBody(
     iX(_iX),    iY(_iY),    iZ(_iZ),
     friction(_friction)
 {}
+InitCGrenade::InitCGrenade(
+    float _damage,float _radius,float _tipo
+) :damage(_damage), radius(_radius), tipo(_tipo)
+{}
 
 InitCGun::InitCGun(
     float _dmg, float _cdc, int _t_bullets

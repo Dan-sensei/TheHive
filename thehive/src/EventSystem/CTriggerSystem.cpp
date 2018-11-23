@@ -10,7 +10,20 @@
 //#include <vector>
 #include "ComponentArch/Components/CAgent.hpp"
 #include <EventSystem/CTriggerSystem.hpp>
+#include <EventSystem/EnumDataType.hpp>
 
+
+TriggerRecordStruct::TriggerRecordStruct(const TriggerRecordStruct &orig){
+    data=orig.data;
+    eTriggerType=orig.eTriggerType;
+    vPos=orig.vPos;
+    nTriggerID=orig.nTriggerID;
+    idSource=orig.idSource;
+    nTimeStamp=orig.nTimeStamp;
+    nExpirationTime=orig.nExpirationTime;//milliseconds
+    fRadius=orig.fRadius;
+    bDynamicSourcePos=orig.bDynamicSourcePos;
+}
 
 CTriggerSystem::CTriggerSystem(){
     lastIdGiven = 0;
@@ -24,10 +37,22 @@ unsigned long CTriggerSystem::RegisterTriger(
     const gg::Vector3f& _vPos,
     float _fRadius,
     float _fDuration,
-    bool _bDynamicSourcePos)
+    bool _bDynamicSourcePos,
+    TData _data)
 {
+//std::map<EnumDataType,float>::iterator it;
+//it = _data.m_dataMap.find(kDat_damage);
+//  if (it != _data.m_dataMap.end())
+//    _data.m_dataMap.erase (it);
+
+
     //Create a trigger record, and fill it in
-    TriggerRecordStruct* pTriggerRecord = new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos);
+    TriggerRecordStruct* pTriggerRecord = new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos,_data);
+
+    //MessageXplotato* exp =(MessageXplotato*) pTriggerRecord->data;
+    //MessageXplotato* exp =(MessageXplotato*) pTriggerRecord->data;
+    //std::cout <<  exp->damage<< '\n';
+
     lastIdGiven++;
 
     //Trigger records are sorted by priority
@@ -68,15 +93,22 @@ void CTriggerSystem::Update()
   it =m_mapTriggerMap.begin();
   while(it!=m_mapTriggerMap.end())
   {
+
     pRec = it->second;
+
+
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(nCurTime - pRec->nTimeStamp).count();
 
     if( (pRec->nExpirationTime!=0)&&
         (pRec->nExpirationTime < ms))
         {
+            //if(pRec->eTriggerType & kTrig_Explosion){
+            //    MessageXplotato* exp =(MessageXplotato*) pRec->data;
+            //    delete exp ;
+            //}
             CAgent::deletetrig(pRec);
-          delete(pRec);
-          it=m_mapTriggerMap.erase(it);
+            delete(pRec);
+            it=m_mapTriggerMap.erase(it);
 
         }else{
           //Update pos if dynamic flag is set.Reset time-stamp
@@ -146,8 +178,10 @@ TriggerRecordStruct::TriggerRecordStruct(
     const gg::Vector3f  _vPos,
     float               _fRadius,
     unsigned long       _fDuration,
-    bool                _bDynamicSourcePos)
+    bool                _bDynamicSourcePos,
+    TData               _data)
 {
+    data=_data;
     eTriggerType=_eTriggerType;
     nTriggerID=id;
     // id++;
