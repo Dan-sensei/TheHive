@@ -30,7 +30,9 @@ class CAIEnem : public IComponent {
     friend class ObjectManager;                 // Con esto le decimos que sólo ObjectManager puede crear esta componente
     public:
 
-
+//new Blackboard datos*;
+//dato add("type",TIPO_EENEMYTYPE,4)
+//dato add("type",TIPO_EENEMYTYPE,4)
         gg::EEnemyType type;
         float agresividad;
         gg::Vector3f playerPos;

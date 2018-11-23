@@ -242,7 +242,6 @@ IComponent* ObjectManager::createRenderable_3DComponent     ()   {
 IComponent* ObjectManager::createCameraComponent            ()   {
     return new CCamera;
 }
-
 IComponent* ObjectManager::createAgentComponent             ()   {
     return new CAgent;
 }

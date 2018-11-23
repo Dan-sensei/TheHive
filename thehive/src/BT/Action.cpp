@@ -12,6 +12,18 @@ Action::Action(Hojas task){
     VectorAcciones[GIRAR] = &Action::girar_enemigo;
     VectorAcciones[RANGO] = &Action::rango_visual;
     VectorAcciones[MOVER] = &Action::move_to;
+    //VectorAcciones[10_METROS] = &Action::move_to;
+    //VectorAcciones[3_ATACK] = &Action::move_to;
+    //VectorAcciones[ON_RANGE] = &Action::move_to;
+    //VectorAcciones[IN_PLACE] = &Action::move_to;
+    //VectorAcciones[PLAYER_SEEN] = &Action::move_to;
+    //VectorAcciones[PLAYER_SEEING] = &Action::move_to;
+    //VectorAcciones[MOVE_AROUND] = &Action::move_to;
+    //VectorAcciones[BLOCK] = &Action::move_to;
+    //VectorAcciones[MOVE_TO_PLAYER] = &Action::move_to;
+    //VectorAcciones[HIT] = &Action::move_to;
+    //VectorAcciones[MOVE_TO_LAST_POS_KWON] = &Action::move_to;
+    //VectorAcciones[JUST_MOVE] = &Action::move_to;
 
     tarea = task;
 

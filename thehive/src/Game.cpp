@@ -26,6 +26,10 @@
 #include "BT/RandomSequence.hpp"
 #include "BT/Action.hpp"
 
+#include "EventSystem/Blackboard.hpp"
+#include "EventSystem/BData.hpp"
+#include "EventSystem/BInt.hpp"
+#include "EventSystem/BFloat.hpp"
 
 #define MOVEMENT_SPEED 1.f
 
@@ -74,9 +78,29 @@ Game::~Game(){
 }
 
 void Game::RUN(){
+    /*    BFloat* newFloato2=new BFloat(83.987);
+
+    Blackboard bb;
+    BInt* newInt = new BInt(83);
+    std::string GG = "GermanGay";
+    BInt* newInt2 = new BInt(85);
+    std::string GG2 = "GermanGay2";
+    bb.setData(GG, newInt);
+    bb.setData(GG2, newInt2);
 
 
+    std::string GG3 = "Germansitoparmisito";
+    bb.setData(GG3, newFloato2);
 
+
+    BData* result = bb.getBData("GermanGay");
+    std::cout << "INT = " << result->getInt() << '\n';
+    result = bb.getBData("GermanGay2");
+    std::cout << "INT = " << result->getInt() << '\n';
+
+    result = bb.getBData("Germansitoparmisito");
+    std::cout << "INT = " << result->getFloat() << '\n';
+*/
 
 /*
 
