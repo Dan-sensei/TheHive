@@ -236,7 +236,7 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
-    // body->activate(true);
+    body->activate(true);
 
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);
@@ -250,18 +250,18 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
             )
         );
 
-        if(body->getInvMass()){
-            btQuaternion rot = trans.getRotation();
-            float _X, _Y, _Z;
-            rot.getEulerZYX(_Z,_Y,_X);
-            cTransform->setRotation(
-                gg::Vector3f(
-                    static_cast<float>(_X/PI*180),
-                    static_cast<float>(_Y/PI*180),
-                    static_cast<float>(_Z/PI*180)
-                )
-            );
-        }
+        // if(body->getInvMass()){
+        //     btQuaternion rot = trans.getRotation();
+        //     float _X, _Y, _Z;
+        //     rot.getEulerZYX(_Z,_Y,_X);
+        //     cTransform->setRotation(
+        //         gg::Vector3f(
+        //             static_cast<float>(_X/PI*180),
+        //             static_cast<float>(_Y/PI*180),
+        //             static_cast<float>(_Z/PI*180)
+        //         )
+        //     );
+        // }
 
     }
 
@@ -296,6 +296,14 @@ gg::Vector3f CRigidBody::getBodyPosition(){
         static_cast<float>(trans.getOrigin().getX()),
         static_cast<float>(trans.getOrigin().getY()),
         static_cast<float>(trans.getOrigin().getZ())
+    );
+}
+
+gg::Vector3f CRigidBody::getLinearVelocity(){
+    return gg::Vector3f(
+        static_cast<float>(body->getLinearVelocity().getX()),
+        static_cast<float>(body->getLinearVelocity().getY()),
+        static_cast<float>(body->getLinearVelocity().getZ())
     );
 }
 

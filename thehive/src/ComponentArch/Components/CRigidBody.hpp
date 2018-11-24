@@ -59,6 +59,7 @@ class CRigidBody : public IComponent {
         void activate(bool);
 
         gg::Vector3f getBodyPosition();
+        gg::Vector3f getLinearVelocity();
 
     private:
 

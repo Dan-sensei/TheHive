@@ -30,7 +30,6 @@ class CPlayerController : public IComponent {
         virtual ~CPlayerController();
 
         // Functions of IComponent
-        bool pulsacion_granada;
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
@@ -52,6 +51,9 @@ class CPlayerController : public IComponent {
         CRigidBody* cRigidBody;
         CCamera *camera;
         bool GranadeCreate;
+
+        bool pulsacion_granada;
+        bool pulsacion_espacio;
 };
 
 #endif
