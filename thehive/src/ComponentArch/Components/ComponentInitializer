@@ -2,6 +2,7 @@ void Factory::ComponentInitializer() {
 	CCamera::initComponent();
 	CPlayerController::initComponent();
 	CRigidBody::initComponent();
+	CVida::initComponent();
 	CRenderable_3D::initComponent();
 	CGranade::initComponent();
 	CAIEnem::initComponent();
