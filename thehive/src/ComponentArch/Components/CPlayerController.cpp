@@ -43,6 +43,7 @@ void CPlayerController::initializeComponentData(const void* data){
     MHandler_SETPTRS();
     Manager = Singleton<ObjectManager>::Instance();
     pulsacion_granada=false;
+    pulsacion_espacio=false;
 
 
 }
@@ -139,7 +140,13 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     }
 
     if(engine->key(JUMP_KEY)){
-        force.Y = 10;
+        if(!pulsacion_espacio){
+            pulsacion_espacio = true;
+            force.Y = 70;
+        }
+    }
+    else{
+        pulsacion_espacio = false;
     }
 
     force *= FORCE_FACTOR;

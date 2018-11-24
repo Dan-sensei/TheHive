@@ -84,7 +84,7 @@ void Game::RUN(){
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
     {
-        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  700,180,0, -1,-1,-1, 50, 0,0,0);
+        InitCRigidBody CRigidBodyHero(true,"assets/BoundingBoxes/Cube.bullet",  700,180,0, -1,-1,-1, 80, 0,0,0);
         uint16_t hero = Manager->createEntity();
         InitCTransform CTransformInitData(0, 0, 10, 0, 0, 0);
         InitCRenderable_3D CRenderable_3DInitData("assets/Models/Cube.obj", moradoDeLos80);
