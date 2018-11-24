@@ -26,6 +26,7 @@ ObjectManager::ObjectManager()
     ComponentConstructorVector[gg::GRANADE]= &ObjectManager::createGranadeComponent;
     ComponentConstructorVector[gg::GUN]= &ObjectManager::createGunComponent;
     ComponentConstructorVector[gg::PATHFINDING]= &ObjectManager::createPathfindingComponent;
+    ComponentConstructorVector[gg::AIENEM]= &ObjectManager::createAIEnemComponent;
 
     //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
     //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
@@ -66,6 +67,7 @@ void ObjectManager::initObjectManager() {
     CRigidBody::initComponent();
     CGranade::initComponent();
     CPathfinding::initComponent();
+    CAIEnem::initComponent();
 }
 
 
@@ -240,7 +242,6 @@ IComponent* ObjectManager::createRenderable_3DComponent     ()   {
 IComponent* ObjectManager::createCameraComponent            ()   {
     return new CCamera;
 }
-
 IComponent* ObjectManager::createAgentComponent             ()   {
     return new CAgent;
 }
@@ -253,9 +254,13 @@ IComponent* ObjectManager::createGranadeComponent           ()   {
 IComponent* ObjectManager::createGunComponent               ()   {
     return new CGun;
 }
-IComponent* ObjectManager::createPathfindingComponent            ()   {
+IComponent* ObjectManager::createPathfindingComponent       ()   {
     return new CPathfinding;
 }
+IComponent* ObjectManager::createAIEnemComponent            ()   {
+    return new CAIEnem;
+}
+
 //IComponent* ObjectManager::createColliderComponent     ();
 //IComponent* ObjectManager::createHealthComponent       ();
 //IComponent* ObjectManager::createRespectComponent      ();

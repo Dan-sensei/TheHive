@@ -58,12 +58,12 @@ gg::EMessageStatus CPathfinding::MHandler_UPDATE(){
 
     if(Waypoints.empty()){
         Singleton<Pathfinding>::Instance()->resetGraph();
-        std::cout << "GENERATING WAYPOINTS" << '\n';
+        //std::cout << "GENERATING WAYPOINTS" << '\n';
         uint16_t target = gg::genIntRandom(0, Singleton<Pathfinding>::Instance()->getGraphSize());
-        std::cout << "CurrentWaypointID = " << currentWaypointID << " | Target = " << target << '\n';
+        //std::cout << "CurrentWaypointID = " << currentWaypointID << " | Target = " << target << '\n';
         Singleton<Pathfinding>::Instance()->A_Estrella(currentWaypointID, target, Waypoints);
-        std::cout << "Waypoints " << Waypoints.size() << '\n' << '\n';
-        std::cout << "-----------------------------------------------" << '\n';
+        //std::cout << "Waypoints " << Waypoints.size() << '\n' << '\n';
+        //std::cout << "-----------------------------------------------" << '\n';
     }
     else{
         gg::Vector3f* target = &Waypoints.top().Position;

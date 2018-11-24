@@ -213,7 +213,7 @@ void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
         gg::Vector3f vect2(33,66,99);
 
         gg::Vector3f suma=vect*vect2;
-        std::cout << "antes" <<suma.X<<suma.Y<<suma.Z<< '\n';
+        //std::cout << "antes" <<suma.X<<suma.Y<<suma.Z<< '\n';
         gg::Normalice(vect);
         *///pruebas
         //body->applyCentralForce(btVector3(0,46000000,0));

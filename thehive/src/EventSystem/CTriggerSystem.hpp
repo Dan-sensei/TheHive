@@ -54,6 +54,12 @@ class CTriggerSystem{
     friend class Singleton<CTriggerSystem>;
 public:
     ~CTriggerSystem();
+    void PulsoTrigger(
+        EnumTriggerType _eTriggerType,
+        unsigned long _idSource,
+        const gg::Vector3f& _vPos,
+        float _fRadius,
+        TData _data);
     unsigned long RegisterTriger(
         EnumTriggerType _eTriggerType,
         unsigned long _nPriority,

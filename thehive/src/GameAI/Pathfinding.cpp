@@ -64,24 +64,24 @@ Pathfinding::Pathfinding()
             }
         }
 
-        std::cout << "GRAPH CREATED!" << '\n';
+        //std::cout << "GRAPH CREATED!" << '\n';
 
-        std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
-        for(uint16_t i = 0; i < GRAPH.size(); ++i){
-            std::cout << "  -- " << i << " " << GRAPH[i] << '\n';
+        //std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
+        for(uint8_t i = 0; i < GRAPH.size(); ++i){
+            //std::cout << "  -- " << i << " " << GRAPH[i] << '\n';
         }
 
-        std::cout << "Connections:" << '\n';
+        //std::cout << "Connections:" << '\n';
         for(uint16_t i = 0; i < GConnections.size(); ++i){
-            std::cout << "[" << i << "] => ";
+            //std::cout << "[" << i << "] => ";
             for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-                std::cout << "[" + std::to_string(GConnections[i][j].From) + "-" + std::to_string(GConnections[i][j].To) + "]" << " = " << GConnections[i][j].Value << " | ";
+                //std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
             }
-            std::cout << '\n';
+            //std::cout << '\n';
         }
 
         std::cout << "3 -> 20" << '\n';
-        
+
         //std::cout << "Test" << '\n';
         //GRAPH[0].EstimatedCost = 10;
         //GRAPH[2].EstimatedCost = 20;
@@ -121,7 +121,7 @@ bool Pathfinding::isDebugging(){
 }
 
 void Pathfinding::resetGraph(){
-    std::cout << "Reseting" << '\n';
+    //std::cout << "Reseting" << '\n';
     uint16_t i = GRAPH.size();
     while(i--){
         GRAPH[i].Status = Type::UNVISITED;
@@ -194,7 +194,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     }
 
     if(CurrentNode->ID != GOAL){
-        gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR [" + std::to_string(START)+","+std::to_string(GOAL)+"]");
+        //std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
         Funneling(CurrentNode, START, Output);
@@ -210,6 +210,10 @@ void Pathfinding::Funneling(Node* CurrentNode, uint16_t START, std::stack<Waypoi
         Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
         Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
         CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
+        //std::cout << "CAMINO: " << '\n';
+
+
+        //std::cout << '\n';
     }
 
 }
@@ -236,10 +240,10 @@ void Pathfinding::printStats(){
         else if(GRAPH[i].Status == Type::UNVISITED)
             ++UNVISITED;
     }
-    std::cout << '\n';
-    std::cout << "OPEN:      " << OPEN << '\n';
-    std::cout << "CLOSED:    " << CLOSED << '\n';
-    std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
+    //std::cout << '\n';
+    //std::cout << "OPEN:      " << OPEN << '\n';
+    //std::cout << "CLOSED:    " << CLOSED << '\n';
+    //std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
 }
 
 
