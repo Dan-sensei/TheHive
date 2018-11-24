@@ -1,15 +1,55 @@
 #include "CAgent.hpp"
 #include "ComponentArch/Components/CAgent.hpp"
 
-#include <ComponentArch/InitStructs.hpp>
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
-#include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
-#include <Singleton.hpp>
+
 #include <list>
 #include "ComponentArch/Message.hpp"
+#include "CGun.hpp"
+#include "CRigidBody.hpp"
+#include "CTransform.hpp"
+
 
 
 std::list <CAgent*>  CAgent::hola;
+
+CAgent::CAgent(const unsigned long &_flags)
+:cTransform(nullptr), Engine(nullptr)
+{
+    dwTriggerFlags = _flags;
+    nDeltaTime=0;
+}
+
+CAgent::~CAgent() {
+    std::list <CAgent*>::iterator it2 ;
+    it2=CAgent::hola.begin();
+    CAgent* pAgent=NULL;
+    for(unsigned long i=0; i<CAgent::hola.size();++i)
+    {
+        pAgent=*it2;
+        if (pAgent->nCAgentID==nCAgentID) {
+            removeAgent(it2);
+            break;
+        }
+        it2++;
+    }
+}
+
+void CAgent::initComponent() {
+    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
+    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
+
+
+}
+
+void CAgent::Init(){
+    Engine = Singleton<GameEngine>::Instance();
+
+    nCAgentID=getEntityID();
+    addAgent(this);
+
+    //  Inicializar punteros a otras compnentes
+    MHandler_SETPTRS();
+}
 
 //std::list  <TriggerRecordStruct*>  hola;
 
@@ -91,8 +131,8 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
             oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
 
         // NO TIENE BALAS O ARMA
-        InitCGun CGunHero(10,1,50);
-        oManager->addComponentToEntity(gg::GUN, nCAgentID, &CGunHero);
+        CGun* Gun = new CGun(10,1,50);
+        oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
     }else if(_pRec->eTriggerType & kTrig_EnemyNear){
         //CAIEnem->enemyseen();
 
@@ -113,6 +153,7 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
         //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
         //// std::cout << "usando handler despues" << nCAgentID<< '\n';
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
+
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
             return;
         }
@@ -207,50 +248,8 @@ void CAgent::addAgent(CAgent* agente){
 void CAgent::removeAgent(std::list<CAgent*>::iterator ite){
     hola.erase(ite);
 }
-CAgent::CAgent()
-:cTransform(nullptr)
-{
-
-}
-
-CAgent::~CAgent() {
-    std::list <CAgent*>::iterator it2 ;
-    it2=CAgent::hola.begin();
-    CAgent* pAgent=NULL;
-    for(unsigned long i=0; i<CAgent::hola.size();++i)
-    {
-        pAgent=*it2;
-        if (pAgent->nCAgentID==nCAgentID) {
-            removeAgent(it2);
-            break;
-        }
-        it2++;
-    }
-}
-
-void CAgent::initComponent() {
-    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
-    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
 
 
-}
-
-void CAgent::initializeComponentData(const void* data){
-    if(data){
-        InitCAgent* cdata=(InitCAgent*)data;
-            nCAgentID=getEntityID();
-            dwTriggerFlags=cdata->flags;
-            nDeltaTime=0;
-            addAgent(this);
-            //vPos=cTransform->getPosition;
-        //CAgent(data->dwTriggerFlags,gg::Vector3f _vPos(cTransform->X,cTransform->Y,cTransform->Z));
-        // Si le pasamos cosas, convertimos el void* a la estructura inicializadora para acceder a los elementos
-    }
-    engine = Singleton<GameEngine>::Instance();
-
-    //  Inicializar punteros a otras compnentes
-    MHandler_SETPTRS();
-}
 
 //void CAgent::update(){
 //    std::list <TriggerRecordStruct*>::iterator it;
@@ -291,7 +290,5 @@ gg::EMessageStatus CAgent::MHandler_UPDATE(){
     //setposition
     //CAgent(cTransform->getPosition);
 
-
     return gg::ST_TRUE;
-
 }

@@ -1,12 +1,14 @@
 #include "CRenderable_3D.hpp"
-#include <Singleton.hpp>
 #include <ComponentArch/ObjectManager.hpp>
-#include <ComponentArch/InitStructs.hpp>
 #include <GameEngine/GameEngine.hpp>
+#include "CTransform.hpp"
 
-CRenderable_3D::CRenderable_3D()
+CRenderable_3D::CRenderable_3D(const std::string &pathToModel, const Material &material)
 :_3DModel(), cTransform(nullptr)
-{}
+{
+    Singleton<GameEngine>::Instance()->createModel(_3DModel, pathToModel);
+    _3DModel.assignMaterial(material);
+}
 
 CRenderable_3D::CRenderable_3D(const CRenderable_3D &orig){
     _3DModel = orig._3DModel;
@@ -20,15 +22,8 @@ void CRenderable_3D::initComponent() {
 }
 
 
-void CRenderable_3D::initializeComponentData(const void* data){
-    if(data){
-        InitCRenderable_3D* cData = (InitCRenderable_3D*)data;
+void CRenderable_3D::Init(){
 
-        Singleton<GameEngine>::Instance()->createModel(_3DModel, cData->pathToModel);
-        _3DModel.assignMaterial(cData->material);
-
-        // // std::cout << _3DModel.getScale().X << "," << _3DModel.getScale().Y << "," << _3DModel.getScale().Z << '\n';
-    }
     MHandler_SETPTRS();
 }
 

@@ -1,16 +1,11 @@
 #include "CPathfinding.hpp"
-#include <Singleton.hpp>
-#include <GameEngine/GameEngine.hpp>
-#include <ComponentArch/ObjectManager.hpp>
-#include "CRigidBody.hpp"
-#include "CTransform.hpp"
 #include <cmath>
 
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 
 CPathfinding::CPathfinding()
-:cTransform(nullptr), currentWaypointID(11)
+:Engine(nullptr), cTransform(nullptr), currentWaypointID(11)
 {
 
 }
@@ -24,9 +19,9 @@ void CPathfinding::initComponent() {
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::PATHFINDING, gg::M_SETPTRS);
 }
 
-void CPathfinding::initializeComponentData(const void* data){
+void CPathfinding::Init(){
     //  We check if this entity has the TRANSFORM component
-    engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<GameEngine>::Instance();
     MHandler_SETPTRS();
 }
 

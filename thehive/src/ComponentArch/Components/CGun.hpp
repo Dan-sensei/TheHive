@@ -6,23 +6,20 @@
 
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
-                                                //            punteros a otras componentes
-
-class GameEngine;        //  [OPCIONAL] Si necesitas acceder a algún método de GameEngine
-class ObjectManager;     //  [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
-
-//  Forward declaration de otras componentes que incluyas
-class CTransform;
+#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+#include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
+#include "CTransform.hpp"
 
 class CGun : public IComponent {
-    friend class ObjectManager;                 // Con esto le decimos que sólo ObjectManager puede crear esta componente
     public:
+        CGun(float _dmg, float _cadence, int _total_bullets);                //  No queremos que alguien lo construya fuera (Limón)
+        CGun(const CGun &orig) = delete;
         virtual ~CGun();
 
         // Functions of IComponent
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
-        virtual void initializeComponentData(const void* data);         // [OBLIGATORIO] Aunque esté vacío en el .cpp
+        virtual void Init();         // [OBLIGATORIO] Aunque esté vacío en el .cpp
 
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
@@ -33,11 +30,9 @@ class CGun : public IComponent {
         int getBullets();
 
     private:
-        CGun();                //  No queremos que alguien lo construya fuera (Limón)
-        CGun(const CGun &orig) = delete;
 
-        GameEngine* engine;
-        ObjectManager* manager;
+        GameEngine* Engine;
+        ObjectManager* Manager;
 
         //  Punteros a otras componentes
         CTransform* cTransform;

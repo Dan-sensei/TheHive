@@ -5,22 +5,23 @@
 #include <ComponentArch/Message.hpp>
 #include <cstdint>
 #include <cmath>
+#include <GameEngine/GameEngine.hpp>
+#include <GameEngine/Camera.hpp>
+#include "CTransform.hpp"
+#include <Singleton.hpp>
 
 
-class GameEngine;
 class ObjectManager;
-class Camera;
-class CTransform;
 
 class CCamera : public IComponent {
-friend class ObjectManager;
+friend class Factory;
 public:
     virtual ~CCamera ();
 
     // Functions of IComponent
     static void initComponent();
-    virtual void initializeComponentData(const void *);
     virtual gg::EMessageStatus processMessage(const Message &m);
+    virtual void Init();
 
     //  Handlers
     gg::EMessageStatus MHandler_SETPTRS();
@@ -36,11 +37,13 @@ public:
 
 private:
     CCamera();
+    CCamera(const CCamera &orig) = delete;
+
     gg::Vector3f lastHeroPosition;
     gg::Vector3f cameraPositionBeforeLockRotation;
 
-    GameEngine *engine;
-    ObjectManager *manager;
+    GameEngine *Engine;
+    ObjectManager *Manager;
     Camera* cam;
 
     CTransform *mod;

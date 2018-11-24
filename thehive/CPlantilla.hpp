@@ -1,5 +1,5 @@
-#ifndef _CPlayerController_H
-#define _CPlayerController_H
+#ifndef _CPlantilla_H
+#define _CPlantilla_H
 
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
@@ -12,23 +12,23 @@ class ObjectManager;     //  [OPCIONAL] Si necesitas acceder a algún método de
 class CCamera;           //  Forward declaration de otras componentes que incluyas
 class CTransform;
 
-class CPlayerController : public IComponent {
+class CPlantilla : public IComponent {
     friend class ObjectManager;                 // Con esto le decimos que sólo ObjectManager puede crear esta componente
     public:
-        virtual ~CPlayerController();
+        CPlantilla(Var 1, Var 2);                    //  <<-- AHORA PUEDE RECIBIR PARÁMETROS!
+        CPlantilla(const CPlantilla &orig) = delete;
+        virtual ~CPlantilla();
 
         // Functions of IComponent
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
-        virtual void initializeComponentData(const void* data);         // [OBLIGATORIO] Aunque esté vacío en el .cpp
+        virtual void Init();                                            // [OPCIONAL]
 
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
         gg::EMessageStatus MHandler_UPDATE  ();
 
     private:
-        CPlayerController();                //  No queremos que alguien lo construya fuera (Limón)
-        CPlayerController(const CPlayerController &orig) = delete;
 
 
         CCamera *camera;

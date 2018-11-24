@@ -12,6 +12,9 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Message.hpp>
 
+#include <Singleton.hpp>
+
+
 class CCamera;
 class CTransform;
 class CRigidBody;
@@ -22,7 +25,7 @@ class ObjectManager;
 class ggDynWorld;
 
 class CPlayerController : public IComponent {
-    friend class ObjectManager;
+    friend class Factory;
     public:
         virtual ~CPlayerController();
 
@@ -30,7 +33,7 @@ class CPlayerController : public IComponent {
         bool pulsacion_granada;
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
-        virtual void initializeComponentData(const void* data);
+        virtual void Init();
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
@@ -41,14 +44,14 @@ class CPlayerController : public IComponent {
         CPlayerController();
         CPlayerController(const CPlayerController &orig) = delete;
 
-        GameEngine* engine;
+        ObjectManager* Manager;
+        GameEngine* Engine;
         ggDynWorld* world;
 
         CTransform* cTransform;
         CRigidBody* cRigidBody;
         CCamera *camera;
         bool GranadeCreate;
-        ObjectManager* Manager;
 };
 
 #endif

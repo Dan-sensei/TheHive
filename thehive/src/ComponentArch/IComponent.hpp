@@ -27,7 +27,7 @@ class IComponent{
         //  ---
         //  Initializes the component data the moment the component is created
         //========================================================================
-        virtual void initializeComponentData(const void* data) = 0;
+        virtual void Init() = 0;
 
 
 

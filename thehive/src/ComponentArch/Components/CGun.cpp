@@ -1,15 +1,12 @@
 #include "CGun.hpp"
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
-#include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
 #define FORCE_FACTOR        9000.f
 #define DIST_OFFSET         5.f
 
-CGun::CGun()
-:cTransform(nullptr)
-{
-
-}
+CGun::CGun(float _dmg, float _cadence, int _total_bullets)
+:Engine(nullptr), Manager(nullptr), cTransform(nullptr),
+damage(_dmg), cadence(_cadence), total_bullets(_total_bullets)
+{}
 
 CGun::~CGun() {
 
@@ -68,16 +65,16 @@ void CGun::shoot(gg::Vector3f to){
     //     vel.Z /= length;
     //
     // // Crear una 'bala'
-    // uint8_t bullet = manager->createEntity();
+    // uint8_t bullet = Manager->createEntity();
     // Material material("assets/Models/obradearte/prueba1.png");
     // InitCRenderable_3D bModel("assets/Models/bullet.obj", material);
     // InitCTransform bTransform(from.X,from.Y,from.Z, 0,0,0);
     // InitCRigidBody bCollide(true,"assets/BoundingBoxes/bullet.bullet",  from.X,from.Y+DIST_OFFSET,from.Z, .5,.5,.5, 1, 0,0,0, 2);
-    // manager->addComponentToEntity(gg::TRANSFORM, bullet, &bTransform);
-    // manager->addComponentToEntity(gg::RENDERABLE_3D, bullet, &bModel);
-    // manager->addComponentToEntity(gg::RIGID_BODY, bullet, &bCollide);
+    // Manager->addComponentToEntity(gg::TRANSFORM, bullet, &bTransform);
+    // Manager->addComponentToEntity(gg::RENDERABLE_3D, bullet, &bModel);
+    // Manager->addComponentToEntity(gg::RIGID_BODY, bullet, &bCollide);
     //
-    // CRigidBody* rb = static_cast<CRigidBody*>(manager->getComponent(gg::RIGID_BODY, bullet));
+    // CRigidBody* rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, bullet));
     // vel.X *= FORCE_FACTOR;
     // vel.Y *= FORCE_FACTOR;
     // vel.Z *= FORCE_FACTOR;
@@ -88,17 +85,11 @@ int CGun::getBullets(){
     return total_bullets;
 }
 
-void CGun::initializeComponentData(const void* data){
-    if(data){
-        InitCGun* cData = (InitCGun*)data;
+void CGun::Init(){
 
-        total_bullets = cData->total_bullets;
-        damage = cData->dmg;
-        cadence = cData->cadence;
-    }
     // Inicializar singletons
-    engine = Singleton<GameEngine>::Instance();
-    manager = Singleton<ObjectManager>::Instance();
+    Engine = Singleton<GameEngine>::Instance();
+    Manager = Singleton<ObjectManager>::Instance();
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();

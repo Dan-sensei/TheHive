@@ -6,18 +6,6 @@
 #include "Message.hpp"
 #include <Arena.hpp>
 
-#include "Components/CTransform.hpp"
-#include "Components/CPlayerController.hpp"
-#include "Components/CRenderable_3D.hpp"
-#include "Components/CCamera.hpp"
-#include "Components/CAgent.hpp"
-#include "Components/CRigidBody.hpp"
-#include "Components/CGranade.hpp"
-#include "Components/CGun.hpp"
-#include "Components/CPathfinding.hpp"
-#include "Components/CAIEnem.hpp"
-
-
 #include <stack>
 #include <map>
 #include <vector>
@@ -30,11 +18,6 @@ class ObjectManager{
     friend class Singleton<ObjectManager>;
     public:
         ~ObjectManager();
-
-        //  ---
-        //  Inits object manager data and initializes components
-        //========================================================================
-        void initObjectManager();
 
         //  ---
         //  Returns next available ID of the system
@@ -51,7 +34,7 @@ class ObjectManager{
         //  Adds a component type to a given Entity (ID). It optionally can
         //  initialize the component data
         //========================================================================
-        void addComponentToEntity(gg::EComponentType type, uint16_t EntityID, const void* initData = nullptr);
+        void addComponentToEntity(IComponent* Component, gg::EComponentType type, uint16_t EntityID);
 
         //  ---
         //  Delete component from given EntityID
@@ -96,27 +79,6 @@ class ObjectManager{
         ObjectManager();
         ObjectManager(const ObjectManager &orig) = delete;
         void operator=(const ObjectManager &orig) = delete;
-
-
-        //  ---
-        //  Each function returns a new component. We will create a vector of
-        //  pointers to this functions to call them directly depending on the
-        //  component type
-        //========================================================================
-        IComponent* createTransformComponent        ();
-        IComponent* createPlayerControllerComponent ();
-        IComponent* createRenderable_3DComponent    ();
-        IComponent* createCameraComponent           ();
-        IComponent* createAgentComponent            ();
-        IComponent* createRigidBodyComponent        ();
-        IComponent* createGranadeComponent          ();
-        IComponent* createGunComponent              ();
-        IComponent* createPathfindingComponent      ();
-        IComponent* createAIEnemComponent           ();
-
-
-        using pConstructor = IComponent* (ObjectManager::*)(void);
-        pConstructor ComponentConstructorVector[gg::NUM_COMPONENTS];
 
 
         //  ---

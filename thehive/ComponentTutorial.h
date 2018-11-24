@@ -20,7 +20,7 @@ C[Nombre] -> Respeta hermano el nombre de las clases, empieza por "C" Seguido de
     Mirar "CPlantilla.hpp" y "CPlantilla.cpp"
 
 
--ObjectManager.hpp
+-Factory.hpp
     [Obligatorio]   Incluir el .hpp de la nueva componente
 
         #include "Components/CTransform.hpp"
@@ -28,31 +28,11 @@ C[Nombre] -> Respeta hermano el nombre de las clases, empieza por "C" Seguido de
         #include "Components/CRenderable_3D.hpp"
         #include "Components/CNewComponent.hpp"
 
-    [Obligatorio]   Declarar la función que devuelve un puntero al nuevo tipo de componente
-        IComponent* createTransformComponent        ();
-        IComponent* createKeyboardComponent         ();
-        IComponent* createRenderable_3DComponent    ();
-        IComponent* createNewComponentComponent     ();     <<-------
-
-
--ObjectManager.cpp
-
-    [Obligatorio]   Guardar en el array de punteros, el puntero a la función creada previamente
-        |
-        ObjectManager::ObjectManager()
-        :memory(128)
-        {
-            nextAvailableEntityID.push(1);
-
-            ComponentConstructorVector[0]= &ObjectManager::createTransformComponent;
-            ComponentConstructorVector[1]= &ObjectManager::createKeyboardComponent;
-            ComponentConstructorVector[2]= &ObjectManager::createRenderable_3DComponent;
-            ComponentConstructorVector[4]= &ObjectManager::createNewComponentComponent;     <<-------
-        }
+-Factory.cpp
 
     [Obligatorio]   Llamar al inicializador de clase
         |
-        void ObjectManager::initObjectManager() {
+        void Factory::Factory() {
 
             CTransform::initComponent();
             CPlayerController::initComponent();
@@ -60,29 +40,3 @@ C[Nombre] -> Respeta hermano el nombre de las clases, empieza por "C" Seguido de
             CNewComponent::initComponent();     <<-------
 
         }
-
-    [Obligatorio]   Definir por último, la función constructora (Están al final)
-        |
-        IComponent* ObjectManager::createNewComponentComponent     ()   {
-            return new CNewComponent;
-        }
-
-
--InitStructs.hpp e InitStructs.cpp
-    [Opcional]  Definir la estrutura inicializadora de las varibles de instancia de nuestra nueva componente
-
-    Por ejemplo, la componente Transform, tiene 6 floats
-    struct ICTransform{
-
-        ICTransform(
-            float  _x, float  _y, float  _z,
-            float _rx, float _ry, float _rz
-        );
-
-        float  x,  y,  z;
-        float rx, ry, rz;
-    };
-
-    Esto es lo que usará el método initializeComponentData(const *void);
-
-
