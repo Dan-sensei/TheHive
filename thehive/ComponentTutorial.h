@@ -18,25 +18,3 @@ Registrar el tipo de componente en Enum.hpp
 C[Nombre] -> Respeta hermano el nombre de las clases, empieza por "C" Seguido del nombre
 
     Mirar "CPlantilla.hpp" y "CPlantilla.cpp"
-
-
--Factory.hpp
-    [Obligatorio]   Incluir el .hpp de la nueva componente
-
-        #include "Components/CTransform.hpp"
-        #include "Components/CPlayerController.hpp"
-        #include "Components/CRenderable_3D.hpp"
-        #include "Components/CNewComponent.hpp"
-
--Factory.cpp
-
-    [Obligatorio]   Llamar al inicializador de clase
-        |
-        void Factory::Factory() {
-
-            CTransform::initComponent();
-            CPlayerController::initComponent();
-            CRenderable_3D::initComponent();
-            CNewComponent::initComponent();     <<-------
-
-        }

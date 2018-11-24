@@ -4,17 +4,11 @@ Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
     Engine = Singleton<GameEngine>::Instance();
 
-    CTransform::initComponent();
-    CPlayerController::initComponent();
-    CRenderable_3D::initComponent();
-    CCamera::initComponent();
-    CRigidBody::initComponent();
-    CAgent::initComponent();
-    CGranade::initComponent();
-    CGun::initComponent();
-    CPathfinding::initComponent();
-    CAIEnem::initComponent();
+    ComponentInitializer();
+
 }
+
+#include <ComponentArch/Components/ComponentInitializer>
 
 void Factory::createHero(const gg::Vector3f &Position) {
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");

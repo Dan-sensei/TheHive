@@ -5,16 +5,7 @@
 #include <GameEngine/GameEngine.hpp>
 #include <Util.hpp>
 
-#include "ComponentArch/Components/CTransform.hpp"
-#include "ComponentArch/Components/CPlayerController.hpp"
-#include "ComponentArch/Components/CRenderable_3D.hpp"
-#include "ComponentArch/Components/CCamera.hpp"
-#include "ComponentArch/Components/CAgent.hpp"
-#include "ComponentArch/Components/CRigidBody.hpp"
-#include "ComponentArch/Components/CGranade.hpp"
-#include "ComponentArch/Components/CGun.hpp"
-#include "ComponentArch/Components/CPathfinding.hpp"
-#include "ComponentArch/Components/CAIEnem.hpp"
+#include <ComponentArch/Components/ComponentHeaders.hpp>
 
 template <typename T>
 class Singleton;
@@ -36,6 +27,8 @@ class Factory{
         Factory(const Factory &orig) = delete;
         void operator=(const Factory &orig) = delete;
 
+        void ComponentInitializer();
+        
         ObjectManager* Manager;
         GameEngine* Engine;
 
