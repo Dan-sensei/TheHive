@@ -147,31 +147,27 @@ void Game::RUN(){
     }
 
     {
-        uint16_t TrainingArea = Manager->createEntity();
-        Material testura("assets/Textures/Domino.jpg");
-        InitCTransform CTransformTraining(0,0,0,0,0,0);
-        InitCRenderable_3D InitTrainingArea("assets/Models/SIUDA_CANAL.obj", testura);
-        InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/SIUDA_CANAL.bullet",  100,75,0, -1,-1,-1, 0, 0,0,0, 0.2);
-        Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
-        Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingArea, &InitTrainingArea);
-        Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
-
-        uint16_t Actor1 = Manager->createEntity();
-        Material Blue("assets/Textures/Blue.png");
-        InitCTransform Actor1Transform(-100,0,0,0,0,0);
-        InitCRenderable_3D CRenderableCube1("assets/Models/Actor.obj", Blue);
-        Manager->addComponentToEntity(gg::TRANSFORM, Actor1, &Actor1Transform);
-        Manager->addComponentToEntity(gg::RENDERABLE_3D, Actor1, &CRenderableCube1);
-        //Manager->addComponentToEntity(gg::PATHFINDING, Actor1);
+        // uint16_t TrainingArea = Manager->createEntity();
+        // Material testura("assets/Textures/Domino.jpg");
+        // InitCTransform CTransformTraining(0,0,0,0,0,0);
+        // InitCRenderable_3D InitTrainingArea("assets/Models/SIUDA_CANAL.obj", testura);
+        // InitCRigidBody CRigidBodyTraining(true,"assets/BoundingBoxes/SIUDA_CANAL.bullet",  100,75,0, -1,-1,-1, 0, 0,0,0, 0.2);
+        // Manager->addComponentToEntity(gg::TRANSFORM, TrainingArea, &CTransformTraining);
+        // Manager->addComponentToEntity(gg::RENDERABLE_3D, TrainingAriea, &InitTrainingArea);
+        // Manager->addComponentToEntity(gg::RIGID_BODY, TrainingArea, &CRigidBodyTraining);
     }
 
      {
-         Material Wireframe("assets/NavMeshes/Navmesh.png");
-         uint16_t Navmesh = Manager->createEntity();
+         // Material Wireframe("assets/Textures/MetalPanelRectangular001_REFL_1K_SPECULAR.jpg");
+         Material Wireframe("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png");
+         uint16_t prototipoSiuda = Manager->createEntity();
          InitCTransform init(0,0,0,0,0,0);
-         InitCRenderable_3D InitTrainingArea("assets/NavMeshes/Test.obj", Wireframe);
-         Manager->addComponentToEntity(gg::TRANSFORM, Navmesh, &init);
-         Manager->addComponentToEntity(gg::RENDERABLE_3D, Navmesh, &InitTrainingArea);
+         InitCRigidBody CRigidBodyTraining(true,"assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0, 0.2);
+         // InitCRigidBody CRigidBodyTraining(false,"",  0,0,0, 10000,2,10000, 0, 0,0,0, 0.2);
+         InitCRenderable_3D InitTrainingArea("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", Wireframe);
+         Manager->addComponentToEntity(gg::TRANSFORM, prototipoSiuda, &init);
+         Manager->addComponentToEntity(gg::RENDERABLE_3D, prototipoSiuda, &InitTrainingArea);
+         Manager->addComponentToEntity(gg::RIGID_BODY, prototipoSiuda, &CRigidBodyTraining);
      }
 
     // Print memory
