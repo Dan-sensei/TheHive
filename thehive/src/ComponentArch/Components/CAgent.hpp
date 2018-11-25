@@ -40,9 +40,6 @@ class CAgent : public IComponent {
         //        void update();
         static void deletetrig(TriggerRecordStruct* _pRec);
 
-
-
-
         static std::list  <CAgent*>  hola;
 
         uint16_t nCAgentID;
@@ -55,9 +52,6 @@ class CAgent : public IComponent {
         void onTriggerStay(TriggerRecordStruct* _pRec);
         void onTriggerExit(TriggerRecordStruct* _pRec);
 
-
-
-
         void SetNextTriggerUpdate(unsigned long _nCurTime);//updatear cada x tiempo
         unsigned long  GetTriggerFlags();
         gg::Vector3f GetPosition();
@@ -69,13 +63,8 @@ class CAgent : public IComponent {
 
     private:
         //CAgent(unsigned long _dwTriggerFlags,gg::Vector3f _vPos);
-
-
-
         GameEngine* Engine;
-
         CTransform* cTransform;     //  Punteros a otras componentes
-
 };
 
 #endif

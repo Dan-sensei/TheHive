@@ -113,3 +113,22 @@ void Factory::createHolyBomb(float _damage, float _radius,float _tipo, const gg:
 
     RigidBody->applyCentralForce(Impulse);
 }
+
+void Factory::createCollectableWeapon(const gg::Vector3f &_position, int _weaponType){
+    uint16_t weapon = Manager->createEntity();
+    Material w_mat("assets/Textures/ice.bmp");
+
+    CTransform *transform = new CTransform(_position, gg::Vector3f(0,0,0));
+    Manager->addComponentToEntity(transform, gg::TRANSFORM, weapon);
+
+    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/Cube.obj", w_mat);
+    Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, weapon);
+
+    CRigidBody *rigidBody = new CRigidBody(false,"",  _position.X,_position.Y,_position.Z, 1.5,1.5,1.5, 1, 0,0,0);
+    Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, weapon);
+
+    TData mes;
+    mes.add(kDat_EntId,weapon);
+    mes.add(kDat_WeaponType,_weaponType);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Gunfire,1,weapon,_position, 5, 0, true, mes);
+}

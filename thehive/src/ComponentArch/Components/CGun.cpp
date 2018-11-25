@@ -3,10 +3,13 @@
 #define FORCE_FACTOR        200.f
 #define DIST_OFFSET         5.f
 
-CGun::CGun(float _dmg, float _cadence, int _total_bullets)
+CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range)
 :Engine(nullptr), Manager(nullptr), cTransform(nullptr),
-damage(_dmg), cadence(_cadence), total_bullets(_total_bullets)
-{}
+damage(_dmg), cadence(_cadence), total_bullets(_total_bullets),
+reloadDT(_reloadDT), range(_range)
+{
+    ktotal_bullets = total_bullets;
+}
 
 CGun::~CGun() {
 
@@ -22,11 +25,19 @@ void CGun::initComponent() {
 }
 
 void CGun::shoot(gg::Vector3f to){
-    if(!total_bullets || to.X == -1){
+    if(!total_bullets){
+        gg::cout("Click!");
         return;
     }
-
+    if(to.X == -1){
+        total_bullets--;
+        gg::cout("PAM! - "+std::to_string(total_bullets));
+        return;
+    }
     total_bullets--;
+
+    gg::cout("PIM! - "+std::to_string(total_bullets));
+
     // // std::cout << "PIM!!! -> " << total_bullets << '\n';
     gg::Vector3f from = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,getEntityID()))->getPosition();
     gg::Vector3f vel(
@@ -47,38 +58,13 @@ void CGun::shoot(gg::Vector3f to){
 
     from.Y += DIST_OFFSET;
     Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(from,to,vel);
+    Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),2000,TData());
+}
 
-
-
-
-    // // Vector direccion normalizado, JUGADOR-TO
-    // gg::Vector3f from = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,getEntityID()))->getPosition();
-    // gg::Vector3f vel(
-    //     to.X-from.X,
-    //     to.Y-from.Y,
-    //     to.Z-from.Z
-    // );
-    //
-    // float length = sqrt(vel.X*vel.X + vel.Y*vel.Y + vel.Z*vel.Z);
-    //     vel.X /= length;
-    //     vel.Y /= length;
-    //     vel.Z /= length;
-    //
-    // // Crear una 'bala'
-    // uint8_t bullet = Manager->createEntity();
-    // Material material("assets/Models/obradearte/prueba1.png");
-    // InitCRenderable_3D bModel("assets/Models/bullet.obj", material);
-    // InitCTransform bTransform(from.X,from.Y,from.Z, 0,0,0);
-    // InitCRigidBody bCollide(true,"assets/BoundingBoxes/bullet.bullet",  from.X,from.Y+DIST_OFFSET,from.Z, .5,.5,.5, 1, 0,0,0, 2);
-    // Manager->addComponentToEntity(gg::TRANSFORM, bullet, &bTransform);
-    // Manager->addComponentToEntity(gg::RENDERABLE_3D, bullet, &bModel);
-    // Manager->addComponentToEntity(gg::RIGID_BODY, bullet, &bCollide);
-    //
-    // CRigidBody* rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, bullet));
-    // vel.X *= FORCE_FACTOR;
-    // vel.Y *= FORCE_FACTOR;
-    // vel.Z *= FORCE_FACTOR;
-    // rb->applyCentralForce(gg::Vector3f(vel.X,vel.Y,vel.Z));
+void CGun::reload(){
+    // NEED TO APPLY THE RELOAD TIME
+    gg::cout(" -- RELOAD -- ");
+    total_bullets = ktotal_bullets;
 }
 
 int CGun::getBullets(){

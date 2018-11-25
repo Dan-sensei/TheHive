@@ -4,9 +4,9 @@
 #include "ComponentArch/Message.hpp"
 
 #include <EventSystem/TData.hpp>
-#define VEL_FACTOR      200.f
 #include "Factory.hpp"
 
+#define VEL_FACTOR      200.f
 
 CGranade::CGranade(float _damage,float _radius,float _tipo)
 :damage(_damage), radius(_radius), tipo(_tipo)

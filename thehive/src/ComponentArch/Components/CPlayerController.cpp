@@ -15,6 +15,7 @@
 #define RUN_KEY         gg::GG_LSHIFT
 #define JUMP_KEY        gg::GG_SPACEBAR
 #define LCLICK          gg::GG_LCLICK
+#define RELOAD_KEY      gg::GG_R
 
 #define DASH_FACTOR     1.2f
 #define RUN_FACTOR      1.1f
@@ -164,12 +165,13 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
     gg::Vector3f rayPos = world->getRaycastVector();
 
+    if(Engine->key(RELOAD_KEY)){
+        CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
+        if(gun && !gun->getBullets()){
+            gun->reload();
+        }
+    }
     if(Engine->key(gg::GG_E)){
-        //
-
-
-        Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),2000,TData());
-        //
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
         if(gun){
             gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);

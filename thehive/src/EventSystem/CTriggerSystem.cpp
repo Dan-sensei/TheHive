@@ -1,16 +1,11 @@
-//#include <iostream>
-//mio
-//#include <cstdlib>
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <termios.h>
-//#include <term.h>
-//#include <curses.h>
-//#include <unistd.h>
-//#include <vector>
+#include "ComponentArch/ObjectManager.hpp"
 #include "ComponentArch/Components/CAgent.hpp"
+#include "ComponentArch/Components/CTransform.hpp"
+
 #include <EventSystem/CTriggerSystem.hpp>
 #include <EventSystem/EnumDataType.hpp>
+
+#include "Singleton.hpp"
 
 
 TriggerRecordStruct::TriggerRecordStruct(const TriggerRecordStruct &orig){
@@ -144,10 +139,13 @@ void CTriggerSystem::Update()
 
         }else{
           //Update pos if dynamic flag is set.Reset time-stamp
-          if(pRec->bDynamicSourcePos==true)
-          {
-            //Update(pRec->vPos);//funcion para actualizar la posicion
-            //pRec->nTimeStamp = nCurTime;
+          if(pRec->bDynamicSourcePos==true){
+              CTransform *ct = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, pRec->idSource));
+              if(ct){
+                  pRec->vPos = ct->getPosition();
+              }
+              //Update(pRec->vPos);//funcion para actualizar la posicion
+              //pRec->nTimeStamp = nCurTime;
           }
           ++it;
         }

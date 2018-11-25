@@ -104,8 +104,6 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
     //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
     if(_pRec->eTriggerType & kTrig_Explosion){
         //std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
-        //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
-        //// std::cout << "usando handler despues" << nCAgentID<< '\n';
         //Message mes(gg::M_XPLOTATO,_pRec);
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
             //std::cout << "core si" << '\n';
@@ -114,15 +112,8 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
             return true;
 
         }
-
-
-        //if(!oManager->checkEvent(nCAgentID,mes)) return false;
-
-        //oManager->sendMessageToEntity(nCAgentID,mes);
-
     }
     else if(_pRec->eTriggerType & kTrig_Gunfire){
-        //std::cout << "OnTriggerEnter arma" << nCAgentID<<'\n';
         if(oManager->getComponent(gg::GUN,nCAgentID))
             if(static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID))->getBullets())
                 return false;
@@ -131,19 +122,46 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
             oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
 
         // NO TIENE BALAS O ARMA
-        CGun* Gun = new CGun(10,1,50);
+        float   dmg, cdc, relDT, rng;
+        int     tb;
+        switch (static_cast<int>(_pRec->data.find(kDat_WeaponType))) {
+            case 0:
+                dmg = 70;
+                cdc = 3;
+                tb  = 30;
+                relDT = 1;
+                rng = 0.7;
+                break;
+            case 1:
+                dmg = 80;
+                cdc = 1;
+                tb  = 10;
+                relDT = 1.5;
+                rng = 0.4;
+                break;
+        }
+        CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng);
         oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
-    }else if(_pRec->eTriggerType & kTrig_EnemyNear){
+
+        gg::cout(" -- GUN PICKED ---");
+        gg::cout(" - DMG="      + std::to_string(dmg));
+        gg::cout(" - CADENCE"   + std::to_string(cdc));
+        gg::cout(" - BULLETS"   + std::to_string(tb));
+        gg::cout(" - DT="       + std::to_string(relDT));
+        gg::cout(" - RANGE="    + std::to_string(rng));
+        gg::cout(" -----------------");
+
+        int id = _pRec->data.find(kDat_EntId);
+        oManager->removeEntity(id);
+        _pRec->nExpirationTime = 50;
+    }
+    else if(_pRec->eTriggerType & kTrig_EnemyNear){
         //CAIEnem->enemyseen();
 
     }
-
-
-
-
-return true;
-
+    return true;
 }
+
 void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
     //std::cout << "OnTriggerStay  entra" <<nCAgentID<< '\n';
     //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';

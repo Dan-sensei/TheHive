@@ -3,6 +3,7 @@
 
 #include <ComponentArch/ObjectManager.hpp>
 #include <GameEngine/GameEngine.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
 
 #include <ComponentArch/Components/ComponentHeaders.hpp>
@@ -20,7 +21,7 @@ class Factory{
         void createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation = gg::Vector3f());
         void createPathFindingActor(const gg::Vector3f &Position);
         void createHolyBomb(float _damage,float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse);
-
+        void createCollectableWeapon(const gg::Vector3f&, int);
     private:
 
         Factory();
@@ -28,7 +29,7 @@ class Factory{
         void operator=(const Factory &orig) = delete;
 
         void ComponentInitializer();
-        
+
         ObjectManager* Manager;
         GameEngine* Engine;
 
