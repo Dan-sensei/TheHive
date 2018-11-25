@@ -2,7 +2,7 @@
 #include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
-#define FORCE_FACTOR        9000.f
+#define FORCE_FACTOR        200.f
 #define DIST_OFFSET         5.f
 
 CGun::CGun()

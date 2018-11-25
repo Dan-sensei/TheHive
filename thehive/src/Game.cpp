@@ -162,7 +162,7 @@ void Game::RUN(){
          Material Wireframe("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png");
          uint16_t prototipoSiuda = Manager->createEntity();
          InitCTransform init(0,0,0,0,0,0);
-         InitCRigidBody CRigidBodyTraining(true,"assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0, 0.2);
+         InitCRigidBody CRigidBodyTraining(true,"assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet",  0,0,0, -1,-1,-1, 0, 0,0,0);
          // InitCRigidBody CRigidBodyTraining(false,"",  0,0,0, 10000,2,10000, 0, 0,0,0, 0.2);
          InitCRenderable_3D InitTrainingArea("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", Wireframe);
          Manager->addComponentToEntity(gg::TRANSFORM, prototipoSiuda, &init);
