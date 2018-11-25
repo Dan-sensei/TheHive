@@ -187,6 +187,10 @@ bool GameEngine::key(gg::KEYCODES keyCode){
     return listener.IsKeyDown(keyCode);
 }
 
+bool GameEngine::isLClickPressed(){
+    return listener.isLClickPressed();
+}
+
 //  ---
 //  Cleans game engine stuff
 //==================================================================================

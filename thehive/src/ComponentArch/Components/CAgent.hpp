@@ -60,11 +60,12 @@ class CAgent : public IComponent {
         void removeAgent(std::list <CAgent*>::iterator ite);
         //uint16_t getEntityID();upda
 
-
     private:
         //CAgent(unsigned long _dwTriggerFlags,gg::Vector3f _vPos);
         GameEngine* Engine;
         CTransform* cTransform;     //  Punteros a otras componentes
+
+        void getWeaponInformation(float&, float&, float&, float&, int&, int);
 };
 
 #endif

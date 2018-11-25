@@ -1,5 +1,7 @@
 #include "EventListener.hpp"
 #include <cstdint>
+#include <iostream>
+#include <GameEngine/ScreenConsole.hpp>
 
 EventListener::EventListener(){
     uint16_t i = irr::KEY_KEY_CODES_COUNT;
@@ -8,8 +10,15 @@ EventListener::EventListener(){
 
 bool EventListener::OnEvent(const irr::SEvent& event) {
     // Remember whether each key is down or up
+    LCLICK = false;
     if (event.EventType == irr::EET_KEY_INPUT_EVENT)
         keyMap[event.KeyInput.Key] = event.KeyInput.PressedDown;
+
+    if (event.EventType == irr::EET_MOUSE_INPUT_EVENT){
+        if (event.MouseInput.Event == irr::EMIE_LMOUSE_PRESSED_DOWN){
+            LCLICK = true;
+        }
+    }
 
     return false;
 }
@@ -17,4 +26,8 @@ bool EventListener::OnEvent(const irr::SEvent& event) {
 // This is used to check whether a key is being held down
 bool EventListener::IsKeyDown(gg::KEYCODES key) const {
     return keyMap[key];
+}
+
+bool EventListener::isLClickPressed(){
+    return LCLICK;
 }

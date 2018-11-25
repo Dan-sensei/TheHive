@@ -14,7 +14,6 @@
 #define DASH_KEY        gg::GG_ALT
 #define RUN_KEY         gg::GG_LSHIFT
 #define JUMP_KEY        gg::GG_SPACEBAR
-#define LCLICK          gg::GG_LCLICK
 #define RELOAD_KEY      gg::GG_R
 
 #define DASH_FACTOR     1.2f

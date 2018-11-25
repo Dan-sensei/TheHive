@@ -3,10 +3,10 @@
 #define FORCE_FACTOR        200.f
 #define DIST_OFFSET         5.f
 
-CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range)
+CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType)
 :Engine(nullptr), Manager(nullptr), cTransform(nullptr),
 damage(_dmg), cadence(_cadence), total_bullets(_total_bullets),
-reloadDT(_reloadDT), range(_range)
+reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
 {
     ktotal_bullets = total_bullets;
 }
@@ -69,6 +69,10 @@ void CGun::reload(){
 
 int CGun::getBullets(){
     return total_bullets;
+}
+
+int CGun::getType(){
+    return WEAPON_TYPE;
 }
 
 void CGun::Init(){

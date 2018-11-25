@@ -10,10 +10,11 @@
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <EventSystem/CTriggerSystem.hpp>
 #include "CTransform.hpp"
+#include <Factory.hpp>
 
 class CGun : public IComponent {
     public:
-        CGun(float, float, int, float, float);                //  No queremos que alguien lo construya fuera (Limón)
+        CGun(float, float, int, float, float, int);                //  No queremos que alguien lo construya fuera (Limón)
         CGun(const CGun &orig) = delete;
         virtual ~CGun();
 
@@ -30,6 +31,7 @@ class CGun : public IComponent {
         void shoot(gg::Vector3f);
         void reload();
         int getBullets();
+        int getType();
 
     private:
         GameEngine* Engine;
@@ -39,6 +41,7 @@ class CGun : public IComponent {
         CTransform* cTransform;
 
         //  Variables de esta componente
+        int WEAPON_TYPE;
         int ktotal_bullets;
         float damage;
         float cadence;

@@ -10,8 +10,10 @@ public:
 
     virtual bool OnEvent(const irr::SEvent& event);
     virtual bool IsKeyDown(gg::KEYCODES key) const;
+    virtual bool isLClickPressed();
 private:
     bool keyMap[irr::KEY_KEY_CODES_COUNT];
+    bool LCLICK;
 };
 
 #endif

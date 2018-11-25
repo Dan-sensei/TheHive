@@ -114,52 +114,88 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         }
     }
     else if(_pRec->eTriggerType & kTrig_Gunfire){
-        if(oManager->getComponent(gg::GUN,nCAgentID))
-            if(static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID))->getBullets())
-                return false;
-
-        if(oManager->getComponent(gg::GUN,nCAgentID))
-            oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
-
-        // NO TIENE BALAS O ARMA
         float   dmg, cdc, relDT, rng;
         int     tb;
-        switch (static_cast<int>(_pRec->data.find(kDat_WeaponType))) {
-            case 0:
-                dmg = 70;
-                cdc = 3;
-                tb  = 30;
-                relDT = 1;
-                rng = 0.7;
-                break;
-            case 1:
-                dmg = 80;
-                cdc = 1;
-                tb  = 10;
-                relDT = 1.5;
-                rng = 0.4;
-                break;
+        CGun *gun = static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID));
+
+        if(gun){
+            if(Singleton<GameEngine>::Instance()->key(gg::GG_F) && nCAgentID == 1){
+                // Puedo recoger el arma del suelo
+                int _wtype_actual = gun->getType();
+                int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
+                gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
+
+                getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
+
+                // Elimino el arma que tiene la entidad
+                oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
+
+                // Le anyado la nueva
+                CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
+                oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
+
+                gg::Vector3f pos(
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().X,
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Y+20,
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Z
+                );
+                Singleton<Factory>::Instance()->createCollectableWeapon(pos,_wtype_actual);
+
+                // Destruyo el arma del suelo y su evento
+                int id = _pRec->data.find(kDat_EntId);
+                oManager->removeEntity(id);
+                _pRec->nExpirationTime = 50;
+
+                return true;
+            }
+            return false;
         }
-        CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng);
+
+        // NO TIENE ARMA
+        getWeaponInformation(dmg,cdc,relDT,rng,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)));
+
+        // Creo y anyado un arma a la entidad
+        CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)));
         oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
 
-        gg::cout(" -- GUN PICKED ---");
-        gg::cout(" - DMG="      + std::to_string(dmg));
-        gg::cout(" - CADENCE"   + std::to_string(cdc));
-        gg::cout(" - BULLETS"   + std::to_string(tb));
-        gg::cout(" - DT="       + std::to_string(relDT));
-        gg::cout(" - RANGE="    + std::to_string(rng));
-        gg::cout(" -----------------");
-
+        // Destruyo el arma del suelo y su evento
         int id = _pRec->data.find(kDat_EntId);
         oManager->removeEntity(id);
         _pRec->nExpirationTime = 50;
     }
     else if(_pRec->eTriggerType & kTrig_EnemyNear){
         //CAIEnem->enemyseen();
-
     }
     return true;
+}
+
+void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
+    switch (_type){
+        case 0:
+            // Rifle
+            dmg = 70;
+            cdc = 3;
+            tb  = 30;
+            relDT = 1;
+            rng = 0.7;
+            break;
+        case 1:
+            // Escopeta
+            dmg = 80;
+            cdc = 1;
+            tb  = 10;
+            relDT = 1.5;
+            rng = 0.4;
+            break;
+    }
+
+    gg::cout(" --- GUN PICKED --- ");
+    gg::cout(" - - DMG= "       + std::to_string(dmg));
+    gg::cout(" - - CADENCE= "   + std::to_string(cdc));
+    gg::cout(" - - BULLETS= "   + std::to_string(tb));
+    gg::cout(" - - DT= "        + std::to_string(relDT));
+    gg::cout(" - - RANGE= "     + std::to_string(rng));
+    gg::cout(" ------------------ ");
 }
 
 void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){

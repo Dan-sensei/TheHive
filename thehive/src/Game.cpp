@@ -135,6 +135,7 @@ void Game::RUN(){
     Singleton<Factory>::Instance()->createPathFindingActor(gg::Vector3f(100, 83, 13));
     Singleton<Factory>::Instance()->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
     Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 180, 20),0);
+    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 180, 40),1);
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
