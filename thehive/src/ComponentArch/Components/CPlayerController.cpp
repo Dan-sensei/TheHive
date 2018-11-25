@@ -1,10 +1,10 @@
 #include "CPlayerController.hpp"
-#include <Singleton.hpp>
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
 #include <string>
+#include "Factory.hpp"
 // #include <GameEngine/ScreenConsole.hpp>
 
 #define VEL_FACTOR      200.f
@@ -21,7 +21,7 @@
 #define FORCE_FACTOR    200.f
 
 CPlayerController::CPlayerController()
-:cTransform(nullptr)
+:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
 {
   GranadeCreate=false;
 }
@@ -36,17 +36,15 @@ void CPlayerController::initComponent() {
 
 }
 
-void CPlayerController::initializeComponentData(const void* data){
+void CPlayerController::Init(){
     //  We check if this entity has the TRANSFORM component
-    engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<GameEngine>::Instance();
     world = Singleton<ggDynWorld>::Instance();
     camera = static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
     Manager = Singleton<ObjectManager>::Instance();
     pulsacion_granada=false;
     pulsacion_espacio=false;
-
-
 }
 
 
@@ -95,52 +93,52 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f force;
 
-    if(engine->key(gg::GG_W)){
+    if(Engine->key(gg::GG_W)){
         force = gg::Vector3f(-cV.X,0,-cV.Z);
-        // if(engine->key(ROTATE_KEY)){
+        // if(Engine->key(ROTATE_KEY)){
         //     cV2.X-=cV.X;
         //     cV2.Z-=cV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // };
     }
-    else if(engine->key(gg::GG_S)){
+    else if(Engine->key(gg::GG_S)){
         force = gg::Vector3f(+cV.X,0,+cV.Z);
-        // if(engine->key(ROTATE_KEY)){
+        // if(Engine->key(ROTATE_KEY)){
         //     cV2.X+=cV.X;
         //     cV2.Z+=cV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // }
     }
 
-    if(engine->key(gg::GG_A)){
+    if(Engine->key(gg::GG_A)){
         force = gg::Vector3f(-ppV.X,0,-ppV.Z);
-        // if(engine->key(ROTATE_KEY)){
+        // if(Engine->key(ROTATE_KEY)){
         //     cV2.X-=ppV.X;
         //     cV2.Z-=ppV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // };
     }
-    else if(engine->key(gg::GG_D)){
+    else if(Engine->key(gg::GG_D)){
         force = gg::Vector3f(+ppV.X,0,+ppV.Z);
-        // if(engine->key(ROTATE_KEY)){
+        // if(Engine->key(ROTATE_KEY)){
         //     cV2.X+=ppV.X;
         //     cV2.Z+=ppV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // }
     }
-    if(engine->key(ROTATE_KEY))
+    if(Engine->key(ROTATE_KEY))
         heroRotation = false;
 
-    if(engine->key(DASH_KEY)){
+    if(Engine->key(DASH_KEY)){
         force.X *= 1.05;
         force.Z *= 1.05;
     }
-    if(engine->key(RUN_KEY)){
+    if(Engine->key(RUN_KEY)){
         force.X *= 1.02;
         force.Z *= 1.02;
     }
 
-    if(engine->key(JUMP_KEY)){
+    if(Engine->key(JUMP_KEY)){
         if(!pulsacion_espacio){
             pulsacion_espacio = true;
             force.Y = 70;
@@ -166,7 +164,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
     gg::Vector3f rayPos = world->getRaycastVector();
 
-    if(engine->key(gg::GG_E)){
+    if(Engine->key(gg::GG_E)){
         //
 
 
@@ -179,7 +177,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     }
 
     // Graná
-    if(engine->key(gg::GG_G) && GranadeCreate==false){
+    if(Engine->key(gg::GG_G) && GranadeCreate==false){
         if(pulsacion_granada==false){
             pulsacion_granada=true;
             gg::Vector3f gPos = cTransform->getPosition();
@@ -190,19 +188,24 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
             vel = gg::Normalice(vel);
 
             uint16_t holyBomb = Manager->createEntity();
-            InitCGrenade CHolyBomb(FORCE_FACTOR*20,40,1);
             Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-            InitCRenderable_3D CRenderableHolyBomb("assets/Models/Cube.obj", moradoDeLos80);
-            InitCTransform CTransformHolyBomb(           gPos.X,gPos.Y+10,gPos.Z, 0,0,0);
-            InitCRigidBody CRigidBodyHolyBomb(false,"",  gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
-            Manager->addComponentToEntity(gg::TRANSFORM, holyBomb, &CTransformHolyBomb);
-            Manager->addComponentToEntity(gg::RENDERABLE_3D, holyBomb, &CRenderableHolyBomb);
-            Manager->addComponentToEntity(gg::GRANADE,holyBomb ,&CHolyBomb);
-            Manager->addComponentToEntity(gg::RIGID_BODY, holyBomb, &CRigidBodyHolyBomb);
 
-            CRigidBody* rb = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, holyBomb));
+            CTransform* Transform = new CTransform(gg::Vector3f(gPos.X,gPos.Y+10,gPos.Z), gg::Vector3f(0,0,0));
+            Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
+
+            CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
+            Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
+
+            CRigidBody* RigidBody = new CRigidBody(false,"", gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
+            Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
+
+            CGranade* Granade = new CGranade(FORCE_FACTOR*20,40,1);
+            Manager->addComponentToEntity(Granade, gg::GRANADE, holyBomb);
+
             vel*= VEL_FACTOR/2;
-            rb->applyCentralForce(vel);
+
+            RigidBody->applyCentralForce(vel);
+
         }
         // GranadeCreate=true;
     }

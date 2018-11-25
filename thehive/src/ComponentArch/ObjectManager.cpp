@@ -16,20 +16,6 @@ ObjectManager::ObjectManager()
 :memory(128)
 {
     nextAvailableEntityID.push(1);
-
-    ComponentConstructorVector[gg::TRANSFORM]= &ObjectManager::createTransformComponent;
-    ComponentConstructorVector[gg::PLAYERCONTROLLER]= &ObjectManager::createPlayerControllerComponent;
-    ComponentConstructorVector[gg::RENDERABLE_3D]= &ObjectManager::createRenderable_3DComponent;
-    ComponentConstructorVector[gg::CAMERA]= &ObjectManager::createCameraComponent;
-    ComponentConstructorVector[gg::RIGID_BODY]= &ObjectManager::createRigidBodyComponent;
-    ComponentConstructorVector[gg::AGENT]= &ObjectManager::createAgentComponent;
-    ComponentConstructorVector[gg::GRANADE]= &ObjectManager::createGranadeComponent;
-    ComponentConstructorVector[gg::GUN]= &ObjectManager::createGunComponent;
-    ComponentConstructorVector[gg::PATHFINDING]= &ObjectManager::createPathfindingComponent;
-    ComponentConstructorVector[gg::AIENEM]= &ObjectManager::createAIEnemComponent;
-
-    //ComponentConstructorVector[3]= &ObjectManager::createHealthComponent;
-    //ComponentConstructorVector[4]= &ObjectManager::createRespectComponent;
 }
 
 
@@ -56,19 +42,6 @@ void ObjectManager::clin(){
     }
 }
 
-//  ---
-//  Calls statics functions of every component to initialize them
-//========================================================================
-void ObjectManager::initObjectManager() {
-    CTransform::initComponent();
-    CPlayerController::initComponent();
-    CRenderable_3D::initComponent();
-    CCamera::initComponent();
-    CRigidBody::initComponent();
-    CGranade::initComponent();
-    CPathfinding::initComponent();
-    CAIEnem::initComponent();
-}
 
 
 uint16_t ObjectManager::createEntity() {
@@ -105,27 +78,16 @@ void ObjectManager::removeEntity(uint16_t targetID){
 }
 
 
-void ObjectManager::addComponentToEntity(gg::EComponentType type, uint16_t EntityID, const void* initData) {
-    IComponent* newComponent;
-
-    //  Depending on the component type we wanna create, we call a different function
-    //  in the constructor vector of functions
-    pConstructor constructor = ComponentConstructorVector[type];
-
-    if(constructor != nullptr)
-        newComponent = (this->*constructor)();
-
-    //// std::cout << "  -Adding componente " << type << " to entity " << EntityID << '\n';
+void ObjectManager::addComponentToEntity(IComponent* Component, gg::EComponentType type, uint16_t EntityID) {
 
     //  We set the entityID to that component
-    newComponent->setEntityID(EntityID);
+    Component->setEntityID(EntityID);
 
     //  And insert in the map, the ID with is assigned component
-    TypeToComponentMap[type].insert(std::make_pair(EntityID, newComponent));
+    TypeToComponentMap[type].insert(std::make_pair(EntityID, Component));
 
-    //  We pass the initData for the component, we call the method
-    //  of the component wich uses this data
-    newComponent->initializeComponentData(initData);
+    //  We call the init method of the Component :)
+    Component->Init();
 }
 
 void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID){
@@ -205,7 +167,7 @@ bool ObjectManager::checkEvent(uint16_t EntityID, const Message &m){
         EntityFound = entitiesMap.find(EntityID);
 
         if(EntityFound != entitiesMap.end()){
-            if(EntityFound->second->processMessage(m)==gg::ST_FALSE)return false;
+            if(EntityFound->second->processMessage(m)==gg::ST_FALSE) return false;
         }
 
         ++componentsIterator;
@@ -225,42 +187,3 @@ IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const u
     //  If not
     return nullptr; //  <- We return nullptr
 }
-
-//  ---
-//  CONSTRUCTORS
-//===========================================================================================================
-
-IComponent* ObjectManager::createTransformComponent         ()   {
-    return new CTransform;
-}
-IComponent* ObjectManager::createPlayerControllerComponent  ()   {
-    return new CPlayerController;
-}
-IComponent* ObjectManager::createRenderable_3DComponent     ()   {
-    return new CRenderable_3D;
-}
-IComponent* ObjectManager::createCameraComponent            ()   {
-    return new CCamera;
-}
-IComponent* ObjectManager::createAgentComponent             ()   {
-    return new CAgent;
-}
-IComponent* ObjectManager::createRigidBodyComponent         ()   {
-    return new CRigidBody;
-}
-IComponent* ObjectManager::createGranadeComponent           ()   {
-    return new CGranade;
-}
-IComponent* ObjectManager::createGunComponent               ()   {
-    return new CGun;
-}
-IComponent* ObjectManager::createPathfindingComponent       ()   {
-    return new CPathfinding;
-}
-IComponent* ObjectManager::createAIEnemComponent            ()   {
-    return new CAIEnem;
-}
-
-//IComponent* ObjectManager::createColliderComponent     ();
-//IComponent* ObjectManager::createHealthComponent       ();
-//IComponent* ObjectManager::createRespectComponent      ();

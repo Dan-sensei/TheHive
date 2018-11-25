@@ -8,20 +8,23 @@
 #include <Util.hpp>
 #include <stack>
 
+#include <GameEngine/GameEngine.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+#include "CTransform.hpp"
+#include <Singleton.hpp>
 
-class GameEngine;
-class CRigidBody;
-class CTransform;
+//#include "CRigidBody.hpp"
+
 
 class CPathfinding : public IComponent {
-    friend class ObjectManager;
+    friend class Factory;
     public:
         virtual ~CPathfinding();
 
         // Functions of IComponent
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
-        virtual void initializeComponentData(const void* data);
+        virtual void Init();
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
@@ -32,12 +35,12 @@ class CPathfinding : public IComponent {
         CPathfinding();
         CPathfinding(const CPathfinding &orig) = delete;
 
+        GameEngine* Engine;
+        CTransform* cTransform;
         std::stack<Waypoint> Waypoints;
         uint16_t currentWaypointID;
 
-        CRigidBody* cRigidBody;
-        CTransform* cTransform;
-        GameEngine* engine;
+        //CRigidBody* cRigidBody;
 };
 
 #endif

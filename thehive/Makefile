@@ -1,6 +1,14 @@
 include MakeColors
 
 BUILD	:= build/
+COMPONENTHEADERS:= src/ComponentArch/Components/ComponentHeaders.hpp
+COMPONENTS := $(wildcard src/ComponentArch/Components/*.hpp)
+COMPONENTS := $(subst src/,,$(COMPONENTS))
+
+COMPONENTINITIALIZER:= src/ComponentArch/Components/ComponentInitializer
+COMPONENTSCLASS := $(basename $(notdir $(COMPONENTS)))
+COMPONENTSCLASS := $(subst ComponentHeaders,,$(COMPONENTSCLASS))
+
 
 SOURCES := $(shell find src/ -type f -name "*.cpp")
 OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
@@ -13,6 +21,17 @@ LIBRARIES := -lGL -lGLEW -lGLU -lglut -lglfw -lassimp -lSOIL2 -lIrrlicht -lBulle
 COMPILER := g++
 
 EXE := main
+
+build: PRE_BUILD $(EXE)
+
+PRE_BUILD:
+	@echo "#ifndef COMPONENTHEADERS_H" > $(COMPONENTHEADERS)
+	@echo "#define COMPONENTHEADERS_H" >> $(COMPONENTHEADERS)
+	@for header in $(COMPONENTS) ; do echo "	#include <$$header>" >> $(COMPONENTHEADERS); done
+	@echo "#endif" >> $(COMPONENTHEADERS)
+	@echo "void Factory::ComponentInitializer() {" > $(COMPONENTINITIALIZER)
+	@for init in $(COMPONENTSCLASS) ; do echo "	$$init::initComponent();" >> $(COMPONENTINITIALIZER); done
+	@echo "}" >> $(COMPONENTINITIALIZER)
 
 $(EXE): $(OBJECTS)
 	$(call br)
@@ -68,7 +87,7 @@ info:
 	$(call br)
 	$(call br)
 	$(call objColor)
-	@$(foreach var,$(SOURCES), echo " "$(var); )
+	#@$(foreach var,$(SOURCES), echo " "$(var); )
 	$(call noColor)
 
 	$(call br)

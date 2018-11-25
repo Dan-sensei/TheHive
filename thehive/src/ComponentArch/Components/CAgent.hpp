@@ -13,22 +13,31 @@
 
 #include <ComponentArch/Message.hpp>
 
+#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+#include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
+#include <Singleton.hpp>
 
-                                                //            punteros a otras componentes
-
-
-class GameEngine;        //  [OPCIONAL] Si necesitas acceder a algún método de GameEngine
-class ObjectManager;     //  [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
-
-class CTransform;           //  Forward declaration de otras componentes que incluyas
+class CTransform;
 
 class CAgent : public IComponent {
-    friend class ObjectManager;                 // Con esto le decimos que sólo ObjectManager puede crear esta componente
     public:
-//TriggerRecordStruct holiis;
+        CAgent(const unsigned long &_flags);
+        CAgent(const CAgent &orig) = delete;
+        virtual ~CAgent();
+
+        // Functions of IComponent
+        static void initComponent();
+        virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
+        virtual void Init();         // [OBLIGATORIO] Aunque esté vacío en el .cpp
+
+        // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
+        gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
+        gg::EMessageStatus MHandler_UPDATE  ();
+
+        //TriggerRecordStruct holiis;
         std::list  <TriggerRecordStruct*>  holiiis;
 
-//        void update();
+        //        void update();
         static void deletetrig(TriggerRecordStruct* _pRec);
 
 
@@ -57,25 +66,13 @@ class CAgent : public IComponent {
         void removeAgent(std::list <CAgent*>::iterator ite);
         //uint16_t getEntityID();upda
 
-        virtual ~CAgent();
-
-        // Functions of IComponent
-        static void initComponent();
-        virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
-        virtual void initializeComponentData(const void* data);         // [OBLIGATORIO] Aunque esté vacío en el .cpp
-
-        // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
-        gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
-        gg::EMessageStatus MHandler_UPDATE  ();
 
     private:
-        CAgent();                //  No queremos que alguien lo construya fuera (Limón)
-        CAgent(const CAgent &orig) = delete;
         //CAgent(unsigned long _dwTriggerFlags,gg::Vector3f _vPos);
 
 
 
-        GameEngine* engine;
+        GameEngine* Engine;
 
         CTransform* cTransform;     //  Punteros a otras componentes
 

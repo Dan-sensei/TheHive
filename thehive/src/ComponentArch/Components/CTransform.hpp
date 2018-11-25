@@ -1,18 +1,21 @@
 #ifndef _CTRANSFORM_H
 #define _CTRANSFORM_H
 
+#include <Singleton.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <Util.hpp>
 
+
 class CTransform : public IComponent {
-    friend class ObjectManager;
     public:
+        CTransform(const gg::Vector3f &Position, const gg::Vector3f &Rotation);
+        CTransform(const CTransform &orig);
         virtual ~CTransform();
 
         //  Functions of IComponent
         static void initComponent();
         //virtual gg::EMessageStatus processMessage();
-        virtual void initializeComponentData(const void* data);
+        virtual void Init();
 
 
         // Functions of this component
@@ -24,8 +27,6 @@ class CTransform : public IComponent {
 
 
     private:
-        CTransform();
-        CTransform(const CTransform &orig);
 
         float  x,  y,  z;
         float rx, ry, rz;

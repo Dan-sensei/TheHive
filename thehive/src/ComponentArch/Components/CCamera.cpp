@@ -1,16 +1,14 @@
-#include <Singleton.hpp>
+#include "CCamera.hpp"
 #include <ComponentArch/ObjectManager.hpp>
-#include <GameEngine/GameEngine.hpp>
-#include <ComponentArch/InitStructs.hpp>
+
 
 #define CAMERA_ATENUATION 7
 #define HEIGHT 5
 #define RADIUS 12
 
 CCamera::CCamera()
-:mod(nullptr)
-{
-}
+:mod(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr)
+{}
 
 
 CCamera::~CCamera(){}
@@ -19,16 +17,16 @@ void CCamera::initComponent(){
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CAMERA, gg::M_SETPTRS);
 }
 
-void CCamera::initializeComponentData(const void* data){
+void CCamera::Init(){
 
-    engine = Singleton<GameEngine>::Instance();
-    manager = Singleton<ObjectManager>::Instance();
-    cam = engine->getCamera();
+    Engine = Singleton<GameEngine>::Instance();
+    Manager = Singleton<ObjectManager>::Instance();
+    cam = Engine->getCamera();
 
     MHandler_SETPTRS();
 
     lastHeroPosition = mod->getPosition();
-    cameraPositionBeforeLockRotation = engine->getCamera()->getPosition();
+    cameraPositionBeforeLockRotation = Engine->getCamera()->getPosition();
 }
 
 gg::EMessageStatus CCamera::processMessage(const Message &m) {
@@ -42,7 +40,7 @@ gg::EMessageStatus CCamera::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CCamera::MHandler_SETPTRS(){
-    mod = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM, getEntityID()));
+    mod = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
     return gg::ST_TRUE;
 }
 
@@ -54,14 +52,14 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
 
     // First of all, we have to get the mouse position on the screen
     // and get the X,Y position
-    int screenW = static_cast<int>(engine->getScreenWidth())/2;
-    int screenH = static_cast<int>(engine->getScreenHeight())/2;
+    int screenW = static_cast<int>(Engine->getScreenWidth())/2;
+    int screenH = static_cast<int>(Engine->getScreenHeight())/2;
 
     // Set the coordinates to an absolute 0 on the center of the screen
     // Set the mouse new coordinate to the center(0,0)
-    int vX = engine->getCursorX() - screenW;
-    int vY = engine->getCursorY() - screenH;
-    engine->setCursorPosition(screenW,screenH);
+    int vX = Engine->getCursorX() - screenW;
+    int vY = Engine->getCursorY() - screenH;
+    Engine->setCursorPosition(screenW,screenH);
 
     // And cast it to a float value
     float newVY = static_cast<float>(vY);
@@ -97,7 +95,7 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     );
 
     // We dont set the body position NOW
-    // In the CPlayerController manager we applied the force/impulse to the body
+    // In the CPlayerController Manager we applied the force/impulse to the body
 
     /////////////////////////////////////////////////////////////////
     // VERTICAL AXIS
@@ -143,25 +141,25 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     // If heroRotation is FALSE, the hero won't move with the camera rotation
     if(heroRotation){
         cameraPositionBeforeLockRotation = cam->getPosition();
-        // static_cast<CRigidBody*>(manager->getComponent(gg::RIGID_BODY, getEntityID()))->applyTorque(gg::Vector3f(1000,newRotation.Y,0));
+        // static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()))->applyTorque(gg::Vector3f(1000,newRotation.Y,0));
         // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
     }
 
 }
 
 gg::Vector3f CCamera::getCameraPosition(){
-    GameEngine *engine = Singleton<GameEngine>::Instance();
-    return engine->getCamera()->getPosition();
+    GameEngine *Engine = Singleton<GameEngine>::Instance();
+    return Engine->getCamera()->getPosition();
 }
 
 gg::Vector3f CCamera::getCameraRotation(){
-    GameEngine *engine = Singleton<GameEngine>::Instance();
-    return engine->getCamera()->getRotation();
+    GameEngine *Engine = Singleton<GameEngine>::Instance();
+    return Engine->getCamera()->getRotation();
 }
 
 gg::Vector3f CCamera::getCameraTarget(){
-    GameEngine *engine = Singleton<GameEngine>::Instance();
-    return engine->getCamera()->getTarget();
+    GameEngine *Engine = Singleton<GameEngine>::Instance();
+    return Engine->getCamera()->getTarget();
 }
 
 gg::Vector3f CCamera::getlastHeroPosition(){

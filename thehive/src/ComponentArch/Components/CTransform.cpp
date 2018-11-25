@@ -1,13 +1,11 @@
 #include "CTransform.hpp"
 #include <iostream>
 #include <ComponentArch/ObjectManager.hpp>
-#include <Singleton.hpp>
-#include <ComponentArch/InitStructs.hpp>
 
 
-CTransform::CTransform()
-:x(0),  y(0),  z(0),
-rx(0), ry(0), rz(0)
+CTransform::CTransform(const gg::Vector3f &Position, const gg::Vector3f &Rotation)
+:x(Position.X),  y(Position.Y),  z(Position.Z),
+rx(Rotation.X), ry(Rotation.Y), rz(Rotation.Z)
 {
 }
 
@@ -21,11 +19,15 @@ CTransform::CTransform(const CTransform &orig){
     rz = orig.rz;
 }
 
-CTransform::~CTransform(){
+CTransform::~CTransform(){}
+
+void CTransform::initComponent(){
 
 }
 
-void CTransform::initComponent(){}
+void CTransform::Init(){
+
+}
 
 
 void CTransform::setPosition(const gg::Vector3f &position){
@@ -38,22 +40,6 @@ void CTransform::setRotation(const gg::Vector3f &rotation){
     rx = rotation.X;
     ry = rotation.Y;
     rz = rotation.Z;
-}
-
-void CTransform::initializeComponentData(const void* data) {
-
-    //  We get a void* to our data, but, since we are on the TRANSFORM component
-
-    //  We cast the void to our InitStructure of the TRANSFORM component
-    InitCTransform* cData = (InitCTransform*)data;
-
-    x = cData->x;
-    y = cData->y;
-    z = cData->z;
-
-    rx = cData->rx;
-    ry = cData->ry;
-    rz = cData->rz;
 }
 
 //  ---

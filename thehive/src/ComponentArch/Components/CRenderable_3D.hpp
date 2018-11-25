@@ -6,26 +6,27 @@
 #include <GameEngine/Model.hpp>
 #include <map>
 #include <iostream>
+#include <Singleton.hpp>
+
 
 class CTransform;
 
 class CRenderable_3D : public IComponent {
-    friend class ObjectManager;
     public:
+        CRenderable_3D(const std::string &pathToModel, const Material &material);
+        CRenderable_3D(const CRenderable_3D &orig);
         virtual ~CRenderable_3D();
 
         // Functions of IComponent
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
-        virtual void initializeComponentData(const void* data);
+        virtual void Init();
 
         //  Handler
         gg::EMessageStatus MHandler_UPDATE();
         gg::EMessageStatus MHandler_SETPTRS();
 
     private:
-        CRenderable_3D();
-        CRenderable_3D(const CRenderable_3D &orig);
         Model _3DModel;
 
         CTransform* cTransform;

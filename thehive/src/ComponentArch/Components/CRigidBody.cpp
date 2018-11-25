@@ -1,14 +1,106 @@
 #include "CRigidBody.hpp"
 #include <vector>
 
+#include "CTransform.hpp"
+
 #define PI 3.14159265359
 #define FORCE_FACTOR    200.f
 
 std::vector<const char*> names;
 
-CRigidBody::CRigidBody()
-:cTransform(nullptr)
+CRigidBody::CRigidBody(
+    bool loadedFromPath,
+    std::string path,
+    float x, float y, float z,
+    float sX, float sY, float sZ,
+    float _mass,
+    float iX, float iY, float iZ,
+    float friction
+)
+:cTransform(nullptr), world(nullptr)
 {
+
+
+    // Puntero al mundo de fisicas
+    world = Singleton<ggDynWorld>::Instance();
+
+    fileLoader = nullptr;
+
+    if(loadedFromPath){
+        fileLoader = new btBulletWorldImporter();
+        if(! ( fileLoader->loadFile(path.c_str())) ){
+            return;
+        }
+
+        btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
+        body = btRigidBody::upcast(obj);
+        shape = body->getCollisionShape();
+
+        // ------------------------
+
+        transform = obj->getWorldTransform();
+
+        transform.setOrigin(btVector3(x,y,z));
+        myMotionState = new btDefaultMotionState(transform);
+        body->setMotionState(myMotionState);
+
+        // Hago pushback en el vector de 'shapes'
+        world->addShape(shape);
+
+        // MASS!=0 ---> RIGIDBODY ES DINAMICO
+        // MASS==0 ---> RIGIDBODY ES ESTATICO
+        btScalar mass(_mass);
+        bool isDynamic = (mass != 0.f);
+        btVector3 localInertia;
+        if (isDynamic)
+        shape->calculateLocalInertia(mass, localInertia);
+
+        // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
+        // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+        btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
+        body = new btRigidBody(rbInfo);
+
+        if(friction){
+            body->setFriction(btScalar(friction));
+        }
+
+        // Add the body to the dynamics world
+        world->addRigidBody(body);
+    }
+    else{
+        shape = new btBoxShape(btVector3(btScalar(sX), btScalar(sY), btScalar(sZ)));
+
+        transform.setIdentity();
+        transform.setOrigin(btVector3(x,y,z));
+        myMotionState = new btDefaultMotionState(transform);
+
+        // Hago pushback en el vector de 'shapes'
+        world->addShape(shape);
+
+        // MASS!=0 ---> RIGIDBODY ES DINAMICO
+        // MASS==0 ---> RIGIDBODY ES ESTATICO
+        btScalar mass(_mass);
+        bool isDynamic = (mass != 0.f);
+        btVector3 localInertia;
+        if (isDynamic)
+        shape->calculateLocalInertia(mass, localInertia);
+
+        // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
+        // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+        btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
+        body = new btRigidBody(rbInfo);
+
+        // We apply the gravity of the world
+        // body->setGravity(btVector3(0,-10,0));
+        // body->applyGravity();
+
+        if(friction){
+            body->setFriction(btScalar(friction));
+        }
+
+        // Add the body to the dynamics world
+        world->addRigidBody(body);
+    }
 }
 
 CRigidBody::~CRigidBody() {
@@ -77,95 +169,11 @@ void CRigidBody::initComponent() {
 
 }
 
-void CRigidBody::initializeComponentData(const void* data){
+void CRigidBody::Init(){
 
-    if(data){
-        InitCRigidBody* cData = (InitCRigidBody*)data;
-
-        // Puntero al mundo de fisicas
-        world = Singleton<ggDynWorld>::Instance();
-
-        fileLoader = nullptr;
-
-        if(cData->loadedFromPath){
-            fileLoader = new btBulletWorldImporter();
-            if(! ( fileLoader->loadFile(cData->path.c_str())) ){
-                return;
-            }
-
-            btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
-            body = btRigidBody::upcast(obj);
-            shape = body->getCollisionShape();
-
-            // ------------------------
-
-            transform = obj->getWorldTransform();
-
-            transform.setOrigin(btVector3(cData->x,cData->y,cData->z));
-            myMotionState = new btDefaultMotionState(transform);
-            body->setMotionState(myMotionState);
-
-            // Hago pushback en el vector de 'shapes'
-            world->addShape(shape);
-
-            // MASS!=0 ---> RIGIDBODY ES DINAMICO
-            // MASS==0 ---> RIGIDBODY ES ESTATICO
-            btScalar mass(cData->mass);
-            bool isDynamic = (mass != 0.f);
-            btVector3 localInertia;
-            if (isDynamic)
-            shape->calculateLocalInertia(mass, localInertia);
-
-            // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
-            // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
-            body = new btRigidBody(rbInfo);
-
-            if(cData->friction){
-                body->setFriction(btScalar(cData->friction));
-            }
-
-            // Add the body to the dynamics world
-            world->addRigidBody(body);
-        }
-        else{
-            shape = new btBoxShape(btVector3(btScalar(cData->sX), btScalar(cData->sY), btScalar(cData->sZ)));
-
-            transform.setIdentity();
-            transform.setOrigin(btVector3(cData->x,cData->y,cData->z));
-            myMotionState = new btDefaultMotionState(transform);
-
-            // Hago pushback en el vector de 'shapes'
-            world->addShape(shape);
-
-            // MASS!=0 ---> RIGIDBODY ES DINAMICO
-            // MASS==0 ---> RIGIDBODY ES ESTATICO
-            btScalar mass(cData->mass);
-            bool isDynamic = (mass != 0.f);
-            btVector3 localInertia;
-            if (isDynamic)
-            shape->calculateLocalInertia(mass, localInertia);
-
-            // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
-            // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
-            body = new btRigidBody(rbInfo);
-
-            // We apply the gravity of the world
-            // body->setGravity(btVector3(0,-10,0));
-            // body->applyGravity();
-
-            if(cData->friction){
-                body->setFriction(btScalar(cData->friction));
-            }
-
-            // Add the body to the dynamics world
-            world->addRigidBody(body);
-        }
-    }
     world->setGravity(0,-10,0);
 
-    body->setAngularFactor(btVector3(0,0,0));
+    //body->setAngularFactor(btVector3(0, 1, 0));
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
 }
@@ -186,7 +194,6 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
 void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
     if(cTransform){
-
         //cdata->vPos;//v2
         float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
         ////float ratio=1-distancia/fRadius;
@@ -202,9 +209,9 @@ void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
 
         float fuerzabomba=cdata->data.find(kDat_damage);
         gg::Vector3f sol =
-        gg::Normalice(cTransform->getPosition()-cdata->vPos)
-        *fuerzabomba*
-        (1-distancia/cdata->fRadius);
+            gg::Normalice(cTransform->getPosition()-cdata->vPos)
+            *fuerzabomba*
+            (1-distancia/cdata->fRadius);
         applyCentralForce(sol);
         //gg::Vector3f vect(33,66,99);
 //std::cout << vect << '\n';

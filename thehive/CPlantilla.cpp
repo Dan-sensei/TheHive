@@ -2,14 +2,7 @@
 #include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
-
-#define MAX_ANGLE 12.f
-
-#define DASH_KEY gg::GG_ALT
-#define ROTATE_KEY gg::GG_LCONTROL
-#define RUN_KEY gg::GG_LSHIFT
-
-CPlantilla::CPlantilla()
+CPlantilla::CPlantilla(Var 1, Var 2)
 :cTransform(nullptr)
 {
 
@@ -28,14 +21,8 @@ void CPlantilla::initComponent() {
 
 }
 
-void CPlantilla::initializeComponentData(const void* data){
+void CPlantilla::Init(){
 
-    if(data){
-        InitPlantilla* cData = (InitPlantilla*)data;
-        // Si le pasamos cosas, convertimos el void* a la estructura inicializadora para acceder a los elementos
-        cData->valor1;
-        ...
-    }
     engine = Singleton<GameEngine>::Instance();
 
     //  Inicializar punteros a otras compnentes

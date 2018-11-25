@@ -4,32 +4,36 @@
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
 
-class CTransform;
-class ObjectManager;
-class GameEngine;
-class CTriggerSystem;
+#include <GameEngine/GameEngine.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+#include <EventSystem/EnumTriggerType.hpp>
+#include "EventSystem/CTriggerSystem.hpp"
+#include "CTransform.hpp"
+
+#include <Singleton.hpp>
+
+
 
 class CGranade: public IComponent {
-    friend class ObjectManager;
     public:
+        CGranade(float _damage,float _radius,float _tipo);
+        CGranade(const CGranade &orig) = delete;
         virtual ~CGranade();
 
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
-        virtual void initializeComponentData(const void* data);
+        virtual void Init();
 
 
         gg::EMessageStatus MHandler_SETPTRS();
         gg::EMessageStatus MHandler_UPDATE();
 
     private:
+        std::chrono::high_resolution_clock::time_point begin;
+        double elapsedtime;
         float damage;
         float radius;
         float tipo;
-        CGranade();
-        CGranade(const CGranade &orig);
-        std::chrono::high_resolution_clock::time_point  begin;
-        double elapsedtime;
         CTransform* cTransform;
         GameEngine* engine;
         ObjectManager* Manager;
