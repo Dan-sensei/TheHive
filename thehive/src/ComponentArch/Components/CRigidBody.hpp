@@ -53,7 +53,9 @@ class CRigidBody : public IComponent {
         void applyTorque(gg::Vector3f);
 
         void setLinearVelocity(gg::Vector3f);
+
         gg::Vector3f getVelocity();
+        gg::Vector2f getXZVelocity();
 
         // 'Despierta' de nuevo el objeto para que les puedan ser aplicadas fuerzas
         void activate(bool);

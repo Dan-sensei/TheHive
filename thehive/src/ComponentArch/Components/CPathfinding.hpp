@@ -13,7 +13,7 @@
 #include "CTransform.hpp"
 #include <Singleton.hpp>
 
-//#include "CRigidBody.hpp"
+#include "CRigidBody.hpp"
 
 
 class CPathfinding : public IComponent {
@@ -40,7 +40,7 @@ class CPathfinding : public IComponent {
         std::stack<Waypoint> Waypoints;
         uint16_t currentWaypointID;
 
-        //CRigidBody* cRigidBody;
+        CRigidBody* cRigidBody;
 };
 
 #endif

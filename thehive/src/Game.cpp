@@ -132,9 +132,20 @@ void Game::RUN(){
     Singleton<Factory>::Instance()->createHero(gg::Vector3f(700, 180, 0));
     Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(710, 180, 0));
     Singleton<Factory>::Instance()->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
-    Singleton<Factory>::Instance()->createPathFindingActor(gg::Vector3f(100, 83, 13));
-    Singleton<Factory>::Instance()->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
+    //Singleton<Factory>::Instance()->createPathFindingActor(gg::Vector3f(100, 83, 13));
+    //Singleton<Factory>::Instance()->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
+    uint16_t Navmesh = Manager->createEntity();
+    Material yelo("assets/NavMeshes/L4D2Nav.png");
 
+    CTransform* Transform = new CTransform(gg::Vector3f(0,0,0), gg::Vector3f(0,0,0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Navmesh);
+
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/NavMeshes/L4D2Nav.obj", yelo);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
+
+    uint16_t NavmeshGround = Manager->createEntity();
+    CRigidBody* RigidBody = new CRigidBody(false,"", 0, -10, 0, 610,10,610, 0, 0,0,0, 0.2);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, NavmeshGround);
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;

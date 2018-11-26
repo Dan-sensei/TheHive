@@ -2,11 +2,11 @@ void Factory::ComponentInitializer() {
 	CCamera::initComponent();
 	CPlayerController::initComponent();
 	CRigidBody::initComponent();
+	CRenderable_3D::initComponent();
 	CGranade::initComponent();
 	CAIEnem::initComponent();
 	CGun::initComponent();
-	CTransform::initComponent();
 	CPathfinding::initComponent();
-	CRenderable_3D::initComponent();
+	CTransform::initComponent();
 	CAgent::initComponent();
 }
