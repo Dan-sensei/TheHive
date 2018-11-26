@@ -46,7 +46,7 @@ void Factory::createEnemy(const gg::Vector3f &Position){
     CRigidBody* RigidBody               = new CRigidBody(true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
-    CAgent* Agent                       = new CAgent(kTrig_EnemyNear);
+    CAgent* Agent                       = new CAgent(kTrig_EnemyNear|kTrig_Shoot);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,gg::Vector3f(),false);

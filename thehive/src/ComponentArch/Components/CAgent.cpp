@@ -166,36 +166,16 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
     else if(_pRec->eTriggerType & kTrig_EnemyNear){
         //CAIEnem->enemyseen();
     }
-    return true;
-}
+    else if(_pRec->eTriggerType & kTrig_Shoot){
+        // gg::cout(std::to_string(_pRec->eTriggerType)+" & "+std::to_string(GetTriggerFlags()));
+        gg::cout("PUM!", gg::Color(255, 0, 0, 1));
 
-void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
-    switch (_type){
-        case 0:
-            // Rifle
-            dmg = 70;
-            cdc = 3;
-            tb  = 30;
-            relDT = 1;
-            rng = 0.7;
-            break;
-        case 1:
-            // Escopeta
-            dmg = 80;
-            cdc = 1;
-            tb  = 10;
-            relDT = 1.5;
-            rng = 0.4;
-            break;
+        // oManager->removeEntity(nCAgentID);
+        // Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec->nTriggerID);
+
     }
 
-    gg::cout(" --- GUN PICKED --- ");
-    gg::cout(" - - DMG= "       + std::to_string(dmg));
-    gg::cout(" - - CADENCE= "   + std::to_string(cdc));
-    gg::cout(" - - BULLETS= "   + std::to_string(tb));
-    gg::cout(" - - DT= "        + std::to_string(relDT));
-    gg::cout(" - - RANGE= "     + std::to_string(rng));
-    gg::cout(" ------------------ ");
+    return true;
 }
 
 void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
@@ -213,8 +193,6 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
         }
     }
     //std::cout << "OnTriggerStay  sale" <<nCAgentID<< '\n';
-
-
 
 }
 void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
@@ -345,4 +323,57 @@ gg::EMessageStatus CAgent::MHandler_UPDATE(){
     //CAgent(cTransform->getPosition);
 
     return gg::ST_TRUE;
+}
+
+void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
+    switch (_type){
+        case 0:
+            // Rifle
+            dmg = 0.7;
+            cdc = 7;
+            tb  = 30;
+            relDT = 1;
+            rng = 0.7;
+            break;
+        case 1:
+            // Escopeta
+            dmg = 0.8;
+            cdc = 1;
+            tb  = 10;
+            relDT = 3;
+            rng = 0.4;
+            break;
+        case 2:
+            // Ametralladora
+            dmg = 0.3;
+            cdc = 9;
+            tb  = 100;
+            relDT = 6;
+            rng = 0.7;
+            break;
+        case 3:
+            // Pistola
+            dmg = 0.4;
+            cdc = 5;
+            tb  = 15;
+            relDT = 0.5;
+            rng = 0.5;
+            break;
+        case 4:
+            // Katana
+            dmg = 1;
+            cdc = 0.5;
+            tb  = -1;
+            relDT = -1;
+            rng = 0.1;
+            break;
+    }
+
+    gg::cout(" --- GUN PICKED --- ");
+    gg::cout(" - - DMG= "       + std::to_string(dmg));
+    gg::cout(" - - CADENCE= "   + std::to_string(cdc));
+    gg::cout(" - - BULLETS= "   + std::to_string(tb));
+    gg::cout(" - - DT= "        + std::to_string(relDT));
+    gg::cout(" - - RANGE= "     + std::to_string(rng));
+    gg::cout(" ------------------ ");
 }

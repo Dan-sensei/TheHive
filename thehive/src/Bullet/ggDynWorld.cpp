@@ -138,6 +138,7 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
     cameraPosition = from;
     raycastVector = to;
     raycastCollisionBody = nullptr;
+    raycastHitPosition = gg::Vector3f(-1,-1,-1);
 
     btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
 
@@ -157,7 +158,7 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
     return ret;
 }
 
-void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f to,gg::Vector3f force){
+void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f force){
     if(!raycastCollisionBody)
         return;
 
@@ -171,4 +172,8 @@ void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f
 
 gg::Vector3f ggDynWorld::getRaycastVector(){
     return raycastVector;
+}
+
+gg::Vector3f ggDynWorld::getRaycastHitPosition(){
+    return raycastHitPosition;
 }

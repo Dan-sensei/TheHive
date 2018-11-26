@@ -33,7 +33,8 @@ public:
 
     gg::Vector3f handleRayCast(gg::Vector3f,gg::Vector3f);
     gg::Vector3f getRaycastVector();
-    void applyForceToRaycastCollisionBody(gg::Vector3f,gg::Vector3f,gg::Vector3f);
+    gg::Vector3f getRaycastHitPosition();
+    void applyForceToRaycastCollisionBody(gg::Vector3f,gg::Vector3f);
 
     void removeRigidBody(btRigidBody*);
     void removeCollisionObject(btCollisionObject*);

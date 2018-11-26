@@ -166,7 +166,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     if(Engine->key(RELOAD_KEY)){
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
-        if(gun && !gun->getBullets()){
+        if(gun && !gun->getBullets() && !gun->isReloading()){
             gun->reload();
         }
     }

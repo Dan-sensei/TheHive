@@ -2,7 +2,8 @@
 #define _CGUN_H
 
 #include <vector>
-#include <Util.hpp>
+#include <chrono>
+
 
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
@@ -11,6 +12,7 @@
 #include <EventSystem/CTriggerSystem.hpp>
 #include "CTransform.hpp"
 #include <Factory.hpp>
+#include <Util.hpp>
 
 class CGun : public IComponent {
     public:
@@ -30,8 +32,10 @@ class CGun : public IComponent {
         // Funciones propias de CGun
         void shoot(gg::Vector3f);
         void reload();
+        bool isReloading();
         int getBullets();
         int getType();
+
 
     private:
         GameEngine* Engine;
@@ -41,14 +45,18 @@ class CGun : public IComponent {
         CTransform* cTransform;
 
         //  Variables de esta componente
-        int WEAPON_TYPE;
-        int ktotal_bullets;
-        float damage;
-        float cadence;
-        int total_bullets;
-        float reloadDT;
-        float range;
-        // std::vector<uint8_t> bullets;
+        int     ktotal_bullets;
+        float   damage;
+        float   cadence;
+        int     total_bullets;
+        float   reloadDT;
+        float   range;
+
+        int     WEAPON_TYPE;
+        bool    canShoot;
+        bool    reloading;
+        std::chrono::high_resolution_clock::time_point dtCadence;
+        std::chrono::high_resolution_clock::time_point dtReload;
 };
 
 #endif

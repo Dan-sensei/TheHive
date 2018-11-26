@@ -23,40 +23,45 @@ TriggerRecordStruct::TriggerRecordStruct(const TriggerRecordStruct &orig){
 CTriggerSystem::CTriggerSystem(){
     lastIdGiven = 0;
 }
+
 CTriggerSystem::~CTriggerSystem(){}
+
 void CTriggerSystem::PulsoTrigger(
     EnumTriggerType _eTriggerType,
     unsigned long _idSource,
     const gg::Vector3f& _vPos,
     float _fRadius,
-    TData _data){
+    TData _data)
+    {
         CAgent* pAgent=NULL;
         float fDistance=0.f;
 
         TriggerRecordStruct pRec(_eTriggerType,_idSource,_vPos,_fRadius,0,false,_data);
-        std::list<CAgent*>::iterator it2 ;
+        std::list<CAgent*>::iterator it2;
         it2=CAgent::hola.begin();
-        for(unsigned long i=0; i<CAgent::hola.size();++i)
-        {
-          pAgent=*it2;
+        for(unsigned long i=0; i<CAgent::hola.size();++i){
+            pAgent=*it2;
 
             //Does agent respond to trigger?
             if(!(pRec.eTriggerType & pAgent->GetTriggerFlags()))
-              continue;
+                continue;
+
             //is source the agent itself?
             if(pRec.idSource==pAgent->nCAgentID)
-              continue;
+                continue;
+
             //Check radius
             //
             fDistance=gg::DIST(pRec.vPos,pAgent->GetPosition());//funcion calcular la distancia
             if(fDistance > pRec.fRadius)
-              continue;
+                continue;
+
             //handletriger return true if the agent responded
             //to the trigger
             pAgent->onTriggerEnter(&pRec);
       }
-
 }
+
 unsigned long CTriggerSystem::RegisterTriger(
     EnumTriggerType _eTriggerType,
     unsigned long _nPriority,
