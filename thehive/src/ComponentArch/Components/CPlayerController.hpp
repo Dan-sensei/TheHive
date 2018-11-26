@@ -14,7 +14,6 @@
 
 #include <Singleton.hpp>
 
-
 class CCamera;
 class CTransform;
 class CRigidBody;
@@ -33,6 +32,9 @@ class CPlayerController : public IComponent {
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+
+        int setSecondWeapon(CGun*);
+        bool heroHasSecondWeapon();
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
@@ -54,6 +56,10 @@ class CPlayerController : public IComponent {
 
         bool pulsacion_granada;
         bool pulsacion_espacio;
+        bool pulsacion_q;
+
+        bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
+        CGun *secondWeapon;
 };
 
 #endif

@@ -105,6 +105,17 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
     // std::cout << "Deleting" << '\n';
 }
 
+void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID){
+    auto foundComponent = TypeToComponentMap[type].find(EntityID);
+
+    if(foundComponent == TypeToComponentMap[type].end())
+        return;
+
+    TypeToComponentMap[type].erase(foundComponent);
+}
+
+
+
 void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType) {
     //  We just insert in the array of vectors, the component type in the messageTYpe array position
     MessageToListeningComponents[mType].push_back(cType);

@@ -15,10 +15,11 @@
 #define RUN_KEY         gg::GG_LSHIFT
 #define JUMP_KEY        gg::GG_SPACEBAR
 #define RELOAD_KEY      gg::GG_R
+#define WEAPON_KEY      gg::GG_Q
 
 #define DASH_FACTOR     1.2f
 #define RUN_FACTOR      1.1f
-#define FORCE_FACTOR    400.f
+#define FORCE_FACTOR    100.f
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
@@ -27,7 +28,7 @@ CPlayerController::CPlayerController()
 }
 
 CPlayerController::~CPlayerController() {
-
+    // if(secondWeapon) delete secondWeapon;
 }
 
 void CPlayerController::initComponent() {
@@ -43,8 +44,15 @@ void CPlayerController::Init(){
     camera = static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
     Manager = Singleton<ObjectManager>::Instance();
-    pulsacion_granada=false;
-    pulsacion_espacio=false;
+
+    pulsacion_granada = false;
+    pulsacion_espacio = false;
+    pulsacion_q = false;
+
+    // El heroe siempre empezara con un arma secundaria
+    // Pistola por defecto
+    isPrincipal = false;
+    secondWeapon = nullptr;
 }
 
 
@@ -233,6 +241,59 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         pulsacion_granada=false;
     }
 
+    if(Engine->key(WEAPON_KEY) && secondWeapon){
+        if(!pulsacion_q){
+            pulsacion_q = true;
+            if(isPrincipal){
+                isPrincipal = false;
+                CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
+
+                Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
+                Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
+
+                gg::cout(" -- PRINCIPAL TO SECONDARY -- ");
+                gg::cout(" -- PRIMARY: "    +std::to_string(secondWeapon->getType()));
+                secondWeapon = aux;
+                gg::cout(" -- SECONDARY: "  +std::to_string(secondWeapon->getType()));
+            }
+            else{
+                // SIEMPRE entrara primero aqui
+                isPrincipal = true;
+                CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
+
+                Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
+                Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
+
+                gg::cout(" -- SECONDARY TO PRINCIPAL -- ");
+                gg::cout(" -- PRIMARY: "    +std::to_string(secondWeapon->getType()));
+                secondWeapon = aux;
+                gg::cout(" -- SECONDARY: "  +std::to_string(secondWeapon->getType()));
+            }
+
+        }
+    }
+    else{
+        pulsacion_q = false;
+    }
+
     return gg::ST_TRUE;
 
+}
+
+bool CPlayerController::heroHasSecondWeapon(){
+    if(secondWeapon)    return true;
+    else                return false;
+
+}
+
+int CPlayerController::setSecondWeapon(CGun *_weapon){
+    int ret;
+    if(secondWeapon){
+        ret = secondWeapon->getType();
+    }
+    else{
+        ret = -1;
+    }
+    secondWeapon = _weapon;
+    return ret;
 }
