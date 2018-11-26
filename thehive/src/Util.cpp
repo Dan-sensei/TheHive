@@ -72,12 +72,12 @@ gg::Vector3f::Vector3f(const Vector3f &orig){
     Z = orig.Z;
 }
 
-//gg::Vector2f::Vector2f(float _X, float _Y)
-//:X(_X),Y(_Y) {};
-//gg::Vector2f::Vector2f(const Vector2f &orig){
-//    X = orig.X;
-//    Y = orig.Y;
-//}
+gg::Vector2f::Vector2f(float _X, float _Y)
+:X(_X),Y(_Y) {};
+gg::Vector2f::Vector2f(const Vector2f &orig){
+    X = orig.X;
+    Y = orig.Y;
+}
 
 gg::Vector3f gg::Vector3f::operator+ ( const Vector3f &v1){
     return Vector3f( v1.X+X,v1.Y+Y,v1.Z+Z);
@@ -115,8 +115,8 @@ void gg::Vector3f::operator*= ( const float &v1){
 gg::Vector3f gg::Vector3f::operator* ( const Vector3f &v1) {
     return Vector3f( v1.X*X,v1.Y*Y,v1.Z*Z);
 }
-gg::Vector3f gg::Vector3f::operator* ( const float &v1) {
-    return Vector3f( v1*X,v1*Y,v1*Z);
+gg::Vector3f gg::Vector3f::operator* ( const float &Multiplier) {
+    return Vector3f( Multiplier*X, Multiplier*Y, Multiplier*Z);
 }
 gg::Vector3f gg::Vector3f::operator/ ( const float &divider) {
     return Vector3f( X/divider, Y/divider, Z/divider);
@@ -126,38 +126,47 @@ bool gg::Vector3f::operator==(const gg::Vector3f &v){
     return (X == v.X && Y == v.Y && Z == v.Z);
 }
 
-template <typename T>
-float DIST(const T &v1, const T &v2){   return 0; }
-template <typename T>
-float Modulo(const T &v1){      return 0; }
-template <typename T>
-T Normalice(T v1){ return v1; }
 
-template <>
-float gg::DIST<gg::Vector3f>(const gg::Vector3f &v1, const gg::Vector3f &v2){
+gg::Vector2f gg::Vector2f::operator* ( const float &Multiplier) {
+    return Vector2f( Multiplier*X, Multiplier*Y);
+}
+
+float gg::DIST(const gg::Vector3f &Vector1, const gg::Vector3f &Vector2){
     return sqrt(
-        (v1.X-v2.X)*(v1.X-v2.X)+
-        (v1.Y-v2.Y)*(v1.Y-v2.Y)+
-        (v1.Z-v2.Z)*(v1.Z-v2.Z)
+        (Vector1.X-Vector2.X)*(Vector1.X-Vector2.X)+
+        (Vector1.Y-Vector2.Y)*(Vector1.Y-Vector2.Y)+
+        (Vector1.Z-Vector2.Z)*(Vector1.Z-Vector2.Z)
     );
 }
 
-template <>
-float gg::Modulo<gg::Vector3f>(const gg::Vector3f &v1){
+float gg::Modulo(const gg::Vector3f &Vector){
     return sqrt(
-        (v1.X)*(v1.X)+
-        (v1.Y)*(v1.Y)+
-        (v1.Z)*(v1.Z)
+        (Vector.X)*(Vector.X)+
+        (Vector.Y)*(Vector.Y)+
+        (Vector.Z)*(Vector.Z)
     );
 }
 
-template <>
-gg::Vector3f gg::Normalice<gg::Vector3f>(gg::Vector3f v1){
-    float modulo=gg::Modulo(v1);
-    v1.X=v1.X/modulo;
-    v1.Y=v1.Y/modulo;
-    v1.Z=v1.Z/modulo;
-    return v1;
+float gg::Modulo(const gg::Vector2f &Vector){
+    return sqrt(
+        (Vector.X)*(Vector.X)+
+        (Vector.Y)*(Vector.Y)
+    );
+}
+
+gg::Vector3f gg::Normalice(gg::Vector3f Vector){
+    float modulo = gg::Modulo(Vector);
+    Vector.X = Vector.X/modulo;
+    Vector.Y = Vector.Y/modulo;
+    Vector.Z = Vector.Z/modulo;
+    return Vector;
+}
+
+gg::Vector2f gg::Normalice(gg::Vector2f Vector){
+    float modulo = gg::Modulo(Vector);
+    Vector.X = Vector.X/modulo;
+    Vector.Y = Vector.Y/modulo;
+    return Vector;
 }
 
 gg::Color::Color()

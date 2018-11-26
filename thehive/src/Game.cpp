@@ -88,8 +88,6 @@ void Game::RUN(){
     Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 50, 40));
 
     Singleton<Factory>::Instance()->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
-    Singleton<Factory>::Instance()->createPathFindingActor(gg::Vector3f(100, 83, 13));
-    Singleton<Factory>::Instance()->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
 
     // Armas
     Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 180, 20),0);

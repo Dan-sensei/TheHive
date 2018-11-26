@@ -97,21 +97,22 @@ namespace gg{
 
 
 
-    //struct Vector2f{
-    //    Vector2f(float _X = 0, float _Y = 0);
-    //    Vector2f(const Vector2f &orig);
+    struct Vector2f{
+        Vector2f(float _X = 0, float _Y = 0);
+        Vector2f(const Vector2f &orig);
+        
+        Vector2f operator* (const float &multiplier);
 
-    //    float X, Y;
-    //};
+        float X, Y;
+    };
 
-    template <typename T>
-    float DIST(const T &v1, const T &v2);
+    float DIST(const Vector3f &Vector1, const Vector3f &Vector2);
 
-    template <typename T>
-    float Modulo(const T &v1);
+    float Modulo(const Vector3f &Vector);
+    float Modulo(const Vector2f &Vector);
 
-    template <typename T>
-    T Normalice(T v1);
+    Vector3f Normalice(Vector3f Vector);
+    Vector2f Normalice(Vector2f Vector);
 
     template <typename T>
     T operator+=(const T &v1, const T &v2);

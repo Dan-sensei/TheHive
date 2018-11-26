@@ -18,7 +18,7 @@
 
 #define DASH_FACTOR     1.2f
 #define RUN_FACTOR      1.1f
-#define FORCE_FACTOR    200.f
+#define FORCE_FACTOR    400.f
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
@@ -70,7 +70,6 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
 gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
-
     // -----------------------------------------------------------------------------
     // Echarle un vistazo!
     // CommonWindowInterface* window = m_guiHelper->getAppInterface()->m_window;
@@ -92,6 +91,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f force;
+    bool pressed = false;
 
     if(Engine->key(gg::GG_W)){
         force = gg::Vector3f(-cV.X,0,-cV.Z);
@@ -100,6 +100,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         //     cV2.Z-=cV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // };
+        pressed = true;
     }
     else if(Engine->key(gg::GG_S)){
         force = gg::Vector3f(+cV.X,0,+cV.Z);
@@ -108,6 +109,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         //     cV2.Z+=cV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // }
+        pressed = true;
     }
 
     if(Engine->key(gg::GG_A)){
@@ -117,6 +119,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         //     cV2.Z-=ppV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // };
+        pressed = true;
     }
     else if(Engine->key(gg::GG_D)){
         force = gg::Vector3f(+ppV.X,0,+ppV.Z);
@@ -125,6 +128,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         //     cV2.Z+=ppV.Z;
         //     camera->setCameraPositionBeforeLockRotation(cV2);
         // }
+        pressed = true;
     }
     if(Engine->key(ROTATE_KEY))
         heroRotation = false;
@@ -139,18 +143,33 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     }
 
     if(Engine->key(JUMP_KEY)){
-        if(!pulsacion_espacio){
+        if(!pulsacion_espacio && cRigidBody->getVelocity().Y < 40){
             pulsacion_espacio = true;
-            force.Y = 70;
+            cRigidBody->applyCentralForce(gg::Vector3f(0, 50*FORCE_FACTOR, 0));
         }
     }
     else{
         pulsacion_espacio = false;
     }
 
-    force *= FORCE_FACTOR;
-    cRigidBody->applyCentralForce(force);
+    float currentSpeed = gg::Modulo(cRigidBody->getXZVelocity());
+    if(!pressed && currentSpeed == 0)
+        goto continueProcessing;
 
+    if(pressed && currentSpeed < 15) {          //  If a key is pressed and we haven't reached max speed yey
+        force *= FORCE_FACTOR;
+        cRigidBody->applyCentralForce(force);   //  Accelerate!
+    }
+    else if (currentSpeed > 2) {              //  Any key is pressed, but the speed is higher than 0.1! We're moving
+        force = cRigidBody->getVelocity() * gg::Vector3f(-0.08, 0, -0.08) * FORCE_FACTOR;
+        cRigidBody->applyCentralForce(force);   //  Stopping!
+    }
+    else {                                      //  If we reach here, any key is pressed and the speed is below 0.1
+        cRigidBody->setLinearVelocity(gg::Vector3f(0, cRigidBody->getVelocity().Y, 0)); //  Set it to 0
+    }
+
+
+    continueProcessing:
     // COPIA-PEGA DE LA DOCUMENTACION:
     // Bullet automatically deactivates dynamic rigid bodies, when the velocity is below a threshold for a given time.
     // Deactivated (sleeping) rigid bodies don't take any processing time, except a minor broadphase collision detection impact

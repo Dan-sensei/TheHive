@@ -310,3 +310,6 @@ gg::Vector3f CRigidBody::getLinearVelocity(){
 gg::Vector3f CRigidBody::getVelocity(){
     return gg::Vector3f(body->getLinearVelocity().getX(), body->getLinearVelocity().getY(), body->getLinearVelocity().getZ());
 }
+gg::Vector2f CRigidBody::getXZVelocity(){
+    return gg::Vector2f(body->getLinearVelocity().getX(), body->getLinearVelocity().getZ());
+}

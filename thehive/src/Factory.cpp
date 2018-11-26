@@ -23,7 +23,7 @@ void Factory::createHero(const gg::Vector3f &Position) {
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, hero);
 
-    CRigidBody* RigidBody               = new CRigidBody(true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 80, 0,0,0);
+    CRigidBody* RigidBody               = new CRigidBody(true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0);
     Manager->addComponentToEntity(RigidBody,        gg::RIGID_BODY, hero);
 
     CPlayerController* PlayerController = new CPlayerController();
@@ -88,8 +88,8 @@ void Factory::createPathFindingActor(const gg::Vector3f &Position) {
     CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Actor.obj", Blue);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Actor1);
 
-    //CRigidBody* RigidBody = new CRigidBody(true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0);
-    //Manager->addComponentToEntity(gg::RIGID_BODY, Actor1, &CRigidBodyActor1);
+    CRigidBody* RigidBody = new CRigidBody(true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Actor1);
 
     CPathfinding* Pathfinding = new CPathfinding();
     Manager->addComponentToEntity(Pathfinding, gg::PATHFINDING, Actor1);

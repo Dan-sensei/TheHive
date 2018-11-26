@@ -249,37 +249,37 @@ void Pathfinding::printStats(){
 
 void Pathfinding::DroNodes(){
     if(!Debug) return;
-    uint16_t color[4];
+    gg::Color color;
     uint8_t i = GRAPH.size();
     uint8_t length = 50;
     while(i--){
         if(i==goal){
              length = 100;
-             color[0] = 1;
-             color[1] = 212;
-             color[2] = 175;
-             color[3] = 55;
+             color.Alpha = 1;
+             color.R = 212;
+             color.G = 175;
+             color.B = 55;
              goto dro;
         }
         else length = 50;
 
         if(GRAPH[i].Status == Type::UNVISITED){
-            color[0] = 1;
-            color[1] = 50;
-            color[2] = 50;
-            color[3] = 50;
+            color.Alpha = 1;
+            color.R = 50;
+            color.G = 50;
+            color.B = 50;
         }
         else if (GRAPH[i].Status == Type::CLOSED){
-            color[0] = 1;
-            color[1] = 204;
-            color[2] = 51;
-            color[3] = 10;
+            color.Alpha = 1;
+            color.R = 204;
+            color.G = 51;
+            color.B = 10;
         }
         else{
-            color[0] = 1;
-            color[1] = 0;
-            color[2] = 102;
-            color[3] = 204;
+            color.Alpha = 1;
+            color.R = 0;
+            color.G = 102;
+            color.B = 204;
         }
         dro:
         Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
@@ -287,10 +287,10 @@ void Pathfinding::DroNodes(){
     }
 
     //  Connections
-    color[0] = 1;
-    color[1] = 0;
-    color[2] = 153;
-    color[3] = 153;
+    color.Alpha = 1;
+    color.R = 0;
+    color.G = 153;
+    color.B = 153;
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
             Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 20, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 20, 0), color, 2);

@@ -198,6 +198,8 @@ bool MeshImporter::importNavmeshV2(
         }
     }
 
+    
+
     Connections.resize(ID_Counter);
     for(uint16_t i = 0; i < FACES.size(); ++i){
         if(FACES[i].size() > 1){
