@@ -1,5 +1,5 @@
-#ifndef CPAHTINDING_H
-#define CPAHTINDING_H
+#ifndef CNAVMESHAGENT_H
+#define CNAVMESHAGENT_H
 
 
 #include <ComponentArch/IComponent.hpp>
@@ -16,10 +16,10 @@
 #include "CRigidBody.hpp"
 
 
-class CPathfinding : public IComponent {
+class CNavmeshAgent : public IComponent {
     friend class Factory;
     public:
-        virtual ~CPathfinding();
+        virtual ~CNavmeshAgent();
 
         // Functions of IComponent
         static void initComponent();
@@ -30,10 +30,13 @@ class CPathfinding : public IComponent {
         gg::EMessageStatus MHandler_SETPTRS ();
         gg::EMessageStatus MHandler_UPDATE  ();
 
+        void SetDestination(uint16_t Target);
+        bool HasDestination();
+
 
     private:
-        CPathfinding();
-        CPathfinding(const CPathfinding &orig) = delete;
+        CNavmeshAgent();
+        CNavmeshAgent(const CNavmeshAgent &orig) = delete;
 
         GameEngine* Engine;
         CTransform* cTransform;
@@ -41,6 +44,8 @@ class CPathfinding : public IComponent {
         uint16_t currentWaypointID;
 
         CRigidBody* cRigidBody;
+
+        bool        currentlyMovingTowardsTarget;
 };
 
 #endif

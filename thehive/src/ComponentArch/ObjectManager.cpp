@@ -74,7 +74,7 @@ void ObjectManager::removeEntity(uint16_t targetID){
     nextAvailableEntityID.push(targetID);
 
     uint8_t i = gg::NUM_COMPONENTS;
-    while (i--) removeComponentFromEntity(static_cast<gg::EComponentType>(i), targetID);
+    while (i--) removeComponentFromEntity(static_cast<gg::EComponentType>(i), targetID, true);
 }
 
 
@@ -90,7 +90,7 @@ void ObjectManager::addComponentToEntity(IComponent* Component, gg::EComponentTy
     Component->Init();
 }
 
-void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID){
+void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID, bool Erase){
     auto foundComponent = TypeToComponentMap[type].find(EntityID);
 
     if(foundComponent == TypeToComponentMap[type].end())
@@ -99,6 +99,8 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
     // std::cout << "B Component " << type << '\n';
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
+
+    if(Erase) return;
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);
     sendMessageToEntity(EntityID, recalculatePointersToAnotherComponents);

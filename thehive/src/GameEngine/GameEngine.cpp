@@ -194,6 +194,10 @@ void GameEngine::clean(){
     device->drop();
 }
 
+void GameEngine::Close(){
+    device->closeDevice();
+}
+
 void GameEngine::Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, const gg::Color &Color, float thickness) {
     irr::video::SMaterial m;
     m.Lighting = false;

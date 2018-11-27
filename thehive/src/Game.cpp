@@ -67,7 +67,7 @@ void Game::RUN(){
     factory->createHero(gg::Vector3f(600, 180, 0));
     factory->createEnemy(gg::Vector3f(570, 190, 0));
     //factory->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
-    factory->createPathFindingActor(gg::Vector3f(100, 83, 13));
+    factory->createPathFindingActor(gg::Vector3f(150, 83, 450));
     //factory->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
 
     uint16_t Navmesh = Manager->createEntity();
@@ -83,6 +83,24 @@ void Game::RUN(){
     CRigidBody* RigidBody = new CRigidBody(false,"", 0, -10, 0, 680,10,800, 0, 0,0,0, 0.2);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, NavmeshGround);
 
+
+
+
+    uint16_t Wall_1 = Manager->createEntity();
+    CRigidBody* RigidBody_1 = new CRigidBody(false,"", -280, 0, -100, 160, 100,265, 0, 0,0,0, 0.2);
+    Manager->addComponentToEntity(RigidBody_1, gg::RIGID_BODY, Wall_1);
+
+    uint16_t Wall_2 = Manager->createEntity();
+    CRigidBody* RigidBody_2 = new CRigidBody(false,"", -80, 0, 410, 215, 100,320, 0, 0,0,0, 0.2);
+    Manager->addComponentToEntity(RigidBody_2, gg::RIGID_BODY, Wall_2);
+
+    uint16_t Wall_3 = Manager->createEntity();
+    CRigidBody* RigidBody_3 = new CRigidBody(false,"", 110, 0, 70, 80, 100, 32, 0, 0,0,0, 0.2);
+    Manager->addComponentToEntity(RigidBody_3, gg::RIGID_BODY, Wall_3);
+
+    uint16_t Wall_4 = Manager->createEntity();
+    CRigidBody* RigidBody_4 = new CRigidBody(false,"", -25, 0, 17, 100, 125, 28, 0, 0,0,0, 0.2);
+    Manager->addComponentToEntity(RigidBody_4, gg::RIGID_BODY, Wall_4);
 
 
     std::stack<Waypoint> otp;

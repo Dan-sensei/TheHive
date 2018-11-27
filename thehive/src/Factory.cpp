@@ -91,8 +91,8 @@ void Factory::createPathFindingActor(const gg::Vector3f &Position) {
     CRigidBody* RigidBody = new CRigidBody(true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Actor1);
 
-    CPathfinding* Pathfinding = new CPathfinding();
-    Manager->addComponentToEntity(Pathfinding, gg::PATHFINDING, Actor1);
+    CNavmeshAgent* NavmeshAgent = new CNavmeshAgent();
+    Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Actor1);
 }
 
 void Factory::createHolyBomb(float _damage, float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse) {

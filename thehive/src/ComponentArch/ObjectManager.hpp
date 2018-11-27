@@ -39,7 +39,7 @@ class ObjectManager{
         //  ---
         //  Delete component from given EntityID
         //========================================================================
-        void removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID);
+        void removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID, bool Erase = false);
 
         //  ---
         //  Defines wich kind of messages will receive each type of component
