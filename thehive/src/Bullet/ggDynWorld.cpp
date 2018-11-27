@@ -126,13 +126,16 @@ btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
     return dynamicsWorld;
 }
 
-gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
+gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float _weaponRange){
     // from -> Camera position
     // to   -> Camera rotation
+    if(_weaponRange == -1)  _weaponRange = FAR_RANGE_FACTOR;
+    else                    _weaponRange *= FAR_RANGE_FACTOR;
+
     gg::Vector3f to = gg::Vector3f(
-        (sin(rot.Y*PI/180)*FAR_RANGE_FACTOR)+from.X,
-        -(sin(rot.X*PI/180)*FAR_RANGE_FACTOR)+from.Y,
-        (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*FAR_RANGE_FACTOR)+from.Z
+        (sin(rot.Y*PI/180)*_weaponRange)+from.X,
+        -(sin(rot.X*PI/180)*_weaponRange)+from.Y,
+        (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*_weaponRange)+from.Z
     );
 
     from = gg::Vector3f(

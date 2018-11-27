@@ -1,6 +1,8 @@
 #ifndef GGDYNWORLD_H
 #define GGDYNWORLD_H
 
+#include <cmath>
+
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
@@ -9,13 +11,11 @@
 #include <Singleton.hpp>
 
 #include <ComponentArch/IComponent.hpp>
-class CTransform;
 #include <ComponentArch/ObjectManager.hpp>
-// class ObjectManager;
 
 #include <Bullet/GLDebugDrawer.h>
 
-#include <cmath>
+class CTransform;
 
 class ggDynWorld {
 public:
@@ -31,7 +31,7 @@ public:
 
     btDiscreteDynamicsWorld* getDynamicsWorld();
 
-    gg::Vector3f handleRayCast(gg::Vector3f,gg::Vector3f);
+    gg::Vector3f handleRayCast(gg::Vector3f,gg::Vector3f,float=-1);
     gg::Vector3f getRaycastVector();
     gg::Vector3f getRaycastHitPosition();
     void applyForceToRaycastCollisionBody(gg::Vector3f,gg::Vector3f);

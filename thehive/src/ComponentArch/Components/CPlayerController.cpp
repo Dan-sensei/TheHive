@@ -7,20 +7,22 @@
 #include "Factory.hpp"
 // #include <GameEngine/ScreenConsole.hpp>
 
-#define VEL_FACTOR      200.f
-#define MAX_ANGLE       12.f
-#define MAX_HERO_SPEED  10
+#define VEL_FACTOR          200.f
+#define MAX_ANGLE           12.f
+#define MAX_HERO_SPEED      5
 
-#define ROTATE_KEY      gg::GG_LCONTROL
-#define DASH_KEY        gg::GG_ALT
-#define RUN_KEY         gg::GG_LSHIFT
-#define JUMP_KEY        gg::GG_SPACEBAR
-#define RELOAD_KEY      gg::GG_R
-#define WEAPON_KEY      gg::GG_Q
+#define ROTATE_KEY          gg::GG_LCONTROL
+#define DASH_KEY            gg::GG_ALT
+#define RUN_KEY             gg::GG_LSHIFT
+#define JUMP_KEY            gg::GG_SPACEBAR
+#define RELOAD_KEY          gg::GG_R
+#define WEAPON_KEY          gg::GG_Q
 
-#define DASH_FACTOR     1.2f
-#define RUN_FACTOR      1.1f
-#define FORCE_FACTOR    400.f
+#define DASH_FACTOR         1.2f
+#define RUN_FACTOR          1.1f
+#define FORCE_FACTOR        400.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*30
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/9
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
@@ -49,6 +51,7 @@ void CPlayerController::Init(){
     pulsacion_granada = false;
     pulsacion_espacio = false;
     pulsacion_q = false;
+    pulsacion_dash = false;
 
     // El heroe siempre empezara con un arma secundaria
     // Pistola por defecto
@@ -99,8 +102,9 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     gg::Vector3f ppV(-cV.Z,0,cV.X);
 
     // Vector que tendrá el impulso para aplicar al body
-    gg::Vector3f force;
-    bool pressed = false;
+    gg::Vector3f    force;
+    bool            pressed = false;
+    float           MULT_FACTOR = 1;
 
     if(Engine->key(gg::GG_W)){
         force = gg::Vector3f(-cV.X,0,-cV.Z);
@@ -142,19 +146,29 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     if(Engine->key(ROTATE_KEY))
         heroRotation = false;
 
-    if(Engine->key(DASH_KEY)){
-        force.X *= 1.05;
-        force.Z *= 1.05;
-    }
     if(Engine->key(RUN_KEY)){
-        force.X *= 1.02;
-        force.Z *= 1.02;
+        gg::cout("RUN!");
+        MULT_FACTOR = 2;
+    }
+    if(Engine->key(DASH_KEY)){
+        if(!pulsacion_dash){
+            gg::cout("DASH!");
+
+            MULT_FACTOR = 6;
+            force.X *= DASH_FORCE_FACTOR;
+            force.Z *= DASH_FORCE_FACTOR;
+
+            pulsacion_dash = true;
+        }
+    }
+    else{
+        pulsacion_dash = false;
     }
 
     if(Engine->key(JUMP_KEY)){
         if(!pulsacion_espacio && cRigidBody->getVelocity().Y < 40){
             pulsacion_espacio = true;
-            cRigidBody->applyCentralForce(gg::Vector3f(0, 50*FORCE_FACTOR, 0));
+            cRigidBody->applyCentralForce(gg::Vector3f(0, JUMP_FORCE_FACTOR, 0));
         }
     }
     else{
@@ -165,7 +179,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     if(!pressed && currentSpeed == 0)
         goto continueProcessing;
 
-    if(pressed && currentSpeed < MAX_HERO_SPEED) {          //  If a key is pressed and we haven't reached max speed yey
+    if(pressed && currentSpeed < (MAX_HERO_SPEED*MULT_FACTOR)) {          //  If a key is pressed and we haven't reached max speed yey
         force *= FORCE_FACTOR;
         cRigidBody->applyCentralForce(force);   //  Accelerate!
     }
