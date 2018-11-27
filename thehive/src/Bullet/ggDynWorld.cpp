@@ -1,6 +1,7 @@
 #include "ggDynWorld.hpp"
 
-#define RANGE_FACTOR 90.f
+#define FAR_RANGE_FACTOR    90.f
+#define CLOSE_RANGE_FACTOR  10.f
 #define PI 3.14159265359
 
 ggDynWorld::ggDynWorld(){
@@ -129,9 +130,15 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot){
     // from -> Camera position
     // to   -> Camera rotation
     gg::Vector3f to = gg::Vector3f(
-        (sin(rot.Y*PI/180)*RANGE_FACTOR)+from.X,
-        -(sin(rot.X*PI/180)*RANGE_FACTOR)+from.Y,
-        (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*RANGE_FACTOR)+from.Z
+        (sin(rot.Y*PI/180)*FAR_RANGE_FACTOR)+from.X,
+        -(sin(rot.X*PI/180)*FAR_RANGE_FACTOR)+from.Y,
+        (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*FAR_RANGE_FACTOR)+from.Z
+    );
+
+    from = gg::Vector3f(
+        (sin(rot.Y*PI/180)*CLOSE_RANGE_FACTOR)+from.X,
+        -(sin(rot.X*PI/180)*CLOSE_RANGE_FACTOR)+from.Y,
+        (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*CLOSE_RANGE_FACTOR)+from.Z
     );
 
     gg::Vector3f ret(-1,-1,-1);

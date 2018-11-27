@@ -9,6 +9,7 @@
 
 #define VEL_FACTOR      200.f
 #define MAX_ANGLE       12.f
+#define MAX_HERO_SPEED  10
 
 #define ROTATE_KEY      gg::GG_LCONTROL
 #define DASH_KEY        gg::GG_ALT
@@ -19,7 +20,7 @@
 
 #define DASH_FACTOR     1.2f
 #define RUN_FACTOR      1.1f
-#define FORCE_FACTOR    100.f
+#define FORCE_FACTOR    400.f
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
@@ -28,7 +29,7 @@ CPlayerController::CPlayerController()
 }
 
 CPlayerController::~CPlayerController() {
-    // if(secondWeapon) delete secondWeapon;
+    if(secondWeapon) delete secondWeapon;
 }
 
 void CPlayerController::initComponent() {
@@ -164,7 +165,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     if(!pressed && currentSpeed == 0)
         goto continueProcessing;
 
-    if(pressed && currentSpeed < 15) {          //  If a key is pressed and we haven't reached max speed yey
+    if(pressed && currentSpeed < MAX_HERO_SPEED) {          //  If a key is pressed and we haven't reached max speed yey
         force *= FORCE_FACTOR;
         cRigidBody->applyCentralForce(force);   //  Accelerate!
     }
@@ -251,10 +252,10 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
                 Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
                 Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
 
-                gg::cout(" -- PRINCIPAL TO SECONDARY -- ");
-                gg::cout(" -- PRIMARY: "    +std::to_string(secondWeapon->getType()));
+                gg::cout("| -- PRINCIPAL TO SECONDARY -- ");
+                gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
                 secondWeapon = aux;
-                gg::cout(" -- SECONDARY: "  +std::to_string(secondWeapon->getType()));
+                gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
             }
             else{
                 // SIEMPRE entrara primero aqui
@@ -264,10 +265,10 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
                 Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
                 Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
 
-                gg::cout(" -- SECONDARY TO PRINCIPAL -- ");
-                gg::cout(" -- PRIMARY: "    +std::to_string(secondWeapon->getType()));
+                gg::cout("| -- SECONDARY TO PRINCIPAL -- ");
+                gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
                 secondWeapon = aux;
-                gg::cout(" -- SECONDARY: "  +std::to_string(secondWeapon->getType()));
+                gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
             }
 
         }
