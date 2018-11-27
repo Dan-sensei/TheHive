@@ -216,7 +216,8 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
             gun->reload();
         }
     }
-    if(Engine->key(gg::GG_E)){
+    // if(Engine->key(gg::GG_E)){
+    if(Engine->isLClickPressed()){
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));
         if(gun){
             gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);

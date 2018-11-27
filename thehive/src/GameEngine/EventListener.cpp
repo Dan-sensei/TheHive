@@ -10,13 +10,15 @@ EventListener::EventListener(){
 
 bool EventListener::OnEvent(const irr::SEvent& event) {
     // Remember whether each key is down or up
-    LCLICK = false;
     if (event.EventType == irr::EET_KEY_INPUT_EVENT)
         keyMap[event.KeyInput.Key] = event.KeyInput.PressedDown;
 
     if (event.EventType == irr::EET_MOUSE_INPUT_EVENT){
         if (event.MouseInput.Event == irr::EMIE_LMOUSE_PRESSED_DOWN){
             LCLICK = true;
+        }
+        else if(event.MouseInput.Event == irr::EMIE_LMOUSE_LEFT_UP){
+            LCLICK = false;
         }
     }
 

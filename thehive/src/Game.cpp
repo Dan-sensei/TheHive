@@ -82,7 +82,7 @@ void Game::RUN(){
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-    Singleton<Factory>::Instance()->createHero(gg::Vector3f(700, 60, 0));
+    Singleton<Factory>::Instance()->createHero(gg::Vector3f(700, 60, 0),true);
     Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 20));
     Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 30));
     Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 40));

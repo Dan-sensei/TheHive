@@ -6,8 +6,9 @@
 #define HEIGHT 1.5
 #define RADIUS 3
 
-CCamera::CCamera()
-:mod(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr)
+CCamera::CCamera(bool _b)
+:mod(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr),
+daniNoSabeProgramar(_b)
 {}
 
 
@@ -59,6 +60,8 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     // Set the mouse new coordinate to the center(0,0)
     int vX = Engine->getCursorX() - screenW;
     int vY = Engine->getCursorY() - screenH;
+    if(daniNoSabeProgramar)
+        vY = -vY;
     Engine->setCursorPosition(screenW,screenH);
 
     // And cast it to a float value

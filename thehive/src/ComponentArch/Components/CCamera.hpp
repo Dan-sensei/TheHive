@@ -16,6 +16,8 @@ class ObjectManager;
 class CCamera : public IComponent {
 friend class Factory;
 public:
+    CCamera(bool);
+    CCamera(const CCamera &orig) = delete;
     virtual ~CCamera ();
 
     // Functions of IComponent
@@ -36,8 +38,6 @@ public:
     void setCameraPositionBeforeLockRotation(gg::Vector3f);
 
 private:
-    CCamera();
-    CCamera(const CCamera &orig) = delete;
 
     gg::Vector3f lastHeroPosition;
     gg::Vector3f cameraPositionBeforeLockRotation;
@@ -45,8 +45,9 @@ private:
     GameEngine *Engine;
     ObjectManager *Manager;
     Camera* cam;
-
     CTransform *mod;
+
+    bool daniNoSabeProgramar;
 };
 
 

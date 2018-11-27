@@ -10,14 +10,14 @@ Factory::Factory() {
 
 #include <ComponentArch/Components/ComponentInitializer>
 
-uint16_t Factory::createHero(const gg::Vector3f &Position) {
+uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
     uint16_t hero = Manager->createEntity();
     CTransform* Transform               = new CTransform(gg::Vector3f(0, 0, 10), gg::Vector3f(0, 0, 0));
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
 
-    CCamera* Camera                     = new CCamera();
+    CCamera* Camera                     = new CCamera(_b);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
