@@ -35,6 +35,7 @@ class CPlayerController : public IComponent {
 
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
+        bool canPickWeapon();
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
@@ -58,6 +59,7 @@ class CPlayerController : public IComponent {
         bool pulsacion_espacio;
         bool pulsacion_q;
         bool pulsacion_dash;
+        bool pulsacion_f;
 
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
         CGun *secondWeapon;

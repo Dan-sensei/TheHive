@@ -10,7 +10,7 @@ Factory::Factory() {
 
 #include <ComponentArch/Components/ComponentInitializer>
 
-void Factory::createHero(const gg::Vector3f &Position) {
+uint16_t Factory::createHero(const gg::Vector3f &Position) {
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
     uint16_t hero = Manager->createEntity();
@@ -34,9 +34,11 @@ void Factory::createHero(const gg::Vector3f &Position) {
 
     CAgent* Agent                       = new CAgent(kTrig_Gunfire|kTrig_Explosion);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
+
+    return hero;
 }
 
-void Factory::createEnemy(const gg::Vector3f &Position){
+uint16_t Factory::createEnemy(const gg::Vector3f &Position){
     uint16_t Enemy = Manager->createEntity();
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
@@ -54,9 +56,11 @@ void Factory::createEnemy(const gg::Vector3f &Position){
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,gg::Vector3f(),false);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+
+    return Enemy;
 }
 
-void Factory::createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position) {
+uint16_t Factory::createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position) {
     uint16_t CollisionableStaticObject = Manager->createEntity();
     Material yelo(Texture);
 
@@ -68,9 +72,11 @@ void Factory::createCollisionableStaticModel(const std::string &Path, const std:
 
     CRigidBody* RigidBody = new CRigidBody(true,BulletPath, Position.X, Position.Y, Position.Z, -1,-1,-1, 0, 0,0,0, 0.2);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, CollisionableStaticObject);
+
+    return CollisionableStaticObject;
 }
 
-void Factory::createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation) {
+uint16_t Factory::createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation) {
     uint16_t CollisionableStaticObject = Manager->createEntity();
     Material yelo(Texture);
 
@@ -79,9 +85,11 @@ void Factory::createStaticModel(const std::string &Path, const std::string &Text
 
     CRenderable_3D* Renderable_3D = new CRenderable_3D(Path, yelo);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, CollisionableStaticObject);
+
+    return CollisionableStaticObject;
 }
 
-void Factory::createPathFindingActor(const gg::Vector3f &Position) {
+uint16_t Factory::createPathFindingActor(const gg::Vector3f &Position) {
     uint16_t Actor1 = Manager->createEntity();
     Material Blue("assets/Textures/Blue.png");
 
@@ -96,9 +104,11 @@ void Factory::createPathFindingActor(const gg::Vector3f &Position) {
 
     CPathfinding* Pathfinding = new CPathfinding();
     Manager->addComponentToEntity(Pathfinding, gg::PATHFINDING, Actor1);
+
+    return Actor1;
 }
 
-void Factory::createHolyBomb(float _damage, float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
+uint16_t Factory::createHolyBomb(float _damage, float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
@@ -115,23 +125,28 @@ void Factory::createHolyBomb(float _damage, float _radius,float _tipo, const gg:
     Manager->addComponentToEntity(Granade, gg::GRANADE, holyBomb);
 
     RigidBody->applyCentralForce(Impulse);
+
+    return holyBomb;
 }
 
-void Factory::createCollectableWeapon(const gg::Vector3f &_position, int _weaponType){
+uint16_t Factory::createCollectableWeapon(const gg::Vector3f &_position, int _weaponType){
     uint16_t weapon = Manager->createEntity();
     Material w_mat("assets/Textures/ice.bmp");
 
     CTransform *transform = new CTransform(_position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, weapon);
 
-    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/Cube.obj", w_mat);
+    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/weapon.obj", w_mat);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, weapon);
 
-    CRigidBody *rigidBody = new CRigidBody(false,"",  _position.X,_position.Y,_position.Z, 1.5,1.5,1.5, 1, 0,0,0);
+    CRigidBody *rigidBody = new CRigidBody(true,"assets/BoundingBoxes/weapon.bullet",  _position.X,_position.Y,_position.Z, -1,-1,-1, 25, 0,0,0);
+    // CRigidBody *rigidBody = new CRigidBody(false,"",  _position.X,_position.Y,_position.Z, 1.5,1.5,1.5, 1, 0,0,0);
     Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, weapon);
 
     TData mes;
     mes.add(kDat_EntId,weapon);
     mes.add(kDat_WeaponType,_weaponType);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Gunfire,1,weapon,_position, 5, 0, true, mes);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Gunfire,1,weapon,_position, 3, 0, true, mes);
+
+    return weapon;
 }

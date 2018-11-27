@@ -1,7 +1,7 @@
 #include "ggDynWorld.hpp"
 
 #define FAR_RANGE_FACTOR    90.f
-#define CLOSE_RANGE_FACTOR  10.f
+#define CLOSE_RANGE_FACTOR  7.f
 #define PI 3.14159265359
 
 ggDynWorld::ggDynWorld(){

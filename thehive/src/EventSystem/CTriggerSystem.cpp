@@ -59,6 +59,8 @@ void CTriggerSystem::PulsoTrigger(
             //handletriger return true if the agent responded
             //to the trigger
             pAgent->onTriggerEnter(&pRec);
+
+            ++it2;
       }
 }
 

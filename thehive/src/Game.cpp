@@ -82,19 +82,24 @@ void Game::RUN(){
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-    Singleton<Factory>::Instance()->createHero(gg::Vector3f(700, 50, 0));
-    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 50, 20));
-    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 50, 30));
-    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 50, 40));
+    Singleton<Factory>::Instance()->createHero(gg::Vector3f(700, 60, 0));
+    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 20));
+    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 30));
+    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 40));
 
-    Singleton<Factory>::Instance()->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
+    Singleton<Factory>::Instance()->createCollisionableStaticModel(
+        "assets/Models/CIUDAD/PROTOTIPO3/PROTOTIPO_CIUDAD.obj",
+        "assets/Models/CIUDAD/PROTOTIPO3/PROTOTIPO_CIUDAD.bullet",
+        "assets/Models/CIUDAD/PROTOTIPO3/PROTOTIPO_CIUDAD.png",
+        gg::Vector3f(700, 175, 0)
+    );
 
     // Armas
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 180, 20),0);
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 180, 40),1);
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 180, 60),2);
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 180, 80),3);
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 180, 100),4);
+    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 20),0);
+    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 40),1);
+    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 60),2);
+    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 80),3);
+    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 100),4);
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;

@@ -19,8 +19,6 @@ CRigidBody::CRigidBody(
 )
 :cTransform(nullptr), world(nullptr)
 {
-
-
     // Puntero al mundo de fisicas
     world = Singleton<ggDynWorld>::Instance();
 
@@ -33,6 +31,11 @@ CRigidBody::CRigidBody(
         }
 
         btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
+        // std::cout << "Bvhs:             " << fileLoader->getNumBvhs() << '\n';
+        // std::cout << "Constraints:      " << fileLoader->getNumConstraints() << '\n';
+        // std::cout << "TriangleInfoMaps: " << fileLoader->getNumTriangleInfoMaps() << '\n';
+        // std::cout << "RigidBodies:      " << fileLoader->getNumRigidBodies() << '\n';
+        // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
         body = btRigidBody::upcast(obj);
         shape = body->getCollisionShape();
 
@@ -101,6 +104,7 @@ CRigidBody::CRigidBody(
         // Add the body to the dynamics world
         world->addRigidBody(body);
     }
+    body->setAngularFactor(btVector3(0,0,0));
 }
 
 CRigidBody::~CRigidBody() {

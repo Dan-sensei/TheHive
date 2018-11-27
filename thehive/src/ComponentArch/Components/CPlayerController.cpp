@@ -21,8 +21,8 @@
 #define DASH_FACTOR         1.2f
 #define RUN_FACTOR          1.1f
 #define FORCE_FACTOR        400.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*30
-#define DASH_FORCE_FACTOR   FORCE_FACTOR/9
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*20.f
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/9.f
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
@@ -52,6 +52,7 @@ void CPlayerController::Init(){
     pulsacion_espacio = false;
     pulsacion_q = false;
     pulsacion_dash = false;
+    pulsacion_f = false;
 
     // El heroe siempre empezara con un arma secundaria
     // Pistola por defecto
@@ -166,7 +167,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     }
 
     if(Engine->key(JUMP_KEY)){
-        if(!pulsacion_espacio && cRigidBody->getVelocity().Y < 40){
+        if(!pulsacion_espacio && abs(cRigidBody->getVelocity().Y) < 40){
             pulsacion_espacio = true;
             cRigidBody->applyCentralForce(gg::Vector3f(0, JUMP_FORCE_FACTOR, 0));
         }
@@ -175,20 +176,23 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         pulsacion_espacio = false;
     }
 
+    // gg::cout(std::to_string(cRigidBody->getVelocity().Y));
+
     float currentSpeed = gg::Modulo(cRigidBody->getXZVelocity());
     if(!pressed && currentSpeed == 0)
         goto continueProcessing;
 
-    if(pressed && currentSpeed < (MAX_HERO_SPEED*MULT_FACTOR)) {          //  If a key is pressed and we haven't reached max speed yey
+    if(pressed && currentSpeed < (MAX_HERO_SPEED*MULT_FACTOR)) {    // If a key is pressed and we haven't reached max speed yet
         force *= FORCE_FACTOR;
-        cRigidBody->applyCentralForce(force);   //  Accelerate!
+        cRigidBody->applyCentralForce(force);                       // Accelerate!
     }
-    else if (currentSpeed > 2) {              //  Any key is pressed, but the speed is higher than 0.1! We're moving
+    else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
         force = cRigidBody->getVelocity() * gg::Vector3f(-0.08, 0, -0.08) * FORCE_FACTOR;
-        cRigidBody->applyCentralForce(force);   //  Stopping!
+        cRigidBody->applyCentralForce(force);                       // Stopping!
     }
-    else {                                      //  If we reach here, any key is pressed and the speed is below 0.1
-        cRigidBody->setLinearVelocity(gg::Vector3f(0, cRigidBody->getVelocity().Y, 0)); //  Set it to 0
+    else {                                                          // If we reach here, any key is pressed and the speed is below 2
+        // Set it to 0
+        cRigidBody->setLinearVelocity(gg::Vector3f(0, cRigidBody->getVelocity().Y, 0));
     }
 
 
@@ -311,4 +315,17 @@ int CPlayerController::setSecondWeapon(CGun *_weapon){
     }
     secondWeapon = _weapon;
     return ret;
+}
+
+bool CPlayerController::canPickWeapon(){
+    if(Engine->key(gg::GG_F)){
+        if(!pulsacion_f){
+            pulsacion_f = true;
+            return true;
+        }
+    }
+    else{
+        pulsacion_f = false;
+    }
+    return true;
 }

@@ -121,46 +121,53 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         if(gun){
             if(Singleton<GameEngine>::Instance()->key(gg::GG_F) && nCAgentID == 1){
                 CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
-                if(!cpc->heroHasSecondWeapon()){
-                    // Puedo recoger el arma del suelo
-                    int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
-                    gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
+                if(cpc->canPickWeapon()){
+                    if(!cpc->heroHasSecondWeapon()){
+                        // Puedo recoger el arma del suelo
+                        int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
+                        gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                    getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
+                        getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
 
-                    // Le anyado la nueva
-                    CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
-                    cpc->setSecondWeapon(Gun);
+                        // Le anyado la nueva
+                        CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
+                        cpc->setSecondWeapon(Gun);
+                    }
+                    else{
+                        // Puedo recoger el arma del suelo
+                        int _wtype_actual = gun->getType();
+                        int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
+                        gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
+
+                        getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
+
+                        // Elimino el arma que tiene la entidad
+                        oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
+
+                        // Le anyado la nueva
+                        CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
+                        oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
+
+                        gg::Vector3f pos(
+                            static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().X,
+                            static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Y+5,
+                            static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Z
+                        );
+                        uint16_t weapon = Singleton<Factory>::Instance()->createCollectableWeapon(pos,_wtype_actual);
+
+                        gg::Vector3f from = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition();
+                        gg::Vector3f to = Singleton<ggDynWorld>::Instance()->getRaycastVector();
+                        gg::Vector3f vec = (to-from)*30;
+                        static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,weapon))->applyCentralForce(vec);
+                    }
+
+                    // Destruyo el arma del suelo y su evento
+                    int id = _pRec->data.find(kDat_EntId);
+                    oManager->removeEntity(id);
+                    _pRec->nExpirationTime = 50;
+
+                    return true;
                 }
-                else{
-                    // Puedo recoger el arma del suelo
-                    int _wtype_actual = gun->getType();
-                    int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
-                    gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
-
-                    getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
-
-                    // Elimino el arma que tiene la entidad
-                    oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
-
-                    // Le anyado la nueva
-                    CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
-                    oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
-
-                    gg::Vector3f pos(
-                        static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().X,
-                        static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Y+20,
-                        static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Z
-                    );
-                    Singleton<Factory>::Instance()->createCollectableWeapon(pos,_wtype_actual);
-                }
-
-                // Destruyo el arma del suelo y su evento
-                int id = _pRec->data.find(kDat_EntId);
-                oManager->removeEntity(id);
-                _pRec->nExpirationTime = 50;
-
-                return true;
             }
             return false;
         }
