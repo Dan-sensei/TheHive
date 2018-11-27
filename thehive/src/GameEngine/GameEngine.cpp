@@ -55,7 +55,7 @@ void GameEngine::DisplayFPS(){
     int fps = driver->getFPS();
 
     if (lastFPS != fps) {
-        irr::core::stringw str = "Irrlicht Engine - Quake 3 Map example [";
+        irr::core::stringw str = "THE HIVE";
         str += driver->getName();
         str += "] FPS:";
         str += fps;

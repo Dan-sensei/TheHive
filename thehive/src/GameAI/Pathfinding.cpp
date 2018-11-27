@@ -14,82 +14,42 @@ Pathfinding::Pathfinding()
 :Debug(false), goal(0)
 {
 
-        //  NODO A         ID   X  Y
-        //GRAPH.emplace_back(0,    0,  0);
-        //GRAPH.emplace_back(1,    7,  3);
-        //GRAPH.emplace_back(2,    3,  7);
-        //GRAPH.emplace_back(3,   13,  5);
-        //GRAPH.emplace_back(4,   11,  9);
-        //GRAPH.emplace_back(5,    6, 13);
-        //GRAPH.emplace_back(6,   10, 16);
-        //GRAPH.emplace_back(7,   18,  7);
-        //GRAPH.emplace_back(8,   17, 14);
-        //GRAPH.emplace_back(9,   16, 18);
-        //GRAPH.emplace_back(10,  20, 02);
-        //GRAPH.emplace_back(11,  30, 02);
-
-
-        //AddConnection(0, 1);
-        //AddConnection(0, 2);
-
-        //AddConnection(1, 3);
-
-        //AddConnection(2, 4);
-        //AddConnection(2, 5);
-
-        //AddConnection(3, 4);
-        //AddConnection(3, 7);
-
-        //AddConnection(4, 6);
-        //AddConnection(4, 9);
-
-        //AddConnection(5, 4);
-        //AddConnection(5, 6);
-
-        //AddConnection(6, 9);
-
-        //AddConnection(7, 8);
-
-        //AddConnection(8, 9);
-
-        //AddConnection(7, 10);
-        //AddConnection(10, 9);
-        //AddConnection(10, 11);
-
-        bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/L4D2Nav.obj", GRAPH, GConnections);
-        for(uint16_t i = 0; i < GConnections.size(); ++i){
-            for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-                if(GConnections[i][j].Value == 0)
-                    GConnections[i][j].Value = gg::DIST(GRAPH[GConnections[i][j].From].Position, GRAPH[GConnections[i][j].To].Position);
-            }
+    bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/L4D2Nav.obj", GRAPH, GConnections);
+    for(uint16_t i = 0; i < GConnections.size(); ++i){
+        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
+            if(GConnections[i][j].Value == 0)
+                GConnections[i][j].Value = gg::DIST(GRAPH[GConnections[i][j].From].Position, GRAPH[GConnections[i][j].To].Position);
         }
+    }
 
-        //std::cout << "GRAPH CREATED!" << '\n';
+    //std::cout << "GRAPH CREATED!" << '\n';
 
-        //std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
-        for(uint8_t i = 0; i < GRAPH.size(); ++i){
-            //std::cout << "  -- " << i << " " << GRAPH[i] << '\n';
+    std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
+    uint16_t cons;
+
+    for(uint8_t i = 0; i < GRAPH.size(); ++i){
+        //std::cout << "  -- " << i << " " << GRAPH[i] << '\n';
+    }
+
+    //std::cout << "Connections:" << '\n';
+    for(uint16_t i = 0; i < GConnections.size(); ++i){
+        //std::cout << "[" << i << "] => ";
+        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
+            //std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
+            ++cons;
         }
+        //std::cout << '\n';
+    }
 
-        //std::cout << "Connections:" << '\n';
-        for(uint16_t i = 0; i < GConnections.size(); ++i){
-            //std::cout << "[" << i << "] => ";
-            for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-                //std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
-            }
-            //std::cout << '\n';
-        }
+    std::cout << " ->" << cons << " Connections created!" << '\n';
 
-        std::cout << "3 -> 20" << '\n';
+    //std::cout << "Test" << '\n';
+    //GRAPH[0].EstimatedCost = 10;
+    //GRAPH[2].EstimatedCost = 20;
+    //OpenList.push(&GRAPH[0]);
+    //OpenList.push(&GRAPH[1]);
 
-        //std::cout << "Test" << '\n';
-        //GRAPH[0].EstimatedCost = 10;
-        //GRAPH[2].EstimatedCost = 20;
-        //OpenList.push(&GRAPH[0]);
-        //OpenList.push(&GRAPH[1]);
-
-        //std::cout << "ID : " << OpenList.top()->ID << " | ESTIMATED COST = " << OpenList.top()->EstimatedCost << '\n';
-
+    //std::cout << "ID : " << OpenList.top()->ID << " | ESTIMATED COST = " << OpenList.top()->EstimatedCost << '\n';
 }
 
 Pathfinding::~Pathfinding(){
