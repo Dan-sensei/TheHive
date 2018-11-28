@@ -6,6 +6,7 @@ Face::Face(uint16_t _ID, const gg::Vector3f _TL,  const gg::Vector3f _TR,  const
 {}
 
 Face::Face(const Face &orig){
+    Portals =   orig.Portals;
     TL      =   orig.TL;
     TR      =   orig.TR;
     BR      =   orig.BR;
@@ -66,6 +67,6 @@ Waypoint::Waypoint(const Waypoint &orig){
 }
 
 std::ostream& operator<<(std::ostream& os, const Node &N){
-    os << "(" << N.Position.X<< "," << N.Position.Y << "," << N.Position.Z << ")";
+    os << "ID: " << N.ID <<  "   - Face: " << N.NODE_1 << " | " << N.NODE_2 << "    --> (" << N.Position.X<< "," << N.Position.Y << "," << N.Position.Z << ")";
     return os;
 }

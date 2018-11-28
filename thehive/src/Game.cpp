@@ -106,7 +106,7 @@ void Game::RUN(){
     //60 -450
     //132 - 550
     CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
-    Agent->SetDestination(gg::Vector3f(373, 0, -430));
+    Agent->SetDestination(gg::Vector3f(-500, 0, -240));
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
     gg::cout("Testing", gg::Color(255, 0, 0, 1));

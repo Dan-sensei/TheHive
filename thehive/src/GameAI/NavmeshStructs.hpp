@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <Util.hpp>
+#include <vector>
 
 enum Type{
     OPEN = 0,
@@ -16,6 +17,7 @@ struct Face{
     Face(uint16_t _ID, const gg::Vector3f _TL,  const gg::Vector3f _TR,  const gg::Vector3f _BR,  const gg::Vector3f _BL);
     Face(const Face &orig);
 
+    std::vector<uint16_t> Portals;
     gg::Vector3f TL, TR, BR, BL;
     uint16_t ID;
 };

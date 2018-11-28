@@ -61,7 +61,12 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
     if(modulo <= MAXSPEED) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
-        if(Waypoints.empty())   currentlyMovingTowardsTarget = false;
+        if(Waypoints.empty()){
+            currentlyMovingTowardsTarget = false;
+            gg::Vector3f Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.7, 0, cRigidBody->getXZVelocity().Y * -0.7)*FORCE_FACTOR;
+            cRigidBody->applyCentralForce(Counter);
+        }
+
         return gg::ST_TRUE;
     }
 

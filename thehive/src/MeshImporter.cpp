@@ -153,100 +153,52 @@ bool MeshImporter::importNavmeshV2(
 
     std::vector<std::vector<Edge>> FACES(meshes[0]->mNumFaces);
 
-    //std::cout << "FACES SIZE = " << FACES.size() << '\n';
     for(uint16_t j = 0; j < meshes[0]->mNumFaces; ++j) {
         const aiFace& Face = faces[j];
-        // if(Face.mNumIndices == 4){
-        //     std::array<gg::Vector3f, 4> FaceVertices = {
-        //         vertex[Face.mIndices[0]]*gg::Vector3f(-1,1,1),
-        //         vertex[Face.mIndices[1]]*gg::Vector3f(-1,1,1),
-        //         vertex[Face.mIndices[2]]*gg::Vector3f(-1,1,1),
-        //         vertex[Face.mIndices[3]]*gg::Vector3f(-1,1,1)
-        //     };
-        //     SQUARE_FACES.emplace_back(j, FaceVertices);
-        // }
-        // else{
 
+        std::vector<gg::Vector3f> minX;
+        std::vector<gg::Vector3f> maxX;
 
-            // Find 4 vertex
-            std::vector<gg::Vector3f> minX;
-            std::vector<gg::Vector3f> maxX;
-            std::vector<gg::Vector3f> Z;
-
-            //std::cout << "FACE " << j << '\n';
-            for(uint16_t i = 0; i < Face.mNumIndices; ++i){
-                // std::cout << "        -Vertex: " << i << vertex[Face.mIndices[i]] << '\n';
-                // if(!minX.empty()){
-                //     std::cout << "           " << vertex[Face.mIndices[i]].X << " == " << minX.front().X << '\n';
-                //     std::cout << "           " << vertex[Face.mIndices[i]].X-maxX.front().X << '\n';
-                // }
-                if(!minX.empty() && minX.front().X - vertex[Face.mIndices[i]].X > 0.001) {
-                    minX.clear();
-                    minX.push_back(vertex[Face.mIndices[i]]);
-                }
-                else if(minX.empty() || abs(vertex[Face.mIndices[i]].X - minX.front().X) < 0.001) {
-                    minX.push_back(vertex[Face.mIndices[i]]);
-                }
-
-                if(!maxX.empty() && vertex[Face.mIndices[i]].X - maxX.front().X > 0.001) {
-                    maxX.clear();
-                    maxX.push_back(vertex[Face.mIndices[i]]);
-                }
-                else if(maxX.empty() || abs(vertex[Face.mIndices[i]].X - maxX.front().X) < 0.001) {
-                    maxX.push_back(vertex[Face.mIndices[i]]);
-                }
-
-                // std::cout << "MIN LIST: ";
-                // for(uint16_t i = 0; i < minX.size(); ++i) {
-                //     std::cout << minX[i] << " ";
-                // }
-                // std::cout << '\n';
-                // std::cout << "MAX LIST: ";
-                // for(uint16_t i = 0; i < maxX.size(); ++i) {
-                //     std::cout << maxX[i] << " ";
-                // }
-                // std::cout << '\n';
+        for(uint16_t i = 0; i < Face.mNumIndices; ++i){
+            if(!minX.empty() && minX.front().X - vertex[Face.mIndices[i]].X > 0.001) {
+                minX.clear();
+                minX.push_back(vertex[Face.mIndices[i]]);
+            }
+            else if(minX.empty() || abs(vertex[Face.mIndices[i]].X - minX.front().X) < 0.001) {
+                minX.push_back(vertex[Face.mIndices[i]]);
             }
 
-            // std::cout << "MIN LIST: ";
-            // for(uint16_t i = 0; i < minX.size(); ++i) {
-            //     std::cout << minX[i] << " ";
-            // }
-            // std::cout << '\n';
-            //
-            // std::cout << "MAX LIST: ";
-            // for(uint16_t i = 0; i < maxX.size(); ++i) {
-            //     std::cout << maxX[i] << " ";
-            // }
-            // std::cout << '\n';
-
-            gg::Vector3f TL = minX.front();
-            gg::Vector3f BL = minX.front();
-            for(uint16_t i = 1; i < minX.size(); ++i){
-                if(minX[i].Z > TL.Z)
-                    TL = minX[i];
-
-                if(minX[i].Z < BL.Z)
-                    BL = minX[i];
+            if(!maxX.empty() && vertex[Face.mIndices[i]].X - maxX.front().X > 0.001) {
+                maxX.clear();
+                maxX.push_back(vertex[Face.mIndices[i]]);
             }
-
-            gg::Vector3f TR = maxX.front();
-            gg::Vector3f BR = maxX.front();
-            for(uint16_t i = 1; i < maxX.size(); ++i){
-                if(maxX[i].Z > TR.Z)
-                    TR = maxX[i];
-
-                if(maxX[i].Z < BR.Z)
-                    BR = maxX[i];
+            else if(maxX.empty() || abs(vertex[Face.mIndices[i]].X - maxX.front().X) < 0.001) {
+                maxX.push_back(vertex[Face.mIndices[i]]);
             }
+        }
+
+        gg::Vector3f TL = minX.front();
+        gg::Vector3f BL = minX.front();
+        for(uint16_t i = 1; i < minX.size(); ++i){
+            if(minX[i].Z > TL.Z)
+                TL = minX[i];
+
+            if(minX[i].Z < BL.Z)
+                BL = minX[i];
+        }
+
+        gg::Vector3f TR = maxX.front();
+        gg::Vector3f BR = maxX.front();
+        for(uint16_t i = 1; i < maxX.size(); ++i){
+            if(maxX[i].Z > TR.Z)
+                TR = maxX[i];
+
+            if(maxX[i].Z < BR.Z)
+                BR = maxX[i];
+        }
 
 
-            // std::cout << TL << "   " << TR << '\n';
-            // std::cout << "|" << '\n';
-            // std::cout << BL << "   " << BR << '\n' << '\n';
-
-            SQUARE_FACES.emplace_back(j,  TL, TR, BR, BL);
-        // }
+        SQUARE_FACES.emplace_back(j,  TL, TR, BR, BL);
 
         for(uint16_t i = 0; i < Face.mNumIndices; ++i){
             Edge NewEdge(Face.mIndices[i], Face.mIndices[(i+1)%Face.mNumIndices]);
@@ -285,10 +237,11 @@ bool MeshImporter::importNavmeshV2(
     }
 
     Connections.resize(ID_Counter);
-    for(uint16_t i = 0; i < FACES.size(); ++i){
+    for(uint16_t i = 0; i < FACES.size(); ++i) {
         if(FACES[i].size() > 1){
-            for(uint16_t j = 0; j < FACES[i].size(); ++j){
-                for(uint16_t k = 0; k < FACES[i].size(); ++k){
+            for(uint16_t j = 0; j < FACES[i].size(); ++j) {
+                SQUARE_FACES[i].Portals.push_back(FACES[i][j].ID);
+                for(uint16_t k = 0; k < FACES[i].size(); ++k) {
                     if(FACES[i][j].ID != FACES[i][k].ID)
                         Connections[FACES[i][j].ID].emplace_back(0, FACES[i][j].ID, FACES[i][k].ID/*, vertex[FACES[i][j].vertex1], vertex[FACES[i][j].vertex2]*/);
                 }

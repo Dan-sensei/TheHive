@@ -28,8 +28,8 @@ Pathfinding::Pathfinding()
     std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
     uint16_t cons;
 
-    for(uint8_t i = 0; i < GRAPH.size(); ++i){
-        //std::cout << "  -- " << i << " " << GRAPH[i] << '\n';
+    for(uint16_t i = 0; i < GRAPH.size(); ++i){
+        std::cout << "  -- " << i << " = " << GRAPH[i] << '\n';
     }
 
     //std::cout << "Connections:" << '\n';
@@ -44,6 +44,12 @@ Pathfinding::Pathfinding()
 
     std::cout << " ->" << cons << " Connections created!" << '\n';
     std::cout << " ->" << FACES.size() << " Faces created!" << '\n';
+    for(uint16_t i = 0; i < FACES.size(); ++i){
+        std::cout << "   Face " << i << " = " << FACES[i].ID << '\n';
+        for(uint16_t j = 0; j < FACES[i].Portals.size(); ++j)
+            std::cout << " " << FACES[i].Portals[j];
+        std::cout << '\n';
+    }
     //std::cout << "Test" << '\n';
     //GRAPH[0].EstimatedCost = 10;
     //GRAPH[2].EstimatedCost = 20;
@@ -194,7 +200,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
 void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output) {
 
     std::cout << "SEARCHING!" << '\n';
-    uint16_t StartNode, GoalNode;
+    uint16_t StartFN, GoalFN;
     //float dist = std::inner_product(p.normal, (vectorSubtract(point, p.point)));
     bool FoundStart = false;
     bool FoundGoal = false;
@@ -211,7 +217,7 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
         else if (START.Z > FACES[i].TL.Z)
             continue;
 
-        StartNode = FACES[i].ID;
+        StartFN = i;
         FoundStart = true;
         break;
     }
@@ -229,7 +235,7 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
         else if (GOAL.Z > FACES[i].TL.Z)
             continue;
 
-        GoalNode = FACES[i].ID;
+        GoalFN = i;
         FoundGoal = true;
         break;
     }
@@ -239,15 +245,36 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
         gg::cout("LA POSICION DEL JUGADOR O GOAL, NO ESTÁN EN NINGUN POLÍGONO", gg::Color(255, 0, 0, 1));
         return;
     }
-    std::cout << "FOUND IT! Start = " << StartNode << " | Goal " << GoalNode << '\n';
-    if(StartNode == GoalNode){
-        Node* Next = &GRAPH[GoalNode];
-        Output.emplace(Next->Position, StartNode, Next->Radius);
+    std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
+
+    if(StartFN == GoalFN){
+        Output.emplace(START, 0, 0);
         return;
     }
 
-    Output.emplace(GOAL, GoalNode, GRAPH[GoalNode].Radius);
-    A_Estrella(StartNode, GoalNode, Output);
+
+    uint16_t StartPortal = FACES[StartFN].Portals[0];
+    if(FACES[StartFN].Portals.size() > 1){
+        float currentDist = gg::DIST(START, GRAPH[FACES[StartFN].Portals[0]].Position);
+        for(uint16_t i = 1; i < FACES[StartFN].Portals.size(); ++i){
+            if(gg::DIST(START, GRAPH[FACES[StartFN].Portals[i]].Position) < currentDist) {
+                StartPortal = FACES[StartFN].Portals[i];
+            }
+        }
+    }
+
+    uint16_t EndPortal = FACES[GoalFN].Portals[0];
+    if(FACES[GoalFN].Portals.size() > 1){
+        float currentDist = gg::DIST(START, GRAPH[FACES[GoalFN].Portals[0]].Position);
+        for(uint16_t i = 1; i < FACES[GoalFN].Portals.size(); ++i){
+            if(gg::DIST(START, GRAPH[FACES[GoalFN].Portals[i]].Position) < currentDist) {
+                EndPortal = FACES[GoalFN].Portals[i];
+            }
+        }
+    }
+
+    Output.emplace(GOAL, EndPortal, GRAPH[EndPortal].Radius);
+    A_Estrella(StartPortal, EndPortal, Output);
 }
 
 uint16_t Pathfinding::getGraphSize(){
