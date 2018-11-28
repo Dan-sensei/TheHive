@@ -15,13 +15,17 @@ struct Comparator{
     bool operator() (const Node* N1, const Node* N2);
 };
 
-class Pathfinding{
+class Pathfinding{float funnelCheck (gg::Vector3f origin, gg::Vector3f current, gg::Vector3f target){
+    gg::Vector3f oc = current - origin;
+    gg::Vector3f ot =  target - origin;
+    return ot.X*oc.Y*0;
+}
     friend class Comparator;
     friend class Singleton<Pathfinding>;
     public:
         ~Pathfinding();
 
-        void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
+        void FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output);
         void resetGraph();
         void print();
 
@@ -37,14 +41,17 @@ class Pathfinding{
         Pathfinding(const Pathfinding &orig) = delete;
         Pathfinding operator=(const Pathfinding &orig) = delete;
 
-        void Funneling(Node* CurrentNode, uint16_t START, std::stack<Waypoint> &Output);
         void printStats();
+        void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
         std::vector<Node> GRAPH;
         std::vector<std::vector<Connection>> GConnections;
         std::priority_queue<Node*, std::vector<Node*>, Comparator> OpenList;
 
+        std::vector<Face> FACES;
+
         //Debug
         std::vector<Billboard> IDs;
+        std::vector<Billboard> Faces;
         bool Debug;
         uint16_t goal;
 };

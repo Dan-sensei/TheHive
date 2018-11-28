@@ -117,11 +117,11 @@ MeshImporter::MeshImporter(){
 bool MeshImporter::importNavmeshV2(
     const std::string& pFile,
     std::vector<Node> &GRAPH,
-    std::vector<std::vector<Connection>> &Connections
+    std::vector<std::vector<Connection>> &Connections,
+    std::vector<Face> &SQUARE_FACES
 ){
 
     std::vector<gg::Vector3f> vertex;
-    std::vector<uint16_t> index;
     std::list<Edge> Edges;
 
     Assimp::Importer importer;
@@ -142,7 +142,7 @@ bool MeshImporter::importNavmeshV2(
        faces   =   meshes[0]->mFaces;
 
     for(uint16_t j = 0; j < meshes[0]->mNumVertices; ++j){
-        vertex.emplace_back(vertices[j].x, vertices[j].y, vertices[j].z);
+        vertex.emplace_back(vertices[j].x*-1, vertices[j].y, vertices[j].z);
     }
 
     //std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
@@ -151,18 +151,104 @@ bool MeshImporter::importNavmeshV2(
 
     uint16_t ID_Counter = 0;
 
-    std::vector<std::vector<Edge>> FACES;
-    FACES.resize(meshes[0]->mNumFaces);
+    std::vector<std::vector<Edge>> FACES(meshes[0]->mNumFaces);
 
     //std::cout << "FACES SIZE = " << FACES.size() << '\n';
     for(uint16_t j = 0; j < meshes[0]->mNumFaces; ++j) {
-
         const aiFace& Face = faces[j];
+        // if(Face.mNumIndices == 4){
+        //     std::array<gg::Vector3f, 4> FaceVertices = {
+        //         vertex[Face.mIndices[0]]*gg::Vector3f(-1,1,1),
+        //         vertex[Face.mIndices[1]]*gg::Vector3f(-1,1,1),
+        //         vertex[Face.mIndices[2]]*gg::Vector3f(-1,1,1),
+        //         vertex[Face.mIndices[3]]*gg::Vector3f(-1,1,1)
+        //     };
+        //     SQUARE_FACES.emplace_back(j, FaceVertices);
+        // }
+        // else{
 
-        for(uint8_t i = 0; i < Face.mNumIndices; ++i){
 
-            index.push_back(Face.mIndices[i]);
+            // Find 4 vertex
+            std::vector<gg::Vector3f> minX;
+            std::vector<gg::Vector3f> maxX;
+            std::vector<gg::Vector3f> Z;
 
+            //std::cout << "FACE " << j << '\n';
+            for(uint16_t i = 0; i < Face.mNumIndices; ++i){
+                // std::cout << "        -Vertex: " << i << vertex[Face.mIndices[i]] << '\n';
+                // if(!minX.empty()){
+                //     std::cout << "           " << vertex[Face.mIndices[i]].X << " == " << minX.front().X << '\n';
+                //     std::cout << "           " << vertex[Face.mIndices[i]].X-maxX.front().X << '\n';
+                // }
+                if(!minX.empty() && minX.front().X - vertex[Face.mIndices[i]].X > 0.001) {
+                    minX.clear();
+                    minX.push_back(vertex[Face.mIndices[i]]);
+                }
+                else if(minX.empty() || abs(vertex[Face.mIndices[i]].X - minX.front().X) < 0.001) {
+                    minX.push_back(vertex[Face.mIndices[i]]);
+                }
+
+                if(!maxX.empty() && vertex[Face.mIndices[i]].X - maxX.front().X > 0.001) {
+                    maxX.clear();
+                    maxX.push_back(vertex[Face.mIndices[i]]);
+                }
+                else if(maxX.empty() || abs(vertex[Face.mIndices[i]].X - maxX.front().X) < 0.001) {
+                    maxX.push_back(vertex[Face.mIndices[i]]);
+                }
+
+                // std::cout << "MIN LIST: ";
+                // for(uint16_t i = 0; i < minX.size(); ++i) {
+                //     std::cout << minX[i] << " ";
+                // }
+                // std::cout << '\n';
+                // std::cout << "MAX LIST: ";
+                // for(uint16_t i = 0; i < maxX.size(); ++i) {
+                //     std::cout << maxX[i] << " ";
+                // }
+                // std::cout << '\n';
+            }
+
+            // std::cout << "MIN LIST: ";
+            // for(uint16_t i = 0; i < minX.size(); ++i) {
+            //     std::cout << minX[i] << " ";
+            // }
+            // std::cout << '\n';
+            //
+            // std::cout << "MAX LIST: ";
+            // for(uint16_t i = 0; i < maxX.size(); ++i) {
+            //     std::cout << maxX[i] << " ";
+            // }
+            // std::cout << '\n';
+
+            gg::Vector3f TL = minX.front();
+            gg::Vector3f BL = minX.front();
+            for(uint16_t i = 1; i < minX.size(); ++i){
+                if(minX[i].Z > TL.Z)
+                    TL = minX[i];
+
+                if(minX[i].Z < BL.Z)
+                    BL = minX[i];
+            }
+
+            gg::Vector3f TR = maxX.front();
+            gg::Vector3f BR = maxX.front();
+            for(uint16_t i = 1; i < maxX.size(); ++i){
+                if(maxX[i].Z > TR.Z)
+                    TR = maxX[i];
+
+                if(maxX[i].Z < BR.Z)
+                    BR = maxX[i];
+            }
+
+
+            // std::cout << TL << "   " << TR << '\n';
+            // std::cout << "|" << '\n';
+            // std::cout << BL << "   " << BR << '\n' << '\n';
+
+            SQUARE_FACES.emplace_back(j,  TL, TR, BR, BL);
+        // }
+
+        for(uint16_t i = 0; i < Face.mNumIndices; ++i){
             Edge NewEdge(Face.mIndices[i], Face.mIndices[(i+1)%Face.mNumIndices]);
             NewEdge.face = j;
 
@@ -175,15 +261,15 @@ bool MeshImporter::importNavmeshV2(
                     (vertex[NewEdge.vertex1] == vertex [(*it).vertex1]    &&
                      vertex[NewEdge.vertex2] == vertex [(*it).vertex2])
                      ||
-                     (vertex[NewEdge.vertex1] == vertex [(*it).vertex2]    &&
-                      vertex[NewEdge.vertex2] == vertex [(*it).vertex1])
+                    (vertex[NewEdge.vertex1] == vertex [(*it).vertex2]    &&
+                     vertex[NewEdge.vertex2] == vertex [(*it).vertex1])
                 ) {
                     (*it).ID = ID_Counter;
                     FACES[j].push_back(*it);
                     FACES[(*it).face].push_back(*it);
 
                     gg::Vector3f NodeCoords = gg::Vector3f((vertex[(*it).vertex1] + vertex[(*it).vertex2])/2);
-                    GRAPH.emplace_back(ID_Counter, NodeCoords * gg::Vector3f(-1,1,1), gg::DIST(NodeCoords, vertex[(*it).vertex1]));
+                    GRAPH.emplace_back(ID_Counter, j, (*it).face, NodeCoords, gg::DIST(NodeCoords, vertex[(*it).vertex1]));
                     found = true;
                     ++ID_Counter;
                     Edges.erase(it);
@@ -198,21 +284,19 @@ bool MeshImporter::importNavmeshV2(
         }
     }
 
-    
-
     Connections.resize(ID_Counter);
     for(uint16_t i = 0; i < FACES.size(); ++i){
         if(FACES[i].size() > 1){
             for(uint16_t j = 0; j < FACES[i].size(); ++j){
                 for(uint16_t k = 0; k < FACES[i].size(); ++k){
                     if(FACES[i][j].ID != FACES[i][k].ID)
-                        Connections[FACES[i][j].ID].emplace_back(FACES[i][j].ID, FACES[i][k].ID, 0, vertex[FACES[i][j].vertex1], vertex[FACES[i][j].vertex2]);
+                        Connections[FACES[i][j].ID].emplace_back(0, FACES[i][j].ID, FACES[i][k].ID/*, vertex[FACES[i][j].vertex1], vertex[FACES[i][j].vertex2]*/);
                 }
             }
         }
     }
 
-    if(true) {
+    //if(true) {
         //std::cout << '\n' << "VERTEX: " << '\n';
         //for(int i = 0; i < vertex.size(); ++i)
             //std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
@@ -233,7 +317,7 @@ bool MeshImporter::importNavmeshV2(
 
         //std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
         //std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
-    }
+    //}
 
     return true;
 }
@@ -254,9 +338,6 @@ Edge::Edge(uint16_t _vertex1, uint16_t _vertex2)
 :vertex1(_vertex1), vertex2(_vertex2), ID(0)
 {}
 
-bool Edge::operator==(const Edge &Edgvertex2){
-    return ((vertex1 == Edgvertex2.vertex1 && vertex2 == Edgvertex2.vertex2) || (vertex1 == Edgvertex2.vertex2 && vertex2 == Edgvertex2.vertex1));
-}
 
 std::ostream& operator<<(std::ostream& os, const Edge &E){
     os << "[" << E.vertex1 << "," << E.vertex2 << "]";

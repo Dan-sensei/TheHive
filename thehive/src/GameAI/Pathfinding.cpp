@@ -3,6 +3,7 @@
 #include "MeshImporter.hpp"
 #include "Singleton.hpp"
 #include <GameEngine/GameEngine.hpp>
+#include <numeric>
 
 
 //  COMPARATOR
@@ -14,7 +15,7 @@ Pathfinding::Pathfinding()
 :Debug(false), goal(0)
 {
 
-    bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/L4D2Nav.obj", GRAPH, GConnections);
+    bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/L4D2Nav.obj", GRAPH, GConnections, FACES);
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
             if(GConnections[i][j].Value == 0)
@@ -42,7 +43,7 @@ Pathfinding::Pathfinding()
     }
 
     std::cout << " ->" << cons << " Connections created!" << '\n';
-
+    std::cout << " ->" << FACES.size() << " Faces created!" << '\n';
     //std::cout << "Test" << '\n';
     //GRAPH[0].EstimatedCost = 10;
     //GRAPH[2].EstimatedCost = 20;
@@ -60,6 +61,7 @@ void Pathfinding::SetDebug(bool flag){
     Debug = flag;
 
     if(flag && IDs.empty()){
+        IDs.reserve(FACES.size()*4);
         IDs.reserve(GRAPH.size());
         uint16_t i = GRAPH.size();
         while(i--){
@@ -70,6 +72,27 @@ void Pathfinding::SetDebug(bool flag){
             IDs[i].setColor(color);
 
         }
+        // uint16_t j = 0;
+        // for(uint16_t i = 0; i < FACES.size(); ++i){
+        //     uint8_t color[4] = {1, 0, 0, 0};
+        //
+        //     Singleton<GameEngine>::Instance()->createBillboard(IDs[j], FACES[i].TL + gg::Vector3f(0, 60+j*2, 0));
+        //     IDs[j].setText(std::to_string(FACES[i].ID) );
+        //     IDs[j].setColor(color);
+        //     ++j;
+        //     Singleton<GameEngine>::Instance()->createBillboard(IDs[j], FACES[i].TR + gg::Vector3f(0, 60+j*2, 0));
+        //     IDs[j].setText(std::to_string(FACES[i].ID) );
+        //     IDs[j].setColor(color);
+        //     ++j;
+        //     Singleton<GameEngine>::Instance()->createBillboard(IDs[j], FACES[i].BR + gg::Vector3f(0, 60+j*2, 0));
+        //     IDs[j].setText(std::to_string(FACES[i].ID) );
+        //     IDs[j].setColor(color);
+        //     ++j;
+        //     Singleton<GameEngine>::Instance()->createBillboard(IDs[j], FACES[i].BL + gg::Vector3f(0, 60+j*2, 0));
+        //     IDs[j].setText(std::to_string(FACES[i].ID) );
+        //     IDs[j].setColor(color);
+        //     ++j;
+        // }
     }
     else if(!flag && !IDs.empty()){
         IDs.clear();
@@ -153,35 +176,78 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
         CurrentNode->Status = Type::CLOSED;
     }
 
-    if(CurrentNode->ID != GOAL){
+    if(CurrentNode->ID != GOAL) {
+        gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
         //std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
-        Funneling(CurrentNode, START, Output);
+        while(CurrentNode->ID != START) {
+            Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
+            Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
+            CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
+        }
     }
 
     printStats();
 }
 
-void Pathfinding::Funneling(Node* CurrentNode, uint16_t START, std::stack<Waypoint> &Output){
+void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output) {
 
-    while(CurrentNode->ID != START) {
-        //path.push_back(CurrentNode->Bitconnect);
-        Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
-        Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
-        CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
-        //std::cout << "CAMINO: " << '\n';
+    std::cout << "SEARCHING!" << '\n';
+    uint16_t StartNode, GoalNode;
+    //float dist = std::inner_product(p.normal, (vectorSubtract(point, p.point)));
+    bool FoundStart = false;
+    bool FoundGoal = false;
+    for(uint16_t i = 0; i < FACES.size(); ++i) {
+        if(START.X > FACES[i].TR.X)
+            continue;
 
+        else if(START.X < FACES[i].TL.X)
+            continue;
 
-        //std::cout << '\n';
+        else if(START.Z < FACES[i].BR.Z)
+            continue;
+
+        else if (START.Z > FACES[i].TL.Z)
+            continue;
+
+        StartNode = FACES[i].ID;
+        FoundStart = true;
+        break;
     }
 
-}
+    for(uint16_t i = 0; i < FACES.size(); ++i) {
+        if(GOAL.X > FACES[i].TR.X)
+            continue;
 
-float funnelCheck (gg::Vector3f origin, gg::Vector3f current, gg::Vector3f target){
-    gg::Vector3f oc = current - origin;
-    gg::Vector3f ot =  target - origin;
-    return ot.X*oc.Y*0;
+        else if(GOAL.X < FACES[i].TL.X)
+            continue;
+
+        else if(GOAL.Z < FACES[i].BR.Z)
+            continue;
+
+        else if (GOAL.Z > FACES[i].TL.Z)
+            continue;
+
+        GoalNode = FACES[i].ID;
+        FoundGoal = true;
+        break;
+    }
+
+    std::cout << "End -- Current: " << FoundStart << " | Goal: " << FoundGoal << '\n';
+    if(!FoundStart || !FoundGoal){
+        gg::cout("LA POSICION DEL JUGADOR O GOAL, NO ESTÁN EN NINGUN POLÍGONO", gg::Color(255, 0, 0, 1));
+        return;
+    }
+    std::cout << "FOUND IT! Start = " << StartNode << " | Goal " << GoalNode << '\n';
+    if(StartNode == GoalNode){
+        Node* Next = &GRAPH[GoalNode];
+        Output.emplace(Next->Position, StartNode, Next->Radius);
+        return;
+    }
+
+    Output.emplace(GOAL, GoalNode, GRAPH[GoalNode].Radius);
+    A_Estrella(StartNode, GoalNode, Output);
 }
 
 uint16_t Pathfinding::getGraphSize(){
@@ -212,6 +278,9 @@ void Pathfinding::DroNodes(){
     gg::Color color;
     uint8_t i = GRAPH.size();
     uint8_t length = 50;
+
+    GameEngine* Engine = Singleton<GameEngine>::Instance();
+
     while(i--){
         if(i==goal){
              length = 100;
@@ -242,7 +311,7 @@ void Pathfinding::DroNodes(){
             color.B = 204;
         }
         dro:
-        Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
+        Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
 
     }
 
@@ -253,7 +322,20 @@ void Pathfinding::DroNodes(){
     color.B = 153;
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            Singleton<GameEngine>::Instance()->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 20, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 20, 0), color, 2);
+            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 20, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 20, 0), color, 2);
         }
+    }
+
+
+    //  255,20,147
+    color.Alpha = 1;
+    color.R = 255;
+    color.G = 20;
+    color.B = 147;
+    for(uint16_t i = 0; i < FACES.size(); ++i){
+        Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + gg::Vector3f(0, 100, 0), color, 2);
+        Engine->Draw3DLine(FACES[i].TR, FACES[i].TR + gg::Vector3f(0, 100, 0), color, 2);
+        Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + gg::Vector3f(0, 100, 0), color, 2);
+        Engine->Draw3DLine(FACES[i].BL, FACES[i].BL + gg::Vector3f(0, 100, 0), color, 2);
     }
 }

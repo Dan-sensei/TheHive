@@ -12,13 +12,20 @@ enum Type{
     UNVISITED
 };
 
+struct Face{
+    Face(uint16_t _ID, const gg::Vector3f _TL,  const gg::Vector3f _TR,  const gg::Vector3f _BR,  const gg::Vector3f _BL);
+    Face(const Face &orig);
+
+    gg::Vector3f TL, TR, BR, BL;
+    uint16_t ID;
+};
 
 struct Connection{
-    Connection(uint16_t _From = 0, uint16_t _To = 0, float _Value = 0, const gg::Vector3f &_Vertex1 = gg::Vector3f(), const gg::Vector3f &_Vertex2 = gg::Vector3f());
+    Connection(float _Value = 0, uint16_t _From = 0, uint16_t _To = 0/*, const gg::Vector3f &_Vertex1 = gg::Vector3f(), const gg::Vector3f &_Vertex2 = gg::Vector3f()*/);
     Connection(const Connection &orig);
 
-    gg::Vector3f Vertex1;
-    gg::Vector3f Vertex2;
+    //gg::Vector3f Vertex1;
+    //gg::Vector3f Vertex2;
     float Value;
     uint16_t From;
     uint16_t To;
@@ -26,17 +33,18 @@ struct Connection{
 
 struct Node{
     Node();
-    Node(uint16_t _ID, const gg::Vector3f &_Position, float _Radius);
+    Node(uint16_t _ID, uint16_t _NODE_1, uint16_t _NODE_2, const gg::Vector3f &_Position, float _Radius);
     Node(const Node &orig);
 
     Connection Bitconnect;
     gg::Vector3f Position;
     float RealCost;
-    float Heuristic;
     float EstimatedCost;
     float Radius;
     Type Status;
     uint16_t ID;
+    uint16_t NODE_1;
+    uint16_t NODE_2;
 };
 
 struct Waypoint{

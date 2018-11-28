@@ -13,6 +13,7 @@
 #include "GameEngine/ScreenConsole.hpp"
 
 #include "Factory.hpp"
+#include <ComponentArch/Components/CNavmeshAgent.hpp>
 
 #define MOVEMENT_SPEED 1.f
 
@@ -67,7 +68,7 @@ void Game::RUN(){
     factory->createHero(gg::Vector3f(600, 180, 0));
     factory->createEnemy(gg::Vector3f(570, 190, 0));
     //factory->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
-    factory->createPathFindingActor(gg::Vector3f(150, 83, 450));
+    uint16_t Dummy = factory->createPathFindingActor(gg::Vector3f(150, 83, 450));
     //factory->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
 
     uint16_t Navmesh = Manager->createEntity();
@@ -102,9 +103,10 @@ void Game::RUN(){
     CRigidBody* RigidBody_4 = new CRigidBody(false,"", -25, 0, 17, 100, 125, 28, 0, 0,0,0, 0.2);
     Manager->addComponentToEntity(RigidBody_4, gg::RIGID_BODY, Wall_4);
 
-
-    std::stack<Waypoint> otp;
-    Singleton<Pathfinding>::Instance()->A_Estrella(19, 28, otp);
+    //60 -450
+    //132 - 550
+    CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
+    Agent->SetDestination(gg::Vector3f(373, 0, -430));
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
     gg::cout("Testing", gg::Color(255, 0, 0, 1));

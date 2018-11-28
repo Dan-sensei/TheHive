@@ -14,12 +14,12 @@ class Factory{
     friend class Singleton<Factory>;
 
     public:
-        void createHero(const gg::Vector3f &Position);
-        void createEnemy(const gg::Vector3f &Position);
-        void createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
-        void createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation = gg::Vector3f());
-        void createPathFindingActor(const gg::Vector3f &Position);
-        void createHolyBomb(float _damage,float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse);
+        uint16_t createHero(const gg::Vector3f &Position);
+        uint16_t createEnemy(const gg::Vector3f &Position);
+        uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
+        uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation = gg::Vector3f());
+        uint16_t createPathFindingActor(const gg::Vector3f &Position);
+        uint16_t createHolyBomb(float _damage,float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse);
 
     private:
 
@@ -28,7 +28,7 @@ class Factory{
         void operator=(const Factory &orig) = delete;
 
         void ComponentInitializer();
-        
+
         ObjectManager* Manager;
         GameEngine* Engine;
 

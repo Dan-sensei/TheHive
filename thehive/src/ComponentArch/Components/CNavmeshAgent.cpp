@@ -82,13 +82,6 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
         cRigidBody->applyCentralForce(Counter);
     }
 
-
-    //gg::cout("Speed = " + std::to_string(gg::Modulo(cRigidBody->getVelocity())));
-    //gg::cout(std::to_string(abs(cos(angle))));
-
-    //gg::cout("X " + std::to_string(force.Z) + " | Y " + std::to_string(force.Y) + " | Z " + std::to_string(force.Z));
-
-    //cRigidBody->applyCentralForce(force);
     if(gg::Modulo(cRigidBody->getXZVelocity()) < MAXSPEED)
         cRigidBody->applyCentralForce(moveVector);
 
@@ -117,8 +110,12 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
     return gg::ST_TRUE;
 }
 
-void CNavmeshAgent::SetDestination(uint16_t Target){
-    Singleton<Pathfinding>::Instance()->A_Estrella(currentWaypointID, Target, Waypoints);
+void CNavmeshAgent::SetDestination(const gg::Vector3f &Target){
+    Singleton<Pathfinding>::Instance()->FindPath(cTransform->getPosition(), Target, Waypoints);
+    if(Waypoints.empty()){
+        gg::cout("No hay camino");
+        return;
+    }
     currentlyMovingTowardsTarget = true;
 }
 

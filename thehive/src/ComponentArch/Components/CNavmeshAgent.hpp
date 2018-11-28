@@ -30,7 +30,7 @@ class CNavmeshAgent : public IComponent {
         gg::EMessageStatus MHandler_SETPTRS ();
         gg::EMessageStatus MHandler_UPDATE  ();
 
-        void SetDestination(uint16_t Target);
+        void SetDestination(const gg::Vector3f &Target);
         bool HasDestination();
 
 
