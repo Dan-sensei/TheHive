@@ -4,14 +4,22 @@
 #include <list>
 #include "ComponentArch/Message.hpp"
 
-#include <BT/RandomSelector.hpp>
-#include <BT/RandomSequence.hpp>
-#include <BT/Action.hpp>
-#include <BT/Sequence.hpp>
-#include <BT/Selector.hpp>
+//#include <BT/RandomSelector.hpp>
+//#include <BT/RandomSequence.hpp>
+//#include <BT/Action.hpp>
+//#include <BT/Sequence.hpp>
+//#include <BT/Selector.hpp>
+#include <Util.hpp>
 
 #include "CAgent.hpp"
 #include "CTransform.hpp"
+
+#include "EventSystem/Blackboard.hpp"
+#include "EventSystem/BData.hpp"
+#include "EventSystem/BInt.hpp"
+#include "EventSystem/BFloat.hpp"
+#include "EventSystem/BVector3f.hpp"
+#include "EventSystem/BBool.hpp"
 
 
 //std::list  <TriggerRecordStruct*>  hola;
@@ -26,159 +34,33 @@
 //    nDeltaTime=0;
 //    vPos=_vPos;
 //}
+CTransform* CAIEnem::PlayerTransform;     //  Punteros a otras componentes
 
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
-:cTransform(nullptr),cAgent(nullptr), Engine(nullptr),
+:cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr),
  type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen)
 {
-    /*
-    Action* andar_r= new Action(ANDAR_RAND);
-    Action* rango= new Action(RANGO);
-    Action* giro= new Action(GIRAR);
-    Action* move_to= new Action(MOVER);
-    Action* com= new Action(COMER);
-
-    m_Children.push_back(andar_r);
-    m_Children.push_back(rango);
-    m_Children.push_back(giro);
-    m_Children.push_back(move_to);
-    m_Children.push_back(com);
-
-    RandomSequence* sec1= new RandomSequence();
-    sec1->addChild(rango);
-    sec1->addChild(giro);
-    m_Children.push_back(sec1);
-
-    RandomSequence*  sec2= new RandomSequence();
-    sec2->addChild(sec1);
-    sec2->addChild(move_to);
-    sec2->addChild(com);
-    m_Children.push_back(sec2);
-
-
-    RandomSelector* selec1=  new RandomSelector();
-    selec1->addChild(andar_r);
-    selec1->addChild(sec2);
-    m_Children.push_back(selec1);
-    */
-
-    //condiciones
-    /*
-    Action* a1= new Action(10_METROS);//10 metros del jugador?
-    Action* a2= new Action(3_ATACK);//hay tres atacando?
-    Action* a3= new Action(ON_RANGE);//estoy a rango?
-    Action* a4= new Action(IN_PLACE);//no estoy en el lugar?
-    Action* a5= new Action(PLAYER_SEEN);//he visto al jugador?
-    Action* a6= new Action(PLAYER_SEEING);//estoy viendo al jugador?
-    //acciones
-    Action* a7= new Action(MOVE_AROUND);//rondar al jugador
-    Action* a8= new Action(BLOCK);//bloquear el camino
-    Action* a9= new Action(MOVE_TO_PLAYER);//moverse hacia el jugador
-    Action* a10= new Action(HIT);//golpear
-    Action* a11= new Action(MOVE_TO_LAST_POS_KWON);//mover ultima pos
-    Action* a12= new Action(JUST_MOVE);//mover por el mapa
-
-
-    m_Children.push_back(a1);
-    m_Children.push_back(a2);
-    m_Children.push_back(a3);
-    m_Children.push_back(a4);
-    m_Children.push_back(a5);
-    m_Children.push_back(a6);
-    m_Children.push_back(a7);
-    m_Children.push_back(a8);
-    m_Children.push_back(a9);
-    m_Children.push_back(a10);
-    m_Children.push_back(a11);
-    m_Children.push_back(a12);
-
-
-    Sequence* sec1= new Sequence();//6
-    sec1->addChild(a1);
-    sec1->addChild(a7);
-    Selector* sel1= new Selector();//5
-    sel1->addChild(sec1);
-    sel1->addChild(a8);
-    Sequence* sec2= new Sequence();//6
-    sec2->addChild(a2);
-    sec2->addChild(sel1);
-    Selector* sel2= new Selector();//5
-    sel2->addChild(sec2);
-    sel2->addChild(a9);
-    Sequence* sec3= new Sequence();//6
-    sec3->addChild(a3);
-    sec3->addChild(a10);
-    Selector* sel3= new Selector();//5
-    sel3->addChild(sec3);
-    sel3->addChild(sel2);
-    Sequence* sec4= new Sequence();//6
-    sec4->addChild(a6);
-    sec4->addChild(sel3);
-
-
-    Sequence* sec5= new Sequence();//6
-    sec5->addChild(a4);
-    sec5->addChild(a11);
-    Selector* sel4= new Selector();//5
-    sel4->addChild(sec5);
-    sel4->addChild(a12);
-    Sequence* sec6= new Sequence();//6
-    sec6->addChild(a5);
-    sec6->addChild(sel4);
-
-
-    Selector* sel5= new Selector();//5
-    sec5->addChild(sec4);
-    sec5->addChild(sec6);
-    sec5->addChild(a12);
-
-
-
-    m_Children.push_back(sec1);
-    m_Children.push_back(sec2);
-    m_Children.push_back(sec3);
-    m_Children.push_back(sec4);
-    m_Children.push_back(sec5);
-    m_Children.push_back(sec6);
-
-    m_Children.push_back(sel1);
-    m_Children.push_back(sel2);
-    m_Children.push_back(sel3);
-    m_Children.push_back(sel4);
-    m_Children.push_back(sel5);
-
-
-
-    BT= new BehaviorTree(sel5);
-    */
-
-    //BT->tick();
-
-
-    //des/activar eventos sonoros
-
-
-    playerOnRange=false;
-    enfado=0;
-    //vPos=cTransform->getPosition;
-    //CAIEnem(data->dwTriggerFlags,gg::Vector3f _vPos(cTransform->X,cTransform->Y,cTransform->Z));
-    // Si le pasamos cosas, convertimos el void* a la estructura inicializadora para acceder a los elementos
+    // void* a la estructura inicializadora para acceder a los elementos
 }
 
 CAIEnem::~CAIEnem() {
-    for (size_t i = 0; i < m_Children.size(); i++) {
-        //std::cout << "borra" << i<<'\n';
-        delete m_Children[i];
-    }
-    //std::cout << "llega" << '\n';
-    //delete BT;
+    delete arbol;
 }
-void CAIEnem::enemyseen(TriggerRecordStruct* cdata){
+void CAIEnem::enemyseen(){
 //
-playerPos=cdata->vPos;
-playerSeen=true;
-playerOnRange=true;
+data->setData("playerPos",new BVector3f(PlayerTransform->getPosition()));
+data->setData("playerSeen",new BBool(true));
+data->setData("playerSeeing",new BBool(true));
+
+//data->setData("playerOnRange",new BBool(true));
+//
+}
+void CAIEnem::enemyrange(){
+//
+//data->setData("playerPos",new BVector3f(cdata->vPos));
+data->setData("playerOnRange",new BBool(true));
+//data->setData("playerOnRange",new BBool(true));
 //
 }
 
@@ -192,10 +74,28 @@ void CAIEnem::initComponent() {
 }
 
 void CAIEnem::Init(){
-
+    enfado=0;
     Engine = Singleton<GameEngine>::Instance();
+    data= new Blackboard();
+    //int id_dado=getEntityID();
+    //std::cout << "id dado:" <<id_dado<< '\n';
+    data->setData("id",new BInt(getEntityID()));
+    data->setData("playerSeeing",new BBool(false));
+    data->setData("playerOnRange",new BBool(false));
+    data->setData("playerSeen",new BBool(false));
+    data->setData("playerPos",new BVector3f(gg::Vector3f(20,20,20)));
+    data->setData("destino",new BVector3f(gg::Vector3f(50,50,50)));
+    //std::cout << "arbol1" << '\n';
+    //std::cout << "creado" << '\n';
+    arbol=new Treecontroller(data);
+    //std::cout << "creadowii" << '\n';
 
-    //  Inicializar punteros a otras compnentes
+    //std::cout << "arbol2" << '\n';
+    Vrange=50;
+    Arange=15;
+
+    playerOnRange=false;
+    enfado=0;
     MHandler_SETPTRS();
 }
 
@@ -235,19 +135,51 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
 }
 
 gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
-    // UPDATE
-    //setposition
-    //CAIEnem(cTransform->getPosition);
-    if(enfado==0){
-        enfado ++;
-        //BT.tick();
-        //BT.tick();
-        //BT->tick();
-        //BT->tick();
+    //std::cout << "entrando" << '\n';
+    float dist =gg::DIST(PlayerTransform->getPosition(),cTransform->getPosition());
+    if(dist<Vrange){
+        if(!data->getBData("playerSeeing")->getBool()){
+            gg::cout("visto");
+            enemyseen();
+        }
+        if(dist<Arange){
+            if(!data->getBData("playerOnRange")->getBool()){
+                gg::cout("rango");
+                enemyrange();
+            }
+
+
+        }
+        else{
+            if(data->getBData("playerOnRange")->getBool()){
+
+                data->setData("playerOnRange",new BBool(false));
+                gg::cout("fuera de rango");
+            }
+
+        }
+
 
     }
-    //std::cout << "updatetrig" << '\n';
-
+    else{
+        if(data->getBData("playerSeeing")->getBool())
+        {
+            data->setData("playerSeeing",new BBool(false));
+            gg::cout("dejo de verlo");
+        }
+    }
+    //if(dist<range){
+    //}
+    //if(dist<range){
+    //}
+    //enfado++;
+    //if(enfado<50){
+    //    std::cout << "iteracion" <<enfado<< '\n';
+        //BT->tick();
+    //std::cout << "entrando" << '\n';
+    arbol->update();
+    //std::cout << "saliendo" << '\n';
+    //}
     return gg::ST_TRUE;
 
 }

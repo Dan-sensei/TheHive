@@ -10,5 +10,7 @@ class Selector : public Composite{
       Behaviors::iterator m_CurrentChild;
       virtual void onInitialize();
       virtual Status update();
+      virtual void onTerminate(Status state);
+
 };
 #endif

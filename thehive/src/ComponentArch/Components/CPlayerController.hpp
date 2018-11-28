@@ -11,10 +11,11 @@
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Message.hpp>
+#include <GameAI/Hability.hpp>
 
 #include <Singleton.hpp>
 
-
+//class Hability;
 class CCamera;
 class CTransform;
 class CRigidBody;
@@ -46,7 +47,7 @@ class CPlayerController : public IComponent {
         ObjectManager* Manager;
         GameEngine* Engine;
         ggDynWorld* world;
-
+        Hability hab;
         CTransform* cTransform;
         CRigidBody* cRigidBody;
         CCamera *camera;

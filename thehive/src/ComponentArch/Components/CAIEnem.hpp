@@ -14,11 +14,15 @@
 
 #include <ComponentArch/Message.hpp>
 #include <ComponentArch/Enum.hpp>
-#include <BT/BehaviorTree.hpp>
+//#include <BT/BehaviorTree.hpp>
 #include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 
 #include <Singleton.hpp>
-                                                //            punteros a otras componentes
+#include "EventSystem/Blackboard.hpp"
+#include <GameAI/Treecontroller.hpp>
+
+
+                                    //            punteros a otras componentes
 
 class CAgent;
 class GameEngine;        //  [OPCIONAL] Si necesitas acceder a algún método de GameEngine
@@ -41,34 +45,40 @@ class CAIEnem : public IComponent {
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
         gg::EMessageStatus MHandler_UPDATE  ();
 
-        void enemyseen(TriggerRecordStruct* cdata);
+        void enemyseen();
+        void enemyrange();
+
 
         //new Blackboard datos*;
         //dato add("type",TIPO_EENEMYTYPE,4)
         //dato add("type",TIPO_EENEMYTYPE,4)
         gg::EEnemyType type;
         float agresividad;
+        float Vrange;
+        float Arange;
         gg::Vector3f playerPos;
         bool playerSeen;
 
         //des/activar eventos sonoros
-
+        Blackboard* data;
 
         bool playerOnRange;
         float enfado;
-        BehaviorTree* BT;
+        //BehaviorTree* BT;
+        Treecontroller* arbol;
 
 
 
         //uint16_t getEntityID();upda
 
 
+        static CTransform* PlayerTransform;     //  Punteros a otras componentes
 
     private:
         //CAIEnem(unsigned long _dwTriggerFlags,gg::Vector3f _vPos);
 
-        using Behaviors = std::vector<Behavior*>;
-        Behaviors m_Children;
+        //using Behaviors = std::vector<Behavior*>;
+        //Behaviors m_Children;
 
 
         GameEngine* Engine;

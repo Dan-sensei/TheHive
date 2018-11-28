@@ -7,6 +7,7 @@
 #include "CGun.hpp"
 #include "CRigidBody.hpp"
 #include "CTransform.hpp"
+#include "CAIEnem.hpp"
 
 
 
@@ -133,10 +134,17 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         // NO TIENE BALAS O ARMA
         CGun* Gun = new CGun(10,1,50);
         oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
-    }else if(_pRec->eTriggerType & kTrig_EnemyNear){
-        //CAIEnem->enemyseen();
+    }//else if(_pRec->eTriggerType & kTrig_EnemyNear){
+        //CAIEnem->enemyseen(_pRec);
+        //CAIEnem->enemyseen(_pRec);
+        //CAIEnem* enem=static_cast<CAIEnem*>(Singleton<ObjectManager>::Instance()->getComponent(gg::AIENEM,getEntityID()));
+        //enem->enemyseen(_pRec);
+        // = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,data->getBData("id")->getInt());
+        //static_cast<CAIEnem*>(Singleton<ObjectManager>::Instance()->enemyseen(_pRec));
 
-    }
+        //cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+
+    //}
 
 
 

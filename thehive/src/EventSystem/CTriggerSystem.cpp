@@ -44,10 +44,11 @@ void CTriggerSystem::PulsoTrigger(
         for(unsigned long i=0; i<CAgent::hola.size();++i)
         {
           pAgent=*it2;
-
+          //std::cout << "id" <<pAgent->nCAgentID<<"trig"<<pAgent->GetTriggerFlags()<< '\n';
             //Does agent respond to trigger?
             if(!(pRec.eTriggerType & pAgent->GetTriggerFlags()))
               continue;
+
             //is source the agent itself?
             if(pRec.idSource==pAgent->nCAgentID)
               continue;
@@ -59,6 +60,7 @@ void CTriggerSystem::PulsoTrigger(
             //handletriger return true if the agent responded
             //to the trigger
             pAgent->onTriggerEnter(&pRec);
+            it2++;
       }
 
 }
@@ -224,7 +226,7 @@ TriggerRecordStruct::TriggerRecordStruct(
     std::chrono::high_resolution_clock::time_point  begin = std::chrono::high_resolution_clock::now();
 
 
-    nTimeStamp=std::chrono::high_resolution_clock::now();;// eso o sucedaneo
+    nTimeStamp=std::chrono::high_resolution_clock::now();// eso o sucedaneo
     nExpirationTime=_fDuration;
     bDynamicSourcePos=_bDynamicSourcePos;
 }

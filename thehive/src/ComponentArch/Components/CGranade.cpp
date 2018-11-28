@@ -60,7 +60,7 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
             TData mes;
             mes.add(kDat_damage,damage);
             EventSystem->RegisterTriger(kTrig_Explosion,1,0,gg::Vector3f(currentPosition.X,currentPosition.Y,currentPosition.Z), radius, 50,false,mes);
-
+            //EventSystem->PulsoTrigger(kTrig_Explosion,0,gg::Vector3f(currentPosition.X,currentPosition.Y,currentPosition.Z),50,mes);
             if(tipo==1||tipo==2){
                 //std::cout << "entramos 2" << '\n';
                 //if(tipo==1){

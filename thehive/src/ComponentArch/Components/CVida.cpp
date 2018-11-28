@@ -18,7 +18,7 @@ void CVida::quitarvida(){
     vida--;
     if(vida==0){
         //destory
-        Manager->removeEntity(getEntityID());
+        //Manager->removeEntity(getEntityID());
 
     }
     std::cout << "vida:" <<vida << '\n';

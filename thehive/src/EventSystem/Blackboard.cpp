@@ -14,8 +14,10 @@ Blackboard::~Blackboard(){
 void Blackboard::setData(const std::string Target, BData* Data){
     auto DataFound = BDataMap.find(Target);
 
-    if(DataFound != BDataMap.end())
+    if(DataFound != BDataMap.end()){
+        delete DataFound->second;//
         DataFound->second = Data;
+    }
     else
         BDataMap.insert(std::make_pair(Target, Data));
 

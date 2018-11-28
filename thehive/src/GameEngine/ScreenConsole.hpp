@@ -14,11 +14,14 @@ class ScreenConsole{
     friend class Singleton<ScreenConsole>;
     friend class GameEngine;
     public:
+        void setprogress(float prog);
         void DisplayDebug();
         void AddTextToBuffer(const std::string &Text, const gg::Color &color);
         void AddImage(std::string palabra,std::string source  ,float _posx,float _posy);
-
     private:
+        float perc;
+        float ancho;
+        float alto;
         ScreenConsole();
         ScreenConsole(const ScreenConsole &orig) = delete;
 
@@ -37,7 +40,6 @@ class ScreenConsole{
         };
         std::list<BufferText> BUFFER;
         std::map <std::string,ImageHUD>IMAGE_BUFFER;
-        
 };
 
 

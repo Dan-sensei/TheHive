@@ -4,5 +4,17 @@ enum Hojas {
     GIRAR,
     RANGO,
     MOVER,
+    TEN_METROS,
+    THREE_ATACK,
+    ON_RANGE,
+    IN_PLACE,
+    PLAYER_SEEN,
+    PLAYER_SEEING,
+    MOVE_AROUND,
+    BLOCK,
+    MOVE_TO_PLAYER,
+    HIT,
+    MOVE_TO_LAST_POS_KWON,
+    JUST_MOVE,
     NUM_ACCIONES
 };
