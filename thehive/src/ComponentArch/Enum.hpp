@@ -14,6 +14,7 @@ namespace gg{
         GUN,
         PATHFINDING,
         AIENEM,
+        CLOCK,
         //HEALTH,
         //RESPECT,
         //DANINOSABEPROGRAMAR

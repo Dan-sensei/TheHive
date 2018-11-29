@@ -100,7 +100,7 @@ namespace gg{
     struct Vector2f{
         Vector2f(float _X = 0, float _Y = 0);
         Vector2f(const Vector2f &orig);
-        
+
         Vector2f operator* (const float &multiplier);
 
         float X, Y;
@@ -129,6 +129,15 @@ namespace gg{
 
         uint8_t R, G, B;
         float Alpha;
+    };
+
+    struct RBActionStruct{
+        RBActionStruct();
+        RBActionStruct(float,float,float);
+        RBActionStruct(const RBActionStruct &orig);
+
+
+        float vX,vY,vZ;
     };
 };
 

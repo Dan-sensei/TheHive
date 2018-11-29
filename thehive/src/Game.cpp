@@ -79,27 +79,46 @@ Game::~Game(){
 }
 
 void Game::RUN(){
+    auto sF = Singleton<Factory>::Instance();
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-    Singleton<Factory>::Instance()->createHero(gg::Vector3f(700, 60, 0),true);
-    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 20));
-    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 30));
-    Singleton<Factory>::Instance()->createEnemy(gg::Vector3f(740, 60, 40));
+    sF->createHero(gg::Vector3f(700, 100, 0),false);
+    sF->createEnemy(gg::Vector3f(740, 100, 20));
+    sF->createEnemy(gg::Vector3f(740, 100, 30));
+    sF->createEnemy(gg::Vector3f(740, 100, 40));
 
-    Singleton<Factory>::Instance()->createCollisionableStaticModel(
-        "assets/Models/CIUDAD/PROTOTIPO3/PROTOTIPO_CIUDAD.obj",
-        "assets/Models/CIUDAD/PROTOTIPO3/PROTOTIPO_CIUDAD.bullet",
-        "assets/Models/CIUDAD/PROTOTIPO3/PROTOTIPO_CIUDAD.png",
-        gg::Vector3f(700, 175, 0)
+    gg::Vector3f mapPos(700,120,0);
+    sF->createCollisionableStaticModel(
+        "assets/Models/CIUDAD/PROTOTIPO4/PROTOTIPO_CIUDAD.obj",
+        "assets/Models/CIUDAD/PROTOTIPO4/PROTOTIPO_CIUDAD.bullet",
+        "assets/Models/CIUDAD/PROTOTIPO4/PROTOTIPO_CIUDAD.png",
+        mapPos
     );
 
     // Armas
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 20),0);
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 40),1);
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 60),2);
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 80),3);
-    Singleton<Factory>::Instance()->createCollectableWeapon(gg::Vector3f(700, 50, 100),4);
+    sF->createCollectableWeapon(gg::Vector3f(700, 100, 20),0);
+    sF->createCollectableWeapon(gg::Vector3f(700, 100, 40),1);
+    sF->createCollectableWeapon(gg::Vector3f(700, 100, 60),2);
+    sF->createCollectableWeapon(gg::Vector3f(700, 100, 80),3);
+    sF->createCollectableWeapon(gg::Vector3f(700, 100, 100),4);
+
+    // Eventos?
+    uint16_t idEx = sF->createCollisionableDynamicModel(
+        "assets/Models/Cube.obj",
+        "assets/BoundingBoxes/Cube-dynamic.bullet",
+        "assets/Textures/Domino.jpg",
+        gg::Vector3f(mapPos.X+425, mapPos.Y-17, mapPos.Z+134));
+    sF->createTouchableObject(gg::Vector3f(mapPos.X+425, mapPos.Y-23, mapPos.Z+134),idEx,gg::Vector3f(0,0.1,0));
+
+    ////////////////////////////////////////////////////////////////
+    // TABLA MOLONA DE CONVERSION DE LA POSICION EN EL ESPACIO 3D //
+    ////////////////////////////////////////////////////////////////
+    //              X        Y       Z                            //
+    // ---------------------------------------------------------- //
+    // BELNDER  -> bX,      bY,     bZ                            //
+    // JEUGO    -> jX-bX,   jY+bZ,  jZ-bY                         //
+    ////////////////////////////////////////////////////////////////
 
     // Print memory
     //p  = reinterpret_cast<uint8_t*>(2) - 16;
@@ -113,7 +132,6 @@ void Game::RUN(){
     // std::cout << "BEGIN GAME LOOP" << '\n';
     gg::cout("Testing", gg::Color(255, 0, 0, 1));
 
-    world->setDebug(false);
     Singleton<Pathfinding>::Instance()->SetDebug(true);
     while(Engine->isWindowOpen()) {
 

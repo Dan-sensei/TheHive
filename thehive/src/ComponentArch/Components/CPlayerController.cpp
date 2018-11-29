@@ -53,6 +53,8 @@ void CPlayerController::Init(){
     pulsacion_q = false;
     pulsacion_dash = false;
     pulsacion_f = false;
+    debug1 = false;
+    debug2 = false;
 
     // El heroe siempre empezara con un arma secundaria
     // Pistola por defecto
@@ -149,7 +151,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     if(Engine->key(RUN_KEY)){
         gg::cout("RUN!");
-        MULT_FACTOR = 2;
+        MULT_FACTOR = 3.5;
     }
     if(Engine->key(DASH_KEY)){
         if(!pulsacion_dash){
@@ -244,7 +246,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
             CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
             Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
-            CRigidBody* RigidBody = new CRigidBody(false,"", gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
+            CRigidBody* RigidBody = new CRigidBody(false,false,"", gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
             Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
 
             CGranade* Granade = new CGranade(FORCE_FACTOR*20,40,1);
@@ -262,11 +264,11 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     }
 
     if(Engine->key(WEAPON_KEY) && secondWeapon){
-        if(!pulsacion_q){
+        CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
+        if(!pulsacion_q && !aux->isReloading()){
             pulsacion_q = true;
             if(isPrincipal){
                 isPrincipal = false;
-                CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
 
                 Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
                 Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
@@ -279,7 +281,6 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
             else{
                 // SIEMPRE entrara primero aqui
                 isPrincipal = true;
-                CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
 
                 Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
                 Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
@@ -295,6 +296,25 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     else{
         pulsacion_q = false;
     }
+
+    // <DEBUG>
+    if(Engine->key(gg::GG_F1)){
+        if(!debug1){
+            debug1 = true;
+            debug2? debug2=false : debug2=true;
+            world->setDebug(debug2);
+        }
+    }
+    else{
+        debug1 = false;
+    }
+    // </DEBUG>
+
+    // gg::cout(
+    //     "(X:"+std::to_string(cTransform->getPosition().X)+
+    //     ",Y:"+std::to_string(cTransform->getPosition().Y)+
+    //     ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
+    // );
 
     return gg::ST_TRUE;
 

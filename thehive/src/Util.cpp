@@ -185,6 +185,18 @@ gg::Color::Color(const Color &orig){
     Alpha = orig.Alpha;
 }
 
+gg::RBActionStruct::RBActionStruct()
+:vX(0),vY(0),vZ(0)
+{}
+gg::RBActionStruct::RBActionStruct(float _vX,float _vY,float _vZ)
+:vX(_vX),vY(_vY),vZ(_vZ)
+{}
+gg::RBActionStruct::RBActionStruct(const RBActionStruct &orig){
+    vX = orig.vX;
+    vY = orig.vY;
+    vZ = orig.vZ;
+}
+
 float gg::genFloatRandom(float min, float max){
     std::random_device rd;
     std::default_random_engine gen(rd());

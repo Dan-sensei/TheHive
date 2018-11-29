@@ -18,14 +18,19 @@
 #include <BulletWorldImporter/btBulletWorldImporter.h>
 #include <Bullet/ggDynWorld.hpp>
 
+#include <EventSystem/Blackboard.hpp>
+#include <EventSystem/BRbData.hpp>
+
 class ggDynWorld;
 
 //  Forward declaration de otras componentes que incluyas
 class CTransform;
+class CClock;
 
 class CRigidBody : public IComponent {
     public:
         CRigidBody(
+            bool kinematic,
             bool loadedFromPath,
             std::string path,
             float x, float y, float z,
@@ -45,6 +50,7 @@ class CRigidBody : public IComponent {
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
         gg::EMessageStatus MHandler_UPDATE  ();
+        gg::EMessageStatus MHandler_DOACTION(Message);
         void MHandler_XPLOTATO(TriggerRecordStruct* cdata);
 
         // Funciones de CRigidBody
@@ -63,10 +69,11 @@ class CRigidBody : public IComponent {
         gg::Vector3f getBodyPosition();
         gg::Vector3f getLinearVelocity();
 
+        // Funciones del mapa
+        void updateCTransformPosition();
+        void Upd_MoverObjeto();
     private:
-
         ggDynWorld* world;
-
 
         //  Punteros a otras componentes
         CTransform* cTransform;
@@ -79,6 +86,11 @@ class CRigidBody : public IComponent {
 
         // Variables de 'ayuda'
         btBulletWorldImporter*      fileLoader;
+
+        // Update personalizado, Amstrad wannabe
+        using pFunc = void (CRigidBody::*)();
+        std::map<EnumActionType, pFunc> mapaFuncUpdate;
+        pFunc actualUpd;
 };
 
 #endif

@@ -213,6 +213,22 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
             return;
         }
     }
+    else if((_pRec->eTriggerType & kTrig_Touchable) && nCAgentID == 1 && Engine->key(gg::GG_E)){
+        bool isDone = _pRec->data.find(kDat_Done);
+        if(!isDone){
+            uint16_t eIdObj     = _pRec->data.find(kDat_EntId);
+            int actionId        = _pRec->data.find(kDat_Action);
+            gg::cout("ID: "+std::to_string(eIdObj)+" || ACTION: "+std::to_string(actionId));
+
+            // Esta done la accion del jugador
+            _pRec->data.clearData(kDat_Done);
+            _pRec->data.add(kDat_Done,true);
+
+            // Ahora le toca a la entidad hacer la accion en concreto
+            Message mes(gg::M_EVENT_ACTION,&actionId);
+            oManager->sendMessageToEntity(eIdObj,mes);
+        }
+    }
     //std::cout << "OnTriggerStay  sale" <<nCAgentID<< '\n';
 
 }

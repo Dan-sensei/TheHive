@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "CTransform.hpp"
+#include "CClock.hpp"
 
 #define PI 3.14159265359
 #define FORCE_FACTOR    200.f
@@ -9,6 +10,7 @@
 std::vector<const char*> names;
 
 CRigidBody::CRigidBody(
+    bool kinematic,
     bool loadedFromPath,
     std::string path,
     float x, float y, float z,
@@ -104,6 +106,12 @@ CRigidBody::CRigidBody(
         // Add the body to the dynamics world
         world->addRigidBody(body);
     }
+
+    if(kinematic){
+        // CF_KINEMATIC_OBJECT = 2
+        body->setCollisionFlags(2);
+    }
+
     body->setAngularFactor(btVector3(0,0,0));
 }
 
@@ -122,39 +130,8 @@ CRigidBody::~CRigidBody() {
     // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
 
     if(fileLoader){
-        // for(int i=0 ; i<fileLoader->getNumBvhs() ; i++){
-        //     // Lo borro cuando CRigidBody se destruya
-        //     delete fileLoader->getBvhByIndex(i);
-        // }
-        // for(int i=0 ; i<fileLoader->getNumConstraints() ; i++){
-        //     delete fileLoader->getConstraintByIndex(i);
-        // }
-        // for(int i=0 ; i<fileLoader->getNumTriangleInfoMaps() ; i++){
-        //     delete fileLoader->getTriangleInfoMapByIndex(i);
-        // }
-        // for(int i=0 ; i<fileLoader->getNumRigidBodies() ; i++){
-        //     btCollisionObject* _obj = fileLoader->getRigidBodyByIndex(i);
-        //     btRigidBody* _body = btRigidBody::upcast(_obj);
-        //     // if(_body && _body->getMotionState()){
-        //     //     delete _body->getMotionState();
-        //     // }
-        //     world->removeCollisionObject(_obj);
-        //     delete _obj;
-        // }
-        // for(int i=0 ; i<fileLoader->getNumCollisionShapes() ; i++){
-        //     // delete fileLoader->getCollisionShapeByIndex(i);
-        // }
-        // std::cout << "AFTER-----------" << '\n';
-        // std::cout << "Bvhs:             " << fileLoader->getNumBvhs() << '\n';
-        // std::cout << "Constraints:      " << fileLoader->getNumConstraints() << '\n';
-        // std::cout << "TriangleInfoMaps: " << fileLoader->getNumTriangleInfoMaps() << '\n';
-        // std::cout << "RigidBodies:      " << fileLoader->getNumRigidBodies() << '\n';
-        // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
-        // delete obj;
         fileLoader->deleteAllData();
         delete fileLoader;
-        // fileLoader = nullptr;
-        // --------------------
     }
     else{
         // Cuando no carga desde fichero
@@ -169,15 +146,19 @@ void CRigidBody::initComponent() {
 
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_UPDATE);
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_SETPTRS);
+    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_EVENT_ACTION);
     //Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_XPLOTATO);
 
 }
 
 void CRigidBody::Init(){
-
     world->setGravity(0,-10,0);
 
-    //body->setAngularFactor(btVector3(0, 1, 0));
+    // Hacer set del mapa de punteros a funcion
+    mapaFuncUpdate.insert(std::make_pair(Action_AbrirPuerta,&CRigidBody::Upd_MoverObjeto));
+    mapaFuncUpdate.insert(std::make_pair(Action_MoverObjeto,&CRigidBody::Upd_MoverObjeto));
+    actualUpd = nullptr;
+
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
 }
@@ -185,9 +166,10 @@ void CRigidBody::Init(){
 
 gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)       return MHandler_UPDATE  ();
+    if      (m.mType == gg::M_UPDATE)               return MHandler_UPDATE      ();
     //else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO(m);
-    else if (m.mType == gg::M_SETPTRS)      return MHandler_SETPTRS ();
+    else if (m.mType == gg::M_SETPTRS)              return MHandler_SETPTRS     ();
+    else if (m.mType == gg::M_EVENT_ACTION)         return MHandler_DOACTION    (m);
 
     return gg::ST_ERROR;
 }
@@ -195,6 +177,21 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+
+gg::EMessageStatus CRigidBody::MHandler_DOACTION(Message _mes){
+    int *action = static_cast<int*>(_mes.mData);
+    // gg::cout("ACTION: "+std::to_string(*action));
+
+    // Mapa con funciones de update
+    EnumActionType eAction = static_cast<EnumActionType>(*action);
+    auto it = mapaFuncUpdate.find(eAction);
+    if(it == mapaFuncUpdate.end()){
+        return gg::ST_ERROR;
+    }
+    actualUpd = mapaFuncUpdate[eAction];
+
+    return gg::ST_TRUE;
+}
 
 void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
     if(cTransform){
@@ -242,32 +239,9 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
     body->activate(true);
 
-    btTransform trans;
-    body->getMotionState()->getWorldTransform(trans);
-
-    if(cTransform){
-        cTransform->setPosition(
-            gg::Vector3f(
-                static_cast<float>(trans.getOrigin().getX()),
-                static_cast<float>(trans.getOrigin().getY()),
-                static_cast<float>(trans.getOrigin().getZ())
-            )
-        );
-
-        // if(body->getInvMass()){
-        //     btQuaternion rot = trans.getRotation();
-        //     float _X, _Y, _Z;
-        //     rot.getEulerZYX(_Z,_Y,_X);
-        //     cTransform->setRotation(
-        //         gg::Vector3f(
-        //             static_cast<float>(_X/PI*180),
-        //             static_cast<float>(_Y/PI*180),
-        //             static_cast<float>(_Z/PI*180)
-        //         )
-        //     );
-        // }
-
-    }
+    if(actualUpd)
+        (this->*actualUpd)();
+    updateCTransformPosition();
 
     return gg::ST_TRUE;
 }
@@ -316,4 +290,89 @@ gg::Vector3f CRigidBody::getVelocity(){
 }
 gg::Vector2f CRigidBody::getXZVelocity(){
     return gg::Vector2f(body->getLinearVelocity().getX(), body->getLinearVelocity().getZ());
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------
+// Funciones del mapa
+// ----------------------------------------------------------------------------------------------------------------------------
+void CRigidBody::updateCTransformPosition(){
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+
+    if(cTransform){
+        cTransform->setPosition(getBodyPosition());
+
+        // if(getEntityID()==11){
+        //     gg::cout(
+        //         " -- POS-T -> ("+std::to_string(cTransform->getPosition().X)+
+        //         ","+std::to_string(cTransform->getPosition().Y)+
+        //         ","+std::to_string(cTransform->getPosition().Z)+")"
+        //     );
+        //     gg::cout(
+        //         " -- POS-B -> ("+std::to_string(trans.getOrigin().getX())+
+        //         ","+std::to_string(trans.getOrigin().getY())+
+        //         ","+std::to_string(trans.getOrigin().getZ())+")"
+        //     );
+        // }
+
+
+        // if(body->getInvMass()){
+        //     btQuaternion rot = trans.getRotation();
+        //     float _X, _Y, _Z;
+        //     rot.getEulerZYX(_Z,_Y,_X);
+        //     cTransform->setRotation(
+        //         gg::Vector3f(
+        //             static_cast<float>(_X/PI*180),
+        //             static_cast<float>(_Y/PI*180),
+        //             static_cast<float>(_Z/PI*180)
+        //         )
+        //     );
+        // }
+    }
+}
+
+void CRigidBody::Upd_MoverObjeto(){
+    ObjectManager *manager = Singleton<ObjectManager>::Instance();
+    CClock *clock = static_cast<CClock*>(manager->getComponent(gg::CLOCK,getEntityID()));
+
+    if(clock){
+        if(clock->hasEnded()){
+            gg::cout(" -- CLOCK END");
+            manager->removeComponentFromEntity(gg::CLOCK,getEntityID());
+            actualUpd = nullptr;
+        }
+        else{
+            // Update del clock
+            gg::cout(" -- CLOCK DUR -> "+std::to_string(clock->getActualTime()));
+            if(body->isKinematicObject()){
+                Blackboard b;
+                BRbData *data = static_cast<BRbData*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())));
+
+                // gg::cout(
+                //     "("+std::to_string(rbS.vX)+
+                //     ","+std::to_string(rbS.vY)+
+                //     ","+std::to_string(rbS.vZ)+")"
+                // );
+
+                btTransform trans;
+                body->getMotionState()->getWorldTransform(trans);
+
+                trans.setOrigin(btVector3(
+                    trans.getOrigin().getX()+data->getRbData().vX,
+                    trans.getOrigin().getY()+data->getRbData().vY,
+                    trans.getOrigin().getZ()+data->getRbData().vZ
+                ));
+
+                body->getMotionState()->setWorldTransform(trans);
+            }
+        }
+    }
+    else{
+        float dur = 1500;
+        clock = new CClock();
+        clock->startChrono(dur);
+        gg::cout(" -- CLOCK INIT ON "+std::to_string(dur));
+        manager->addComponentToEntity(clock,gg::CLOCK,getEntityID());
+    }
+
 }

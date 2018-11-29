@@ -61,6 +61,9 @@ class CPlayerController : public IComponent {
         bool pulsacion_dash;
         bool pulsacion_f;
 
+        bool debug1;
+        bool debug2;
+
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
         CGun *secondWeapon;
 };

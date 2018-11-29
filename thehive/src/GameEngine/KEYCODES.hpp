@@ -6,6 +6,8 @@
 
 namespace gg{
     enum KEYCODES{
+        GG_F1 = irr::EKEY_CODE::KEY_F1,
+        
         GG_A = irr::EKEY_CODE::KEY_KEY_A,
         GG_B = irr::EKEY_CODE::KEY_KEY_B,
         GG_D = irr::EKEY_CODE::KEY_KEY_D,

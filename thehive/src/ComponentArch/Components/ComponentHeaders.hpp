@@ -3,6 +3,7 @@
 	#include <ComponentArch/Components/CCamera.hpp>
 	#include <ComponentArch/Components/CPlayerController.hpp>
 	#include <ComponentArch/Components/CRigidBody.hpp>
+	#include <ComponentArch/Components/CClock.hpp>
 	#include <ComponentArch/Components/ComponentHeaders.hpp>
 	#include <ComponentArch/Components/CGranade.hpp>
 	#include <ComponentArch/Components/CAIEnem.hpp>

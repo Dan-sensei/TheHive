@@ -4,7 +4,7 @@
 
 #define CAMERA_ATENUATION 7
 #define HEIGHT 1.5
-#define RADIUS 3
+#define RADIUS 5
 
 CCamera::CCamera(bool _b)
 :mod(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr),
