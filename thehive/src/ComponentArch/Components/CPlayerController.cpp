@@ -233,7 +233,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         pulsacion_granada=false;
     }
 
-    gg::cout(cTransform->getPosition());
+    //gg::cout(cTransform->getPosition());
 
     if(Engine->key(gg::GG_Q))
         Engine->Close();

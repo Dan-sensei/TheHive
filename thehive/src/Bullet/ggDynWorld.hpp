@@ -35,6 +35,18 @@ public:
     gg::Vector3f getRaycastVector();
     void applyForceToRaycastCollisionBody(gg::Vector3f,gg::Vector3f,gg::Vector3f);
 
+
+    //  ---
+    //  Do a ray cast test! If it hits something it will return true, and the collision point on te 3rd
+    //  parameter, if not, it will return false, an it'll leave CollisionResult untouched
+    //===================================================================================================
+    bool RayCastTest(const gg::Vector3f &Start, const gg::Vector3f &End, gg::Vector3f &CollisionResult);
+
+    //  ---
+    //  Do a ray cast test! And just returns true or false
+    //===================================================================================================
+    bool DoesItHitSomething(const gg::Vector3f &Start, const gg::Vector3f &End);
+
     void removeRigidBody(btRigidBody*);
     void removeCollisionObject(btCollisionObject*);
 

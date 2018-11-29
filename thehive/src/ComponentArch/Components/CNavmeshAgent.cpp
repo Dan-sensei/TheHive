@@ -5,7 +5,7 @@
 #include <cmath>
 
 CNavmeshAgent::CNavmeshAgent()
-:Engine(nullptr), cTransform(nullptr), currentWaypointID(11), currentlyMovingTowardsTarget(false)
+:Engine(nullptr), cTransform(nullptr), currentWaypointID(11), currentlyMovingTowardsTarget(false), SightDistance(300000)
 {
 
 }
@@ -41,6 +41,7 @@ gg::EMessageStatus CNavmeshAgent::processMessage(const Message &m) {
 gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
     cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    world = Singleton<ggDynWorld>::Instance();
     return gg::ST_TRUE;
 }
 
@@ -52,12 +53,29 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
     if(!cTransform)     return gg::ST_ERROR;
     if(!currentlyMovingTowardsTarget) return gg::ST_IGNORED;
 
-
     gg::Vector3f* target = &Waypoints.top().Position;
     gg::Vector3f moveVector = *target - cTransform->getPosition();
 
     float modulo= gg::Modulo(moveVector);
-    //if((target->Y > cTransform->getPosition().Y && modulo < 3) || modulo <= Waypoints.top().Radius) {
+
+    bool stop = false;
+
+    do{
+        if(Waypoints.size() == 1) break;
+
+        Waypoint backup = Waypoints.top();
+        Waypoints.pop();
+
+        if( gg::FastDIST(cTransform->getPosition(), Waypoints.top().Position) > SightDistance ||
+            world->DoesItHitSomething(cTransform->getPosition() + gg::Vector3f(0, 10, 0), Waypoints.top().Position + gg::Vector3f(0, 10, 0))
+        ){
+
+            Waypoints.push(backup);
+            stop = true;
+        }
+    } while(!stop);
+
+
     if(modulo <= MAXSPEED) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
@@ -72,6 +90,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
 
     moveVector = (moveVector / modulo)*FORCE_FACTOR;
 
+    //  Debug!
     Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 10, 0), cTransform->getPosition()+(moveVector/FORCE_FACTOR)*100+gg::Vector3f(0, 10, 0), gg::Color(0,255,0,1));
     Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 10, 0), cTransform->getPosition()+gg::Vector3f(0, 10, 0)+cRigidBody->getVelocity()*5, gg::Color(255,255,0,1));
 
@@ -83,7 +102,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
 
     gg::Vector3f Counter = gg::Vector3f();
     if(abs(cos(angle)) < 0.9) {
-        Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.08, 0, cRigidBody->getXZVelocity().Y * -0.08)*FORCE_FACTOR*abs(sin(angle));
+        Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.12, 0, cRigidBody->getXZVelocity().Y * -0.12)*FORCE_FACTOR*abs(sin(angle));
         cRigidBody->applyCentralForce(Counter);
     }
 

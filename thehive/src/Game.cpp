@@ -3,12 +3,14 @@
 #include <iostream>
 #include <cstdint>
 #include <string>
+#include <stack>
 
 #include "ComponentArch/ObjectManager.hpp"
 #include "GameEngine/Camera.hpp"
 #include "Singleton.hpp"
 
 #include "GameAI/Pathfinding.hpp"
+#include "GameAI/NavmeshStructs.hpp"
 
 #include "GameEngine/ScreenConsole.hpp"
 
@@ -105,13 +107,15 @@ void Game::RUN(){
 
     //60 -450
     //132 - 550
+
     CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
     Agent->SetDestination(gg::Vector3f(-500, 0, -240));
+
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
     gg::cout("Testing", gg::Color(255, 0, 0, 1));
 
-    world->setDebug(true);
+    world->setDebug(false);
     Singleton<Pathfinding>::Instance()->SetDebug(true);
     while(Engine->isWindowOpen()) {
 

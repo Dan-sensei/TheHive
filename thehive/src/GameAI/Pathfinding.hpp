@@ -26,6 +26,7 @@ class Pathfinding{float funnelCheck (gg::Vector3f origin, gg::Vector3f current, 
         ~Pathfinding();
 
         void FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output);
+        void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
         void resetGraph();
         void print();
 
@@ -42,7 +43,6 @@ class Pathfinding{float funnelCheck (gg::Vector3f origin, gg::Vector3f current, 
         Pathfinding operator=(const Pathfinding &orig) = delete;
 
         void printStats();
-        void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
         std::vector<Node> GRAPH;
         std::vector<std::vector<Connection>> GConnections;
         std::priority_queue<Node*, std::vector<Node*>, Comparator> OpenList;
@@ -51,7 +51,6 @@ class Pathfinding{float funnelCheck (gg::Vector3f origin, gg::Vector3f current, 
 
         //Debug
         std::vector<Billboard> IDs;
-        std::vector<Billboard> Faces;
         bool Debug;
         uint16_t goal;
 };

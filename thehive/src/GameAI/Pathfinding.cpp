@@ -26,12 +26,12 @@ Pathfinding::Pathfinding()
     //std::cout << "GRAPH CREATED!" << '\n';
 
     std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
-    uint16_t cons;
 
     for(uint16_t i = 0; i < GRAPH.size(); ++i){
         std::cout << "  -- " << i << " = " << GRAPH[i] << '\n';
     }
 
+    uint16_t cons = 0;
     //std::cout << "Connections:" << '\n';
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         //std::cout << "[" << i << "] => ";
@@ -44,12 +44,12 @@ Pathfinding::Pathfinding()
 
     std::cout << " ->" << cons << " Connections created!" << '\n';
     std::cout << " ->" << FACES.size() << " Faces created!" << '\n';
-    for(uint16_t i = 0; i < FACES.size(); ++i){
-        std::cout << "   Face " << i << " = " << FACES[i].ID << '\n';
-        for(uint16_t j = 0; j < FACES[i].Portals.size(); ++j)
-            std::cout << " " << FACES[i].Portals[j];
-        std::cout << '\n';
-    }
+    // for(uint16_t i = 0; i < FACES.size(); ++i){
+    //     std::cout << "   Face " << i << " = " << FACES[i].ID << '\n';
+    //     for(uint16_t j = 0; j < FACES[i].Portals.size(); ++j)
+    //         std::cout << " " << FACES[i].Portals[j];
+    //     std::cout << '\n';
+    // }
     //std::cout << "Test" << '\n';
     //GRAPH[0].EstimatedCost = 10;
     //GRAPH[2].EstimatedCost = 20;
@@ -125,6 +125,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     resetGraph();
     OpenList = std::priority_queue<Node*, std::vector<Node*>, Comparator>();
 
+    gg::cout("PATH! " + std::to_string(START) + " -> " + std::to_string(GOAL));
     //{
     //    uint16_t c = 0;
     //    for(uint16_t i = 0; i < GRAPH.size(); ++i)
@@ -187,11 +188,14 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
         //std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
+        uint16_t nodes = 0;
         while(CurrentNode->ID != START) {
             Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
             Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
+            ++nodes;
         }
+        gg::cout("PATH " + std::to_string(nodes));
     }
 
     printStats();
@@ -255,9 +259,11 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
 
     uint16_t StartPortal = FACES[StartFN].Portals[0];
     if(FACES[StartFN].Portals.size() > 1){
-        float currentDist = gg::DIST(START, GRAPH[FACES[StartFN].Portals[0]].Position);
+        float currentDist = gg::FastDIST(START, GRAPH[FACES[StartFN].Portals[0]].Position);
         for(uint16_t i = 1; i < FACES[StartFN].Portals.size(); ++i){
-            if(gg::DIST(START, GRAPH[FACES[StartFN].Portals[i]].Position) < currentDist) {
+            float newMin = gg::FastDIST(START, GRAPH[FACES[StartFN].Portals[i]].Position);
+            if(newMin < currentDist) {
+                currentDist = newMin;
                 StartPortal = FACES[StartFN].Portals[i];
             }
         }
@@ -265,9 +271,11 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
 
     uint16_t EndPortal = FACES[GoalFN].Portals[0];
     if(FACES[GoalFN].Portals.size() > 1){
-        float currentDist = gg::DIST(START, GRAPH[FACES[GoalFN].Portals[0]].Position);
+        float currentDist = gg::FastDIST(GOAL, GRAPH[FACES[GoalFN].Portals[0]].Position);
         for(uint16_t i = 1; i < FACES[GoalFN].Portals.size(); ++i){
-            if(gg::DIST(START, GRAPH[FACES[GoalFN].Portals[i]].Position) < currentDist) {
+            float newMin = gg::FastDIST(GOAL, GRAPH[FACES[GoalFN].Portals[i]].Position);
+            if(newMin < currentDist) {
+                currentDist = newMin;
                 EndPortal = FACES[GoalFN].Portals[i];
             }
         }

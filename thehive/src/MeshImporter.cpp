@@ -235,7 +235,7 @@ bool MeshImporter::importNavmeshV2(
                 Edges.push_back(NewEdge);
         }
     }
-
+    std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
     Connections.resize(ID_Counter);
     for(uint16_t i = 0; i < FACES.size(); ++i) {
         if(FACES[i].size() > 1){

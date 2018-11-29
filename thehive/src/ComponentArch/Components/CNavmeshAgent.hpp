@@ -14,7 +14,7 @@
 #include <Singleton.hpp>
 
 #include "CRigidBody.hpp"
-
+#include <Bullet/ggDynWorld.hpp>
 
 class CNavmeshAgent : public IComponent {
     friend class Factory;
@@ -33,19 +33,22 @@ class CNavmeshAgent : public IComponent {
         void SetDestination(const gg::Vector3f &Target);
         bool HasDestination();
 
+        std::stack<Waypoint> Waypoints;
 
     private:
         CNavmeshAgent();
         CNavmeshAgent(const CNavmeshAgent &orig) = delete;
 
         GameEngine* Engine;
+        ggDynWorld* world;
+
         CTransform* cTransform;
-        std::stack<Waypoint> Waypoints;
         uint16_t currentWaypointID;
 
         CRigidBody* cRigidBody;
 
         bool        currentlyMovingTowardsTarget;
+        float SightDistance;
 };
 
 #endif
