@@ -166,7 +166,7 @@ uint16_t Factory::createCollectableWeapon(const gg::Vector3f &_position, int _we
     return weapon;
 }
 
-uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uint16_t &_id, const gg::Vector3f &vel){
+uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uint16_t &_id, const gg::Vector3f &vel, const float &_dur){
     uint16_t t_obj = Manager->createEntity();
     Material w_mat("assets/Textures/e61.png");
 
@@ -174,6 +174,7 @@ uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uin
     Manager->addComponentToEntity(transform, gg::TRANSFORM, t_obj);
 
     CRenderable_3D *renderable = new CRenderable_3D("assets/Models/Cube.obj", w_mat);
+    // CRenderable_3D *renderable = new CRenderable_3D("assets/Models/cuboGrande.obj", w_mat);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, t_obj);
 
     // CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet",  _position.X,_position.Y,_position.Z, -1,-1,-1, 25, 0,0,0);
@@ -185,9 +186,10 @@ uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uin
     mes.add(kDat_Done,false);
 
     Blackboard b;
-    std::string str = "DATA_"+std::to_string(_id);
     BRbData *data = new BRbData(gg::RBActionStruct(vel.X,vel.Y,vel.Z));
-    b.GLOBAL_setData(str,data);
+    BFloat *data_time = new BFloat(_dur);
+    b.GLOBAL_setData("DATA_"+std::to_string(_id)            ,data);
+    b.GLOBAL_setData("DATA_"+std::to_string(_id)+"_TIME"    ,data_time);
 
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Touchable,1,t_obj,_position, 5, 0, true, mes);
 

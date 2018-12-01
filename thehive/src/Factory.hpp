@@ -10,6 +10,7 @@
 
 #include <EventSystem/Blackboard.hpp>
 #include <EventSystem/BRbData.hpp>
+#include <EventSystem/BFloat.hpp>
 
 template <typename T>
 class Singleton;
@@ -26,7 +27,7 @@ class Factory{
         uint16_t createPathFindingActor(const gg::Vector3f &Position);
         uint16_t createHolyBomb(float _damage,float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse);
         uint16_t createCollectableWeapon(const gg::Vector3f&, int);
-        uint16_t createTouchableObject(const gg::Vector3f&, const uint16_t&, const gg::Vector3f&);
+        uint16_t createTouchableObject(const gg::Vector3f&, const uint16_t&, const gg::Vector3f&, const float&);
     private:
 
         Factory();

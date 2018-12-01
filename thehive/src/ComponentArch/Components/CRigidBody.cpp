@@ -340,10 +340,14 @@ void CRigidBody::Upd_MoverObjeto(){
             gg::cout(" -- CLOCK END");
             manager->removeComponentFromEntity(gg::CLOCK,getEntityID());
             actualUpd = nullptr;
+
+            Blackboard b;
+            b.GLOBAL_removeData("DATA_"+std::to_string(getEntityID()));
+
         }
         else{
             // Update del clock
-            gg::cout(" -- CLOCK DUR -> "+std::to_string(clock->getActualTime()));
+            // gg::cout(" -- CLOCK DUR -> "+std::to_string(clock->getActualTime()));
             if(body->isKinematicObject()){
                 Blackboard b;
                 BRbData *data = static_cast<BRbData*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())));
@@ -368,11 +372,16 @@ void CRigidBody::Upd_MoverObjeto(){
         }
     }
     else{
-        float dur = 1500;
+        Blackboard b;
+        BFloat *data = static_cast<BFloat*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())+"_TIME"));
+
+        float dur = data->getFloat();
         clock = new CClock();
         clock->startChrono(dur);
         gg::cout(" -- CLOCK INIT ON "+std::to_string(dur));
         manager->addComponentToEntity(clock,gg::CLOCK,getEntityID());
+
+        b.GLOBAL_removeData("DATA_"+std::to_string(getEntityID())+"_TIME");
     }
 
 }

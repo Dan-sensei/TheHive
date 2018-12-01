@@ -3,7 +3,6 @@
 
 #include <vector>
 
-
 #include <Singleton.hpp>
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables punteros a otras componentes
@@ -20,6 +19,7 @@
 
 #include <EventSystem/Blackboard.hpp>
 #include <EventSystem/BRbData.hpp>
+#include <EventSystem/BFloat.hpp>
 
 class ggDynWorld;
 

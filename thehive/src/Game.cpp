@@ -83,7 +83,8 @@ void Game::RUN(){
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-    sF->createHero(gg::Vector3f(700, 100, 0),false);
+    // sF->createHero(gg::Vector3f(700, 100, 0),false);
+    sF->createHero(gg::Vector3f(1097, 120, 272),false);
     sF->createEnemy(gg::Vector3f(740, 100, 20));
     sF->createEnemy(gg::Vector3f(740, 100, 30));
     sF->createEnemy(gg::Vector3f(740, 100, 40));
@@ -105,11 +106,18 @@ void Game::RUN(){
 
     // Eventos?
     uint16_t idEx = sF->createCollisionableDynamicModel(
-        "assets/Models/Cube.obj",
-        "assets/BoundingBoxes/Cube-dynamic.bullet",
+        "assets/Models/ModelsForEvents/door1.obj",
+        "assets/Models/ModelsForEvents/door1.bullet",
         "assets/Textures/Domino.jpg",
-        gg::Vector3f(mapPos.X+425, mapPos.Y-17, mapPos.Z+134));
-    sF->createTouchableObject(gg::Vector3f(mapPos.X+425, mapPos.Y-23, mapPos.Z+134),idEx,gg::Vector3f(0,0.1,0));
+        gg::Vector3f(mapPos.X+412, mapPos.Y-13, mapPos.Z+122));
+    sF->createTouchableObject(gg::Vector3f(mapPos.X+425, mapPos.Y-23, mapPos.Z+134),idEx,gg::Vector3f(0,0.1,0),3200);
+
+    idEx = sF->createCollisionableDynamicModel(
+        "assets/Models/ModelsForEvents/door2.obj",
+        "assets/Models/ModelsForEvents/door2.bullet",
+        "assets/Textures/Domino.jpg",
+        gg::Vector3f(mapPos.X+331.65, mapPos.Y-18, mapPos.Z+45.78));
+    sF->createTouchableObject(gg::Vector3f(mapPos.X+354, mapPos.Y-23, mapPos.Z+38),idEx,gg::Vector3f(0,-0.035,0),8000);
 
     ////////////////////////////////////////////////////////////////
     // TABLA MOLONA DE CONVERSION DE LA POSICION EN EL ESPACIO 3D //
