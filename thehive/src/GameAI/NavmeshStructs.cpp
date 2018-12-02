@@ -1,16 +1,14 @@
 #include "NavmeshStructs.hpp"
 
 //  FACES
-Face::Face(uint16_t _ID, const gg::Vector3f _TL,  const gg::Vector3f _TR,  const gg::Vector3f _BR,  const gg::Vector3f _BL)
-:ID(_ID), TL(_TL), TR(_TR), BR(_BR), BL(_BL)
+Face::Face(uint16_t _ID, const gg::Vector3f _TL, const gg::Vector3f _BR)
+:ID(_ID), TL(_TL), BR(_BR)
 {}
 
 Face::Face(const Face &orig){
     Portals =   orig.Portals;
     TL      =   orig.TL;
-    TR      =   orig.TR;
     BR      =   orig.BR;
-    BL      =   orig.BL;
     ID      =   orig.ID;
 }
 

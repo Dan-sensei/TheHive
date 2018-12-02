@@ -182,23 +182,16 @@ bool MeshImporter::importNavmeshV2(
         for(uint16_t i = 1; i < minX.size(); ++i){
             if(minX[i].Z > TL.Z)
                 TL = minX[i];
-
-            if(minX[i].Z < BL.Z)
-                BL = minX[i];
         }
 
         gg::Vector3f TR = maxX.front();
         gg::Vector3f BR = maxX.front();
         for(uint16_t i = 1; i < maxX.size(); ++i){
-            if(maxX[i].Z > TR.Z)
-                TR = maxX[i];
-
             if(maxX[i].Z < BR.Z)
                 BR = maxX[i];
         }
 
-
-        SQUARE_FACES.emplace_back(j,  TL, TR, BR, BL);
+        SQUARE_FACES.emplace_back(j, TL, BR);
 
         for(uint16_t i = 0; i < Face.mNumIndices; ++i){
             Edge NewEdge(Face.mIndices[i], Face.mIndices[(i+1)%Face.mNumIndices]);
@@ -238,13 +231,11 @@ bool MeshImporter::importNavmeshV2(
     std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
     Connections.resize(ID_Counter);
     for(uint16_t i = 0; i < FACES.size(); ++i) {
-        if(FACES[i].size() > 1){
-            for(uint16_t j = 0; j < FACES[i].size(); ++j) {
-                SQUARE_FACES[i].Portals.push_back(FACES[i][j].ID);
-                for(uint16_t k = 0; k < FACES[i].size(); ++k) {
-                    if(FACES[i][j].ID != FACES[i][k].ID)
-                        Connections[FACES[i][j].ID].emplace_back(0, FACES[i][j].ID, FACES[i][k].ID/*, vertex[FACES[i][j].vertex1], vertex[FACES[i][j].vertex2]*/);
-                }
+        for(uint16_t j = 0; j < FACES[i].size(); ++j) {
+            SQUARE_FACES[i].Portals.push_back(FACES[i][j].ID);
+            for(uint16_t k = 0; k < FACES[i].size(); ++k) {
+                if(FACES[i][j].ID != FACES[i][k].ID)
+                    Connections[FACES[i][j].ID].emplace_back(0, FACES[i][j].ID, FACES[i][k].ID/*, vertex[FACES[i][j].vertex1], vertex[FACES[i][j].vertex2]*/);
             }
         }
     }

@@ -15,11 +15,7 @@ struct Comparator{
     bool operator() (const Node* N1, const Node* N2);
 };
 
-class Pathfinding{float funnelCheck (gg::Vector3f origin, gg::Vector3f current, gg::Vector3f target){
-    gg::Vector3f oc = current - origin;
-    gg::Vector3f ot =  target - origin;
-    return ot.X*oc.Y*0;
-}
+class Pathfinding {
     friend class Comparator;
     friend class Singleton<Pathfinding>;
     public:
@@ -37,6 +33,7 @@ class Pathfinding{float funnelCheck (gg::Vector3f origin, gg::Vector3f current, 
         void SetDebug(bool flag);
         bool isDebugging();
 
+        void clear();   //  Provisional
     private:
         Pathfinding();
         Pathfinding(const Pathfinding &orig) = delete;
@@ -51,6 +48,7 @@ class Pathfinding{float funnelCheck (gg::Vector3f origin, gg::Vector3f current, 
 
         //Debug
         std::vector<Billboard> IDs;
+        std::vector<Billboard> BillboardFaces;
         bool Debug;
         uint16_t goal;
 };

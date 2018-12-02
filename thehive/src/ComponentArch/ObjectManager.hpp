@@ -102,6 +102,8 @@ class ObjectManager{
         //========================================================================
         std::map<uint16_t, IComponent*> TypeToComponentMap[gg::NUM_COMPONENTS];
 
+
+
         //  ---
         //  Every position of this array, is a vector wich contains all the
         //  components types that expects to receive that kind of messge

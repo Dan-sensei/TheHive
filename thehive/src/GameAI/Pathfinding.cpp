@@ -44,12 +44,12 @@ Pathfinding::Pathfinding()
 
     std::cout << " ->" << cons << " Connections created!" << '\n';
     std::cout << " ->" << FACES.size() << " Faces created!" << '\n';
-    // for(uint16_t i = 0; i < FACES.size(); ++i){
-    //     std::cout << "   Face " << i << " = " << FACES[i].ID << '\n';
-    //     for(uint16_t j = 0; j < FACES[i].Portals.size(); ++j)
-    //         std::cout << " " << FACES[i].Portals[j];
-    //     std::cout << '\n';
-    // }
+    for(uint16_t i = 0; i < FACES.size(); ++i){
+        std::cout << "   Face " << i << " = " << FACES[i].ID << "  | P: ";
+        for(uint16_t j = 0; j < FACES[i].Portals.size(); ++j)
+            std::cout << " " << FACES[i].Portals[j];
+        std::cout << '\n';
+    }
     //std::cout << "Test" << '\n';
     //GRAPH[0].EstimatedCost = 10;
     //GRAPH[2].EstimatedCost = 20;
@@ -67,8 +67,7 @@ void Pathfinding::SetDebug(bool flag){
     Debug = flag;
 
     if(flag && IDs.empty()){
-        IDs.reserve(FACES.size()*4);
-        IDs.reserve(GRAPH.size());
+        IDs.resize(GRAPH.size());
         uint16_t i = GRAPH.size();
         while(i--){
 
@@ -76,29 +75,17 @@ void Pathfinding::SetDebug(bool flag){
             IDs[i].setText(std::to_string(i) );
             uint8_t color[4] = {1, 0, 0, 0};
             IDs[i].setColor(color);
-
         }
-        // uint16_t j = 0;
-        // for(uint16_t i = 0; i < FACES.size(); ++i){
-        //     uint8_t color[4] = {1, 0, 0, 0};
-        //
-        //     Singleton<GameEngine>::Instance()->createBillboard(IDs[j], FACES[i].TL + gg::Vector3f(0, 60+j*2, 0));
-        //     IDs[j].setText(std::to_string(FACES[i].ID) );
-        //     IDs[j].setColor(color);
-        //     ++j;
-        //     Singleton<GameEngine>::Instance()->createBillboard(IDs[j], FACES[i].TR + gg::Vector3f(0, 60+j*2, 0));
-        //     IDs[j].setText(std::to_string(FACES[i].ID) );
-        //     IDs[j].setColor(color);
-        //     ++j;
-        //     Singleton<GameEngine>::Instance()->createBillboard(IDs[j], FACES[i].BR + gg::Vector3f(0, 60+j*2, 0));
-        //     IDs[j].setText(std::to_string(FACES[i].ID) );
-        //     IDs[j].setColor(color);
-        //     ++j;
-        //     Singleton<GameEngine>::Instance()->createBillboard(IDs[j], FACES[i].BL + gg::Vector3f(0, 60+j*2, 0));
-        //     IDs[j].setText(std::to_string(FACES[i].ID) );
-        //     IDs[j].setColor(color);
-        //     ++j;
-        // }
+
+        BillboardFaces.resize(FACES.size());
+        uint16_t j = FACES.size();
+        while(j--){
+            uint8_t color[4] = {1, 0, 0, 0};
+
+            Singleton<GameEngine>::Instance()->createBillboard(BillboardFaces[j], FACES[j].TL + gg::Vector3f(0, 60+j*2, 0));
+            BillboardFaces[j].setText(std::to_string(FACES[j].ID) );
+            BillboardFaces[j].setColor(color);
+        }
     }
     else if(!flag && !IDs.empty()){
         IDs.clear();
@@ -209,17 +196,13 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     bool FoundStart = false;
     bool FoundGoal = false;
     for(uint16_t i = 0; i < FACES.size(); ++i) {
-        if(START.X > FACES[i].TR.X)
+
+        if(START.X < FACES[i].TL.X || START.Z > FACES[i].TL.Z)
             continue;
 
-        else if(START.X < FACES[i].TL.X)
+        else if(START.X > FACES[i].BR.X || START.Z < FACES[i].BR.Z)
             continue;
 
-        else if(START.Z < FACES[i].BR.Z)
-            continue;
-
-        else if (START.Z > FACES[i].TL.Z)
-            continue;
 
         StartFN = i;
         FoundStart = true;
@@ -227,16 +210,10 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     }
 
     for(uint16_t i = 0; i < FACES.size(); ++i) {
-        if(GOAL.X > FACES[i].TR.X)
+        if(GOAL.X < FACES[i].TL.X || GOAL.Z > FACES[i].TL.Z)
             continue;
 
-        else if(GOAL.X < FACES[i].TL.X)
-            continue;
-
-        else if(GOAL.Z < FACES[i].BR.Z)
-            continue;
-
-        else if (GOAL.Z > FACES[i].TL.Z)
+        else if(GOAL.X > FACES[i].BR.X || GOAL.Z < FACES[i].BR.Z)
             continue;
 
         GoalFN = i;
@@ -369,8 +346,11 @@ void Pathfinding::DroNodes(){
     color.B = 147;
     for(uint16_t i = 0; i < FACES.size(); ++i){
         Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + gg::Vector3f(0, 100, 0), color, 2);
-        Engine->Draw3DLine(FACES[i].TR, FACES[i].TR + gg::Vector3f(0, 100, 0), color, 2);
         Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + gg::Vector3f(0, 100, 0), color, 2);
-        Engine->Draw3DLine(FACES[i].BL, FACES[i].BL + gg::Vector3f(0, 100, 0), color, 2);
     }
+}
+
+void Pathfinding::clear(){  //  Provisional
+    IDs.clear();
+    BillboardFaces.clear();
 }

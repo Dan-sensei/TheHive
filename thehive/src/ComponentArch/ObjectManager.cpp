@@ -1,6 +1,9 @@
 #include "ObjectManager.hpp"
 //#include "Enum.hpp"
+#include <GameAI/Pathfinding.hpp>
+#include <Singleton.hpp>
 #include <iostream>
+
                      //  2^16
 #define MAX_ENTITIES 65536
 
@@ -40,6 +43,7 @@ void ObjectManager::clin(){
             ++it;
         };
     }
+    Singleton<Pathfinding>::Instance()->clear();    //  Provisional
 }
 
 

@@ -50,8 +50,8 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
 
 gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
 
-    if(!cTransform)     return gg::ST_ERROR;
-    if(!currentlyMovingTowardsTarget) return gg::ST_IGNORED;
+    if(!cTransform)                     return gg::ST_ERROR;
+    if(!currentlyMovingTowardsTarget)   return gg::ST_IGNORED;
 
     gg::Vector3f* target = &Waypoints.top().Position;
     gg::Vector3f moveVector = *target - cTransform->getPosition();
@@ -129,8 +129,6 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
         }
 
     }
-
-
     return gg::ST_TRUE;
 }
 
