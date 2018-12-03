@@ -4,6 +4,7 @@
 	#include <ComponentArch/Components/CNavmeshAgent.hpp>
 	#include <ComponentArch/Components/CPlayerController.hpp>
 	#include <ComponentArch/Components/CRigidBody.hpp>
+	#include <ComponentArch/Components/CVida.hpp>
 	#include <ComponentArch/Components/CClock.hpp>
 	#include <ComponentArch/Components/ComponentHeaders.hpp>
 	#include <ComponentArch/Components/CRenderable_3D.hpp>

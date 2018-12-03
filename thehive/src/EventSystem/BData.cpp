@@ -8,6 +8,9 @@ BData::~BData(){}
 int             BData::getInt(){
     return 0;
 }
+bool            BData::getBool(){
+    return false;
+}
 
 float           BData::getFloat(){
     return 0;

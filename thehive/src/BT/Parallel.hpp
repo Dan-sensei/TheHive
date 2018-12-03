@@ -17,11 +17,11 @@ class Parallel : public Composite{
      ~Parallel();
 
     protected:
-      Policy m_eSuccesPolicy;
-      Policy m_eFailurePolicy;
-
       virtual void onInitialize();
       virtual void onTerminate(Status state);
       virtual Status update();
+
+      Policy m_eSuccesPolicy;
+      Policy m_eFailurePolicy;
 };
 #endif

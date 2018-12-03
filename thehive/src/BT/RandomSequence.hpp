@@ -12,12 +12,12 @@ public:
 protected:
     RandomSequence(const RandomSequence &orig);
 
-  Behaviors::iterator m_CurrentChild;
-  std::vector<int> secuencia;
-  int max;
   virtual void onInitialize();
   virtual Status update();
 
+  Behaviors::iterator m_CurrentChild;
+  std::vector<int> secuencia;
+  int max;
 };
 
 #endif

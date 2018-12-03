@@ -7,6 +7,7 @@
 #include "CGun.hpp"
 #include "CRigidBody.hpp"
 #include "CTransform.hpp"
+#include "CAIEnem.hpp"
 
 
 

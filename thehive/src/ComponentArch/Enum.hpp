@@ -15,6 +15,7 @@ namespace gg{
         NAVMESHAGENT,
         AIENEM,
         CLOCK,
+        VIDA,
         //HEALTH,
         //RESPECT,
         //PABLONDEMADERASABEPROGRAMAR

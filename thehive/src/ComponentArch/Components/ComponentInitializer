@@ -3,6 +3,7 @@ void Factory::ComponentInitializer() {
 	CNavmeshAgent::initComponent();
 	CPlayerController::initComponent();
 	CRigidBody::initComponent();
+	CVida::initComponent();
 	CClock::initComponent();
 	CRenderable_3D::initComponent();
 	CGranade::initComponent();
