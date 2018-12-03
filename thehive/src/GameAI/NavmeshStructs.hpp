@@ -14,12 +14,11 @@ enum Type{
 };
 
 struct Face{
-    Face(uint16_t _ID, const gg::Vector3f _TL, const gg::Vector3f _BR);
+    Face(const gg::Vector3f _TL, const gg::Vector3f _BR);
     Face(const Face &orig);
 
     std::vector<uint16_t> Portals;
     gg::Vector3f TL, BR;
-    uint16_t ID;
 };
 
 struct Connection{

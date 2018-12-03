@@ -45,7 +45,7 @@ Pathfinding::Pathfinding()
     std::cout << " ->" << cons << " Connections created!" << '\n';
     std::cout << " ->" << FACES.size() << " Faces created!" << '\n';
     for(uint16_t i = 0; i < FACES.size(); ++i){
-        std::cout << "   Face " << i << " = " << FACES[i].ID << "  | P: ";
+        std::cout << "   Face " << i << "  | P: ";
         for(uint16_t j = 0; j < FACES[i].Portals.size(); ++j)
             std::cout << " " << FACES[i].Portals[j];
         std::cout << '\n';
@@ -83,7 +83,7 @@ void Pathfinding::SetDebug(bool flag){
             uint8_t color[4] = {1, 0, 0, 0};
 
             Singleton<GameEngine>::Instance()->createBillboard(BillboardFaces[j], FACES[j].TL + gg::Vector3f(0, 60+j*2, 0));
-            BillboardFaces[j].setText(std::to_string(FACES[j].ID) );
+            BillboardFaces[j].setText(std::to_string(j));
             BillboardFaces[j].setColor(color);
         }
     }
@@ -112,17 +112,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     resetGraph();
     OpenList = std::priority_queue<Node*, std::vector<Node*>, Comparator>();
 
-    gg::cout("PATH! " + std::to_string(START) + " -> " + std::to_string(GOAL));
-    //{
-    //    uint16_t c = 0;
-    //    for(uint16_t i = 0; i < GRAPH.size(); ++i)
-    //        if(GRAPH[i].Status == Type::UNVISITED) ++c;
-
-    //    std::cout << "GRAPH UNVISITED: " << c << '\n';
-    //    std::cout << "       OPENLIST: " << OpenList.size() << '\n';
-    //}
-
-    GRAPH[START].EstimatedCost = gg::DIST(GRAPH[START].Position, GRAPH[GOAL].Position);
+    GRAPH[START].EstimatedCost = gg::FastDIST(GRAPH[START].Position, GRAPH[GOAL].Position);
     GRAPH[START].Status = Type::OPEN;
     OpenList.push(&GRAPH[START]);
 
@@ -138,33 +128,36 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
         std::vector<Connection>* Connections = &GConnections[CurrentNode->ID];
         for(Connection c : *Connections) {
             float costToNode = CurrentNode->RealCost + c.Value;
+            float Heuristic = 0;
             Node* targetNode = &GRAPH[c.To];
+
+            bool isOpenNode = false;
+
             if (targetNode->Status == Type::CLOSED) {
 
                 if(targetNode->RealCost <= costToNode)
                     continue;
 
                 targetNode->Status = Type::OPEN;
-                OpenList.push(targetNode);
-
-                targetNode->EstimatedCost = targetNode->EstimatedCost - targetNode->RealCost;
-
+                Heuristic = targetNode->EstimatedCost - targetNode->RealCost;
             }
             else if (targetNode->Status == Type::OPEN)      {
                 if(targetNode->RealCost <= costToNode)
                     continue;
 
-                targetNode->EstimatedCost = targetNode->EstimatedCost - targetNode->RealCost;
+                isOpenNode = true;
+                Heuristic = targetNode->EstimatedCost - targetNode->RealCost;
             }
-            else {                                       //  Heurístic: Euclidean Distance
-                targetNode->EstimatedCost = costToNode + gg::DIST(targetNode->Position, GRAPH[GOAL].Position);
+            else {          //  Heurístic: Euclidean Distance^2
+                Heuristic = gg::FastDIST(targetNode->Position, GRAPH[GOAL].Position);
                 targetNode->Status = Type::OPEN;
-                OpenList.push(targetNode);
             }
 
             targetNode->RealCost = costToNode;
+            targetNode->EstimatedCost = costToNode + Heuristic;
             targetNode->Bitconnect = c;
 
+            if(!isOpenNode) OpenList.push(targetNode);
         } //FOR-LOOP end
 
         CurrentNode->Status = Type::CLOSED;
@@ -221,7 +214,6 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
         break;
     }
 
-    std::cout << "End -- Current: " << FoundStart << " | Goal: " << FoundGoal << '\n';
     if(!FoundStart || !FoundGoal){
         gg::cout("LA POSICION DEL JUGADOR O GOAL, NO ESTÁN EN NINGUN POLÍGONO", gg::Color(255, 0, 0, 1));
         return;

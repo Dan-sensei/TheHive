@@ -5,7 +5,7 @@
 #include <cmath>
 
 CNavmeshAgent::CNavmeshAgent()
-:Engine(nullptr), cTransform(nullptr), currentWaypointID(11), currentlyMovingTowardsTarget(false), SightDistance(300000)
+:Engine(nullptr), cTransform(nullptr), currentWaypointID(11), currentlyMovingTowardsTarget(false), SightDistance(200000)
 {
 
 }
@@ -53,11 +53,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
     if(!cTransform)                     return gg::ST_ERROR;
     if(!currentlyMovingTowardsTarget)   return gg::ST_IGNORED;
 
-    gg::Vector3f* target = &Waypoints.top().Position;
-    gg::Vector3f moveVector = *target - cTransform->getPosition();
-
-    float modulo= gg::Modulo(moveVector);
-
+    gg::Vector3f moveVector = Waypoints.top().Position - cTransform->getPosition();
     bool stop = false;
 
     do{
@@ -75,6 +71,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
         }
     } while(!stop);
 
+    float modulo= gg::Modulo(moveVector);
 
     if(modulo <= MAXSPEED) {
         currentWaypointID = Waypoints.top().ID;
@@ -101,7 +98,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
     float angle = atan2(det, dot);
 
     gg::Vector3f Counter = gg::Vector3f();
-    if(abs(cos(angle)) < 0.9) {
+    if(abs(cos(angle)) < 0.98) {
         Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.12, 0, cRigidBody->getXZVelocity().Y * -0.12)*FORCE_FACTOR*abs(sin(angle));
         cRigidBody->applyCentralForce(Counter);
     }

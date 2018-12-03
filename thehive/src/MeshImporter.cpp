@@ -191,7 +191,7 @@ bool MeshImporter::importNavmeshV2(
                 BR = maxX[i];
         }
 
-        SQUARE_FACES.emplace_back(j, TL, BR);
+        SQUARE_FACES.emplace_back(TL, BR);
 
         for(uint16_t i = 0; i < Face.mNumIndices; ++i){
             Edge NewEdge(Face.mIndices[i], Face.mIndices[(i+1)%Face.mNumIndices]);
@@ -224,8 +224,7 @@ bool MeshImporter::importNavmeshV2(
 
             }
 
-            if (!found)
-                Edges.push_back(NewEdge);
+            if (!found) Edges.push_back(NewEdge);
         }
     }
     std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
