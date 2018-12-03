@@ -84,16 +84,16 @@ void Game::RUN(){
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
     // sF->createHero(gg::Vector3f(700, 100, 0),false);
-    sF->createHero(gg::Vector3f(1097, 120, 272),false);
+    sF->createHero(gg::Vector3f(1061, 105, 344),false);
     sF->createEnemy(gg::Vector3f(740, 100, 20));
     sF->createEnemy(gg::Vector3f(740, 100, 30));
     sF->createEnemy(gg::Vector3f(740, 100, 40));
 
     gg::Vector3f mapPos(700,120,0);
     sF->createCollisionableStaticModel(
-        "assets/Models/CIUDAD/PROTOTIPO4/PROTOTIPO_CIUDAD.obj",
-        "assets/Models/CIUDAD/PROTOTIPO4/PROTOTIPO_CIUDAD.bullet",
-        "assets/Models/CIUDAD/PROTOTIPO4/PROTOTIPO_CIUDAD.png",
+        "assets/Models/CIUDAD/PROTOTIPO5/PROTOTIPO_CIUDAD.obj",
+        "assets/Models/CIUDAD/PROTOTIPO5/PROTOTIPO_CIUDAD.bullet",
+        "assets/Models/CIUDAD/PROTOTIPO5/PROTOTIPO_CIUDAD.png",
         mapPos
     );
 

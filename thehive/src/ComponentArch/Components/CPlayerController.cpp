@@ -9,7 +9,7 @@
 
 #define VEL_FACTOR          200.f
 #define MAX_ANGLE           12.f
-#define MAX_HERO_SPEED      5
+#define MAX_HERO_SPEED      4
 
 #define ROTATE_KEY          gg::GG_LCONTROL
 #define DASH_KEY            gg::GG_ALT
@@ -18,11 +18,9 @@
 #define RELOAD_KEY          gg::GG_R
 #define WEAPON_KEY          gg::GG_Q
 
-#define DASH_FACTOR         1.2f
-#define RUN_FACTOR          1.1f
 #define FORCE_FACTOR        400.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*20.f
-#define DASH_FORCE_FACTOR   FORCE_FACTOR/9.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*15.f
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/6.f
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
@@ -309,7 +307,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     else{
         debug1 = false;
     }
-    
+
     // gg::cout(
     //     "(X:"+std::to_string(cTransform->getPosition().X)+
     //     ",Y:"+std::to_string(cTransform->getPosition().Y)+

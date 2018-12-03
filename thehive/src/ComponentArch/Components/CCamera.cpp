@@ -3,8 +3,8 @@
 
 
 #define CAMERA_ATENUATION 7
-#define HEIGHT 1.5
-#define RADIUS 5
+#define HEIGHT 0.7
+#define RADIUS 2.5
 
 CCamera::CCamera(bool _b)
 :mod(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr),
@@ -106,13 +106,17 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     // Now it's time to set the rotation on the VERTICAL AXIS
     gg::Vector3f finalCameraPosition = cam->getPosition();
 
-    dist = RADIUS+2;
+    dist = RADIUS;
     angle = -newRotation.X*CAMERA_ATENUATION/400;
     float newY = dist * sin(angle);
     newZ = dist * cos(angle);
 
+    // gg::cout("sin(angle) = "+std::to_string(sin(angle)));
+    // gg::cout("cos(angle) = "+std::to_string(cos(angle)));
+
     finalCameraPosition.Y += newY;
     finalCameraPosition.Z += newZ;
+
 
     // Now set the 'OFFSET' to the nextPosition to cheat the player eyes
     gg::Vector3f finalYRVector(
@@ -130,6 +134,24 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
             camPosition.Z+finalXRVector.Z
         )
     );
+
+    // Perpendicular vector so set an offset to the right
+    gg::Vector3f ppV(
+        nextPosition.Z-camPosition.Z,
+        0,
+        -(nextPosition.X-camPosition.X)
+    );
+    ppV = gg::Normalice(ppV);
+
+    camPosition = cam->getPosition();
+    cam->setPosition(
+        gg::Vector3f(
+            camPosition.X+ppV.X,
+            camPosition.Y,
+            camPosition.Z+ppV.Z
+        )
+    );
+
 
     // Call to updateAbsolutePosition() to avoid perspective
     // and camera position problems
