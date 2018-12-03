@@ -18,7 +18,6 @@ struct Edge{
     uint16_t vertex2 = 0;
     uint16_t face = 0;
     uint16_t ID = 0;
-    bool operator==(const Edge &orig);
 };
 
 std::ostream& operator<<(std::ostream& os, const Edge &E);
@@ -36,7 +35,8 @@ class MeshImporter{
         bool importNavmeshV2(
             const std::string& pFile,
             std::vector<Node> &GRAPH,
-            std::vector<std::vector<Connection>> &Connections
+            std::vector<std::vector<Connection>> &Connections,
+            std::vector<Face> &SQUARE_FACES
         );
 
     private:

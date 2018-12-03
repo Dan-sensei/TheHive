@@ -14,23 +14,19 @@ class CTransform : public IComponent {
 
         //  Functions of IComponent
         static void initComponent();
-        //virtual gg::EMessageStatus processMessage();
-        virtual void Init();
 
 
         // Functions of this component
         gg::Vector3f getPosition();
         gg::Vector3f getRotation();
-        void setPosition(const gg::Vector3f &position);
-        void setRotation(const gg::Vector3f &rotation);
+        void setPosition(const gg::Vector3f &_Position);
+        void setRotation(const gg::Vector3f &_Rotation);
         void setScale(const gg::Vector3f &scale);
 
 
     private:
-
-        float  x,  y,  z;
-        float rx, ry, rz;
-
+        gg::Vector3f Position;
+        gg::Vector3f Rotation;
 };
 
 #endif

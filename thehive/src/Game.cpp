@@ -1,37 +1,21 @@
+#include "Game.hpp"
+
 #include <iostream>
 #include <cstdint>
-#include <iomanip>
-#include <map>
 #include <string>
+#include <stack>
 
-#include "Arena.hpp"
 #include "ComponentArch/ObjectManager.hpp"
 #include "GameEngine/Camera.hpp"
-#include "Game.hpp"
-#include "Util.hpp"
 #include "Singleton.hpp"
 
-#include "ComponentArch/Components/CAgent.hpp"
-#include <EventSystem/EnumTriggerType.hpp>
 #include "GameAI/Pathfinding.hpp"
+#include "GameAI/NavmeshStructs.hpp"
 
-
-#include "Bullet/ggDynWorld.hpp"
 #include "GameEngine/ScreenConsole.hpp"
 
-#include "BT/BehaviorTree.hpp"
-#include "BT/RandomSelector.hpp"
-#include "BT/RandomSequence.hpp"
-#include "BT/Action.hpp"
-
-#include "EventSystem/Blackboard.hpp"
-#include "EventSystem/BData.hpp"
-#include "EventSystem/BInt.hpp"
-#include "EventSystem/BFloat.hpp"
-
-#include "GameEngine/Billboard.hpp"
-
 #include "Factory.hpp"
+#include <ComponentArch/Components/CNavmeshAgent.hpp>
 
 #define MOVEMENT_SPEED 1.f
 
@@ -83,13 +67,14 @@ void Game::RUN(){
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
+
     // sF->createHero(gg::Vector3f(700, 100, 0),false);
-    sF->createHero(gg::Vector3f(1097, 120, 272),false);
+    sF->createHero(gg::Vector3f(1797, 120, 272),false);     //600
     sF->createEnemy(gg::Vector3f(740, 100, 20));
     sF->createEnemy(gg::Vector3f(740, 100, 30));
     sF->createEnemy(gg::Vector3f(740, 100, 40));
 
-    gg::Vector3f mapPos(700,120,0);
+    gg::Vector3f mapPos(1400,120,0);
     sF->createCollisionableStaticModel(
         "assets/Models/CIUDAD/PROTOTIPO4/PROTOTIPO_CIUDAD.obj",
         "assets/Models/CIUDAD/PROTOTIPO4/PROTOTIPO_CIUDAD.bullet",
@@ -128,14 +113,50 @@ void Game::RUN(){
     // JEUGO    -> jX-bX,   jY+bZ,  jZ-bY                         //
     ////////////////////////////////////////////////////////////////
 
-    // Print memory
-    //p  = reinterpret_cast<uint8_t*>(2) - 16;
-    //printRawMem(p, 16, 10);
-    //// std::cout << "--------------\n";
 
-    //Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-    //Model tioPablomanesQueNoEstaTanMal = engine.createModel("assets/Models/obradearte/algo.obj");
-    //tioPablomanesQueNoEstaTanMal.assignMaterial(moradoDeLos80);
+    //factory->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
+    uint16_t Dummy = sF->createPathFindingActor(gg::Vector3f(150, 83, 450));
+    //factory->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
+
+    uint16_t Navmesh = Manager->createEntity();
+    Material yelo("assets/NavMeshes/L4D2Nav.png");
+
+    CTransform* Transform = new CTransform(gg::Vector3f(0,0,0), gg::Vector3f(0,0,0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Navmesh);
+
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/NavMeshes/L4D2Nav.obj", yelo);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
+
+    uint16_t NavmeshGround = Manager->createEntity();
+    CRigidBody* RigidBody = new CRigidBody(false, false,"", 0, -10, 0, 680,10,800, 0, 0,0,0, 0.2);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, NavmeshGround);
+
+
+
+
+
+    uint16_t Wall_1 = Manager->createEntity();
+    CRigidBody* RigidBody_1 = new CRigidBody(false, false,"", -280, 0, -100, 160, 100,265, 0, 0,0,0, 0.2f);
+    Manager->addComponentToEntity(RigidBody_1, gg::RIGID_BODY, Wall_1);
+
+    uint16_t Wall_2 = Manager->createEntity();
+    CRigidBody* RigidBody_2 = new CRigidBody(false, false,"", -80, 0, 410, 215, 100,320, 0, 0,0,0, 0.2f);
+    Manager->addComponentToEntity(RigidBody_2, gg::RIGID_BODY, Wall_2);
+
+    uint16_t Wall_3 = Manager->createEntity();
+    CRigidBody* RigidBody_3 = new CRigidBody(false, false,"", 110, 0, 70, 80, 100, 32, 0, 0,0,0, 0.2f);
+    Manager->addComponentToEntity(RigidBody_3, gg::RIGID_BODY, Wall_3);
+
+    uint16_t Wall_4 = Manager->createEntity();
+    CRigidBody* RigidBody_4 = new CRigidBody(false, false,"", -25, 0, 17, 100, 125, 28, 0, 0,0,0, 0.2f);
+    Manager->addComponentToEntity(RigidBody_4, gg::RIGID_BODY, Wall_4);
+
+    //60 -450
+    //132 - 550
+
+    CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
+    Agent->SetDestination(gg::Vector3f(-500, 0, -240));
+
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
     gg::cout("Testing", gg::Color(255, 0, 0, 1));

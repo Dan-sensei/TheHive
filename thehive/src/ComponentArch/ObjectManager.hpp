@@ -39,7 +39,7 @@ class ObjectManager{
         //  ---
         //  Delete component from given EntityID
         //========================================================================
-        void removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID);
+        void removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID, bool Erase = false);
         void removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID);
 
         //  ---
@@ -102,6 +102,8 @@ class ObjectManager{
         //
         //========================================================================
         std::map<uint16_t, IComponent*> TypeToComponentMap[gg::NUM_COMPONENTS];
+
+
 
         //  ---
         //  Every position of this array, is a vector wich contains all the

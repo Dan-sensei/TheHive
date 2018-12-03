@@ -12,12 +12,12 @@ namespace gg{
         AGENT,
         GRANADE,
         GUN,
-        PATHFINDING,
+        NAVMESHAGENT,
         AIENEM,
         CLOCK,
         //HEALTH,
         //RESPECT,
-        //DANINOSABEPROGRAMAR
+        //PABLONDEMADERASABEPROGRAMAR
         NUM_COMPONENTS
     };
     enum EEnemyType{

@@ -309,7 +309,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     else{
         debug1 = false;
     }
-    
+
     // gg::cout(
     //     "(X:"+std::to_string(cTransform->getPosition().X)+
     //     ",Y:"+std::to_string(cTransform->getPosition().Y)+
@@ -318,6 +318,10 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     // </DEBUG>
 
+    //gg::cout(cTransform->getPosition());
+
+    if(Engine->key(gg::GG_Q))
+    Engine->Close();
 
     return gg::ST_TRUE;
 
