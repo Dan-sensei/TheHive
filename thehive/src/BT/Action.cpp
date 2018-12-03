@@ -20,7 +20,6 @@ gg::Vector3f playerPos;
 gg::Vector3f destino;
 
 
-
 float range;
 Blackboard* data;
 bool playerOnRange;

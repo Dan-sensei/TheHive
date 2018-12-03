@@ -17,7 +17,7 @@ class ScreenConsole{
         void setprogress(float prog);
         void DisplayDebug();
         void AddTextToBuffer(const std::string &Text, const gg::Color &color);
-        void AddImage(std::string palabra,std::string source  ,float _posx,float _posy);
+        void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
     private:
         float perc;
         float ancho;
@@ -33,10 +33,12 @@ class ScreenConsole{
             gg::Color Color;
         };
         struct ImageHUD{
-            ImageHUD(irr::video::ITexture* _texture,float _posx,float _posy);
+            ImageHUD(irr::video::ITexture* _texture,float _posx,float _posy,float _width,float _height);
             irr::video::ITexture* texture;
             float posx;
             float posy;
+            float width;
+            float height;
         };
         std::list<BufferText> BUFFER;
         std::map <std::string,ImageHUD>IMAGE_BUFFER;

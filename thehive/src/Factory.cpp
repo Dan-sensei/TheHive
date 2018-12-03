@@ -21,8 +21,8 @@ void Factory::createHero(const gg::Vector3f &Position) {
     CCamera* Camera                     = new CCamera();
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 
-    //CVida* Vida                         = new CVida(3);
-    //Manager->addComponentToEntity(Vida,             gg::CAMERA, hero);
+    CVida* Vida                         = new CVida(3);
+    Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
 
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, hero);
