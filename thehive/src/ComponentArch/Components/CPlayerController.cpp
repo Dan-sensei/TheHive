@@ -320,7 +320,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     //gg::cout(cTransform->getPosition());
 
-    if(Engine->key(gg::GG_Q))
+    if(Engine->key(gg::GG_P))
     Engine->Close();
 
     return gg::ST_TRUE;

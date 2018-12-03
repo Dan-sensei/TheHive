@@ -12,11 +12,22 @@ Blackboard::~Blackboard(){
     };
 }
 
+void Blackboard::ClearGlobalBlackboard(){
+    auto it = GLOBAL_BDataMap.begin();
+
+    while(it != GLOBAL_BDataMap.end()){
+        delete it->second;
+        ++it;
+    };
+}
+
 void Blackboard::setData(const std::string Target, BData* Data){
     auto DataFound = BDataMap.find(Target);
 
-    if(DataFound != BDataMap.end())
+    if(DataFound != BDataMap.end()){
+        delete DataFound->second;
         DataFound->second = Data;
+    }
     else
         BDataMap.insert(std::make_pair(Target, Data));
 
@@ -33,8 +44,10 @@ BData* Blackboard::getBData(const std::string &Target){
 void Blackboard::GLOBAL_setData(const std::string Target, BData* Data){
     auto DataFound = GLOBAL_BDataMap.find(Target);
 
-    if(DataFound != GLOBAL_BDataMap.end())
+    if(DataFound != GLOBAL_BDataMap.end()){
+        delete DataFound->second;
         DataFound->second = Data;
+    }
     else
         GLOBAL_BDataMap.insert(std::make_pair(Target, Data));
 

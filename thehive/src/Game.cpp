@@ -16,6 +16,8 @@
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
+#include <EventSystem/Blackboard.hpp>
+
 
 #define MOVEMENT_SPEED 1.f
 
@@ -182,6 +184,7 @@ void Game::RUN(){
 }
 
 void Game::CLIN(){
+    Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     Engine->clean();
     world->clean();
