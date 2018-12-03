@@ -14,6 +14,7 @@ public:
     virtual float           getFloat();
     virtual std::string     getString();
     virtual gg::Vector3f    getVector3f();
+    virtual bool            getBool();
 
 
 };

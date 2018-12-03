@@ -229,7 +229,7 @@ TriggerRecordStruct::TriggerRecordStruct(
     std::chrono::high_resolution_clock::time_point  begin = std::chrono::high_resolution_clock::now();
 
 
-    nTimeStamp=std::chrono::high_resolution_clock::now();;// eso o sucedaneo
+    nTimeStamp=std::chrono::high_resolution_clock::now();// eso o sucedaneo
     nExpirationTime=_fDuration;
     bDynamicSourcePos=_bDynamicSourcePos;
 }

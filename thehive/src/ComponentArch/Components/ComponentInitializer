@@ -1,13 +1,14 @@
 void Factory::ComponentInitializer() {
 	CCamera::initComponent();
+	CNavmeshAgent::initComponent();
 	CPlayerController::initComponent();
 	CRigidBody::initComponent();
+	CVida::initComponent();
 	CClock::initComponent();
 	CGranade::initComponent();
 	CAIEnem::initComponent();
 	CGun::initComponent();
 	CTransform::initComponent();
-	CPathfinding::initComponent();
 	CRenderable_3D::initComponent();
 	CAgent::initComponent();
 }

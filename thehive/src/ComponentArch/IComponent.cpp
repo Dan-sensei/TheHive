@@ -23,3 +23,5 @@ void IComponent::setEntityID(uint16_t _ID){
 uint16_t IComponent::getEntityID(){
     return EntityID;
 }
+
+void IComponent::Init(){}

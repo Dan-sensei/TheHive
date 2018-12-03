@@ -1,10 +1,20 @@
 #include "Selector.hpp"
+#include <iostream>
 
 void Selector::onInitialize() {
+    //std::cout << "init selector" << '\n';
   m_CurrentChild=m_Children.begin();
+}
+void Selector::onTerminate(Status state){
+    //std::cout << "terminate selector" <<state<< '\n';
+
+  //std::cout << "Sequence onTerminate" << state << '\n';
 }
 
 Status Selector::update() {
+    //std::cout << "update selector" << '\n';
+    //std::cout << m_CurrentChild << '\n';
+
   while (true) {
     Status s=(*m_CurrentChild)->tick();
     if(s != BH_FAILURE)//{

@@ -30,6 +30,8 @@ class GameEngine{
         void BeginDro();
         void Dro();
         void EndDro();
+        void Close();
+        
         bool isWindowOpen();
         void DisplayFPS();
 

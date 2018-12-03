@@ -108,6 +108,13 @@ namespace gg{
 
     float DIST(const Vector3f &Vector1, const Vector3f &Vector2);
 
+    //  ---
+    //  This is just used for checking distances between points. It doesn't compute
+    //  the sqrt, but:
+    //      sqrt(x) < sqrt(y) = x < y   Therefore, the condition remains the same
+    //===============================================================================
+    float FastDIST(const Vector3f &Vector1, const Vector3f &Vector2);
+
     float Modulo(const Vector3f &Vector);
     float Modulo(const Vector2f &Vector);
 

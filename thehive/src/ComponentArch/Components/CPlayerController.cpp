@@ -5,6 +5,9 @@
 #include <Util.hpp>
 #include <string>
 #include "Factory.hpp"
+//#include <GameAI/Hability.hpp>
+#include <GameAI/Enumhabs.hpp>
+
 // #include <GameEngine/ScreenConsole.hpp>
 
 #define VEL_FACTOR          200.f
@@ -23,7 +26,7 @@
 #define DASH_FORCE_FACTOR   FORCE_FACTOR/6.f
 
 CPlayerController::CPlayerController()
-:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
+:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(0,HAB1,2000,4000)
 {
   GranadeCreate=false;
 }
@@ -83,6 +86,7 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
 gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
+    hab.update();
     // -----------------------------------------------------------------------------
     // Echarle un vistazo!
     // CommonWindowInterface* window = m_guiHelper->getAppInterface()->m_window;
@@ -227,6 +231,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     // Graná
     if(Engine->key(gg::GG_G) && GranadeCreate==false){
         if(pulsacion_granada==false){
+            hab.init();
             pulsacion_granada=true;
             gg::Vector3f gPos = cTransform->getPosition();
             gg::Vector3f from = gPos;
@@ -316,6 +321,10 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     // </DEBUG>
 
+    //gg::cout(cTransform->getPosition());
+
+    if(Engine->key(gg::GG_P))
+    Engine->Close();
 
     return gg::ST_TRUE;
 

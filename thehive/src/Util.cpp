@@ -139,6 +139,13 @@ float gg::DIST(const gg::Vector3f &Vector1, const gg::Vector3f &Vector2){
     );
 }
 
+float gg::FastDIST(const Vector3f &Vector1, const Vector3f &Vector2){
+    return  (Vector1.X-Vector2.X)*(Vector1.X-Vector2.X)+
+            (Vector1.Y-Vector2.Y)*(Vector1.Y-Vector2.Y)+
+            (Vector1.Z-Vector2.Z)*(Vector1.Z-Vector2.Z);
+}
+
+
 float gg::Modulo(const gg::Vector3f &Vector){
     return sqrt(
         (Vector.X)*(Vector.X)+

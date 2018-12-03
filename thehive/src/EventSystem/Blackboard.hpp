@@ -19,6 +19,8 @@ public:
     void GLOBAL_setData(const std::string Target, BData* Data);
     BData* GLOBAL_getBData(const std::string &Target);
     bool GLOBAL_removeData(const std::string Target);
+
+    static void ClearGlobalBlackboard();
 private:
     std::map<std::string, BData*> BDataMap;
     static std::map<std::string, BData*> GLOBAL_BDataMap;

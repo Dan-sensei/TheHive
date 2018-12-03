@@ -187,3 +187,31 @@ gg::Vector3f ggDynWorld::getRaycastVector(){
 gg::Vector3f ggDynWorld::getRaycastHitPosition(){
     return raycastHitPosition;
 }
+
+bool ggDynWorld::RayCastTest(const gg::Vector3f &Start, const gg::Vector3f &End, gg::Vector3f &CollisionResult){
+
+    btVector3 Starto = btVector3(Start.X,Start.Y,Start.Z);
+    btVector3 Endo = btVector3(End.X,End.Y,End.Z);
+
+    btCollisionWorld::ClosestRayResultCallback callBack(Starto, Endo);
+    dynamicsWorld->rayTest(Starto, Endo, callBack);
+
+    if(callBack.hasHit()){
+        CollisionResult = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
+        return true;
+    }
+    return false;
+}
+
+bool ggDynWorld::DoesItHitSomething(const gg::Vector3f &Start, const gg::Vector3f &End){
+    btVector3 Starto = btVector3(Start.X,Start.Y,Start.Z);
+    btVector3 Endo = btVector3(End.X,End.Y,End.Z);
+
+    btCollisionWorld::ClosestRayResultCallback callBack(Starto, Endo);
+    dynamicsWorld->rayTest(Starto, Endo, callBack);
+
+    if(callBack.hasHit())   return true;
+
+    return false;
+}
+

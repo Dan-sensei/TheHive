@@ -8,16 +8,16 @@
 class RandomSelector : public Composite{
 public:
  //Status update();
- RandomSelector();
+    RandomSelector();
 protected:
     RandomSelector(const RandomSelector &orig);
-  Behaviors::iterator m_CurrentChild;
-  std::vector<int> secuencia;
-  int max;
-  virtual void onInitialize();
-  virtual Status update();
-  virtual void onTerminate(Status state);
+    virtual void onInitialize();
+    virtual Status update();
+    virtual void onTerminate(Status state);
 
+    Behaviors::iterator m_CurrentChild;
+    std::vector<int> secuencia;
+    int max;
 
 };
 
