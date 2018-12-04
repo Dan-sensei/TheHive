@@ -11,8 +11,7 @@
 // #include <GameEngine/ScreenConsole.hpp>
 
 #define VEL_FACTOR          200.f
-#define MAX_ANGLE           12.f
-#define MAX_HERO_SPEED      4
+#define MAX_HERO_SPEED      3
 
 #define ROTATE_KEY          gg::GG_LCONTROL
 #define DASH_KEY            gg::GG_ALT
@@ -23,7 +22,10 @@
 
 #define FORCE_FACTOR        400.f
 #define JUMP_FORCE_FACTOR   FORCE_FACTOR*15.f
-#define DASH_FORCE_FACTOR   FORCE_FACTOR/6.f
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/25.f
+
+#define MULT_RUN_FACTOR     1.5
+#define MULT_DASH_FACTOR    3
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(0,HAB1,2000,4000)
@@ -103,7 +105,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     // Como aplico un offset a la posicion de la camara
     // Para arreglar el movimiento y que no sea hacia el lado,
     // aplico el mismo offset al vector direccion del heroe
-    hV += static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
+    cV -= static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
     cV -= hV;
     cV  = gg::Normalice(cV);
 
@@ -157,14 +159,14 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         heroRotation = false;
 
     if(Engine->key(RUN_KEY)){
-        gg::cout("RUN!");
-        MULT_FACTOR = 3.5;
+        // gg::cout("RUN!");
+        MULT_FACTOR = MULT_RUN_FACTOR;
     }
     if(Engine->key(DASH_KEY)){
         if(!pulsacion_dash){
-            gg::cout("DASH!");
+            // gg::cout("DASH!");
 
-            MULT_FACTOR = 6;
+            MULT_FACTOR = MULT_DASH_FACTOR;
             force.X *= DASH_FORCE_FACTOR;
             force.Z *= DASH_FORCE_FACTOR;
 
@@ -205,11 +207,6 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     }
 
     continueProcessing:
-    // COPIA-PEGA DE LA DOCUMENTACION:
-    // Bullet automatically deactivates dynamic rigid bodies, when the velocity is below a threshold for a given time.
-    // Deactivated (sleeping) rigid bodies don't take any processing time, except a minor broadphase collision detection impact
-    // (to allow active objects to activate/wake up sleeping objects)
-    cRigidBody->activate(true);
 
     // And we update it accoding to the keyboard input
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
@@ -217,7 +214,6 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     // -----------------------------------
     // Acciones de Willy
     // -----------------------------------
-
     // DISPARO
     gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
     gg::Vector3f rayPos = world->getRaycastVector();

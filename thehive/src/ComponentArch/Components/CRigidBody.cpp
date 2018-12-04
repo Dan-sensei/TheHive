@@ -237,6 +237,11 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
+    
+    // COPIA-PEGA DE LA DOCUMENTACION:
+    // Bullet automatically deactivates dynamic rigid bodies, when the velocity is below a threshold for a given time.
+    // Deactivated (sleeping) rigid bodies don't take any processing time, except a minor broadphase collision detection impact
+    // (to allow active objects to activate/wake up sleeping objects)
     body->activate(true);
 
     if(actualUpd)
