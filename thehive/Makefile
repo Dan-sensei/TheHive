@@ -9,6 +9,9 @@ COMPONENTINITIALIZER:= src/ComponentArch/Components/ComponentInitializer
 COMPONENTSCLASS := $(basename $(notdir $(COMPONENTS)))
 COMPONENTSCLASS := $(subst ComponentHeaders,,$(COMPONENTSCLASS))
 
+COUNT_HPP := $(shell find src/ -type f -name "*.hpp" | grep -c /)
+COUNT_CPP := $(shell find src/ -type f -name "*.cpp" | grep -c /)
+TOTAL_COUNT := $(shell (find src/ -type f -name "*.hpp" && find src/ -type f -name "*.cpp") | grep -c /)
 
 SOURCES := $(shell find src/ -type f -name "*.cpp")
 OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
@@ -86,7 +89,21 @@ info:
 	$(call br)
 	$(call br)
 	$(call objColor)
-	#@$(foreach var,$(SOURCES), echo " "$(var); )
+	@$(foreach var,$(SOURCES), echo " "$(var); )
 	$(call noColor)
 
 	$(call br)
+
+caunt:
+	$(call printWarning,  $(COUNT_HPP))
+	$(call printObj, "Archivos .hpp")
+	$(call br)
+	$(call printWarning,  $(COUNT_CPP))
+	$(call printObj, "Archivos .cpp")
+	$(call br)
+	$(call printObj,  "_____________________" )
+	$(call br)
+	$(call printWarning,  $(TOTAL_COUNT))
+	$(call printObj, "Archivos" "totales")
+	$(call br)
+

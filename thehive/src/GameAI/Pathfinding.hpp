@@ -28,8 +28,6 @@ class Pathfinding {
 
         void DroNodes();
 
-        uint16_t getGraphSize();
-
         void SetDebug(bool flag);
         bool isDebugging();
 
