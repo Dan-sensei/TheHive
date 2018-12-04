@@ -45,7 +45,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-#define MAXSPEED 20.f
+#define MAXSPEED 5.f
 #define FORCE_FACTOR 600.f
 
 gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
@@ -73,7 +73,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
 
     float modulo= gg::Modulo(moveVector);
 
-    if(modulo <= MAXSPEED) {
+    if(modulo <= 30) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
         if(Waypoints.empty()){

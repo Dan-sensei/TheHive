@@ -15,7 +15,7 @@ Pathfinding::Pathfinding()
 :Debug(false), goal(0)
 {
 
-    bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/L4D2Nav.obj", GRAPH, GConnections, FACES);
+    bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
             if(GConnections[i][j].Value == 0)
@@ -281,20 +281,20 @@ void Pathfinding::DroNodes(){
     if(!Debug) return;
     gg::Color color;
     uint8_t i = GRAPH.size();
-    uint8_t length = 50;
+    uint8_t length = 0;
 
     GameEngine* Engine = Singleton<GameEngine>::Instance();
 
     while(i--){
         if(i==goal){
-             length = 100;
+             length = 200;
              color.Alpha = 1;
              color.R = 212;
              color.G = 175;
              color.B = 55;
              goto dro;
         }
-        else length = 50;
+        else length = 100;
 
         if(GRAPH[i].Status == Type::UNVISITED){
             color.Alpha = 1;
@@ -326,20 +326,20 @@ void Pathfinding::DroNodes(){
     color.B = 153;
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 20, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 20, 0), color, 2);
+            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 100, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 100, 0), color, 2);
         }
     }
 
 
     //  255,20,147
-    color.Alpha = 1;
-    color.R = 255;
-    color.G = 20;
-    color.B = 147;
-    for(uint16_t i = 0; i < FACES.size(); ++i){
-        Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + gg::Vector3f(0, 100, 0), color, 2);
-        Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + gg::Vector3f(0, 100, 0), color, 2);
-    }
+    // color.Alpha = 1;
+    // color.R = 255;
+    // color.G = 20;
+    // color.B = 147;
+    // for(uint16_t i = 0; i < FACES.size(); ++i){
+    //     Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + gg::Vector3f(0, 100, 0), color, 2);
+    //     Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + gg::Vector3f(0, 100, 0), color, 2);
+    // }
 }
 
 void Pathfinding::clear(){  //  Provisional
