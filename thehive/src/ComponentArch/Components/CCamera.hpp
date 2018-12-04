@@ -32,6 +32,7 @@ public:
     gg::Vector3f getCameraPosition();
     gg::Vector3f getCameraRotation();
     gg::Vector3f getCameraTarget();
+    gg::Vector3f getOffsetPositionVector();
 
     gg::Vector3f getlastHeroPosition();
     gg::Vector3f getCameraPositionBeforeLockRotation();
@@ -48,6 +49,7 @@ private:
     CTransform *mod;
 
     bool daniNoSabeProgramar;
+    gg::Vector3f offsetPositionVector;
 };
 
 

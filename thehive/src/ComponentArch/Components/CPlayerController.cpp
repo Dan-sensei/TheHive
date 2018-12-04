@@ -86,11 +86,10 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
 gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
+
+    // Update de las habilidades
+    // CAMBIAR HABILIDADES AL CPlayerController.cpp !!!
     hab.update();
-    // -----------------------------------------------------------------------------
-    // Echarle un vistazo!
-    // CommonWindowInterface* window = m_guiHelper->getAppInterface()->m_window;
-    // -----------------------------------------------------------------------------
 
     //  If exists, we get its position
     gg::Vector3f nextPosition = camera->getlastHeroPosition();
@@ -98,13 +97,19 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     // Vector direccion camara-heroe
     gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
-    gg::Vector3f cV2 = cV;
+    gg::Vector3f cV2 = cV;  // cV2 por ahora no se usa para nada
+
     gg::Vector3f hV = cRigidBody->getBodyPosition();
-        cV-=hV;
-        cV=gg::Normalice(cV);
+    // Como aplico un offset a la posicion de la camara
+    // Para arreglar el movimiento y que no sea hacia el lado,
+    // aplico el mismo offset al vector direccion del heroe
+    hV += static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
+    cV -= hV;
+    cV  = gg::Normalice(cV);
 
     // Vector perpendicular al vector direccion
     gg::Vector3f ppV(-cV.Z,0,cV.X);
+
 
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f    force;
@@ -199,7 +204,6 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         cRigidBody->setLinearVelocity(gg::Vector3f(0, cRigidBody->getVelocity().Y, 0));
     }
 
-
     continueProcessing:
     // COPIA-PEGA DE LA DOCUMENTACION:
     // Bullet automatically deactivates dynamic rigid bodies, when the velocity is below a threshold for a given time.
@@ -210,7 +214,11 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     // And we update it accoding to the keyboard input
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
 
-    // DISPARO -> NO VA EL CLICK IZQUIERDO =D
+    // -----------------------------------
+    // Acciones de Willy
+    // -----------------------------------
+
+    // DISPARO
     gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
     gg::Vector3f rayPos = world->getRaycastVector();
 
@@ -313,11 +321,15 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         debug1 = false;
     }
 
-    // gg::cout(
-    //     "(X:"+std::to_string(cTransform->getPosition().X)+
-    //     ",Y:"+std::to_string(cTransform->getPosition().Y)+
-    //     ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
-    // );
+    if(debug2){
+        // DEBUG ACTIVATED
+        gg::cout(
+            "(X:"+std::to_string(cTransform->getPosition().X)+
+            ",Y:"+std::to_string(cTransform->getPosition().Y)+
+            ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
+        );
+    }
+
 
     // </DEBUG>
 

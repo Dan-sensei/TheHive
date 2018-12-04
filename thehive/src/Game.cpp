@@ -71,7 +71,7 @@ void Game::RUN(){
 
 
     // sF->createHero(gg::Vector3f(700, 100, 0),false);
-    sF->createHero(gg::Vector3f(1797, 120, 272),false);     //600
+    sF->createHero(gg::Vector3f(1797, 120, 300),false);     //600
     sF->createEnemy(gg::Vector3f(740, 100, 20));
     sF->createEnemy(gg::Vector3f(740, 100, 30));
     sF->createEnemy(gg::Vector3f(740, 100, 40));

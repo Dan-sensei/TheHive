@@ -1,7 +1,8 @@
 #include "ggDynWorld.hpp"
 
 #define FAR_RANGE_FACTOR    90.f
-#define CLOSE_RANGE_FACTOR  7.f
+// #define CLOSE_RANGE_FACTOR  7.f
+#define CLOSE_RANGE_FACTOR  1.f
 #define PI 3.14159265359
 
 ggDynWorld::ggDynWorld(){
@@ -214,4 +215,3 @@ bool ggDynWorld::DoesItHitSomething(const gg::Vector3f &Start, const gg::Vector3
 
     return false;
 }
-

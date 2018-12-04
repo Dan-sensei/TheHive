@@ -142,6 +142,7 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
         -(nextPosition.X-camPosition.X)
     );
     ppV = gg::Normalice(ppV);
+    offsetPositionVector = ppV;
 
     camPosition = cam->getPosition();
     cam->setPosition(
@@ -171,6 +172,11 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     }
 
 }
+
+gg::Vector3f CCamera::getOffsetPositionVector(){
+    return offsetPositionVector;
+}
+
 
 gg::Vector3f CCamera::getCameraPosition(){
     GameEngine *Engine = Singleton<GameEngine>::Instance();
