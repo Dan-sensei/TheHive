@@ -39,6 +39,10 @@ class CPlayerController : public IComponent {
         bool heroHasSecondWeapon();
         bool canPickWeapon();
 
+        bool hasItem(const uint16_t&);
+        bool pickItem(const uint16_t&);
+        bool useItem(const uint16_t&);
+
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
         gg::EMessageStatus MHandler_UPDATE  ();
@@ -68,6 +72,7 @@ class CPlayerController : public IComponent {
 
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
         CGun *secondWeapon;
+        std::array<uint16_t,3> items;
 };
 
 #endif

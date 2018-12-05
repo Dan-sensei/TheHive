@@ -5,9 +5,10 @@ enum EnumDataType{
     kDat_damage,
     kDat_Matri,
     kDat_EntId,
-    kDat_WeaponType,
-    kDat_Action,
-    kDat_Done            // 0-1 | false-true
+    kDat_WeaponType,        // Un perro
+    kDat_Action,            // Numero que dictamina el update que realizara dicho CRigidBody
+    kDat_Done,              // 0-1 | false-true
+    kDat_PickableItemId     // Id de la entidad, que es un pickableItem
 };
 
 enum EnumActionType{

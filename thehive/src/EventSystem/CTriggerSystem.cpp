@@ -39,7 +39,7 @@ void CTriggerSystem::PulsoTrigger(
         TriggerRecordStruct pRec(_eTriggerType,_idSource,_vPos,_fRadius,0,false,_data);
         std::list<CAgent*>::iterator it2;
         it2=CAgent::hola.begin();
-        for(unsigned long i=0; i<CAgent::hola.size();++i){
+        for(unsigned long i=0; i<CAgent::hola.size();++i,it2++){
             pAgent=*it2;
 
             //Does agent respond to trigger?
@@ -59,8 +59,6 @@ void CTriggerSystem::PulsoTrigger(
             //handletriger return true if the agent responded
             //to the trigger
             pAgent->onTriggerEnter(&pRec);
-
-            ++it2;
       }
 }
 

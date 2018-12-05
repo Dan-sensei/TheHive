@@ -63,6 +63,9 @@ void CPlayerController::Init(){
     // Pistola por defecto
     isPrincipal = false;
     secondWeapon = nullptr;
+
+    // Array de items con sus posiciones a -1
+    // Ya que por ahora no tiene ningún item
 }
 
 
@@ -75,8 +78,8 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 }
 
 
-//  Message handler functions_______________________________________________________________
-//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+// Message handler functions__________________________________________________________________
+// |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
@@ -367,4 +370,36 @@ bool CPlayerController::canPickWeapon(){
         pulsacion_f = false;
     }
     return true;
+}
+
+bool CPlayerController::hasItem(const uint16_t &_item){
+    for(const uint16_t& i : items){
+        if(i==_item){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool CPlayerController::pickItem(const uint16_t &_item){
+    // No compruebo duplicados entre items
+    // Nunca pasara esa situacion
+    for(const uint16_t &i : items){
+        // gg::cout("items["+std::to_string(i)+"] = "+std::to_string(items[i]));
+        if(i==0){
+            items[i] = _item;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool CPlayerController::useItem(const uint16_t &_item){
+    for(const uint16_t &i : items){
+        if(i==_item){
+            items[i] = 0;
+            return true;
+        }
+    }
+    return false;
 }
