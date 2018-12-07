@@ -13,6 +13,7 @@ namespace gg{
         GRANADE,
         GUN,
         NAVMESHAGENT,
+        HAB,
         AIENEM,
         CLOCK,
         VIDA,

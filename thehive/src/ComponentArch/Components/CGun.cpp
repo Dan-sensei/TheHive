@@ -27,6 +27,8 @@ void CGun::initComponent() {
 }
 
 void CGun::shoot(gg::Vector3f to){
+    TData mes;
+    CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
     if(canShoot && !reloading){
         // Activar cadencia
         canShoot = false;
@@ -35,6 +37,8 @@ void CGun::shoot(gg::Vector3f to){
         // Comprobar balas
         if(!total_bullets){
             gg::cout("Click!");
+            EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,mes);
+
             return;
         }
 
@@ -42,6 +46,7 @@ void CGun::shoot(gg::Vector3f to){
         if(total_bullets!=-1){
             total_bullets--;
         }
+        Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
 
         // Comprobar destino
         if(to.X == -1){
@@ -51,8 +56,13 @@ void CGun::shoot(gg::Vector3f to){
 
         gg::cout("PIM! - "+std::to_string(total_bullets));
 
+        //TData mes;
+        //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
+        EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,mes);
+
+
         // // std::cout << "PIM!!! -> " << total_bullets << '\n';
-        gg::Vector3f from = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,getEntityID()))->getPosition();
+        gg::Vector3f from = cTransform->getPosition();
         gg::Vector3f vel(
             to.X-from.X,
             to.Y-from.Y,
@@ -72,10 +82,12 @@ void CGun::shoot(gg::Vector3f to){
         from.Y += DIST_OFFSET;
 
         Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(from,vel);
-        gg::Vector3f hit = Singleton<ggDynWorld>::Instance()->getRaycastHitPosition();
+        //TData mes;
+        //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
+        EventSystem->PulsoTrigger(kTrig_Shoot,0,to,500,mes);//sonido de disparo
 
-        // Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),hit,10,TData());
-        Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
+        // Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),to,10,TData());
+        //Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
 
         // <DEBUG>
             Material moradoDeLos80("assets/Textures/Blue.png");
@@ -133,6 +145,7 @@ gg::EMessageStatus CGun::processMessage(const Message &m) {
 gg::EMessageStatus CGun::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
 
     return gg::ST_TRUE;
 }
@@ -151,6 +164,8 @@ gg::EMessageStatus CGun::MHandler_UPDATE(){
             gg::cout(" -- RELOADED" , gg::Color(255, 0, 0, 1));
             reloading = false;
             total_bullets = ktotal_bullets;
+            Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+            
         }
     }
     else if(!canShoot){

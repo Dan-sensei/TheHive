@@ -16,24 +16,25 @@
 
 class CGranade: public IComponent {
     public:
-        CGranade(float _damage,float _radius,float _tipo);
+        CGranade(float _radius);
+        CGranade();
         CGranade(const CGranade &orig) = delete;
         virtual ~CGranade();
 
         static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void explosion();
+
 
 
         gg::EMessageStatus MHandler_SETPTRS();
         gg::EMessageStatus MHandler_UPDATE();
 
-    private:
+    protected:
         std::chrono::high_resolution_clock::time_point begin;
         double elapsedtime;
-        float damage;
         float radius;
-        float tipo;
         CTransform* cTransform;
         GameEngine* engine;
         ObjectManager* Manager;

@@ -10,12 +10,9 @@
     //    Hability (Blackboard* _data);
 
     //}
-    Hability::Hability (int _id,EHabType _tipo,float _duracion,int _cooldown)
-    : cTriggerSystem(nullptr),id(_id),tipo(_tipo),duracion(_duracion),cooldown(_cooldown),terminado(true),nocool(true)
+    Hability::Hability (int _id,float _duracion,int _cooldown)
+    : cTriggerSystem(nullptr),id(_id),duracion(_duracion),cooldown(_cooldown),terminado(true),nocool(true),prog(1)
     {
-        VectorAccionesInit[HAB1] = &Hability::Hab1_init;
-        VectorAccionesUpdate[HAB1] = &Hability::Hab1_update;
-        VectorAccionesTerminate[HAB1] = &Hability::Hab1_terminate;
         //nombres[NUM_HABS]="ojete";
 
         std::chrono::high_resolution_clock::time_point  begin = std::chrono::high_resolution_clock::now();
@@ -27,20 +24,27 @@
     }
     Hability::~Hability (){
     }
+
+    Hability::Hability (const Hability &orig){
+
+
+    id=orig.id;
+    duracion=orig.duracion;
+    cooldown=orig.cooldown;
+    nocool=orig.nocool;
+    terminado=orig.terminado;
+    nTimeStamp=orig.nTimeStamp;
+    cTriggerSystem=orig.cTriggerSystem;
+
+
+
+
+}
     void Hability::init(){
-        //std::cout << "init" << '\n';
-        //id(_id),tipo(_tipo),duracion(_duracion),cooldown(_cooldown),terminado(true)
-        //std::cout << "id:"              <<id<< '\n';
-        //std::cout << "tipo:"            <<tipo<< '\n';
-        //std::cout << "duracion:"        <<duracion<< '\n';
-        //std::cout << "cooldown:"        <<cooldown<< '\n';
-        //std::cout << "terminado:"       <<terminado<< '\n';
-        //std::cout << "nocool:"          <<nocool<< '\n';
 
         if(nocool){
             iniciar();
-            if(VectorAccionesInit[tipo] != nullptr)
-                (this->*VectorAccionesInit[tipo])();
+            Hab1_init ();
         }
 
     }
@@ -48,14 +52,10 @@
         if(!terminado){
             if(!terminar(duracion,terminado)){
                 //update
-                //std::cout << "update" << '\n';
-                if(VectorAccionesUpdate[tipo] != nullptr)
-                    (this->*VectorAccionesUpdate[tipo])();
+                Hab1_update();
             }else{
                 //terminate
-                //std::cout << "terminate" << '\n';
-                if(VectorAccionesTerminate[tipo] != nullptr)
-                    (this->*VectorAccionesTerminate[tipo])();
+                Hab1_terminate();
             }
         }
         else if(!nocool){
@@ -71,20 +71,23 @@
         if(ms>_dur){
             res= true;
         }
-        float prog=(float)ms/cooldown;
+        prog=(float)ms/cooldown;
         if (prog>=1){
             prog=1;
         }
-        Singleton<ScreenConsole>::Instance()->setprogress(prog);
+        //Singleton<ScreenConsole>::Instance()->setprogress(tipo,prog);
         return res;
     }
     void Hability::iniciar(){
+        prog=0;
         terminado=false;
         nocool=false;
         std::chrono::high_resolution_clock::time_point  begin = std::chrono::high_resolution_clock::now();
         nTimeStamp=std::chrono::high_resolution_clock::now();//
     }
-
+float Hability::getProg(){
+    return prog;
+}
 
 
     //codigo de las habilidades
@@ -92,12 +95,10 @@
 
     }
     void Hability::Hab1_update(){
-        //std::cout << "update" << '\n';
 
 
     }
     void Hability::Hab1_terminate(){
-        //std::cout << "update" << '\n';
 
 
     }

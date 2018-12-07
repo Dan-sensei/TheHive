@@ -187,6 +187,13 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
     }
     else if(_pRec->eTriggerType & kTrig_EnemyNear){
         //CAIEnem->enemyseen();
+        if(oManager->getComponent(gg::AIENEM,nCAgentID)){
+            //std::cout << "core si" << '\n';
+            static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_NEAR(_pRec);
+            //std::cout << "core no" << '\n';
+            return true;
+
+        }
     }
     else if(_pRec->eTriggerType & kTrig_Shoot){
         // gg::cout(std::to_string(_pRec->eTriggerType)+" & "+std::to_string(GetTriggerFlags()));
@@ -195,7 +202,26 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         // oManager->removeEntity(nCAgentID);
         // Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec->nTriggerID);
 
-    }
+    }else if(_pRec->eTriggerType & kTrig_Senyuelo){
+        if(oManager->getComponent(gg::AIENEM,nCAgentID)){
+            //std::cout << "core si" << '\n';
+            static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_SENYUELO(_pRec);
+            //std::cout << "core no" << '\n';
+            return true;
+
+        }
+    }else if(_pRec->eTriggerType & kTrig_Aturd){
+        //std::cout << "triger entrando" << '\n';
+            //std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
+            //Message mes(gg::M_XPLOTATO,_pRec);
+            if(oManager->getComponent(gg::AIENEM,nCAgentID)){
+                //std::cout << "core si" << '\n';
+                static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_ATURD();
+                //std::cout << "core no" << '\n';
+                return true;
+
+            }
+        }
 
     return true;
 }
@@ -235,7 +261,26 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
 }
 void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
     //std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
+    ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
+    if(_pRec->eTriggerType & kTrig_Senyuelo){
+        if(oManager->getComponent(gg::AIENEM,nCAgentID)){
+            //std::cout << "core si" << '\n';
+            static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_SENYUELO_END();
+            //std::cout << "core no" << '\n';
+
+
+        }
+    }/*else if(_pRec->eTriggerType & kTrig_Aturd){
+            //std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
+            //Message mes(gg::M_XPLOTATO,_pRec);
+            if(oManager->getComponent(gg::AIENEM,nCAgentID)){
+                //std::cout << "core si" << '\n';
+                static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_ATURD_END();
+                //std::cout << "core no" << '\n';
+
+            }
+        }*/
 
 }
 void CAgent::deletetrig(TriggerRecordStruct* _pRec){

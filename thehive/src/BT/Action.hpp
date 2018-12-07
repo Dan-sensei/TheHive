@@ -6,11 +6,13 @@
 #include <iostream>
 #include <string>
 #include "EventSystem/Blackboard.hpp"
+#include "ComponentArch/Components/CAIEnem.hpp"
+
 
 class Action : public Behavior {
 
     public:
-      Action(Hojas task,Blackboard* _data);
+      Action(Hojas task,Blackboard* _data,CAIEnem* ai);
       virtual ~Action();
       Action(const Action &orig);
        // behavior() : m_eStatus(BH_INVALID)  {}    // Constructor. No se declara en la interfaz, sino en sus hijos, SUPONGO
@@ -27,15 +29,25 @@ class Action : public Behavior {
        void girar_enemigo();
        void distancia10();
        void onrange();
-       void distancia(float _dist);
+       void distancia(float _dist,gg::Vector3f obj);
        void seeing();
+       void ultrasonido();
+       void senyuelo();
        void seen();
-       void checkbool(std::string that);
+       void checkbool(bool that);
        void move_around();
+       void move_senyuelo();
        void move_player();
        void move_last();
+       void in_last();
+       void ult_cont();
+       void rond_seny();
+       void rond_jugador();
+       void rond();
+       void player_vistocono();
 
 
+CAIEnem* yo;
 
 
    private:

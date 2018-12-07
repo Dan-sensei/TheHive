@@ -25,7 +25,9 @@ class Factory{
         uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
         uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation = gg::Vector3f());
         uint16_t createPathFindingActor(const gg::Vector3f &Position);
-        uint16_t createHolyBomb(float _damage,float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse);
+        uint16_t createHolyBomb(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
+        uint16_t createMatriuska(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
+        uint16_t createSenyuelo(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
         uint16_t createCollectableWeapon(const gg::Vector3f&, int);
         uint16_t createTouchableObject(const gg::Vector3f&, const uint16_t&, const gg::Vector3f&, const float&);
     private:

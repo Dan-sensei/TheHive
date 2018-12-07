@@ -3,9 +3,38 @@
 //#include <SMaterial>
 
 irr::IrrlichtDevice* ScreenConsole::IrrlichtDevice = nullptr;
-void ScreenConsole::setprogress(float prog){
+void ScreenConsole::setprogress(int hab,float prog){
     //std::cout << "entra en :" <<prog<< '\n';
-    perc=1-prog;
+    if(hab==0){
+        perc=1-prog;
+
+    }else if(hab==1){
+        perc2=1-prog;
+
+    }
+    else{
+        perc3=1-prog;
+
+    }
+}
+void ScreenConsole::setvida(float _vida){
+    std::cout << "hacemos algo" << '\n';
+vida=_vida;
+}
+void ScreenConsole::setbullet(int tipo,int balas){
+    if(tipo==0){
+        balaP=balas;
+
+    }else {
+        balaS=balas;
+    }
+}
+
+float ScreenConsole::porc_alto(float x){
+    return ((alto*2)/100.0)*x;
+}
+float ScreenConsole::porc_ancho(float x){
+    return ((ancho*2)/100.0)*x;
 }
 ScreenConsole::ScreenConsole(){
     font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
@@ -13,9 +42,20 @@ ScreenConsole::ScreenConsole(){
 
     ancho=(driver->getScreenSize().Width/2);
     alto=(driver->getScreenSize().Height/2);
-    float alto2=((alto*2)/100)*80;
 
-    AddImage("ojete","assets/HUD/ojetecalor.jpg",50,alto2,100,100);
+    AddImage("hab1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab2","assets/HUD/ojetecalor.jpg",porc_ancho(9),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab3","assets/HUD/ojetecalor.jpg",porc_ancho(16),porc_alto(90),porc_alto(10),porc_alto(10));
+
+    AddImage("1arma","assets/HUD/ojetecalor.jpg",porc_ancho(70),porc_alto(80),porc_ancho(20),porc_alto(15));//principal
+    AddImage("0arma","assets/HUD/ojetecalor.jpg",porc_ancho(75),porc_alto(85),porc_ancho(20),porc_alto(15));
+
+    AddImage("vida","assets/HUD/ojetecalor.jpg",porc_ancho(60),porc_alto(2),porc_ancho(30),porc_alto(3));
+
+    AddImage("G1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
+    AddImage("G2","assets/HUD/ojetecalor.jpg",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
+    AddImage("G3","assets/HUD/ojetecalor.jpg",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
+
     //AddImage("mongol","assets/HUD/mongol.jpg",300,300,30,30);
     //node->setMaterialTexture(0, driver->getTexture("bg.jpg"));
 //redimensionar¿?
@@ -38,6 +78,11 @@ ScreenConsole::ScreenConsole(){
     //m.getTextureMatrix(0)[0][0][0][0];
     //CMatrix4<float> k=m.getTextureMatrix(0);
     perc=0;
+    perc2=0;
+    perc3=0;
+    balaP=0;
+    balaS=0;
+    vida=1;
 
 }
 void ScreenConsole::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){
@@ -94,19 +139,50 @@ void ScreenConsole::DisplayDebug(){
             //driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
             //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.texture->getSize().Width,it->second.posy+it->second.texture->getSize().Height*perc));
             //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.texture->getSize().Width,it->second.posy+it->second.texture->getSize().Height));
+            //if(it->first=="hab1"){
+
+            //}
             it++;
         }
-        if(IMAGE_BUFFER.find("ojete")!=IMAGE_BUFFER.end()){
-            it=IMAGE_BUFFER.find("ojete");
-            //irr::gui::IGUIImage* pru =new irr::gui::IGUIImage();
-//pru->setImage(it->second);
-            //->second
+        if(IMAGE_BUFFER.find("hab1")!=IMAGE_BUFFER.end()){
+            it=IMAGE_BUFFER.find("hab1");
             driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
             irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height*perc));
-//delete pru;
         }
-         driver->draw2DLine(irr::core::position2d<irr::s32>(ancho-20,alto),irr::core::position2d<irr::s32>(ancho+20,alto),irr::video::SColor(250,0,0,0));
-         driver->draw2DLine(irr::core::position2d<irr::s32>(ancho,alto-20),irr::core::position2d<irr::s32>(ancho,alto+20),irr::video::SColor(250,0,0,0));
+        if(IMAGE_BUFFER.find("hab2")!=IMAGE_BUFFER.end()){
+            it=IMAGE_BUFFER.find("hab2");
+            driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
+            irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height*perc2));
+        }
+        if(IMAGE_BUFFER.find("hab3")!=IMAGE_BUFFER.end()){
+            it=IMAGE_BUFFER.find("hab3");
+            driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
+            irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height*perc3));
+        }
+        if(IMAGE_BUFFER.find("vida")!=IMAGE_BUFFER.end()){
+            it=IMAGE_BUFFER.find("vida");
+            driver->draw2DRectangle(irr::video::SColor(150,0,255,0),
+            irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width*vida,it->second.posy+it->second.height));
+        }
+        if(IMAGE_BUFFER.find("1arma")!=IMAGE_BUFFER.end()){
+            it=IMAGE_BUFFER.find("1arma");
+            //driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
+            std::string hola=std::to_string(balaP)+std::string("/100");
+            //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height*perc3));
+            font->draw(hola.c_str(), irr::core::rect<irr::s32>(it->second.posx+(it->second.width/100)*65,it->second.posy+(it->second.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
+        }
+        if(IMAGE_BUFFER.find("0arma")!=IMAGE_BUFFER.end()){
+            it=IMAGE_BUFFER.find("0arma");
+            //driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
+            //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height*perc3));
+            std::string hola=std::to_string(balaS)+std::string("/100");
+            //irr::core::stringw WS((*it).Text.c_str());
+            font->draw(hola.c_str(), irr::core::rect<irr::s32>(it->second.posx+(it->second.width/100)*65,it->second.posy+(it->second.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
+        }
+        //AddImage("G3","assets/HUD/ojetecalor.jpg",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
+        float ale=porc_alto(2);
+        driver->draw2DLine(irr::core::position2d<irr::s32>(ancho-ale,alto),irr::core::position2d<irr::s32>(ancho+ale,alto),irr::video::SColor(250,0,0,0));
+        driver->draw2DLine(irr::core::position2d<irr::s32>(ancho,alto-ale),irr::core::position2d<irr::s32>(ancho,alto+ale),irr::video::SColor(250,0,0,0));
     }
     if(true){
         auto it = BUFFER.begin();

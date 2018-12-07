@@ -6,7 +6,7 @@
 #include <string>
 #include "Factory.hpp"
 //#include <GameAI/Hability.hpp>
-#include <GameAI/Enumhabs.hpp>
+//#include <GameAI/Enumhabs.hpp>
 
 // #include <GameEngine/ScreenConsole.hpp>
 
@@ -26,7 +26,7 @@
 #define DASH_FORCE_FACTOR   FORCE_FACTOR/6.f
 
 CPlayerController::CPlayerController()
-:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(0,HAB1,2000,4000)
+:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
 {
   GranadeCreate=false;
 }
@@ -55,6 +55,7 @@ void CPlayerController::Init(){
     pulsacion_dash = false;
     pulsacion_f = false;
     debug1 = false;
+    MULT_BASE=1;
     debug2 = false;
 
     // El heroe siempre empezara con un arma secundaria
@@ -79,6 +80,10 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
     cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
+    std::cout << "llega" << '\n';
+    hab = static_cast<CHabilityController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::HAB, getEntityID()));
+    //hab = static_cast<CHabilityController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::HABILITY, getEntityID()));
+
 
     return gg::ST_TRUE;
 }
@@ -86,7 +91,7 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
 gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
-    hab.update();
+    //hab.update();
     // -----------------------------------------------------------------------------
     // Echarle un vistazo!
     // CommonWindowInterface* window = m_guiHelper->getAppInterface()->m_window;
@@ -97,7 +102,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     bool heroRotation = true;
 
     // Vector direccion camara-heroe
-    gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
+    gg::Vector3f cV = camera->getCameraPosition();
     gg::Vector3f cV2 = cV;
     gg::Vector3f hV = cRigidBody->getBodyPosition();
         cV-=hV;
@@ -109,8 +114,18 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f    force;
     bool            pressed = false;
+
     float           MULT_FACTOR = 1;
 
+    if(Engine->key(gg::GG_1)){
+        hab->pulsado(0);
+    }
+    if(Engine->key(gg::GG_2)){
+        hab->pulsado(1);
+    }
+    if(Engine->key(gg::GG_3)){
+        hab->pulsado(2);
+    }
     if(Engine->key(gg::GG_W)){
         force = gg::Vector3f(-cV.X,0,-cV.Z);
         // if(Engine->key(ROTATE_KEY)){
@@ -186,7 +201,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     if(!pressed && currentSpeed == 0)
         goto continueProcessing;
 
-    if(pressed && currentSpeed < (MAX_HERO_SPEED*MULT_FACTOR)) {    // If a key is pressed and we haven't reached max speed yet
+    if(pressed && currentSpeed < ((MAX_HERO_SPEED*MULT_FACTOR)*MULT_BASE)) {    // If a key is pressed and we haven't reached max speed yet
         force *= FORCE_FACTOR;
         cRigidBody->applyCentralForce(force);                       // Accelerate!
     }
@@ -231,7 +246,13 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     // Graná
     if(Engine->key(gg::GG_G) && GranadeCreate==false){
         if(pulsacion_granada==false){
-            hab.init();
+            //CVida* vid = static_cast<CVida*>(Singleton<ObjectManager>::Instance()->getComponent(gg::VIDA, getEntityID()));
+            //vid->quitarvida();
+            //TData mes;
+            //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
+            //EventSystem->PulsoTrigger(kTrig_Aturd,0,cTransform->getPosition(),500,mes);
+
+            //hab.init();
             pulsacion_granada=true;
             gg::Vector3f gPos = cTransform->getPosition();
             gg::Vector3f from = gPos;
@@ -240,25 +261,13 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
             gg::Vector3f vel=to-from;
             vel = gg::Normalice(vel);
 
-            uint16_t holyBomb = Manager->createEntity();
-            Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
-
-            CTransform* Transform = new CTransform(gg::Vector3f(gPos.X,gPos.Y+10,gPos.Z), gg::Vector3f(0,0,0));
-            Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
-
-            CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
-            Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
-
-            CRigidBody* RigidBody = new CRigidBody(false,false,"", gPos.X,gPos.Y+10,gPos.Z, 1,1,1, 1, 0,0,0);
-            Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
-
-            CGranade* Granade = new CGranade(FORCE_FACTOR*20,40,1);
-            Manager->addComponentToEntity(Granade, gg::GRANADE, holyBomb);
-
             vel*= VEL_FACTOR/2;
 
-            RigidBody->applyCentralForce(vel);
-
+            Singleton<Factory>::Instance()->createHolyBomb(
+                gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),
+                vel
+            );
+            //*/
         }
         // GranadeCreate=true;
     }
@@ -347,7 +356,12 @@ int CPlayerController::setSecondWeapon(CGun *_weapon){
     secondWeapon = _weapon;
     return ret;
 }
-
+void CPlayerController::buf(){
+MULT_BASE=2.5;
+}
+void CPlayerController::debuf(){
+MULT_BASE=1;
+}
 bool CPlayerController::canPickWeapon(){
     if(Engine->key(gg::GG_F)){
         if(!pulsacion_f){

@@ -11,7 +11,8 @@
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Message.hpp>
-#include <GameAI/Hability.hpp>
+//#include <ComponentArch/Components/CHabilityController.hpp>
+//#include <GameAI/Hability.hpp>
 
 #include <Singleton.hpp>
 
@@ -20,6 +21,7 @@ class CCamera;
 class CTransform;
 class CRigidBody;
 class CGun;
+class CHabilityController;
 
 class GameEngine;
 class ObjectManager;
@@ -43,7 +45,8 @@ class CPlayerController : public IComponent {
         gg::EMessageStatus MHandler_SETPTRS ();
         gg::EMessageStatus MHandler_UPDATE  ();
 
-
+        void buf();
+        void debuf();
     private:
         CPlayerController();
         CPlayerController(const CPlayerController &orig) = delete;
@@ -51,10 +54,10 @@ class CPlayerController : public IComponent {
         ObjectManager* Manager;
         GameEngine* Engine;
         ggDynWorld* world;
-        Hability hab;
         CTransform* cTransform;
         CRigidBody* cRigidBody;
         CCamera *camera;
+        CHabilityController* hab;
         bool GranadeCreate;
 
         bool pulsacion_granada;
@@ -65,7 +68,7 @@ class CPlayerController : public IComponent {
 
         bool debug1;
         bool debug2;
-
+        float           MULT_BASE;
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
         CGun *secondWeapon;
 };

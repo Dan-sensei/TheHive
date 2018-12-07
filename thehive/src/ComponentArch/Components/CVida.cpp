@@ -4,11 +4,12 @@
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 #include <iostream>
-
+#include <GameEngine/ScreenConsole.hpp>
+#include <Singleton.hpp>
 CVida::CVida(int _vida)
-:Manager(nullptr),vida(_vida)
+:Manager(nullptr),vida(_vida),vida_max(_vida)
 {
-
+std::cout << "vida" << '\n';
 }
 
 CVida::~CVida() {
@@ -17,14 +18,19 @@ CVida::~CVida() {
 void CVida::quitarvida(){
     vida--;
     if(vida==0){
+
         //destory
         //Manager->removeEntity(getEntityID());
 
     }
+    float res=(float)vida/vida_max;
+    Singleton<ScreenConsole>::Instance()->setvida(res);
     std::cout << "vida:" <<vida << '\n';
 }
 
 void CVida::initComponent() {
+    std::cout << "llega a la vida" << '\n';
+
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::VIDA, gg::M_UPDATE);
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::VIDA, gg::M_SETPTRS);
 }

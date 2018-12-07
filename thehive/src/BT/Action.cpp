@@ -6,7 +6,9 @@
 #include <string>
 #include <random>
 #include "EventSystem/BVector3f.hpp"
-
+#include "EventSystem/BInt.hpp"
+#include "EventSystem/BBool.hpp"
+//#include "GameEngine/ScreenConsole.hpp"
 
 //#include <Util>
 /*
@@ -34,10 +36,10 @@ BehaviorTree* BT;
 
 
 Action::Action(const Action &orig){
-    Action(orig.tarea,orig.data);
+    Action(orig.tarea,orig.data,orig.yo);
 }
-Action::Action(Hojas task,Blackboard* _data){
-
+Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
+yo=ai;
     VectorAcciones[ANDAR_RAND] = &Action::andar_random;
     VectorAcciones[COMER] = &Action::comer_animal;
     VectorAcciones[GIRAR] = &Action::girar_enemigo;
@@ -46,16 +48,30 @@ Action::Action(Hojas task,Blackboard* _data){
     ///
     VectorAcciones[TEN_METROS] = &Action::distancia10;//si
     VectorAcciones[THREE_ATACK] = &Action::move_to;//ni idea si
-    VectorAcciones[ON_RANGE] = &Action::onrange;//si
     VectorAcciones[IN_PLACE] = &Action::move_to;//inutilidad maxima si
-    VectorAcciones[PLAYER_SEEN] = &Action::seen;//si
-    VectorAcciones[PLAYER_SEEING] = &Action::seeing;//si
-    VectorAcciones[MOVE_AROUND] = &Action::move_around;//si
     VectorAcciones[BLOCK] = &Action::move_around;//trucada
-    VectorAcciones[MOVE_TO_PLAYER] = &Action::move_player;//si
-    VectorAcciones[HIT] = &Action::move_to;//ni idea si
-    VectorAcciones[MOVE_TO_LAST_POS_KWON] = &Action::move_last;//si
     VectorAcciones[JUST_MOVE] = &Action::move_around;//trucada
+
+    VectorAcciones[RANGO_ULTRASONIDO] = &Action::ultrasonido;//si
+    VectorAcciones[ATURDIDO] = &Action::ult_cont;//si
+    VectorAcciones[RANGO_SENYUELO] = &Action::senyuelo;//si
+    VectorAcciones[MOVER_SENYUELO] = &Action::move_senyuelo;//si
+    VectorAcciones[RONDAR_SENYUELO] = &Action::rond_seny;//TRUCADA
+    VectorAcciones[PLAYER_SEEING] = &Action::seeing;//si
+    VectorAcciones[ON_RANGE] = &Action::onrange;//si
+    VectorAcciones[HIT] = &Action::comer_animal;//TRUCADA
+    VectorAcciones[NOT_ATTACKED] = &Action::girar_enemigo;//TRUCADA
+    VectorAcciones[ALLY_DEAD] = &Action::girar_enemigo;//TRUCADA
+    VectorAcciones[MORE_RAGE] = &Action::comer_animal;//TRUCADA
+    VectorAcciones[X_ALIENS_ATTACKING] = &Action::girar_enemigo;//TRUCADA
+    VectorAcciones[X_METRES_PLAYER] = &Action::distancia10;//SI
+    VectorAcciones[RONDAR_PLAYER] = &Action::rond_jugador;//TRUCADA
+    VectorAcciones[PAUSE] = &Action::comer_animal;//TRUCADA
+    VectorAcciones[MOVE_TO_PLAYER] = &Action::move_player;//si
+    VectorAcciones[PLAYER_SEEN] = &Action::seen;//si
+    VectorAcciones[MOVE_AROUND] = &Action::move_around;//siRANDOM
+    VectorAcciones[MOVE_TO_LAST_POS_KWON] = &Action::move_last;//si
+    VectorAcciones[IN_LAST_POS_KWON] = &Action::in_last;//si
 
     data=_data;
     tarea = task;
@@ -73,6 +89,7 @@ void Action::onInitialize(){
 
 Status Action::update() {
     //std::cout << "Accion Update" <<tarea<< '\n';
+    //gg::cout("action nº"+std::to_string(tarea));
 
     if(VectorAcciones[tarea] != nullptr)
         (this->*VectorAcciones[tarea])();
@@ -100,13 +117,26 @@ void Action::distancia10(){//int tipo){
     //std::cout << "distancia10" << '\n';
 
     //std::cout << "se hace wey" << '\n';
-    distancia(10);//int tipo){
+    distancia(10,yo->playerPos);//int tipo){
 
 
 }
-void Action::checkbool(std::string that){
-    if(data->getBData(that)->getBool()){
+void Action::in_last(){//int tipo){
+    //std::cout << "distancia10" << '\n';
+
+    //std::cout << "se hace wey" << '\n';
+    distancia(0.5,yo->playerPos);//int tipo){
+if(s==BH_SUCCESS){
+    s=BH_FAILURE;
+}else{
+    s=BH_SUCCESS;
+}
+
+}
+void Action::checkbool(bool that){
+    if(that){
         s=BH_SUCCESS;
+        //std::cout << "cierto" << '\n';
     }else{
         s=BH_FAILURE;
     }
@@ -114,40 +144,111 @@ void Action::checkbool(std::string that){
 void Action::onrange(){
     //std::cout << "range" << '\n';
 
-    checkbool("playerOnRange");
+    checkbool(yo->playerOnRange);
+
 }
 void Action::seeing(){
-    //std::cout << "seeing" << '\n';
+    //std::cout << "viendo?" << '\n';
+    checkbool(yo->playerSeeing);
 
-    //std::cout << "primerito" << '\n';
-    checkbool("playerSeeing");
 }
+void Action::ultrasonido(){
+    checkbool(yo->ultrasonido);
+}
+void Action::senyuelo(){
+    checkbool(yo->senyuelo);
+
+}
+
 void Action::seen(){
-    //std::cout << "seen" << '\n';
+    checkbool(yo->playerSeen);
 
-    checkbool("playerSeen");
 }
+void Action::rond_seny(){
+    if(s!=BH_RUNNING){
+        std::cout << "iniciando rondando senyuelo" << '\n';
+        yo->destino=yo->senpos;
+
+    }
+
+    rond();
+
+}
+void Action::rond_jugador(){
+    if(s!=BH_RUNNING){
+        std::cout << "iniciando rondando senyuelo" << '\n';
+    }
+    yo->destino=yo->playerPos;
 
 
-void Action::distancia(float _dist){//int tipo){
+    rond();
 
-    //setActive("andar random",0);
-    //data->getBData("playerPos")->getVector3f();
+}
+void Action::rond(){
+    if(s!=BH_RUNNING){
+        yo->rondacion_cont=0;
+        s=BH_RUNNING;
 
-    //CAIEnem* enem=static_cast<CAIEnem*>(Singleton<ObjectManager>::Instance()->getComponent(gg::AIENEM,getEntityID()));
-    //enem->enemyseen(_pRec);
+    }
+
+    float cont= yo->rondacion_cont;
+    cont++;
+    if(cont>50){
+        s=BH_SUCCESS;
+    }
 
     CTransform* cTransform;     //  Punteros a otras componentes
-    float id=data->getBData("id")->getInt();
-    //std::cout << "id" <<id<< '\n';
+    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,yo->getEntityID()));
+    gg::Vector3f mio =cTransform->getPosition();
+
+    gg::Vector3f dest =yo->destino;
+
+    //std::cout << "dest" <<dest<< '\n';
+    //gg::Normalice(dest-mio)*2;
+    gg::Vector3f res=dest-mio;
+    gg::Vector3f res2=mio+gg::Normalice(gg::Vector3f(res.Z,0,-res.X))*1/15;
+    //std::cout << "mio" <<mio<< '\n';
+    //std::cout << "posicion" <<res2<< '\n';
+
+    cTransform->setPosition(mio+gg::Normalice(gg::Vector3f(res.Z,0,-res.X))*1/15);
+    //float dist=gg::DIST(mio,dest);
+    //std::cout << "dist" <<dist<< '\n';
+    //if(dist<5){
+    //    s=BH_SUCCESS;
+    //}else{
+    //    s=BH_RUNNING;
+    //}
+
+}
+void Action::ult_cont(){
+    float res=yo->ultrasonido_cont;
+    res++;
+    //3-4 seg
+    if(res>100){
+        //std::cout << "aturdido acabado" << '\n';
+        yo->ultrasonido=false;
+
+
+
+        s=BH_SUCCESS;
+    }else{
+        s=BH_RUNNING;
+    }
+    yo->ultrasonido_cont=res;
+    //data->setData("ultrasonido_cont",new BInt(0));
+
+}
+
+void Action::distancia(float _dist,gg::Vector3f obj){//int tipo){
+
+
+    CTransform* cTransform;     //  Punteros a otras componentes
+    float id=yo->getEntityID();
+
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,id));
     gg::Vector3f mio =cTransform->getPosition();
-    //std::cout << "aqui peta" << '\n';
-    gg::Vector3f dest =data->getBData("playerPos")->getVector3f();
-    //std::cout << "aqui peta" << '\n';
 
-    float dist=gg::DIST(mio,dest);
-    //std::cout << "aqui peta" << '\n';
+    float dist=gg::DIST(mio,obj);
     if(dist<_dist){
         s=BH_SUCCESS;
 
@@ -155,14 +256,13 @@ void Action::distancia(float _dist){//int tipo){
         s=BH_FAILURE;
 
     }
-    //data->getBData("dist");
 
 }
 void Action::comer_animal(){
     setActive("comer",1);
 }
 void Action::girar_enemigo(){
-    setActive("girar",1);
+    setActive("girar",0);
 }
 void Action::rango_visual(){
     setActive("rango",1);
@@ -171,25 +271,65 @@ void Action::move_to(){
     setActive("mover",1);
 }
 void Action::move_last(){
-    //std::cout << "move last" << '\n';
 
     if(s!=BH_RUNNING){
-        data->setData("destino",new BVector3f(data->getBData("playerPos")->getVector3f()));
+        s=BH_RUNNING;
+
+        //std::cout << "iniciando move last" << '\n';
+        yo->destino=yo->playerPos;
     }
     move_too();
+    if(s!=BH_RUNNING){
+        yo->playerSeen=false;
+    }
+}
+void Action::move_senyuelo(){
+    if(s!=BH_RUNNING){
+        s=BH_RUNNING;
+        //std::cout << "iniciando move senyuelo" << '\n';
+
+    }
+
+    yo->destino=yo->senpos;
+
+    move_too();
+}
+void Action::player_vistocono(){
+    CTransform* cTransform;     //  Punteros a otras componentes
+    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,data->getBData("id2")->getInt()));
+    gg::Vector3f player=cTransform->getPosition();
+
+    //CTransform* cTransform;     //  Punteros a otras componentes
+    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,yo->getEntityID()));
+    float rotate=cTransform->getRotation().Y;//grados
+
+
 }
 void Action::move_player(){
     //std::co << "move player" << '\n';
-
+    //std::cout << "moviendo" << '\n';
     //if(s!=BH_RUNNING){
-        data->setData("destino",new BVector3f(data->getBData("playerPos")->getVector3f()));
+
+    if(s!=BH_RUNNING){
+        s=BH_RUNNING;
+        //std::cout << "iniciando move PLAYER" << '\n';
+
+    }
     //}
+    CTransform* cTransform;     //  Punteros a otras componentes
+    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,data->getBData("id2")->getInt()));
+    yo->destino=cTransform->getPosition();
+
     move_too();
 }
 
 void Action::move_around(){
-    //std::cout << "move around" << '\n';
     if(s!=BH_RUNNING){
+        //std::cout << "iniciando move random" << '\n';
+
+    }
+    if(s!=BH_RUNNING){
+        s=BH_RUNNING;
         //elegir
         //std::cout << "elegimos" << '\n';
         std::random_device rd;
@@ -200,14 +340,14 @@ void Action::move_around(){
         //std::cout << "X:" <<x<< '\n';
         //std::cout << "Y" <<y<< '\n';
         CTransform* cTransform;     //  Punteros a otras componentes
-        cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,data->getBData("id")->getInt()));
-        //gg::Vector3f dest =data->getBData("destino")->getVector3f();
+        cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,yo->getEntityID()));
         gg::Vector3f mio =cTransform->getPosition();
         //std::cout << "mio:" <<mio << '\n';
         gg::Vector3f dest =mio+gg::Vector3f(x,0,y);
         //std::cout << "dest:" <<dest << '\n';
         //cTransform->setPosition(mio);
-        data->setData("destino",new BVector3f(dest));
+        yo->destino=dest;
+
 
     }
     move_too();
@@ -215,17 +355,17 @@ void Action::move_around(){
 
 void Action::move_too(){
     CTransform* cTransform;     //  Punteros a otras componentes
-    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,data->getBData("id")->getInt()));
+    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,yo->getEntityID()));
     gg::Vector3f mio =cTransform->getPosition();
     //std::cout << "mio" <<mio<< '\n';
 
-    gg::Vector3f dest =data->getBData("destino")->getVector3f();
+    gg::Vector3f dest =yo->destino;
     //std::cout << "dest" <<dest<< '\n';
     //gg::Normalice(dest-mio)*2;
     cTransform->setPosition(mio+gg::Normalice(dest-mio)*1/15);
     float dist=gg::DIST(mio,dest);
     //std::cout << "dist" <<dist<< '\n';
-    if(dist<5){
+    if(dist<10){
         s=BH_SUCCESS;
     }else{
         s=BH_RUNNING;

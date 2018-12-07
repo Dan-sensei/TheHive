@@ -3,8 +3,10 @@
 
 #include "EventSystem/Blackboard.hpp"
 #include <BT/BehaviorTree.hpp>
-#include <vector>
+#include "ComponentArch/Components/CAIEnem.hpp"
 
+#include <vector>
+class CAIEnem;
 class Treecontroller {
 private:
     /* data */
@@ -14,14 +16,18 @@ private:
     Behaviors m_Children;
 
     BehaviorTree* BT;
-
-
+CAIEnem* yo;
 public:
-    Treecontroller (Blackboard* _data);
+    Treecontroller (Blackboard* _data,int tipo,CAIEnem* ai);
     Treecontroller ();
     //void iniciar (Blackboard* _data);
     virtual ~Treecontroller ();
     void arbolsoldado();
+    void arboltracker();
+    void arbolrusher();
+    void arboltank();
+
+
     void reset();
     void update();
 

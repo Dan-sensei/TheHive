@@ -14,12 +14,22 @@ class ScreenConsole{
     friend class Singleton<ScreenConsole>;
     friend class GameEngine;
     public:
-        void setprogress(float prog);
+        void setprogress(int hab,float _prog);
+        void setvida(float _vida);
+        void setbullet(int tipo,int balas);
         void DisplayDebug();
         void AddTextToBuffer(const std::string &Text, const gg::Color &color);
         void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
     private:
+        float porc_alto(float x);
+        float porc_ancho(float x);
+
+        int balaP;
+        int balaS;
+        float vida;
         float perc;
+        float perc2;
+        float perc3;
         float ancho;
         float alto;
         ScreenConsole();

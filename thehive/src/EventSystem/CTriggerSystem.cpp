@@ -33,14 +33,18 @@ void CTriggerSystem::PulsoTrigger(
     float _fRadius,
     TData _data)
     {
+        std::cout << "triger entrando 1" << '\n';
+        //std::cout << "triger entrando 12" << '\n';
         CAgent* pAgent=NULL;
         float fDistance=0.f;
 
         TriggerRecordStruct pRec(_eTriggerType,_idSource,_vPos,_fRadius,0,false,_data);
         std::list<CAgent*>::iterator it2;
         it2=CAgent::hola.begin();
-        for(unsigned long i=0; i<CAgent::hola.size();++i){
+        for(unsigned long i=0; i<CAgent::hola.size();++i,it2++){
             pAgent=*it2;
+            std::cout << "agente" <<pAgent->getEntityID()<< '\n';
+            std::cout << "trig" <<pAgent->GetTriggerFlags()<< '\n';
 
             //Does agent respond to trigger?
             if(!(pRec.eTriggerType & pAgent->GetTriggerFlags()))
@@ -60,7 +64,6 @@ void CTriggerSystem::PulsoTrigger(
             //to the trigger
             pAgent->onTriggerEnter(&pRec);
 
-            ++it2;
       }
 }
 

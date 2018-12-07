@@ -23,7 +23,7 @@
 
 
                                     //            punteros a otras componentes
-
+class Treecontroller;
 class CAgent;
 class GameEngine;        //  [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 class ObjectManager;     //  [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
@@ -44,6 +44,16 @@ class CAIEnem : public IComponent {
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
         gg::EMessageStatus MHandler_UPDATE  ();
+        void MHandler_SENYUELO(TriggerRecordStruct* cdata);
+        void MHandler_SENYUELO_END();
+
+        void MHandler_ATURD();
+
+        void MHandler_NEAR(TriggerRecordStruct* cdata);
+
+
+        //void MHandler_ATURD_END();
+
 
         void enemyseen();
         void enemyrange();
@@ -56,13 +66,10 @@ class CAIEnem : public IComponent {
         float agresividad;
         float Vrange;
         float Arange;
-        gg::Vector3f playerPos;
-        bool playerSeen;
 
         //des/activar eventos sonoros
         Blackboard* data;
 
-        bool playerOnRange;
         float enfado;
         //BehaviorTree* BT;
         Treecontroller* arbol;
@@ -74,7 +81,25 @@ class CAIEnem : public IComponent {
 
         static CTransform* PlayerTransform;     //  Punteros a otras componentes
 
+        gg::Vector3f playerPos;
+        bool playerSeen;
+        bool playerOnRange;
+
+        bool playerSeeing;
+        bool ultrasonido;
+        bool senyuelo;
+        gg::Vector3f senpos;
+        gg::Vector3f destino;
+        int id;
+        int id2;
+        int ultrasonido_cont;
+        int rondacion_cont;
     private:
+        //bool playerSeen;
+        //bool playerOnRange;
+        //gg::Vector3f playerPos;
+
+
         //CAIEnem(unsigned long _dwTriggerFlags,gg::Vector3f _vPos);
 
         //using Behaviors = std::vector<Behavior*>;

@@ -71,10 +71,11 @@ void Game::RUN(){
 
 
     // sF->createHero(gg::Vector3f(700, 100, 0),false);
-    sF->createHero(gg::Vector3f(1797, 120, 272),false);     //600
+    sF->createHero(gg::Vector3f(1760, 110, 350),false);     //600
     sF->createEnemy(gg::Vector3f(740, 100, 20));
     sF->createEnemy(gg::Vector3f(740, 100, 30));
     sF->createEnemy(gg::Vector3f(740, 100, 40));
+    sF->createEnemy(gg::Vector3f(1760, 110, 390));
 
     gg::Vector3f mapPos(1400,120,0);
     sF->createCollisionableStaticModel(

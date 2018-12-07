@@ -49,19 +49,13 @@ CAIEnem::~CAIEnem() {
 }
 void CAIEnem::enemyseen(){
 //
-data->setData("playerPos",new BVector3f(PlayerTransform->getPosition()));
-data->setData("playerSeen",new BBool(true));
-data->setData("playerSeeing",new BBool(true));
-
-//data->setData("playerOnRange",new BBool(true));
+playerPos=PlayerTransform->getPosition();
+playerSeen=true;
+playerSeeing=true;
 //
 }
 void CAIEnem::enemyrange(){
-//
-//data->setData("playerPos",new BVector3f(cdata->vPos));
-data->setData("playerOnRange",new BBool(true));
-//data->setData("playerOnRange",new BBool(true));
-//
+playerOnRange=true;
 }
 
 void CAIEnem::initComponent() {
@@ -79,20 +73,31 @@ void CAIEnem::Init(){
     data= new Blackboard();
     //int id_dado=getEntityID();
     //std::cout << "id dado:" <<id_dado<< '\n';
-    data->setData("id",new BInt(getEntityID()));
-    data->setData("playerSeeing",new BBool(false));
-    data->setData("playerOnRange",new BBool(false));
-    data->setData("playerSeen",new BBool(false));
-    data->setData("playerPos",new BVector3f(gg::Vector3f(20,20,20)));
-    data->setData("destino",new BVector3f(gg::Vector3f(50,50,50)));
+
+    playerSeeing=false;
+    playerOnRange=false;
+    playerSeen=false;
+    ultrasonido=false;
+    senyuelo=false;
+    senpos=gg::Vector3f(50,50,50);
+    playerPos=gg::Vector3f(20,20,20);
+    destino=gg::Vector3f(50,50,50);
+    id=getEntityID();
+    id2=PlayerTransform->getEntityID();
+    ultrasonido_cont=0;
+    rondacion_cont=0;
+
+    data->setData("id2",new BInt(PlayerTransform->getEntityID()));
+
+    //data->serData()
     //std::cout << "arbol1" << '\n';
     //std::cout << "creado" << '\n';
-    arbol=new Treecontroller(data);
+    arbol=new Treecontroller(data,0,this);
     //std::cout << "creadowii" << '\n';
 
     //std::cout << "arbol2" << '\n';
-    Vrange=50;
-    Arange=15;
+    Vrange=30;
+    Arange=5;
 
     playerOnRange=false;
     enfado=0;
@@ -138,12 +143,14 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
     //std::cout << "entrando" << '\n';
     float dist =gg::DIST(PlayerTransform->getPosition(),cTransform->getPosition());
     if(dist<Vrange){
-        if(!data->getBData("playerSeeing")->getBool()){
+        if(!playerSeeing){
             gg::cout("visto");
             enemyseen();
+            arbol->reset();
+
         }
         if(dist<Arange){
-            if(!data->getBData("playerOnRange")->getBool()){
+            if(!playerOnRange){
                 gg::cout("rango");
                 enemyrange();
             }
@@ -151,9 +158,9 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
 
         }
         else{
-            if(data->getBData("playerOnRange")->getBool()){
+            if(playerOnRange){
 
-                data->setData("playerOnRange",new BBool(false));
+                playerOnRange=false;
                 gg::cout("fuera de rango");
             }
 
@@ -162,9 +169,10 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
 
     }
     else{
-        if(data->getBData("playerSeeing")->getBool())
+        if(playerSeeing)
         {
-            data->setData("playerSeeing",new BBool(false));
+            playerSeeing=false;
+            arbol->reset();
             gg::cout("dejo de verlo");
         }
     }
@@ -182,4 +190,27 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
     //}
     return gg::ST_TRUE;
 
+}
+
+void CAIEnem::MHandler_ATURD(){
+    std::cout << "aturd" << '\n';
+    ultrasonido=true;
+    ultrasonido_cont=0;
+    arbol->reset();
+
+}
+void CAIEnem::MHandler_NEAR(TriggerRecordStruct* cdata){
+
+}
+void CAIEnem::MHandler_SENYUELO(TriggerRecordStruct* cdata){
+    senyuelo=true;
+    senpos=cdata->vPos;
+    arbol->reset();
+    std::cout << "sen in" << '\n';
+}
+void CAIEnem::MHandler_SENYUELO_END(){
+    senyuelo=false;
+    std::cout << "sen out" << '\n';
+
+    arbol->reset();
 }

@@ -37,6 +37,7 @@ class CVida : public IComponent {
         ObjectManager* Manager;
 
         int vida;
+        int vida_max;
         //CRigidBody* cRigidBody;
 };
 

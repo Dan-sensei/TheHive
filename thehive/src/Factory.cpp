@@ -24,6 +24,9 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CVida* Vida                         = new CVida(3);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
 
+    CHabilityController* Hab                         = new CHabilityController();
+    Manager->addComponentToEntity(Hab,             gg::HAB, hero);
+
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Hero.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, hero);
 
@@ -52,10 +55,10 @@ uint16_t Factory::createEnemy(const gg::Vector3f &Position){
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
 
-    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0, 0);
-    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
+    //CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0, 0);
+    //Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
-    CAgent* Agent                       = new CAgent(kTrig_EnemyNear|kTrig_Shoot);
+    CAgent* Agent                       = new CAgent(kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,gg::Vector3f(),false);
@@ -128,7 +131,7 @@ uint16_t Factory::createPathFindingActor(const gg::Vector3f &Position) {
     return Actor1;
 }
 
-uint16_t Factory::createHolyBomb(float _damage, float _radius,float _tipo, const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
+uint16_t Factory::createSenyuelo( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
@@ -138,10 +141,50 @@ uint16_t Factory::createHolyBomb(float _damage, float _radius,float _tipo, const
     CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
-    CRigidBody* RigidBody = new CRigidBody(false, false,"",  Position.X,Position.Y,Position.Z, 3,3,3, 1, 0,0,0);
+    CRigidBody* RigidBody = new CRigidBody(false, false,"",  Position.X,Position.Y,Position.Z, 1,1,1, 1, 0,0,0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
 
-    CGranade* Granade = new CGranade(_damage, _radius, _tipo);
+    CGranade* Granade = new CGranade2();
+    Manager->addComponentToEntity(Granade, gg::GRANADE, holyBomb);
+
+    RigidBody->applyCentralForce(Impulse);
+
+    return holyBomb;
+}
+uint16_t Factory::createMatriuska( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
+    uint16_t holyBomb = Manager->createEntity();
+    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+
+    CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
+
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
+
+    CRigidBody* RigidBody = new CRigidBody(false, false,"",  Position.X,Position.Y,Position.Z, 1,1,1, 1, 0,0,0);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
+
+    CGranade* Granade = new CGranade1();
+    Manager->addComponentToEntity(Granade, gg::GRANADE, holyBomb);
+
+    RigidBody->applyCentralForce(Impulse);
+
+    return holyBomb;
+}
+uint16_t Factory::createHolyBomb( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
+    uint16_t holyBomb = Manager->createEntity();
+    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+
+    CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
+
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
+
+    CRigidBody* RigidBody = new CRigidBody(false, false,"",  Position.X,Position.Y,Position.Z, 1,1,1, 1, 0,0,0);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
+
+    CGranade* Granade = new CGranade0();
     Manager->addComponentToEntity(Granade, gg::GRANADE, holyBomb);
 
     RigidBody->applyCentralForce(Impulse);
