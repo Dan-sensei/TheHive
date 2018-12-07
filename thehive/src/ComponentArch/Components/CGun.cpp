@@ -74,7 +74,7 @@ void CGun::shoot(gg::Vector3f to){
         Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(from,vel);
         gg::Vector3f hit = Singleton<ggDynWorld>::Instance()->getRaycastHitPosition();
 
-        Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),hit,10,TData());
+        Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),hit,5,TData());
         // Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
 
         // <DEBUG>

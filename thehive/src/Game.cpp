@@ -66,17 +66,15 @@ Game::~Game(){
 
 void Game::RUN(){
     auto sF = Singleton<Factory>::Instance();
+    uint16_t key;
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
+    sF->createHero(gg::Vector3f(1797, 120, 300),false);
+    sF->createEnemy(gg::Vector3f(1797, 120, 350));
+    sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
 
-    // sF->createHero(gg::Vector3f(700, 100, 0),false);
-    sF->createHero(gg::Vector3f(285, 0, 117),false);     //600
-    sF->createEnemy(gg::Vector3f(740, 100, 20));
-    sF->createEnemy(gg::Vector3f(740, 100, 30));
-    sF->createEnemy(gg::Vector3f(740, 100, 40));
-
-    gg::Vector3f mapPos(0,0,0);
+    gg::Vector3f mapPos(1400,120,0);
     sF->createCollisionableStaticModel(
         "assets/Models/CIUDAD/PROTOTIPO5/PROTOTIPO_CIUDAD.obj",
         "assets/Models/CIUDAD/PROTOTIPO5/PROTOTIPO_CIUDAD.bullet",
@@ -84,25 +82,24 @@ void Game::RUN(){
         mapPos
     );
 
-    // Armas
     sF->createCollectableWeapon(gg::Vector3f(700, 100, 20),0);
     sF->createCollectableWeapon(gg::Vector3f(700, 100, 40),1);
     sF->createCollectableWeapon(gg::Vector3f(700, 100, 60),2);
     sF->createCollectableWeapon(gg::Vector3f(700, 100, 80),3);
     sF->createCollectableWeapon(gg::Vector3f(700, 100, 100),4);
 
-    // sF->createCollisionableDynamicModel(
-    //     "assets/Models/cuboGrande.obj",
-    //     "assets/BoundingBoxes/cuboGrande.bullet",
-    //     "assets/Textures/e61.png",
-    //     gg::Vector3f(mapPos.X+274, mapPos.Y, mapPos.Z+50));
+    sF->createCollisionableDynamicModel(
+        "assets/Models/cuboGrande.obj",
+        "assets/BoundingBoxes/cuboGrande.bullet",
+        "assets/Textures/e61.png",
+        gg::Vector3f(mapPos.X+274, mapPos.Y, mapPos.Z+50));
 
-    // Eventos?
     uint16_t idEx = sF->createCollisionableDynamicModel(
         "assets/Models/ModelsForEvents/door1.obj",
         "assets/Models/ModelsForEvents/door1.bullet",
         "assets/Textures/Domino.jpg",
         gg::Vector3f(mapPos.X+350, mapPos.Y-10, mapPos.Z+204));
+    key = sF->createPickableItem(gg::Vector3f(1624, 120, 145));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+345, mapPos.Y-13, mapPos.Z+215),idEx,gg::Vector3f(0,0.1,0),3200);
 
     idEx = sF->createCollisionableDynamicModel(
@@ -111,7 +108,7 @@ void Game::RUN(){
         "assets/Textures/Domino.jpg",
         gg::Vector3f(mapPos.X+270.5, mapPos.Y-8, mapPos.Z+131));
         // i674,106,130
-    sF->createTouchableObject(gg::Vector3f(mapPos.X+290, mapPos.Y-11, mapPos.Z+131),idEx,gg::Vector3f(0,-0.035,0),8000);
+    sF->createTouchableObject(gg::Vector3f(mapPos.X+290, mapPos.Y-11, mapPos.Z+131),idEx,gg::Vector3f(0,-0.035,0),8000,key);
 
     ////////////////////////////////////////////////////////////////
     // TABLA MOLONA DE CONVERSION DE LA POSICION EN EL ESPACIO 3D //

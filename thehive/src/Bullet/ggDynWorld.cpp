@@ -34,7 +34,6 @@ void ggDynWorld::stepSimulation(float timeStep, int maxSubSteps, float fixedTime
 }
 
 void ggDynWorld::debugDrawWorld(){
-    debugRaycast();
     if(debug){
         debugDrawer->setDebugMode(1);
         dynamicsWorld->setDebugDrawer(debugDrawer);
@@ -48,7 +47,7 @@ void ggDynWorld::debugRaycast(){
     color.R = 212;
     color.G = 175;
     color.B = 55;
-    Singleton<GameEngine>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color,5);
+    Singleton<GameEngine>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color,10);
 }
 
 void ggDynWorld::printObjects(int _end){
@@ -147,9 +146,9 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float
         -(sin(rot.X*PI/180)*CLOSE_RANGE_FACTOR)+from.Y,
         (cos(rot.X*PI/180)*cos(rot.Y*PI/180)*CLOSE_RANGE_FACTOR)+from.Z
     );
-    cameraPosition = from;
 
     gg::Vector3f ret(-1,-1,-1);
+    cameraPosition = from;
     raycastVector = to;
     raycastCollisionBody = nullptr;
     raycastHitPosition = gg::Vector3f(-1,-1,-1);
