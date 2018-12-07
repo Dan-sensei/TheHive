@@ -29,7 +29,8 @@ class Factory{
         uint16_t createMatriuska(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
         uint16_t createSenyuelo(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
         uint16_t createCollectableWeapon(const gg::Vector3f&, int);
-        uint16_t createTouchableObject(const gg::Vector3f&, const uint16_t&, const gg::Vector3f&, const float&);
+        uint16_t createPickableItem(const gg::Vector3f&);
+        uint16_t createTouchableObject(const gg::Vector3f&, const uint16_t&, const gg::Vector3f&, const float&, uint16_t=0);
     private:
 
         Factory();

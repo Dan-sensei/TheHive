@@ -36,10 +36,11 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CPlayerController* PlayerController = new CPlayerController();
     Manager->addComponentToEntity(PlayerController, gg::PLAYERCONTROLLER, hero);
 
+    // Arma por defecto
     CGun *gun = new CGun(0.4,5,15,0.5,0.5,3);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
-    CAgent* Agent                       = new CAgent(kTrig_Gunfire|kTrig_Explosion|kTrig_Touchable);
+    CAgent* Agent                       = new CAgent(kTrig_Gunfire|kTrig_Explosion|kTrig_Touchable|kTrig_Pickable);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
     return hero;
@@ -213,7 +214,27 @@ uint16_t Factory::createCollectableWeapon(const gg::Vector3f &_position, int _we
     return weapon;
 }
 
-uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uint16_t &_id, const gg::Vector3f &vel, const float &_dur){
+uint16_t Factory::createPickableItem(const gg::Vector3f &_position){
+    uint16_t item = Manager->createEntity();
+    Material w_mat("assets/Textures/pese.jpg");
+
+    CTransform *transform = new CTransform(_position, gg::Vector3f(0,0,0));
+    Manager->addComponentToEntity(transform, gg::TRANSFORM, item);
+
+    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/weapon.obj", w_mat);
+    Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, item);
+
+    CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.X,_position.Y,_position.Z, -1,-1,-1, 25, 0,0,0);
+    Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, item);
+
+    TData mes;
+    mes.add(kDat_PickableItemId,item);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Pickable,1,item,_position, 2.5, 0, true, mes);
+
+    return item;
+}
+
+uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uint16_t &_id, const gg::Vector3f &vel, const float &_dur, uint16_t _item){
     uint16_t t_obj = Manager->createEntity();
     Material w_mat("assets/Textures/e61.png");
 
@@ -231,6 +252,9 @@ uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uin
     mes.add(kDat_EntId,_id);
     mes.add(kDat_Action,Action_MoverObjeto);
     mes.add(kDat_Done,false);
+    if(_item){
+        mes.add(kDat_PickableItemId,_item);
+    }
 
     Blackboard b;
     BRbData *data = new BRbData(gg::RBActionStruct(vel.X,vel.Y,vel.Z));

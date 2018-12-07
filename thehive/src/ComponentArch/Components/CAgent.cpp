@@ -241,6 +241,16 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
         }
     }
     else if((_pRec->eTriggerType & kTrig_Touchable) && nCAgentID == 1 && Engine->key(gg::GG_E)){
+        uint16_t item = _pRec->data.find(kDat_PickableItemId);
+        CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
+        if(item && !cpc->hasItem(item)){
+            // El heroe no ha cogido el item en concreto para realizar la accion
+            gg::cout("You shall not PASS!!!");
+            return;
+        }
+        // Usa y destruye el item
+        cpc->useItem(item);
+
         bool isDone = _pRec->data.find(kDat_Done);
         if(!isDone){
             uint16_t eIdObj     = _pRec->data.find(kDat_EntId);
@@ -255,6 +265,19 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
             Message mes(gg::M_EVENT_ACTION,&actionId);
             oManager->sendMessageToEntity(eIdObj,mes);
         }
+    }
+    else if((_pRec->eTriggerType & kTrig_Pickable) && nCAgentID == 1 /*&& Engine->key(gg::GG_E)*/){
+        int id = _pRec->data.find(kDat_PickableItemId);
+
+        bool result = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER, nCAgentID))->pickItem(id);
+        if(result){
+            gg::cout(" -- Picked object: "+std::to_string(id));
+            // Ha podido coger el item
+            _pRec->nExpirationTime = 20;
+            oManager->removeEntity(id);
+        }
+        // No ha podido cogerlo
+        gg::cout(" -- Can't pick object: "+std::to_string(id)+" -> FULL POCKETS");
     }
     //std::cout << "OnTriggerStay  sale" <<nCAgentID<< '\n';
 

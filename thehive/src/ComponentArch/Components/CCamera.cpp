@@ -111,12 +111,8 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     float newY = dist * sin(angle);
     newZ = dist * cos(angle);
 
-    // gg::cout("sin(angle) = "+std::to_string(sin(angle)));
-    // gg::cout("cos(angle) = "+std::to_string(cos(angle)));
-
     finalCameraPosition.Y += newY;
     finalCameraPosition.Z += newZ;
-
 
     // Now set the 'OFFSET' to the nextPosition to cheat the player eyes
     gg::Vector3f finalYRVector(
@@ -135,13 +131,14 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
         )
     );
 
-    // Perpendicular vector so set an offset to the right
+    // Perpendicular vector to set an offset to the right
     gg::Vector3f ppV(
         nextPosition.Z-camPosition.Z,
         0,
         -(nextPosition.X-camPosition.X)
     );
     ppV = gg::Normalice(ppV);
+    offsetPositionVector = ppV;
 
     camPosition = cam->getPosition();
     cam->setPosition(
@@ -166,11 +163,15 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     // If heroRotation is FALSE, the hero won't move with the camera rotation
     if(heroRotation){
         cameraPositionBeforeLockRotation = cam->getPosition();
-        // static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()))->applyTorque(gg::Vector3f(1000,newRotation.Y,0));
         // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
     }
 
 }
+
+gg::Vector3f CCamera::getOffsetPositionVector(){
+    return offsetPositionVector;
+}
+
 
 gg::Vector3f CCamera::getCameraPosition(){
     GameEngine *Engine = Singleton<GameEngine>::Instance();

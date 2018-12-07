@@ -1,7 +1,8 @@
 #include "ggDynWorld.hpp"
 
 #define FAR_RANGE_FACTOR    90.f
-#define CLOSE_RANGE_FACTOR  7.f
+// #define CLOSE_RANGE_FACTOR  7.f
+#define CLOSE_RANGE_FACTOR  1.f
 #define PI 3.14159265359
 
 ggDynWorld::ggDynWorld(){
@@ -41,10 +42,12 @@ void ggDynWorld::debugDrawWorld(){
 }
 
 void ggDynWorld::debugRaycast(){
-    if(debug && raycastHitPosition.X!=-1){
-        float color[4] = {226,45,13,0};
-        Singleton<GameEngine>::Instance()->draw3DLine(cameraPosition,raycastHitPosition,color);
-    }
+    gg::Color color;
+    color.Alpha = 1;
+    color.R = 212;
+    color.G = 175;
+    color.B = 55;
+    Singleton<GameEngine>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color,10);
 }
 
 void ggDynWorld::printObjects(int _end){
@@ -214,4 +217,3 @@ bool ggDynWorld::DoesItHitSomething(const gg::Vector3f &Start, const gg::Vector3
 
     return false;
 }
-

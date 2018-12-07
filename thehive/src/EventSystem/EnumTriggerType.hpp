@@ -9,6 +9,7 @@ enum EnumTriggerType{
     kTrig_Shoot     =1<<3,
     kTrig_Touchable =1<<4,
     kTrig_Senyuelo  =1<<5,
-    kTrig_Aturd     =1<<6
+    kTrig_Aturd     =1<<6,
+    kTrig_Pickable  =1<<7
 };
 #endif

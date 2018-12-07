@@ -11,8 +11,7 @@
 // #include <GameEngine/ScreenConsole.hpp>
 
 #define VEL_FACTOR          200.f
-#define MAX_ANGLE           12.f
-#define MAX_HERO_SPEED      4
+#define MAX_HERO_SPEED      3
 
 #define ROTATE_KEY          gg::GG_LCONTROL
 #define DASH_KEY            gg::GG_ALT
@@ -23,7 +22,10 @@
 
 #define FORCE_FACTOR        400.f
 #define JUMP_FORCE_FACTOR   FORCE_FACTOR*15.f
-#define DASH_FORCE_FACTOR   FORCE_FACTOR/6.f
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/25.f
+
+#define MULT_RUN_FACTOR     1.5
+#define MULT_DASH_FACTOR    3
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
@@ -62,6 +64,9 @@ void CPlayerController::Init(){
     // Pistola por defecto
     isPrincipal = false;
     secondWeapon = nullptr;
+
+    // Array de items con sus posiciones a -1
+    // Ya que por ahora no tiene ningún item
 }
 
 
@@ -74,8 +79,8 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 }
 
 
-//  Message handler functions_______________________________________________________________
-//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+// Message handler functions__________________________________________________________________
+// |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
@@ -102,14 +107,20 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     bool heroRotation = true;
 
     // Vector direccion camara-heroe
-    gg::Vector3f cV = camera->getCameraPosition();
-    gg::Vector3f cV2 = cV;
+    gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
+    gg::Vector3f cV2 = cV;  // cV2 por ahora no se usa para nada
+
     gg::Vector3f hV = cRigidBody->getBodyPosition();
-        cV-=hV;
-        cV=gg::Normalice(cV);
+    // Como aplico un offset a la posicion de la camara
+    // Para arreglar el movimiento y que no sea hacia el lado,
+    // aplico el mismo offset al vector direccion del heroe
+    cV -= static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
+    cV -= hV;
+    cV  = gg::Normalice(cV);
 
     // Vector perpendicular al vector direccion
     gg::Vector3f ppV(-cV.Z,0,cV.X);
+
 
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f    force;
@@ -167,14 +178,14 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         heroRotation = false;
 
     if(Engine->key(RUN_KEY)){
-        gg::cout("RUN!");
-        MULT_FACTOR = 3.5;
+        // gg::cout("RUN!");
+        MULT_FACTOR = MULT_RUN_FACTOR;
     }
     if(Engine->key(DASH_KEY)){
         if(!pulsacion_dash){
-            gg::cout("DASH!");
+            // gg::cout("DASH!");
 
-            MULT_FACTOR = 6;
+            MULT_FACTOR = MULT_DASH_FACTOR;
             force.X *= DASH_FORCE_FACTOR;
             force.Z *= DASH_FORCE_FACTOR;
 
@@ -214,18 +225,15 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         cRigidBody->setLinearVelocity(gg::Vector3f(0, cRigidBody->getVelocity().Y, 0));
     }
 
-
     continueProcessing:
-    // COPIA-PEGA DE LA DOCUMENTACION:
-    // Bullet automatically deactivates dynamic rigid bodies, when the velocity is below a threshold for a given time.
-    // Deactivated (sleeping) rigid bodies don't take any processing time, except a minor broadphase collision detection impact
-    // (to allow active objects to activate/wake up sleeping objects)
-    cRigidBody->activate(true);
 
     // And we update it accoding to the keyboard input
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
 
-    // DISPARO -> NO VA EL CLICK IZQUIERDO =D
+    // -----------------------------------
+    // Acciones de Willy
+    // -----------------------------------
+    // DISPARO
     gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
     gg::Vector3f rayPos = world->getRaycastVector();
 
@@ -322,11 +330,15 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         debug1 = false;
     }
 
-    // gg::cout(
-    //     "(X:"+std::to_string(cTransform->getPosition().X)+
-    //     ",Y:"+std::to_string(cTransform->getPosition().Y)+
-    //     ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
-    // );
+    if(debug2){
+        // DEBUG ACTIVATED
+        gg::cout(
+            "(X:"+std::to_string(cTransform->getPosition().X)+
+            ",Y:"+std::to_string(cTransform->getPosition().Y)+
+            ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
+        );
+    }
+
 
     // </DEBUG>
 
@@ -373,4 +385,36 @@ bool CPlayerController::canPickWeapon(){
         pulsacion_f = false;
     }
     return true;
+}
+
+bool CPlayerController::hasItem(const uint16_t &_item){
+    for(const uint16_t& i : items){
+        if(i==_item){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool CPlayerController::pickItem(const uint16_t &_item){
+    // No compruebo duplicados entre items
+    // Nunca pasara esa situacion
+    for(const uint16_t &i : items){
+        // gg::cout("items["+std::to_string(i)+"] = "+std::to_string(items[i]));
+        if(i==0){
+            items[i] = _item;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool CPlayerController::useItem(const uint16_t &_item){
+    for(const uint16_t &i : items){
+        if(i==_item){
+            items[i] = 0;
+            return true;
+        }
+    }
+    return false;
 }

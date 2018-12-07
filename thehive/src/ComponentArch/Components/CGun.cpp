@@ -84,10 +84,10 @@ void CGun::shoot(gg::Vector3f to){
         Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(from,vel);
         //TData mes;
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
-        EventSystem->PulsoTrigger(kTrig_Shoot,0,to,500,mes);//sonido de disparo
+        //EventSystem->PulsoTrigger(kTrig_Shoot,0,to,500,mes);//sonido de disparo
 
-        // Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),to,10,TData());
-        //Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
+        Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),to,50,TData());
+        // Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
 
         // <DEBUG>
             Material moradoDeLos80("assets/Textures/Blue.png");
@@ -165,7 +165,7 @@ gg::EMessageStatus CGun::MHandler_UPDATE(){
             reloading = false;
             total_bullets = ktotal_bullets;
             Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
-            
+
         }
     }
     else if(!canShoot){
