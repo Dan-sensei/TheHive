@@ -135,17 +135,15 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float
     if(_weaponRange == -1)  _weaponRange  = FAR_RANGE_FACTOR;
     else                    _weaponRange *= FAR_RANGE_FACTOR;
 
-    gg::Vector3f to = gg::Vector3f(
-         (sin(rot.Y  *PI/180.f)                         *FAR_RANGE_FACTOR)      +from.X,
-        -(sin(rot.X  *PI/180.f)                         *FAR_RANGE_FACTOR)      +from.Y,
-         (cos(rot.X  *PI/180.f)*cos(rot.Y*PI/180.f)     *FAR_RANGE_FACTOR)      +from.Z
+    gg::Vector3f aux = gg::Vector3f(
+         sin(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) ) ,
+        -sin(rot.X  *PI/180.f) ,
+         cos(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) )
     );
 
-    // from = gg::Vector3f(
-    //      (sin(rot.Y  *PI/180.f)                         *CLOSE_RANGE_FACTOR)    +from.X,
-    //     -(sin(rot.X  *PI/180.f)                         *CLOSE_RANGE_FACTOR)    +from.Y,
-    //      (cos(rot.X  *PI/180.f)*cos(rot.Y*PI/180.f)     *CLOSE_RANGE_FACTOR)    +from.Z
-    // );
+
+    gg::Vector3f to =gg::Normalice(aux)*FAR_RANGE_FACTOR+from;
+std::cout << "aux" <<aux<< '\n';
 
     gg::Vector3f ret(-1,-1,-1);
     raycastVector           = to;
