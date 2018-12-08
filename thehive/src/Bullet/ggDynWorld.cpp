@@ -142,8 +142,7 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float
     );
 
 
-    gg::Vector3f to =gg::Normalice(aux)*FAR_RANGE_FACTOR+from;
-std::cout << "aux" <<aux<< '\n';
+    gg::Vector3f to =aux*FAR_RANGE_FACTOR+from;
 
     gg::Vector3f ret(-1,-1,-1);
     raycastVector           = to;
