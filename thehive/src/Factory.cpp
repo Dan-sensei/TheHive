@@ -223,3 +223,16 @@ uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uin
 
     return t_obj;
 }
+
+uint16_t Factory::createDebugBullet(const gg::Vector3f &_pos){
+    uint16_t debug = Manager->createEntity();
+    Material moradoDeLos80("assets/Textures/Blue.png");
+
+    CTransform* Transform               = new CTransform(_pos, gg::Vector3f(0, 0, 0));
+    Manager->addComponentToEntity(Transform,        gg::TRANSFORM, debug);
+
+    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
+    Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, debug);
+
+    return debug;
+}

@@ -237,7 +237,7 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
-    
+
     // COPIA-PEGA DE LA DOCUMENTACION:
     // Bullet automatically deactivates dynamic rigid bodies, when the velocity is below a threshold for a given time.
     // Deactivated (sleeping) rigid bodies don't take any processing time, except a minor broadphase collision detection impact
@@ -295,6 +295,10 @@ gg::Vector3f CRigidBody::getVelocity(){
 }
 gg::Vector2f CRigidBody::getXZVelocity(){
     return gg::Vector2f(body->getLinearVelocity().getX(), body->getLinearVelocity().getZ());
+}
+
+bool CRigidBody::checkContactResponse(){
+    return world->contactTest(body);
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------

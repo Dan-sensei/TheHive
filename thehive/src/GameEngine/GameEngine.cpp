@@ -134,11 +134,11 @@ int GameEngine::getScreenHeight(){
     return driver->getScreenSize().Height;
 }
 
-int GameEngine::getCursorX(){
+float GameEngine::getCursorX(){
     return device->getCursorControl()->getPosition().X;
 }
 
-int GameEngine::getCursorY(){
+float GameEngine::getCursorY(){
     return device->getCursorControl()->getPosition().Y;
 }
 

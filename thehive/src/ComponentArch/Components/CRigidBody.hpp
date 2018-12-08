@@ -69,6 +69,8 @@ class CRigidBody : public IComponent {
         gg::Vector3f getBodyPosition();
         gg::Vector3f getLinearVelocity();
 
+        bool checkContactResponse();
+
         // Funciones del mapa
         void updateCTransformPosition();
         void Upd_MoverObjeto();

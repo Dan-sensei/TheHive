@@ -78,12 +78,8 @@ void CGun::shoot(gg::Vector3f to){
         // Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
 
         // <DEBUG>
-            Material moradoDeLos80("assets/Textures/Blue.png");
-            uint16_t debug = Manager->createEntity();
-            CTransform* Transform               = new CTransform(to, gg::Vector3f(0, 0, 0));
-            CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
-            Manager->addComponentToEntity(Transform,        gg::TRANSFORM, debug);
-            Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, debug);
+            Factory *fac = Singleton<Factory>::Instance();
+            fac->createDebugBullet(gg::Vector3f(to));
         // </DEBUG>
     }
 }

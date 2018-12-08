@@ -10,11 +10,15 @@
 
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
-#include "CTransform.hpp"
 #include <Singleton.hpp>
 
-#include "CRigidBody.hpp"
+#include "CTransform.hpp"
+
 #include <Bullet/ggDynWorld.hpp>
+#include "CRigidBody.hpp"
+
+class ggDynWorld;
+class CRigidBody;
 
 class CNavmeshAgent : public IComponent {
     friend class Factory;

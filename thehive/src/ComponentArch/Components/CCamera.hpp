@@ -7,11 +7,12 @@
 #include <cmath>
 #include <GameEngine/GameEngine.hpp>
 #include <GameEngine/Camera.hpp>
-#include "CTransform.hpp"
 #include <Singleton.hpp>
 
+#include "CTransform.hpp"
 
 class ObjectManager;
+class CRigidBody;
 
 class CCamera : public IComponent {
 friend class Factory;
@@ -34,12 +35,16 @@ public:
     gg::Vector3f getCameraTarget();
     gg::Vector3f getOffsetPositionVector();
 
+    void moveCameraPosition(gg::Vector3f);
+
     gg::Vector3f getlastHeroPosition();
     gg::Vector3f getCameraPositionBeforeLockRotation();
     void setCameraPositionBeforeLockRotation(gg::Vector3f);
 
-private:
+    float getSenA(){return senA;}
+    float getCosA(){return cosA;}
 
+private:
     gg::Vector3f lastHeroPosition;
     gg::Vector3f cameraPositionBeforeLockRotation;
 
@@ -50,6 +55,12 @@ private:
 
     bool daniNoSabeProgramar;
     gg::Vector3f offsetPositionVector;
+
+    float senA,cosA;
+
+    uint16_t entCollisions;
+    CTransform *collTF;
+    CRigidBody *collRB;
 };
 
 

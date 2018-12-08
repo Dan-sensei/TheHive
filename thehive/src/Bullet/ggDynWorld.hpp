@@ -8,6 +8,7 @@
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
 
 #include <GameEngine/GameEngine.hpp>
+#include <Factory.hpp>
 #include <Singleton.hpp>
 
 #include <ComponentArch/IComponent.hpp>
@@ -36,6 +37,7 @@ public:
     gg::Vector3f getRaycastHitPosition();
     void applyForceToRaycastCollisionBody(gg::Vector3f,gg::Vector3f);
 
+    bool contactTest(btCollisionObject*);
 
     //  ---
     //  Do a ray cast test! If it hits something it will return true, and the collision point on te 3rd
@@ -91,6 +93,8 @@ private:
     gg::Vector3f raycastVector;
     gg::Vector3f raycastHitPosition;
     btRigidBody* raycastCollisionBody;
+
+    uint16_t debugBullet;
 };
 
 
