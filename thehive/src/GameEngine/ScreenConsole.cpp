@@ -4,7 +4,7 @@
 
 irr::IrrlichtDevice* ScreenConsole::IrrlichtDevice = nullptr;
 void ScreenConsole::setprogress(int hab,float prog){
-    //std::cout << "entra en :" <<prog<< '\n';
+    //// std::cout << "entra en :" <<prog<< '\n';
     if(hab==0){
         perc=1-prog;
 
@@ -18,7 +18,7 @@ void ScreenConsole::setprogress(int hab,float prog){
     }
 }
 void ScreenConsole::setvida(float _vida){
-    std::cout << "hacemos algo" << '\n';
+    // std::cout << "hacemos algo" << '\n';
 vida=_vida;
 }
 void ScreenConsole::setbullet(int tipo,int balas){
@@ -72,9 +72,9 @@ ScreenConsole::ScreenConsole(){
 //    m.setTexture(0,it->second.texture);
 //    m.getTextureMatrix(0).setTextureScale(.3f, .5f);
     //irr::core::CMatrix4<float> k=m.getTextureMatrix(0);
-    //std::cout << k[66] << '\n';
-//    std::cout << k.getScale().X << '\n';
-    //std::cout << m.getTextureMatrix(0) << '\';
+    //// std::cout << k[66] << '\n';
+//    // std::cout << k.getScale().X << '\n';
+    //// std::cout << m.getTextureMatrix(0) << '\';
     //m.getTextureMatrix(0)[0][0][0][0];
     //CMatrix4<float> k=m.getTextureMatrix(0);
     perc=0;
@@ -131,11 +131,11 @@ void ScreenConsole::DisplayDebug(){
                 irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height),
                 irr::core::rect<irr::s32>(0,0,it->second.texture->getSize().Width,it->second.texture->getSize().Height)
             );
-            //std::cout << "nombre" <<it->first<< '\n';
-            //std::cout << "posx" <<it->second.posx<< '\n';
-            //std::cout << "posy" <<it->second.posy<< '\n';
-            //std::cout << "tamano H" <<it->second.texture->getSize().Height<< '\n';
-            //std::cout << "tamano W" <<it->second.texture->getSize().Width<< '\n';
+            //// std::cout << "nombre" <<it->first<< '\n';
+            //// std::cout << "posx" <<it->second.posx<< '\n';
+            //// std::cout << "posy" <<it->second.posy<< '\n';
+            //// std::cout << "tamano H" <<it->second.texture->getSize().Height<< '\n';
+            //// std::cout << "tamano W" <<it->second.texture->getSize().Width<< '\n';
             //driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
             //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.texture->getSize().Width,it->second.posy+it->second.texture->getSize().Height*perc));
             //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.texture->getSize().Width,it->second.posy+it->second.texture->getSize().Height));

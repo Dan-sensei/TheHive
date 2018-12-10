@@ -9,7 +9,7 @@
 CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
 {
-std::cout << "vida" << '\n';
+// std::cout << "vida" << '\n';
 }
 
 CVida::~CVida() {
@@ -25,11 +25,11 @@ void CVida::quitarvida(){
     }
     float res=(float)vida/vida_max;
     Singleton<ScreenConsole>::Instance()->setvida(res);
-    std::cout << "vida:" <<vida << '\n';
+    // std::cout << "vida:" <<vida << '\n';
 }
 
 void CVida::initComponent() {
-    std::cout << "llega a la vida" << '\n';
+    // std::cout << "llega a la vida" << '\n';
 
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::VIDA, gg::M_UPDATE);
     Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::VIDA, gg::M_SETPTRS);

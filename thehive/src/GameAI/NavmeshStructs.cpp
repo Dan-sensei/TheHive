@@ -35,7 +35,7 @@ Node::Node(uint16_t _ID, uint16_t _NODE_1, uint16_t _NODE_2, const gg::Vector3f 
 {}
 
 Node::Node(const Node &orig){
-    //std::cout << "Copiando Nodo..." << '\n';
+    //// std::cout << "Copiando Nodo..." << '\n';
 
     Bitconnect      =   orig.Bitconnect;
     RealCost        =   orig.RealCost;

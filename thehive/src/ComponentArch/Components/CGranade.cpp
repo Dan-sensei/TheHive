@@ -1,11 +1,5 @@
 #include "CGranade.hpp"
 
-
-#include "ComponentArch/Message.hpp"
-
-#include <EventSystem/TData.hpp>
-#include "Factory.hpp"
-
 #define VEL_FACTOR      200.f
 
 CGranade::CGranade(){

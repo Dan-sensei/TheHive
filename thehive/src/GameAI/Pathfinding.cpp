@@ -23,23 +23,23 @@ Pathfinding::Pathfinding()
         }
     }
 
-    //std::cout << "GRAPH CREATED!" << '\n';
+    //// std::cout << "GRAPH CREATED!" << '\n';
 
     std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
 
     for(uint16_t i = 0; i < GRAPH.size(); ++i){
-        std::cout << "  -- " << i << " = " << GRAPH[i] << '\n';
+        // std::cout << "  -- " << i << " = " << GRAPH[i] << '\n';
     }
 
     uint16_t cons = 0;
-    //std::cout << "Connections:" << '\n';
+    //// std::cout << "Connections:" << '\n';
     for(uint16_t i = 0; i < GConnections.size(); ++i){
-        //std::cout << "[" << i << "] => ";
+        //// std::cout << "[" << i << "] => ";
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            //std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
+            //// std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
             ++cons;
         }
-        //std::cout << '\n';
+        //// std::cout << '\n';
     }
 
     std::cout << " ->" << cons << " Connections created!" << '\n';
@@ -50,13 +50,13 @@ Pathfinding::Pathfinding()
             std::cout << " " << FACES[i].Portals[j];
         std::cout << '\n';
     }
-    //std::cout << "Test" << '\n';
+    //// std::cout << "Test" << '\n';
     //GRAPH[0].EstimatedCost = 10;
     //GRAPH[2].EstimatedCost = 20;
     //OpenList.push(&GRAPH[0]);
     //OpenList.push(&GRAPH[1]);
 
-    //std::cout << "ID : " << OpenList.top()->ID << " | ESTIMATED COST = " << OpenList.top()->EstimatedCost << '\n';
+    //// std::cout << "ID : " << OpenList.top()->ID << " | ESTIMATED COST = " << OpenList.top()->EstimatedCost << '\n';
 }
 
 Pathfinding::~Pathfinding(){
@@ -97,7 +97,7 @@ bool Pathfinding::isDebugging(){
 }
 
 void Pathfinding::resetGraph(){
-    //std::cout << "Reseting" << '\n';
+    //// std::cout << "Reseting" << '\n';
     uint16_t i = GRAPH.size();
     while(i--){
         GRAPH[i].Status = Type::UNVISITED;
@@ -165,7 +165,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
 
     if(CurrentNode->ID != GOAL) {
         gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
-        //std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
+        //// std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
         uint16_t nodes = 0;
@@ -183,7 +183,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
 
 void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output) {
 
-    std::cout << "SEARCHING!" << '\n';
+    // std::cout << "SEARCHING!" << '\n';
     uint16_t StartFN, GoalFN;
     //float dist = std::inner_product(p.normal, (vectorSubtract(point, p.point)));
     bool FoundStart = false;
@@ -218,7 +218,7 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
         gg::cout("LA POSICION DEL JUGADOR O GOAL, NO ESTÁN EN NINGUN POLÍGONO", gg::Color(255, 0, 0, 1));
         return;
     }
-    std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
+    // std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
 
     if(StartFN == GoalFN){
         Output.emplace(START, 0, 0);
@@ -270,10 +270,10 @@ void Pathfinding::printStats(){
         else if(GRAPH[i].Status == Type::UNVISITED)
             ++UNVISITED;
     }
-    //std::cout << '\n';
-    //std::cout << "OPEN:      " << OPEN << '\n';
-    //std::cout << "CLOSED:    " << CLOSED << '\n';
-    //std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
+    //// std::cout << '\n';
+    //// std::cout << "OPEN:      " << OPEN << '\n';
+    //// std::cout << "CLOSED:    " << CLOSED << '\n';
+    //// std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
 }
 
 

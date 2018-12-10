@@ -24,10 +24,6 @@ EXE := main
 build: PRE_BUILD $(EXE)
 
 PRE_BUILD:
-	@echo "#ifndef COMPONENTHEADERS_H" > $(COMPONENTHEADERS)
-	@echo "#define COMPONENTHEADERS_H" >> $(COMPONENTHEADERS)
-	@for header in $(COMPONENTS) ; do echo "	#include <$$header>" >> $(COMPONENTHEADERS); done
-	@echo "#endif" >> $(COMPONENTHEADERS)
 	@echo "void Factory::ComponentInitializer() {" > $(COMPONENTINITIALIZER)
 	@for init in $(COMPONENTSCLASS) ; do echo "	$$init::initComponent();" >> $(COMPONENTINITIALIZER); done
 	@echo "}" >> $(COMPONENTINITIALIZER)

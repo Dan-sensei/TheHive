@@ -41,7 +41,7 @@ RandomSequence::RandomSequence(const RandomSequence &orig):Composite(orig)
                         incluido=true;
                         secuencia[i]=x;
 
-                        //std::cout<<"El random es"<< x<<'\n';
+                        //// std::cout<<"El random es"<< x<<'\n';
 
 
                     }

@@ -72,10 +72,10 @@ void Game::RUN(){
 
     // sF->createHero(gg::Vector3f(700, 100, 0),false);
     sF->createHero(gg::Vector3f(1760, 110, 350),false);     //600
-    //sF->createEnemy(gg::Vector3f(740, 100, 20));
-    //sF->createEnemy(gg::Vector3f(740, 100, 30));
-    //sF->createEnemy(gg::Vector3f(740, 100, 40));
-    //sF->createEnemy(gg::Vector3f(1760, 110, 390));
+    sF->createEnemy(gg::Vector3f(740, 100, 20));
+    sF->createEnemy(gg::Vector3f(740, 100, 30));
+    sF->createEnemy(gg::Vector3f(740, 100, 40));
+    sF->createEnemy(gg::Vector3f(1760, 110, 390));
     sF->createEnemy(gg::Vector3f(1797, 120, 350));
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
 
@@ -126,18 +126,21 @@ void Game::RUN(){
 
 
     //factory->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
-    uint16_t Dummy = sF->createPathFindingActor(gg::Vector3f(285, 0, 117));
-    //factory->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
-
-    uint16_t Navmesh = Manager->createEntity();
-    Material yelo("assets/NavMeshes/PROTOTIPO_CIUDAD.png");
-    //Material yelo("assets/Textures/ice.bmp");
-
-    CTransform* Transform = new CTransform(gg::Vector3f(0,80,0), gg::Vector3f(0,0,0));
-    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Navmesh);
-
-    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", yelo);
-    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
+    // uint16_t Dummy = sF->createPathFindingActor(gg::Vector3f(285, 0, 117));
+    // //factory->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
+    //
+    // CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
+    // Agent->SetDestination(gg::Vector3f(280, -20, -377));
+    //
+    // uint16_t Navmesh = Manager->createEntity();
+    // Material yelo("assets/NavMeshes/PROTOTIPO_CIUDAD.png");
+    // //Material yelo("assets/Textures/ice.bmp");
+    //
+    // CTransform* Transform = new CTransform(gg::Vector3f(0,80,0), gg::Vector3f(0,0,0));
+    // Manager->addComponentToEntity(Transform, gg::TRANSFORM, Navmesh);
+    //
+    // CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", yelo);
+    // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     // uint16_t NavmeshGround = Manager->createEntity();
     // CRigidBody* RigidBody = new CRigidBody(false, false,"", 0, -10, 0, 680,10,800, 0, 0,0,0, 0.2);
@@ -166,8 +169,6 @@ void Game::RUN(){
     //60 -450
     //132 - 550
 
-    CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
-    Agent->SetDestination(gg::Vector3f(280, -20, -377));
 
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
@@ -176,7 +177,7 @@ void Game::RUN(){
     Singleton<Pathfinding>::Instance()->SetDebug(true);
     while(Engine->isWindowOpen()) {
 
-        world->stepSimulation(1.f / 11.f, 10.f);
+        world->stepSimulation(1.f / 11.f, 6);
 
         EventSystem->Update();
 

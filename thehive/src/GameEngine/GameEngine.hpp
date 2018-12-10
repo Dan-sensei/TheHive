@@ -31,7 +31,7 @@ class GameEngine{
         void Dro();
         void EndDro();
         void Close();
-        
+
         bool isWindowOpen();
         void DisplayFPS();
 
@@ -49,8 +49,8 @@ class GameEngine{
         Camera* getCamera();
         int getScreenWidth();
         int getScreenHeight();
-        int getCursorX();
-        int getCursorY();
+        float getCursorX();
+        float getCursorY();
         void setCursorPosition(int,int);
 
 

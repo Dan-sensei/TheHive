@@ -6,7 +6,7 @@ Inverso::Inverso(){}
 Inverso::~Inverso(){}
 
 Status Inverso::update(){
-  //std::cout << "Inverso update" <<getStatus() << '\n';
+  //// std::cout << "Inverso update" <<getStatus() << '\n';
   m_pChild->tick();
   if(m_pChild->getStatus()==BH_FAILURE)return BH_SUCCESS;
   if(m_pChild->getStatus()==BH_SUCCESS)return BH_FAILURE;
@@ -14,5 +14,5 @@ Status Inverso::update(){
   return m_pChild->getStatus();
 }
 void Inverso::onTerminate(Status state){
-  //std::cout << "Inverso onTerminate" <<state << '\n';
+  //// std::cout << "Inverso onTerminate" <<state << '\n';
 }

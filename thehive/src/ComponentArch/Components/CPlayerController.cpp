@@ -85,7 +85,7 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
     cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
-    std::cout << "llega" << '\n';
+    // std::cout << "llega" << '\n';
     hab = static_cast<CHabilityController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::HAB, getEntityID()));
     //hab = static_cast<CHabilityController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::HABILITY, getEntityID()));
 
@@ -106,21 +106,18 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     gg::Vector3f nextPosition = camera->getlastHeroPosition();
     bool heroRotation = true;
 
-    // Vector direccion camara-heroe
+    gg::Vector3f oPV = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
     gg::Vector3f cV = camera->getCameraPositionBeforeLockRotation();
-    gg::Vector3f cV2 = cV;  // cV2 por ahora no se usa para nada
+    gg::Vector3f hV = nextPosition;
+    // gg::Vector3f cV2 = cV;  // cV2 POR AHORA no se usa para nada
 
-    gg::Vector3f hV = cRigidBody->getBodyPosition();
-    // Como aplico un offset a la posicion de la camara
-    // Para arreglar el movimiento y que no sea hacia el lado,
-    // aplico el mismo offset al vector direccion del heroe
-    cV -= static_cast<CCamera*>(Singleton<ObjectManager>::Instance()->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
+    // cV es un vector direccion camara-heroe
+    cV -= oPV;
     cV -= hV;
     cV  = gg::Normalice(cV);
 
     // Vector perpendicular al vector direccion
     gg::Vector3f ppV(-cV.Z,0,cV.X);
-
 
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f    force;
@@ -206,8 +203,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         pulsacion_espacio = false;
     }
 
-    // gg::cout(std::to_string(cRigidBody->getVelocity().Y));
-
+    // Se aplican fuerzas
     float currentSpeed = gg::Modulo(cRigidBody->getXZVelocity());
     if(!pressed && currentSpeed == 0)
         goto continueProcessing;
@@ -224,7 +220,6 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
         // Set it to 0
         cRigidBody->setLinearVelocity(gg::Vector3f(0, cRigidBody->getVelocity().Y, 0));
     }
-
     continueProcessing:
 
     // And we update it accoding to the keyboard input
@@ -342,10 +337,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
 
     // </DEBUG>
 
-    //gg::cout(cTransform->getPosition());
-
-    if(Engine->key(gg::GG_P))
-    Engine->Close();
+    if(Engine->key(gg::GG_P)) Engine->Close();
 
     return gg::ST_TRUE;
 

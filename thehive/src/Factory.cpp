@@ -1,4 +1,8 @@
 #include "Factory.hpp"
+#include <ComponentArch/Components/CGranade.hpp>
+#include <ComponentArch/Components/CGranade0.hpp>
+#include <ComponentArch/Components/CGranade1.hpp>
+#include <ComponentArch/Components/CGranade2.hpp>
 
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
@@ -265,4 +269,17 @@ uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uin
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Touchable,1,t_obj,_position, 5, 0, true, mes);
 
     return t_obj;
+}
+
+uint16_t Factory::createDebugBullet(const gg::Vector3f &_pos){
+    uint16_t debug = Manager->createEntity();
+    Material moradoDeLos80("assets/Textures/Blue.png");
+
+    CTransform* Transform               = new CTransform(_pos, gg::Vector3f(0, 0, 0));
+    Manager->addComponentToEntity(Transform,        gg::TRANSFORM, debug);
+
+    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
+    Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, debug);
+
+    return debug;
 }

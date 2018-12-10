@@ -31,6 +31,8 @@ class Factory{
         uint16_t createCollectableWeapon(const gg::Vector3f&, int);
         uint16_t createPickableItem(const gg::Vector3f&);
         uint16_t createTouchableObject(const gg::Vector3f&, const uint16_t&, const gg::Vector3f&, const float&, uint16_t=0);
+
+        uint16_t createDebugBullet(const gg::Vector3f&);
     private:
 
         Factory();
