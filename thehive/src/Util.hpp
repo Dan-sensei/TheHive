@@ -121,6 +121,12 @@ namespace gg{
     Vector3f Normalice(Vector3f Vector);
     Vector2f Normalice(Vector2f Vector);
 
+    Vector3f Direccion2D(Vector3f rot);
+    Vector3f Direccion3D(Vector3f rot);
+    Vector3f Direccion2D_to_rot(Vector3f rot);
+    float Producto(const Vector3f &dir,const Vector3f &diren);
+
+
     template <typename T>
     T operator+=(const T &v1, const T &v2);
 

@@ -21,6 +21,7 @@
 #include "EventSystem/BVector3f.hpp"
 #include "EventSystem/BBool.hpp"
 
+bool CAIEnem::debugvis=true;
 
 //std::list  <TriggerRecordStruct*>  hola;
 
@@ -102,6 +103,10 @@ void CAIEnem::Init(){
     playerOnRange=false;
     enfado=0;
     MHandler_SETPTRS();
+    //gradovision=0.5;
+    gradovision=cos(30*3.14159265359/180.f);
+    //float res = gradovision*180/3.14159265359
+
 }
 
 //void CAIEnem::update(){
@@ -141,9 +146,50 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
 
 gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
     //std::cout << "entrando" << '\n';
+    if(debugvis){
+        float res = acos(gradovision)*180.f/3.14159265359;
+
+        gg::Vector3f dir=Direccion2D( cTransform->getRotation());
+        gg::Vector3f dir1=Direccion2D( cTransform->getRotation()+gg::Vector3f(0,res,0));
+        gg::Vector3f dir2=Direccion2D( cTransform->getRotation()-gg::Vector3f(0,res,0));
+
+        gg::Vector3f inicio=cTransform->getPosition();
+        gg::Vector3f fin=dir*Vrange+cTransform->getPosition();
+        gg::Vector3f fin2=dir1*Vrange+cTransform->getPosition();
+        gg::Vector3f fin3=dir2*Vrange+cTransform->getPosition();
+
+
+
+        Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1),3);
+        Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1),3);
+        Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1),3);
+        gg::Vector3f diren=PlayerTransform->getPosition()-cTransform->getPosition();
+        diren.Y=0;
+        diren=gg::Normalice(diren);
+        float sol=gg::Producto(diren,dir);
+        gg::Vector3f hola= Direccion2D_to_rot(dir);
+}
+
+    //float sol=diren.X*dir.X+diren.Y*dir.Y+diren.Z*dir.Z;
+    //float sol=diren*dir;
+
+
+
+    //0,8
+
+
+
     float dist =gg::DIST(PlayerTransform->getPosition(),cTransform->getPosition());
     if(dist<Vrange){
-        if(!playerSeeing){
+        gg::Vector3f dir=Direccion2D( cTransform->getRotation());
+        gg::Vector3f diren=PlayerTransform->getPosition()-cTransform->getPosition();
+        diren.Y=0;
+        diren=gg::Normalice(diren);
+        float sol=gg::Producto(diren,dir);
+        if(gradovision<sol&&!playerSeeing){
+            std::cout << "sol" <<sol<< '\n';
+            std::cout << "gradovision" <<gradovision<< '\n';
+
             gg::cout("visto");
             enemyseen();
             arbol->reset();

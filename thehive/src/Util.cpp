@@ -1,6 +1,7 @@
 #include "Util.hpp"
 #include <math.h>
 #include <random>
+#define PI 3.14159265359
 
 
 //gg::Vector3u8::Vector3u8(uint8_t _X, uint8_t _Y, uint8_t _Z)
@@ -153,6 +154,10 @@ float gg::Modulo(const gg::Vector3f &Vector){
         (Vector.Z)*(Vector.Z)
     );
 }
+float gg::Producto(const gg::Vector3f &dir,const gg::Vector3f &diren){
+    return diren.X*dir.X+diren.Y*dir.Y+diren.Z*dir.Z;
+}
+
 
 float gg::Modulo(const gg::Vector2f &Vector){
     return sqrt(
@@ -167,6 +172,37 @@ gg::Vector3f gg::Normalice(gg::Vector3f Vector){
     Vector.Y = Vector.Y/modulo;
     Vector.Z = Vector.Z/modulo;
     return Vector;
+}
+gg::Vector3f gg::Direccion2D(gg::Vector3f rot){
+    gg::Vector3f aux = gg::Vector3f(
+         sin(rot.Y  *PI/180.f) ,
+         0 ,
+         cos(rot.Y  *PI/180.f)
+    );
+
+    return aux;
+}
+gg::Vector3f gg::Direccion3D(gg::Vector3f rot){
+    gg::Vector3f aux = gg::Vector3f(
+        sin(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) ) ,
+        -sin(rot.X  *PI/180.f) ,
+        cos(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) )
+    );
+
+    return aux;
+}
+gg::Vector3f gg::Direccion2D_to_rot(gg::Vector3f rot){
+float aux2=asin(rot.X)*180.f/PI;
+    if(rot.Z<0){
+        aux2=180-aux2;
+    }
+    gg::Vector3f aux = gg::Vector3f(
+         0,
+         aux2,
+         0
+    );
+
+    return aux;
 }
 
 gg::Vector2f gg::Normalice(gg::Vector2f Vector){

@@ -94,7 +94,9 @@ class CAIEnem : public IComponent {
         int id2;
         int ultrasonido_cont;
         int rondacion_cont;
+        float gradovision;
     private:
+        static bool debugvis;
         //bool playerSeen;
         //bool playerOnRange;
         //gg::Vector3f playerPos;

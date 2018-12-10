@@ -360,6 +360,11 @@ void Action::move_too(){
     //std::cout << "mio" <<mio<< '\n';
 
     gg::Vector3f dest =yo->destino;
+    gg::Vector3f direccion=dest-mio;
+    direccion.Y=0;
+    direccion=gg::Normalice(direccion);
+    direccion=gg::Direccion2D_to_rot(direccion);
+    cTransform->setRotation(direccion);
     //std::cout << "dest" <<dest<< '\n';
     //gg::Normalice(dest-mio)*2;
     cTransform->setPosition(mio+gg::Normalice(dest-mio)*1/15);
