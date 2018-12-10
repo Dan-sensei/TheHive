@@ -8,3 +8,7 @@ ENode::ENode(std::string m, std::string t = "NO_PATH"){
     node = nullptr;
 }
 ENode::~ENode(){}
+
+void ENode::setAutomaticCulling(int _state){
+    node->setAutomaticCulling(_state);
+}

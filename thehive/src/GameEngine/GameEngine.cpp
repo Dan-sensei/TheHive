@@ -97,7 +97,7 @@ void GameEngine::loadMesh(ENode* node){
         node->getSceneNode()->setMaterialTexture(0, driver->getTexture( node->getTPath().c_str() ));
     }
 
-
+    node->setAutomaticCulling(2);
 }
 
 

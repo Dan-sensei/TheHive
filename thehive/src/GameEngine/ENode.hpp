@@ -16,6 +16,8 @@ public:
 
     std::string getMPath() {return mPath;}
     std::string getTPath() {return tPath;}
+
+    void setAutomaticCulling(int);
 protected:
     irr::scene::ISceneNode* getSceneNode() {return node;}
     irr::scene::IAnimatedMesh* getAnimatedMesh() {return mesh;}
