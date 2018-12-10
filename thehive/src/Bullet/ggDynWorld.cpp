@@ -161,8 +161,6 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float
             cTransform->setPosition(ret);
         // </DEBUG VISUAL>
 
-        Singleton<GameEngine>::Instance()->Draw3DLine(from,to,gg::Color(),5);
-
         raycastHitPosition = ret;
         raycastCollisionBody = const_cast<btRigidBody*>(btRigidBody::upcast(callBack.m_collisionObject));
     }
@@ -217,7 +215,7 @@ bool ggDynWorld::DoesItHitSomething(const gg::Vector3f &Start, const gg::Vector3
 }
 
 bool ggDynWorld::contactTest(btCollisionObject *_obj){
-    // btCollisionWorld::ContactResultCallback callback();
-    // collisionWorld->contactTest(_obj,callback);
-    return false;
+    SimulationContactResultCallback callback;
+    collisionWorld->contactTest(_obj,callback);
+    return callback.bCollision;
 }

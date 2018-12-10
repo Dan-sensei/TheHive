@@ -29,6 +29,7 @@ class CClock;
 
 class CRigidBody : public IComponent {
     public:
+        // Constructor normal
         CRigidBody(
             bool kinematic,
             bool loadedFromPath,
@@ -38,6 +39,12 @@ class CRigidBody : public IComponent {
             float _mass,
             float iX, float iY, float iZ,
             float friction = 0
+        );
+        // Constructor de objetos fantasma -> DETECTAN TODAS LAS COLISIONES, PERO NO COLISIONAN
+        CRigidBody(
+            bool,
+            float,float,float,
+            float,float,float
         );
         CRigidBody(const CRigidBody &orig) = delete;
         virtual ~CRigidBody();
@@ -68,13 +75,22 @@ class CRigidBody : public IComponent {
 
         gg::Vector3f getBodyPosition();
         gg::Vector3f getLinearVelocity();
+        void setBodyPosition(gg::Vector3f&);
+        void setOffsetBodyPosition(gg::Vector3f&);
 
         bool checkContactResponse();
+        void setIgnoreCollisionCheck1st(CRigidBody*,bool);
+        void setIgnoreCollisionCheck2nd(btCollisionObject*,bool);
 
         // Funciones del mapa
         void updateCTransformPosition();
         void Upd_MoverObjeto();
     private:
+        btCollisionObject* getCollisionObject(){
+            btCollisionObject *ret = body;
+            return ret;
+        }
+
         ggDynWorld* world;
 
         //  Punteros a otras componentes

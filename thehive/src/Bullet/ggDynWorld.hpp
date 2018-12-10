@@ -18,6 +18,38 @@
 
 class CTransform;
 
+struct SimulationContactResultCallback : public btCollisionWorld::ContactResultCallback{
+    bool bCollision;
+    SimulationContactResultCallback():bCollision(false){}
+
+    btScalar addSingleResult(
+        btManifoldPoint& cp,
+        const btCollisionObjectWrapper* colObj0Wrap,
+        int partId0,
+        int index0,
+        const btCollisionObjectWrapper* colObj1Wrap,
+        int partId1,
+        int index1)
+    {
+
+        gg::Vector3f vecA(
+            cp.m_localPointA.getX(),
+            cp.m_localPointA.getY(),
+            cp.m_localPointA.getZ()
+        );
+        gg::Vector3f vecB(
+            cp.m_localPointB.getX(),
+            cp.m_localPointB.getY(),
+            cp.m_localPointB.getZ()
+        );
+        if(cp.getDistance()<gg::DIST(vecA,vecB)){
+            //If cp distance less than threshold
+            bCollision = true;
+        }
+        return 0;
+    }
+};
+
 class ggDynWorld {
 public:
     ggDynWorld ();

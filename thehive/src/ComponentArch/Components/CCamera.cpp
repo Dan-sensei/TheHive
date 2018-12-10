@@ -27,17 +27,24 @@ void CCamera::Init(){
 
     MHandler_SETPTRS();
 
+    float _S = 0.4;
     lastHeroPosition = mod->getPosition();
     cameraPositionBeforeLockRotation = Engine->getCamera()->getPosition();
 
     entCollisions = Manager->createEntity();
     CTransform* Transform               = new CTransform(gg::Vector3f(0, 0, 0), gg::Vector3f(0, 0, 0));
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, entCollisions);
-    CRigidBody* RigidBody               = new CRigidBody(false, false,"", 0,0,0, 2,2,2, 50, 0,0,0);
+    // CRigidBody* RigidBody               = new CRigidBody(true, false,"", 0,0,0, _S,_S,_S, 50, 0,0,0);
+    CRigidBody* RigidBody               = new CRigidBody(true, 0,0,0, _S,_S,_S);
     Manager->addComponentToEntity(RigidBody,        gg::RIGID_BODY, entCollisions);
 
     collTF = Transform;
     collRB = RigidBody;
+
+    CRigidBody *rbEnt = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,getEntityID()));
+    collRB->setIgnoreCollisionCheck1st(rbEnt, true);
+
+    collision = false;
 }
 
 gg::EMessageStatus CCamera::processMessage(const Message &m) {
@@ -111,11 +118,9 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     // Now it's time to set the rotation on the VERTICAL AXIS
     gg::Vector3f finalCameraPosition = nextModelPosition;
 
-    dist = RADIUS;
     angle = -newRotation.X*DEGREES_TO_RADIANS;
     float   newY = dist * sin(angle);
             newZ = dist * cos(angle);
-
 
     finalCameraPosition.Y += newY;
     finalCameraPosition.X += newZ;
@@ -137,7 +142,20 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
         )
     );
 
+
+    // -------------------------------------------
+    // Colisiones de la camara
+    // -------------------------------------------
+    camPosition = cam->getPosition();
+
+    // Las dos mejores lineas que he escrito en mi vida
+    gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2;
+    if(Singleton<ggDynWorld>::Instance()->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
+        cam->setPosition(pos_on_collision);
+    }
+
     // Perpendicular vector to set an offset to the right
+    camPosition = cam->getPosition();
     gg::Vector3f ppV(
         nextPosition.Z-camPosition.Z,
         0,
@@ -146,21 +164,12 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     ppV = gg::Normalice(ppV);
     offsetPositionVector = ppV;
 
-    camPosition = cam->getPosition();
-    cam->setPosition(
-        gg::Vector3f(
-            camPosition.X+ppV.X,
-            camPosition.Y,
-            camPosition.Z+ppV.Z
-        )
-    );
+    moveCameraPosition(ppV);
 
     // Call to updateAbsolutePosition() to avoid perspective
     // and camera position problems
+    // ¡¡¡¡ THIS HAS TO BE THE LAST FUNCTION TO CALL !!!!
     cam->updateAbsolutePosition();
-
-    // Colisiones de la camara
-    // collRB->checkContactResponse();
 
     // SECOND set the camera rotation
     if(newRotation.X >= -30 && newRotation.X <= 60)

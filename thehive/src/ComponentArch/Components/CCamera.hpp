@@ -8,6 +8,7 @@
 #include <GameEngine/GameEngine.hpp>
 #include <GameEngine/Camera.hpp>
 #include <Singleton.hpp>
+#include <Bullet/ggDynWorld.hpp>
 
 #include "CTransform.hpp"
 
@@ -61,6 +62,10 @@ private:
     uint16_t entCollisions;
     CTransform *collTF;
     CRigidBody *collRB;
+
+    bool collision;
+    gg::Vector3f pos_on_collision;
+    gg::Vector3f last_cam_position;
 };
 
 

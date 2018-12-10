@@ -5,10 +5,10 @@ void Factory::ComponentInitializer() {
 	CRigidBody::initComponent();
 	CVida::initComponent();
 	CClock::initComponent();
-	CRenderable_3D::initComponent();
 	CGranade::initComponent();
 	CAIEnem::initComponent();
 	CGun::initComponent();
 	CTransform::initComponent();
+	CRenderable_3D::initComponent();
 	CAgent::initComponent();
 }
