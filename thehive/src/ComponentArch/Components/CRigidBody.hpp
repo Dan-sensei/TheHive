@@ -79,8 +79,6 @@ class CRigidBody : public IComponent {
         void setOffsetBodyPosition(gg::Vector3f&);
 
         bool checkContactResponse();
-        void setIgnoreCollisionCheck1st(CRigidBody*,bool);
-        void setIgnoreCollisionCheck2nd(btCollisionObject*,bool);
 
         // Funciones del mapa
         void updateCTransformPosition();

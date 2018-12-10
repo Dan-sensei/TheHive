@@ -344,19 +344,6 @@ bool CRigidBody::checkContactResponse(){
     return world->contactTest(body);
 }
 
-void CRigidBody::setIgnoreCollisionCheck1st(CRigidBody *_body,bool hasToIgnore){
-    btCollisionObject *obj = body;
-    _body->setIgnoreCollisionCheck2nd(obj,hasToIgnore);
-}
-void CRigidBody::setIgnoreCollisionCheck2nd(btCollisionObject *_obj,bool hasToIgnore){
-    // AQUI ES DONDE PETA
-    // //////////////////
-    // btCollisionObject *obj = body;
-
-    // obj->setIgnoreCollisionCheck(_obj,hasToIgnore);
-}
-
-
 // ----------------------------------------------------------------------------------------------------------------------------
 // Funciones del mapa
 // ----------------------------------------------------------------------------------------------------------------------------
