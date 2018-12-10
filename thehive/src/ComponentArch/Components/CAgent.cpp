@@ -120,7 +120,7 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         CGun *gun = static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID));
 
         if(gun){
-            if(Singleton<GameEngine>::Instance()->key(gg::GG_F) && nCAgentID == 1){
+            if(Singleton<GameEngine>::Instance()->key(gg::GG_F)){
                 CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
                 if(cpc->canPickWeapon()){
                     if(!cpc->heroHasSecondWeapon()){
@@ -240,7 +240,7 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
             return;
         }
     }
-    else if((_pRec->eTriggerType & kTrig_Touchable) && nCAgentID == 1 && Engine->key(gg::GG_E)){
+    else if((_pRec->eTriggerType & kTrig_Touchable) && Engine->key(gg::GG_E)){
         uint16_t item = _pRec->data.find(kDat_PickableItemId);
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
         if(item && !cpc->hasItem(item)){
@@ -266,7 +266,7 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
             oManager->sendMessageToEntity(eIdObj,mes);
         }
     }
-    else if((_pRec->eTriggerType & kTrig_Pickable) && nCAgentID == 1 /*&& Engine->key(gg::GG_E)*/){
+    else if((_pRec->eTriggerType & kTrig_Pickable) /*&& Engine->key(gg::GG_E)*/){
         int id = _pRec->data.find(kDat_PickableItemId);
 
         bool result = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER, nCAgentID))->pickItem(id);

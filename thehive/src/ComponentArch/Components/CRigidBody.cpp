@@ -115,6 +115,50 @@ CRigidBody::CRigidBody(
     body->setAngularFactor(btVector3(0,0,0));
 }
 
+CRigidBody::CRigidBody(
+    bool kinematic,
+    float x,float y,float z,
+    float sX,float sY,float sZ)
+:cTransform(nullptr), world(nullptr)
+{
+    // Puntero al mundo de fisicas
+    world = Singleton<ggDynWorld>::Instance();
+    fileLoader = nullptr;
+
+    shape = new btBoxShape(btVector3(btScalar(sX), btScalar(sY), btScalar(sZ)));
+
+    // Hago pushback en el vector de 'shapes'
+    world->addShape(shape);
+
+    transform.setIdentity();
+    transform.setOrigin(btVector3(x,y,z));
+    myMotionState = new btDefaultMotionState(transform);
+
+    // MASS!=0 ---> RIGIDBODY ES DINAMICO
+    // MASS==0 ---> RIGIDBODY ES ESTATICO
+    btScalar mass(10);
+    bool isDynamic = (mass != 0.f);
+    btVector3 localInertia;
+    if (isDynamic)
+    shape->calculateLocalInertia(mass, localInertia);
+
+    // Supongo que es algo que mejora las colisiones y opcional, PERO, sin el myMotionState NO SE PUEDE INICIALIZAR EL BODY =D
+    // Using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
+    body = new btRigidBody(rbInfo);
+
+    if(kinematic){
+        // CF_KINEMATIC_OBJECT = 2
+        body->setCollisionFlags(2);
+    }
+
+    // CF_NO_CONTACT_RESPONSE
+    body->setCollisionFlags( body->getCollisionFlags() | 4);
+
+    // Add the body to the dynamics world
+    world->addRigidBody(body);
+}
+
 CRigidBody::~CRigidBody() {
     delete myMotionState;
     world->removeRigidBody(body);
@@ -195,36 +239,11 @@ gg::EMessageStatus CRigidBody::MHandler_DOACTION(Message _mes){
 
 void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
     if(cTransform){
-        //cdata->vPos;//v2
         float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
-        ////float ratio=1-distancia/fRadius;
-        //std::cout << "distancia: "<<distancia << '\n';
-        //std::cout << "v1-v2: "<< v1-v2 << '\n';
-        //std::cout << "normalizado(v1-v2): "<< gg::Normalice(v1-v2) << '\n';
-        //gg::Vector3f v3=gg::Normalice(v1-v2);
-
-        //std::cout << "modv3: "<<gg::Modulo(v3)  << '\n';
-
-        //std::cout << "ratio: "<< (1-distancia/cdata->fRadius) << '\n';
-
-
         float fuerzabomba=cdata->data.find(kDat_damage);
-        gg::Vector3f sol =
-            gg::Normalice(cTransform->getPosition()-cdata->vPos)
-            *fuerzabomba*
-            (1-distancia/cdata->fRadius);
-        applyCentralForce(sol);
-        //gg::Vector3f vect(33,66,99);
-//std::cout << vect << '\n';
-        /*
-        gg::Vector3f vect(33,66,99);
-        gg::Vector3f vect2(33,66,99);
+        gg::Vector3f sol =gg::Normalice(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
 
-        gg::Vector3f suma=vect*vect2;
-        //std::cout << "antes" <<suma.X<<suma.Y<<suma.Z<< '\n';
-        gg::Normalice(vect);
-        *///pruebas
-        //body->applyCentralForce(btVector3(0,46000000,0));
+        applyCentralForce(sol);
     }
 }
 
@@ -237,7 +256,7 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
 
 gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     // UPDATE
-    
+
     // COPIA-PEGA DE LA DOCUMENTACION:
     // Bullet automatically deactivates dynamic rigid bodies, when the velocity is below a threshold for a given time.
     // Deactivated (sleeping) rigid bodies don't take any processing time, except a minor broadphase collision detection impact
@@ -282,6 +301,30 @@ gg::Vector3f CRigidBody::getBodyPosition(){
     );
 }
 
+void CRigidBody::setBodyPosition(gg::Vector3f &_pos){
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+
+    trans.setOrigin(btVector3(
+        _pos.X,
+        _pos.Y,
+        _pos.Z
+    ));
+    body->getMotionState()->setWorldTransform(trans);
+}
+
+void CRigidBody::setOffsetBodyPosition(gg::Vector3f &_off){
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+
+    trans.setOrigin(btVector3(
+        trans.getOrigin().getX()+_off.X,
+        trans.getOrigin().getY()+_off.Y,
+        trans.getOrigin().getZ()+_off.Z
+    ));
+    body->getMotionState()->setWorldTransform(trans);
+}
+
 gg::Vector3f CRigidBody::getLinearVelocity(){
     return gg::Vector3f(
         static_cast<float>(body->getLinearVelocity().getX()),
@@ -295,6 +338,10 @@ gg::Vector3f CRigidBody::getVelocity(){
 }
 gg::Vector2f CRigidBody::getXZVelocity(){
     return gg::Vector2f(body->getLinearVelocity().getX(), body->getLinearVelocity().getZ());
+}
+
+bool CRigidBody::checkContactResponse(){
+    return world->contactTest(body);
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -363,16 +410,20 @@ void CRigidBody::Upd_MoverObjeto(){
                 //     ","+std::to_string(rbS.vZ)+")"
                 // );
 
-                btTransform trans;
-                body->getMotionState()->getWorldTransform(trans);
+                gg::Vector3f offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
 
-                trans.setOrigin(btVector3(
-                    trans.getOrigin().getX()+data->getRbData().vX,
-                    trans.getOrigin().getY()+data->getRbData().vY,
-                    trans.getOrigin().getZ()+data->getRbData().vZ
-                ));
+                setOffsetBodyPosition(offset);
 
-                body->getMotionState()->setWorldTransform(trans);
+                // btTransform trans;
+                // body->getMotionState()->getWorldTransform(trans);
+                //
+                // trans.setOrigin(btVector3(
+                //     trans.getOrigin().getX()+data->getRbData().vX,
+                //     trans.getOrigin().getY()+data->getRbData().vY,
+                //     trans.getOrigin().getZ()+data->getRbData().vZ
+                // ));
+                //
+                // body->getMotionState()->setWorldTransform(trans);
             }
         }
     }

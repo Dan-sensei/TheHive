@@ -16,6 +16,8 @@
 
 #include <Singleton.hpp>
 
+#define NUMBER_OF_ITEMS     3
+
 //class Hability;
 class CCamera;
 class CTransform;
@@ -75,7 +77,7 @@ class CPlayerController : public IComponent {
         float           MULT_BASE;
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
         CGun *secondWeapon;
-        std::array<uint16_t,3> items;
+        std::array<uint16_t,NUMBER_OF_ITEMS> items;
 };
 
 #endif
