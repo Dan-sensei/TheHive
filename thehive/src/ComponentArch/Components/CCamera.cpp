@@ -38,12 +38,6 @@ void CCamera::Init(){
     CRigidBody* RigidBody               = new CRigidBody(true, 0,0,0, _S,_S,_S);
     Manager->addComponentToEntity(RigidBody,        gg::RIGID_BODY, entCollisions);
 
-    collTF = Transform;
-    collRB = RigidBody;
-
-    CRigidBody *rbEnt = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,getEntityID()));
-    collRB->setIgnoreCollisionCheck1st(rbEnt, true);
-
     collision = false;
 }
 
@@ -142,18 +136,6 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
         )
     );
 
-
-    // -------------------------------------------
-    // Colisiones de la camara
-    // -------------------------------------------
-    camPosition = cam->getPosition();
-
-    // Las dos mejores lineas que he escrito en mi vida
-    gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2;
-    if(Singleton<ggDynWorld>::Instance()->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
-        cam->setPosition(pos_on_collision);
-    }
-
     // Perpendicular vector to set an offset to the right
     camPosition = cam->getPosition();
     gg::Vector3f ppV(
@@ -166,13 +148,24 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
 
     moveCameraPosition(ppV);
 
+    // -------------------------------------------
+    // Colisiones de la camara
+    // -------------------------------------------
+    camPosition = cam->getPosition();
+    // Las dos mejores lineas que he escrito en mi vida
+    gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2;
+    if(Singleton<ggDynWorld>::Instance()->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
+        cam->setPosition(pos_on_collision);
+    }
+    // -------------------------------------------
+
     // Call to updateAbsolutePosition() to avoid perspective
     // and camera position problems
     // ¡¡¡¡ THIS HAS TO BE THE LAST FUNCTION TO CALL !!!!
     cam->updateAbsolutePosition();
 
     // SECOND set the camera rotation
-    if(newRotation.X >= -30 && newRotation.X <= 60)
+    if(newRotation.X > -60 && newRotation.X <= 60)
         cam->setRotation(newRotation);
     else
         cam->setRotation(backupRotation);

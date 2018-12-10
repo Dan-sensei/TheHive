@@ -61,7 +61,6 @@ private:
 
     uint16_t entCollisions;
     CTransform *collTF;
-    CRigidBody *collRB;
 
     bool collision;
     gg::Vector3f pos_on_collision;

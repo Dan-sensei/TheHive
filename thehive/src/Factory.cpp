@@ -1,4 +1,8 @@
 #include "Factory.hpp"
+#include <ComponentArch/Components/CGranade.hpp>
+#include <ComponentArch/Components/CGranade0.hpp>
+#include <ComponentArch/Components/CGranade1.hpp>
+#include <ComponentArch/Components/CGranade2.hpp>
 
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();

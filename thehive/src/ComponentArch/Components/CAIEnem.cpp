@@ -72,7 +72,7 @@ void CAIEnem::Init(){
     Engine = Singleton<GameEngine>::Instance();
     data= new Blackboard();
     //int id_dado=getEntityID();
-    //std::cout << "id dado:" <<id_dado<< '\n';
+    //// std::cout << "id dado:" <<id_dado<< '\n';
 
     playerSeeing=false;
     playerOnRange=false;
@@ -90,12 +90,12 @@ void CAIEnem::Init(){
     data->setData("id2",new BInt(PlayerTransform->getEntityID()));
 
     //data->serData()
-    //std::cout << "arbol1" << '\n';
-    //std::cout << "creado" << '\n';
+    //// std::cout << "arbol1" << '\n';
+    //// std::cout << "creado" << '\n';
     arbol=new Treecontroller(data,0,this);
-    //std::cout << "creadowii" << '\n';
+    //// std::cout << "creadowii" << '\n';
 
-    //std::cout << "arbol2" << '\n';
+    //// std::cout << "arbol2" << '\n';
     Vrange=30;
     Arange=5;
 
@@ -140,18 +140,18 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
 }
 
 gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
-    //std::cout << "entrando" << '\n';
+    //// std::cout << "entrando" << '\n';
     float dist =gg::DIST(PlayerTransform->getPosition(),cTransform->getPosition());
     if(dist<Vrange){
         if(!playerSeeing){
-            gg::cout("visto");
+            // gg::cout("visto");
             enemyseen();
             arbol->reset();
 
         }
         if(dist<Arange){
             if(!playerOnRange){
-                gg::cout("rango");
+                // gg::cout("rango");
                 enemyrange();
             }
 
@@ -161,7 +161,7 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
             if(playerOnRange){
 
                 playerOnRange=false;
-                gg::cout("fuera de rango");
+                // gg::cout("fuera de rango");
             }
 
         }
@@ -182,18 +182,18 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
     //}
     //enfado++;
     //if(enfado<50){
-    //    std::cout << "iteracion" <<enfado<< '\n';
+    //    // std::cout << "iteracion" <<enfado<< '\n';
         //BT->tick();
-    //std::cout << "entrando" << '\n';
+    //// std::cout << "entrando" << '\n';
     arbol->update();
-    //std::cout << "saliendo" << '\n';
+    //// std::cout << "saliendo" << '\n';
     //}
     return gg::ST_TRUE;
 
 }
 
 void CAIEnem::MHandler_ATURD(){
-    std::cout << "aturd" << '\n';
+    // std::cout << "aturd" << '\n';
     ultrasonido=true;
     ultrasonido_cont=0;
     arbol->reset();
@@ -206,11 +206,11 @@ void CAIEnem::MHandler_SENYUELO(TriggerRecordStruct* cdata){
     senyuelo=true;
     senpos=cdata->vPos;
     arbol->reset();
-    std::cout << "sen in" << '\n';
+    // std::cout << "sen in" << '\n';
 }
 void CAIEnem::MHandler_SENYUELO_END(){
     senyuelo=false;
-    std::cout << "sen out" << '\n';
+    // std::cout << "sen out" << '\n';
 
     arbol->reset();
 }

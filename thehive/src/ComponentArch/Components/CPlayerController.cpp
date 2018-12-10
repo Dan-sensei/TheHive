@@ -85,7 +85,7 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
     cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
-    std::cout << "llega" << '\n';
+    // std::cout << "llega" << '\n';
     hab = static_cast<CHabilityController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::HAB, getEntityID()));
     //hab = static_cast<CHabilityController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::HABILITY, getEntityID()));
 

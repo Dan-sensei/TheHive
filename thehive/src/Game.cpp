@@ -76,7 +76,6 @@ void Game::RUN(){
     sF->createEnemy(gg::Vector3f(740, 100, 30));
     sF->createEnemy(gg::Vector3f(740, 100, 40));
     sF->createEnemy(gg::Vector3f(1760, 110, 390));
-    sF->createHero(gg::Vector3f(1797, 120, 300),false);
     sF->createEnemy(gg::Vector3f(1797, 120, 350));
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
 
@@ -129,7 +128,7 @@ void Game::RUN(){
     //factory->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
     // uint16_t Dummy = sF->createPathFindingActor(gg::Vector3f(285, 0, 117));
     // //factory->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
-    // 
+    //
     // CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
     // Agent->SetDestination(gg::Vector3f(280, -20, -377));
     //
@@ -178,7 +177,7 @@ void Game::RUN(){
     Singleton<Pathfinding>::Instance()->SetDebug(true);
     while(Engine->isWindowOpen()) {
 
-        world->stepSimulation(1.f / 11.f, 10.f);
+        world->stepSimulation(1.f / 11.f, 6);
 
         EventSystem->Update();
 

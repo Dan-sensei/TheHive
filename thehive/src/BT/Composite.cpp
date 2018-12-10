@@ -28,9 +28,9 @@ void Composite::clearChildren(){
 Composite::~Composite(){
 
     //for (size_t i = 0; i < m_Children.size(); i++) {
-    //    std::cout << "borrando composite"<< i<< '\n';
+    //    // std::cout << "borrando composite"<< i<< '\n';
     //    if(m_Children[i]!=nullptr){
-    //        std::cout << "borrando" << '\n';
+    //        // std::cout << "borrando" << '\n';
     //        //delete m_Children[i];
     //    }
     //}

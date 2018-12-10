@@ -6,7 +6,7 @@ Parallel::~Parallel(){}
 void Parallel::onInitialize() {}//m_CurrentChild=m_Children.begin();
 
 void Parallel::onTerminate(Status state){
-  //std::cout << "Parallel onTerminate" << state << '\n';
+  //// std::cout << "Parallel onTerminate" << state << '\n';
   for(auto it:m_Children){
     Behavior b=*it;
     if(!b.isTerminate()) b.abort();

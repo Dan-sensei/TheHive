@@ -31,7 +31,7 @@ MeshImporter::MeshImporter(){
 //     if( !scene)
 //         return false;
 //
-//     std::cout << "Loading model '" << pFile << "'" << '\n';
+//     // std::cout << "Loading model '" << pFile << "'" << '\n';
 //
 //     aiMesh **meshes = scene->mMeshes;
 //     aiVector3D* vertices;
@@ -47,7 +47,7 @@ MeshImporter::MeshImporter(){
 //         vertex.emplace_back(vertices[j].x, vertices[j].y, vertices[j].z);
 //     }
 //
-//     std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
+//     // std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
 //
 //     Connections.resize(meshes[0]->mNumFaces);
 //
@@ -89,26 +89,26 @@ MeshImporter::MeshImporter(){
 //     }
 //
 //     if(false) {
-//         std::cout << '\n' << "VERTEX: " << '\n';
+//         // std::cout << '\n' << "VERTEX: " << '\n';
 //         for(int i = 0; i < vertex.size(); ++i)
-//             std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
+//             // std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
 //
-//         std::cout << '\n';
+//         // std::cout << '\n';
 //
-//         std::cout << "INDEXES: " << '\n';
+//         // std::cout << "INDEXES: " << '\n';
 //         for(int i = 0; i < index.size(); ++i)
-//             std::cout << " " << index[i];
+//             // std::cout << " " << index[i];
 //
-//         std::cout << '\n' << '\n';
+//         // std::cout << '\n' << '\n';
 //
-//         std::cout << "EDGES: " << '\n';
+//         // std::cout << "EDGES: " << '\n';
 //         for(int i = 0; i < Edges.size(); ++i)
-//             std::cout << " " << Edges[i] << '\n';
+//             // std::cout << " " << Edges[i] << '\n';
 //
-//         std::cout << '\n' << '\n';
+//         // std::cout << '\n' << '\n';
 //
-//         std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
-//         std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
+//         // std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
+//         // std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
 //     }
 //
 //     return true;
@@ -132,7 +132,7 @@ bool MeshImporter::importNavmeshV2(
     if( !scene)
         return false;
 
-    //std::cout << "Loading model '" << pFile << "'" << '\n';
+    //// std::cout << "Loading model '" << pFile << "'" << '\n';
 
     aiMesh **meshes = scene->mMeshes;
     aiVector3D* vertices;
@@ -145,7 +145,7 @@ bool MeshImporter::importNavmeshV2(
         vertex.emplace_back(vertices[j].x*-1, vertices[j].y, vertices[j].z);
     }
 
-    //std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
+    //// std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
 
     Connections.resize(meshes[0]->mNumFaces);
 
@@ -200,7 +200,7 @@ bool MeshImporter::importNavmeshV2(
             auto it = Edges.begin();
             bool found = false;
             while(it != Edges.end()) {
-                //std::cout << "FOUND!" << '\n';
+                //// std::cout << "FOUND!" << '\n';
 
                 if(
                     (vertex[NewEdge.vertex1] == vertex [(*it).vertex1]    &&
@@ -227,7 +227,7 @@ bool MeshImporter::importNavmeshV2(
             if (!found) Edges.push_back(NewEdge);
         }
     }
-    std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
+    // std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
     Connections.resize(ID_Counter);
     for(uint16_t i = 0; i < FACES.size(); ++i) {
         for(uint16_t j = 0; j < FACES[i].size(); ++j) {
@@ -240,26 +240,26 @@ bool MeshImporter::importNavmeshV2(
     }
 
     //if(true) {
-        //std::cout << '\n' << "VERTEX: " << '\n';
+        //// std::cout << '\n' << "VERTEX: " << '\n';
         //for(int i = 0; i < vertex.size(); ++i)
-            //std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
+            //// std::cout << " " << i << " -> ("<< vertex[i].X << ", " << vertex[i].Y << ", " << vertex[i].Z  <<")" << '\n';
 
-        //std::cout << '\n';
+        //// std::cout << '\n';
 
-        //std::cout << "INDEXES: " << '\n';
+        //// std::cout << "INDEXES: " << '\n';
         //for(int i = 0; i < index.size(); ++i)
-            //std::cout << " " << index[i];
+            //// std::cout << " " << index[i];
 
-        //std::cout << '\n' << '\n';
+        //// std::cout << '\n' << '\n';
 
-        //std::cout << "EDGES: " << '\n';
+        //// std::cout << "EDGES: " << '\n';
         //for(int i = 0; i < Edges.size(); ++i)
-        //    std::cout << " " << Edges[i] << '\n';
+        //    // std::cout << " " << Edges[i] << '\n';
 
-        //std::cout << '\n' << '\n';
+        //// std::cout << '\n' << '\n';
 
-        //std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
-        //std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
+        //// std::cout << "   |-- VERTEX : " << meshes[0]->mNumVertices << '\n';
+        //// std::cout << "   |--  INDEX : " << index.size() << '\n' << '\n';
     //}
 
     return true;
