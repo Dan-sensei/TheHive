@@ -19,7 +19,7 @@
 class CGranade: public IComponent {
     public:
         CGranade();
-        CGranade(float _radius);
+        CGranade(float,int);
         CGranade(const CGranade &orig) = delete;
         virtual ~CGranade();
 
@@ -29,18 +29,19 @@ class CGranade: public IComponent {
 
         virtual void explosion();
 
-
-
         gg::EMessageStatus MHandler_SETPTRS();
 
     protected:
+        CTransform      *cTransform;
+        CRigidBody      *cRigidBody;
+        GameEngine      *engine;
+        ObjectManager   *Manager;
+        CTriggerSystem  *EventSystem;
+
         std::chrono::high_resolution_clock::time_point begin;
         double elapsedtime;
         float radius;
-        CTransform* cTransform;
-        GameEngine* engine;
-        ObjectManager* Manager;
-        CTriggerSystem* EventSystem;
+        int exTime;
 
 
 };

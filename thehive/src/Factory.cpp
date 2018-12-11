@@ -137,15 +137,15 @@ uint16_t Factory::createPathFindingActor(const gg::Vector3f &Position) {
 
 uint16_t Factory::createSenyuelo( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+    Material moradoDeLos80("assets/Textures/Blue.png");
 
     CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
-    CRigidBody* RigidBody = new CRigidBody(false, false,"",  Position.X,Position.Y,Position.Z, 1,1,1, 1, 0,0,0);
+    CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.X,Position.Y,Position.Z, 1,1,1, 5, 0,0,0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
 
     CGranade* Granade = new CGranade2();
@@ -157,15 +157,15 @@ uint16_t Factory::createSenyuelo( const gg::Vector3f &Position, const gg::Vector
 }
 uint16_t Factory::createMatriuska( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+    Material moradoDeLos80("assets/Textures/Blue.png");
 
     CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
-    CRigidBody* RigidBody = new CRigidBody(false, false,"",  Position.X,Position.Y,Position.Z, 1,1,1, 1, 0,0,0);
+    CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.X,Position.Y,Position.Z, 1,1,1, 5, 0,0,0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
 
     CGranade* Granade = new CGranade1();
@@ -177,15 +177,15 @@ uint16_t Factory::createMatriuska( const gg::Vector3f &Position, const gg::Vecto
 }
 uint16_t Factory::createHolyBomb( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+    Material moradoDeLos80("assets/Textures/Blue.png");
 
     CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
-    CRigidBody* RigidBody = new CRigidBody(false, false,"",  Position.X,Position.Y,Position.Z, 1,1,1, 1, 0,0,0);
+    CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.X,Position.Y,Position.Z, 1,1,1, 5, 0,0,0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
 
     CGranade* Granade = new CGranade0();

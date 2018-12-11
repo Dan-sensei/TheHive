@@ -8,7 +8,7 @@
 
 // #include <GameEngine/ScreenConsole.hpp>
 
-#define VEL_FACTOR          200.f
+#define VEL_FACTOR          2000.f
 #define MAX_HERO_SPEED      3
 
 #define ROTATE_KEY          gg::GG_LCONTROL
@@ -199,7 +199,8 @@ void CPlayerController::Update(){
         gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
     }
     if(Engine->key(gg::GG_G)){
-        if(pulsacion_granada==false) (this->*mapFuncGrenades[actualGrenadeState])();
+        if(pulsacion_granada==false)
+            (this->*mapFuncGrenades[actualGrenadeState])();
     }
     else{
         pulsacion_granada=false;
@@ -249,7 +250,7 @@ void CPlayerController::playerThrowDopple(){
     gg::Vector3f vel    = to-from;
 
     vel  = gg::Normalice(vel);
-    vel *= VEL_FACTOR/2;
+    vel *= VEL_FACTOR;
 
     Singleton<Factory>::Instance()->createSenyuelo(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
 }

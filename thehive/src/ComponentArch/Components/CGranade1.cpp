@@ -3,8 +3,7 @@
 #define VEL_FACTOR      200.f
 
 CGranade1::CGranade1()
-: CGranade(600),damage(100)//, tipo(_tipo)
-
+: CGranade(50,300),damage(1000)//, tipo(_tipo)
 {
 }
 
@@ -17,9 +16,7 @@ void CGranade1::explosion(){
     TData mes;
     mes.add(kDat_Damage,damage);
     EventSystem->RegisterTriger(kTrig_Explosion,1,0,currentPosition, radius, 50,false,mes);
-    //if(tipo==2){
-    //    return gg::ST_TRUE;
-    //}
+
     float alejamiento=5;
     float ymas=10;
     float decrecimiento=0.75;
