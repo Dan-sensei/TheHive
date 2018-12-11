@@ -191,6 +191,10 @@ bool GameEngine::isLClickPressed(){
     return listener.isLClickPressed();
 }
 
+int GameEngine::getWheelState(){
+    return listener.getWheelValue();
+}
+
 //  ---
 //  Cleans game engine stuff
 //==================================================================================

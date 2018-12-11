@@ -14,6 +14,17 @@ bool EventListener::OnEvent(const irr::SEvent& event) {
         keyMap[event.KeyInput.Key] = event.KeyInput.PressedDown;
 
     if (event.EventType == irr::EET_MOUSE_INPUT_EVENT){
+        //  1 ARRIBA
+        // -1 ABAJO
+        wheel = event.MouseInput.Wheel;
+        // if(event.MouseInput.Event == irr::EMIE_MOUSE_WHEEL){
+        //     //  1 ARRIBA
+        //     // -1 ABAJO
+        // }
+        // else{
+        //     wheel = event.MouseInput.Wheel;
+        // }
+
         if (event.MouseInput.Event == irr::EMIE_LMOUSE_PRESSED_DOWN){
             LCLICK = true;
         }
@@ -32,4 +43,8 @@ bool EventListener::IsKeyDown(gg::KEYCODES key) const {
 
 bool EventListener::isLClickPressed(){
     return LCLICK;
+}
+
+int EventListener::getWheelValue(){
+    return wheel;
 }

@@ -70,6 +70,7 @@ class GameEngine{
 
         bool key(gg::KEYCODES keyCode);
         bool isLClickPressed();
+        int getWheelState();
 
         void clean();
 

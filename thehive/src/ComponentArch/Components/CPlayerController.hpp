@@ -61,7 +61,7 @@ class CPlayerController : public IComponent {
         ggDynWorld* world;
         CTransform* cTransform;
         CRigidBody* cRigidBody;
-        CCamera *camera;
+        CCamera* camera;
         CHabilityController* hab;
         bool GranadeCreate;
 
@@ -73,10 +73,27 @@ class CPlayerController : public IComponent {
 
         bool debug1;
         bool debug2;
-        float           MULT_BASE;
+        float MULT_BASE;
+
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
         CGun *secondWeapon;
         std::array<uint16_t,NUMBER_OF_ITEMS> items;
+
+        gg::Vector3f cV,ppV;
+        std::map<int, void (CPlayerController::*)(gg::Vector3f&,bool&)> mapPlayerActions;
+        void W_IsPressed(gg::Vector3f&,bool&);
+        void A_IsPressed(gg::Vector3f&,bool&);
+        void S_IsPressed(gg::Vector3f&,bool&);
+        void D_IsPressed(gg::Vector3f&,bool&);
+        void ApplyDash(gg::Vector3f&,float&);
+        void showDebug();
+        void changeWeaponIfPossible(CGun*);
+
+        int actualGrenadeState; // 1,2,3
+        std::map<int, void (CPlayerController::*)()> mapFuncGrenades;
+        void playerThrowHolyBomb();
+        void playerThrowMatrioska();
+        void playerThrowDopple();
 };
 
 #endif
