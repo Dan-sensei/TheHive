@@ -49,8 +49,6 @@ ObjectManager::ObjectManager()
 
 
 
-    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::CAMERA);
-
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AGENT);
 
 }

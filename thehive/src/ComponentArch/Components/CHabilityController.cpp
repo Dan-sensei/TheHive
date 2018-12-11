@@ -53,7 +53,7 @@ gg::EMessageStatus CHabilityController::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CHabilityController::Update(){
+void CHabilityController::FixedUpdate(){
     for (size_t i = 0; i < 3; i++) {
 
         hab[i]->update();

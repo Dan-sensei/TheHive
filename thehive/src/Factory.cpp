@@ -19,7 +19,9 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CAIEnem::PlayerTransform=Transform;     //  Punteros a otras componentes
 
     CCamera* Camera                     = new CCamera(_b);
+    Camera->setTarget(Transform);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
+
 
     CVida* Vida                         = new CVida(3);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);

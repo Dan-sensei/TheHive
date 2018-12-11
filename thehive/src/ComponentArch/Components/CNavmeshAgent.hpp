@@ -28,7 +28,7 @@ class CNavmeshAgent : public IComponent {
         // Functions of IComponent
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
-        virtual void Update();
+        virtual void FixedUpdate();
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();

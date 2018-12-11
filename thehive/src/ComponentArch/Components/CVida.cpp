@@ -54,6 +54,3 @@ gg::EMessageStatus CVida::MHandler_SETPTRS(){
 }
 
 
-void CVida::Update() {
-
-}

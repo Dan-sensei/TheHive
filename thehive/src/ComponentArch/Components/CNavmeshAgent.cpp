@@ -43,7 +43,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
 #define MAXSPEED 5.f
 #define FORCE_FACTOR 600.f
 
-void CNavmeshAgent::Update(){
+void CNavmeshAgent::FixedUpdate(){
 
     if(!cTransform || !currentlyMovingTowardsTarget)  return;
 

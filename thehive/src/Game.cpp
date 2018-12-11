@@ -16,6 +16,7 @@
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include <EventSystem/Blackboard.hpp>
+#include <ComponentArch/Components/CCamera.hpp>
 
 #define MOVEMENT_SPEED 1.f
 
@@ -73,7 +74,9 @@ void Game::RUN(){
 
 
     // sF->createHero(gg::Vector3f(700, 100, 0),false);
-    sF->createHero(gg::Vector3f(1760, 110, 350),false);     //600
+    uint16_t h = sF->createHero(gg::Vector3f(1760, 110, 350),false);     //600
+    CCamera* MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
+
     sF->createEnemy(gg::Vector3f(740, 100, 20));
     sF->createEnemy(gg::Vector3f(740, 100, 30));
     sF->createEnemy(gg::Vector3f(740, 100, 40));
@@ -179,6 +182,9 @@ void Game::RUN(){
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
 
+    unsigned long UPDATE = 0;
+    unsigned long DRO = 0;
+
     MasterClock.Restart();
     while(Engine->isWindowOpen()) {
 
@@ -190,19 +196,27 @@ void Game::RUN(){
         Accumulator += DeltaTime;
         while(Accumulator >= 1/UPDATE_STEP){
             // FIXED UPDATE
-            //world->stepSimulation(1/UPDATE_STEP, 5);
+            Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
+            Manager->FixedUpdateAll();
+            Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
             Accumulator -= 1/UPDATE_STEP;
+            ++UPDATE;
         }
-
+        ++DRO;
         world->stepSimulation(1.f / 11.f, 6);
 
         //  Interpolation tick!
         Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
+        Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
+
 
         EventSystem->Update();
 
         Engine->BeginDro();
         Manager->UpdateAll();
+
+        MainCamera->CameraUpdate();
+
         Engine->Dro();
         Engine->DisplayFPS();
 
@@ -212,6 +226,8 @@ void Game::RUN(){
 
         Engine->EndDro();
     }
+    std::cout << "UPDTES " << UPDATE  << '\n';
+    std::cout << "DRO " << DRO  << '\n';
 }
 
 void Game::CLIN(){

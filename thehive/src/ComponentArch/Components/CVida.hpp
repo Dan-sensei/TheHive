@@ -25,7 +25,6 @@ class CVida : public IComponent {
         // Functions of IComponent
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
-        virtual void Update();
 
         void quitarvida();
         // Handlers

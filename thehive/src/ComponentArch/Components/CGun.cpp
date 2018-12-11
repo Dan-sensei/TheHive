@@ -136,7 +136,7 @@ gg::EMessageStatus CGun::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CGun::Update(){
+void CGun::FixedUpdate(){
     // UPDATE
 
     // Update delta time de la cadencia de fuego

@@ -86,7 +86,7 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CPlayerController::Update(){
+void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !cRigidBody)  return;
     //hab.update();
@@ -216,7 +216,6 @@ void CPlayerController::Update(){
     continueProcessing:
 
     // And we update it accoding to the keyboard input
-    camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
 
     // -----------------------------------
     // Acciones de Willy

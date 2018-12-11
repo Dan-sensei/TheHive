@@ -25,7 +25,7 @@ class CGranade: public IComponent {
 
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
-        virtual void Update();
+        virtual void FixedUpdate();
 
         virtual void explosion();
 

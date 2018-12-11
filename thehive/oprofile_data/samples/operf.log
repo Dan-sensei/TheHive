@@ -32,3 +32,54 @@ Nr. user samples lost due to no app info available: 0
 Nr. backtraces skipped due to no file mapping: 2
 Nr. hypervisor samples dropped due to address out-of-range: 0
 Nr. samples lost reported by perf_events kernel: 0
+
+Profiling started at Tue Dec 11 15:16:11 2018
+Profiling stopped at Tue Dec 11 15:16:13 2018
+
+-- OProfile/operf Statistics --
+Nr. non-backtrace samples: 6828
+Nr. kernel samples: 746
+Nr. user space samples: 6082
+Nr. samples lost due to sample address not in expected range for domain: 0
+Nr. lost kernel samples: 0
+Nr. samples lost due to sample file open failure: 0
+Nr. samples lost due to no permanent mapping: 2794
+Nr. user context kernel samples lost due to no app info available: 0
+Nr. user samples lost due to no app info available: 0
+Nr. backtraces skipped due to no file mapping: 2781
+Nr. hypervisor samples dropped due to address out-of-range: 0
+Nr. samples lost reported by perf_events kernel: 0
+
+Profiling started at Tue Dec 11 15:16:54 2018
+Profiling stopped at Tue Dec 11 15:16:59 2018
+
+-- OProfile/operf Statistics --
+Nr. non-backtrace samples: 2233
+Nr. kernel samples: 163
+Nr. user space samples: 2070
+Nr. samples lost due to sample address not in expected range for domain: 0
+Nr. lost kernel samples: 0
+Nr. samples lost due to sample file open failure: 0
+Nr. samples lost due to no permanent mapping: 6
+Nr. user context kernel samples lost due to no app info available: 0
+Nr. user samples lost due to no app info available: 0
+Nr. backtraces skipped due to no file mapping: 0
+Nr. hypervisor samples dropped due to address out-of-range: 0
+Nr. samples lost reported by perf_events kernel: 0
+
+Profiling started at Tue Dec 11 15:17:38 2018
+Profiling stopped at Tue Dec 11 15:17:56 2018
+
+-- OProfile/operf Statistics --
+Nr. non-backtrace samples: 8044
+Nr. kernel samples: 538
+Nr. user space samples: 7506
+Nr. samples lost due to sample address not in expected range for domain: 0
+Nr. lost kernel samples: 0
+Nr. samples lost due to sample file open failure: 0
+Nr. samples lost due to no permanent mapping: 20
+Nr. user context kernel samples lost due to no app info available: 0
+Nr. user samples lost due to no app info available: 0
+Nr. backtraces skipped due to no file mapping: 0
+Nr. hypervisor samples dropped due to address out-of-range: 0
+Nr. samples lost reported by perf_events kernel: 0

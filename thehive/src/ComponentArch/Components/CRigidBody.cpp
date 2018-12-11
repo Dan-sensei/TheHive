@@ -245,7 +245,7 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CRigidBody::Update(){
+void CRigidBody::FixedUpdate(){
     // UPDATE
 
     // COPIA-PEGA DE LA DOCUMENTACION:
@@ -256,7 +256,7 @@ void CRigidBody::Update(){
 
     if(actualUpd)
         (this->*actualUpd)();
-    updateCTransformPosition();
+    //updateCTransformPosition();
 }
 
 void CRigidBody::applyCentralImpulse(gg::Vector3f vec){
@@ -441,12 +441,12 @@ gg::EMessageStatus CRigidBody::SaveCurrentStatus(){
     body->getMotionState()->getWorldTransform(trans);
 
     Current.Position = getBodyPosition();
-    
+
     return gg::ST_TRUE;
 }
-gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick){
+gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
 
-    float Tick = *(static_cast<float*>(_Tick.mData));
+    double Tick = *static_cast<double*>(_Tick.mData);
 
     float X = Previous.Position.X *(1-Tick) + Current.Position.X*Tick;
     float Y = Previous.Position.Y *(1-Tick) + Current.Position.Y*Tick;

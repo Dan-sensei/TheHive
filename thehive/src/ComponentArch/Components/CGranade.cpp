@@ -41,7 +41,8 @@ gg::EMessageStatus CGranade::MHandler_SETPTRS(){
 
 void CGranade::explosion(){
 }
-void CGranade::Update(){
+
+void CGranade::FixedUpdate(){
     if(cTransform){
 
         auto end = std::chrono::high_resolution_clock::now(); //Start de another chrono tu see the processor time now

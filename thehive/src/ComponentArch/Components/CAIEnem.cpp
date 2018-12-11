@@ -134,7 +134,7 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CAIEnem::Update(){
+void CAIEnem::FixedUpdate(){
     //std::cout << "entrando" << '\n';
     if(debugvis){
         float res = acos(gradovision)*180.f/3.14159265359;

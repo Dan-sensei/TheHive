@@ -8,7 +8,7 @@
 #define RADIUS              2.5
 
 CCamera::CCamera(bool _b)
-:mod(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr),
+:Target(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr),
 daniNoSabeProgramar(_b)
 {}
 
@@ -21,10 +21,8 @@ void CCamera::Init(){
     Manager = Singleton<ObjectManager>::Instance();
     cam = Engine->getCamera();
 
-    MHandler_SETPTRS();
-
     float _S = 0.4;
-    lastHeroPosition = mod->getPosition();
+    lastHeroPosition = Target->getPosition();
     cameraPositionBeforeLockRotation = Engine->getCamera()->getPosition();
 
     entCollisions = Manager->createEntity();
@@ -37,23 +35,12 @@ void CCamera::Init(){
     collision = false;
 }
 
-gg::EMessageStatus CCamera::processMessage(const Message &m) {
-
-    if(m.mType == gg::M_SETPTRS)    return MHandler_SETPTRS ();
-
-    return gg::ST_ERROR;
+void CCamera::setTarget(CTransform *T) {
+    Target = T;
 }
 
-//  Message handler functions_______________________________________________________________
-//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-
-gg::EMessageStatus CCamera::MHandler_SETPTRS(){
-    mod = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
-    return gg::ST_TRUE;
-}
-
-
-void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
+void CCamera::CameraUpdate(){
+    gg::Vector3f nextPosition = Target->getPosition();
     lastHeroPosition = nextPosition;
 
     cam->bindTargetAndRotation(true);
@@ -167,10 +154,10 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
         cam->setRotation(backupRotation);
 
     // If heroRotation is FALSE, the hero won't move with the camera rotation
-    if(heroRotation){
+    //if(heroRotation){
         cameraPositionBeforeLockRotation = cam->getPosition();
         // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
-    }
+    //}
 
 }
 
