@@ -11,20 +11,8 @@ CClock::CClock()
 
 CClock::~CClock(){}
 
-void CClock::initComponent(){
-    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
-    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
-
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CLOCK, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CLOCK, gg::M_SETPTRS);
-
-}
-
 void CClock::Init(){
     engine = Singleton<GameEngine>::Instance();
-
-    //  Inicializar punteros a otras compnentes
-    MHandler_SETPTRS();
 }
 
 bool CClock::startChrono(float _end){
@@ -76,27 +64,4 @@ bool CClock::hasEnded(){
         }
         else            return false;
     }
-}
-
-gg::EMessageStatus CClock::processMessage(const Message &m) {
-
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
-
-    return gg::ST_ERROR;
-}
-
-
-//  Message handler functions_______________________________________________________________
-//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-
-gg::EMessageStatus CClock::MHandler_SETPTRS(){
-    // Inicializando punteros
-
-    return gg::ST_TRUE;
-}
-
-gg::EMessageStatus CClock::MHandler_UPDATE(){
-    // UPDATE
-    return gg::ST_TRUE;
 }

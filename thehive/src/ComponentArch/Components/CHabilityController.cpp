@@ -22,12 +22,6 @@ CHabilityController::~CHabilityController() {
     }
 }
 
-void CHabilityController::initComponent() {
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::HAB, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::HAB, gg::M_SETPTRS);
-
-}
-
 void CHabilityController::pulsado(int habi){
 
     hab[habi]->init();
@@ -42,8 +36,7 @@ void CHabilityController::Init(){
 
 gg::EMessageStatus CHabilityController::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -60,14 +53,10 @@ gg::EMessageStatus CHabilityController::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CHabilityController::MHandler_UPDATE(){
+void CHabilityController::Update(){
     for (size_t i = 0; i < 3; i++) {
 
         hab[i]->update();
         Singleton<ScreenConsole>::Instance()->setprogress(i,hab[i]->getProg());
     }
-
-
-    return gg::ST_TRUE;
-
 }

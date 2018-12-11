@@ -4,12 +4,9 @@
 namespace gg{
 
     enum EComponentType{
-        TRANSFORM = 0,
         PLAYERCONTROLLER,
-        RENDERABLE_3D,
-        CAMERA,
         RIGID_BODY,
-        AGENT,
+        RENDERABLE_3D,
         GRANADE,
         GUN,
         NAVMESHAGENT,
@@ -17,9 +14,13 @@ namespace gg{
         AIENEM,
         CLOCK,
         VIDA,
+
+        CAMERA,
+        AGENT,
+        TRANSFORM,
         //HEALTH,
         //RESPECT,
-        //PABLONDEMADERASABEPROGRAMAR
+        //PABLONDEMADERANOSABEPROGRAMAR
         NUM_COMPONENTS
     };
     enum EEnemyType{

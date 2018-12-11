@@ -14,11 +14,6 @@ CGranade::CGranade(float _radius)
 CGranade::~CGranade() {
 
 }
-void CGranade::initComponent() {
-    //  We wait for the M_UPDATE message
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::GRANADE, gg::M_UPDATE);
-}
-
 
 void CGranade::Init(){
 
@@ -32,8 +27,7 @@ void CGranade::Init(){
 
 gg::EMessageStatus CGranade::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -47,7 +41,7 @@ gg::EMessageStatus CGranade::MHandler_SETPTRS(){
 
 void CGranade::explosion(){
 }
-gg::EMessageStatus CGranade::MHandler_UPDATE(){
+void CGranade::Update(){
     if(cTransform){
 
         auto end = std::chrono::high_resolution_clock::now(); //Start de another chrono tu see the processor time now
@@ -59,6 +53,4 @@ gg::EMessageStatus CGranade::MHandler_UPDATE(){
             Manager->removeEntity(getEntityID());
         }
     }
-
-    return gg::ST_TRUE;
 }

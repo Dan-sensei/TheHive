@@ -5,10 +5,9 @@
 namespace gg{
 
     enum MessageType{
-        M_UPDATE=0,
-        M_SETPTRS,
-        M_TRANSFORM,
-        M_DAMAGE,
+        M_SETPTRS = 0,
+        UPDATE,         //  Provisional
+        FIXED_UPDATE,   //  Provisional
         M_EVENT_ACTION,
         //M_XPLOTATO,
         // M_PICKGUN

@@ -56,16 +56,7 @@ playerSeeing=true;
 //
 }
 void CAIEnem::enemyrange(){
-playerOnRange=true;
-}
-
-void CAIEnem::initComponent() {
-    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
-    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::AIENEM, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::AIENEM, gg::M_SETPTRS);
-
-
+    playerOnRange=true;
 }
 
 void CAIEnem::Init(){
@@ -126,8 +117,7 @@ void CAIEnem::Init(){
 //}
 gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -144,7 +134,7 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
+void CAIEnem::Update(){
     //std::cout << "entrando" << '\n';
     if(debugvis){
         float res = acos(gradovision)*180.f/3.14159265359;
@@ -234,8 +224,6 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
     arbol->update();
     //// std::cout << "saliendo" << '\n';
     //}
-    return gg::ST_TRUE;
-
 }
 
 void CAIEnem::MHandler_ATURD(){

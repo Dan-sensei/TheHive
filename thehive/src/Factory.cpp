@@ -8,11 +8,7 @@ Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
     Engine = Singleton<GameEngine>::Instance();
 
-    ComponentInitializer();
-
 }
-
-#include <ComponentArch/Components/ComponentInitializer>
 
 uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");

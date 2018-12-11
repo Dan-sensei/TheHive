@@ -23,15 +23,15 @@ class CGranade: public IComponent {
         CGranade(const CGranade &orig) = delete;
         virtual ~CGranade();
 
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
+
         virtual void explosion();
 
 
 
         gg::EMessageStatus MHandler_SETPTRS();
-        gg::EMessageStatus MHandler_UPDATE();
 
     protected:
         std::chrono::high_resolution_clock::time_point begin;

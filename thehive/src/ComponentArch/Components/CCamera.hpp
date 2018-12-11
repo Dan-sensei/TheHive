@@ -23,7 +23,6 @@ public:
     virtual ~CCamera ();
 
     // Functions of IComponent
-    static void initComponent();
     virtual gg::EMessageStatus processMessage(const Message &m);
     virtual void Init();
 

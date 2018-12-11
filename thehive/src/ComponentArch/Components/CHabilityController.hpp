@@ -35,14 +35,13 @@ class CHabilityController : public IComponent {
         virtual ~CHabilityController();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
 
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
-        gg::EMessageStatus MHandler_UPDATE  ();
 
         void pulsado(int hab);
 

@@ -26,13 +26,12 @@ class CAgent : public IComponent {
         virtual ~CAgent();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
-        virtual void Init();         // [OBLIGATORIO] Aunque esté vacío en el .cpp
+        virtual void Init();
+        //virtual void Update();
 
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
-        gg::EMessageStatus MHandler_UPDATE  ();
 
         //TriggerRecordStruct holiis;
         std::list  <TriggerRecordStruct*>  holiiis;

@@ -19,6 +19,37 @@ ObjectManager::ObjectManager()
 :memory(128)
 {
     nextAvailableEntityID.push(1);
+
+    //  Defines wich kind of messages will receive each type of component
+    //  We just insert in the array of vectors, the component type in the messageTYpe array position
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::VIDA);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::M_EVENT_ACTION].push_back(gg::RIGID_BODY);
+
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RENDERABLE_3D);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::PLAYERCONTROLLER);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::NAVMESHAGENT);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::HAB);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::GUN);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::GRANADE);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::CLOCK);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AIENEM);
+
+
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::CAMERA);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AGENT);
+
 }
 
 
@@ -120,14 +151,6 @@ void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16
     TypeToComponentMap[type].erase(foundComponent);
 }
 
-
-
-void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType) {
-    //  We just insert in the array of vectors, the component type in the messageTYpe array position
-    MessageToListeningComponents[mType].push_back(cType);
-}
-
-
 void ObjectManager::sendMessageToAllEntities(const Message &m){
     // We iterate over every component in the map that expects to receive that kind of message
 
@@ -149,6 +172,33 @@ void ObjectManager::sendMessageToAllEntities(const Message &m){
         ++componentsIterator;
     }
 }
+
+void ObjectManager::UpdateAll(){
+    uint8_t i = 0;
+    while (i < gg::NUM_COMPONENTS){
+        std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
+        while(it!=TypeToComponentMap[i].end()){
+            auto current = it;
+            ++it;
+            current->second->Update();
+        };
+        ++i;
+    }
+}
+
+void ObjectManager::FixedUpdateAll(){
+    uint8_t i = 0;
+    while (i < gg::NUM_COMPONENTS){
+        std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
+        while(it!=TypeToComponentMap[i].end()){
+            auto current = it;
+            ++it;
+            current->second->FixedUpdate();
+        };
+        ++i;
+    }
+}
+
 
 
 void ObjectManager::sendMessageToEntity(uint16_t EntityID, const Message &m){

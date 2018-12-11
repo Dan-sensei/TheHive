@@ -21,12 +21,8 @@ COMPILER := g++
 
 EXE := main
 
-build: PRE_BUILD $(EXE)
+build: $(EXE)
 
-PRE_BUILD:
-	@echo "void Factory::ComponentInitializer() {" > $(COMPONENTINITIALIZER)
-	@for init in $(COMPONENTSCLASS) ; do echo "	$$init::initComponent();" >> $(COMPONENTINITIALIZER); done
-	@echo "}" >> $(COMPONENTINITIALIZER)
 
 $(EXE): $(OBJECTS)
 	$(call br)

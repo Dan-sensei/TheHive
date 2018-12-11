@@ -37,12 +37,6 @@ CPlayerController::~CPlayerController() {
     if(secondWeapon) delete secondWeapon;
 }
 
-void CPlayerController::initComponent() {
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::PLAYERCONTROLLER, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::PLAYERCONTROLLER, gg::M_SETPTRS);
-
-}
-
 void CPlayerController::Init(){
     //  We check if this entity has the TRANSFORM component
     Engine = Singleton<GameEngine>::Instance();
@@ -72,8 +66,7 @@ void CPlayerController::Init(){
 
 gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -93,9 +86,9 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
+void CPlayerController::Update(){
 
-    if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
+    if(!cTransform || !camera || !cRigidBody)  return;
     //hab.update();
     // -----------------------------------------------------------------------------
     // Echarle un vistazo!
@@ -338,9 +331,6 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     // </DEBUG>
 
     if(Engine->key(gg::GG_P)) Engine->Close();
-
-    return gg::ST_TRUE;
-
 }
 
 bool CPlayerController::heroHasSecondWeapon(){

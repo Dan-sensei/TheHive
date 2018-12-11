@@ -13,8 +13,6 @@ class CTransform : public IComponent {
         virtual ~CTransform();
 
         //  Functions of IComponent
-        static void initComponent();
-
 
         // Functions of this component
         gg::Vector3f getPosition();

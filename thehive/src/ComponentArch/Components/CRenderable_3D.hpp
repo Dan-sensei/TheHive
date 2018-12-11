@@ -18,12 +18,11 @@ class CRenderable_3D : public IComponent {
         virtual ~CRenderable_3D();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
 
         //  Handler
-        gg::EMessageStatus MHandler_UPDATE();
         gg::EMessageStatus MHandler_SETPTRS();
 
     private:

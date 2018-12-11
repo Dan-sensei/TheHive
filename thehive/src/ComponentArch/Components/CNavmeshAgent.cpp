@@ -14,10 +14,6 @@ CNavmeshAgent::~CNavmeshAgent() {
 
 }
 
-void CNavmeshAgent::initComponent() {
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::NAVMESHAGENT, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::NAVMESHAGENT, gg::M_SETPTRS);
-}
 
 void CNavmeshAgent::Init(){
     //  We check if this entity has the TRANSFORM component
@@ -28,8 +24,7 @@ void CNavmeshAgent::Init(){
 
 gg::EMessageStatus CNavmeshAgent::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -48,10 +43,9 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
 #define MAXSPEED 5.f
 #define FORCE_FACTOR 600.f
 
-gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
+void CNavmeshAgent::Update(){
 
-    if(!cTransform)                     return gg::ST_ERROR;
-    if(!currentlyMovingTowardsTarget)   return gg::ST_IGNORED;
+    if(!cTransform || !currentlyMovingTowardsTarget)  return;
 
     gg::Vector3f moveVector = Waypoints.top().Position - cTransform->getPosition();
     bool stop = false;
@@ -82,7 +76,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
             cRigidBody->applyCentralForce(Counter);
         }
 
-        return gg::ST_TRUE;
+        return;
     }
 
     moveVector = (moveVector / modulo)*FORCE_FACTOR;
@@ -126,7 +120,6 @@ gg::EMessageStatus CNavmeshAgent::MHandler_UPDATE(){
         }
 
     }
-    return gg::ST_TRUE;
 }
 
 void CNavmeshAgent::SetDestination(const gg::Vector3f &Target){

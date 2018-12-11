@@ -35,9 +35,9 @@ class CPlayerController : public IComponent {
         virtual ~CPlayerController();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
 
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
@@ -49,7 +49,6 @@ class CPlayerController : public IComponent {
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
-        gg::EMessageStatus MHandler_UPDATE  ();
 
         void buf();
         void debuf();

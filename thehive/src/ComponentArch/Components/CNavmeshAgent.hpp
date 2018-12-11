@@ -26,13 +26,12 @@ class CNavmeshAgent : public IComponent {
         virtual ~CNavmeshAgent();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
-        gg::EMessageStatus MHandler_UPDATE  ();
 
         void SetDestination(const gg::Vector3f &Target);
         bool HasDestination();

@@ -29,6 +29,16 @@ class IComponent{
         //========================================================================
         virtual void Init();
 
+        //  ---
+        //  This method is called once every 1/60 seconds.
+        //========================================================================
+        virtual void Update();
+
+        //  ---
+        //  This method is called once every 1/15 seconds. Use it for calculations
+        //========================================================================
+        virtual void FixedUpdate();
+
 
 
     protected:

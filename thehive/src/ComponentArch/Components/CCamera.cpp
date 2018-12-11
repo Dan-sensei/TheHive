@@ -15,10 +15,6 @@ daniNoSabeProgramar(_b)
 
 CCamera::~CCamera(){}
 
-void CCamera::initComponent(){
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CAMERA, gg::M_SETPTRS);
-}
-
 void CCamera::Init(){
 
     Engine = Singleton<GameEngine>::Instance();

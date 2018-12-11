@@ -17,15 +17,6 @@ CGun::~CGun() {
 
 }
 
-void CGun::initComponent() {
-    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
-    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
-
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::GUN, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::GUN, gg::M_SETPTRS);
-
-}
-
 void CGun::shoot(gg::Vector3f to){
     TData mes;
     CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
@@ -128,8 +119,7 @@ void CGun::Init(){
 
 gg::EMessageStatus CGun::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -146,7 +136,7 @@ gg::EMessageStatus CGun::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CGun::MHandler_UPDATE(){
+void CGun::Update(){
     // UPDATE
 
     // Update delta time de la cadencia de fuego
@@ -176,6 +166,4 @@ gg::EMessageStatus CGun::MHandler_UPDATE(){
             canShoot = true;
         }
     }
-
-    return gg::ST_TRUE;
 }

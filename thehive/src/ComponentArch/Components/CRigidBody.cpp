@@ -184,17 +184,6 @@ CRigidBody::~CRigidBody() {
     }
 }
 
-void CRigidBody::initComponent() {
-    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
-    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
-
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_SETPTRS);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_EVENT_ACTION);
-    //Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RIGID_BODY, gg::M_XPLOTATO);
-
-}
-
 void CRigidBody::Init(){
     world->setGravity(0,-10,0);
 
@@ -210,9 +199,8 @@ void CRigidBody::Init(){
 
 gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)               return MHandler_UPDATE      ();
+    if (m.mType == gg::M_SETPTRS)              return MHandler_SETPTRS     ();
     //else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO(m);
-    else if (m.mType == gg::M_SETPTRS)              return MHandler_SETPTRS     ();
     else if (m.mType == gg::M_EVENT_ACTION)         return MHandler_DOACTION    (m);
 
     return gg::ST_ERROR;
@@ -254,7 +242,7 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
+void CRigidBody::Update(){
     // UPDATE
 
     // COPIA-PEGA DE LA DOCUMENTACION:
@@ -266,8 +254,6 @@ gg::EMessageStatus CRigidBody::MHandler_UPDATE(){
     if(actualUpd)
         (this->*actualUpd)();
     updateCTransformPosition();
-
-    return gg::ST_TRUE;
 }
 
 void CRigidBody::applyCentralImpulse(gg::Vector3f vec){

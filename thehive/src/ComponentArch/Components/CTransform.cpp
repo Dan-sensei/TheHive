@@ -14,8 +14,6 @@ CTransform::CTransform(const CTransform &orig){
 
 CTransform::~CTransform(){}
 
-void CTransform::initComponent(){}
-
 
 void CTransform::setPosition(const gg::Vector3f &_Position){
     Position = _Position;

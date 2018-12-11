@@ -16,10 +16,6 @@ CRenderable_3D::CRenderable_3D(const CRenderable_3D &orig){
 
 CRenderable_3D::~CRenderable_3D() {}
 
-void CRenderable_3D::initComponent() {
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RENDERABLE_3D, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::RENDERABLE_3D, gg::M_SETPTRS);
-}
 
 
 void CRenderable_3D::Init(){
@@ -30,8 +26,7 @@ void CRenderable_3D::Init(){
 
 gg::EMessageStatus CRenderable_3D::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS();
 
     return gg::ST_ERROR;
 }
@@ -40,16 +35,12 @@ gg::EMessageStatus CRenderable_3D::processMessage(const Message &m) {
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
-gg::EMessageStatus CRenderable_3D::MHandler_UPDATE(){
+void CRenderable_3D::Update(){
     if(cTransform){
         //  If exists, we get its position, and asign it to the _3DModel
         _3DModel.setPosition(cTransform->getPosition());
         _3DModel.setRotation(cTransform->getRotation());
-
-        return gg::ST_TRUE;
     }
-
-    return gg::ST_ERROR;
 }
 
 gg::EMessageStatus CRenderable_3D::MHandler_SETPTRS(){

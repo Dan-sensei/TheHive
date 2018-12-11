@@ -20,13 +20,13 @@ class CPlantilla : public IComponent {
         virtual ~CPlantilla();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
         virtual void Init();                                            // [OPCIONAL]
+        virtual void Update();                                          // [OPCIONAL]   Se llama cada 1/60 segundos
+        virtual void FixedUpdate();                                     // [OPCIONAL]   Se llama cada 1/15 segundos. Para cáculos.
 
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
-        gg::EMessageStatus MHandler_UPDATE  ();
 
     private:
 
@@ -35,9 +35,6 @@ class CPlantilla : public IComponent {
         GameEngine* engine;
 
         CTransform* cTransform;     //  Punteros a otras componentes
-
-        gg::Vector2f DASH_SPEED;    //  Variables de esta componente
-        gg::Vector2f RUNNING_SPEED;
 };
 
 #endif

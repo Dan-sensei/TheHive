@@ -25,3 +25,5 @@ uint16_t IComponent::getEntityID(){
 }
 
 void IComponent::Init(){}
+void IComponent::Update(){}
+void IComponent::FixedUpdate(){}

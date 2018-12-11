@@ -42,10 +42,6 @@ class ObjectManager{
         void removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID, bool Erase = false);
         void removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID);
 
-        //  ---
-        //  Defines wich kind of messages will receive each type of component
-        //========================================================================
-        void subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType);
 
         //  ---
         //  Searchs and returns a pointer to the component of the given EntityID,
@@ -64,6 +60,9 @@ class ObjectManager{
         //  to receive that message type
         //========================================================================
         void sendMessageToEntity(uint16_t EntityID, const Message &m);
+
+        void UpdateAll();
+        void FixedUpdateAll();
 
         //  ---
         //  Cleans the maps

@@ -28,13 +28,6 @@ void CVida::quitarvida(){
     // std::cout << "vida:" <<vida << '\n';
 }
 
-void CVida::initComponent() {
-    // std::cout << "llega a la vida" << '\n';
-
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::VIDA, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::VIDA, gg::M_SETPTRS);
-}
-
 void CVida::Init(){
     //  We check if this entity has the TRANSFORM component
     //Manager = Singleton<ObjectManager>::Instance();
@@ -44,8 +37,7 @@ void CVida::Init(){
 
 gg::EMessageStatus CVida::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -62,9 +54,6 @@ gg::EMessageStatus CVida::MHandler_SETPTRS(){
 }
 
 
-gg::EMessageStatus CVida::MHandler_UPDATE(){
+void CVida::Update() {
 
-
-
-    return gg::ST_TRUE;
 }

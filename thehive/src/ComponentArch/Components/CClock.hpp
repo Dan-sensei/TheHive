@@ -19,13 +19,7 @@ class CClock : public IComponent {
         virtual ~CClock();
 
         // Functions of IComponent
-        static void initComponent();
-        virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
-        virtual void Init();                                            // [OPCIONAL]
-
-        // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
-        gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
-        gg::EMessageStatus MHandler_UPDATE  ();
+        virtual void Init();
 
         // Funciones propias
         bool startChrono(float);

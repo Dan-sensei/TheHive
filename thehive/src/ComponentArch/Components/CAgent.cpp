@@ -35,12 +35,6 @@ CAgent::~CAgent() {
     }
 }
 
-void CAgent::initComponent() {
-    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
-    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
-
-
-}
 
 void CAgent::Init(){
     Engine = Singleton<GameEngine>::Instance();
@@ -406,8 +400,7 @@ void CAgent::removeAgent(std::list<CAgent*>::iterator ite){
 //}
 gg::EMessageStatus CAgent::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -423,13 +416,11 @@ gg::EMessageStatus CAgent::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CAgent::MHandler_UPDATE(){
-    // UPDATE
-    //setposition
-    //CAgent(cTransform->getPosition);
-
-    return gg::ST_TRUE;
-}
+// void CAgent::Update(){
+//     // UPDATE
+//     //setposition
+//     //CAgent(cTransform->getPosition);
+// }
 
 void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
     switch (_type){

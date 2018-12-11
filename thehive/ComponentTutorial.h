@@ -13,6 +13,11 @@ Registrar el tipo de componente en Enum.hpp
         NUM_COMPONENTS        <<---- Esta siempre debe estar la última
     };
 
+->ObjectManager.cpp<-
+Registrar a que mensajes está suscrita la componente
+    ObjectManager::ObjectManager(){
+        ...
+    }
 
 ->Clase<-
 C[Nombre] -> Respeta hermano el nombre de las clases, empieza por "C" Seguido del nombre

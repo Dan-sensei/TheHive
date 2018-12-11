@@ -50,13 +50,12 @@ class CRigidBody : public IComponent {
         virtual ~CRigidBody();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
-        virtual void Init();         // [OBLIGATORIO] Aunque esté vacío en el .cpp
+        virtual void Init();
+        virtual void Update();
 
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
-        gg::EMessageStatus MHandler_UPDATE  ();
         gg::EMessageStatus MHandler_DOACTION(Message);
         void MHandler_XPLOTATO(TriggerRecordStruct* cdata);
 

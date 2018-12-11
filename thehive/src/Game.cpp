@@ -182,7 +182,7 @@ void Game::RUN(){
         EventSystem->Update();
 
         Engine->BeginDro();
-        Manager->sendMessageToAllEntities(gg::M_UPDATE);
+        Manager->UpdateAll();
         Engine->Dro();
         Engine->DisplayFPS();
 
