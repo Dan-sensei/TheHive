@@ -6,26 +6,38 @@
 #include <iostream>
 #include <GameEngine/ScreenConsole.hpp>
 #include <Singleton.hpp>
+
+#define K_DMG_VALUE 20
+
 CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
-{
-// std::cout << "vida" << '\n';
-}
+{}
 
-CVida::~CVida() {
+CVida::~CVida() {}
 
-}
-void CVida::quitarvida(){
-    vida--;
-    if(vida==0){
+bool CVida::quitarvida(const float &_factor){
+    bool ret = false;
 
-        //destory
-        //Manager->removeEntity(getEntityID());
-
+    if(vida <= 0){
+        ret = true;
     }
-    float res=(float)vida/vida_max;
-    Singleton<ScreenConsole>::Instance()->setvida(res);
-    // std::cout << "vida:" <<vida << '\n';
+
+    vida -= K_DMG_VALUE*_factor;
+    if(vida <= 0){
+        vida = 0;
+        gg::cout(" -- Entity "+std::to_string(getEntityID())+" has died painfully");
+        ret = true;
+    }
+    gg::cout("DAMAGE DONE: ["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
+
+    if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+        gg::cout("HEROE--");
+    }
+
+    // float res=(float)vida/vida_max;
+    // Singleton<ScreenConsole>::Instance()->setvida(res);
+
+    return ret;
 }
 
 void CVida::Init(){
@@ -49,6 +61,8 @@ gg::EMessageStatus CVida::processMessage(const Message &m) {
 gg::EMessageStatus CVida::MHandler_SETPTRS(){
     //cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
     //cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+
+    Manager = Singleton<ObjectManager>::Instance();
 
     return gg::ST_TRUE;
 }

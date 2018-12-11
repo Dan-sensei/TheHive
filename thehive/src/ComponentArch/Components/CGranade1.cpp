@@ -15,7 +15,7 @@ void CGranade1::explosion(){
     gg::Vector3f currentPosition = cTransform->getPosition();
 
     TData mes;
-    mes.add(kDat_damage,damage);
+    mes.add(kDat_Damage,damage);
     EventSystem->RegisterTriger(kTrig_Explosion,1,0,currentPosition, radius, 50,false,mes);
     //if(tipo==2){
     //    return gg::ST_TRUE;

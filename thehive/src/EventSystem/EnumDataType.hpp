@@ -2,7 +2,7 @@
 #define _EnumDataType_H
 
 enum EnumDataType{
-    kDat_damage,
+    kDat_Damage,            // Cantidad de danyo de un arma
     kDat_Matri,
     kDat_EntId,
     kDat_WeaponType,        // Un perro

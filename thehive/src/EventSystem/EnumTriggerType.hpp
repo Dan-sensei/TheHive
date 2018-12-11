@@ -11,5 +11,6 @@ enum EnumTriggerType{
     kTrig_Senyuelo  =1<<5,
     kTrig_Aturd     =1<<6,
     kTrig_Pickable  =1<<7
+
 };
 #endif

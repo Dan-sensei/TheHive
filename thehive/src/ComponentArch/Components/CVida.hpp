@@ -27,7 +27,7 @@ class CVida : public IComponent {
         virtual void Init();
         virtual void Update();
 
-        void quitarvida();
+        bool quitarvida(const float&);
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
 

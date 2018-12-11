@@ -44,7 +44,7 @@
     //codigo de las habilidades
     void Hability3::Hab1_init (){
         TData mes;
-        mes.add(kDat_damage,6000);
+        mes.add(kDat_Damage,6000);
         CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
 
         CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, id));

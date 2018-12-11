@@ -231,7 +231,7 @@ gg::EMessageStatus CRigidBody::MHandler_DOACTION(Message _mes){
 void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
     if(cTransform){
         float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
-        float fuerzabomba=cdata->data.find(kDat_damage);
+        float fuerzabomba=cdata->data.find(kDat_Damage);
         gg::Vector3f sol =gg::Normalice(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
 
         applyCentralForce(sol);

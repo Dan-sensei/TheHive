@@ -78,7 +78,7 @@ unsigned long CTriggerSystem::RegisterTriger(
     TData _data)
 {
 //std::map<EnumDataType,float>::iterator it;
-//it = _data.m_dataMap.find(kDat_damage);
+//it = _data.m_dataMap.find(kDat_Damage);
 //  if (it != _data.m_dataMap.end())
 //    _data.m_dataMap.erase (it);
 

@@ -18,7 +18,6 @@ CGun::~CGun() {
 }
 
 void CGun::shoot(gg::Vector3f to){
-    TData mes;
     CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
     if(canShoot && !reloading){
         // Activar cadencia
@@ -28,7 +27,7 @@ void CGun::shoot(gg::Vector3f to){
         // Comprobar balas
         if(!total_bullets){
             gg::cout("Click!");
-            EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,mes);
+            EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
             return;
         }
@@ -49,7 +48,7 @@ void CGun::shoot(gg::Vector3f to){
 
         //TData mes;
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
-        EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,mes);
+        EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
 
         // // std::cout << "PIM!!! -> " << total_bullets << '\n';
@@ -73,12 +72,12 @@ void CGun::shoot(gg::Vector3f to){
         from.Y += DIST_OFFSET;
 
         Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(from,vel);
-        //TData mes;
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
         //EventSystem->PulsoTrigger(kTrig_Shoot,0,to,500,mes);//sonido de disparo
 
-        Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),to,50,TData());
-        // Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
+        TData mes;
+        mes.add(kDat_Damage,damage);
+        Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),to,5,mes);
 
         // <DEBUG>
             // Factory *fac = Singleton<Factory>::Instance();

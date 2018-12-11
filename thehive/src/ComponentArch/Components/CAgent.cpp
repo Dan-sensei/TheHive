@@ -190,13 +190,18 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         }
     }
     else if(_pRec->eTriggerType & kTrig_Shoot){
-        // gg::cout(std::to_string(_pRec->eTriggerType)+" & "+std::to_string(GetTriggerFlags()));
-        gg::cout("PUM!", gg::Color(255, 0, 0, 1));
 
-        // oManager->removeEntity(nCAgentID);
-        // Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec->nTriggerID);
+        CVida *health = static_cast<CVida*>(oManager->getComponent(gg::VIDA,nCAgentID));
+        if(health){
+            gg::cout("PUM! -> ["+std::to_string(_pRec->data.find(kDat_Damage))+"]", gg::Color(0, 0, 255, 1));
+            health->quitarvida(_pRec->data.find(kDat_Damage));
+        }
+        else{
+            gg::cout("FLUSH!...", gg::Color(0, 0, 255, 1));
+        }
 
-    }else if(_pRec->eTriggerType & kTrig_Senyuelo){
+    }
+    else if(_pRec->eTriggerType & kTrig_Senyuelo){
         if(oManager->getComponent(gg::AIENEM,nCAgentID)){
             //// std::cout << "core si" << '\n';
             static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_SENYUELO(_pRec);
@@ -204,7 +209,8 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
             return true;
 
         }
-    }else if(_pRec->eTriggerType & kTrig_Aturd){
+    }
+    else if(_pRec->eTriggerType & kTrig_Aturd){
         //// std::cout << "triger entrando" << '\n';
             //// std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
             //Message mes(gg::M_XPLOTATO,_pRec);

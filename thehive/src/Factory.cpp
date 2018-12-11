@@ -22,7 +22,7 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CCamera* Camera                     = new CCamera(_b);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 
-    CVida* Vida                         = new CVida(3);
+    CVida* Vida                         = new CVida(100);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
 
     CHabilityController* Hab                         = new CHabilityController();
@@ -37,7 +37,6 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CPlayerController* PlayerController = new CPlayerController();
     Manager->addComponentToEntity(PlayerController, gg::PLAYERCONTROLLER, hero);
 
-    // Arma por defecto
     CGun *gun = new CGun(0.4,5,15,0.5,0.5,3);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
@@ -65,6 +64,9 @@ uint16_t Factory::createEnemy(const gg::Vector3f &Position){
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,gg::Vector3f(),false);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+
+    CVida* Vida                         = new CVida(50);
+    Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
 
     return Enemy;
 }

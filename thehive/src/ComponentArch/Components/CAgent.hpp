@@ -18,6 +18,7 @@
 #include <Singleton.hpp>
 
 class CTransform;
+class CVida;
 
 class CAgent : public IComponent {
     public:
