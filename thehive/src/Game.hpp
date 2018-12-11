@@ -6,6 +6,7 @@ class CTriggerSystem;
 
 class ObjectManager;
 class ggDynWorld;
+class StateMachine;
 
 #include <iostream>
 
@@ -24,6 +25,8 @@ private:
 
     ObjectManager* Manager;
     ggDynWorld* world;
+    StateMachine* mainstates;
+
 };
 
 

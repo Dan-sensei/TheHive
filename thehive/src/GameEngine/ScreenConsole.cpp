@@ -38,6 +38,28 @@ float ScreenConsole::porc_ancho(float x){
 }
 ScreenConsole::ScreenConsole(){
     font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
+    //IGUIEnvironment* env = device->getGUIEnvironment();
+}
+void ScreenConsole::InitMenu(){
+
+    SAppContext context;
+    context.device = IrrlichtDevice;
+    context.counter = 0;
+    //irr::gui::IGUIListBox * listbox = IrrlichtDevice->getGUIEnvironment()->addListBox(irr::core::rect<irr::s32>(50, 140, 250, 210));
+    //context.listbox = listbox;
+
+    // Then create the event receiver, giving it that context structure.
+    eventManager=new EventRec(context);
+    IrrlichtDevice->setEventReceiver(eventManager);
+
+    IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(10,240,110,240 + 32), 0, 0,
+                L"Quit", L"Exits Program");
+    IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(10,280,110,280 + 32), 0, 1,
+            L"New Window", L"Launches a new Window");
+    IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(10,320,110,320 + 32), 0, 2,
+                L"File Open", L"Opens a file");
+}
+void ScreenConsole::InitHUD(){
     irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
 
     ancho=(driver->getScreenSize().Width/2);
@@ -55,28 +77,6 @@ ScreenConsole::ScreenConsole(){
     AddImage("G1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
     AddImage("G2","assets/HUD/ojetecalor.jpg",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
     AddImage("G3","assets/HUD/ojetecalor.jpg",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
-
-    //AddImage("mongol","assets/HUD/mongol.jpg",300,300,30,30);
-    //node->setMaterialTexture(0, driver->getTexture("bg.jpg"));
-//redimensionar¿?
-//    std::map <std::string,ImageHUD>::iterator it;
-//    it=IMAGE_BUFFER.begin();
-//    matrix4* tran = it->second.texture->getTextureMatrix();
-
-    //ITexture* background = driver->getTexture("bg2.jpg");
-       //matrix4* tran = background->getTextureMatrix();
-       //tran->setScale(vector3df(0.5f,0.5f,0.5f));
-
-
-//    irr::video::SMaterial m;// = it->second.texture;
-//    m.setTexture(0,it->second.texture);
-//    m.getTextureMatrix(0).setTextureScale(.3f, .5f);
-    //irr::core::CMatrix4<float> k=m.getTextureMatrix(0);
-    //// std::cout << k[66] << '\n';
-//    // std::cout << k.getScale().X << '\n';
-    //// std::cout << m.getTextureMatrix(0) << '\';
-    //m.getTextureMatrix(0)[0][0][0][0];
-    //CMatrix4<float> k=m.getTextureMatrix(0);
     perc=0;
     perc2=0;
     perc3=0;
@@ -87,9 +87,9 @@ ScreenConsole::ScreenConsole(){
 }
 void ScreenConsole::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){
 
-irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
-irr::video::ITexture* images = driver->getTexture(source.c_str());
-IMAGE_BUFFER.insert(std::pair<std::string,ImageHUD>(palabra,ImageHUD(images,_posx,_posy,_width,_height)));
+    irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
+    irr::video::ITexture* images = driver->getTexture(source.c_str());
+    IMAGE_BUFFER.insert(std::pair<std::string,ImageHUD>(palabra,ImageHUD(images,_posx,_posy,_width,_height)));
 
 }
 void ScreenConsole::AddTextToBuffer(const std::string &Text, const gg::Color &color){
@@ -107,41 +107,42 @@ ScreenConsole::BufferText::BufferText(const std::string &_Text, const gg::Color 
 ScreenConsole::ImageHUD::ImageHUD(irr::video::ITexture* _texture,float _posx,float _posy,float _width,float _height)
 :texture(_texture), posx(_posx),posy(_posy),width(_width),height(_height)
 {}
+void ScreenConsole::CLIN(){
+    BUFFER.clear();
+    IMAGE_BUFFER.clear();
+    IrrlichtDevice->getGUIEnvironment()->clear();
+    if(eventManager!=nullptr){
+        delete eventManager;
+    }
+
+
+}
 void ScreenConsole::DisplayDebug(){
     if(true){
-        irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
-        //irr::video::ITexture* images = driver->getTexture("assets/HUD/ojetecalor.jpg");
-        //driver->draw2DImage(images, irr::core::position2d<irr::s32>(50,50),
-        //irr::core::rect<irr::s32>(0,0,342,224), 0,
-        //irr::video::SColor(255,255,255,255), true);
-        //driver->draw2DImage(images, irr::core::position2d<irr::s32>(50,50));
+        auto it = BUFFER.begin();
+        uint16_t DiplayY = 10;
+        while (it!=BUFFER.end()){
+            irr::core::stringw WS((*it).Text.c_str());
+            font->draw(WS, irr::core::rect<irr::s32>(20,DiplayY,700,50), irr::video::SColor((*it).Color.Alpha*255,(*it).Color.R,(*it).Color.G,(*it).Color.B));
+            DiplayY += 17;
+            ++it;
+        }
+    }
+}
+void ScreenConsole::DisplayMenu(){
+    IrrlichtDevice->getGUIEnvironment()->drawAll();
 
+}
+void ScreenConsole::DisplayHUD(){
+    if(true){
+        irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
         std::map <std::string,ImageHUD>::iterator it;
         it=IMAGE_BUFFER.begin();
-        //driver->draw2DRectangle(irr::video::SColor(150,255,200,100),
-        //irr::core::rect<irr::s32>(50,50,259,194));
-        //259,194
-        //if(perc<1){
-        //    perc+=0.005;
-        //}
-
         while(it!=IMAGE_BUFFER.end()){
-            //enableMaterial2D();
             driver->draw2DImage(it->second.texture,
                 irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height),
                 irr::core::rect<irr::s32>(0,0,it->second.texture->getSize().Width,it->second.texture->getSize().Height)
             );
-            //// std::cout << "nombre" <<it->first<< '\n';
-            //// std::cout << "posx" <<it->second.posx<< '\n';
-            //// std::cout << "posy" <<it->second.posy<< '\n';
-            //// std::cout << "tamano H" <<it->second.texture->getSize().Height<< '\n';
-            //// std::cout << "tamano W" <<it->second.texture->getSize().Width<< '\n';
-            //driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
-            //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.texture->getSize().Width,it->second.posy+it->second.texture->getSize().Height*perc));
-            //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.texture->getSize().Width,it->second.posy+it->second.texture->getSize().Height));
-            //if(it->first=="hab1"){
-
-            //}
             it++;
         }
         if(IMAGE_BUFFER.find("hab1")!=IMAGE_BUFFER.end()){
@@ -166,33 +167,17 @@ void ScreenConsole::DisplayDebug(){
         }
         if(IMAGE_BUFFER.find("1arma")!=IMAGE_BUFFER.end()){
             it=IMAGE_BUFFER.find("1arma");
-            //driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
             std::string hola=std::to_string(balaP)+std::string("/100");
-            //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height*perc3));
             font->draw(hola.c_str(), irr::core::rect<irr::s32>(it->second.posx+(it->second.width/100)*65,it->second.posy+(it->second.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
         }
         if(IMAGE_BUFFER.find("0arma")!=IMAGE_BUFFER.end()){
             it=IMAGE_BUFFER.find("0arma");
-            //driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
-            //irr::core::rect<irr::s32>(it->second.posx,it->second.posy,it->second.posx+it->second.width,it->second.posy+it->second.height*perc3));
             std::string hola=std::to_string(balaS)+std::string("/100");
-            //irr::core::stringw WS((*it).Text.c_str());
             font->draw(hola.c_str(), irr::core::rect<irr::s32>(it->second.posx+(it->second.width/100)*65,it->second.posy+(it->second.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
         }
-        //AddImage("G3","assets/HUD/ojetecalor.jpg",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
         float ale=porc_alto(2);
         driver->draw2DLine(irr::core::position2d<irr::s32>(ancho-ale,alto),irr::core::position2d<irr::s32>(ancho+ale,alto),irr::video::SColor(250,0,0,0));
         driver->draw2DLine(irr::core::position2d<irr::s32>(ancho,alto-ale),irr::core::position2d<irr::s32>(ancho,alto+ale),irr::video::SColor(250,0,0,0));
-    }
-    if(true){
-        auto it = BUFFER.begin();
-        uint16_t DiplayY = 10;
-        while (it!=BUFFER.end()){
-            irr::core::stringw WS((*it).Text.c_str());
-            font->draw(WS, irr::core::rect<irr::s32>(20,DiplayY,700,50), irr::video::SColor((*it).Color.Alpha*255,(*it).Color.R,(*it).Color.G,(*it).Color.B));
-            DiplayY += 17;
-            ++it;
-        }
     }
 }
 

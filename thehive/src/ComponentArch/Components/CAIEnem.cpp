@@ -187,9 +187,6 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
         diren=gg::Normalice(diren);
         float sol=gg::Producto(diren,dir);
         if(gradovision<sol&&!playerSeeing){
-            std::cout << "sol" <<sol<< '\n';
-            std::cout << "gradovision" <<gradovision<< '\n';
-
             gg::cout("visto");
             enemyseen();
             arbol->reset();
@@ -197,8 +194,10 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
         }
         if(dist<Arange){
             if(!playerOnRange){
-                // gg::cout("rango");
+                 gg::cout("rango");
                 enemyrange();
+                enemyseen();
+                arbol->reset();
             }
 
 
@@ -207,7 +206,7 @@ gg::EMessageStatus CAIEnem::MHandler_UPDATE(){
             if(playerOnRange){
 
                 playerOnRange=false;
-                // gg::cout("fuera de rango");
+                 gg::cout("fuera de rango");
             }
 
         }

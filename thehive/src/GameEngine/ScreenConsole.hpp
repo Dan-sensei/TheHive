@@ -7,6 +7,8 @@
 #include "Util.hpp"
 #include <list>
 #include <map>
+#include "EventRec.hpp"
+
 
 class GameEngine;
 
@@ -18,6 +20,13 @@ class ScreenConsole{
         void setvida(float _vida);
         void setbullet(int tipo,int balas);
         void DisplayDebug();
+        void DisplayHUD();
+        void DisplayMenu();
+
+        void CLIN();
+        void InitHUD();
+        void InitMenu();
+
         void AddTextToBuffer(const std::string &Text, const gg::Color &color);
         void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
     private:
@@ -33,6 +42,8 @@ class ScreenConsole{
         float ancho;
         float alto;
         ScreenConsole();
+        EventRec* eventManager;
+
         ScreenConsole(const ScreenConsole &orig) = delete;
 
         static irr::IrrlichtDevice* IrrlichtDevice;
