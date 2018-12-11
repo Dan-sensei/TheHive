@@ -133,9 +133,7 @@ void Action::rond_seny(){
     if(s!=BH_RUNNING){
         // std::cout << "iniciando rondando senyuelo" << '\n';
         yo->destino=yo->senpos;
-
     }
-
     rond();
 
 }
@@ -219,7 +217,6 @@ void Action::move_to(){
 void Action::move_last(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
-
         //// std::cout << "iniciando move last" << '\n';
         yo->destino = yo->playerPos;
     }
@@ -232,8 +229,8 @@ void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
         //// std::cout << "iniciando move senyuelo" << '\n';
+        yo->destino = yo->senpos;
     }
-    yo->destino = yo->senpos;
 
     move_too();
 }
@@ -257,10 +254,6 @@ void Action::move_player(){
 }
 
 void Action::move_around(){
-    if(s!=BH_RUNNING){
-        //// std::cout << "iniciando move random" << '\n';
-
-    }
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
 

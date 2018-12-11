@@ -24,8 +24,8 @@ bool CVida::quitarvida(const float &_factor){
 
     vida -= K_DMG_VALUE*_factor;
     if(vida <= 0){
+        gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
         vida = 0;
-        gg::cout(" -- Entity "+std::to_string(getEntityID())+" has died painfully");
         ret = true;
     }
     gg::cout("DAMAGE DONE: ["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");

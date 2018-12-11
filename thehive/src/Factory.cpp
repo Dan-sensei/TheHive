@@ -46,7 +46,7 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     return hero;
 }
 
-uint16_t Factory::createEnemy(const gg::Vector3f &Position){
+uint16_t Factory::createEnemy(const gg::Vector3f &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
@@ -65,7 +65,7 @@ uint16_t Factory::createEnemy(const gg::Vector3f &Position){
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,gg::Vector3f(),false);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
-    CVida* Vida                         = new CVida(50);
+    CVida* Vida                         = new CVida(health);
     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
 
     return Enemy;

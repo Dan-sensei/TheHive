@@ -190,16 +190,15 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         }
     }
     else if(_pRec->eTriggerType & kTrig_Shoot){
-
         CVida *health = static_cast<CVida*>(oManager->getComponent(gg::VIDA,nCAgentID));
         if(health){
-            gg::cout("PUM! -> ["+std::to_string(_pRec->data.find(kDat_Damage))+"]", gg::Color(0, 0, 255, 1));
-            health->quitarvida(_pRec->data.find(kDat_Damage));
-        }
-        else{
-            gg::cout("FLUSH!...", gg::Color(0, 0, 255, 1));
-        }
+            float damage = _pRec->data.find(kDat_Damage);
+            gg::cout("PUM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
 
+            if(health->quitarvida(damage)){
+                oManager->removeEntity(nCAgentID);
+            }
+        }
     }
     else if(_pRec->eTriggerType & kTrig_Senyuelo){
         if(oManager->getComponent(gg::AIENEM,nCAgentID)){

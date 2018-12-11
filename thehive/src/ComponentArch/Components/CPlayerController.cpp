@@ -225,13 +225,7 @@ void CPlayerController::Update(){
     if(Engine->key(gg::GG_G) && GranadeCreate==false){
         if(pulsacion_granada==false){
             pulsacion_granada   = true;
-            //CVida* vid = static_cast<CVida*>(Singleton<ObjectManager>::Instance()->getComponent(gg::VIDA, getEntityID()));
-            //vid->quitarvida();
-            //TData mes;
-            //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
-            //EventSystem->PulsoTrigger(kTrig_Aturd,0,cTransform->getPosition(),500,mes);
 
-            //hab.init();
             gg::Vector3f gPos   = cTransform->getPosition();
             gg::Vector3f from   = gPos;
             gg::Vector3f to     = world->getRaycastVector();
