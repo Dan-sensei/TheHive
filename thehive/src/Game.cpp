@@ -17,9 +17,11 @@
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include <EventSystem/Blackboard.hpp>
 
-
 #define MOVEMENT_SPEED 1.f
 
+#define FRAMERATE 60.f
+#define UPDATE_STEP 15.f
+#define BULLET_STEP 1.f/FRAMERATE
 
 //Funciones de Fran Gallego para imprimir memoria por consola ==============================¬
 //                                                                                          |
@@ -174,10 +176,28 @@ void Game::RUN(){
     // std::cout << "BEGIN GAME LOOP" << '\n';
     gg::cout("Testing", gg::Color(255, 0, 0, 1));
 
+
     Singleton<Pathfinding>::Instance()->SetDebug(true);
+
+    MasterClock.Restart();
     while(Engine->isWindowOpen()) {
 
+        DeltaTime = MasterClock.Restart().Seconds();
+
+        //  SPIRAL OF DEATH. Not cool
+        if(DeltaTime > 0.25) DeltaTime = 0.25;
+
+        Accumulator += DeltaTime;
+        while(Accumulator >= 1/UPDATE_STEP){
+            // FIXED UPDATE
+            //world->stepSimulation(1/UPDATE_STEP, 5);
+            Accumulator -= 1/UPDATE_STEP;
+        }
+
         world->stepSimulation(1.f / 11.f, 6);
+
+        //  Interpolation tick!
+        Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
 
         EventSystem->Update();
 

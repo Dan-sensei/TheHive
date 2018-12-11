@@ -202,6 +202,9 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
     if (m.mType == gg::M_SETPTRS)              return MHandler_SETPTRS     ();
     //else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO(m);
     else if (m.mType == gg::M_EVENT_ACTION)         return MHandler_DOACTION    (m);
+    else if (m.mType == gg::M_INTERPOLATE_PRESAVE)  return SavePreviousStatus   ();
+    else if (m.mType == gg::M_INTERPOLATE_POSTSAVE) return SaveCurrentStatus    ();
+    else if (m.mType == gg::M_INTERPOLATE)          return Interpolate    (m);
 
     return gg::ST_ERROR;
 }
@@ -427,3 +430,36 @@ void CRigidBody::Upd_MoverObjeto(){
     }
 
 }
+
+gg::EMessageStatus CRigidBody::SavePreviousStatus(){
+    Previous = Current;
+
+    return gg::ST_TRUE;
+}
+gg::EMessageStatus CRigidBody::SaveCurrentStatus(){
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+
+    Current.Position = getBodyPosition();
+    
+    return gg::ST_TRUE;
+}
+gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick){
+
+    float Tick = *(static_cast<float*>(_Tick.mData));
+
+    float X = Previous.Position.X *(1-Tick) + Current.Position.X*Tick;
+    float Y = Previous.Position.Y *(1-Tick) + Current.Position.Y*Tick;
+    float Z = Previous.Position.Z *(1-Tick) + Current.Position.Z*Tick;
+
+    cTransform->setPosition(gg::Vector3f(X,Y,Z));
+    return gg::ST_TRUE;
+}
+
+
+CRigidBody::Status::Status(){}
+CRigidBody::Status::Status(const Status &orig){
+    Position = orig.Position;
+    Rotation = orig.Rotation;
+}
+CRigidBody::Status::~Status(){}

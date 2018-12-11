@@ -26,6 +26,9 @@ ObjectManager::ObjectManager()
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RIGID_BODY);
     MessageToListeningComponents[gg::M_EVENT_ACTION].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::M_INTERPOLATE_PRESAVE].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::M_INTERPOLATE_POSTSAVE].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::M_INTERPOLATE].push_back(gg::RIGID_BODY);
 
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RENDERABLE_3D);

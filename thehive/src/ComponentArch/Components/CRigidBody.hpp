@@ -56,6 +56,11 @@ class CRigidBody : public IComponent {
 
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
+
+        gg::EMessageStatus SavePreviousStatus ();
+        gg::EMessageStatus SaveCurrentStatus ();
+        gg::EMessageStatus Interpolate (const Message &_Tick);
+
         gg::EMessageStatus MHandler_DOACTION(Message);
         void MHandler_XPLOTATO(TriggerRecordStruct* cdata);
 
@@ -87,6 +92,18 @@ class CRigidBody : public IComponent {
             btCollisionObject *ret = body;
             return ret;
         }
+
+        struct Status {
+            Status();
+            Status(const Status &orig);
+            ~Status();
+
+            gg::Vector3f Position;
+            gg::Vector3f Rotation;
+        };
+
+        Status Previous;
+        Status Current;
 
         ggDynWorld* world;
 

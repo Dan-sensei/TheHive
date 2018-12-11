@@ -8,6 +8,7 @@ class ObjectManager;
 class ggDynWorld;
 
 #include <iostream>
+#include <GameEngine/Clock.hpp>
 
 class Game{
 public:
@@ -24,6 +25,11 @@ private:
 
     ObjectManager* Manager;
     ggDynWorld* world;
+
+    gg::Clock MasterClock;
+    double DeltaTime;
+    double Tick; //PARA LA INTERPOLACION
+    float Accumulator;
 };
 
 

@@ -8,6 +8,9 @@ namespace gg{
         M_SETPTRS = 0,
         UPDATE,         //  Provisional
         FIXED_UPDATE,   //  Provisional
+        M_INTERPOLATE_PRESAVE,
+        M_INTERPOLATE_POSTSAVE,
+        M_INTERPOLATE,
         M_EVENT_ACTION,
         //M_XPLOTATO,
         // M_PICKGUN
