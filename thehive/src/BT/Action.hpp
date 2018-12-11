@@ -3,11 +3,22 @@
 
 #include "Behavior.hpp"
 #include "Hojas.hpp"
+
 #include <iostream>
 #include <string>
-#include "EventSystem/Blackboard.hpp"
-#include "ComponentArch/Components/CAIEnem.hpp"
+#include <random>
 
+#include <Util.hpp>
+
+#include "EventSystem/Blackboard.hpp"
+#include "EventSystem/BVector3f.hpp"
+#include "EventSystem/BInt.hpp"
+#include "EventSystem/BBool.hpp"
+
+#include <ComponentArch/ObjectManager.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
+#include <ComponentArch/Components/CTransform.hpp>
+#include <ComponentArch/Components/CRigidBody.hpp>
 
 class Action : public Behavior {
 
@@ -56,5 +67,9 @@ CAIEnem* yo;
        pFunc VectorAcciones[NUM_ACCIONES];
        Status s;
        Hojas tarea;
+
+       ObjectManager    *manager;
+       CTransform       *cTransform;
+       CRigidBody       *cRigidBody;
 };
 #endif

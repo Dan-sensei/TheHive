@@ -5,7 +5,7 @@
 #include "CClock.hpp"
 
 #define PI 3.14159265359
-#define FORCE_FACTOR    200.f
+#define FORCE_FACTOR    400.f
 
 std::vector<const char*> names;
 
@@ -275,6 +275,26 @@ void CRigidBody::setLinearVelocity(gg::Vector3f vec){
     body->setLinearVelocity(btVector3(vec.X,vec.Y,vec.Z));
 }
 
+void CRigidBody::applyConstantVelocity(gg::Vector3f _force,float _max_speed,bool _keyPressed){
+    float currentSpeed = gg::Modulo(getXZVelocity());
+    if(!_keyPressed && currentSpeed == 0)
+        return;
+
+    if(_keyPressed && currentSpeed < _max_speed) {    // If a key is pressed and we haven't reached max speed yet
+        _force *= FORCE_FACTOR;
+        applyCentralForce(_force);                       // Accelerate!
+    }
+    else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
+        _force = getVelocity() * gg::Vector3f(-0.08, 0, -0.08) * FORCE_FACTOR;
+        applyCentralForce(_force);                       // Stopping!
+    }
+    else {                                                          // If we reach here, any key is pressed and the speed is below 2
+        // Set it to 0
+        setLinearVelocity(gg::Vector3f(0, getVelocity().Y, 0));
+    }
+}
+
+
 void CRigidBody::activate(bool b){
     body->activate(b);
 }
@@ -441,7 +461,7 @@ gg::EMessageStatus CRigidBody::SaveCurrentStatus(){
     body->getMotionState()->getWorldTransform(trans);
 
     Current.Position = getBodyPosition();
-    
+
     return gg::ST_TRUE;
 }
 gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick){

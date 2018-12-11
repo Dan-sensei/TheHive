@@ -16,7 +16,8 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     uint16_t hero = Manager->createEntity();
     CTransform* Transform               = new CTransform(gg::Vector3f(0, 0, 10), gg::Vector3f(0, 0, 0));
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
-    CAIEnem::PlayerTransform=Transform;     //  Punteros a otras componentes
+
+    CAIEnem::PlayerTransform=Transform;
 
     CCamera* Camera                     = new CCamera(_b);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
@@ -56,8 +57,8 @@ uint16_t Factory::createEnemy(const gg::Vector3f &Position){
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
 
-    //CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0, 0);
-    //Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
+    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0, 0);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
     CAgent* Agent                       = new CAgent(kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);

@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <iostream>
 
+
+
 namespace gg{
 
     /*          UNSIGNED INT - 8 BITS       */

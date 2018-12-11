@@ -5,8 +5,6 @@
 #include <Util.hpp>
 #include <string>
 #include "Factory.hpp"
-//#include <GameAI/Hability.hpp>
-//#include <GameAI/Enumhabs.hpp>
 
 // #include <GameEngine/ScreenConsole.hpp>
 
@@ -196,24 +194,8 @@ void CPlayerController::Update(){
         pulsacion_espacio = false;
     }
 
-    // Se aplican fuerzas
-    float currentSpeed = gg::Modulo(cRigidBody->getXZVelocity());
-    if(!pressed && currentSpeed == 0)
-        goto continueProcessing;
-
-    if(pressed && currentSpeed < ((MAX_HERO_SPEED*MULT_FACTOR)*MULT_BASE)) {    // If a key is pressed and we haven't reached max speed yet
-        force *= FORCE_FACTOR;
-        cRigidBody->applyCentralForce(force);                       // Accelerate!
-    }
-    else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
-        force = cRigidBody->getVelocity() * gg::Vector3f(-0.08, 0, -0.08) * FORCE_FACTOR;
-        cRigidBody->applyCentralForce(force);                       // Stopping!
-    }
-    else {                                                          // If we reach here, any key is pressed and the speed is below 2
-        // Set it to 0
-        cRigidBody->setLinearVelocity(gg::Vector3f(0, cRigidBody->getVelocity().Y, 0));
-    }
-    continueProcessing:
+    // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
+    cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
 
     // And we update it accoding to the keyboard input
     camera->updateCameraTarget(cRigidBody->getBodyPosition(),heroRotation);
@@ -242,6 +224,7 @@ void CPlayerController::Update(){
     // Graná
     if(Engine->key(gg::GG_G) && GranadeCreate==false){
         if(pulsacion_granada==false){
+            pulsacion_granada   = true;
             //CVida* vid = static_cast<CVida*>(Singleton<ObjectManager>::Instance()->getComponent(gg::VIDA, getEntityID()));
             //vid->quitarvida();
             //TData mes;
@@ -249,21 +232,15 @@ void CPlayerController::Update(){
             //EventSystem->PulsoTrigger(kTrig_Aturd,0,cTransform->getPosition(),500,mes);
 
             //hab.init();
-            pulsacion_granada=true;
-            gg::Vector3f gPos = cTransform->getPosition();
-            gg::Vector3f from = gPos;
-            gg::Vector3f to = world->getRaycastVector();
+            gg::Vector3f gPos   = cTransform->getPosition();
+            gg::Vector3f from   = gPos;
+            gg::Vector3f to     = world->getRaycastVector();
+            gg::Vector3f vel    = to-from;
 
-            gg::Vector3f vel=to-from;
-            vel = gg::Normalice(vel);
+            vel  = gg::Normalice(vel);
+            vel *= VEL_FACTOR/2;
 
-            vel*= VEL_FACTOR/2;
-
-            Singleton<Factory>::Instance()->createHolyBomb(
-                gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),
-                vel
-            );
-            //*/
+            Singleton<Factory>::Instance()->createHolyBomb(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
         }
         // GranadeCreate=true;
     }

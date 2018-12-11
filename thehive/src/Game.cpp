@@ -71,12 +71,7 @@ void Game::RUN(){
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-
-    // sF->createHero(gg::Vector3f(700, 100, 0),false);
-    sF->createHero(gg::Vector3f(1760, 110, 350),false);     //600
-    sF->createEnemy(gg::Vector3f(740, 100, 20));
-    sF->createEnemy(gg::Vector3f(740, 100, 30));
-    sF->createEnemy(gg::Vector3f(740, 100, 40));
+    sF->createHero(gg::Vector3f(1760, 110, 350),false);
     sF->createEnemy(gg::Vector3f(1760, 110, 390));
     sF->createEnemy(gg::Vector3f(1797, 120, 350));
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
@@ -148,36 +143,10 @@ void Game::RUN(){
     // CRigidBody* RigidBody = new CRigidBody(false, false,"", 0, -10, 0, 680,10,800, 0, 0,0,0, 0.2);
     // Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, NavmeshGround);
 
-
-
-
-    //
-    // uint16_t Wall_1 = Manager->createEntity();
-    // CRigidBody* RigidBody_1 = new CRigidBody(false, false,"", -280, 0, -100, 160, 100,265, 0, 0,0,0, 0.2f);
-    // Manager->addComponentToEntity(RigidBody_1, gg::RIGID_BODY, Wall_1);
-    //
-    // uint16_t Wall_2 = Manager->createEntity();
-    // CRigidBody* RigidBody_2 = new CRigidBody(false, false,"", -80, 0, 410, 215, 100,320, 0, 0,0,0, 0.2f);
-    // Manager->addComponentToEntity(RigidBody_2, gg::RIGID_BODY, Wall_2);
-    //
-    // uint16_t Wall_3 = Manager->createEntity();
-    // CRigidBody* RigidBody_3 = new CRigidBody(false, false,"", 110, 0, 70, 80, 100, 32, 0, 0,0,0, 0.2f);
-    // Manager->addComponentToEntity(RigidBody_3, gg::RIGID_BODY, Wall_3);
-    //
-    // uint16_t Wall_4 = Manager->createEntity();
-    // CRigidBody* RigidBody_4 = new CRigidBody(false, false,"", -25, 0, 17, 100, 125, 28, 0, 0,0,0, 0.2f);
-    // Manager->addComponentToEntity(RigidBody_4, gg::RIGID_BODY, Wall_4);
-
-    //60 -450
-    //132 - 550
-
-
-
     // std::cout << "BEGIN GAME LOOP" << '\n';
     gg::cout("Testing", gg::Color(255, 0, 0, 1));
 
-
-    Singleton<Pathfinding>::Instance()->SetDebug(true);
+    Singleton<Pathfinding>::Instance()->SetDebug(false);
 
     MasterClock.Restart();
     while(Engine->isWindowOpen()) {

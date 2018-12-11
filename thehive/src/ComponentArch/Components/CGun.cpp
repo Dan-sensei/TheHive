@@ -81,8 +81,8 @@ void CGun::shoot(gg::Vector3f to){
         // Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
 
         // <DEBUG>
-            Factory *fac = Singleton<Factory>::Instance();
-            fac->createDebugBullet(gg::Vector3f(to));
+            // Factory *fac = Singleton<Factory>::Instance();
+            // fac->createDebugBullet(gg::Vector3f(to));
         // </DEBUG>
     }
 }

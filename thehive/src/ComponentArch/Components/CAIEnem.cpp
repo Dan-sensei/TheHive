@@ -21,7 +21,8 @@
 #include "EventSystem/BVector3f.hpp"
 #include "EventSystem/BBool.hpp"
 
-bool CAIEnem::debugvis=true;
+bool        CAIEnem::debugvis=true;
+CTransform* CAIEnem::PlayerTransform;
 
 //std::list  <TriggerRecordStruct*>  hola;
 
@@ -35,7 +36,6 @@ bool CAIEnem::debugvis=true;
 //    nDeltaTime=0;
 //    vPos=_vPos;
 //}
-CTransform* CAIEnem::PlayerTransform;     //  Punteros a otras componentes
 
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
@@ -48,13 +48,13 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerP
 CAIEnem::~CAIEnem() {
     delete arbol;
 }
+
 void CAIEnem::enemyseen(){
-//
-playerPos=PlayerTransform->getPosition();
-playerSeen=true;
-playerSeeing=true;
-//
+    playerPos   =PlayerTransform->getPosition();
+    playerSeen  =true;
+    playerSeeing=true;
 }
+
 void CAIEnem::enemyrange(){
     playerOnRange=true;
 }
@@ -66,55 +66,39 @@ void CAIEnem::Init(){
     //int id_dado=getEntityID();
     //// std::cout << "id dado:" <<id_dado<< '\n';
 
-    playerSeeing=false;
-    playerOnRange=false;
-    playerSeen=false;
-    ultrasonido=false;
-    senyuelo=false;
-    senpos=gg::Vector3f(50,50,50);
-    playerPos=gg::Vector3f(20,20,20);
-    destino=gg::Vector3f(50,50,50);
-    id=getEntityID();
-    id2=PlayerTransform->getEntityID();
-    ultrasonido_cont=0;
-    rondacion_cont=0;
+    playerSeeing    = false;
+    playerOnRange   = false;
+    playerSeen      = false;
+    ultrasonido     = false;
+    senyuelo        = false;
+    playerOnRange   = false;
 
-    data->setData("id2",new BInt(PlayerTransform->getEntityID()));
+    senpos          = gg::Vector3f(50,50,50);
+    playerPos       = gg::Vector3f(20,20,20);
+    destino         = gg::Vector3f(50,50,50);
+
+    id              = getEntityID();
+    id2             = PlayerTransform->getEntityID();
+    ultrasonido_cont= 0;
+    rondacion_cont  = 0;
+
+    data->setData("id2",new BInt(id2));
 
     //data->serData()
     //// std::cout << "arbol1" << '\n';
     //// std::cout << "creado" << '\n';
-    arbol=new Treecontroller(data,0,this);
+    arbol = new Treecontroller(data,0,this);
     //// std::cout << "creadowii" << '\n';
 
     //// std::cout << "arbol2" << '\n';
-    Vrange=30;
-    Arange=5;
+    Vrange          = 30;
+    Arange          = 5;
+    enfado          = 0;
+    gradovision     = cos(30*3.14159265359/180.f);
 
-    playerOnRange=false;
-    enfado=0;
     MHandler_SETPTRS();
-    //gradovision=0.5;
-    gradovision=cos(30*3.14159265359/180.f);
-    //float res = gradovision*180/3.14159265359
-
 }
 
-//void CAIEnem::update(){
-//    std::list <TriggerRecordStruct*>::iterator it;
-//    it=holiiis.begin();
-//    TriggerRecordStruct* pTrig=NULL;
-//    for(unsigned long i=0; i<holiiis.size();++i)
-//    {
-//        pTrig=*it;
-//        onTriggerStay(pTrig);
-//        it++;
-//
-//    }
-//
-//
-//
-//}
 gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
 
     if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
@@ -139,79 +123,55 @@ void CAIEnem::Update(){
     if(debugvis){
         float res = acos(gradovision)*180.f/3.14159265359;
 
-        gg::Vector3f dir=Direccion2D( cTransform->getRotation());
-        gg::Vector3f dir1=Direccion2D( cTransform->getRotation()+gg::Vector3f(0,res,0));
-        gg::Vector3f dir2=Direccion2D( cTransform->getRotation()-gg::Vector3f(0,res,0));
+        gg::Vector3f dir    = Direccion2D( cTransform->getRotation());
+        gg::Vector3f dir1   = Direccion2D( cTransform->getRotation()+gg::Vector3f(0,res,0));
+        gg::Vector3f dir2   = Direccion2D( cTransform->getRotation()-gg::Vector3f(0,res,0));
 
-        gg::Vector3f inicio=cTransform->getPosition();
-        gg::Vector3f fin=dir*Vrange+cTransform->getPosition();
-        gg::Vector3f fin2=dir1*Vrange+cTransform->getPosition();
-        gg::Vector3f fin3=dir2*Vrange+cTransform->getPosition();
-
-
+        gg::Vector3f inicio = cTransform->getPosition();
+        gg::Vector3f fin    = dir*Vrange+cTransform->getPosition();
+        gg::Vector3f fin2   = dir1*Vrange+cTransform->getPosition();
+        gg::Vector3f fin3   = dir2*Vrange+cTransform->getPosition();
 
         Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1),3);
         Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1),3);
         Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1),3);
-        gg::Vector3f diren=PlayerTransform->getPosition()-cTransform->getPosition();
-        diren.Y=0;
-        diren=gg::Normalice(diren);
-        float sol=gg::Producto(diren,dir);
-        gg::Vector3f hola= Direccion2D_to_rot(dir);
-}
 
-    //float sol=diren.X*dir.X+diren.Y*dir.Y+diren.Z*dir.Z;
-    //float sol=diren*dir;
+        gg::Vector3f diren  = PlayerTransform->getPosition()-cTransform->getPosition();
+        diren.Y             = 0;
+        diren               = gg::Normalice(diren);
+        float sol           = gg::Producto(diren,dir);
+        gg::Vector3f hola   = Direccion2D_to_rot(dir);
+    }
 
+    float dist = gg::DIST(PlayerTransform->getPosition(),cTransform->getPosition());
 
-
-    //0,8
-
-
-
-    float dist =gg::DIST(PlayerTransform->getPosition(),cTransform->getPosition());
     if(dist<Vrange){
-        gg::Vector3f dir=Direccion2D( cTransform->getRotation());
-        gg::Vector3f diren=PlayerTransform->getPosition()-cTransform->getPosition();
-        diren.Y=0;
-        diren=gg::Normalice(diren);
-        float sol=gg::Producto(diren,dir);
-        if(gradovision<sol&&!playerSeeing){
-            std::cout << "sol" <<sol<< '\n';
-            std::cout << "gradovision" <<gradovision<< '\n';
+        gg::Vector3f dir    = Direccion2D( cTransform->getRotation());
+        gg::Vector3f diren  = PlayerTransform->getPosition()-cTransform->getPosition();
 
-            gg::cout("visto");
+        diren.Y     = 0;
+        diren       = gg::Normalice(diren);
+        float sol   = gg::Producto(diren,dir);
+
+        if(gradovision<sol && !playerSeeing){
             enemyseen();
             arbol->reset();
-
-        }
-        if(dist<Arange){
-            if(!playerOnRange){
-                // gg::cout("rango");
-                enemyrange();
-            }
-
-
-        }
-        else{
-            if(playerOnRange){
-
-                playerOnRange=false;
-                // gg::cout("fuera de rango");
-            }
-
         }
 
-
-    }
-    else{
-        if(playerSeeing)
-        {
-            playerSeeing=false;
-            arbol->reset();
-            gg::cout("dejo de verlo");
+        if(dist<Arange && !playerOnRange){
+            enemyrange();
+        }
+        else if(playerOnRange){
+            playerOnRange = false;
         }
     }
+    else if(playerSeeing){
+        playerSeeing = false;
+        arbol->reset();
+    }
+    arbol->update();
+
+
     //if(dist<range){
     //}
     //if(dist<range){
@@ -221,30 +181,31 @@ void CAIEnem::Update(){
     //    // std::cout << "iteracion" <<enfado<< '\n';
         //BT->tick();
     //// std::cout << "entrando" << '\n';
-    arbol->update();
     //// std::cout << "saliendo" << '\n';
     //}
 }
 
 void CAIEnem::MHandler_ATURD(){
     // std::cout << "aturd" << '\n';
-    ultrasonido=true;
-    ultrasonido_cont=0;
+    ultrasonido     = true;
+    ultrasonido_cont= 0;
     arbol->reset();
 
 }
+
 void CAIEnem::MHandler_NEAR(TriggerRecordStruct* cdata){
 
 }
+
 void CAIEnem::MHandler_SENYUELO(TriggerRecordStruct* cdata){
-    senyuelo=true;
-    senpos=cdata->vPos;
+    senyuelo    = true;
+    senpos      = cdata->vPos;
     arbol->reset();
     // std::cout << "sen in" << '\n';
 }
-void CAIEnem::MHandler_SENYUELO_END(){
-    senyuelo=false;
-    // std::cout << "sen out" << '\n';
 
+void CAIEnem::MHandler_SENYUELO_END(){
+    senyuelo    = false;
+    // std::cout << "sen out" << '\n';
     arbol->reset();
 }
