@@ -270,8 +270,10 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
             _pRec->nExpirationTime = 20;
             oManager->removeEntity(id);
         }
-        // No ha podido cogerlo
-        gg::cout(" -- Can't pick object: "+std::to_string(id)+" -> FULL POCKETS");
+        else{
+            // No ha podido cogerlo
+            gg::cout(" -- Can't pick object: "+std::to_string(id)+" -> FULL POCKETS");
+        }
     }
     //// std::cout << "OnTriggerStay  sale" <<nCAgentID<< '\n';
 
@@ -474,3 +476,4 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
     gg::cout(" - - RANGE= "     + std::to_string(rng));
     gg::cout(" ------------------ ");
 }
+

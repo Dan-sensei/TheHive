@@ -11,7 +11,7 @@
 // #include <GameEngine/ScreenConsole.hpp>
 
 #define VEL_FACTOR          200.f
-#define MAX_HERO_SPEED      3
+#define MAX_HERO_SPEED      5
 
 #define ROTATE_KEY          gg::GG_LCONTROL
 #define DASH_KEY            gg::GG_ALT
@@ -20,9 +20,9 @@
 #define RELOAD_KEY          gg::GG_R
 #define WEAPON_KEY          gg::GG_Q
 
-#define FORCE_FACTOR        400.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*15.f
-#define DASH_FORCE_FACTOR   FORCE_FACTOR/25.f
+#define FORCE_FACTOR        700.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*5.f
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/50.f
 
 #define MULT_RUN_FACTOR     1.5
 #define MULT_DASH_FACTOR    3
@@ -206,7 +206,7 @@ void CPlayerController::FixedUpdate(){
         cRigidBody->applyCentralForce(force);                       // Accelerate!
     }
     else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
-        force = cRigidBody->getVelocity() * gg::Vector3f(-0.08, 0, -0.08) * FORCE_FACTOR;
+        force = cRigidBody->getVelocity() * gg::Vector3f(-0.1, 0, -0.1) * FORCE_FACTOR;
         cRigidBody->applyCentralForce(force);                       // Stopping!
     }
     else {                                                          // If we reach here, any key is pressed and the speed is below 2
@@ -215,14 +215,11 @@ void CPlayerController::FixedUpdate(){
     }
     continueProcessing:
 
-    // And we update it accoding to the keyboard input
-
     // -----------------------------------
     // Acciones de Willy
     // -----------------------------------
     // DISPARO
     gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
-    gg::Vector3f rayPos = world->getRaycastVector();
 
     if(Engine->key(RELOAD_KEY)){
         CGun* gun = static_cast<CGun*>(Singleton<ObjectManager>::Instance()->getComponent(gg::GUN, getEntityID()));

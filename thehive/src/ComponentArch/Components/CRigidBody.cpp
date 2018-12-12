@@ -400,7 +400,6 @@ void CRigidBody::Upd_MoverObjeto(){
                 // );
 
                 gg::Vector3f offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
-
                 setOffsetBodyPosition(offset);
 
                 // btTransform trans;

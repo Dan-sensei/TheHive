@@ -110,7 +110,7 @@ void Game::RUN(){
         "assets/Textures/Domino.jpg",
         gg::Vector3f(mapPos.X+350, mapPos.Y-10, mapPos.Z+204));
     key = sF->createPickableItem(gg::Vector3f(1624, 120, 145));
-    sF->createTouchableObject(gg::Vector3f(mapPos.X+345, mapPos.Y-13, mapPos.Z+215),idEx,gg::Vector3f(0,0.1,0),3200);
+    sF->createTouchableObject(gg::Vector3f(mapPos.X+345, mapPos.Y-13, mapPos.Z+215),idEx,gg::Vector3f(0,0.4,0),3200);
 
     idEx = sF->createCollisionableDynamicModel(
         "assets/Models/ModelsForEvents/door2.obj",
@@ -174,13 +174,7 @@ void Game::RUN(){
     //60 -450
     //132 - 550
 
-
-
-    // std::cout << "BEGIN GAME LOOP" << '\n';
-    gg::cout("Testing", gg::Color(255, 0, 0, 1));
-
-
-    Singleton<Pathfinding>::Instance()->SetDebug(true);
+    Singleton<Pathfinding>::Instance()->SetDebug(false);
 
     unsigned long UPDATE = 0;
     unsigned long DRO = 0;
@@ -199,11 +193,11 @@ void Game::RUN(){
             Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
             Manager->FixedUpdateAll();
             Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
+            world->stepSimulation(1/UPDATE_STEP*2, 10);
             Accumulator -= 1/UPDATE_STEP;
             ++UPDATE;
         }
         ++DRO;
-        world->stepSimulation(1.f / 11.f, 6);
 
         //  Interpolation tick!
         Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
@@ -225,7 +219,9 @@ void Game::RUN(){
         Singleton<ScreenConsole>::Instance()->DisplayDebug();
 
         Engine->EndDro();
+        std::cout << DeltaTime << '\n';
     }
+    std::cout << "1/60 = " << 1/60.F << '\n';
     std::cout << "UPDTES " << UPDATE  << '\n';
     std::cout << "DRO " << DRO  << '\n';
 }
