@@ -11,7 +11,9 @@
 
 CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
-{}
+{
+    Manager = Singleton<ObjectManager>::Instance();
+}
 
 CVida::~CVida() {}
 
@@ -62,8 +64,6 @@ gg::EMessageStatus CVida::processMessage(const Message &m) {
 gg::EMessageStatus CVida::MHandler_SETPTRS(){
     //cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
     //cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-
-    Manager = Singleton<ObjectManager>::Instance();
 
     return gg::ST_TRUE;
 }

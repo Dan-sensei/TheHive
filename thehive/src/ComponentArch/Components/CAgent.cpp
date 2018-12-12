@@ -231,8 +231,6 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
     ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
     if(_pRec->eTriggerType & kTrig_Explosion){
-        //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
-        //// std::cout << "usando handler despues" << nCAgentID<< '\n';
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
         }
@@ -244,7 +242,6 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
                 oManager->removeEntity(nCAgentID);
             }
         }
-        return;
     }
     else if((_pRec->eTriggerType & kTrig_Touchable) && Engine->key(gg::GG_E)){
         uint16_t item = _pRec->data.find(kDat_PickableItemId);

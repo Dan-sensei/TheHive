@@ -228,17 +228,17 @@ void CPlayerController::playerThrowHolyBomb(){
 }
 
 void CPlayerController::playerThrowMatrioska(){
-    pulsacion_granada   = true;
-
-    gg::Vector3f gPos   = cTransform->getPosition();
-    gg::Vector3f from   = gPos;
-    gg::Vector3f to     = world->getRaycastVector();
-    gg::Vector3f vel    = to-from;
-
-    vel  = gg::Normalice(vel);
-    vel *= VEL_FACTOR/2;
-
-    Singleton<Factory>::Instance()->createMatriuska(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
+    // pulsacion_granada   = true;
+    //
+    // gg::Vector3f gPos   = cTransform->getPosition();
+    // gg::Vector3f from   = gPos;
+    // gg::Vector3f to     = world->getRaycastVector();
+    // gg::Vector3f vel    = to-from;
+    //
+    // vel  = gg::Normalice(vel);
+    // vel *= VEL_FACTOR/2;
+    //
+    // Singleton<Factory>::Instance()->createMatriuska(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
 }
 
 void CPlayerController::playerThrowDopple(){

@@ -56,5 +56,4 @@ void CGranade1::explosion(){
         vel
     );
 
-
 }
