@@ -68,15 +68,38 @@ class CAgent : public IComponent {
         void getWeaponInformation(float&, float&, float&, float&, int&, int);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerEnter;
-        void func_kTrig_none        (TriggerRecordStruct*);
-        void func_kTrig_Explosion   (TriggerRecordStruct*);
-        void func_kTrig_EnemyNear   (TriggerRecordStruct*);
-        void func_kTrig_Gunfire     (TriggerRecordStruct*);
-        void func_kTrig_Shoot       (TriggerRecordStruct*);
-        void func_kTrig_Touchable   (TriggerRecordStruct*);
-        void func_kTrig_Senyuelo    (TriggerRecordStruct*);
-        void func_kTrig_Aturd       (TriggerRecordStruct*);
-        void func_kTrig_Pickable    (TriggerRecordStruct*);
+        void ENTER_func_kTrig_none          (TriggerRecordStruct*);
+        void ENTER_func_kTrig_Explosion     (TriggerRecordStruct*);
+        void ENTER_func_kTrig_EnemyNear     (TriggerRecordStruct*);
+        void ENTER_func_kTrig_Gunfire       (TriggerRecordStruct*);
+        void ENTER_func_kTrig_Shoot         (TriggerRecordStruct*);
+        void ENTER_func_kTrig_Touchable     (TriggerRecordStruct*);
+        void ENTER_func_kTrig_Senyuelo      (TriggerRecordStruct*);
+        void ENTER_func_kTrig_Aturd         (TriggerRecordStruct*);
+        void ENTER_func_kTrig_Pickable      (TriggerRecordStruct*);
+
+        std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerStay;
+        void STAY_func_kTrig_none           (TriggerRecordStruct*);
+        void STAY_func_kTrig_Explosion      (TriggerRecordStruct*);
+        void STAY_func_kTrig_EnemyNear      (TriggerRecordStruct*);
+        void STAY_func_kTrig_Gunfire        (TriggerRecordStruct*);
+        void STAY_func_kTrig_Shoot          (TriggerRecordStruct*);
+        void STAY_func_kTrig_Touchable      (TriggerRecordStruct*);
+        void STAY_func_kTrig_Senyuelo       (TriggerRecordStruct*);
+        void STAY_func_kTrig_Aturd          (TriggerRecordStruct*);
+        void STAY_func_kTrig_Pickable       (TriggerRecordStruct*);
+
+        std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerExit;
+        void EXIT_func_kTrig_none           (TriggerRecordStruct*);
+        void EXIT_func_kTrig_Explosion      (TriggerRecordStruct*);
+        void EXIT_func_kTrig_EnemyNear      (TriggerRecordStruct*);
+        void EXIT_func_kTrig_Gunfire        (TriggerRecordStruct*);
+        void EXIT_func_kTrig_Shoot          (TriggerRecordStruct*);
+        void EXIT_func_kTrig_Touchable      (TriggerRecordStruct*);
+        void EXIT_func_kTrig_Senyuelo       (TriggerRecordStruct*);
+        void EXIT_func_kTrig_Aturd          (TriggerRecordStruct*);
+        void EXIT_func_kTrig_Pickable       (TriggerRecordStruct*);
+
 };
 
 #endif
