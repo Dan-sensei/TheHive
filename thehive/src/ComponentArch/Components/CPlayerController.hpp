@@ -80,7 +80,7 @@ class CPlayerController : public IComponent {
         std::array<uint16_t,NUMBER_OF_ITEMS> items;
 
         gg::Vector3f cV,ppV;
-        std::map<int, void (CPlayerController::*)(gg::Vector3f&,bool&)> mapPlayerActions;
+        // std::map<int, void (CPlayerController::*)(gg::Vector3f&,bool&)> mapPlayerActions;
         void W_IsPressed(gg::Vector3f&,bool&);
         void A_IsPressed(gg::Vector3f&,bool&);
         void S_IsPressed(gg::Vector3f&,bool&);

@@ -18,6 +18,7 @@ CAgent::CAgent(const unsigned long &_flags)
 {
     dwTriggerFlags = _flags;
     nDeltaTime=0;
+    oManager = Singleton<ObjectManager>::Instance();
 }
 
 CAgent::~CAgent() {
@@ -42,6 +43,17 @@ void CAgent::Init(){
     nCAgentID=getEntityID();
     addAgent(this);
 
+    // Mapa a funcion de los trigger ON ENTER
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_none,        &CAgent::func_kTrig_none));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Explosion,   &CAgent::func_kTrig_Explosion));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_EnemyNear,   &CAgent::func_kTrig_EnemyNear));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Gunfire,     &CAgent::func_kTrig_Gunfire));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Shoot,       &CAgent::func_kTrig_Shoot));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Touchable,   &CAgent::func_kTrig_Touchable));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Senyuelo,    &CAgent::func_kTrig_Senyuelo));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Aturd,       &CAgent::func_kTrig_Aturd));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Pickable,    &CAgent::func_kTrig_Pickable));
+
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
 }
@@ -57,6 +69,7 @@ unsigned long  CAgent::GetTriggerFlags(){
 gg::Vector3f CAgent::GetPosition(){
     return cTransform->getPosition();
 }
+
 void CAgent::updatetrig(){
     //// std::cout << "entra updatetrig" <<nCAgentID<< '\n';
 
@@ -92,23 +105,34 @@ void CAgent::updatetrig(){
 }
 
 bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
-    ObjectManager* oManager = Singleton<ObjectManager>::Instance();
-    //oManager->checkEvent(nCAgentID,mes);
+    (this->*mapFuncOnTriggerEnter[_pRec->eTriggerType])(_pRec);
+    return true;
+}
+void CAgent::func_kTrig_none        (TriggerRecordStruct *_pRec){}
+void CAgent::func_kTrig_Touchable   (TriggerRecordStruct *_pRec){}
+void CAgent::func_kTrig_Pickable    (TriggerRecordStruct *_pRec){}
 
-
-    //// std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
+void CAgent::func_kTrig_Explosion   (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Explosion){
-        //// std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
-        //Message mes(gg::M_XPLOTATO,_pRec);
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
-            //// std::cout << "core si" << '\n';
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
-            //// std::cout << "core no" << '\n';
-            return true;
-
         }
     }
-    else if(_pRec->eTriggerType & kTrig_Gunfire){
+}
+
+void CAgent::func_kTrig_EnemyNear   (TriggerRecordStruct *_pRec){
+    if(_pRec->eTriggerType & kTrig_EnemyNear){
+        //CAIEnem->enemyseen();
+        if(oManager->getComponent(gg::AIENEM,nCAgentID)){
+            //// std::cout << "core si" << '\n';
+            static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_NEAR(_pRec);
+            //// std::cout << "core no" << '\n';
+        }
+    }
+}
+
+void CAgent::func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
+    if(_pRec->eTriggerType & kTrig_Gunfire){
         float   dmg, cdc, relDT, rng;
         int     tb;
         CGun *gun = static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID));
@@ -160,11 +184,8 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
                     int id = _pRec->data.find(kDat_EntId);
                     oManager->removeEntity(id);
                     _pRec->nExpirationTime = 50;
-
-                    return true;
                 }
             }
-            return false;
         }
 
         // NO TIENE ARMA
@@ -179,17 +200,10 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
         oManager->removeEntity(id);
         _pRec->nExpirationTime = 50;
     }
-    else if(_pRec->eTriggerType & kTrig_EnemyNear){
-        //CAIEnem->enemyseen();
-        if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-            //// std::cout << "core si" << '\n';
-            static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_NEAR(_pRec);
-            //// std::cout << "core no" << '\n';
-            return true;
+}
 
-        }
-    }
-    else if(_pRec->eTriggerType & kTrig_Shoot){
+void CAgent::func_kTrig_Shoot       (TriggerRecordStruct *_pRec){
+    if(_pRec->eTriggerType & kTrig_Shoot){
         CVida *health = static_cast<CVida*>(oManager->getComponent(gg::VIDA,nCAgentID));
         if(health){
             float damage = _pRec->data.find(kDat_Damage);
@@ -200,35 +214,40 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
             }
         }
     }
-    else if(_pRec->eTriggerType & kTrig_Senyuelo){
+}
+
+void CAgent::func_kTrig_Senyuelo    (TriggerRecordStruct *_pRec){
+    if(_pRec->eTriggerType & kTrig_Senyuelo){
         if(oManager->getComponent(gg::AIENEM,nCAgentID)){
             //// std::cout << "core si" << '\n';
             static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_SENYUELO(_pRec);
             //// std::cout << "core no" << '\n';
-            return true;
-
         }
     }
-    else if(_pRec->eTriggerType & kTrig_Aturd){
-        //// std::cout << "triger entrando" << '\n';
-            //// std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
-            //Message mes(gg::M_XPLOTATO,_pRec);
-            if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-                //// std::cout << "core si" << '\n';
-                static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_ATURD();
-                //// std::cout << "core no" << '\n';
-                return true;
-
-            }
-        }
-
-    return true;
 }
+
+void CAgent::func_kTrig_Aturd       (TriggerRecordStruct *_pRec){
+    if(_pRec->eTriggerType & kTrig_Aturd){
+    //// std::cout << "triger entrando" << '\n';
+        //// std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
+        //Message mes(gg::M_XPLOTATO,_pRec);
+        if(oManager->getComponent(gg::AIENEM,nCAgentID)){
+            //// std::cout << "core si" << '\n';
+            static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_ATURD();
+            //// std::cout << "core no" << '\n';
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
     //// std::cout << "OnTriggerStay  entra" <<nCAgentID<< '\n';
     //// std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
-    ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
     if(_pRec->eTriggerType & kTrig_Explosion){
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
@@ -285,9 +304,9 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
     //// std::cout << "OnTriggerStay  sale" <<nCAgentID<< '\n';
 
 }
+
 void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
     //// std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
-    ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
     if(_pRec->eTriggerType & kTrig_Senyuelo){
         if(oManager->getComponent(gg::AIENEM,nCAgentID)){
@@ -309,6 +328,7 @@ void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
         }*/
 
 }
+
 void CAgent::deletetrig(TriggerRecordStruct* _pRec){
 
     std::list <CAgent*>::iterator it2 ;
@@ -420,7 +440,7 @@ gg::EMessageStatus CAgent::processMessage(const Message &m) {
 
 gg::EMessageStatus CAgent::MHandler_SETPTRS(){
     // Inicializando punteros
-    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    cTransform = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM, getEntityID()));
 
     return gg::ST_TRUE;
 }

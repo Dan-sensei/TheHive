@@ -37,6 +37,7 @@ class CGranade: public IComponent {
         GameEngine      *engine;
         ObjectManager   *Manager;
         CTriggerSystem  *EventSystem;
+        Factory         *factory;
 
         std::chrono::high_resolution_clock::time_point begin;
         double elapsedtime;

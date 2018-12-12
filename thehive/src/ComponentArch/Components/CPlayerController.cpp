@@ -49,8 +49,8 @@ void CPlayerController::Init(){
     pulsacion_dash = false;
     pulsacion_f = false;
     debug1 = false;
-    MULT_BASE=1;
     debug2 = false;
+    MULT_BASE=1;
 
     // El heroe siempre empezara con un arma secundaria
     // Pistola por defecto
@@ -61,11 +61,6 @@ void CPlayerController::Init(){
     mapFuncGrenades.insert(std::make_pair(1,&CPlayerController::playerThrowHolyBomb));
     mapFuncGrenades.insert(std::make_pair(2,&CPlayerController::playerThrowMatrioska));
     mapFuncGrenades.insert(std::make_pair(3,&CPlayerController::playerThrowDopple));
-
-    // mapPlayerActions.insert(std::make_pair(gg::GG_W,&CPlayerController::W_IsPressed));
-    // mapPlayerActions.insert(std::make_pair(gg::GG_A,&CPlayerController::A_IsPressed));
-    // mapPlayerActions.insert(std::make_pair(gg::GG_S,&CPlayerController::S_IsPressed));
-    // mapPlayerActions.insert(std::make_pair(gg::GG_D,&CPlayerController::D_IsPressed));
 }
 
 
@@ -120,7 +115,6 @@ void CPlayerController::Update(){
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f    force;
     bool            pressed = false;
-
     float           MULT_FACTOR = 1;
 
     if(Engine->key(gg::GG_1)){

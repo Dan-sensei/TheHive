@@ -61,11 +61,22 @@ class CAgent : public IComponent {
         //uint16_t getEntityID();upda
 
     private:
-        //CAgent(unsigned long _dwTriggerFlags,gg::Vector3f _vPos);
-        GameEngine* Engine;
-        CTransform* cTransform;     //  Punteros a otras componentes
+        GameEngine      *Engine;
+        CTransform      *cTransform;
+        ObjectManager   *oManager;
 
         void getWeaponInformation(float&, float&, float&, float&, int&, int);
+
+        std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerEnter;
+        void func_kTrig_none        (TriggerRecordStruct*);
+        void func_kTrig_Explosion   (TriggerRecordStruct*);
+        void func_kTrig_EnemyNear   (TriggerRecordStruct*);
+        void func_kTrig_Gunfire     (TriggerRecordStruct*);
+        void func_kTrig_Shoot       (TriggerRecordStruct*);
+        void func_kTrig_Touchable   (TriggerRecordStruct*);
+        void func_kTrig_Senyuelo    (TriggerRecordStruct*);
+        void func_kTrig_Aturd       (TriggerRecordStruct*);
+        void func_kTrig_Pickable    (TriggerRecordStruct*);
 };
 
 #endif

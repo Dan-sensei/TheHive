@@ -20,6 +20,7 @@ void CGranade::Init(){
     EventSystem = Singleton<CTriggerSystem>::Instance();
     engine      = Singleton<GameEngine>::Instance();
     Manager     = Singleton<ObjectManager>::Instance();
+    factory          = Singleton<Factory>::Instance();
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
