@@ -112,6 +112,7 @@ class CAIEnem : public IComponent {
         CTransform* cTransform;     //  Punteros a otras componentes
         CAgent* cAgent;     //  Punteros a otras componentes
 
+        void enableVisualDebug();
 
 };
 

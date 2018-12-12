@@ -4,11 +4,6 @@
 #include <list>
 #include "ComponentArch/Message.hpp"
 
-//#include <BT/RandomSelector.hpp>
-//#include <BT/RandomSequence.hpp>
-//#include <BT/Action.hpp>
-//#include <BT/Sequence.hpp>
-//#include <BT/Selector.hpp>
 #include <Util.hpp>
 
 #include "CAgent.hpp"
@@ -23,20 +18,6 @@
 
 bool        CAIEnem::debugvis=true;
 CTransform* CAIEnem::PlayerTransform;
-
-//std::list  <TriggerRecordStruct*>  hola;
-
-
-
-
-//CAIEnem::CAIEnem(unsigned long _dwTriggerFlags,gg::Vector3f _vPos){
-//    nCAIEnemID=id2;
-//    id2++;
-//    dwTriggerFlags=_dwTriggerFlags;
-//    nDeltaTime=0;
-//    vPos=_vPos;
-//}
-
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr),
@@ -120,34 +101,17 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
 
 void CAIEnem::Update(){
     //std::cout << "entrando" << '\n';
-    if(debugvis){
-        float res = acos(gradovision)*180.f/3.14159265359;
+    if(debugvis)  enableVisualDebug();
 
-        gg::Vector3f dir    = Direccion2D( cTransform->getRotation());
-        gg::Vector3f dir1   = Direccion2D( cTransform->getRotation()+gg::Vector3f(0,res,0));
-        gg::Vector3f dir2   = Direccion2D( cTransform->getRotation()-gg::Vector3f(0,res,0));
-
-        gg::Vector3f inicio = cTransform->getPosition();
-        gg::Vector3f fin    = dir*Vrange+cTransform->getPosition();
-        gg::Vector3f fin2   = dir1*Vrange+cTransform->getPosition();
-        gg::Vector3f fin3   = dir2*Vrange+cTransform->getPosition();
-
-        Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1),3);
-        Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1),3);
-        Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1),3);
-
-        gg::Vector3f diren  = PlayerTransform->getPosition()-cTransform->getPosition();
-        diren.Y             = 0;
-        diren               = gg::Normalice(diren);
-        float sol           = gg::Producto(diren,dir);
-        gg::Vector3f hola   = Direccion2D_to_rot(dir);
-    }
-
-    float dist = gg::DIST(PlayerTransform->getPosition(),cTransform->getPosition());
-
+    float dist;
     if(dist<Vrange){
-        gg::Vector3f dir    = Direccion2D( cTransform->getRotation());
-        gg::Vector3f diren  = PlayerTransform->getPosition()-cTransform->getPosition();
+        gg::Vector3f pTF        = PlayerTransform->getPosition();
+        gg::Vector3f cTF_ROT    = cTransform->getRotation();
+        gg::Vector3f cTF_POS    = cTransform->getPosition();
+        gg::Vector3f dir        = Direccion2D(cTF_ROT);
+        gg::Vector3f diren      = pTF-cTF_POS;
+
+        dist = gg::DIST(pTF,cTF_POS);
 
         diren.Y     = 0;
         diren       = gg::Normalice(diren);
@@ -170,19 +134,6 @@ void CAIEnem::Update(){
         arbol->reset();
     }
     arbol->update();
-
-
-    //if(dist<range){
-    //}
-    //if(dist<range){
-    //}
-    //enfado++;
-    //if(enfado<50){
-    //    // std::cout << "iteracion" <<enfado<< '\n';
-        //BT->tick();
-    //// std::cout << "entrando" << '\n';
-    //// std::cout << "saliendo" << '\n';
-    //}
 }
 
 void CAIEnem::MHandler_ATURD(){
@@ -194,7 +145,7 @@ void CAIEnem::MHandler_ATURD(){
 }
 
 void CAIEnem::MHandler_NEAR(TriggerRecordStruct* cdata){
-    
+
 }
 
 void CAIEnem::MHandler_SENYUELO(TriggerRecordStruct* cdata){
@@ -208,4 +159,27 @@ void CAIEnem::MHandler_SENYUELO_END(){
     senyuelo    = false;
     // std::cout << "sen out" << '\n';
     arbol->reset();
+}
+
+void CAIEnem::enableVisualDebug(){
+    float res = acos(gradovision)*180.f/3.14159265359;
+
+    gg::Vector3f dir    = Direccion2D( cTransform->getRotation());
+    gg::Vector3f dir1   = Direccion2D( cTransform->getRotation()+gg::Vector3f(0,res,0));
+    gg::Vector3f dir2   = Direccion2D( cTransform->getRotation()-gg::Vector3f(0,res,0));
+
+    gg::Vector3f inicio = cTransform->getPosition();
+    gg::Vector3f fin    = dir*Vrange+cTransform->getPosition();
+    gg::Vector3f fin2   = dir1*Vrange+cTransform->getPosition();
+    gg::Vector3f fin3   = dir2*Vrange+cTransform->getPosition();
+
+    Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1),3);
+    Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1),3);
+    Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1),3);
+
+    gg::Vector3f diren  = PlayerTransform->getPosition()-cTransform->getPosition();
+    diren.Y             = 0;
+    diren               = gg::Normalice(diren);
+    float sol           = gg::Producto(diren,dir);
+    gg::Vector3f hola   = Direccion2D_to_rot(dir);
 }
