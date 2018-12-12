@@ -7,7 +7,7 @@
 namespace gg{
     enum KEYCODES{
         GG_F1 = irr::EKEY_CODE::KEY_F1,
-        
+
         GG_A = irr::EKEY_CODE::KEY_KEY_A,
         GG_B = irr::EKEY_CODE::KEY_KEY_B,
         GG_D = irr::EKEY_CODE::KEY_KEY_D,
@@ -38,6 +38,9 @@ namespace gg{
         GG_LSHIFT = irr::EKEY_CODE::KEY_LSHIFT,
         GG_ALT = irr::EKEY_CODE::KEY_LMENU,
         GG_SPACEBAR = irr::EKEY_CODE::KEY_SPACE,
+
+        GG_ENTER = irr::EKEY_CODE::KEY_CLEAR,
+        GG_ESC = irr::EKEY_CODE::KEY_ESCAPE,
 
         GG_0 = irr::EKEY_CODE::KEY_KEY_0,
         GG_1 = irr::EKEY_CODE::KEY_KEY_1,

@@ -69,6 +69,7 @@ class GameEngine{
         void createBillboard(Billboard &billboard, const gg::Vector3f &position = {0,0,0});
 
         bool key(gg::KEYCODES keyCode);
+        int checkbutton();
         bool isLClickPressed();
 
         void clean();

@@ -1,6 +1,6 @@
 #include "StateMachine.hpp"
 #include <iostream>
-StateMachine::StateMachine() { }
+StateMachine::StateMachine():cantidad(0) { }
 StateMachine::~StateMachine() {
 
 	//for (size_t i = 0; i < states.size(); i++) {
@@ -18,8 +18,9 @@ void StateMachine::AddState(State* _newState, bool _isReplacing)
 	newState = _newState;
 }
 
-void StateMachine::RemoveState()
+void StateMachine::RemoveState(int _cantidad)
 {
+	cantidad=_cantidad;
 	isRemoving = true;
 }
 //revisar
@@ -27,13 +28,20 @@ void StateMachine::ProcessStateChanges()
 {
 	if (isRemoving && !states.empty())
 	{
-		states.top()->CLIN();
-		delete states.top();
-		states.pop();
+		while(cantidad!=0){
 
-		if (!states.empty())
-		{
-			//states.top()->Resume();
+			states.top()->CLIN();
+			delete states.top();
+			states.pop();
+			cantidad--;
+			if(cantidad<0){
+				cantidad=0;
+			}
+
+			//if (!states.empty())
+			//{
+			//	//states.top()->Resume();
+			//}
 		}
 
 		isRemoving = false;

@@ -1,4 +1,4 @@
-#include "MenuState.hpp"
+#include "PauseState.hpp"
 
 #include <iostream>
 #include <cstdint>
@@ -50,7 +50,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 */
 //============================================================================================
 
-MenuState::MenuState():cont(){
+PauseState::PauseState():cont(){
     Engine = Singleton<GameEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
@@ -63,20 +63,20 @@ MenuState::MenuState():cont(){
     Engine->HideCursor(false);
 }
 
-MenuState::~MenuState(){
+PauseState::~PauseState(){
 
 }
 
-void MenuState::Init(){
+void PauseState::Init(){
 
-    cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
+    Singleton<ScreenConsole>::Instance()->InitPause();
     //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 }
-//void MenuState::submenu(){
+//void PauseState::submenu(){
 //    CLIN();
 
 //}
-void MenuState::Update(float dt){
+void PauseState::Update(float dt){
 
     Engine->BeginDro();
     Engine->Dro();
@@ -86,7 +86,7 @@ void MenuState::Update(float dt){
     Engine->EndDro();
 }
 
-void MenuState::CLIN(){
+void PauseState::CLIN(){
     Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     world->clear();

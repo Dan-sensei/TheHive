@@ -1,6 +1,7 @@
 #include "ScreenConsole.hpp"
 #include <iostream>
 //#include <SMaterial>
+#include <GameEngine/EnumButtonType.hpp>
 
 irr::IrrlichtDevice* ScreenConsole::IrrlichtDevice = nullptr;
 void ScreenConsole::setprogress(int hab,float prog){
@@ -38,32 +39,124 @@ float ScreenConsole::porc_ancho(float x){
 }
 ScreenConsole::ScreenConsole(){
     font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
+    //IrrlichtDevice->getGUIEnvironment()->a
     //IGUIEnvironment* env = device->getGUIEnvironment();
-}
-void ScreenConsole::InitMenu(){
-
-    SAppContext context;
-    context.device = IrrlichtDevice;
-    context.counter = 0;
-    //irr::gui::IGUIListBox * listbox = IrrlichtDevice->getGUIEnvironment()->addListBox(irr::core::rect<irr::s32>(50, 140, 250, 210));
-    //context.listbox = listbox;
-
-    // Then create the event receiver, giving it that context structure.
-    eventManager=new EventRec(context);
-    IrrlichtDevice->setEventReceiver(eventManager);
-
-    IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(10,240,110,240 + 32), 0, 0,
-                L"Quit", L"Exits Program");
-    IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(10,280,110,280 + 32), 0, 1,
-            L"New Window", L"Launches a new Window");
-    IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(10,320,110,320 + 32), 0, 2,
-                L"File Open", L"Opens a file");
-}
-void ScreenConsole::InitHUD(){
     irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
 
     ancho=(driver->getScreenSize().Width/2);
     alto=(driver->getScreenSize().Height/2);
+}
+//Menu principal
+int ScreenConsole::InitPause(){
+    CLIN();
+    addButton(45,50,55,59,CONTINUE,"Continuar",true);
+    addButton(45,60,55,69,DIFF2,"Ni puta idea");
+    addButton(45,70,55,79,RETURNMENU,"Salir al menu");
+    return 3;
+}
+int ScreenConsole::InitMenu(){
+    CLIN();
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(0,0,0,1));
+    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(1,255,255,255));
+
+    //IrrlichtDevice->getGUIEnvironment()->addStaticText (L"Menu principal",irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)));
+
+    //IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(porc_ancho(38),porc_alto(50),porc_ancho(48),porc_alto(70)), 0, 0,
+    //            L"J");
+    addButton(38,50,48,70,GOPLAY,"J");
+    addButton(38,75,48,95,GOCREDITS,"C");
+    addButton(52,50,62,70,GOOPTIONS,"O");
+    addButton(52,75,62,95,CLOSE,"S");
+    return 4;
+}
+//Jugar
+int ScreenConsole::InitMenu2(){
+    CLIN();
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Play"),gg::Color(0,0,0,1));
+    addButton(45,50,55,59,DIFF1,"Larva",true);
+    addButton(45,60,55,69,DIFF2,"Alien");
+    addButton(45,70,55,79,DIFF3,"The hive");
+    addButton(40,80,60,89,START,"Play");
+
+    addButton(65,80,70,89,GOMAIN,"Back");
+return 5;
+}
+//Creditos
+int ScreenConsole::InitMenu3(){
+    CLIN();
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Credits"),gg::Color(0,0,0,1));
+
+    addButton(65,80,70,89,GOMAIN,"Back");
+    return 1;
+}
+//Opciones
+int ScreenConsole::InitMenu4(){
+    CLIN();
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Options"),gg::Color(0,0,0,1));
+
+    addButton(45,50,55,59,GOVIDEO,"Video");
+    addButton(45,60,55,69,GOMUSIC,"Music");
+    addButton(45,70,55,79,GOCONTROLLS,"Controlls");
+
+    addButton(65,80,70,89,GOMAIN,"Back");
+    return 4;
+}
+//graficos
+int ScreenConsole::InitMenu5(){
+    CLIN();
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Video"),gg::Color(0,0,0,1));
+
+    addButton(65,80,70,89,GOOPTIONS,"Back");
+    return 1;
+}
+//sonido
+int ScreenConsole::InitMenu6(){
+    CLIN();
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Audio"),gg::Color(0,0,0,1));
+
+    addButton(65,80,70,89,GOOPTIONS,"Back");
+    return 1;
+}
+//controles
+int ScreenConsole::InitMenu7(){
+    CLIN();
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Controlls"),gg::Color(0,0,0,1));
+
+    addButton(65,80,70,89,GOOPTIONS,"Back");
+return 1;
+    //IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(porc_ancho(65),porc_alto(80),porc_ancho(70),porc_alto(89)), 0, 2);
+    //AddStaticTextToBuffer(porc_ancho(65.5),porc_alto(83),std::string("Back"),gg::Color(0,0,0,1));
+}
+//Singleton<ScreenConsole>::Instance()->Pulsarboton(cursorpos);
+
+int ScreenConsole::Pulsarboton(int but){
+    return Botones.at(but)->getID();
+}
+void ScreenConsole::addButton(float x, float y, float w,float h,int id,std::string texto, bool focus){
+    //irr::core::stringw WS(texto.c_str());
+    std::wstring widestr = std::wstring(texto.begin(), texto.end());
+    const wchar_t* szName = widestr.c_str();
+    auto hola=font->getDimension (szName);
+
+    float _x=porc_ancho(x);
+    float _y=porc_alto(y);
+    float _w=porc_ancho(w);
+    float _h=porc_alto(h);
+    auto gen=IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(_x,_y,_w,_h), 0, id);
+    Botones.push_back(gen);
+    if(focus){
+        IrrlichtDevice->getGUIEnvironment()->setFocus(gen);
+    }
+
+    float difx=(_w-_x-hola.Width)/2.0;
+    float dify=(_h-_y-hola.Height)/2.0;
+//x=10y=100/3
+    AddStaticTextToBuffer(_x+difx,_y+dify,texto,gg::Color(0,0,0,1));
+
+
+}
+void ScreenConsole::InitHUD(){
+
 
     AddImage("hab1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(90),porc_alto(10),porc_alto(10));
     AddImage("hab2","assets/HUD/ojetecalor.jpg",porc_ancho(9),porc_alto(90),porc_alto(10),porc_alto(10));
@@ -100,20 +193,25 @@ void ScreenConsole::AddTextToBuffer(const std::string &Text, const gg::Color &co
     BUFFER.emplace_back(Text, color);
 
 }
+void ScreenConsole::AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color){
 
+    TEXT_BUFFER.emplace_back(x,y,Text, color);
+}
 ScreenConsole::BufferText::BufferText(const std::string &_Text, const gg::Color &_Color)
 :Text(_Text), Color(_Color)
+{}
+ScreenConsole::StaticText::StaticText(float _x,float _y, std::string _Text,gg::Color _Color)
+:Text(_Text),Color(_Color),posx(_x),posy(_y)
 {}
 ScreenConsole::ImageHUD::ImageHUD(irr::video::ITexture* _texture,float _posx,float _posy,float _width,float _height)
 :texture(_texture), posx(_posx),posy(_posy),width(_width),height(_height)
 {}
 void ScreenConsole::CLIN(){
     BUFFER.clear();
+    TEXT_BUFFER.clear();
+    Botones.clear();
     IMAGE_BUFFER.clear();
     IrrlichtDevice->getGUIEnvironment()->clear();
-    if(eventManager!=nullptr){
-        delete eventManager;
-    }
 
 
 }
@@ -131,6 +229,17 @@ void ScreenConsole::DisplayDebug(){
 }
 void ScreenConsole::DisplayMenu(){
     IrrlichtDevice->getGUIEnvironment()->drawAll();
+    auto it = TEXT_BUFFER.begin();
+    while (it!=TEXT_BUFFER.end()){
+        irr::core::stringw WS((*it).Text.c_str());
+        font->draw(WS, irr::core::rect<irr::s32>((*it).posx,(*it).posy,(*it).posx+100,(*it).posy+100),irr::video::SColor((*it).Color.Alpha*255,(*it).Color.R,(*it).Color.G,(*it).Color.B));
+        //DiplayY += 17;
+        //->draw(L"Menu principal", irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)), irr::video::SColor(255,155,155,155));
+        ++it;
+    }
+    //IrrlichtDevice->getGUIEnvironment()->addStaticText (L"Menu principal",irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)));
+    //font->draw(L"Menu principal", irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)), irr::video::SColor(255,155,155,155));
+
 
 }
 void ScreenConsole::DisplayHUD(){
@@ -180,11 +289,9 @@ void ScreenConsole::DisplayHUD(){
         driver->draw2DLine(irr::core::position2d<irr::s32>(ancho,alto-ale),irr::core::position2d<irr::s32>(ancho,alto+ale),irr::video::SColor(250,0,0,0));
     }
 }
-
 void gg::cout (const std::string &Text, const gg::Color &color){
     Singleton<ScreenConsole>::Instance()->AddTextToBuffer(Text, color);
 }
-
 void gg::cout (const gg::Vector3f &Vector, const gg::Color &color){
     std::string VectorString = "(" + std::to_string(Vector.X) + "," + std::to_string(Vector.Y) + "," + std::to_string(Vector.Z) + ")";
     Singleton<ScreenConsole>::Instance()->AddTextToBuffer(VectorString, color);

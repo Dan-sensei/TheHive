@@ -5,6 +5,8 @@
 #include <Util.hpp>
 #include <string>
 #include "Factory.hpp"
+#include <States/StateMachine.hpp>
+#include <PauseState.hpp>
 //#include <GameAI/Hability.hpp>
 //#include <GameAI/Enumhabs.hpp>
 
@@ -126,6 +128,7 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     float           MULT_FACTOR = 1;
 
     if(Engine->key(gg::GG_1)){
+        Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
         hab->pulsado(0);
     }
     if(Engine->key(gg::GG_2)){

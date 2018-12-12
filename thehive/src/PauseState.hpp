@@ -1,5 +1,5 @@
-#ifndef _MENUSTATE_H
-#define _MENUSTATE_H
+#ifndef _PAUSESTATE_H
+#define _PAUSESTATE_H
 
 class GameEngine;
 class CTriggerSystem;
@@ -11,11 +11,11 @@ class ggDynWorld;
 #include "States/State.hpp"
 #include "GameEngine/GUIController.hpp"
 
-class MenuState : public State{
+class PauseState : public State{
 public:
-    MenuState();
-    MenuState(const MenuState &orig) = delete;
-    ~MenuState();
+    PauseState();
+    PauseState(const PauseState &orig) = delete;
+    ~PauseState();
     //void update();
     //void RUN();
     virtual void CLIN();

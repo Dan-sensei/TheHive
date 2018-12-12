@@ -186,6 +186,9 @@ void GameEngine::createBillboard(Billboard &billboard, const gg::Vector3f &posit
 bool GameEngine::key(gg::KEYCODES keyCode){
     return listener.IsKeyDown(keyCode);
 }
+int GameEngine::checkbutton(){
+    return listener.checkbutton();
+}
 
 bool GameEngine::isLClickPressed(){
     return listener.isLClickPressed();

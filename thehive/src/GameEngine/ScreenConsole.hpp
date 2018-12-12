@@ -7,7 +7,7 @@
 #include "Util.hpp"
 #include <list>
 #include <map>
-#include "EventRec.hpp"
+#include <vector>
 
 
 class GameEngine;
@@ -25,10 +25,21 @@ class ScreenConsole{
 
         void CLIN();
         void InitHUD();
-        void InitMenu();
+        int InitMenu();
+        int InitMenu2();
+        int InitMenu3();
+        int InitMenu4();
+        int InitMenu5();
+        int InitMenu6();
+        int InitMenu7();
+        int InitPause();
+
 
         void AddTextToBuffer(const std::string &Text, const gg::Color &color);
+        void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
         void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
+        void addButton(float x, float y, float w,float h,int id,std::string texto,bool focus=false);
+        int Pulsarboton(int but);
     private:
         float porc_alto(float x);
         float porc_ancho(float x);
@@ -42,7 +53,6 @@ class ScreenConsole{
         float ancho;
         float alto;
         ScreenConsole();
-        EventRec* eventManager;
 
         ScreenConsole(const ScreenConsole &orig) = delete;
 
@@ -53,6 +63,13 @@ class ScreenConsole{
             std::string Text;
             gg::Color Color;
         };
+        struct StaticText{
+            StaticText(float,float , std::string _Text,gg::Color _Color);
+            std::string Text;
+            gg::Color Color;
+            float posx;
+            float posy;
+        };
         struct ImageHUD{
             ImageHUD(irr::video::ITexture* _texture,float _posx,float _posy,float _width,float _height);
             irr::video::ITexture* texture;
@@ -62,6 +79,8 @@ class ScreenConsole{
             float height;
         };
         std::list<BufferText> BUFFER;
+        std::list<StaticText> TEXT_BUFFER;
+        std::vector<irr::gui::IGUIButton*> Botones;
         std::map <std::string,ImageHUD>IMAGE_BUFFER;
 };
 

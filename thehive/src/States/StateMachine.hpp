@@ -13,14 +13,14 @@ class StateMachine{
 		~StateMachine();
 
 		void AddState(State* newState, bool isReplacing = true);
-		void RemoveState();
+		void RemoveState(int cantidad=1);
 		// Run at start of each loop in Game.cpp
 		void ProcessStateChanges();
 
 		State* GetActiveState();
 
 	private:
-
+		int cantidad;
 		std::stack<State*> states;
 		State* newState;
 
