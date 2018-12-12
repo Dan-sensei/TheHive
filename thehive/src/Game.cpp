@@ -72,8 +72,8 @@ void Game::RUN(){
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
     sF->createHero(gg::Vector3f(1760, 110, 350),false);
-    sF->createEnemy(gg::Vector3f(1760, 110, 390),100);
-    sF->createEnemy(gg::Vector3f(1797, 120, 350),200);
+    sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
+    sF->createEnemy(gg::Vector3f(1797, 120, 350),2000);
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
 
     gg::Vector3f mapPos(1400,120,0);

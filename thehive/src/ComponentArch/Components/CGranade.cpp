@@ -41,7 +41,9 @@ gg::EMessageStatus CGranade::MHandler_SETPTRS(){
 }
 
 void CGranade::explosion(){
+
 }
+
 void CGranade::Update(){
     if(cRigidBody && cRigidBody->checkContactResponse()){
 
