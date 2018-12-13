@@ -134,12 +134,11 @@ int GameEngine::getScreenHeight(){
     return driver->getScreenSize().Height;
 }
 
-float GameEngine::getCursorX(){
-    return device->getCursorControl()->getPosition().X;
-}
+void GameEngine::getCursorPosition(int &x, int &y){
+    irr::core::vector2d<int> pos = device->getCursorControl()->getPosition();
 
-float GameEngine::getCursorY(){
-    return device->getCursorControl()->getPosition().Y;
+    x = pos.X;
+    y = pos.Y;
 }
 
 void GameEngine::setCursorPosition(int x, int y){

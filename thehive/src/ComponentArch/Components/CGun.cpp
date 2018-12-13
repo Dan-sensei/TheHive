@@ -106,7 +106,6 @@ int CGun::getType(){
 }
 
 void CGun::Init(){
-
     // Inicializar singletons
     Engine = Singleton<GameEngine>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
@@ -137,28 +136,22 @@ gg::EMessageStatus CGun::MHandler_SETPTRS(){
 
 void CGun::Update(){
     // UPDATE
-
-    // Update delta time de la cadencia de fuego
     if(reloading){
-        auto end = std::chrono::high_resolution_clock::now();
+        auto end         = std::chrono::high_resolution_clock::now();
         auto elapsedtime = end - dtReload;
-        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
-
+        auto ms          = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
 
         if(ms > reloadDT*1000){
             gg::cout(" -- RELOADED" , gg::Color(255, 0, 0, 1));
             reloading = false;
             total_bullets = ktotal_bullets;
             Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
-
         }
     }
     else if(!canShoot){
-        auto end = std::chrono::high_resolution_clock::now();
+        auto end         = std::chrono::high_resolution_clock::now();
         auto elapsedtime = end - dtCadence;
-        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
-
-        // gg::cout(std::to_string(ms)+" -> "+std::to_string((1/cadence)*1000));
+        auto ms          = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
 
         if(ms > (1/cadence)*1000){
             // gg::cout(" --- READY TO SHOOT --- ", gg::Color(255, 0, 0, 1)),

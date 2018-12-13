@@ -43,6 +43,7 @@ class CGranade: public IComponent {
         double elapsedtime;
         float radius;
         int exTime;
+        bool hasContact;
 
 
 };

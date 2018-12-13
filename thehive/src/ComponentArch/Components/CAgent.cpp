@@ -161,9 +161,10 @@ void CAgent::ENTER_func_kTrig_Shoot       (TriggerRecordStruct *_pRec){
             float damage = _pRec->data.find(kDat_Damage);
             gg::cout("PUM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
 
-            if(health->quitarvida(damage)){
-                oManager->removeEntity(nCAgentID);
-            }
+            health->quitarvida(damage);
+            // if(){
+            //     oManager->removeEntity(nCAgentID);
+            // }
         }
     }
 }
@@ -320,8 +321,10 @@ void CAgent::STAY_func_kTrig_Pickable    (TriggerRecordStruct *_pRec){
             _pRec->nExpirationTime = 20;
             oManager->removeEntity(id);
         }
-        // No ha podido cogerlo
-        gg::cout(" -- Can't pick object: "+std::to_string(id)+" -> FULL POCKETS");
+        else{
+            // No ha podido cogerlo
+            gg::cout(" -- Can't pick object: "+std::to_string(id)+" -> FULL POCKETS");
+        }
     }
 }
 
@@ -334,9 +337,11 @@ void CAgent::STAY_func_kTrig_Explosion   (TriggerRecordStruct *_pRec){
             if(health){
                 float damage = _pRec->data.find(kDat_Damage)/1000;
                 // gg::cout("BOOOOOOOOOOM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
-                if(health->quitarvida(damage)){
-                    oManager->removeEntity(nCAgentID);
-                }
+
+                health->quitarvida(damage);
+                // if(health->quitarvida(damage)){
+                //     oManager->removeEntity(nCAgentID);
+                // }
             }
         }
     }

@@ -20,10 +20,6 @@ CVida::~CVida() {}
 bool CVida::quitarvida(const float &_factor){
     bool ret = false;
 
-    // if(vida <= 0){
-    //     ret = true;
-    // }
-
     vida -= K_DMG_VALUE*_factor;
     if(vida <= 0){
         gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
@@ -64,11 +60,15 @@ gg::EMessageStatus CVida::processMessage(const Message &m) {
 gg::EMessageStatus CVida::MHandler_SETPTRS(){
     //cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
     //cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-
     return gg::ST_TRUE;
 }
 
 
 void CVida::Update() {
-
+    if(vida <= 0){
+        // gg::cout("ENTITY "+std::to_string(getEntityID())+" IS NO LONGER ALIVE!");
+        // std::cout << "BEF:" << this << '\n';
+        Manager->removeEntity(getEntityID());
+        // std::cout << "AFT:" << this << '\n';
+    }
 }

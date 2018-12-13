@@ -363,20 +363,7 @@ void CRigidBody::updateCTransformPosition(){
     if(cTransform){
         cTransform->setPosition(getBodyPosition());
 
-        // if(getEntityID()==11){
-        //     gg::cout(
-        //         " -- POS-T -> ("+std::to_string(cTransform->getPosition().X)+
-        //         ","+std::to_string(cTransform->getPosition().Y)+
-        //         ","+std::to_string(cTransform->getPosition().Z)+")"
-        //     );
-        //     gg::cout(
-        //         " -- POS-B -> ("+std::to_string(trans.getOrigin().getX())+
-        //         ","+std::to_string(trans.getOrigin().getY())+
-        //         ","+std::to_string(trans.getOrigin().getZ())+")"
-        //     );
-        // }
-
-
+        // ROTASAO
         // if(body->getInvMass()){
         //     btQuaternion rot = trans.getRotation();
         //     float _X, _Y, _Z;
@@ -413,26 +400,9 @@ void CRigidBody::Upd_MoverObjeto(){
                 Blackboard b;
                 BRbData *data = static_cast<BRbData*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())));
 
-                // gg::cout(
-                //     "("+std::to_string(rbS.vX)+
-                //     ","+std::to_string(rbS.vY)+
-                //     ","+std::to_string(rbS.vZ)+")"
-                // );
-
                 gg::Vector3f offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
 
                 setOffsetBodyPosition(offset);
-
-                // btTransform trans;
-                // body->getMotionState()->getWorldTransform(trans);
-                //
-                // trans.setOrigin(btVector3(
-                //     trans.getOrigin().getX()+data->getRbData().vX,
-                //     trans.getOrigin().getY()+data->getRbData().vY,
-                //     trans.getOrigin().getZ()+data->getRbData().vZ
-                // ));
-                //
-                // body->getMotionState()->setWorldTransform(trans);
             }
         }
     }

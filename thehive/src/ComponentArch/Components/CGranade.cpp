@@ -9,25 +9,22 @@ CGranade::CGranade(float _radius, int time)
 :radius(_radius),exTime(time)
 {
     begin = std::chrono::high_resolution_clock::now();
+    hasContact = false;
 }
 
-CGranade::~CGranade() {
-
-}
+CGranade::~CGranade() {}
 
 void CGranade::Init(){
-
     EventSystem = Singleton<CTriggerSystem>::Instance();
     engine      = Singleton<GameEngine>::Instance();
     Manager     = Singleton<ObjectManager>::Instance();
-    factory          = Singleton<Factory>::Instance();
+    factory     = Singleton<Factory>::Instance();
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
 }
 
 gg::EMessageStatus CGranade::processMessage(const Message &m) {
-
     if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
@@ -41,13 +38,16 @@ gg::EMessageStatus CGranade::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CGranade::explosion(){
-
-}
+void CGranade::explosion(){}
 
 void CGranade::Update(){
-    if(cRigidBody && cRigidBody->checkContactResponse()){
-
+    if(!hasContact){
+        if(cRigidBody && cRigidBody->checkContactResponse()){
+            begin = std::chrono::high_resolution_clock::now();
+            hasContact = true;
+        }
+    }
+    else{
         auto end = std::chrono::high_resolution_clock::now(); //Start de another chrono tu see the processor time now
         auto elapsedtime = end - begin; //The difference between both crhonos is the elapsed time
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count(); //Calculate the elapsed time as milisecons

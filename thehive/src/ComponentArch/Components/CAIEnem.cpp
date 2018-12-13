@@ -16,7 +16,7 @@
 #include "EventSystem/BVector3f.hpp"
 #include "EventSystem/BBool.hpp"
 
-bool        CAIEnem::debugvis=true;
+bool        CAIEnem::debugvis=false;
 CTransform* CAIEnem::PlayerTransform;
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
@@ -103,15 +103,14 @@ void CAIEnem::Update(){
     //std::cout << "entrando" << '\n';
     if(debugvis)  enableVisualDebug();
 
-    float dist;
+    gg::Vector3f pTF        = PlayerTransform->getPosition();
+    gg::Vector3f cTF_POS    = cTransform->getPosition();
+    float dist = gg::DIST(pTF,cTF_POS);
     if(dist<Vrange){
-        gg::Vector3f pTF        = PlayerTransform->getPosition();
         gg::Vector3f cTF_ROT    = cTransform->getRotation();
-        gg::Vector3f cTF_POS    = cTransform->getPosition();
         gg::Vector3f dir        = Direccion2D(cTF_ROT);
         gg::Vector3f diren      = pTF-cTF_POS;
 
-        dist = gg::DIST(pTF,cTF_POS);
 
         diren.Y     = 0;
         diren       = gg::Normalice(diren);

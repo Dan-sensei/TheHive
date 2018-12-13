@@ -3,22 +3,23 @@
 
 #include <cmath>
 #include <map>
+#include <string>
 
-#include <GameEngine/GameEngine.hpp>
-#include <Bullet/ggDynWorld.hpp>
-#include <GameEngine/KEYCODES.hpp>
-
-#include <ComponentArch/IComponent.hpp>
-#include <ComponentArch/ObjectManager.hpp>
-#include <ComponentArch/Message.hpp>
-//#include <ComponentArch/Components/CHabilityController.hpp>
-//#include <GameAI/Hability.hpp>
+#include <Util.hpp>
 
 #include <Singleton.hpp>
+#include <GameEngine/GameEngine.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
+#include <Bullet/ggDynWorld.hpp>
+#include "Factory.hpp"
+
+#include <GameEngine/KEYCODES.hpp>
+#include <ComponentArch/IComponent.hpp>
+#include <ComponentArch/Message.hpp>
 
 #define NUMBER_OF_ITEMS     3
 
-//class Hability;
 class CCamera;
 class CTransform;
 class CRigidBody;
@@ -28,6 +29,7 @@ class CHabilityController;
 class GameEngine;
 class ObjectManager;
 class ggDynWorld;
+class Factory;
 
 class CPlayerController : public IComponent {
     friend class Factory;
@@ -57,6 +59,7 @@ class CPlayerController : public IComponent {
         CPlayerController(const CPlayerController &orig) = delete;
 
         ObjectManager* Manager;
+        Factory* factory;
         GameEngine* Engine;
         ggDynWorld* world;
         CTransform* cTransform;

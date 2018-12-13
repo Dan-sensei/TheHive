@@ -89,11 +89,6 @@ class CRigidBody : public IComponent {
         void updateCTransformPosition();
         void Upd_MoverObjeto();
     private:
-        btCollisionObject* getCollisionObject(){
-            btCollisionObject *ret = body;
-            return ret;
-        }
-
         struct Status {
             Status();
             Status(const Status &orig);

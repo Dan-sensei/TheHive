@@ -1,7 +1,7 @@
 #include "CGranade2.hpp"
 
 CGranade2::CGranade2()
-: CGranade(50,0)
+: CGranade(30,0)
 {}
 
 CGranade2::~CGranade2() {}

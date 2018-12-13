@@ -1,7 +1,7 @@
 #include "CGranade0.hpp"
 
 CGranade0::CGranade0()
-: CGranade(50,100),damage(2000)
+: CGranade(30,200),damage(2000)
 {}
 
 CGranade0::~CGranade0() {}

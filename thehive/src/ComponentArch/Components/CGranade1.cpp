@@ -3,7 +3,7 @@
 #define VEL_FACTOR      200.f
 
 CGranade1::CGranade1()
-: CGranade(50,300),damage(1000)//, tipo(_tipo)
+: CGranade(30,500),damage(1000)//, tipo(_tipo)
 {
 }
 

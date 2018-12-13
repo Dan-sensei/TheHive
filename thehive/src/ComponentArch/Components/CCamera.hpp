@@ -8,12 +8,12 @@
 #include <GameEngine/GameEngine.hpp>
 #include <GameEngine/Camera.hpp>
 #include <Singleton.hpp>
-#include <Bullet/ggDynWorld.hpp>
 
 #include "CTransform.hpp"
 
 class ObjectManager;
 class CRigidBody;
+class ggDynWorld;
 
 class CCamera : public IComponent {
 friend class Factory;
@@ -39,31 +39,34 @@ public:
 
     gg::Vector3f getlastHeroPosition();
     gg::Vector3f getCameraPositionBeforeLockRotation();
-    void setCameraPositionBeforeLockRotation(gg::Vector3f);
-
-    float getSenA(){return senA;}
-    float getCosA(){return cosA;}
+    void setCameraPositionBeforeLockRotation(gg::Vector3f); // Por ahora no se usa
 
 private:
+    GameEngine      *Engine;
+    ObjectManager   *Manager;
+    Camera          *cam;
+    CTransform      *mod;
+    ggDynWorld      *dynWorld;
+
     gg::Vector3f lastHeroPosition;
     gg::Vector3f cameraPositionBeforeLockRotation;
-
-    GameEngine *Engine;
-    ObjectManager *Manager;
-    Camera* cam;
-    CTransform *mod;
-
-    bool daniNoSabeProgramar;
     gg::Vector3f offsetPositionVector;
-
-    float senA,cosA;
-
-    uint16_t entCollisions;
-    CTransform *collTF;
-
-    bool collision;
     gg::Vector3f pos_on_collision;
     gg::Vector3f last_cam_position;
+
+    float screenW;
+    float screenH;
+
+    bool daniNoSabeProgramar;
+    bool collision;
+
+    void getNewRotation                 (gg::Vector3f&);
+    void setFinalRotation               (gg::Vector3f&,gg::Vector3f&,bool);
+    void setHorizontalAxis              (gg::Vector3f&,gg::Vector3f&,gg::Vector3f&,gg::Vector3f&);
+    void setVerticalAxis                (gg::Vector3f&,gg::Vector3f&,gg::Vector3f&, gg::Vector3f&);
+    void fixCameraPositionOnCollision   (gg::Vector3f&);
+    void setPerpendicularOffsetVector   (gg::Vector3f&);
+
 };
 
 

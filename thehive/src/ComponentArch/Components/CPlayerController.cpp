@@ -1,12 +1,4 @@
 #include "CPlayerController.hpp"
-#include <GameEngine/GameEngine.hpp>
-#include <ComponentArch/ObjectManager.hpp>
-#include <EventSystem/CTriggerSystem.hpp>
-#include <Util.hpp>
-#include <string>
-#include "Factory.hpp"
-
-// #include <GameEngine/ScreenConsole.hpp>
 
 #define VEL_FACTOR          2000.f
 #define MAX_HERO_SPEED      3
@@ -40,6 +32,7 @@ void CPlayerController::Init(){
     Engine  = Singleton<GameEngine>::Instance();
     world   = Singleton<ggDynWorld>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
+    factory = Singleton<Factory>::Instance();
     camera  = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
 
@@ -218,21 +211,21 @@ void CPlayerController::playerThrowHolyBomb(){
     vel  = gg::Normalice(vel);
     vel *= VEL_FACTOR/2;
 
-    Singleton<Factory>::Instance()->createHolyBomb(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
+    factory->createHolyBomb(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
 }
 
 void CPlayerController::playerThrowMatrioska(){
-    // pulsacion_granada   = true;
-    //
-    // gg::Vector3f gPos   = cTransform->getPosition();
-    // gg::Vector3f from   = gPos;
-    // gg::Vector3f to     = world->getRaycastVector();
-    // gg::Vector3f vel    = to-from;
-    //
-    // vel  = gg::Normalice(vel);
-    // vel *= VEL_FACTOR/2;
-    //
-    // Singleton<Factory>::Instance()->createMatriuska(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
+    pulsacion_granada   = true;
+
+    gg::Vector3f gPos   = cTransform->getPosition();
+    gg::Vector3f from   = gPos;
+    gg::Vector3f to     = world->getRaycastVector();
+    gg::Vector3f vel    = to-from;
+
+    vel  = gg::Normalice(vel);
+    vel *= VEL_FACTOR/2;
+
+    factory->createMatriuska(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
 }
 
 void CPlayerController::playerThrowDopple(){
@@ -246,7 +239,7 @@ void CPlayerController::playerThrowDopple(){
     vel  = gg::Normalice(vel);
     vel *= VEL_FACTOR;
 
-    Singleton<Factory>::Instance()->createSenyuelo(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
+    factory->createSenyuelo(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
 }
 
 void CPlayerController::W_IsPressed(gg::Vector3f &force, bool &pressed){

@@ -49,9 +49,8 @@ class GameEngine{
         Camera* getCamera();
         int getScreenWidth();
         int getScreenHeight();
-        float getCursorX();
-        float getCursorY();
         void setCursorPosition(int,int);
+        void getCursorPosition(int&,int&);
 
 
         void draw3DLine(const gg::Vector3f&, const gg::Vector3f&, const float[4]);
