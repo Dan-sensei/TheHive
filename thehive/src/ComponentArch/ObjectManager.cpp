@@ -42,7 +42,9 @@ void ObjectManager::clin(){
             delete it->second;
             ++it;
         };
+        TypeToComponentMap[i].clear();
     }
+
     Singleton<Pathfinding>::Instance()->clear();    //  Provisional
 }
 
@@ -136,9 +138,14 @@ std::cout << "aqui estamos" << '\n';
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
     std::cout << "aqui estamos 2" << '\n';
     // First we search for a component type that expects that message type
+    int i=0;
     while(componentsIterator != MessageToListeningComponents[m.mType].end()){
+        std::cout << "contador" <<i<< '\n';
+        std::cout << "tipo" <<m.mType<< '\n';
+        i++;
         std::cout << "aqui estamos 3" << '\n';
 
+        //  Found one!
         //  Found one!
         std::cout << "aqui estamos 4" << '\n';
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();

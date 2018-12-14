@@ -96,7 +96,7 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
 }
 
 gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
-
+std::cout << "entra" << '\n';
     if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
     //hab.update();
     // -----------------------------------------------------------------------------
