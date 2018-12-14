@@ -111,7 +111,7 @@ void GUIController::gotoControlls(){
 }
 //but7
 void GUIController::StartGame(){
-    Singleton<StateMachine>::Instance()->AddState(new GameState());
+    Singleton<StateMachine>::Instance()->AddState(new GameState(),false);
 }
 //but8
 void GUIController::gotoMain(){

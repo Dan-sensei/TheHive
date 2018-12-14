@@ -130,22 +130,31 @@ void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType
 
 void ObjectManager::sendMessageToAllEntities(const Message &m){
     // We iterate over every component in the map that expects to receive that kind of message
-
+std::cout << "aqui estamos" << '\n';
     std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
+    std::cout << "aqui estamos 1" << '\n';
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
+    std::cout << "aqui estamos 2" << '\n';
     // First we search for a component type that expects that message type
     while(componentsIterator != MessageToListeningComponents[m.mType].end()){
+        std::cout << "aqui estamos 3" << '\n';
 
         //  Found one!
+        std::cout << "aqui estamos 4" << '\n';
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
+        std::cout << "aqui estamos 5" << '\n';
         //  Now we iterate over every entity that contains that component type
         while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
+            std::cout << "aqui estamos 6" << '\n';
             auto current = entitiesIterator;
+            std::cout << "aqui estamos 7" << '\n';
             ++entitiesIterator;
             //  We process the message
+            std::cout << "aqui estamos 8" << '\n';
             current->second->processMessage(m);
         }
 
+        std::cout << "aqui estamos 9" << '\n';
         ++componentsIterator;
     }
 }

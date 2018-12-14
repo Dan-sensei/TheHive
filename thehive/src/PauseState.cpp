@@ -72,6 +72,9 @@ void PauseState::Init(){
     Singleton<ScreenConsole>::Instance()->InitPause();
     //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 }
+ void PauseState::Resume(){
+    Init();
+}
 //void PauseState::submenu(){
 //    CLIN();
 
@@ -87,8 +90,10 @@ void PauseState::Update(float dt){
 }
 
 void PauseState::CLIN(){
-    Blackboard::ClearGlobalBlackboard();
-    Manager->clin();
-    world->clear();
-    EventSystem->clin();
+    Singleton<ScreenConsole>::Instance()->CLINMenu();
+
+    //Blackboard::ClearGlobalBlackboard();
+    //Manager->clin();
+    //world->clear();
+    //EventSystem->clin();
 }

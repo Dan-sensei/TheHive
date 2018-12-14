@@ -72,12 +72,16 @@ void MenuState::Init(){
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
     //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 }
+void MenuState::Resume() {
+    cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
+
+}
 //void MenuState::submenu(){
 //    CLIN();
 
 //}
 void MenuState::Update(float dt){
-
+//std::cout << "haciendo" << '\n';
     Engine->BeginDro();
     Engine->Dro();
     cont.update();
@@ -87,8 +91,10 @@ void MenuState::Update(float dt){
 }
 
 void MenuState::CLIN(){
+    Singleton<ScreenConsole>::Instance()->CLINMenu();
+
     Blackboard::ClearGlobalBlackboard();
     Manager->clin();
-    world->clear();
+    world->clean();
     EventSystem->clin();
 }

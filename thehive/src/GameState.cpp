@@ -67,6 +67,7 @@ GameState::~GameState(){
 }
 
 void GameState::Init(){
+    std::cout << "empezando init" << '\n';
     Singleton<ScreenConsole>::Instance()->InitHUD();
 
     auto sF = Singleton<Factory>::Instance();
@@ -184,31 +185,48 @@ void GameState::Init(){
     //    update();
 
     //}
+    std::cout << "terminando init" << '\n';
 
 }
 void GameState::Update(float dt){
-
+    std::cout << "update empezando" << '\n';
     world->stepSimulation(1.f / 11.f, 6);
+    std::cout << "si 1" << '\n';
     EventSystem->Update();
+    std::cout << "si 2" << '\n';
 
     Engine->BeginDro();
+    std::cout << "si 3" << '\n';
     Manager->sendMessageToAllEntities(gg::M_UPDATE);
+    std::cout << "si 4" << '\n';
     Engine->Dro();
+    std::cout << "si 5" << '\n';
     Engine->DisplayFPS();
 
+    std::cout << "si 6" << '\n';
     Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    std::cout << "si 7" << '\n';
     Singleton<Pathfinding>::Instance()->DroNodes();
+    std::cout << "si 8" << '\n';
     Singleton<ScreenConsole>::Instance()->DisplayDebug();
+    std::cout << "si 9" << '\n';
     Singleton<ScreenConsole>::Instance()->DisplayHUD();
+    std::cout << "si 10" << '\n';
 
     Engine->EndDro();
+    std::cout << "update terminado" << '\n';
 }
 
+ void GameState::Resume(){
+
+}
 void GameState::CLIN(){
     Blackboard::ClearGlobalBlackboard();
-    Manager->clin();
-    world->clear();
-    EventSystem->clin();
-    Singleton<ScreenConsole>::Instance()->CLIN();
+    Manager->clin();// este esta bien creo
+    world->clear();//clean es el vuestro// clear solo vacia los rigidbody sin quitar las fisicas
+    //EventSystem->clin();
+    //Singleton<ScreenConsole>::Instance()->CLIN();
+    Singleton<ScreenConsole>::Instance()->CLINNormal();
+
 
 }

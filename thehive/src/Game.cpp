@@ -78,7 +78,10 @@ Game::~Game(){
 
 void Game::RUN(){
     while(Engine->isWindowOpen()) {
+        //std::cout << "haciendo P" << '\n';
         mainstates->ProcessStateChanges();
+        //std::cout << "haciendo P2" << '\n';
+        mainstates->prueba();
         mainstates->GetActiveState()->Update(0);
     }
 }

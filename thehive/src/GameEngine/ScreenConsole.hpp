@@ -23,7 +23,8 @@ class ScreenConsole{
         void DisplayHUD();
         void DisplayMenu();
 
-        void CLIN();
+        void CLINNormal();
+        void CLINMenu();
         void InitHUD();
         int InitMenu();
         int InitMenu2();

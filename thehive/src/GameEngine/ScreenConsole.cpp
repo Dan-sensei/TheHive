@@ -48,14 +48,14 @@ ScreenConsole::ScreenConsole(){
 }
 //Menu principal
 int ScreenConsole::InitPause(){
-    CLIN();
+    CLINMenu();
     addButton(45,50,55,59,CONTINUE,"Continuar",true);
     addButton(45,60,55,69,DIFF2,"Ni puta idea");
     addButton(45,70,55,79,RETURNMENU,"Salir al menu");
     return 3;
 }
 int ScreenConsole::InitMenu(){
-    CLIN();
+    CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(0,0,0,1));
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(1,255,255,255));
 
@@ -71,7 +71,7 @@ int ScreenConsole::InitMenu(){
 }
 //Jugar
 int ScreenConsole::InitMenu2(){
-    CLIN();
+    CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Play"),gg::Color(0,0,0,1));
     addButton(45,50,55,59,DIFF1,"Larva",true);
     addButton(45,60,55,69,DIFF2,"Alien");
@@ -83,7 +83,7 @@ return 5;
 }
 //Creditos
 int ScreenConsole::InitMenu3(){
-    CLIN();
+    CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Credits"),gg::Color(0,0,0,1));
 
     addButton(65,80,70,89,GOMAIN,"Back");
@@ -91,7 +91,7 @@ int ScreenConsole::InitMenu3(){
 }
 //Opciones
 int ScreenConsole::InitMenu4(){
-    CLIN();
+    CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Options"),gg::Color(0,0,0,1));
 
     addButton(45,50,55,59,GOVIDEO,"Video");
@@ -103,7 +103,7 @@ int ScreenConsole::InitMenu4(){
 }
 //graficos
 int ScreenConsole::InitMenu5(){
-    CLIN();
+    CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Video"),gg::Color(0,0,0,1));
 
     addButton(65,80,70,89,GOOPTIONS,"Back");
@@ -111,7 +111,7 @@ int ScreenConsole::InitMenu5(){
 }
 //sonido
 int ScreenConsole::InitMenu6(){
-    CLIN();
+    CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Audio"),gg::Color(0,0,0,1));
 
     addButton(65,80,70,89,GOOPTIONS,"Back");
@@ -119,7 +119,7 @@ int ScreenConsole::InitMenu6(){
 }
 //controles
 int ScreenConsole::InitMenu7(){
-    CLIN();
+    CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Controlls"),gg::Color(0,0,0,1));
 
     addButton(65,80,70,89,GOOPTIONS,"Back");
@@ -206,11 +206,20 @@ ScreenConsole::StaticText::StaticText(float _x,float _y, std::string _Text,gg::C
 ScreenConsole::ImageHUD::ImageHUD(irr::video::ITexture* _texture,float _posx,float _posy,float _width,float _height)
 :texture(_texture), posx(_posx),posy(_posy),width(_width),height(_height)
 {}
-void ScreenConsole::CLIN(){
-    BUFFER.clear();
+void ScreenConsole::CLINMenu(){
+    //BUFFER.clear();
     TEXT_BUFFER.clear();
     Botones.clear();
-    IMAGE_BUFFER.clear();
+    //IMAGE_BUFFER.clear();
+    IrrlichtDevice->getGUIEnvironment()->clear();
+
+
+}
+void ScreenConsole::CLINNormal(){
+    //BUFFER.clear();
+    TEXT_BUFFER.clear();
+    Botones.clear();
+    //IMAGE_BUFFER.clear();
     IrrlichtDevice->getGUIEnvironment()->clear();
 
 
