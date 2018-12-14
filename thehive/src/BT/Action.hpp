@@ -19,9 +19,9 @@
 #include <ComponentArch/Components/CAIEnem.hpp>
 #include <ComponentArch/Components/CTransform.hpp>
 #include <ComponentArch/Components/CRigidBody.hpp>
+#include <ComponentArch/Components/CVida.hpp>
 
 class Action : public Behavior {
-
     public:
       Action(Hojas task,Blackboard* _data,CAIEnem* ai);
       virtual ~Action();
@@ -54,22 +54,32 @@ class Action : public Behavior {
        void ult_cont();
        void rond_seny();
        void rond_jugador();
-       void rond();
+       void rond(bool = true);
        void player_vistocono();
+       void hit();
+       void playerNotAttacking();
+       void isThereSomeAlienDead();
+       void moreRage();
+       void checkAliensAttacking();
 
-
-CAIEnem* yo;
-
+       CAIEnem* yo;
 
    private:
+       CRigidBody       *cRigidBody;
+       ObjectManager    *manager;
+       CTransform       *cTransform;
+
        Blackboard* data;
+
        using pFunc = void(Action::*)();
        pFunc VectorAcciones[NUM_ACCIONES];
+
        Status s;
        Hojas tarea;
 
-       ObjectManager    *manager;
-       CTransform       *cTransform;
-       CRigidBody       *cRigidBody;
+       // Variables del BT
+       int cont_hit;
+       static int aliensAttacking;
+
 };
 #endif

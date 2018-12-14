@@ -65,3 +65,9 @@ bool CClock::hasEnded(){
         else            return false;
     }
 }
+
+void CClock::restart(){
+    limitReached = false;
+    initialized = true;
+    begin       = std::chrono::high_resolution_clock::now();
+}

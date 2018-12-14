@@ -1,6 +1,9 @@
 #include "Action.hpp"
 
-#define MAX_AI_SPEED 2.5
+#define MAX_AI_SPEED            1.5
+#define MAX_ALIENS_ATTACKING    1
+
+int Action::aliensAttacking = 0;
 
 Action::Action(const Action &orig){
     Action(orig.tarea,orig.data,orig.yo);
@@ -25,16 +28,18 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[ATURDIDO]                = &Action::ult_cont;        // si
     VectorAcciones[RANGO_SENYUELO]          = &Action::senyuelo;        // si
     VectorAcciones[MOVER_SENYUELO]          = &Action::move_senyuelo;   // si
-    VectorAcciones[RONDAR_SENYUELO]         = &Action::rond_seny;       // TRUCADA
+    VectorAcciones[RONDAR_SENYUELO]         = &Action::rond_seny;       // si
     VectorAcciones[PLAYER_SEEING]           = &Action::seeing;          // si
     VectorAcciones[ON_RANGE]                = &Action::onrange;         // si
-    VectorAcciones[HIT]                     = &Action::comer_animal;    // TRUCADA
-    VectorAcciones[NOT_ATTACKED]            = &Action::girar_enemigo;   // TRUCADA
-    VectorAcciones[ALLY_DEAD]               = &Action::girar_enemigo;   // TRUCADA
-    VectorAcciones[MORE_RAGE]               = &Action::comer_animal;    // TRUCADA
-    VectorAcciones[X_ALIENS_ATTACKING]      = &Action::girar_enemigo;   // TRUCADA
+    VectorAcciones[HIT]                     = &Action::hit;             // si
+    VectorAcciones[NOT_ATTACKED]            = &Action::playerNotAttacking;   // si
+
+    VectorAcciones[ALLY_DEAD]               = &Action::isThereSomeAlienDead;   // si
+    VectorAcciones[MORE_RAGE]               = &Action::moreRage;    // si
+    VectorAcciones[X_ALIENS_ATTACKING]      = &Action::checkAliensAttacking;   // si
+
     VectorAcciones[X_METRES_PLAYER]         = &Action::distancia10;     // SI
-    VectorAcciones[RONDAR_PLAYER]           = &Action::rond_jugador;    // TRUCADA
+    VectorAcciones[RONDAR_PLAYER]           = &Action::rond_jugador;    // si
     VectorAcciones[PAUSE]                   = &Action::comer_animal;    // TRUCADA
     VectorAcciones[MOVE_TO_PLAYER]          = &Action::move_player;     // si
     VectorAcciones[PLAYER_SEEN]             = &Action::seen;            // si
@@ -98,6 +103,7 @@ void Action::in_last(){//int tipo){
     }
 
 }
+
 void Action::checkbool(bool that){
     if(that){
         s=BH_SUCCESS;
@@ -106,20 +112,24 @@ void Action::checkbool(bool that){
         s=BH_FAILURE;
     }
 }
+
 void Action::onrange(){
     //// std::cout << "range" << '\n';
 
     checkbool(yo->playerOnRange);
 
 }
+
 void Action::seeing(){
     //// std::cout << "viendo?" << '\n';
     checkbool(yo->playerSeeing);
 
 }
+
 void Action::ultrasonido(){
     checkbool(yo->ultrasonido);
 }
+
 void Action::senyuelo(){
     checkbool(yo->senyuelo);
 
@@ -129,25 +139,32 @@ void Action::seen(){
     checkbool(yo->playerSeen);
 
 }
+
 void Action::rond_seny(){
     if(s!=BH_RUNNING){
-        // std::cout << "iniciando rondando senyuelo" << '\n';
+        // gg::cout("RONDANDO SENYUELO");
         yo->destino=yo->senpos;
     }
     rond();
 
 }
+
 void Action::rond_jugador(){
     if(s!=BH_RUNNING){
-        // std::cout << "iniciando rondando senyuelo" << '\n';
+        // gg::cout("RONDANDO JUGADOR");
+        yo->destino=yo->playerPos;
     }
-    yo->destino=yo->playerPos;
 
 
-    rond();
+    rond(yo->playerSeeing);
 
 }
-void Action::rond(){
+
+void Action::rond(bool _b){
+    // El bool que se le pasa es dependiendo si se le llama desde:
+    //      rond_jugador    -> Necesita el bool de si ve al jugador
+    //      rond_seny       -> No necesita ningun bool para pasar
+    // ADEMAS: El bool es true por defecto
     if(s!=BH_RUNNING){
         yo->rondacion_cont=0;
         s=BH_RUNNING;
@@ -155,17 +172,19 @@ void Action::rond(){
 
     float cont= yo->rondacion_cont;
     cont++;
-    if(cont>50){
+
+    if(cont>50 || !_b){
         s=BH_SUCCESS;
     }
 
-    gg::Vector3f mio        = cTransform->getPosition();
-    gg::Vector3f dest       = yo->destino;
-    gg::Vector3f res        = dest-mio;
-    gg::Vector3f res2       = mio+gg::Normalice(gg::Vector3f(res.Z,0,-res.X))*1/15;
+    gg::Vector3f mio            = cTransform->getPosition();
+    gg::Vector3f dest           = yo->destino;
 
-    // cRigidBody->applyConstantVelocity(res,MAX_AI_SPEED,yo->playerSeeing);
-    cTransform->setPosition(mio+gg::Normalice(gg::Vector3f(res.Z,0,-res.X))*1/15);
+    gg::Vector3f V_AI_DEST      = dest-mio;
+    gg::Vector3f V_AI_DEST_PP   = gg::Vector3f(V_AI_DEST.Z,0,-V_AI_DEST.X);
+    gg::Vector3f V_FINAL        = (V_AI_DEST-V_AI_DEST_PP)*0.3;
+
+    cRigidBody->applyConstantVelocity(V_FINAL,MAX_AI_SPEED);
 }
 
 void Action::ult_cont(){
@@ -175,8 +194,6 @@ void Action::ult_cont(){
     if(res>100){
         //// std::cout << "aturdido acabado" << '\n';
         yo->ultrasonido=false;
-
-
 
         s=BH_SUCCESS;
     }else{
@@ -198,6 +215,62 @@ void Action::distancia(float _dist,gg::Vector3f obj){//int tipo){
     }
 
 }
+
+void Action::hit(){
+    if(s!=BH_RUNNING){
+        aliensAttacking++;
+        cont_hit = 0;
+        s = BH_RUNNING;
+    }
+
+    cont_hit++;
+    if(cont_hit > 50){
+        // Cuando ataque checkear que tambien este a rango
+        uint16_t hero = manager->getHeroID();
+        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
+
+        ht->quitarvida(0.5+(yo->getRage()/2));
+        aliensAttacking--;
+        s = BH_SUCCESS;
+    }
+}
+
+void Action::playerNotAttacking(){
+    if(s != BH_RUNNING){
+        s = BH_RUNNING;
+    }
+
+    if(yo->getPlayerIsAttacking()){
+        s = BH_FAILURE;
+    }
+    else{
+        s = BH_SUCCESS;
+    }
+}
+
+void Action::isThereSomeAlienDead(){
+    if(yo->getCloserAllyIsDead()){
+        s = BH_SUCCESS;
+    }
+    else{
+        s = BH_FAILURE;
+    }
+}
+
+void Action::moreRage(){
+    yo->upgradeRage();
+    s = BH_SUCCESS;
+}
+
+void Action::checkAliensAttacking(){
+    if(aliensAttacking<MAX_ALIENS_ATTACKING){
+        s = BH_SUCCESS;
+    }
+    else{
+        s = BH_FAILURE;
+    }
+}
+
 void Action::comer_animal(){
     setActive("comer",1);
 }
@@ -217,14 +290,16 @@ void Action::move_to(){
 void Action::move_last(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
-        //// std::cout << "iniciando move last" << '\n';
         yo->destino = yo->playerPos;
     }
+
     move_too();
+
     if(s!=BH_RUNNING){
         yo->playerSeen=false;
     }
 }
+
 void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
@@ -234,6 +309,7 @@ void Action::move_senyuelo(){
 
     move_too();
 }
+
 void Action::player_vistocono(){
     // PABLO: Esta comentado, pero no se si se usa para algo
     // CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,data->getBData("id2")->getInt()));
@@ -291,6 +367,7 @@ void Action::move_too(){
     else            s = BH_RUNNING;
 
 }
+
 void Action::onTerminate(Status state){//tener cuidado de cerrar todos los recursos que abramos
-  //// std::cout << "Accion onTerminate" <<state << '\n';
+  // gg::cout("ON TERMINATE: ["+std::to_string(state)+"]");
 }

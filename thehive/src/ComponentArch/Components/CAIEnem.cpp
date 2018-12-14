@@ -16,7 +16,7 @@
 #include "EventSystem/BVector3f.hpp"
 #include "EventSystem/BBool.hpp"
 
-bool        CAIEnem::debugvis=false;
+bool        CAIEnem::debugvis=true;
 CTransform* CAIEnem::PlayerTransform;
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
@@ -41,8 +41,8 @@ void CAIEnem::enemyrange(){
 }
 
 void CAIEnem::Init(){
-    enfado=0;
     Engine = Singleton<GameEngine>::Instance();
+    Manager = Singleton<ObjectManager>::Instance();
     data= new Blackboard();
     //int id_dado=getEntityID();
     //// std::cout << "id dado:" <<id_dado<< '\n';
@@ -73,8 +73,8 @@ void CAIEnem::Init(){
 
     //// std::cout << "arbol2" << '\n';
     Vrange          = 30;
-    Arange          = 5;
-    enfado          = 0;
+    Arange          = 2;
+    enfado          = 1;
     gradovision     = cos(30*3.14159265359/180.f);
 
     MHandler_SETPTRS();
@@ -93,8 +93,8 @@ gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
 
 gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     // Inicializando punteros
-    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-    cAgent = static_cast<CAgent*>(Singleton<ObjectManager>::Instance()->getComponent(gg::AGENT, getEntityID()));
+    cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
+    cAgent = static_cast<CAgent*>(Manager->getComponent(gg::AGENT, getEntityID()));
 
     return gg::ST_TRUE;
 }
@@ -102,6 +102,12 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
 void CAIEnem::Update(){
     //std::cout << "entrando" << '\n';
     if(debugvis)  enableVisualDebug();
+
+    CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
+    if(clk && clk->hasEnded()){
+        isPlayerAttacking = false;
+        Manager->removeComponentFromEntity(gg::CLOCK,id);
+    }
 
     gg::Vector3f pTF        = PlayerTransform->getPosition();
     gg::Vector3f cTF_POS    = cTransform->getPosition();
@@ -181,4 +187,38 @@ void CAIEnem::enableVisualDebug(){
     diren               = gg::Normalice(diren);
     float sol           = gg::Producto(diren,dir);
     gg::Vector3f hola   = Direccion2D_to_rot(dir);
+}
+
+void CAIEnem::setPlayerIsAttacking(bool _b){
+    isPlayerAttacking = _b;
+
+    CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
+    if(clk){
+        clk->restart();
+    }
+    else{
+        clk = new CClock();
+        clk->startChrono(3000);
+        Manager->addComponentToEntity(clk,gg::CLOCK,id);
+    }
+}
+
+bool CAIEnem::getPlayerIsAttacking(){
+    return isPlayerAttacking;
+}
+
+void CAIEnem::setCloserAllyIsDead(bool _b){
+    closerAllyIsDead = _b;
+}
+
+bool CAIEnem::getCloserAllyIsDead(){
+    return closerAllyIsDead;
+}
+
+void CAIEnem::upgradeRage(){
+    enfado++;
+}
+
+float CAIEnem::getRage(){
+    return enfado;
 }

@@ -18,7 +18,7 @@
 
     Treecontroller::Treecontroller (Blackboard* _data,int tipo,CAIEnem* ai){
         yo=ai;
-        
+
 
         //// std::cout << "creacion" << '\n';
         data=_data;
@@ -58,6 +58,7 @@
         BT->tick();
         //// std::cout << "update2" << '\n';
     }
+
     void Treecontroller::arboltracker(){
         Action* a1= new Action(TEN_METROS,data,yo);//rango ultrasonido
         Action* a2= new Action(TEN_METROS,data,yo);//aturdido
@@ -345,6 +346,7 @@
 
 
     }
+
     void Treecontroller::arbolsoldado(){
 /*
         Action* a1= new Action(TEN_METROS,data,yo);//10 metros del jugador?
@@ -363,17 +365,22 @@
 */
         Action* a1= new Action(RANGO_ULTRASONIDO,data,yo);//rango ultrasonido
         Action* a2= new Action(ATURDIDO,data,yo);//aturdido
+
         Action* a3= new Action(RANGO_SENYUELO,data,yo);//rango señuelo
         Action* a4= new Action(MOVER_SENYUELO,data,yo);//mover
         Action* a5= new Action(RONDAR_SENYUELO,data,yo);//rondar
+
         Action* a6= new Action(PLAYER_SEEING,data,yo);//estoy viendo al jugador
         Action* a7= new Action(ON_RANGE,data,yo);//esta a rango
         Action* a8= new Action(HIT,data,yo);//golpear
+
         Action* a9= new Action(NOT_ATTACKED,data,yo);//el jugador me ha atacado
         Action* a10= new Action(ALLY_DEAD,data,yo);//ha muerto aliado
         Action* a11= new Action(MORE_RAGE,data,yo);//aumentar enfado
         Action* a12= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando
+
         Action* a13= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando
+
         Action* a14= new Action(X_METRES_PLAYER,data,yo);// esta a x metros o menos del jugador
         Action* a15= new Action(RONDAR_PLAYER,data,yo);//rodar jugador
         Action* a16= new Action(GIRAR,data,yo);//no esta en la ruta

@@ -14,6 +14,7 @@
 
 #include <ComponentArch/Message.hpp>
 #include <ComponentArch/Enum.hpp>
+#include <ComponentArch/Components/CClock.hpp>
 //#include <BT/BehaviorTree.hpp>
 #include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 
@@ -94,6 +95,16 @@ class CAIEnem : public IComponent {
         int ultrasonido_cont;
         int rondacion_cont;
         float gradovision;
+
+        // -----------
+        void setPlayerIsAttacking(bool);
+        bool getPlayerIsAttacking();
+
+        void setCloserAllyIsDead(bool);
+        bool getCloserAllyIsDead();
+
+        void upgradeRage();
+        float getRage();
     private:
         static bool debugvis;
         //bool playerSeen;
@@ -108,11 +119,16 @@ class CAIEnem : public IComponent {
 
 
         GameEngine* Engine;
+        ObjectManager* Manager;
 
         CTransform* cTransform;     //  Punteros a otras componentes
         CAgent* cAgent;     //  Punteros a otras componentes
 
         void enableVisualDebug();
+
+        // -----------
+        bool isPlayerAttacking;
+        bool closerAllyIsDead;
 
 };
 

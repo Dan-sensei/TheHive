@@ -22,7 +22,7 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CCamera* Camera                     = new CCamera(_b);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 
-    CVida* Vida                         = new CVida(100);
+    CVida* Vida                         = new CVida(1000);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
 
     CHabilityController* Hab                         = new CHabilityController();
@@ -43,6 +43,8 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
+    Manager->setHeroID(hero);
+
     return hero;
 }
 
@@ -59,7 +61,7 @@ uint16_t Factory::createEnemy(const gg::Vector3f &Position,const float &health){
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
-    CAgent* Agent                       = new CAgent(kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion);
+    CAgent* Agent                       = new CAgent(kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,gg::Vector3f(),false);

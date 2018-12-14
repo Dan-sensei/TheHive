@@ -73,7 +73,7 @@ void Game::RUN(){
 
     sF->createHero(gg::Vector3f(1760, 110, 350),false);
     sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
-    sF->createEnemy(gg::Vector3f(1797, 120, 350),2000);
+    sF->createEnemy(gg::Vector3f(1797, 120, 350),10);
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
 
     gg::Vector3f mapPos(1400,120,0);

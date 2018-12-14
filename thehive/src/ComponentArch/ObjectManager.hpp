@@ -73,7 +73,8 @@ class ObjectManager{
 
         //german gay
         bool checkEvent(uint16_t EntityID, const Message &m);
-
+        uint16_t getHeroID();
+        void setHeroID(uint16_t);
 
     private:
         ObjectManager();
@@ -126,6 +127,11 @@ class ObjectManager{
         //  Memory manager class
         //========================================================================
         Arena memory;
+
+        //  ---
+        //  Hero entity id. To avoid computing time and problems
+        //========================================================================
+        uint16_t HERO_ID;
 };
 
 #endif

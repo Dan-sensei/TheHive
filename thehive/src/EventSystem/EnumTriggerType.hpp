@@ -10,7 +10,7 @@ enum EnumTriggerType{
     kTrig_Touchable =1<<4,  // 16
     kTrig_Senyuelo  =1<<5,  // 32
     kTrig_Aturd     =1<<6,  // 64
-    kTrig_Pickable  =1<<7   // 128
-
+    kTrig_Pickable  =1<<7,  // 128
+    kTrig_DeadAlien =1<<8   // 256
 };
 #endif

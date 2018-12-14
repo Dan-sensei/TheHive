@@ -26,6 +26,7 @@ class CClock : public IComponent {
         bool setEndTime(float);
         float getActualTime();
         bool hasEnded();
+        void restart();
 
     private:
         GameEngine* engine;

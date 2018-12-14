@@ -7,12 +7,14 @@
 #include <GameEngine/ScreenConsole.hpp>
 #include <Singleton.hpp>
 
-#define K_DMG_VALUE 20
+#define K_DMG_VALUE 20.f
 
 CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
 {
-    Manager = Singleton<ObjectManager>::Instance();
+    Manager         = Singleton<ObjectManager>::Instance();
+    hud             = Singleton<ScreenConsole>::Instance();
+    triggerSystem   = Singleton<CTriggerSystem>::Instance();
 }
 
 CVida::~CVida() {}
@@ -21,17 +23,20 @@ bool CVida::quitarvida(const float &_factor){
     bool ret = false;
 
     vida -= K_DMG_VALUE*_factor;
-    if(vida <= 0){
-        gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
-        vida = 0;
-        ret = true;
-    }
-    gg::cout("DAMAGE DONE: ["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
+    if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+        gg::cout("HEROE--");
 
-    // if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
-    //     gg::cout("HEROE--");
-    //     ret = false;
-    // }
+        hud->setvida(vida/vida_max);
+    }
+    else{
+        if(vida <= 0){
+            gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
+            vida = 0;
+            ret = true;
+        }
+        gg::cout("DAMAGE DONE: ["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
+    }
+
 
     // float res=(float)vida/vida_max;
     // Singleton<ScreenConsole>::Instance()->setvida(res);
@@ -65,10 +70,13 @@ gg::EMessageStatus CVida::MHandler_SETPTRS(){
 
 
 void CVida::Update() {
-    if(vida <= 0){
-        // gg::cout("ENTITY "+std::to_string(getEntityID())+" IS NO LONGER ALIVE!");
-        // std::cout << "BEF:" << this << '\n';
+    if(vida <= 0 && !Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+        CTransform *t = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,getEntityID()));
+        if(t){
+            // Evento para que los enemigos vean que se ha muerto un aliado suyo
+            triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 5, 5000, false, TData());
+        }
+
         Manager->removeEntity(getEntityID());
-        // std::cout << "AFT:" << this << '\n';
     }
 }
