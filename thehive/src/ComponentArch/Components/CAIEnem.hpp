@@ -103,6 +103,9 @@ class CAIEnem : public IComponent {
         void setCloserAllyIsDead(bool);
         bool getCloserAllyIsDead();
 
+        void setImAttacking(bool);
+        bool getImAttacking();
+
         void upgradeRage();
         float getRage();
     private:
@@ -127,6 +130,7 @@ class CAIEnem : public IComponent {
         void enableVisualDebug();
 
         // -----------
+        bool imAttacking;
         bool isPlayerAttacking;
         bool closerAllyIsDead;
 

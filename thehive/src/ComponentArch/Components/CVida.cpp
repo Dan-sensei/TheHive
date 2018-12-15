@@ -24,8 +24,6 @@ bool CVida::quitarvida(const float &_factor){
 
     vida -= K_DMG_VALUE*_factor;
     if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
-        gg::cout("HEROE--");
-
         hud->setvida(vida/vida_max);
     }
     else{
@@ -34,12 +32,8 @@ bool CVida::quitarvida(const float &_factor){
             vida = 0;
             ret = true;
         }
-        gg::cout("DAMAGE DONE: ["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
     }
-
-
-    // float res=(float)vida/vida_max;
-    // Singleton<ScreenConsole>::Instance()->setvida(res);
+    gg::cout("DAMAGE DONE-> "+std::to_string(K_DMG_VALUE*_factor)+"["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
 
     return ret;
 }

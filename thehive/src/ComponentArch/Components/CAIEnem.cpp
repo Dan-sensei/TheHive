@@ -53,6 +53,7 @@ void CAIEnem::Init(){
     ultrasonido     = false;
     senyuelo        = false;
     playerOnRange   = false;
+    imAttacking     = false;
 
     senpos          = gg::Vector3f(50,50,50);
     playerPos       = gg::Vector3f(20,20,20);
@@ -221,4 +222,11 @@ void CAIEnem::upgradeRage(){
 
 float CAIEnem::getRage(){
     return enfado;
+}
+
+void CAIEnem::setImAttacking(bool _b){
+    imAttacking = _b;
+}
+bool CAIEnem::getImAttacking(){
+    return imAttacking;
 }

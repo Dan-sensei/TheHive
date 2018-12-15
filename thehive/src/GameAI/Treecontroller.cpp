@@ -366,9 +366,11 @@
         Action* a1= new Action(RANGO_ULTRASONIDO,data,yo);//rango ultrasonido
         Action* a2= new Action(ATURDIDO,data,yo);//aturdido
 
+
         Action* a3= new Action(RANGO_SENYUELO,data,yo);//rango señuelo
         Action* a4= new Action(MOVER_SENYUELO,data,yo);//mover
         Action* a5= new Action(RONDAR_SENYUELO,data,yo);//rondar
+
 
         Action* a6= new Action(PLAYER_SEEING,data,yo);//estoy viendo al jugador
         Action* a7= new Action(ON_RANGE,data,yo);//esta a rango
@@ -383,16 +385,22 @@
 
         Action* a14= new Action(X_METRES_PLAYER,data,yo);// esta a x metros o menos del jugador
         Action* a15= new Action(RONDAR_PLAYER,data,yo);//rodar jugador
+
         Action* a16= new Action(GIRAR,data,yo);//no esta en la ruta
         Action* a17= new Action(GIRAR,data,yo);//calcular ruta a bloquear
         Action* a18= new Action(MOVE_AROUND,data,yo);//mover
+
         Action* a19= new Action(PAUSE,data,yo);//esperar
+
         Action* a20= new Action(MOVE_TO_PLAYER,data,yo);//moverse en direccion al jugador
+
+
         Action* a21= new Action(PLAYER_SEEN,data,yo);//estoy escuhando al jugador
         Action* a22= new Action(PLAYER_SEEN,data,yo);//he visto al jugador
         Action* a23= new Action(IN_LAST_POS_KWON,data,yo);//no estoy en la zona
         Action* a24= new Action(MOVE_TO_LAST_POS_KWON,data,yo);//moverse a la zona
         Action* a25= new Action(GIRAR,data,yo);//patrullar la zona
+        
         Action* a26= new Action(MOVE_AROUND,data,yo);//andar random
         Action* a27= new Action(GIRAR,data,yo);//animal en rango
         Action* a28= new Action(GIRAR,data,yo);//no hay mas de 3 comiendo

@@ -1,7 +1,7 @@
 #include "Action.hpp"
 
-#define MAX_AI_SPEED            1.5
-#define MAX_ALIENS_ATTACKING    1
+#define MAX_AI_SPEED            2
+#define MAX_ALIENS_ATTACKING    2
 
 int Action::aliensAttacking = 0;
 
@@ -38,9 +38,10 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[MORE_RAGE]               = &Action::moreRage;    // si
     VectorAcciones[X_ALIENS_ATTACKING]      = &Action::checkAliensAttacking;   // si
 
-    VectorAcciones[X_METRES_PLAYER]         = &Action::distancia10;     // SI
+    VectorAcciones[X_METRES_PLAYER]         = &Action::distancia10;     // si
     VectorAcciones[RONDAR_PLAYER]           = &Action::rond_jugador;    // si
-    VectorAcciones[PAUSE]                   = &Action::comer_animal;    // TRUCADA
+    VectorAcciones[PAUSE]                   = &Action::alienInPause;    // si
+
     VectorAcciones[MOVE_TO_PLAYER]          = &Action::move_player;     // si
     VectorAcciones[PLAYER_SEEN]             = &Action::seen;            // si
     VectorAcciones[MOVE_AROUND]             = &Action::move_around;     // siRANDOM
@@ -74,6 +75,11 @@ Status Action::update() {
     return s;
 
 }// Update del comportamiento. Llamado cada vez que el comportamiento es actualizado
+
+void Action::abort(){
+    Behavior::abort();
+    modifyImAttacking(false);
+}
 
 void Action::setActive(std::string a, bool acierto){
     if(acierto)
@@ -115,7 +121,6 @@ void Action::checkbool(bool that){
 
 void Action::onrange(){
     //// std::cout << "range" << '\n';
-
     checkbool(yo->playerOnRange);
 
 }
@@ -144,6 +149,8 @@ void Action::rond_seny(){
     if(s!=BH_RUNNING){
         // gg::cout("RONDANDO SENYUELO");
         yo->destino=yo->senpos;
+        yo->rondacion_cont=0;
+        s=BH_RUNNING;
     }
     rond();
 
@@ -152,12 +159,11 @@ void Action::rond_seny(){
 void Action::rond_jugador(){
     if(s!=BH_RUNNING){
         // gg::cout("RONDANDO JUGADOR");
-        yo->destino=yo->playerPos;
+        yo->rondacion_cont=0;
+        s=BH_RUNNING;
     }
-
-
+    yo->destino=yo->playerPos;
     rond(yo->playerSeeing);
-
 }
 
 void Action::rond(bool _b){
@@ -165,24 +171,30 @@ void Action::rond(bool _b){
     //      rond_jugador    -> Necesita el bool de si ve al jugador
     //      rond_seny       -> No necesita ningun bool para pasar
     // ADEMAS: El bool es true por defecto
-    if(s!=BH_RUNNING){
-        yo->rondacion_cont=0;
-        s=BH_RUNNING;
-    }
-
     float cont= yo->rondacion_cont;
     cont++;
 
     if(cont>50 || !_b){
         s=BH_SUCCESS;
+        return;
     }
+
+    // Intentar cambiar esto
+    int sign = 1;
+    gg::genFloatRandom(-1,1)>0? sign = 1 : sign = -1;
 
     gg::Vector3f mio            = cTransform->getPosition();
     gg::Vector3f dest           = yo->destino;
 
     gg::Vector3f V_AI_DEST      = dest-mio;
-    gg::Vector3f V_AI_DEST_PP   = gg::Vector3f(V_AI_DEST.Z,0,-V_AI_DEST.X);
+    gg::Vector3f V_AI_DEST_PP   = gg::Vector3f(sign*V_AI_DEST.Z,0,(-sign)*V_AI_DEST.X);
     gg::Vector3f V_FINAL        = (V_AI_DEST-V_AI_DEST_PP)*0.3;
+
+    V_AI_DEST.Y     = 0;
+    V_AI_DEST       = gg::Normalice(V_AI_DEST);
+    V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
+
+    cTransform->setRotation(V_AI_DEST);
 
     cRigidBody->applyConstantVelocity(V_FINAL,MAX_AI_SPEED);
 }
@@ -218,8 +230,8 @@ void Action::distancia(float _dist,gg::Vector3f obj){//int tipo){
 
 void Action::hit(){
     if(s!=BH_RUNNING){
-        aliensAttacking++;
         cont_hit = 0;
+        modifyImAttacking(true);
         s = BH_RUNNING;
     }
 
@@ -227,23 +239,20 @@ void Action::hit(){
     if(cont_hit > 50){
         // Cuando ataque checkear que tambien este a rango
         uint16_t hero = manager->getHeroID();
-        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
 
+        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
         ht->quitarvida(0.5+(yo->getRage()/2));
-        aliensAttacking--;
+
         s = BH_SUCCESS;
     }
 }
 
 void Action::playerNotAttacking(){
-    if(s != BH_RUNNING){
-        s = BH_RUNNING;
-    }
-
     if(yo->getPlayerIsAttacking()){
         s = BH_FAILURE;
     }
     else{
+        // gg::cout("NO ATTACK");
         s = BH_SUCCESS;
     }
 }
@@ -263,12 +272,29 @@ void Action::moreRage(){
 }
 
 void Action::checkAliensAttacking(){
-    if(aliensAttacking<MAX_ALIENS_ATTACKING){
+    gg::cout("ALIENS ATACANDO:"+std::to_string(aliensAttacking));
+    if(aliensAttacking>=MAX_ALIENS_ATTACKING){
+        // gg::cout(" --1");
         s = BH_SUCCESS;
     }
     else{
+        // gg::cout(" --2");
         s = BH_FAILURE;
     }
+
+}
+
+void Action::alienInPause(){
+    if(s!=BH_RUNNING){
+        gg::cout("PAUSE");
+        cont_pause = 0;
+        s = BH_RUNNING;
+    }
+    cont_pause++;
+    if(cont_pause > 50){
+        s = BH_SUCCESS;
+    }
+
 }
 
 void Action::comer_animal(){
@@ -303,8 +329,7 @@ void Action::move_last(){
 void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
-        //// std::cout << "iniciando move senyuelo" << '\n';
-        yo->destino = yo->senpos;
+        yo->destino = yo->destino+((yo->senpos-yo->destino)/2);
     }
 
     move_too();
@@ -320,6 +345,7 @@ void Action::player_vistocono(){
 
 void Action::move_player(){
     if(s!=BH_RUNNING){
+        modifyImAttacking(true);
         s=BH_RUNNING;
         //// std::cout << "iniciando move PLAYER" << '\n';
     }
@@ -363,11 +389,31 @@ void Action::move_too(){
 
     float dist = gg::DIST(mio,dest);
 
-    if(dist<10)     s = BH_SUCCESS;
-    else            s = BH_RUNNING;
+    if(dist<10){
+        modifyImAttacking(false);
+        s = BH_SUCCESS;
+    }
+    else{
+        s = BH_RUNNING;
+    }
 
 }
 
 void Action::onTerminate(Status state){//tener cuidado de cerrar todos los recursos que abramos
   // gg::cout("ON TERMINATE: ["+std::to_string(state)+"]");
+}
+
+void Action::modifyImAttacking(bool _b){
+    if(!_b){
+        if(yo->getImAttacking()){
+            if(aliensAttacking>0) aliensAttacking--;
+            yo->setImAttacking(false);
+        }
+    }
+    else{
+        if(!yo->getImAttacking()){
+            aliensAttacking++;
+            yo->setImAttacking(true);
+        }
+    }
 }
