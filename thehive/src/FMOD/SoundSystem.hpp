@@ -13,20 +13,25 @@
 
 using namespace std;
 
-#include "mathvector.h"
-#include "fmod/fmod_studio.h"
-#include "fmod/fmod_studio.hpp"
+#include <glm/glm.hpp>
+#include "inc/fmod_studio.hpp"
+#include "inc/fmod.hpp"
+#include "Util.hpp"
+
+#define ERRCHECK(_result) ERRCHECK_fn(_result, __FILE__, __LINE__)
 
 class SoundEvent;
+template <typename T>
+class Singleton;
 
 class SoundSystem {
-
+friend class Singleton<SoundSystem>;
 public:
     /**
      *  Constructor
      *  \param soundBanksPath ruta del directorio donde se encuentran los bancos generados con FMOD Studio
      */
-	SoundSystem(string soundBanksPath);
+	SoundSystem();
 
 	~SoundSystem();
 
@@ -38,6 +43,8 @@ public:
      */
     SoundEvent* getEvent(string eventPath);
 
+	SoundEvent* createSoundEvent(FMOD::Studio::EventInstance* ins);
+
     /**
      *  Modifica el volumen general del motor de sonido
      */
@@ -46,27 +53,43 @@ public:
     /**
      *  Modifica la posición del punto de escucha (en esta aplicación sólo hay uno)
      */
-    void setListernerPosition(Vec3 pos);
+    void setListernerPosition(gg::Vector3f pos);
 
     /**
      *  Actualiza el motor de audio
      *  \param paused indica si hay que pausar el motor de audio o no
      */
-    void update(bool paused);
+    //void update(bool paused);
+	void update();
+
+	void release();
+
+	//Funcion ERRCHECK
+
+	void ERRCHECK_fn(FMOD_RESULT result, const char *file, int line){
+	    if(result!= FMOD_OK){
+	        std::cerr << file << "(" << line << "): FMOD error"
+	        << result << " - " << std::endl;
+	        exit(-1);
+	    }
+	}
 private:
     string banksPath;
 	FMOD::Studio::System*	system = NULL;
 	FMOD::System*			lowLevelSystem = NULL;
 	FMOD::Studio::Bank* masterBank = NULL;
 	FMOD::Studio::Bank* stringsBank = NULL;
+	FMOD::Studio::Bank* sfx = NULL;
     map<string, FMOD::Studio::Bank*> banks;
     map<string, FMOD::Studio::EventDescription*> eventDescriptions;
 	FMOD::Studio::EventDescription* event = NULL;
+	SoundEvent* soundEvent = NULL;
     map<string, SoundEvent*> soundEvents;
 
 };
 
 class SoundEvent {
+	friend class SoundSystem;
 public:
     SoundEvent();
     virtual ~SoundEvent() = 0; /**>  SoundEvent es una clase abstracta */
@@ -74,12 +97,17 @@ public:
     /**
      *  Comienza a reproducir el evento
      */
-    virtual void start();
+    void start();
 
     /**
      *  Detiene la reproducción del evento inmediatamente
      */
-    void stop();
+    void stopInmediate();
+
+	/**
+	 *  Detiene la reproducción del evento inmediatamente
+	 */
+	void stopFadeOut();
 
     /**
      *  Pausa la reproducción del evento.
@@ -100,25 +128,35 @@ public:
      */
     void setGain(float gain);
 
+	void setParameterValue(string nom, float value);
+
     /**
      *  Modifica la posición 3D del evento de sonido
      *  \param pos nuevo vector de posición
      */
-    void setPosition(Vec3 pos);
+    void setPosition(gg::Vector3f pos);
 
     /**
      *  Consulta si el evento está sonando
      *  \return devuelve cierto si el evento está sonando
      */
-    bool isPlaying();
+	 bool isPlaying();
+
+
+	void release();
+
+	FMOD::Studio::EventInstance* getInstance();
+
 
 protected:
-    FMOD::Studio::EventInstance* soundInstance;
+    FMOD::Studio::EventInstance* soundInstance = NULL;
     /**
      * Este método crea un SoundEvent (EngineSound, WindSound, etc.) correspondiente
      * al evento que recibe como argumento
      */
     virtual SoundEvent* newSoundEvent(FMOD::Studio::EventInstance*) = 0;
+
+
 };
 
 

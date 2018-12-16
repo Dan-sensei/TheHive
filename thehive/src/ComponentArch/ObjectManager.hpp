@@ -72,7 +72,7 @@ class ObjectManager{
 
 
 
-        //german gay
+        //
         bool checkEvent(uint16_t EntityID, const Message &m);
 
 

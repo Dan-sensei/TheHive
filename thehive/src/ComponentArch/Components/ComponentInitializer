@@ -7,12 +7,12 @@ void Factory::ComponentInitializer() {
 	CVida::initComponent();
 	CClock::initComponent();
 	CGranade2::initComponent();
-	CRenderable_3D::initComponent();
 	CGranade::initComponent();
 	CAIEnem::initComponent();
 	CGranade1::initComponent();
 	CGun::initComponent();
 	CGranade0::initComponent();
 	CTransform::initComponent();
+	CRenderable_3D::initComponent();
 	CAgent::initComponent();
 }

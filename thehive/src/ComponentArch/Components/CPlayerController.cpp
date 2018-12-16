@@ -5,6 +5,8 @@
 #include <Util.hpp>
 #include <string>
 #include "Factory.hpp"
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/ForestSound.hpp>
 //#include <GameAI/Hability.hpp>
 //#include <GameAI/Enumhabs.hpp>
 
@@ -129,6 +131,15 @@ gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
     float           MULT_FACTOR = 1;
 
     if(Engine->key(gg::GG_1)){
+        SoundEvent* hola=Singleton<SoundSystem>::Instance()->getEvent("event:/Weapons/Explosion");
+        //ForestSound* sound = new ForestSound();
+        //sound->newSoundEvent(hola->getInstance());
+        hola->setVolume(1);
+        hola->start();
+        hola->isPlaying();
+
+
+
         hab->pulsado(0);
     }
     if(Engine->key(gg::GG_2)){

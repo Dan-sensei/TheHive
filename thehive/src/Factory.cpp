@@ -40,6 +40,7 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CGun *gun = new CGun(0.4,5,15,0.5,0.5,3);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
+
     CAgent* Agent                       = new CAgent(kTrig_Gunfire|kTrig_Explosion|kTrig_Touchable|kTrig_Pickable);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
