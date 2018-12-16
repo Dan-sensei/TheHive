@@ -92,8 +92,8 @@ int ScreenConsole::InitMenu4(){
     CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Options"),gg::Color(0,0,0,1));
 
-    addButton(45,50,55,59,GOVIDEO,"Video");
-    addButton(45,60,55,69,GOMUSIC,"Music");
+    addButton(45,50,55,59,GOVIDEO,"Graphics");
+    addButton(45,60,55,69,GOMUSIC,"Audio");
     addButton(45,70,55,79,GOCONTROLLS,"Controlls");
 
     addButton(65,80,70,89,GOMAIN,"Back");
@@ -111,7 +111,9 @@ int ScreenConsole::InitMenu5(){
 int ScreenConsole::InitMenu6(){
     CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Audio"),gg::Color(0,0,0,1));
-
+    //addButton(45,50,55,59,GOVIDEO,"Dialogues");
+    //addButton(45,60,55,69,GOMUSIC,"Music");
+    //addButton(45,70,55,79,GOCONTROLLS,"Effects");
     addButton(65,80,70,89,GOOPTIONS,"Back");
     return 1;
 }
