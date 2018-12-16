@@ -1,6 +1,6 @@
 #include "Pathfinding.hpp"
 #include <iostream>
-#include "MeshImporter.hpp"
+#include <BinaryParser.hpp>
 #include "Singleton.hpp"
 #include <GameEngine/GameEngine.hpp>
 #include <numeric>
@@ -15,7 +15,7 @@ Pathfinding::Pathfinding()
 :Debug(false), goal(0)
 {
 
-    bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
+    //bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
             if(GConnections[i][j].Value == 0)

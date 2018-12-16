@@ -1,16 +1,8 @@
 include MakeColors
 
 BUILD	:= build/
-COMPONENTHEADERS:= src/ComponentArch/Components/ComponentHeaders.hpp
-COMPONENTS := $(wildcard src/ComponentArch/Components/*.hpp)
-COMPONENTS := $(subst src/,,$(COMPONENTS))
 
-COMPONENTINITIALIZER:= src/ComponentArch/Components/ComponentInitializer
-COMPONENTSCLASS := $(basename $(notdir $(COMPONENTS)))
-COMPONENTSCLASS := $(subst ComponentHeaders,,$(COMPONENTSCLASS))
-
-
-SOURCES := $(shell find src/ -type f -name "*.cpp")
+SOURCES := $(shell find src/ -type f -name "*.cpp" ! -path "src/Preprocessing/*")
 OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
 OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 
@@ -21,8 +13,11 @@ COMPILER := g++
 
 EXE := main
 
-build: $(EXE)
+build: preprocessing $(EXE)
 
+
+preprocessing:
+	cd Preprocessing && $(MAKE)
 
 $(EXE): $(OBJECTS)
 	$(call br)
@@ -44,6 +39,7 @@ $(OBJECTS): $(BUILD)%.o : %.cpp
 	$(call br)
 
 clean:
+	cd Preprocessing && $(MAKE) clean
 	$(call printWarning, "Deleting" )
 	$(call printObj,$(BUILD))
 	$(call printWarning,"..." )
@@ -78,7 +74,7 @@ info:
 	$(call br)
 	$(call br)
 	$(call objColor)
-	#@$(foreach var,$(SOURCES), echo " "$(var); )
+	@$(foreach var,$(SOURCES), echo " "$(var); )
 	$(call noColor)
 
 	$(call br)
