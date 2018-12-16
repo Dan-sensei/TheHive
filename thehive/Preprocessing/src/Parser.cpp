@@ -2,9 +2,6 @@
 #include <iostream>
 
 int main(int argc, char const *argv[]) {
-    //NavmeshParser::generateBinaryGG_Navmesh("assets/NavMeshes/PROTOTIPO_CIUDAD.obj");
-
-    std::cout << "PREPROCESING!" << '\n';
-
+    NavmeshParser::generateBinaryGG_Navmesh("assets/NavMeshes/PROTOTIPO_CIUDAD.obj");
     return 0;
 }

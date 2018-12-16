@@ -3,12 +3,9 @@
 
 #include <fstream>
 
-class BinaryHelper{
-    template<typename T>
-    std::ostream& GG_Write(std::ostream& _ostream, const T& value);
-
-    template<typename T>
-    std::istream & GG_Read(std::istream& _istream, T& value);
-};
+template<typename T>
+std::ostream& GG_Write(std::ostream& _ostream, const T& value){
+    return _ostream.write(reinterpret_cast<const char*>(&value), sizeof(T));
+}
 
 #endif

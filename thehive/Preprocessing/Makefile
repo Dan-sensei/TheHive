@@ -25,12 +25,7 @@ $(EXE): $(OBJECTS)
 
 $(OBJECTS): $(BUILD)%.o : %.cpp
 	@mkdir -p ${@D}
-
 	@$(COMPILER) -g -o $@ -c $<
-	$(call printInfo, "-Compiling")
-	$(call printObj, $^)
-	$(call printSuccess,  "[OK]")
-	$(call br)
 
 clean:
 	$(call printWarning, "Deleting" )

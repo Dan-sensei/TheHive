@@ -16,47 +16,8 @@ Pathfinding::Pathfinding()
 {
 
     //bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
-    for(uint16_t i = 0; i < GConnections.size(); ++i){
-        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            if(GConnections[i][j].Value == 0)
-                GConnections[i][j].Value = gg::DIST(GRAPH[GConnections[i][j].From].Position, GRAPH[GConnections[i][j].To].Position);
-        }
-    }
-
+    BinaryParser::ReadNavmeshData("assets/BinaryFiles/NavmeshCITY.gg", GRAPH, GConnections, FACES);
     //// std::cout << "GRAPH CREATED!" << '\n';
-
-    std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
-
-    for(uint16_t i = 0; i < GRAPH.size(); ++i){
-        // std::cout << "  -- " << i << " = " << GRAPH[i] << '\n';
-    }
-
-    uint16_t cons = 0;
-    //// std::cout << "Connections:" << '\n';
-    for(uint16_t i = 0; i < GConnections.size(); ++i){
-        //// std::cout << "[" << i << "] => ";
-        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            //// std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
-            ++cons;
-        }
-        //// std::cout << '\n';
-    }
-
-    std::cout << " ->" << cons << " Connections created!" << '\n';
-    std::cout << " ->" << FACES.size() << " Faces created!" << '\n';
-    for(uint16_t i = 0; i < FACES.size(); ++i){
-        std::cout << "   Face " << i << "  | P: ";
-        for(uint16_t j = 0; j < FACES[i].Portals.size(); ++j)
-            std::cout << " " << FACES[i].Portals[j];
-        std::cout << '\n';
-    }
-    //// std::cout << "Test" << '\n';
-    //GRAPH[0].EstimatedCost = 10;
-    //GRAPH[2].EstimatedCost = 20;
-    //OpenList.push(&GRAPH[0]);
-    //OpenList.push(&GRAPH[1]);
-
-    //// std::cout << "ID : " << OpenList.top()->ID << " | ESTIMATED COST = " << OpenList.top()->EstimatedCost << '\n';
 }
 
 Pathfinding::~Pathfinding(){
