@@ -87,7 +87,6 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
     cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
-    // std::cout << "llega" << '\n';
     hab = static_cast<CHabilityController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::HAB, getEntityID()));
     //hab = static_cast<CHabilityController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::HABILITY, getEntityID()));
 
@@ -96,7 +95,6 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
 }
 
 gg::EMessageStatus CPlayerController::MHandler_UPDATE(){
-std::cout << "entra" << '\n';
     if(!cTransform || !camera || !cRigidBody)  return gg::ST_ERROR;
     //hab.update();
     // -----------------------------------------------------------------------------
@@ -178,12 +176,10 @@ std::cout << "entra" << '\n';
         heroRotation = false;
 
     if(Engine->key(RUN_KEY)){
-        // gg::cout("RUN!");
         MULT_FACTOR = MULT_RUN_FACTOR;
     }
     if(Engine->key(DASH_KEY)){
         if(!pulsacion_dash){
-            // gg::cout("DASH!");
 
             MULT_FACTOR = MULT_DASH_FACTOR;
             force.X *= DASH_FORCE_FACTOR;
@@ -395,7 +391,6 @@ bool CPlayerController::pickItem(const uint16_t &_item){
     // No compruebo duplicados entre items
     // Nunca pasara esa situacion
     for(const uint16_t &i : items){
-        // gg::cout("items["+std::to_string(i)+"] = "+std::to_string(items[i]));
         if(i==0){
             items[i] = _item;
             return true;

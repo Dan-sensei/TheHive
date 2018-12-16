@@ -19,7 +19,6 @@ Status Behavior::tick(){
     }
 
     m_eStatus = update();
-//// std::cout << "estatus final" << m_eStatus<< '\n';
     if (m_eStatus != BH_RUNNING) onTerminate(m_eStatus);
 
     return m_eStatus;

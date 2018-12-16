@@ -83,13 +83,10 @@ Action::~Action(){
 }
 
 void Action::onInitialize(){
-    //// std::cout << "Accion onInitialize" << '\n';
     s = BH_INVALID;
 }//parámetros del mundo necesarios para el update} // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update
 
 Status Action::update() {
-    //// std::cout << "Accion Update" <<tarea<< '\n';
-    //gg::cout("action nº"+std::to_string(tarea));
 
     if(VectorAcciones[tarea] != nullptr)
         (this->*VectorAcciones[tarea])();
@@ -99,7 +96,6 @@ Status Action::update() {
 }// Update del comportamiento. Llamado cada vez que el comportamiento es actualizado
 
 void Action::setActive(std::string a, bool acierto){
-    //// std::cout<< a << " update" <<getStatus() << '\n';
 
     if(acierto)
         s = BH_SUCCESS;
@@ -109,22 +105,15 @@ void Action::setActive(std::string a, bool acierto){
 }
 
 void Action::andar_random(){
-    //// std::cout << "andar_random" << '\n';
     setActive("andar random",0);
 
 }
 void Action::distancia10(){//int tipo){
-    //// std::cout << "distancia10" << '\n';
-
-    //// std::cout << "se hace wey" << '\n';
     distancia(10,yo->playerPos);//int tipo){
 
 
 }
 void Action::in_last(){//int tipo){
-    //// std::cout << "distancia10" << '\n';
-
-    //// std::cout << "se hace wey" << '\n';
     distancia(0.5,yo->playerPos);//int tipo){
 if(s==BH_SUCCESS){
     s=BH_FAILURE;
@@ -136,19 +125,16 @@ if(s==BH_SUCCESS){
 void Action::checkbool(bool that){
     if(that){
         s=BH_SUCCESS;
-        //// std::cout << "cierto" << '\n';
     }else{
         s=BH_FAILURE;
     }
 }
 void Action::onrange(){
-    //// std::cout << "range" << '\n';
 
     checkbool(yo->playerOnRange);
 
 }
 void Action::seeing(){
-    //// std::cout << "viendo?" << '\n';
     checkbool(yo->playerSeeing);
 
 }
@@ -166,7 +152,6 @@ void Action::seen(){
 }
 void Action::rond_seny(){
     if(s!=BH_RUNNING){
-        // std::cout << "iniciando rondando senyuelo" << '\n';
         yo->destino=yo->senpos;
 
     }
@@ -176,7 +161,6 @@ void Action::rond_seny(){
 }
 void Action::rond_jugador(){
     if(s!=BH_RUNNING){
-        // std::cout << "iniciando rondando senyuelo" << '\n';
     }
     yo->destino=yo->playerPos;
 
@@ -203,16 +187,12 @@ void Action::rond(){
 
     gg::Vector3f dest =yo->destino;
 
-    //// std::cout << "dest" <<dest<< '\n';
     //gg::Normalice(dest-mio)*2;
     gg::Vector3f res=dest-mio;
     gg::Vector3f res2=mio+gg::Normalice(gg::Vector3f(res.Z,0,-res.X))*1/15;
-    //// std::cout << "mio" <<mio<< '\n';
-    //// std::cout << "posicion" <<res2<< '\n';
 
     cTransform->setPosition(mio+gg::Normalice(gg::Vector3f(res.Z,0,-res.X))*1/15);
     //float dist=gg::DIST(mio,dest);
-    //// std::cout << "dist" <<dist<< '\n';
     //if(dist<5){
     //    s=BH_SUCCESS;
     //}else{
@@ -225,7 +205,6 @@ void Action::ult_cont(){
     res++;
     //3-4 seg
     if(res>100){
-        //// std::cout << "aturdido acabado" << '\n';
         yo->ultrasonido=false;
 
 
@@ -275,7 +254,6 @@ void Action::move_last(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
 
-        //// std::cout << "iniciando move last" << '\n';
         yo->destino=yo->playerPos;
     }
     move_too();
@@ -286,7 +264,6 @@ void Action::move_last(){
 void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
-        //// std::cout << "iniciando move senyuelo" << '\n';
 
     }
 
@@ -307,12 +284,10 @@ void Action::player_vistocono(){
 }
 void Action::move_player(){
     //std::co << "move player" << '\n';
-    //// std::cout << "moviendo" << '\n';
     //if(s!=BH_RUNNING){
 
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
-        //// std::cout << "iniciando move PLAYER" << '\n';
 
     }
     //}
@@ -325,26 +300,20 @@ void Action::move_player(){
 
 void Action::move_around(){
     if(s!=BH_RUNNING){
-        //// std::cout << "iniciando move random" << '\n';
 
     }
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
         //elegir
-        //// std::cout << "elegimos" << '\n';
         std::random_device rd;
         std::default_random_engine gen(rd());
         std::uniform_int_distribution<int> distribution(-50,50);
         int x = distribution(gen);
         int y = distribution(gen);
-        //// std::cout << "X:" <<x<< '\n';
-        //// std::cout << "Y" <<y<< '\n';
         CTransform* cTransform;     //  Punteros a otras componentes
         cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,yo->getEntityID()));
         gg::Vector3f mio =cTransform->getPosition();
-        //// std::cout << "mio:" <<mio << '\n';
         gg::Vector3f dest =mio+gg::Vector3f(x,0,y);
-        //// std::cout << "dest:" <<dest << '\n';
         //cTransform->setPosition(mio);
         yo->destino=dest;
 
@@ -357,7 +326,6 @@ void Action::move_too(){
     CTransform* cTransform;     //  Punteros a otras componentes
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM,yo->getEntityID()));
     gg::Vector3f mio =cTransform->getPosition();
-    //// std::cout << "mio" <<mio<< '\n';
 
     gg::Vector3f dest =yo->destino;
     gg::Vector3f direccion=dest-mio;
@@ -365,11 +333,9 @@ void Action::move_too(){
     direccion=gg::Normalice(direccion);
     direccion=gg::Direccion2D_to_rot(direccion);
     cTransform->setRotation(direccion);
-    //std::cout << "dest" <<dest<< '\n';
     //gg::Normalice(dest-mio)*2;
     cTransform->setPosition(mio+gg::Normalice(dest-mio)*1/15);
     float dist=gg::DIST(mio,dest);
-    //// std::cout << "dist" <<dist<< '\n';
     if(dist<10){
         s=BH_SUCCESS;
     }else{
@@ -378,5 +344,4 @@ void Action::move_too(){
 
 }
 void Action::onTerminate(Status state){//tener cuidado de cerrar todos los recursos que abramos
-  //// std::cout << "Accion onTerminate" <<state << '\n';
 }

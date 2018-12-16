@@ -64,7 +64,6 @@ gg::Vector3f CAgent::GetPosition(){
     return cTransform->getPosition();
 }
 void CAgent::updatetrig(){
-    //// std::cout << "entra updatetrig" <<nCAgentID<< '\n';
 
     std::list <TriggerRecordStruct*>::iterator it;
     it=holiiis.begin();
@@ -73,28 +72,19 @@ void CAgent::updatetrig(){
     {
         pTrig=*it;
         float fDistance=gg::DIST(pTrig->vPos,GetPosition());//funcion calcular la distancia
-        //// std::cout << "radio" <<pTrig->fRadius<< '\n';
-        //// std::cout << "fDistance" <<fDistance<< '\n';
         float distancia=pTrig->fRadius;
         if(fDistance > (pTrig->fRadius)){
             //ejecutar ontriggerExit
-            //// std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
-            //// std::cout << "peta" <<nCAgentID<< '\n';
             onTriggerExit(pTrig);
 
             //ejecutar ontriggerExit
             holiiis.erase(it);
         }else{
-            //// std::cout << "peta" <<nCAgentID<< '\n';
             onTriggerStay(pTrig);
         }
         it++;
 
     }
-
-    //// std::cout << "sale updatetrig" <<nCAgentID<< '\n';
-
-
 }
 
 bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
@@ -102,14 +92,10 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
     //oManager->checkEvent(nCAgentID,mes);
 
 
-    //// std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
     if(_pRec->eTriggerType & kTrig_Explosion){
-        //// std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
         //Message mes(gg::M_XPLOTATO,_pRec);
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
-            //// std::cout << "core si" << '\n';
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
-            //// std::cout << "core no" << '\n';
             return true;
 
         }
@@ -188,15 +174,12 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
     else if(_pRec->eTriggerType & kTrig_EnemyNear){
         //CAIEnem->enemyseen();
         if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-            //// std::cout << "core si" << '\n';
             static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_NEAR(_pRec);
-            //// std::cout << "core no" << '\n';
             return true;
 
         }
     }
     else if(_pRec->eTriggerType & kTrig_Shoot){
-        // gg::cout(std::to_string(_pRec->eTriggerType)+" & "+std::to_string(GetTriggerFlags()));
         gg::cout("PUM!", gg::Color(255, 0, 0, 1));
 
         // oManager->removeEntity(nCAgentID);
@@ -204,20 +187,14 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
 
     }else if(_pRec->eTriggerType & kTrig_Senyuelo){
         if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-            //// std::cout << "core si" << '\n';
             static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_SENYUELO(_pRec);
-            //// std::cout << "core no" << '\n';
             return true;
 
         }
     }else if(_pRec->eTriggerType & kTrig_Aturd){
-        //// std::cout << "triger entrando" << '\n';
-            //// std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
             //Message mes(gg::M_XPLOTATO,_pRec);
             if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-                //// std::cout << "core si" << '\n';
                 static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_ATURD();
-                //// std::cout << "core no" << '\n';
                 return true;
 
             }
@@ -227,13 +204,9 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
 }
 
 void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
-    //// std::cout << "OnTriggerStay  entra" <<nCAgentID<< '\n';
-    //// std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
     ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
     if(_pRec->eTriggerType & kTrig_Explosion){
-        //// std::cout << "agente" << nCAgentID << "con triger"<< GetTriggerFlags()<<'\n';
-        //// std::cout << "usando handler despues" << nCAgentID<< '\n';
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
 
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
@@ -279,28 +252,21 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
         // No ha podido cogerlo
         gg::cout(" -- Can't pick object: "+std::to_string(id)+" -> FULL POCKETS");
     }
-    //// std::cout << "OnTriggerStay  sale" <<nCAgentID<< '\n';
 
 }
 void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
-    //// std::cout << "OnTriggerExit ni idea" <<nCAgentID<< '\n';
     ObjectManager* oManager = Singleton<ObjectManager>::Instance();
 
     if(_pRec->eTriggerType & kTrig_Senyuelo){
         if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-            //// std::cout << "core si" << '\n';
             static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_SENYUELO_END();
-            //// std::cout << "core no" << '\n';
 
 
         }
     }/*else if(_pRec->eTriggerType & kTrig_Aturd){
-            //// std::cout << "OnTrigger explosion" <<nCAgentID<< '\n';
             //Message mes(gg::M_XPLOTATO,_pRec);
             if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-                //// std::cout << "core si" << '\n';
                 static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_ATURD_END();
-                //// std::cout << "core no" << '\n';
 
             }
         }*/
@@ -316,7 +282,6 @@ void CAgent::deletetrig(TriggerRecordStruct* _pRec){
     for(unsigned long i=0; i<CAgent::hola.size();++i)
     {
         pAgent=*it2;
-        //// std::cout << "entra delete" <<pAgent->nCAgentID<< '\n';
 
         it=pAgent->holiiis.begin();
         TriggerRecordStruct* pTrig=NULL;
@@ -325,7 +290,6 @@ void CAgent::deletetrig(TriggerRecordStruct* _pRec){
             pTrig=*it;
             if(pTrig==_pRec){
 
-                //// std::cout << "OnTriggerExit ni idea" << '\n';
                 pAgent->onTriggerExit(_pRec);
                 pAgent->holiiis.erase(it);
                 break;
@@ -340,13 +304,9 @@ void CAgent::deletetrig(TriggerRecordStruct* _pRec){
 
 }
 bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
-    //// std::cout << "numero de trigs "<< holiiis.size() << '\n';
-
-    // // std::cout << "Id agente:"<<nCAgentID << " ha entrado"<<std::endl;
     std::list <TriggerRecordStruct*>::iterator it;
     it=holiiis.begin();
     TriggerRecordStruct* pTrig=NULL;
-    //// std::cout << "entra handler" <<nCAgentID<< '\n';
     for(unsigned long i=0; i<holiiis.size();++i)
     {
         pTrig=*it;
@@ -358,8 +318,6 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
     }
 
     //MessageXplotato* exp =(MessageXplotato*) _pRec->data;
-    //// std::cout << "hanlder" << '\n';
-    //// std::cout << exp->damage << '\n';
 
     bool res=onTriggerEnter(_pRec);
     if(res)

@@ -23,32 +23,6 @@
 #define MOVEMENT_SPEED 1.f
 
 
-//Funciones de Fran Gallego para imprimir memoria por consola ==============================¬
-//                                                                                          |
-//====================================================================================      |
-// Pretty print a 2-digits hexadecimal value                                                |
-//====================================================================================      |
-/*
-void printHexVal(uint16_t val) {
-   // std::cout << std::hex << std::setw(2) << std::setfill('0') << val;
-}
-
-//====================================================================================
-// Print a memory slice as raw bytes
-//====================================================================================
-void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
-   for(uint16_t l=0; l < lines; ++l) {
-      // std::cout << reinterpret_cast<uint16_t*>(p) << " ";
-      for(uint16_t u=0; u < linebytes; ++u) {
-         printHexVal(*p);
-         ++p;
-         // std::cout << " ";
-      }
-      // std::cout << "\n";
-   }
-}
-*/
-//============================================================================================
 
 PauseState::PauseState():cont(){
     Engine = Singleton<GameEngine>::Instance();

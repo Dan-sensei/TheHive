@@ -19,6 +19,7 @@ void Blackboard::ClearGlobalBlackboard(){
         delete it->second;
         ++it;
     };
+
 }
 
 void Blackboard::setData(const std::string Target, BData* Data){

@@ -5,7 +5,6 @@
 
 irr::IrrlichtDevice* ScreenConsole::IrrlichtDevice = nullptr;
 void ScreenConsole::setprogress(int hab,float prog){
-    //// std::cout << "entra en :" <<prog<< '\n';
     if(hab==0){
         perc=1-prog;
 
@@ -19,7 +18,6 @@ void ScreenConsole::setprogress(int hab,float prog){
     }
 }
 void ScreenConsole::setvida(float _vida){
-    // std::cout << "hacemos algo" << '\n';
 vida=_vida;
 }
 void ScreenConsole::setbullet(int tipo,int balas){

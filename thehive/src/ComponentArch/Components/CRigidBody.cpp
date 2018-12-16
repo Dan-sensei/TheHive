@@ -33,11 +33,6 @@ CRigidBody::CRigidBody(
         }
 
         btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
-        // std::cout << "Bvhs:             " << fileLoader->getNumBvhs() << '\n';
-        // std::cout << "Constraints:      " << fileLoader->getNumConstraints() << '\n';
-        // std::cout << "TriangleInfoMaps: " << fileLoader->getNumTriangleInfoMaps() << '\n';
-        // std::cout << "RigidBodies:      " << fileLoader->getNumRigidBodies() << '\n';
-        // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
         body = btRigidBody::upcast(obj);
         shape = body->getCollisionShape();
 
@@ -166,12 +161,6 @@ CRigidBody::~CRigidBody() {
 
     // --------------------
     // Delete de todo lo que he creado con el loadfile
-    // std::cout << "BEFORE----------" << '\n';
-    // std::cout << "Bvhs:             " << fileLoader->getNumBvhs() << '\n';
-    // std::cout << "Constraints:      " << fileLoader->getNumConstraints() << '\n';
-    // std::cout << "TriangleInfoMaps: " << fileLoader->getNumTriangleInfoMaps() << '\n';
-    // std::cout << "RigidBodies:      " << fileLoader->getNumRigidBodies() << '\n';
-    // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
 
     if(fileLoader){
         fileLoader->deleteAllData();
@@ -224,7 +213,6 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
 gg::EMessageStatus CRigidBody::MHandler_DOACTION(Message _mes){
     int *action = static_cast<int*>(_mes.mData);
-    // gg::cout("ACTION: "+std::to_string(*action));
 
     // Mapa con funciones de update
     EnumActionType eAction = static_cast<EnumActionType>(*action);
@@ -354,32 +342,6 @@ void CRigidBody::updateCTransformPosition(){
     if(cTransform){
         cTransform->setPosition(getBodyPosition());
 
-        // if(getEntityID()==11){
-        //     gg::cout(
-        //         " -- POS-T -> ("+std::to_string(cTransform->getPosition().X)+
-        //         ","+std::to_string(cTransform->getPosition().Y)+
-        //         ","+std::to_string(cTransform->getPosition().Z)+")"
-        //     );
-        //     gg::cout(
-        //         " -- POS-B -> ("+std::to_string(trans.getOrigin().getX())+
-        //         ","+std::to_string(trans.getOrigin().getY())+
-        //         ","+std::to_string(trans.getOrigin().getZ())+")"
-        //     );
-        // }
-
-
-        // if(body->getInvMass()){
-        //     btQuaternion rot = trans.getRotation();
-        //     float _X, _Y, _Z;
-        //     rot.getEulerZYX(_Z,_Y,_X);
-        //     cTransform->setRotation(
-        //         gg::Vector3f(
-        //             static_cast<float>(_X/PI*180),
-        //             static_cast<float>(_Y/PI*180),
-        //             static_cast<float>(_Z/PI*180)
-        //         )
-        //     );
-        // }
     }
 }
 
@@ -399,31 +361,15 @@ void CRigidBody::Upd_MoverObjeto(){
         }
         else{
             // Update del clock
-            // gg::cout(" -- CLOCK DUR -> "+std::to_string(clock->getActualTime()));
             if(body->isKinematicObject()){
                 Blackboard b;
                 BRbData *data = static_cast<BRbData*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())));
 
-                // gg::cout(
-                //     "("+std::to_string(rbS.vX)+
-                //     ","+std::to_string(rbS.vY)+
-                //     ","+std::to_string(rbS.vZ)+")"
-                // );
 
                 gg::Vector3f offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
 
                 setOffsetBodyPosition(offset);
 
-                // btTransform trans;
-                // body->getMotionState()->getWorldTransform(trans);
-                //
-                // trans.setOrigin(btVector3(
-                //     trans.getOrigin().getX()+data->getRbData().vX,
-                //     trans.getOrigin().getY()+data->getRbData().vY,
-                //     trans.getOrigin().getZ()+data->getRbData().vZ
-                // ));
-                //
-                // body->getMotionState()->setWorldTransform(trans);
             }
         }
     }

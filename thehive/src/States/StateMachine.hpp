@@ -19,7 +19,7 @@ class StateMachine{
 		void prueba();
 
 		State* GetActiveState();
-
+		void clin();
 	private:
 		int cantidad;
 		std::stack<State*> states;

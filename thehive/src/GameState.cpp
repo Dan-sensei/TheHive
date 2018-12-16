@@ -28,7 +28,6 @@
 //====================================================================================      |
 /*
 void printHexVal(uint16_t val) {
-   // std::cout << std::hex << std::setw(2) << std::setfill('0') << val;
 }
 
 //====================================================================================
@@ -36,13 +35,10 @@ void printHexVal(uint16_t val) {
 //====================================================================================
 void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
    for(uint16_t l=0; l < lines; ++l) {
-      // std::cout << reinterpret_cast<uint16_t*>(p) << " ";
       for(uint16_t u=0; u < linebytes; ++u) {
          printHexVal(*p);
          ++p;
-         // std::cout << " ";
       }
-      // std::cout << "\n";
    }
 }
 */
@@ -67,7 +63,6 @@ GameState::~GameState(){
 }
 
 void GameState::Init(){
-    std::cout << "empezando init" << '\n';
     Singleton<ScreenConsole>::Instance()->InitHUD();
 
     auto sF = Singleton<Factory>::Instance();
@@ -177,51 +172,37 @@ void GameState::Init(){
 
 
 
-    // std::cout << "BEGIN GAME LOOP" << '\n';
-    //gg::cout("Testing", gg::Color(255, 0, 0, 1));
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
     //while(Engine->isWindowOpen()) {
     //    update();
 
     //}
-    std::cout << "terminando init" << '\n';
 
 }
 void GameState::Update(float dt){
-    std::cout << "update empezando" << '\n';
     world->stepSimulation(1.f / 11.f, 6);
-    std::cout << "si 1" << '\n';
     EventSystem->Update();
-    std::cout << "si 2" << '\n';
 
     Engine->BeginDro();
-    std::cout << "si 3" << '\n';
     Manager->sendMessageToAllEntities(gg::M_UPDATE);
-    std::cout << "si 4" << '\n';
     Engine->Dro();
-    std::cout << "si 5" << '\n';
     Engine->DisplayFPS();
 
-    std::cout << "si 6" << '\n';
     Singleton<ggDynWorld>::Instance()->debugDrawWorld();
-    std::cout << "si 7" << '\n';
     Singleton<Pathfinding>::Instance()->DroNodes();
-    std::cout << "si 8" << '\n';
     Singleton<ScreenConsole>::Instance()->DisplayDebug();
-    std::cout << "si 9" << '\n';
     Singleton<ScreenConsole>::Instance()->DisplayHUD();
-    std::cout << "si 10" << '\n';
 
     Engine->EndDro();
-    std::cout << "update terminado" << '\n';
 }
 
  void GameState::Resume(){
 
 }
+
 void GameState::CLIN(){
-    Blackboard::ClearGlobalBlackboard();
+    //Blackboard::ClearGlobalBlackboard();
     Manager->clin();// este esta bien creo
     world->clear();//clean es el vuestro// clear solo vacia los rigidbody sin quitar las fisicas
     //EventSystem->clin();

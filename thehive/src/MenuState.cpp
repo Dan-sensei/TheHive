@@ -81,7 +81,6 @@ void MenuState::Resume() {
 
 //}
 void MenuState::Update(float dt){
-//std::cout << "haciendo" << '\n';
     Engine->BeginDro();
     Engine->Dro();
     cont.update();

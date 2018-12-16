@@ -30,13 +30,11 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::clin(){
-    // std::cout << "Destruyendo todos los componentes..." << '\n';
     uint8_t i = gg::NUM_COMPONENTS;
     while (i--){
         std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
 
         while(it!=TypeToComponentMap[i].end()){
-            // std::cout << "  -Eliminando componente " << (int)i << " de entidad " << it->first << '\n';
             //it->second->~IComponent();
             //memory.deallocate(it->second);
             delete it->second;
@@ -102,7 +100,6 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
     if(foundComponent == TypeToComponentMap[type].end())
         return;
 
-    // std::cout << "B Component " << type << '\n';
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
 
@@ -110,7 +107,6 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);
     sendMessageToEntity(EntityID, recalculatePointersToAnotherComponents);
-    // std::cout << "Deleting" << '\n';
 }
 
 void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID){
@@ -132,36 +128,24 @@ void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType
 
 void ObjectManager::sendMessageToAllEntities(const Message &m){
     // We iterate over every component in the map that expects to receive that kind of message
-std::cout << "aqui estamos" << '\n';
     std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
-    std::cout << "aqui estamos 1" << '\n';
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
-    std::cout << "aqui estamos 2" << '\n';
     // First we search for a component type that expects that message type
     int i=0;
     while(componentsIterator != MessageToListeningComponents[m.mType].end()){
-        std::cout << "contador" <<i<< '\n';
-        std::cout << "tipo" <<m.mType<< '\n';
         i++;
-        std::cout << "aqui estamos 3" << '\n';
 
         //  Found one!
         //  Found one!
-        std::cout << "aqui estamos 4" << '\n';
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
-        std::cout << "aqui estamos 5" << '\n';
         //  Now we iterate over every entity that contains that component type
         while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
-            std::cout << "aqui estamos 6" << '\n';
             auto current = entitiesIterator;
-            std::cout << "aqui estamos 7" << '\n';
             ++entitiesIterator;
             //  We process the message
-            std::cout << "aqui estamos 8" << '\n';
             current->second->processMessage(m);
         }
 
-        std::cout << "aqui estamos 9" << '\n';
         ++componentsIterator;
     }
 }

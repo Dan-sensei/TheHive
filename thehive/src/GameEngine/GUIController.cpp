@@ -65,7 +65,6 @@ void GUIController::update(){
         if(!enter_pulsado){
             enter_pulsado=true;
             id=Singleton<ScreenConsole>::Instance()->Pulsarboton(cursorpos);
-            //std::cout << "he pulsado boton" <<id_pul<< '\n';
 
         }
     }else{

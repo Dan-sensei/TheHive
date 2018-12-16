@@ -93,7 +93,7 @@ void ggDynWorld::clear(){
 		delete obj;
 	}
     collisionShapes.clear();
-    
+
 
 }
 void ggDynWorld::clean(){
@@ -189,8 +189,6 @@ void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f
     if(!raycastCollisionBody)
         return;
 
-    // std::cout << "PIM!" << '\n';
-    // std::cout << force.X << "," << force.Y << "," << force.Z << '\n';
     raycastCollisionBody->applyCentralForce(btVector3(force.X,force.Y,force.Z));
 
     // Debe de haber alguna forma de igualar bodys para saber el CRigidBody que estamos echando atras

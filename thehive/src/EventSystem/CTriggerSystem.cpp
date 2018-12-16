@@ -33,8 +33,6 @@ void CTriggerSystem::PulsoTrigger(
     float _fRadius,
     TData _data)
     {
-        // std::cout << "triger entrando 1" << '\n';
-        //// std::cout << "triger entrando 12" << '\n';
         CAgent* pAgent=NULL;
         float fDistance=0.f;
 
@@ -43,8 +41,6 @@ void CTriggerSystem::PulsoTrigger(
         it2=CAgent::hola.begin();
         for(unsigned long i=0; i<CAgent::hola.size();++i,it2++){
             pAgent=*it2;
-            // std::cout << "agente" <<pAgent->getEntityID()<< '\n';
-            // std::cout << "trig" <<pAgent->GetTriggerFlags()<< '\n';
 
             //Does agent respond to trigger?
             if(!(pRec.eTriggerType & pAgent->GetTriggerFlags()))
@@ -88,7 +84,6 @@ unsigned long CTriggerSystem::RegisterTriger(
 
     //MessageXplotato* exp =(MessageXplotato*) pTriggerRecord->data;
     //MessageXplotato* exp =(MessageXplotato*) pTriggerRecord->data;
-    //// std::cout <<  exp->damage<< '\n';
 
     lastIdGiven++;
 
@@ -175,8 +170,6 @@ void CTriggerSystem::Update()
     //if(pAgent->SetNextTriggerUpdate(nCurTime))...
     //pAgent->SetNextTriggerUpdate(nCurTime);//usado para controlar el ratio de update
     //llop thru exixting trigger records
-    //// std::cout << "agente" << pAgent->nCAgentID << "("<<pAgent->GetPosition().X<<"," <<pAgent->GetPosition().Y<<","<<pAgent->GetPosition().Z<<")"<< '\n';
-    //// std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
 
 
     for(it=m_mapTriggerMap.begin();
@@ -184,7 +177,6 @@ void CTriggerSystem::Update()
     {
 
       pRec=it->second;
-     // // std::cout << "trigger" << pRec->idSource << "("<<pRec->vPos.X<<"," <<pRec->vPos.Y<<","<<pRec->vPos.Z<<")"<< '\n';
 
       //Does agent respond to trigger?
       if(!(pRec->eTriggerType & pAgent->GetTriggerFlags()))
@@ -202,7 +194,6 @@ void CTriggerSystem::Update()
       if(pAgent->HandleTrig(pRec))
       {
 
-          //// std::cout << "agente" << pAgent->nCAgentID << "con triger"<< pAgent->GetTriggerFlags()<<'\n';
 
         //Listen to highest priority trig at any instant
         break;

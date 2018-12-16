@@ -48,7 +48,6 @@
 
     }
     void Hability2::Hab1_terminate(){
-        //// std::cout << "update" << '\n';
 
         CPlayerController* cPlayer = static_cast<CPlayerController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::PLAYERCONTROLLER, id));
         cPlayer->debuf();

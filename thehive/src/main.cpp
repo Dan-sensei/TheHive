@@ -11,10 +11,8 @@
 //        Dummy(uint16_t _u, uint8_t _x, uint8_t _y)
 //        :uee(_u), x(_x), y(_y)
 //        {
-//            // std::cout << "Construyendo Dummy \n";
 //        };
 //        ~Dummy(){
-//            // std::cout << "Destruyendo Dummy \n";
 //        };
 //    private:
 //        uint16_t uee;
