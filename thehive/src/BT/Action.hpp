@@ -65,7 +65,10 @@ class Action : public Behavior {
         void alienInPause();
 
         void modifyImAttacking(bool);
+        void setOffsetAliensAttacking(int);
         CAIEnem* yo;
+
+        static int aliensAttacking;
 
    private:
         CRigidBody       *cRigidBody;
@@ -83,6 +86,6 @@ class Action : public Behavior {
         // Variables del BT
         int cont_hit;
         int cont_pause;
-        static int aliensAttacking;
 };
+
 #endif

@@ -384,7 +384,7 @@
         Action* a13= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando
 
         Action* a14= new Action(X_METRES_PLAYER,data,yo);// esta a x metros o menos del jugador
-        Action* a15= new Action(RONDAR_PLAYER,data,yo);//rodar jugador
+        Action* a15= new Action(RONDAR_PLAYER,data,yo);//rondar jugador
 
         Action* a16= new Action(GIRAR,data,yo);//no esta en la ruta
         Action* a17= new Action(GIRAR,data,yo);//calcular ruta a bloquear
@@ -394,18 +394,19 @@
 
         Action* a20= new Action(MOVE_TO_PLAYER,data,yo);//moverse en direccion al jugador
 
-
+        // <NO IMPLEMENTADO>
         Action* a21= new Action(PLAYER_SEEN,data,yo);//estoy escuhando al jugador
         Action* a22= new Action(PLAYER_SEEN,data,yo);//he visto al jugador
         Action* a23= new Action(IN_LAST_POS_KWON,data,yo);//no estoy en la zona
         Action* a24= new Action(MOVE_TO_LAST_POS_KWON,data,yo);//moverse a la zona
         Action* a25= new Action(GIRAR,data,yo);//patrullar la zona
-        
+
         Action* a26= new Action(MOVE_AROUND,data,yo);//andar random
         Action* a27= new Action(GIRAR,data,yo);//animal en rango
         Action* a28= new Action(GIRAR,data,yo);//no hay mas de 3 comiendo
         Action* a29= new Action(GIRAR,data,yo);//mover
         Action* a30= new Action(GIRAR,data,yo);//comer
+        // </NO IMPLEMENTADO>
 
         m_Children.push_back(a1);
         m_Children.push_back(a2);

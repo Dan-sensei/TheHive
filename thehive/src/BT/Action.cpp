@@ -1,7 +1,7 @@
 #include "Action.hpp"
 
 #define MAX_AI_SPEED            2
-#define MAX_ALIENS_ATTACKING    2
+#define MAX_ALIENS_ATTACKING    1
 
 int Action::aliensAttacking = 0;
 
@@ -158,7 +158,7 @@ void Action::rond_seny(){
 
 void Action::rond_jugador(){
     if(s!=BH_RUNNING){
-        // gg::cout("RONDANDO JUGADOR");
+        gg::cout("RONDANDO JUGADOR");
         yo->rondacion_cont=0;
         s=BH_RUNNING;
     }
@@ -174,7 +174,7 @@ void Action::rond(bool _b){
     float cont= yo->rondacion_cont;
     cont++;
 
-    if(cont>50 || !_b){
+    if(cont>50){
         s=BH_SUCCESS;
         return;
     }
@@ -232,17 +232,17 @@ void Action::hit(){
     if(s!=BH_RUNNING){
         cont_hit = 0;
         modifyImAttacking(true);
+
+        uint16_t hero = manager->getHeroID();
+        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
+        ht->quitarvida(0.5+(yo->getRage()/2));
+
         s = BH_RUNNING;
     }
 
     cont_hit++;
     if(cont_hit > 50){
-        // Cuando ataque checkear que tambien este a rango
-        uint16_t hero = manager->getHeroID();
-
-        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
-        ht->quitarvida(0.5+(yo->getRage()/2));
-
+        modifyImAttacking(false);
         s = BH_SUCCESS;
     }
 }
@@ -267,18 +267,19 @@ void Action::isThereSomeAlienDead(){
 }
 
 void Action::moreRage(){
+    gg::cout("RAGE INCREASES");
     yo->upgradeRage();
     s = BH_SUCCESS;
 }
 
 void Action::checkAliensAttacking(){
-    gg::cout("ALIENS ATACANDO:"+std::to_string(aliensAttacking));
+    // gg::cout("ALIENS ATACANDO:"+std::to_string(aliensAttacking));
     if(aliensAttacking>=MAX_ALIENS_ATTACKING){
-        // gg::cout(" --1");
+        // gg::cout(" -- MAX ALIENS ATTACKING");
         s = BH_SUCCESS;
     }
     else{
-        // gg::cout(" --2");
+        // gg::cout(" -- ALIENS CAN ATTACK");
         s = BH_FAILURE;
     }
 
@@ -345,9 +346,9 @@ void Action::player_vistocono(){
 
 void Action::move_player(){
     if(s!=BH_RUNNING){
-        modifyImAttacking(true);
         s=BH_RUNNING;
-        //// std::cout << "iniciando move PLAYER" << '\n';
+        // gg::cout(" --- MOVE TO PLAYER --- ");
+        modifyImAttacking(true);
     }
     CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,data->getBData("id2")->getInt()));
     yo->destino = cTransform2->getPosition();
@@ -416,4 +417,8 @@ void Action::modifyImAttacking(bool _b){
             yo->setImAttacking(true);
         }
     }
+}
+
+void Action::setOffsetAliensAttacking(int _i){
+    aliensAttacking += _i;
 }

@@ -5,6 +5,8 @@
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
 #include <ComponentArch/Components/CTransform.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
+
 #include <GameAI/NavmeshStructs.hpp>
 #include <Util.hpp>
 #include <stack>
@@ -12,10 +14,7 @@
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
-#include "CTransform.hpp"
 #include <Singleton.hpp>
-
-//#include "CRigidBody.hpp"
 
 
 class CVida : public IComponent {

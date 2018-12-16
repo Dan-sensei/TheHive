@@ -137,7 +137,15 @@ void CAgent::ENTER_func_kTrig_none        (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_Pickable    (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){}
-void CAgent::ENTER_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){}
+
+void CAgent::ENTER_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){
+    if(_pRec->eTriggerType & kTrig_DeadAlien){
+        CAIEnem *AI = static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,getEntityID()));
+        if(AI && !AI->getCloserAllyIsDead()){
+            AI->setCloserAllyIsDead(true);
+        }
+    }
+}
 
 void CAgent::ENTER_func_kTrig_Explosion   (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Explosion){
@@ -203,15 +211,7 @@ void CAgent::STAY_func_kTrig_EnemyNear   (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Shoot       (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Senyuelo    (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Aturd       (TriggerRecordStruct *_pRec){}
-
-void CAgent::STAY_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){
-    if(_pRec->eTriggerType & kTrig_DeadAlien){
-        CAIEnem *AI = static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,getEntityID()));
-        if(AI && !AI->getCloserAllyIsDead()){
-            AI->setCloserAllyIsDead(true);
-        }
-    }
-}
+void CAgent::STAY_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){}
 
 void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Gunfire){
