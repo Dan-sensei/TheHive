@@ -113,6 +113,8 @@ CRigidBody::CRigidBody(
     }
 
     body->setAngularFactor(btVector3(0,0,0));
+    SaveCurrentStatus();
+    SavePreviousStatus();
 }
 
 CRigidBody::CRigidBody(
@@ -157,6 +159,8 @@ CRigidBody::CRigidBody(
 
     // Add the body to the dynamics world
     world->addRigidBody(body);
+    SaveCurrentStatus();
+    SavePreviousStatus();
 }
 
 CRigidBody::~CRigidBody() {

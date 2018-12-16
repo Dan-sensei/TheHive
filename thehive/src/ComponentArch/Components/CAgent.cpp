@@ -63,8 +63,7 @@ void CAgent::updatetrig(){
     std::list <TriggerRecordStruct*>::iterator it;
     it=holiiis.begin();
     TriggerRecordStruct* pTrig=NULL;
-    for(unsigned long e=0; e<holiiis.size();++e)
-    {
+    for(unsigned long e=0; e<holiiis.size();++e) {
         pTrig=*it;
         float fDistance=gg::DIST(pTrig->vPos,GetPosition());//funcion calcular la distancia
         //// std::cout << "radio" <<pTrig->fRadius<< '\n';
@@ -476,4 +475,3 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
     gg::cout(" - - RANGE= "     + std::to_string(rng));
     gg::cout(" ------------------ ");
 }
-

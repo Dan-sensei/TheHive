@@ -109,6 +109,7 @@ void Game::RUN(){
         "assets/Models/ModelsForEvents/door1.bullet",
         "assets/Textures/Domino.jpg",
         gg::Vector3f(mapPos.X+350, mapPos.Y-10, mapPos.Z+204));
+    std::cout << "KEY" << '\n';
     key = sF->createPickableItem(gg::Vector3f(1624, 120, 145));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+345, mapPos.Y-13, mapPos.Z+215),idEx,gg::Vector3f(0,0.4,0),3200);
 
@@ -193,18 +194,19 @@ void Game::RUN(){
             Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
             Manager->FixedUpdateAll();
             Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
-            world->stepSimulation(1/UPDATE_STEP*2, 10);
+            world->stepSimulation(1/UPDATE_STEP*2.5, 10);
             Accumulator -= 1/UPDATE_STEP;
             ++UPDATE;
         }
         ++DRO;
+
+        EventSystem->Update();
 
         //  Interpolation tick!
         Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
 
-        EventSystem->Update();
 
         Engine->BeginDro();
         Manager->UpdateAll();
@@ -219,7 +221,6 @@ void Game::RUN(){
         Singleton<ScreenConsole>::Instance()->DisplayDebug();
 
         Engine->EndDro();
-        std::cout << DeltaTime << '\n';
     }
     std::cout << "1/60 = " << 1/60.F << '\n';
     std::cout << "UPDTES " << UPDATE  << '\n';

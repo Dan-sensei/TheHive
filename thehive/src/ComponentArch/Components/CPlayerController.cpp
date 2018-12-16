@@ -20,8 +20,8 @@
 #define RELOAD_KEY          gg::GG_R
 #define WEAPON_KEY          gg::GG_Q
 
-#define FORCE_FACTOR        700.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*5.f
+#define FORCE_FACTOR        500.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*4.f
 #define DASH_FORCE_FACTOR   FORCE_FACTOR/50.f
 
 #define MULT_RUN_FACTOR     1.5
@@ -61,6 +61,8 @@ void CPlayerController::Init(){
 
     // Array de items con sus posiciones a -1
     // Ya que por ahora no tiene ningún item
+
+    items.fill(0);
 }
 
 
@@ -206,7 +208,7 @@ void CPlayerController::FixedUpdate(){
         cRigidBody->applyCentralForce(force);                       // Accelerate!
     }
     else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
-        force = cRigidBody->getVelocity() * gg::Vector3f(-0.1, 0, -0.1) * FORCE_FACTOR;
+        force = cRigidBody->getVelocity() * gg::Vector3f(-0.2, 0, -0.2) * FORCE_FACTOR;
         cRigidBody->applyCentralForce(force);                       // Stopping!
     }
     else {                                                          // If we reach here, any key is pressed and the speed is below 2
