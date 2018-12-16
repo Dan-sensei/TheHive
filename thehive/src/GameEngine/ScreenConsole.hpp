@@ -19,6 +19,9 @@ class ScreenConsole{
         void setprogress(int hab,float _prog);
         void setvida(float _vida);
         void setbullet(int tipo,int balas);
+        void setVolDialogo(int _vol);
+        void setVolEffect(int _vol);
+        void setVolMusic(int _vol);
         void DisplayDebug();
         void DisplayHUD();
         void DisplayMenu();
@@ -34,6 +37,10 @@ class ScreenConsole{
         int InitMenu6();
         int InitMenu7();
         int InitPause();
+        //int InitPause2();
+        //int InitPause3();
+        //int InitPause4();
+        //int InitPause5();
 
 
         void AddTextToBuffer(const std::string &Text, const gg::Color &color);
@@ -45,6 +52,9 @@ class ScreenConsole{
         float porc_alto(float x);
         float porc_ancho(float x);
 
+        int VolDialogo;
+        int VolEffect;
+        int VolMusic;
         int balaP;
         int balaS;
         float vida;
@@ -80,7 +90,7 @@ class ScreenConsole{
             float height;
         };
         std::list<BufferText> BUFFER;
-        std::list<StaticText> TEXT_BUFFER;
+        std::vector<StaticText> TEXT_BUFFER;
         std::vector<irr::gui::IGUIButton*> Botones;
         std::map <std::string,ImageHUD>IMAGE_BUFFER;
 };

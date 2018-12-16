@@ -20,6 +20,15 @@ void ScreenConsole::setprogress(int hab,float prog){
 void ScreenConsole::setvida(float _vida){
 vida=_vida;
 }
+void ScreenConsole::setVolDialogo(int _vol){
+VolDialogo=_vol;
+}
+void ScreenConsole::setVolEffect(int _vol){
+VolEffect=_vol;
+}
+void ScreenConsole::setVolMusic(int _vol){
+VolMusic=_vol;
+}
 void ScreenConsole::setbullet(int tipo,int balas){
     if(tipo==0){
         balaP=balas;
@@ -37,8 +46,6 @@ float ScreenConsole::porc_ancho(float x){
 }
 ScreenConsole::ScreenConsole(){
     font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
-    //IrrlichtDevice->getGUIEnvironment()->a
-    //IGUIEnvironment* env = device->getGUIEnvironment();
     irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
 
     ancho=(driver->getScreenSize().Width/2);
@@ -48,10 +55,12 @@ ScreenConsole::ScreenConsole(){
 int ScreenConsole::InitPause(){
     CLINMenu();
     addButton(45,50,55,59,CONTINUE,"Continuar",true);
-    addButton(45,60,55,69,DIFF2,"Ni puta idea");
+    addButton(45,60,55,69,GOOPTIONS,"Opciones");
     addButton(45,70,55,79,RETURNMENU,"Salir al menu");
     return 3;
+
 }
+//Main Menu
 int ScreenConsole::InitMenu(){
     CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(0,0,0,1));
@@ -96,7 +105,7 @@ int ScreenConsole::InitMenu4(){
     addButton(45,60,55,69,GOMUSIC,"Audio");
     addButton(45,70,55,79,GOCONTROLLS,"Controlls");
 
-    addButton(65,80,70,89,GOMAIN,"Back");
+    addButton(65,80,70,89,CONTINUE,"Back");
     return 4;
 }
 //graficos
@@ -104,26 +113,35 @@ int ScreenConsole::InitMenu5(){
     CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Video"),gg::Color(0,0,0,1));
 
-    addButton(65,80,70,89,GOOPTIONS,"Back");
+    addButton(65,80,70,89,GOINITOPTIONS,"Back");
     return 1;
 }
 //sonido
 int ScreenConsole::InitMenu6(){
     CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Audio"),gg::Color(0,0,0,1));
-    //addButton(45,50,55,59,GOVIDEO,"Dialogues");
-    //addButton(45,60,55,69,GOMUSIC,"Music");
-    //addButton(45,70,55,79,GOCONTROLLS,"Effects");
-    addButton(65,80,70,89,GOOPTIONS,"Back");
-    return 1;
+    AddStaticTextToBuffer(porc_ancho(30),porc_alto(51),std::string("Dialogues"),gg::Color(0,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(40),porc_alto(51),std::to_string(VolDialogo),gg::Color(0,0,0,1));
+    addButton(50,50,52,55,MOREDIALOD,"+");
+    addButton(53,50,55,55,LESSDIALOD,"-");
+    AddStaticTextToBuffer(porc_ancho(30),porc_alto(57),std::string("Music"),gg::Color(0,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(40),porc_alto(57),std::to_string(VolMusic),gg::Color(0,0,0,1));
+    addButton(50,56,52,61,MOREMUSIC,"+");
+    addButton(53,56,55,61,LESSMUSIC,"-");
+    AddStaticTextToBuffer(porc_ancho(30),porc_alto(63),std::string("Effects"),gg::Color(0,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(40),porc_alto(63),std::to_string(VolEffect),gg::Color(0,0,0,1));
+    addButton(50,62,52,67,MOREEFFECT,"+");
+    addButton(53,62,55,67,LESSEFFECT,"-");
+    addButton(65,80,70,89,GOINITOPTIONS,"Back");
+    return 7;
 }
 //controles
 int ScreenConsole::InitMenu7(){
     CLINMenu();
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Controlls"),gg::Color(0,0,0,1));
 
-    addButton(65,80,70,89,GOOPTIONS,"Back");
-return 1;
+    addButton(65,80,70,89,GOINITOPTIONS,"Back");
+    return 1;
     //IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(porc_ancho(65),porc_alto(80),porc_ancho(70),porc_alto(89)), 0, 2);
     //AddStaticTextToBuffer(porc_ancho(65.5),porc_alto(83),std::string("Back"),gg::Color(0,0,0,1));
 }
@@ -176,6 +194,9 @@ void ScreenConsole::InitHUD(){
     balaP=0;
     balaS=0;
     vida=1;
+    VolDialogo=50;
+    VolEffect=50;
+    VolMusic=50;
 
 }
 void ScreenConsole::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){

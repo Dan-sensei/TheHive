@@ -16,6 +16,14 @@ enum EnumButtonType{
     DIFF3,
     CONTINUE,
     RETURNMENU,
+    GOINITOPTIONS,
+    GOPAUSE,
+    MOREDIALOD,
+    LESSDIALOD,
+    MOREMUSIC,
+    LESSMUSIC,
+    MOREEFFECT,
+    LESSEFFECT,
     Butn
 };
 

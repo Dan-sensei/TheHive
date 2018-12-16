@@ -11,7 +11,7 @@
 #include <GameEngine/EnumButtonType.hpp>
 #include <GameEngine/KEYCODES.hpp>
 #include <States/StateMachine.hpp>
-#include <GameState.hpp>
+
 
 class GameEngine;
 
@@ -23,6 +23,12 @@ class GUIController{
         void setposmax(int p);
     private:
         int dif;
+        int dialogue;
+        int music;
+        int effect;
+        int dialogue_max;
+        int music_max;
+        int effect_max;
         int cursorpos;
         int posmax;
         bool arriba_pulsado;
@@ -45,6 +51,18 @@ void dif2();
 void dif3();
 void Continue();
 void ReturnMain();
+void PgotoOptions();
+void PgotoVideo();
+void PgotoMusic();
+void PgotoControlls();
+void gotoPause();
+void moreDialog();
+void lessDialog();
+void moreMusic();
+void lessMusic();
+void moreEffect();
+void lessEffect();
+void initOptions();
 
 
         GameEngine* Engine;
