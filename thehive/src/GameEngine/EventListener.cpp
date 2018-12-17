@@ -1,13 +1,17 @@
 #include "EventListener.hpp"
 #include <cstdint>
 #include <iostream>
-#include <GameEngine/ScreenConsole.hpp>
 
 EventListener::EventListener(){
+    IdButon=-1;
     uint16_t i = irr::KEY_KEY_CODES_COUNT;
     while(i--)  keyMap[i] = false;
 }
-
+int EventListener::checkbutton(){
+    int aux=IdButon;
+    IdButon=-1;
+    return aux;
+}
 bool EventListener::OnEvent(const irr::SEvent& event) {
     // Remember whether each key is down or up
     if (event.EventType == irr::EET_KEY_INPUT_EVENT)
@@ -32,6 +36,15 @@ bool EventListener::OnEvent(const irr::SEvent& event) {
             LCLICK = false;
         }
     }
+
+    if (event.EventType == irr::EET_GUI_EVENT){
+        irr::s32 id = event.GUIEvent.Caller->getID();
+        if (event.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED){
+            IdButon=id;
+
+        }
+    }
+
 
     return false;
 }

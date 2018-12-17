@@ -56,7 +56,6 @@ Action::~Action(){
 }
 
 void Action::onInitialize(){
-    //// std::cout << "Accion onInitialize" << '\n';
     s = BH_INVALID;
 }//parámetros del mundo necesarios para el update} // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update
 
@@ -87,9 +86,6 @@ void Action::distancia10(){//int tipo){
 }
 
 void Action::in_last(){//int tipo){
-    //// std::cout << "distancia10" << '\n';
-
-    //// std::cout << "se hace wey" << '\n';
     distancia(0.5,yo->playerPos);//int tipo){
     if(s==BH_SUCCESS){
         s=BH_FAILURE;
@@ -101,19 +97,16 @@ void Action::in_last(){//int tipo){
 void Action::checkbool(bool that){
     if(that){
         s=BH_SUCCESS;
-        //// std::cout << "cierto" << '\n';
     }else{
         s=BH_FAILURE;
     }
 }
 void Action::onrange(){
-    //// std::cout << "range" << '\n';
 
     checkbool(yo->playerOnRange);
 
 }
 void Action::seeing(){
-    //// std::cout << "viendo?" << '\n';
     checkbool(yo->playerSeeing);
 
 }
@@ -131,7 +124,6 @@ void Action::seen(){
 }
 void Action::rond_seny(){
     if(s!=BH_RUNNING){
-        // std::cout << "iniciando rondando senyuelo" << '\n';
         yo->destino=yo->senpos;
     }
     rond();
@@ -139,7 +131,6 @@ void Action::rond_seny(){
 }
 void Action::rond_jugador(){
     if(s!=BH_RUNNING){
-        // std::cout << "iniciando rondando senyuelo" << '\n';
     }
     yo->destino=yo->playerPos;
 
@@ -173,7 +164,6 @@ void Action::ult_cont(){
     res++;
     //3-4 seg
     if(res>100){
-        //// std::cout << "aturdido acabado" << '\n';
         yo->ultrasonido=false;
 
 
@@ -292,5 +282,4 @@ void Action::move_too(){
 
 }
 void Action::onTerminate(Status state){//tener cuidado de cerrar todos los recursos que abramos
-  //// std::cout << "Accion onTerminate" <<state << '\n';
 }

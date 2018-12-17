@@ -91,6 +91,7 @@ public:
 
     void printObjects(int);
     void clean();
+    void clear();
 private:
     bool debug;
 

@@ -8,7 +8,7 @@ ggDynWorld::ggDynWorld(){
     debugDrawer = Singleton<GLDebugDrawer>::Instance();
 
     Factory *fac = Singleton<Factory>::Instance();
-    debugBullet = fac->createDebugBullet(gg::Vector3f());
+    //debugBullet = fac->createDebugBullet(gg::Vector3f());
 }
 ggDynWorld::~ggDynWorld(){}
 
@@ -78,6 +78,24 @@ void ggDynWorld::inito(float _gX, float _gY, float _gZ){
     dynamicsWorld->setGravity(btVector3(_gX, _gY, _gZ));
 }
 
+void ggDynWorld::clear(){
+    //remove the rigidbodies from the dynamics world and delete them
+	for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+	{
+		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
+		btRigidBody* body = btRigidBody::upcast(obj);
+		if (body && body->getMotionState())
+		{
+            // Al borrar los propios CRigidBody se hace delete de esto
+			// delete body->getMotionState();
+		}
+		dynamicsWorld->removeCollisionObject(obj);
+		delete obj;
+	}
+    collisionShapes.clear();
+
+
+}
 void ggDynWorld::clean(){
     //remove the rigidbodies from the dynamics world and delete them
 	for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
@@ -157,8 +175,8 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float
     if(callBack.hasHit()){
         ret = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
         // <DEBUG VISUAL>
-            CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, debugBullet));
-            cTransform->setPosition(ret);
+            //CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, debugBullet));
+            //cTransform->setPosition(ret);
         // </DEBUG VISUAL>
 
         raycastHitPosition = ret;
@@ -171,8 +189,6 @@ void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f
     if(!raycastCollisionBody)
         return;
 
-    // std::cout << "PIM!" << '\n';
-    // std::cout << force.X << "," << force.Y << "," << force.Z << '\n';
     raycastCollisionBody->applyCentralForce(btVector3(force.X,force.Y,force.Z));
 
     // Debe de haber alguna forma de igualar bodys para saber el CRigidBody que estamos echando atras

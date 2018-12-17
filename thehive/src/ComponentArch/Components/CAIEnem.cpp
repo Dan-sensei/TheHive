@@ -45,7 +45,6 @@ void CAIEnem::Init(){
     Engine = Singleton<GameEngine>::Instance();
     data= new Blackboard();
     //int id_dado=getEntityID();
-    //// std::cout << "id dado:" <<id_dado<< '\n';
 
     playerSeeing    = false;
     playerOnRange   = false;
@@ -148,7 +147,6 @@ void CAIEnem::MHandler_SENYUELO(TriggerRecordStruct* cdata){
     senyuelo    = true;
     senpos      = cdata->vPos;
     arbol->reset();
-    // std::cout << "sen in" << '\n';
 }
 
 void CAIEnem::MHandler_SENYUELO_END(){

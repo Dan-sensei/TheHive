@@ -1,6 +1,16 @@
 #include "CPlayerController.hpp"
 
 #define VEL_FACTOR          2000.f
+#include <States/StateMachine.hpp>
+#include <PauseState.hpp>
+/*
+#include <GameEngine/GameEngine.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
+#include <Util.hpp>
+#include <string>
+#include "Factory.hpp"
+*/
 #define MAX_HERO_SPEED      3
 
 #define ROTATE_KEY          gg::GG_LCONTROL
@@ -113,6 +123,7 @@ void CPlayerController::Update(){
     float           MULT_FACTOR = 1;
 
     if(Engine->key(gg::GG_1)){
+        Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
         hab->pulsado(0);
     }
     if(Engine->key(gg::GG_2)){
@@ -392,7 +403,6 @@ bool CPlayerController::pickItem(const uint16_t &_item){
     // No compruebo duplicados entre items
     // Nunca pasara esa situacion
     for(const uint16_t &i : items){
-        // gg::cout("items["+std::to_string(i)+"] = "+std::to_string(items[i]));
         if(i==0){
             items[i] = _item;
             return true;

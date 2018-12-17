@@ -33,11 +33,6 @@ CRigidBody::CRigidBody(
         }
 
         btCollisionObject* obj = fileLoader->getRigidBodyByIndex(0);
-        // std::cout << "Bvhs:             " << fileLoader->getNumBvhs() << '\n';
-        // std::cout << "Constraints:      " << fileLoader->getNumConstraints() << '\n';
-        // std::cout << "TriangleInfoMaps: " << fileLoader->getNumTriangleInfoMaps() << '\n';
-        // std::cout << "RigidBodies:      " << fileLoader->getNumRigidBodies() << '\n';
-        // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
         body = btRigidBody::upcast(obj);
         shape = body->getCollisionShape();
 
@@ -166,12 +161,6 @@ CRigidBody::~CRigidBody() {
 
     // --------------------
     // Delete de todo lo que he creado con el loadfile
-    // std::cout << "BEFORE----------" << '\n';
-    // std::cout << "Bvhs:             " << fileLoader->getNumBvhs() << '\n';
-    // std::cout << "Constraints:      " << fileLoader->getNumConstraints() << '\n';
-    // std::cout << "TriangleInfoMaps: " << fileLoader->getNumTriangleInfoMaps() << '\n';
-    // std::cout << "RigidBodies:      " << fileLoader->getNumRigidBodies() << '\n';
-    // std::cout << "CollisionShapes:  " << fileLoader->getNumCollisionShapes() << '\n';
 
     if(fileLoader){
         fileLoader->deleteAllData();
@@ -215,7 +204,6 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
 gg::EMessageStatus CRigidBody::MHandler_DOACTION(Message _mes){
     int *action = static_cast<int*>(_mes.mData);
-    // gg::cout("ACTION: "+std::to_string(*action));
 
     // Mapa con funciones de update
     EnumActionType eAction = static_cast<EnumActionType>(*action);
@@ -395,7 +383,6 @@ void CRigidBody::Upd_MoverObjeto(){
         }
         else{
             // Update del clock
-            // gg::cout(" -- CLOCK DUR -> "+std::to_string(clock->getActualTime()));
             if(body->isKinematicObject()){
                 Blackboard b;
                 BRbData *data = static_cast<BRbData*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())));

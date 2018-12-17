@@ -1,5 +1,5 @@
-#ifndef _GAME_H
-#define _GAME_H
+#ifndef _PAUSESTATE_H
+#define _PAUSESTATE_H
 
 class GameEngine;
 class CTriggerSystem;
@@ -8,21 +8,21 @@ class ObjectManager;
 class ggDynWorld;
 
 #include <iostream>
-#include <GameEngine/Clock.hpp>
 #include "States/State.hpp"
+#include "GameEngine/GUIController.hpp"
 
-class Game : public State{
+class PauseState : public State{
 public:
-    Game();
-    Game(const Game &orig) = delete;
-    ~Game();
+    PauseState();
+    PauseState(const PauseState &orig) = delete;
+    ~PauseState();
     //void update();
     //void RUN();
     virtual void CLIN();
     virtual void Init();
     virtual void Update(float dt);
     virtual void Resume();
-
+    
     /*
 
     virtual void HandleInput() = 0;
@@ -38,11 +38,8 @@ private:
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
+    GUIController cont;
 
-    gg::Clock MasterClock;
-    double DeltaTime;
-    double Tick; //PARA LA INTERPOLACION
-    float Accumulator;
 };
 
 

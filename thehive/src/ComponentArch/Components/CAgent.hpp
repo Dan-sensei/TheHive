@@ -70,7 +70,6 @@ class CAgent : public IComponent {
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerEnter;
         void ENTER_func_kTrig_none          (TriggerRecordStruct*);
         void ENTER_func_kTrig_Explosion     (TriggerRecordStruct*);
-        void ENTER_func_kTrig_EnemyNear     (TriggerRecordStruct*);
         void ENTER_func_kTrig_Gunfire       (TriggerRecordStruct*);
         void ENTER_func_kTrig_Shoot         (TriggerRecordStruct*);
         void ENTER_func_kTrig_Touchable     (TriggerRecordStruct*);
@@ -81,7 +80,6 @@ class CAgent : public IComponent {
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerStay;
         void STAY_func_kTrig_none           (TriggerRecordStruct*);
         void STAY_func_kTrig_Explosion      (TriggerRecordStruct*);
-        void STAY_func_kTrig_EnemyNear      (TriggerRecordStruct*);
         void STAY_func_kTrig_Gunfire        (TriggerRecordStruct*);
         void STAY_func_kTrig_Shoot          (TriggerRecordStruct*);
         void STAY_func_kTrig_Touchable      (TriggerRecordStruct*);
@@ -92,7 +90,6 @@ class CAgent : public IComponent {
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerExit;
         void EXIT_func_kTrig_none           (TriggerRecordStruct*);
         void EXIT_func_kTrig_Explosion      (TriggerRecordStruct*);
-        void EXIT_func_kTrig_EnemyNear      (TriggerRecordStruct*);
         void EXIT_func_kTrig_Gunfire        (TriggerRecordStruct*);
         void EXIT_func_kTrig_Shoot          (TriggerRecordStruct*);
         void EXIT_func_kTrig_Touchable      (TriggerRecordStruct*);

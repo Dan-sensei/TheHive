@@ -18,9 +18,8 @@
 
     Treecontroller::Treecontroller (Blackboard* _data,int tipo,CAIEnem* ai){
         yo=ai;
-        
 
-        //// std::cout << "creacion" << '\n';
+
         data=_data;
         if(tipo==0){
             arbolsoldado();
@@ -31,32 +30,23 @@
     }
     Treecontroller::~Treecontroller (){
         for (size_t i = 0; i < m_Children.size(); i++) {
-            //// std::cout << "entra hijo" << '\n';
-            //// std::cout << "borra" << i<<'\n';
             delete m_Children[i];
         }
-        //// std::cout << "llega" << '\n';
         if(BT!=nullptr){
-            //// std::cout << "entra BT" << '\n';
             delete BT;
         }
         if(data!=nullptr){
-            //// std::cout << "entra data" << '\n';
             delete data;
         }
-        //// std::cout << "sale" << '\n';
 
     }
     void Treecontroller::reset(){
         for (size_t i = 0; i < m_Children.size(); i++) {
-            //// std::cout << "borra" << i<<'\n';
             m_Children[i]->abort();
         }
     }
     void Treecontroller::update(){
-        //// std::cout << "update1" << '\n';
         BT->tick();
-        //// std::cout << "update2" << '\n';
     }
     void Treecontroller::arboltracker(){
         Action* a1= new Action(TEN_METROS,data,yo);//rango ultrasonido

@@ -27,7 +27,7 @@ void CGun::shoot(gg::Vector3f to){
         // Comprobar balas
         if(!total_bullets){
             gg::cout("Click!");
-            EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
+            //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
             return;
         }
@@ -48,7 +48,7 @@ void CGun::shoot(gg::Vector3f to){
 
         //TData mes;
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
-        EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
+        //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
 
         // // std::cout << "PIM!!! -> " << total_bullets << '\n';

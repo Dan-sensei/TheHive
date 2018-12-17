@@ -1,36 +1,65 @@
-
+/*
 #include "Game.hpp"
 #include <iostream>
 #include <string>
 #include <Singleton.hpp>
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/NavmeshStructs.hpp"
+*/
 
-//class Dummy{
-//    public:
-//        Dummy(uint16_t _u, uint8_t _x, uint8_t _y)
-//        :uee(_u), x(_x), y(_y)
-//        {
-//            // std::cout << "Construyendo Dummy \n";
-//        };
-//        ~Dummy(){
-//            // std::cout << "Destruyendo Dummy \n";
-//        };
-//    private:
-//        uint16_t uee;
-//        uint8_t x, y;
-//};
+#include <iostream>
+#include <cstdint>
+#include <string>
+#include <stack>
+
+#include "ComponentArch/ObjectManager.hpp"
+#include "GameEngine/Camera.hpp"
+#include "Singleton.hpp"
+#include "GameAI/Pathfinding.hpp"
+#include "GameAI/NavmeshStructs.hpp"
+
+#include "GameEngine/ScreenConsole.hpp"
+
+#include "Factory.hpp"
+#include <ComponentArch/Components/CNavmeshAgent.hpp>
+#include <EventSystem/Blackboard.hpp>
+
+#include "States/StateMachine.hpp"
+#include "Game.hpp"
+#include "MenuState.hpp"
 
 
-//#include<>
 int main(int argc, char const *argv[]) {
+GameEngine *Engine = Singleton<GameEngine>::Instance();
+CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
 
-    Game THE_HIVE;
+Engine->Starto();
+//Engine->HideCursor(false);
 
-    THE_HIVE.RUN();
-    THE_HIVE.CLIN();
+ObjectManager *Manager = Singleton<ObjectManager>::Instance();
+
+ggDynWorld *world = Singleton<ggDynWorld>::Instance();
+world->inito();
+
+
+//singleton StateMachine
+//new GameState();
+StateMachine *mainstates = Singleton<StateMachine>::Instance();
+//mainstates->AddState(new GameState());
+//mainstates->AddState(new GameState());
+mainstates->AddState(new MenuState());
+
+while(Engine->isWindowOpen()) {
+    mainstates->ProcessStateChanges();
+    mainstates->prueba();
+    mainstates->GetActiveState()->Update(0);
+}
+    Blackboard::ClearGlobalBlackboard();
+    Manager->clin();
+    Engine->clean();
+    world->clean();
+    EventSystem->clin();
+    mainstates->clin();
 
     return 0;
 }
-//[0-3]-[3-5]-[5-8]-[8-18]-[18-17]-[17-16]-[16-15]-[15-13]-[13-11]-[11-22]-[22-23]-[23-21]-[21-20]
-//[0-3]-[3-5]-[5-4]-[4-9]-[9-19]-[19-20]

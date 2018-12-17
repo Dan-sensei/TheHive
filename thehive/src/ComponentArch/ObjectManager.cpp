@@ -64,19 +64,19 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::clin(){
-    // std::cout << "Destruyendo todos los componentes..." << '\n';
     uint8_t i = gg::NUM_COMPONENTS;
     while (i--){
         std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
 
         while(it!=TypeToComponentMap[i].end()){
-            // std::cout << "  -Eliminando componente " << (int)i << " de entidad " << it->first << '\n';
             //it->second->~IComponent();
             //memory.deallocate(it->second);
             delete it->second;
             ++it;
         };
+        TypeToComponentMap[i].clear();
     }
+
     Singleton<Pathfinding>::Instance()->clear();    //  Provisional
 }
 
@@ -134,7 +134,6 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
     if(foundComponent == TypeToComponentMap[type].end())
         return;
 
-    // std::cout << "B Component " << type << '\n';
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
 
@@ -142,7 +141,6 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);
     sendMessageToEntity(EntityID, recalculatePointersToAnotherComponents);
-    // std::cout << "Deleting" << '\n';
 }
 
 void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID){
@@ -156,12 +154,14 @@ void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16
 
 void ObjectManager::sendMessageToAllEntities(const Message &m){
     // We iterate over every component in the map that expects to receive that kind of message
-
     std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
     // First we search for a component type that expects that message type
+    int i=0;
     while(componentsIterator != MessageToListeningComponents[m.mType].end()){
+        i++;
 
+        //  Found one!
         //  Found one!
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
         //  Now we iterate over every entity that contains that component type

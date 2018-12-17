@@ -12,10 +12,12 @@ public:
     virtual bool IsKeyDown(gg::KEYCODES key) const;
     virtual bool isLClickPressed();
     virtual int getWheelValue();
+    virtual int checkbutton();
 private:
     bool keyMap[irr::KEY_KEY_CODES_COUNT];
     bool LCLICK;
     int wheel;
+    int IdButon;
 };
 
 #endif

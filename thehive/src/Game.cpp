@@ -28,8 +28,8 @@
 //====================================================================================      |
 // Pretty print a 2-digits hexadecimal value                                                |
 //====================================================================================      |
+/*
 void printHexVal(uint16_t val) {
-   // std::cout << std::hex << std::setw(2) << std::setfill('0') << val;
 }
 
 //====================================================================================
@@ -37,35 +37,36 @@ void printHexVal(uint16_t val) {
 //====================================================================================
 void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
    for(uint16_t l=0; l < lines; ++l) {
-      // std::cout << reinterpret_cast<uint16_t*>(p) << " ";
       for(uint16_t u=0; u < linebytes; ++u) {
          printHexVal(*p);
          ++p;
-         // std::cout << " ";
       }
-      // std::cout << "\n";
    }
 }
+*/
 //============================================================================================
 
 Game::Game(){
     Engine = Singleton<GameEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
-    Engine->Starto();
-    Engine->HideCursor(true);
+    //Engine->Starto();
+    //Engine->HideCursor(true);
 
     Manager = Singleton<ObjectManager>::Instance();
 
     world = Singleton<ggDynWorld>::Instance();
-    world->inito();
+    //world->inito();
+    Engine->HideCursor(true);
 }
 
 Game::~Game(){
 
 }
 
-void Game::RUN(){
+void Game::Init(){
+    Singleton<ScreenConsole>::Instance()->InitHUD();
+
     auto sF = Singleton<Factory>::Instance();
     uint16_t key;
 
@@ -149,44 +150,57 @@ void Game::RUN(){
     Singleton<Pathfinding>::Instance()->SetDebug(false);
 
     MasterClock.Restart();
-    while(Engine->isWindowOpen()) {
 
         DeltaTime = MasterClock.Restart().Seconds();
 
         //  SPIRAL OF DEATH. Not cool
-        if(DeltaTime > 0.25) DeltaTime = 0.25;
 
-        Accumulator += DeltaTime;
-        while(Accumulator >= 1/UPDATE_STEP){
-            // FIXED UPDATE
-            //world->stepSimulation(1/UPDATE_STEP, 5);
-            Accumulator -= 1/UPDATE_STEP;
-        }
 
-        world->stepSimulation(1.f / 11.f, 6);
+    //while(Engine->isWindowOpen()) {
+    //    update();
 
-        //  Interpolation tick!
-        Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
+    //}
 
-        EventSystem->Update();
+}
+void Game::Update(float dt){
+    if(DeltaTime > 0.25) DeltaTime = 0.25;
 
-        Engine->BeginDro();
-        Manager->UpdateAll();
-        Engine->Dro();
-        Engine->DisplayFPS();
-
-        Singleton<ggDynWorld>::Instance()->debugDrawWorld();
-        Singleton<Pathfinding>::Instance()->DroNodes();
-        Singleton<ScreenConsole>::Instance()->DisplayDebug();
-
-        Engine->EndDro();
+    Accumulator += DeltaTime;
+    while(Accumulator >= 1/UPDATE_STEP){
+        // FIXED UPDATE
+        //world->stepSimulation(1/UPDATE_STEP, 5);
+        Accumulator -= 1/UPDATE_STEP;
     }
+    Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
+
+    EventSystem->Update();
+
+    Engine->BeginDro();
+    Manager->UpdateAll();
+    Engine->Dro();
+    Engine->DisplayFPS();
+
+
+
+    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    Singleton<Pathfinding>::Instance()->DroNodes();
+    Singleton<ScreenConsole>::Instance()->DisplayDebug();
+    Singleton<ScreenConsole>::Instance()->DisplayHUD();
+
+    Engine->EndDro();
+}
+
+ void Game::Resume(){
+
 }
 
 void Game::CLIN(){
-    Blackboard::ClearGlobalBlackboard();
-    Manager->clin();
-    Engine->clean();
-    world->clean();
-    EventSystem->clin();
+    //Blackboard::ClearGlobalBlackboard();
+    Manager->clin();// este esta bien creo
+    world->clear();//clean es el vuestro// clear solo vacia los rigidbody sin quitar las fisicas
+    //EventSystem->clin();
+    //Singleton<ScreenConsole>::Instance()->CLIN();
+    Singleton<ScreenConsole>::Instance()->CLINNormal();
+
+
 }

@@ -1,5 +1,5 @@
-#ifndef _GAME_H
-#define _GAME_H
+#ifndef _OPTIONSTATE_H
+#define _OPTIONSTATE_H
 
 class GameEngine;
 class CTriggerSystem;
@@ -8,14 +8,14 @@ class ObjectManager;
 class ggDynWorld;
 
 #include <iostream>
-#include <GameEngine/Clock.hpp>
 #include "States/State.hpp"
+#include "GameEngine/GUIController.hpp"
 
-class Game : public State{
+class OptionState : public State{
 public:
-    Game();
-    Game(const Game &orig) = delete;
-    ~Game();
+    OptionState();
+    OptionState(const OptionState &orig) = delete;
+    ~OptionState();
     //void update();
     //void RUN();
     virtual void CLIN();
@@ -38,11 +38,8 @@ private:
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
+    GUIController cont;
 
-    gg::Clock MasterClock;
-    double DeltaTime;
-    double Tick; //PARA LA INTERPOLACION
-    float Accumulator;
 };
 
 
