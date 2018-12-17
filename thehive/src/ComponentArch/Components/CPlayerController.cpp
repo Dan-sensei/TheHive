@@ -11,7 +11,7 @@
 // #include <GameEngine/ScreenConsole.hpp>
 
 #define VEL_FACTOR          200.f
-#define MAX_HERO_SPEED      5
+#define MAX_HERO_SPEED      6
 
 #define ROTATE_KEY          gg::GG_LCONTROL
 #define DASH_KEY            gg::GG_ALT
@@ -21,7 +21,7 @@
 #define WEAPON_KEY          gg::GG_Q
 
 #define FORCE_FACTOR        500.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*4.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*6.f
 #define DASH_FORCE_FACTOR   FORCE_FACTOR/50.f
 
 #define MULT_RUN_FACTOR     1.5

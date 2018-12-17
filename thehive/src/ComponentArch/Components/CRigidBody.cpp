@@ -189,7 +189,7 @@ CRigidBody::~CRigidBody() {
 }
 
 void CRigidBody::Init(){
-    world->setGravity(0,-10,0);
+    world->setGravity(0,-15,0);
 
     // Hacer set del mapa de punteros a funcion
     mapaFuncUpdate.insert(std::make_pair(Action_AbrirPuerta,&CRigidBody::Upd_MoverObjeto));
