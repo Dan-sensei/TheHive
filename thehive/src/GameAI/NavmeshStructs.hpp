@@ -37,8 +37,8 @@ struct Node{
     Node(uint16_t _ID, uint16_t _NODE_1, uint16_t _NODE_2, const gg::Vector3f &_Position, float _Radius);
     Node(const Node &orig);
 
-    Connection Bitconnect;
     gg::Vector3f Position;
+    Connection Bitconnect;
     float RealCost;
     float EstimatedCost;
     float Radius;

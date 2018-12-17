@@ -54,7 +54,6 @@ void CPlayerController::Init(){
     debug2 = false;
     MULT_BASE=1;
 
-    items.fill(0);
 
     // El heroe siempre empezara con un arma secundaria
     // Pistola por defecto
@@ -65,6 +64,7 @@ void CPlayerController::Init(){
     mapFuncGrenades.insert(std::make_pair(1,&CPlayerController::playerThrowHolyBomb));
     mapFuncGrenades.insert(std::make_pair(2,&CPlayerController::playerThrowMatrioska));
     mapFuncGrenades.insert(std::make_pair(3,&CPlayerController::playerThrowDopple));
+    items.fill(0);
 }
 
 
@@ -191,7 +191,7 @@ void CPlayerController::FixedUpdate(){
         actualGrenadeState -= wheelState;
         if(actualGrenadeState<1)    actualGrenadeState = 3;
         if(actualGrenadeState>3)    actualGrenadeState = 1;
-        gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
+        //gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
     }
     if(Engine->key(gg::GG_G)){
         if(pulsacion_granada==false)

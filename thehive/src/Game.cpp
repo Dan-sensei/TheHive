@@ -75,14 +75,14 @@ void Game::Init(){
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
 
-    uint16_t h = sF->createHero(gg::Vector3f(1760, 110, 350),false);     //600
+    uint16_t h = sF->createHero(gg::Vector3f(360, 0, 350),false);     //600
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
-    sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
-    sF->createEnemy(gg::Vector3f(1797, 120, 350),2000);
+    sF->createEnemy(gg::Vector3f(360, -10, 390),1000);
+    sF->createEnemy(gg::Vector3f(397, 0, 350),2000);
 
-    sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
+    sF->createCollectableWeapon(gg::Vector3f(397, 0, 330),2);
 
-    gg::Vector3f mapPos(1400,120,0);
+    gg::Vector3f mapPos(0,0,0);
     sF->createCollisionableStaticModel(
         "assets/Models/CIUDAD/PROTOTIPO5/PROTOTIPO_CIUDAD.obj",
         "assets/Models/CIUDAD/PROTOTIPO5/PROTOTIPO_CIUDAD.bullet",
@@ -90,11 +90,11 @@ void Game::Init(){
         mapPos
     );
 
-    sF->createCollectableWeapon(gg::Vector3f(700, 100, 20),0);
-    sF->createCollectableWeapon(gg::Vector3f(700, 100, 40),1);
-    sF->createCollectableWeapon(gg::Vector3f(700, 100, 60),2);
-    sF->createCollectableWeapon(gg::Vector3f(700, 100, 80),3);
-    sF->createCollectableWeapon(gg::Vector3f(700, 100, 100),4);
+    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 20),0);
+    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 40),1);
+    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 60),2);
+    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 80),3);
+    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 100),4);
 
     sF->createCollisionableDynamicModel(
         "assets/Models/cuboGrande.obj",
@@ -107,8 +107,8 @@ void Game::Init(){
         "assets/Models/ModelsForEvents/door1.bullet",
         "assets/Textures/Domino.jpg",
         gg::Vector3f(mapPos.X+350, mapPos.Y-10, mapPos.Z+204));
-    std::cout << "KEY" << '\n';
-    key = sF->createPickableItem(gg::Vector3f(1624, 120, 145));
+
+    key = sF->createPickableItem(gg::Vector3f(224, 0, 145));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+345, mapPos.Y-13, mapPos.Z+215),idEx,gg::Vector3f(0,0.4,0),3200);
 
     idEx = sF->createCollisionableDynamicModel(

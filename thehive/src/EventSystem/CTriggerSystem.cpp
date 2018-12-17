@@ -71,8 +71,6 @@ unsigned long CTriggerSystem::RegisterTriger(
 
     //Create a trigger record, and fill it in
     TriggerRecordStruct* pTriggerRecord = new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos,_data);
-    std::cout << " NEW item (" <<  1<<7 << "?) " << _eTriggerType << " = " << _vPos << '\n';
-    std::cout << " NEW item (" <<  1<<7 << "?) " << pTriggerRecord->vPos << " = " << _vPos << '\n';
     //MessageXplotato* exp =(MessageXplotato*) pTriggerRecord->data;
     //MessageXplotato* exp =(MessageXplotato*) pTriggerRecord->data;
 
@@ -81,9 +79,6 @@ unsigned long CTriggerSystem::RegisterTriger(
     //Trigger records are sorted by priority
     m_mapTriggerMap.insert(TRIGGER_MAP::value_type(_nPriority,pTriggerRecord));
 
-    for(auto it = m_mapTriggerMap.begin(); it != m_mapTriggerMap.end(); ++it){
-        std::cout << it->second->eTriggerType << " -> " << it->second->vPos << '\n';
-    }
     //return unique id for this triger
     return pTriggerRecord->nTriggerID;
 }
