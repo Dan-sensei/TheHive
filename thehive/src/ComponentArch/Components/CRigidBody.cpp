@@ -108,6 +108,8 @@ CRigidBody::CRigidBody(
     }
 
     body->setAngularFactor(btVector3(0,0,0));
+    SaveCurrentStatus();
+    SavePreviousStatus();
 }
 
 CRigidBody::CRigidBody(
@@ -152,6 +154,8 @@ CRigidBody::CRigidBody(
 
     // Add the body to the dynamics world
     world->addRigidBody(body);
+    SaveCurrentStatus();
+    SavePreviousStatus();
 }
 
 CRigidBody::~CRigidBody() {
@@ -174,7 +178,7 @@ CRigidBody::~CRigidBody() {
 }
 
 void CRigidBody::Init(){
-    world->setGravity(0,-10,0);
+    world->setGravity(0,-15,0);
 
     // Hacer set del mapa de punteros a funcion
     mapaFuncUpdate.insert(std::make_pair(Action_AbrirPuerta,&CRigidBody::Upd_MoverObjeto));
@@ -233,7 +237,7 @@ gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CRigidBody::Update(){
+void CRigidBody::FixedUpdate(){
     // UPDATE
 
     // COPIA-PEGA DE LA DOCUMENTACION:
@@ -244,7 +248,7 @@ void CRigidBody::Update(){
 
     if(actualUpd)
         (this->*actualUpd)();
-    updateCTransformPosition();
+    //updateCTransformPosition();
 }
 
 void CRigidBody::applyCentralImpulse(gg::Vector3f vec){
@@ -273,7 +277,7 @@ void CRigidBody::applyConstantVelocity(gg::Vector3f _force,float _max_speed,bool
         applyCentralForce(_force);                       // Accelerate!
     }
     else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
-        _force = getVelocity() * gg::Vector3f(-0.08, 0, -0.08) * FORCE_FACTOR;
+        _force = getVelocity() * gg::Vector3f(-0.2, 0, -0.2) * FORCE_FACTOR;
         applyCentralForce(_force);                       // Stopping!
     }
     else {                                                          // If we reach here, any key is pressed and the speed is below 2
@@ -388,7 +392,6 @@ void CRigidBody::Upd_MoverObjeto(){
                 BRbData *data = static_cast<BRbData*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())));
 
                 gg::Vector3f offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
-
                 setOffsetBodyPosition(offset);
             }
         }
@@ -421,9 +424,9 @@ gg::EMessageStatus CRigidBody::SaveCurrentStatus(){
 
     return gg::ST_TRUE;
 }
-gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick){
+gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
 
-    float Tick = *(static_cast<float*>(_Tick.mData));
+    double Tick = *static_cast<double*>(_Tick.mData);
 
     float X = Previous.Position.X *(1-Tick) + Current.Position.X*Tick;
     float Y = Previous.Position.Y *(1-Tick) + Current.Position.Y*Tick;

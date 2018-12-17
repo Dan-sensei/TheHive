@@ -23,13 +23,11 @@ public:
     virtual ~CCamera ();
 
     // Functions of IComponent
-    virtual gg::EMessageStatus processMessage(const Message &m);
     virtual void Init();
 
-    //  Handlers
-    gg::EMessageStatus MHandler_SETPTRS();
+    void setTarget(CTransform* T);
+    void CameraUpdate();
 
-    void updateCameraTarget(gg::Vector3f, bool);
     gg::Vector3f getCameraPosition();
     gg::Vector3f getCameraRotation();
     gg::Vector3f getCameraTarget();
@@ -46,7 +44,7 @@ private:
     GameEngine      *Engine;
     ObjectManager   *Manager;
     Camera          *cam;
-    CTransform      *mod;
+    CTransform      *Target;
     ggDynWorld      *dynWorld;
 
     gg::Vector3f lastHeroPosition;

@@ -30,30 +30,31 @@
 
 
 int main(int argc, char const *argv[]) {
-GameEngine *Engine = Singleton<GameEngine>::Instance();
-CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
+    GameEngine *Engine = Singleton<GameEngine>::Instance();
+    CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
 
-Engine->Starto();
-//Engine->HideCursor(false);
+    Engine->Starto();
+    //Engine->HideCursor(false);
 
-ObjectManager *Manager = Singleton<ObjectManager>::Instance();
+    ObjectManager *Manager = Singleton<ObjectManager>::Instance();
 
-ggDynWorld *world = Singleton<ggDynWorld>::Instance();
-world->inito();
+    ggDynWorld *world = Singleton<ggDynWorld>::Instance();
+    world->inito();
 
 
-//singleton StateMachine
-//new GameState();
-StateMachine *mainstates = Singleton<StateMachine>::Instance();
-//mainstates->AddState(new GameState());
-//mainstates->AddState(new GameState());
-mainstates->AddState(new MenuState());
+    //singleton StateMachine
+    //new GameState();
+    StateMachine *mainstates = Singleton<StateMachine>::Instance();
+    //mainstates->AddState(new GameState());
+    //mainstates->AddState(new GameState());
+    mainstates->AddState(new MenuState());
 
-while(Engine->isWindowOpen()) {
-    mainstates->ProcessStateChanges();
-    mainstates->prueba();
-    mainstates->GetActiveState()->Update(0);
-}
+    while(Engine->isWindowOpen()) {
+        mainstates->ProcessStateChanges();
+        mainstates->prueba();
+        mainstates->GetActiveState()->Update();
+    }
+    
     Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     Engine->clean();

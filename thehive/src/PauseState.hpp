@@ -20,9 +20,9 @@ public:
     //void RUN();
     virtual void CLIN();
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
     virtual void Resume();
-    
+
     /*
 
     virtual void HandleInput() = 0;

@@ -94,8 +94,7 @@ void CAgent::updatetrig(){
     std::list <TriggerRecordStruct*>::iterator it;
     it=holiiis.begin();
     TriggerRecordStruct* pTrig=NULL;
-    for(unsigned long e=0; e<holiiis.size();++e)
-    {
+    for(unsigned long e=0; e<holiiis.size();++e) {
         pTrig=*it;
         float fDistance=gg::DIST(pTrig->vPos,GetPosition());//funcion calcular la distancia
         float distancia=pTrig->fRadius;

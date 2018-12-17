@@ -16,7 +16,6 @@ CGranade::~CGranade() {}
 
 void CGranade::Init(){
     EventSystem = Singleton<CTriggerSystem>::Instance();
-    engine      = Singleton<GameEngine>::Instance();
     Manager     = Singleton<ObjectManager>::Instance();
     factory     = Singleton<Factory>::Instance();
 
@@ -38,9 +37,11 @@ gg::EMessageStatus CGranade::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CGranade::explosion(){}
+void CGranade::explosion(){
+}
 
-void CGranade::Update(){
+
+void CGranade::FixedUpdate(){
     if(!hasContact){
         if(cRigidBody && cRigidBody->checkContactResponse()){
             begin = std::chrono::high_resolution_clock::now();

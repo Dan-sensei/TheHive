@@ -39,7 +39,7 @@ class CPlayerController : public IComponent {
         // Functions of IComponent
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
-        virtual void Update();
+        virtual void FixedUpdate();
 
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();

@@ -23,33 +23,41 @@ ObjectManager::ObjectManager()
     //  Defines wich kind of messages will receive each type of component
     //  We just insert in the array of vectors, the component type in the messageTYpe array position
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::VIDA);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::VIDA);
+
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RIGID_BODY);
     MessageToListeningComponents[gg::M_EVENT_ACTION].push_back(gg::RIGID_BODY);
     MessageToListeningComponents[gg::M_INTERPOLATE_PRESAVE].push_back(gg::RIGID_BODY);
     MessageToListeningComponents[gg::M_INTERPOLATE_POSTSAVE].push_back(gg::RIGID_BODY);
     MessageToListeningComponents[gg::M_INTERPOLATE].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::RIGID_BODY);
 
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RENDERABLE_3D);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::RENDERABLE_3D);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::PLAYERCONTROLLER);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::PLAYERCONTROLLER);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::NAVMESHAGENT);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::NAVMESHAGENT);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::HAB);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::HAB);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::GUN);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::GUN);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::GRANADE);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::GRANADE);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::CLOCK);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AIENEM);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::AIENEM);
 
 
-
-    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::CAMERA);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AGENT);
 
@@ -177,28 +185,34 @@ void ObjectManager::sendMessageToAllEntities(const Message &m){
 }
 
 void ObjectManager::UpdateAll(){
-    uint8_t i = 0;
-    while (i < gg::NUM_COMPONENTS){
-        std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
-        while(it!=TypeToComponentMap[i].end()){
-            auto current = it;
-            ++it;
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[gg::UPDATE].begin();
+    std::map<uint16_t, IComponent*>::iterator entitiesIterator;
+
+    while(componentsIterator != MessageToListeningComponents[gg::UPDATE].end()){
+        entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
+        while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
+            auto current = entitiesIterator;
+            ++entitiesIterator;
             current->second->Update();
-        };
-        ++i;
+        }
+
+        ++componentsIterator;
     }
 }
 
 void ObjectManager::FixedUpdateAll(){
-    uint8_t i = 0;
-    while (i < gg::NUM_COMPONENTS){
-        std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
-        while(it!=TypeToComponentMap[i].end()){
-            auto current = it;
-            ++it;
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[gg::FIXED_UPDATE].begin();
+    std::map<uint16_t, IComponent*>::iterator entitiesIterator;
+    
+    while(componentsIterator != MessageToListeningComponents[gg::FIXED_UPDATE].end()){
+        entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
+        while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
+            auto current = entitiesIterator;
+            ++entitiesIterator;
             current->second->FixedUpdate();
-        };
-        ++i;
+        }
+
+        ++componentsIterator;
     }
 }
 

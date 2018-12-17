@@ -8,7 +8,7 @@
 #define RADIUS              2.5
 
 CCamera::CCamera(bool _b)
-:mod(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr),
+:Target(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr),
 daniNoSabeProgramar(_b)
 {}
 
@@ -23,38 +23,30 @@ void CCamera::Init(){
     dynWorld = Singleton<ggDynWorld>::Instance();
     cam = Engine->getCamera();
 
-    MHandler_SETPTRS();
+    lastHeroPosition = Target->getPosition();
 
-    lastHeroPosition = mod->getPosition();
     cameraPositionBeforeLockRotation = Engine->getCamera()->getPosition();
 
     collision = false;
-CRigidbody=new CRigidBody(false,
-    cameraPositionBeforeLockRotation.X,cameraPositionBeforeLockRotation.Y,cameraPositionBeforeLockRotation.Z,
-    1,1,1);
+    CRigidbody=new CRigidBody(
+        false,
+        cameraPositionBeforeLockRotation.X,
+        cameraPositionBeforeLockRotation.Y,
+        cameraPositionBeforeLockRotation.Z,
+        1,1,1
+    );
 
 
     screenW = static_cast<int>(Engine->getScreenWidth())/2;
     screenH = static_cast<int>(Engine->getScreenHeight())/2;
 }
 
-gg::EMessageStatus CCamera::processMessage(const Message &m) {
-
-    if(m.mType == gg::M_SETPTRS)    return MHandler_SETPTRS ();
-
-    return gg::ST_ERROR;
+void CCamera::setTarget(CTransform *T) {
+    Target = T;
 }
 
-//  Message handler functions_______________________________________________________________
-//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-
-gg::EMessageStatus CCamera::MHandler_SETPTRS(){
-    mod = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
-    return gg::ST_TRUE;
-}
-
-
-void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
+void CCamera::CameraUpdate(){
+    gg::Vector3f nextPosition = Target->getPosition();
     lastHeroPosition = nextPosition;
 
     cam->bindTargetAndRotation(true);
@@ -102,7 +94,7 @@ void CCamera::updateCameraTarget(gg::Vector3f nextPosition, bool heroRotation) {
     // [IRRLICHT FUNCTION]
     cam->updateAbsolutePosition();
 
-    setFinalRotation(newRotation,backupRotation,heroRotation);
+    setFinalRotation(newRotation,backupRotation, true);
 }
 
 void CCamera::setHorizontalAxis(gg::Vector3f &nextPosition,gg::Vector3f &finalXRVector,gg::Vector3f &newRotation,gg::Vector3f &ret_position){
@@ -179,10 +171,10 @@ void CCamera::setFinalRotation(gg::Vector3f &newRotation,gg::Vector3f &backupRot
         cam->setRotation(backupRotation);
 
     // If heroRotation is FALSE, the hero won't move with the camera rotation
-    if(heroRotation){
+    //if(heroRotation){
         cameraPositionBeforeLockRotation = cam->getPosition();
         // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
-    }
+    //}
 }
 
 void CCamera::fixCameraPositionOnCollision(gg::Vector3f &nextPosition){

@@ -98,7 +98,7 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CAIEnem::Update(){
+void CAIEnem::FixedUpdate(){
     //std::cout << "entrando" << '\n';
     if(debugvis)  enableVisualDebug();
 

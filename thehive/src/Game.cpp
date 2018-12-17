@@ -58,6 +58,8 @@ Game::Game(){
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
     Engine->HideCursor(true);
+    UPDATE = 0;
+    DRO = 0;
 }
 
 Game::~Game(){
@@ -72,9 +74,12 @@ void Game::Init(){
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-    sF->createHero(gg::Vector3f(1760, 110, 350),false);
+
+    uint16_t h = sF->createHero(gg::Vector3f(1760, 110, 350),false);     //600
+    MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
     sF->createEnemy(gg::Vector3f(1797, 120, 350),2000);
+
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
 
     gg::Vector3f mapPos(1400,120,0);
@@ -102,8 +107,9 @@ void Game::Init(){
         "assets/Models/ModelsForEvents/door1.bullet",
         "assets/Textures/Domino.jpg",
         gg::Vector3f(mapPos.X+350, mapPos.Y-10, mapPos.Z+204));
+    std::cout << "KEY" << '\n';
     key = sF->createPickableItem(gg::Vector3f(1624, 120, 145));
-    sF->createTouchableObject(gg::Vector3f(mapPos.X+345, mapPos.Y-13, mapPos.Z+215),idEx,gg::Vector3f(0,0.1,0),3200);
+    sF->createTouchableObject(gg::Vector3f(mapPos.X+345, mapPos.Y-13, mapPos.Z+215),idEx,gg::Vector3f(0,0.4,0),3200);
 
     idEx = sF->createCollisionableDynamicModel(
         "assets/Models/ModelsForEvents/door2.obj",
@@ -151,7 +157,6 @@ void Game::Init(){
 
     MasterClock.Restart();
 
-        DeltaTime = MasterClock.Restart().Seconds();
 
         //  SPIRAL OF DEATH. Not cool
 
@@ -162,27 +167,38 @@ void Game::Init(){
     //}
 
 }
-void Game::Update(float dt){
+void Game::Update(){
+    DeltaTime = MasterClock.Restart().Seconds();
+
     if(DeltaTime > 0.25) DeltaTime = 0.25;
 
     Accumulator += DeltaTime;
     while(Accumulator >= 1/UPDATE_STEP){
         // FIXED UPDATE
-        //world->stepSimulation(1/UPDATE_STEP, 5);
+        Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
+        Manager->FixedUpdateAll();
+        Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
+        world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
+        ++UPDATE;
     }
-    Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
-
-    world->stepSimulation(1.f/11.f,10.f);
+    ++DRO;
 
     EventSystem->Update();
 
+    //  Interpolation tick!
+    Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
+    Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
+
+
+
     Engine->BeginDro();
     Manager->UpdateAll();
+
+    MainCamera->CameraUpdate();
+
     Engine->Dro();
     Engine->DisplayFPS();
-
-
 
     Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     Singleton<Pathfinding>::Instance()->DroNodes();
@@ -192,7 +208,7 @@ void Game::Update(float dt){
     Engine->EndDro();
 }
 
- void Game::Resume(){
+void Game::Resume(){
 
 }
 
@@ -204,5 +220,8 @@ void Game::CLIN(){
     //Singleton<ScreenConsole>::Instance()->CLIN();
     Singleton<ScreenConsole>::Instance()->CLINNormal();
 
+    std::cout << "1/60 = " << 1/60.F << '\n';
+    std::cout << "UPDTES " << UPDATE  << '\n';
+    std::cout << "DRO " << DRO  << '\n';
 
 }

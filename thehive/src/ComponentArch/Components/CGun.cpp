@@ -134,7 +134,7 @@ gg::EMessageStatus CGun::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-void CGun::Update(){
+void CGun::FixedUpdate(){
     // UPDATE
     if(reloading){
         auto end         = std::chrono::high_resolution_clock::now();

@@ -79,7 +79,7 @@ void MenuState::Resume() {
 //    CLIN();
 
 //}
-void MenuState::Update(float dt){
+void MenuState::Update(){
     Engine->BeginDro();
     Engine->Dro();
     cont.update();

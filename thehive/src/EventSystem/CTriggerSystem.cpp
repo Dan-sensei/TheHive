@@ -8,17 +8,7 @@
 #include "Singleton.hpp"
 
 
-TriggerRecordStruct::TriggerRecordStruct(const TriggerRecordStruct &orig){
-    data=orig.data;
-    eTriggerType=orig.eTriggerType;
-    vPos=orig.vPos;
-    nTriggerID=orig.nTriggerID;
-    idSource=orig.idSource;
-    nTimeStamp=orig.nTimeStamp;
-    nExpirationTime=orig.nExpirationTime;//milliseconds
-    fRadius=orig.fRadius;
-    bDynamicSourcePos=orig.bDynamicSourcePos;
-}
+
 
 CTriggerSystem::CTriggerSystem(){
     lastIdGiven = 0;
@@ -81,7 +71,8 @@ unsigned long CTriggerSystem::RegisterTriger(
 
     //Create a trigger record, and fill it in
     TriggerRecordStruct* pTriggerRecord = new TriggerRecordStruct(_eTriggerType,_idSource,_vPos,_fRadius,_fDuration,_bDynamicSourcePos,_data);
-
+    std::cout << " NEW item (" <<  1<<7 << "?) " << _eTriggerType << " = " << _vPos << '\n';
+    std::cout << " NEW item (" <<  1<<7 << "?) " << pTriggerRecord->vPos << " = " << _vPos << '\n';
     //MessageXplotato* exp =(MessageXplotato*) pTriggerRecord->data;
     //MessageXplotato* exp =(MessageXplotato*) pTriggerRecord->data;
 
@@ -90,6 +81,9 @@ unsigned long CTriggerSystem::RegisterTriger(
     //Trigger records are sorted by priority
     m_mapTriggerMap.insert(TRIGGER_MAP::value_type(_nPriority,pTriggerRecord));
 
+    for(auto it = m_mapTriggerMap.begin(); it != m_mapTriggerMap.end(); ++it){
+        std::cout << it->second->eTriggerType << " -> " << it->second->vPos << '\n';
+    }
     //return unique id for this triger
     return pTriggerRecord->nTriggerID;
 }
@@ -130,7 +124,6 @@ void CTriggerSystem::Update()
 
 
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(nCurTime - pRec->nTimeStamp).count();
-
     if( (pRec->nExpirationTime!=0)&&
         (pRec->nExpirationTime < ms))
         {
@@ -145,6 +138,7 @@ void CTriggerSystem::Update()
         }else{
           //Update pos if dynamic flag is set.Reset time-stamp
           if(pRec->bDynamicSourcePos==true){
+              auto t = Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, pRec->idSource);
               CTransform *ct = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, pRec->idSource));
               if(ct){
                   pRec->vPos = ct->getPosition();
@@ -155,10 +149,12 @@ void CTriggerSystem::Update()
           ++it;
         }
   }
+
   //Trigger agents
   //int g_nNumAgents=20;//numero actual de agentes
   std::list<CAgent*>::iterator it2 ;
   it2=CAgent::hola.begin();
+
   for(unsigned long i=0; i<CAgent::hola.size();++i)
   {
     pAgent=*it2;
@@ -170,7 +166,6 @@ void CTriggerSystem::Update()
     //if(pAgent->SetNextTriggerUpdate(nCurTime))...
     //pAgent->SetNextTriggerUpdate(nCurTime);//usado para controlar el ratio de update
     //llop thru exixting trigger records
-
 
     for(it=m_mapTriggerMap.begin();
         it!=m_mapTriggerMap.end();++it)
@@ -228,6 +223,18 @@ TriggerRecordStruct::TriggerRecordStruct(
     bDynamicSourcePos=_bDynamicSourcePos;
 }
 
+TriggerRecordStruct::TriggerRecordStruct(const TriggerRecordStruct &orig){
+    data=orig.data;
+    eTriggerType=orig.eTriggerType;
+    vPos=orig.vPos;
+    nTriggerID=orig.nTriggerID;
+    idSource=orig.idSource;
+    nTimeStamp=orig.nTimeStamp;
+    nExpirationTime=orig.nExpirationTime;//milliseconds
+    fRadius=orig.fRadius;
+    bDynamicSourcePos=orig.bDynamicSourcePos;
+}
+
 void CTriggerSystem::clin(){
     TRIGGER_MAP::iterator it=m_mapTriggerMap.begin();
     while(it!=m_mapTriggerMap.end()){
@@ -235,6 +242,7 @@ void CTriggerSystem::clin(){
         ++it;
     }
 }
+
 
 //Pruebas
 //unsigned long CTriggerSystem::RegisterTriger(

@@ -64,7 +64,7 @@ gg::EMessageStatus CVida::MHandler_SETPTRS(){
 }
 
 
-void CVida::Update() {
+void CVida::FixedUpdate() {
     if(vida <= 0){
         // gg::cout("ENTITY "+std::to_string(getEntityID())+" IS NO LONGER ALIVE!");
         // std::cout << "BEF:" << this << '\n';

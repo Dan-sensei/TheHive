@@ -33,14 +33,14 @@ struct TriggerRecordStruct
         TData _data
     );
     TriggerRecordStruct(const TriggerRecordStruct &orig);
-    TData data;
-    EnumTriggerType eTriggerType;
     gg::Vector3f vPos;
+    TData data;
+    std::chrono::high_resolution_clock::time_point nTimeStamp;
     unsigned long nTriggerID;
     unsigned long idSource;
-    std::chrono::high_resolution_clock::time_point nTimeStamp;
     unsigned long nExpirationTime;//milliseconds
     float fRadius;
+    EnumTriggerType eTriggerType;
     bool bDynamicSourcePos;
 };
 

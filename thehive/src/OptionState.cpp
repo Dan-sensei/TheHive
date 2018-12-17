@@ -78,7 +78,7 @@ void OptionState::Resume() {
 //    CLIN();
 
 //}
-void OptionState::Update(float dt){
+void OptionState::Update(){
     Engine->BeginDro();
     Engine->Dro();
     cont.update();

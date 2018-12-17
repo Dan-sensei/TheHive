@@ -52,7 +52,7 @@ void PauseState::Init(){
 //    CLIN();
 
 //}
-void PauseState::Update(float dt){
+void PauseState::Update(){
 
     Engine->BeginDro();
     Engine->Dro();

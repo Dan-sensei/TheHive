@@ -10,6 +10,8 @@ class ggDynWorld;
 #include <iostream>
 #include <GameEngine/Clock.hpp>
 #include "States/State.hpp"
+#include <ComponentArch/Components/CCamera.hpp>
+
 
 class Game : public State{
 public:
@@ -20,7 +22,7 @@ public:
     //void RUN();
     virtual void CLIN();
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
     virtual void Resume();
 
     /*
@@ -38,11 +40,15 @@ private:
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
+    CCamera* MainCamera;
 
     gg::Clock MasterClock;
     double DeltaTime;
     double Tick; //PARA LA INTERPOLACION
     float Accumulator;
+
+    uint UPDATE;
+    uint DRO;
 };
 
 
