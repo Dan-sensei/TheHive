@@ -36,6 +36,7 @@ void CGun::shoot(gg::Vector3f to){
         if(total_bullets!=-1){
             total_bullets--;
         }
+
         Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
 
         // Comprobar destino
@@ -99,6 +100,10 @@ bool CGun::isReloading(){
 
 int CGun::getBullets(){
     return total_bullets;
+}
+
+int CGun::getTotalBullets(){
+    return ktotal_bullets;
 }
 
 int CGun::getType(){

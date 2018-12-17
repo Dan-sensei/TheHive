@@ -27,8 +27,8 @@ class ScreenConsole{
         float porc_alto(float x);
         float porc_ancho(float x);
 
-        int balaP;
-        int balaS;
+        int balaP, balaP_TOT;
+        int balaS, balaS_TOT;
         float vida;
         float perc;
         float perc2;

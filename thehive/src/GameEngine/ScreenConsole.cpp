@@ -21,12 +21,14 @@ void ScreenConsole::setvida(float _vida){
     // std::cout << "hacemos algo" << '\n';
     vida=_vida;
 }
-void ScreenConsole::setbullet(int tipo,int balas){
+void ScreenConsole::setbullet(int tipo,int b_act, int b_tot){
     if(tipo==0){
-        balaP=balas;
+        balaP=b_act;
+        balaP_TOT=b_tot;
 
     }else {
-        balaS=balas;
+        balaS=b_act;
+        balaS_TOT=b_tot;
     }
 }
 
@@ -197,11 +199,11 @@ void ScreenConsole::HUD_vida(ImageHUD &it){
 }
 
 void ScreenConsole::HUD_arma0(ImageHUD &it){
-    std::string hola=std::to_string(balaS)+std::string("/100");
+    std::string hola=std::to_string(balaS)+"/"+std::string(balaS_TOT);
     font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
 }
 
 void ScreenConsole::HUD_arma1(ImageHUD &it){
-    std::string hola=std::to_string(balaP)+std::string("/100");
+    std::string hola=std::to_string(balaP)+"/"+std::string(balaP_TOT);
     font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
 }

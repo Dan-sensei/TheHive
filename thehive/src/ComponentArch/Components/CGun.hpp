@@ -33,6 +33,7 @@ class CGun : public IComponent {
         void reload();
         bool isReloading();
         int getBullets();
+        int getTotalBullets();
         int getType();
 
 
