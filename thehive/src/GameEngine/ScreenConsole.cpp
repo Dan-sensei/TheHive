@@ -199,11 +199,11 @@ void ScreenConsole::HUD_vida(ImageHUD &it){
 }
 
 void ScreenConsole::HUD_arma0(ImageHUD &it){
-    std::string hola=std::to_string(balaS)+"/"+std::string(balaS_TOT);
+    std::string hola=std::to_string(balaS)+"/"+std::to_string(balaS_TOT);
     font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
 }
 
 void ScreenConsole::HUD_arma1(ImageHUD &it){
-    std::string hola=std::to_string(balaP)+"/"+std::string(balaP_TOT);
+    std::string hola=std::to_string(balaP)+"/"+std::to_string(balaP_TOT);
     font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
 }

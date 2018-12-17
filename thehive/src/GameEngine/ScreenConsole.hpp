@@ -18,7 +18,7 @@ class ScreenConsole{
     public:
         void setprogress(int hab,float _prog);
         void setvida(float _vida);
-        void setbullet(int tipo,int balas);
+        void setbullet(int,int,int);
         void DisplayDebug();
         void AddTextToBuffer(const std::string &Text, const gg::Color &color);
         void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);

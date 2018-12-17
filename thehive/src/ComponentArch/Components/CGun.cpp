@@ -37,7 +37,7 @@ void CGun::shoot(gg::Vector3f to){
             total_bullets--;
         }
 
-        Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+        Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
         // Comprobar destino
         if(to.X == -1){
@@ -134,7 +134,7 @@ gg::EMessageStatus CGun::processMessage(const Message &m) {
 gg::EMessageStatus CGun::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-    Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+    Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
     return gg::ST_TRUE;
 }
@@ -150,7 +150,7 @@ void CGun::Update(){
             gg::cout(" -- RELOADED" , gg::Color(255, 0, 0, 1));
             reloading = false;
             total_bullets = ktotal_bullets;
-            Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+            Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
         }
     }
     else if(!canShoot){
