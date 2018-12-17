@@ -45,6 +45,8 @@ void CPlayerController::Init(){
     debug2 = false;
     MULT_BASE=1;
 
+    items.fill(0);
+
     // El heroe siempre empezara con un arma secundaria
     // Pistola por defecto
     isPrincipal = false;
