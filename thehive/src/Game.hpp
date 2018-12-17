@@ -6,27 +6,37 @@ class CTriggerSystem;
 
 class ObjectManager;
 class ggDynWorld;
-class StateMachine;
 
 #include <iostream>
+#include "States/State.hpp"
 
-class Game{
+class Game : public State{
 public:
     Game();
     Game(const Game &orig) = delete;
     ~Game();
+    //void update();
+    //void RUN();
+    virtual void CLIN();
+    virtual void Init();
+    virtual void Update(float dt);
+    virtual void Resume();
 
-    void RUN();
-    void CLIN();
+    /*
+
+    virtual void HandleInput() = 0;
+    virtual void Draw(float dt) = 0;
+
+    virtual void Pause() { }
+    virtual void Resume() { }
+
+    */
 
 private:
     GameEngine* Engine;
     CTriggerSystem* EventSystem;
-
     ObjectManager* Manager;
     ggDynWorld* world;
-    StateMachine* mainstates;
-
 };
 
 

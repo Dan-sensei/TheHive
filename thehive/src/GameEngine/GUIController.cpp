@@ -1,6 +1,6 @@
 #include "GUIController.hpp"
 #include <iostream>
-#include <GameState.hpp>
+#include <Game.hpp>
 #include <OptionState.hpp>
 //#include <SMaterial>
 GUIController::GUIController()
@@ -130,7 +130,7 @@ void GUIController::gotoControlls(){
 }
 //but7
 void GUIController::StartGame(){
-    Singleton<StateMachine>::Instance()->AddState(new GameState(),false);
+    Singleton<StateMachine>::Instance()->AddState(new Game(),false);
 }
 //but8
 void GUIController::gotoMain(){

@@ -17,7 +17,6 @@
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include <EventSystem/Blackboard.hpp>
 #include <States/StateMachine.hpp>
-#include <GameState.hpp>
 
 
 #define MOVEMENT_SPEED 1.f
