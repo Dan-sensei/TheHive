@@ -14,6 +14,9 @@
 #include <Factory.hpp>
 #include <Util.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SoundEvent.hpp>
+
 class CGun : public IComponent {
     public:
         CGun(float, float, int, float, float, int);                //  No queremos que alguien lo construya fuera (Limón)
@@ -40,6 +43,10 @@ class CGun : public IComponent {
     private:
         GameEngine* Engine;
         ObjectManager* Manager;
+
+        SoundSystem     *SS;
+        SoundEvent *prueba;
+
 
         //  Punteros a otras componentes
         CTransform* cTransform;

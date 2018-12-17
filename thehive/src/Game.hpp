@@ -3,10 +3,10 @@
 
 class GameEngine;
 class CTriggerSystem;
-
 class ObjectManager;
 class ggDynWorld;
 
+#include <FMOD/SoundSystem.hpp>
 #include <iostream>
 
 class Game{
@@ -21,7 +21,7 @@ public:
 private:
     GameEngine* Engine;
     CTriggerSystem* EventSystem;
-
+    SoundSystem* soundSys;
     ObjectManager* Manager;
     ggDynWorld* world;
 };

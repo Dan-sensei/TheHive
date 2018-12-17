@@ -11,6 +11,9 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
     ktotal_bullets = total_bullets;
     canShoot = true;
     reloading = false;
+
+    SS = Singleton<SoundSystem>::Instance();
+    prueba = SS->createSound("event:/Armas/Rifle/Rifle_disparo");
 }
 
 CGun::~CGun() {
@@ -47,6 +50,8 @@ void CGun::shoot(gg::Vector3f to){
             total_bullets--;
         }
         Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+
+        prueba->play();
 
         // Comprobar destino
         if(to.X == -1){
@@ -85,7 +90,6 @@ void CGun::shoot(gg::Vector3f to){
         //TData mes;
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
         //EventSystem->PulsoTrigger(kTrig_Shoot,0,to,500,mes);//sonido de disparo
-
         Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),to,50,TData());
         // Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
 

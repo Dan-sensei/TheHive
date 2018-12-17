@@ -14,6 +14,9 @@
 //#include <ComponentArch/Components/CHabilityController.hpp>
 //#include <GameAI/Hability.hpp>
 
+#include <FMOD/SoundEvent.hpp>
+#include <FMOD/SoundSystem.hpp>
+
 #include <Singleton.hpp>
 
 //class Hability;

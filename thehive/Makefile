@@ -14,6 +14,8 @@ SOURCES := $(shell find src/ -type f -name "*.cpp")
 OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
 OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 
+LIB := ./lib/
+
 ADDITIONAL_H :=  -I ./include -I ./src -I /usr/include/bullet
 LIBRARIES := -lGL -lGLEW -lGLU -lglut -lglfw -lassimp -lIrrlicht -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader -lBullet2FileLoader -lfmod  -lfmodstudio
 
@@ -37,7 +39,7 @@ $(EXE): $(OBJECTS)
 	$(call printInfo, "Generating")
 	$(call printWarning, $(EXE))
 	$(call printInfo,"...")
-	@$(COMPILER) -o $@ $^ -L ./lib $(LIBRARIES)
+	@$(COMPILER) -o $@ $^ -L ./lib $(LIBRARIES) -Wl,-rpath,$(LIB)
 	$(call printObj,  "Finished!")
 	$(call br)
 	$(call br)

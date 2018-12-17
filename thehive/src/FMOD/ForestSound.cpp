@@ -1,21 +1,8 @@
 #include "ForestSound.hpp"
 
-ForestSound::ForestSound():SoundEvent(){};
-
-
-ForestSound::~ForestSound(){
-
+ForestSound::ForestSound(FMOD::Studio::EventInstance *_instance)
+{
+    SoundEvent::soundInstance = _instance;
 }
 
-
-SoundEvent* ForestSound::newSoundEvent(FMOD::Studio::EventInstance* ins){
-
-    ForestSound* sound = new ForestSound();
-    sound->setInstance(ins);
-
-    return sound;
-}
-
-void ForestSound::setInstance(FMOD::Studio::EventInstance* ins){
-    soundInstance=ins;
-}
+ForestSound::~ForestSound(){}

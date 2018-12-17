@@ -27,17 +27,17 @@ int main(int argc, char const *argv[]) {
       int letra=0;
       init_keyboard();
       while(letra!='q'){
-        // std::cout << "Ey yo wassup my nigga" << std::endl;
+        // // std::cout << "Ey yo wassup my nigga" << std::endl;
         sleep(1);
         if(kbhit()){
           letra=readch();
-          // std::cout << "Ey yo wassup my nigga pulsaste" << std::endl;
+          // // std::cout << "Ey yo wassup my nigga pulsaste" << std::endl;
 
-          //// std::cout << "Ey yo wassup my nigga, pulsaste %c\n",letra << std::endl;
+          //// // std::cout << "Ey yo wassup my nigga, pulsaste %c\n",letra << std::endl;
         }
       }
       close_keyboard();
-    // std::cout << "Ey yo wassup my nigga" << std::endl;
+    // // std::cout << "Ey yo wassup my nigga" << std::endl;
 
     return 0;
 }

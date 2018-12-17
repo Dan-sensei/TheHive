@@ -57,6 +57,9 @@ Game::Game(){
 
     world = Singleton<ggDynWorld>::Instance();
     world->inito();
+
+    soundSys = Singleton<SoundSystem>::Instance();
+
 }
 
 Game::~Game(){
@@ -76,7 +79,6 @@ void Game::RUN(){
     sF->createEnemy(gg::Vector3f(740, 100, 30));
     sF->createEnemy(gg::Vector3f(740, 100, 40));
     sF->createEnemy(gg::Vector3f(1760, 110, 390));
-    sF->createHero(gg::Vector3f(1797, 120, 300),false);
     sF->createEnemy(gg::Vector3f(1797, 120, 350));
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
 
@@ -191,6 +193,8 @@ void Game::RUN(){
         Singleton<ScreenConsole>::Instance()->DisplayDebug();
 
         Engine->EndDro();
+
+        soundSys->update();
     }
 }
 
@@ -200,4 +204,5 @@ void Game::CLIN(){
     Engine->clean();
     world->clean();
     EventSystem->clin();
+    soundSys->CLIN();
 }
