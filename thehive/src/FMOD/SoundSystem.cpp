@@ -23,7 +23,7 @@ SoundSystem::SoundSystem(){
     //system->getBank("assets/FMOD/SFX.bank",&masterBank);
     //masterBank->getLoadingState(state);
 
-    ERRCHECK(this->setVolume(1));
+    this->setVolume(1);
 
 
 }
@@ -32,17 +32,16 @@ SoundSystem::SoundSystem(){
 SoundSystem::~SoundSystem(){}
 
 SoundEvent* SoundSystem::getEvent(string eventPath){
-    ERRCHECK(system->getEvent ( eventPath.c_str(), &event ));
+    ERRCHECK(system->getEvent(eventPath.c_str(), &event));
     FMOD::Studio::EventInstance* ins = NULL;
     ERRCHECK(event->createInstance(&ins)); //no estamos seguros de si va aqui
-
 
     return createSoundEvent(ins);
 }
 
 SoundEvent* SoundSystem::createSoundEvent(FMOD::Studio::EventInstance* instance){
     soundEvent=new ForestSound();
-    return ERRCHECK(soundEvent->newSoundEvent(instance));
+    return soundEvent->newSoundEvent(instance);
 }
 
 void SoundSystem::setVolume(float vol){
@@ -50,6 +49,7 @@ void SoundSystem::setVolume(float vol){
     FMOD::Studio::Bus* bus;
     ERRCHECK(system->getBus(busPath.c_str(),&bus));
     ERRCHECK(bus->setVolume(vol));
+
 }
 
 void SoundSystem::setListernerPosition(gg::Vector3f pos){

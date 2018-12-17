@@ -12,7 +12,6 @@ SoundEvent* ForestSound::newSoundEvent(FMOD::Studio::EventInstance* ins){
 
     ForestSound* sound = new ForestSound();
     sound->setInstance(ins);
-    //soundInstance=ins;
 
     return sound;
 }

@@ -16,9 +16,20 @@ using namespace std;
 #include <glm/glm.hpp>
 #include "inc/fmod_studio.hpp"
 #include "inc/fmod.hpp"
+#include "inc/fmod_errors.h"
 #include "Util.hpp"
 
+inline void ERRCHECK_fn(FMOD_RESULT result, const char *file, int line)
+{
+    if (result != FMOD_OK)
+    {
+        std::cerr << file << "(" << line << "): FMOD error " << result << " - " << FMOD_ErrorString(result) << std::endl;
+        exit(-1);
+    }
+}
+
 #define ERRCHECK(_result) ERRCHECK_fn(_result, __FILE__, __LINE__)
+
 
 class SoundEvent;
 template <typename T>
@@ -64,15 +75,8 @@ public:
 
 	void release();
 
-	//Funcion ERRCHECK
 
-	void ERRCHECK_fn(FMOD_RESULT result, const char *file, int line){
-	    if(result!= FMOD_OK){
-	        std::cerr << file << "(" << line << "): FMOD error"
-	        << result << " - " << std::endl;
-	        exit(-1);
-	    }
-	}
+
 private:
     string banksPath;
 	FMOD::Studio::System*	system = NULL;
