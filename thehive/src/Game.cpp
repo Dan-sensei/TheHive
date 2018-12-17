@@ -173,6 +173,8 @@ void Game::Update(float dt){
     }
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
 
+    world->stepSimulation(1.f/11.f,10.f);
+
     EventSystem->Update();
 
     Engine->BeginDro();
