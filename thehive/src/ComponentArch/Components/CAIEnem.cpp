@@ -143,9 +143,6 @@ void CAIEnem::MHandler_ATURD(){
 
 }
 
-void CAIEnem::MHandler_NEAR(TriggerRecordStruct* cdata){
-
-}
 
 void CAIEnem::MHandler_SENYUELO(TriggerRecordStruct* cdata){
     senyuelo    = true;

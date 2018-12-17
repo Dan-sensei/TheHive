@@ -42,6 +42,7 @@ public:
     void setCameraPositionBeforeLockRotation(gg::Vector3f); // Por ahora no se usa
 
 private:
+    CRigidBody      *CRigidbody;
     GameEngine      *Engine;
     ObjectManager   *Manager;
     Camera          *cam;

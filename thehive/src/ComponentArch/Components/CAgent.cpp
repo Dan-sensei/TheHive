@@ -46,7 +46,6 @@ void CAgent::Init(){
     // Mapa a funcion de los trigger ON ENTER
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_none,        &CAgent::ENTER_func_kTrig_none));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Explosion,   &CAgent::ENTER_func_kTrig_Explosion));
-    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_EnemyNear,   &CAgent::ENTER_func_kTrig_EnemyNear));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Gunfire,     &CAgent::ENTER_func_kTrig_Gunfire));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Shoot,       &CAgent::ENTER_func_kTrig_Shoot));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Touchable,   &CAgent::ENTER_func_kTrig_Touchable));
@@ -57,7 +56,6 @@ void CAgent::Init(){
     // Mapa a funcion de los trigger ON STAY
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_none,        &CAgent::STAY_func_kTrig_none));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_Explosion,   &CAgent::STAY_func_kTrig_Explosion));
-    mapFuncOnTriggerStay.insert(std::make_pair(kTrig_EnemyNear,   &CAgent::STAY_func_kTrig_EnemyNear));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_Gunfire,     &CAgent::STAY_func_kTrig_Gunfire));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_Shoot,       &CAgent::STAY_func_kTrig_Shoot));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_Touchable,   &CAgent::STAY_func_kTrig_Touchable));
@@ -68,7 +66,6 @@ void CAgent::Init(){
     // Mapa a funcion de los trigger ON STAY
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_none,        &CAgent::EXIT_func_kTrig_none));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Explosion,   &CAgent::EXIT_func_kTrig_Explosion));
-    mapFuncOnTriggerExit.insert(std::make_pair(kTrig_EnemyNear,   &CAgent::EXIT_func_kTrig_EnemyNear));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Gunfire,     &CAgent::EXIT_func_kTrig_Gunfire));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Shoot,       &CAgent::EXIT_func_kTrig_Shoot));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Touchable,   &CAgent::EXIT_func_kTrig_Touchable));
@@ -139,20 +136,20 @@ void CAgent::ENTER_func_kTrig_Explosion   (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Explosion){
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
+            CVida *health = static_cast<CVida*>(oManager->getComponent(gg::VIDA,nCAgentID));
+            if(health){
+                float damage = _pRec->data.find(kDat_Damage)/1000;
+                // gg::cout("BOOOOOOOOOOM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
+
+                health->quitarvida(damage);
+                // if(health->quitarvida(damage)){
+                //     oManager->removeEntity(nCAgentID);
+                // }
+            }
         }
     }
 }
 
-void CAgent::ENTER_func_kTrig_EnemyNear   (TriggerRecordStruct *_pRec){
-    if(_pRec->eTriggerType & kTrig_EnemyNear){
-        //CAIEnem->enemyseen();
-        if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-            //// std::cout << "core si" << '\n';
-            static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_NEAR(_pRec);
-            //// std::cout << "core no" << '\n';
-        }
-    }
-}
 
 void CAgent::ENTER_func_kTrig_Shoot       (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Shoot){
@@ -203,7 +200,6 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
 }
 
 void CAgent::STAY_func_kTrig_none        (TriggerRecordStruct *_pRec){}
-void CAgent::STAY_func_kTrig_EnemyNear   (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Shoot       (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Senyuelo    (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Aturd       (TriggerRecordStruct *_pRec){}
@@ -328,24 +324,7 @@ void CAgent::STAY_func_kTrig_Pickable    (TriggerRecordStruct *_pRec){
     }
 }
 
-void CAgent::STAY_func_kTrig_Explosion   (TriggerRecordStruct *_pRec){
-    if(_pRec->eTriggerType & kTrig_Explosion){
-        if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
-            static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
-
-            CVida *health = static_cast<CVida*>(oManager->getComponent(gg::VIDA,nCAgentID));
-            if(health){
-                float damage = _pRec->data.find(kDat_Damage)/1000;
-                // gg::cout("BOOOOOOOOOOM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
-
-                health->quitarvida(damage);
-                // if(health->quitarvida(damage)){
-                //     oManager->removeEntity(nCAgentID);
-                // }
-            }
-        }
-    }
-}
+void CAgent::STAY_func_kTrig_Explosion   (TriggerRecordStruct *_pRec){}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,7 +348,6 @@ void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
 }
 
 void CAgent::EXIT_func_kTrig_none        (TriggerRecordStruct *_pRec){}
-void CAgent::EXIT_func_kTrig_EnemyNear   (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_Shoot       (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_Aturd       (TriggerRecordStruct *_pRec){}

@@ -48,7 +48,6 @@ class CAIEnem : public IComponent {
 
         void MHandler_ATURD();
 
-        void MHandler_NEAR(TriggerRecordStruct* cdata);
 
 
         //void MHandler_ATURD_END();
