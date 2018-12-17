@@ -94,7 +94,7 @@ void Action::andar_random(){
 }
 
 void Action::distancia10(){//int tipo){
-    distancia(10,yo->playerPos);//int tipo){
+    distancia(20,yo->playerPos);//int tipo){
 }
 
 void Action::in_last(){//int tipo){
@@ -151,6 +151,9 @@ void Action::rond_seny(){
         yo->destino=yo->senpos;
         yo->rondacion_cont=0;
         s=BH_RUNNING;
+        int sign;
+        gg::genFloatRandom(-1,1)>0? sign = 1 : sign = -1;
+        yo->setSigno(sign);
     }
     rond();
 
@@ -161,6 +164,9 @@ void Action::rond_jugador(){
         gg::cout("RONDANDO JUGADOR");
         yo->rondacion_cont=0;
         s=BH_RUNNING;
+        int sign;
+        gg::genFloatRandom(-1,1)>0? sign = 1 : sign = -1;
+        yo->setSigno(sign);
     }
     yo->destino=yo->playerPos;
     rond(yo->playerSeeing);
@@ -180,15 +186,15 @@ void Action::rond(bool _b){
     }
 
     // Intentar cambiar esto
-    int sign = 1;
-    gg::genFloatRandom(-1,1)>0? sign = 1 : sign = -1;
+    int sign = yo->getSigno();
+    //gg::genFloatRandom(-1,1)>0? sign = 1 : sign = -1;
 
     gg::Vector3f mio            = cTransform->getPosition();
     gg::Vector3f dest           = yo->destino;
 
     gg::Vector3f V_AI_DEST      = dest-mio;
     gg::Vector3f V_AI_DEST_PP   = gg::Vector3f(sign*V_AI_DEST.Z,0,(-sign)*V_AI_DEST.X);
-    gg::Vector3f V_FINAL        = (V_AI_DEST-V_AI_DEST_PP)*0.3;
+    gg::Vector3f V_FINAL        = (V_AI_DEST_PP)*0.3;
 
     V_AI_DEST.Y     = 0;
     V_AI_DEST       = gg::Normalice(V_AI_DEST);
@@ -218,6 +224,8 @@ void Action::ult_cont(){
 
 void Action::distancia(float _dist,gg::Vector3f obj){//int tipo){
     gg::Vector3f mio    = cTransform->getPosition();
+    mio.Y=0;
+    obj.Y=0;
     float dist          = gg::DIST(mio,obj);
 
     if(dist<_dist){
@@ -387,7 +395,8 @@ void Action::move_too(){
     direccion       = dest-mio;
     direccion       = gg::Normalice(direccion);
     cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED);
-
+    mio.Y=0;
+    dest.Y=0;
     float dist = gg::DIST(mio,dest);
 
     if(dist<10){

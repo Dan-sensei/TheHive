@@ -71,6 +71,8 @@ class CAIEnem : public IComponent {
         Blackboard* data;
 
         float enfado;
+        int signo;
+
         //BehaviorTree* BT;
         Treecontroller* arbol;
 
@@ -105,6 +107,9 @@ class CAIEnem : public IComponent {
 
         void setImAttacking(bool);
         bool getImAttacking();
+
+        void setSigno(int);
+        int getSigno();
 
         void upgradeRage();
         float getRage();

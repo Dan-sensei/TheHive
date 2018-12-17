@@ -72,11 +72,11 @@ void Game::RUN(){
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
     sF->createHero(gg::Vector3f(1760, 110, 350),false);
-    sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
-    sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
-    sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
-    sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
-    sF->createEnemy(gg::Vector3f(1760, 110, 390),1000);
+    sF->createEnemy(gg::Vector3f(1730, 110, 390),1000,gg::Vector3f(1760, 110, 350));
+    sF->createEnemy(gg::Vector3f(1730, 110, 350),1000,gg::Vector3f(1760, 110, 350));
+    sF->createEnemy(gg::Vector3f(1790, 110, 390),1000,gg::Vector3f(1760, 110, 350));
+    sF->createEnemy(gg::Vector3f(1790, 110, 350),1000,gg::Vector3f(1760, 110, 350));
+    sF->createEnemy(gg::Vector3f(1760, 110, 420),1000,gg::Vector3f(1760, 110, 350));
     // sF->createEnemy(gg::Vector3f(1797, 120, 350),10);
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 330),2);
 

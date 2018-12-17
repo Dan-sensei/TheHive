@@ -24,7 +24,12 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerP
 {
     // void* a la estructura inicializadora para acceder a los elementos
 }
-
+void CAIEnem::setSigno(int _signo){
+    signo=_signo;
+}
+int CAIEnem::getSigno(){
+    return signo;
+}
 CAIEnem::~CAIEnem() {
     delete arbol;
 }
@@ -48,20 +53,21 @@ void CAIEnem::Init(){
 
     playerSeeing    = false;
     playerOnRange   = false;
-    playerSeen      = false;
+    //playerSeen      = false;
     ultrasonido     = false;
     senyuelo        = false;
     playerOnRange   = false;
     imAttacking     = false;
 
     senpos          = gg::Vector3f(50,50,50);
-    playerPos       = gg::Vector3f(20,20,20);
+    //playerPos       = gg::Vector3f(20,20,20);
     destino         = gg::Vector3f(50,50,50);
 
     id              = getEntityID();
     id2             = PlayerTransform->getEntityID();
     ultrasonido_cont= 0;
     rondacion_cont  = 0;
+    signo=1;
 
     data->setData("id2",new BInt(id2));
 
