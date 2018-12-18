@@ -49,7 +49,7 @@ class CHabilityController : public IComponent {
         CHabilityController(const CHabilityController &orig) = delete;
 
 
-        Hability* hab[3];
+        Hability hab[3];
         //Hability hab2;
         //Hability hab3;
 

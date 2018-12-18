@@ -29,5 +29,9 @@ enum Hojas {
     RONDAR_PLAYER,
     PAUSE,
     MOVE_TO_PLAYER,
+    FIVE_SINCELASTHABILITY,
+    EXPANSIVE_WAVE,
+    SPIT, // Es escupir en inglis
+    ENEMY_OVER_2_METERS,
     NUM_ACCIONES
 };

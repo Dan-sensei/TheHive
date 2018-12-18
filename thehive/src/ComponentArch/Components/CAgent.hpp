@@ -80,6 +80,7 @@ class CAgent : public IComponent {
         void ENTER_func_kTrig_Aturd         (TriggerRecordStruct*);
         void ENTER_func_kTrig_Pickable      (TriggerRecordStruct*);
         void ENTER_func_kTrig_DeadAlien     (TriggerRecordStruct*);
+        void ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerStay;
         void STAY_func_kTrig_none           (TriggerRecordStruct*);
@@ -92,6 +93,7 @@ class CAgent : public IComponent {
         void STAY_func_kTrig_Aturd          (TriggerRecordStruct*);
         void STAY_func_kTrig_Pickable       (TriggerRecordStruct*);
         void STAY_func_kTrig_DeadAlien      (TriggerRecordStruct*);
+        void STAY_func_kTrig_ExpansiveWave  (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerExit;
         void EXIT_func_kTrig_none           (TriggerRecordStruct*);
@@ -104,6 +106,7 @@ class CAgent : public IComponent {
         void EXIT_func_kTrig_Aturd          (TriggerRecordStruct*);
         void EXIT_func_kTrig_Pickable       (TriggerRecordStruct*);
         void EXIT_func_kTrig_DeadAlien      (TriggerRecordStruct*);
+        void EXIT_func_kTrig_ExpansiveWave  (TriggerRecordStruct*);
 
 };
 

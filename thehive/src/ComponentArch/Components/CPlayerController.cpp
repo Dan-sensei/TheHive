@@ -54,6 +54,8 @@ void CPlayerController::Init(){
     mapFuncGrenades.insert(std::make_pair(1,&CPlayerController::playerThrowHolyBomb));
     mapFuncGrenades.insert(std::make_pair(2,&CPlayerController::playerThrowMatrioska));
     mapFuncGrenades.insert(std::make_pair(3,&CPlayerController::playerThrowDopple));
+
+    items.fill(0);
 }
 
 
@@ -375,7 +377,7 @@ bool CPlayerController::canPickWeapon(){
     else{
         pulsacion_f = false;
     }
-    return true;
+    return false;
 }
 
 bool CPlayerController::hasItem(const uint16_t &_item){

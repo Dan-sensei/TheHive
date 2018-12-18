@@ -21,23 +21,24 @@ CTransform* CAIEnem::PlayerTransform;
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr),
  type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen)
-{
-    // void* a la estructura inicializadora para acceder a los elementos
-}
+{}
+
 void CAIEnem::setSigno(int _signo){
     signo=_signo;
 }
+
 int CAIEnem::getSigno(){
     return signo;
 }
+
 CAIEnem::~CAIEnem() {
     delete arbol;
 }
 
 void CAIEnem::enemyseen(){
-    playerPos   =PlayerTransform->getPosition();
-    playerSeen  =true;
-    playerSeeing=true;
+    playerPos       = PlayerTransform->getPosition();
+    playerSeen      = true;
+    playerSeeing    = true;
 }
 
 void CAIEnem::enemyrange(){
@@ -45,49 +46,43 @@ void CAIEnem::enemyrange(){
 }
 
 void CAIEnem::Init(){
-    Engine = Singleton<GameEngine>::Instance();
-    Manager = Singleton<ObjectManager>::Instance();
-    data= new Blackboard();
-    //int id_dado=getEntityID();
-    //// std::cout << "id dado:" <<id_dado<< '\n';
+    Engine          = Singleton<GameEngine>::Instance();
+    Manager         = Singleton<ObjectManager>::Instance();
+    EventSystem     = Singleton<CTriggerSystem>::Instance();
+    data            = new Blackboard();
 
-    playerSeeing    = false;
-    playerOnRange   = false;
-    //playerSeen      = false;
-    ultrasonido     = false;
-    senyuelo        = false;
-    playerOnRange   = false;
-    imAttacking     = false;
+    playerSeeing        = false;
+    playerOnRange       = false;
+    //playerSeen          = false;
+    ultrasonido         = false;
+    senyuelo            = false;
+    playerOnRange       = false;
+    imAttacking         = false;
+    closerAllyIsDead    = false;
 
     senpos          = gg::Vector3f(50,50,50);
-    //playerPos       = gg::Vector3f(20,20,20);
     destino         = gg::Vector3f(50,50,50);
 
     id              = getEntityID();
     id2             = PlayerTransform->getEntityID();
     ultrasonido_cont= 0;
     rondacion_cont  = 0;
-    signo=1;
+    signo           = 1;
 
     data->setData("id2",new BInt(id2));
+    arbol = new Treecontroller(data,type,this);
 
-    //data->serData()
-    //// std::cout << "arbol1" << '\n';
-    //// std::cout << "creado" << '\n';
-    arbol = new Treecontroller(data,0,this);
-    //// std::cout << "creadowii" << '\n';
-
-    //// std::cout << "arbol2" << '\n';
     Vrange          = 30;
     Arange          = 2;
     enfado          = 1;
     gradovision     = cos(30*3.14159265359/180.f);
 
+    numberOfUpdatesSinceLastHability = 0;
+
     MHandler_SETPTRS();
 }
 
 gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
-
     if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
@@ -109,11 +104,15 @@ void CAIEnem::Update(){
     //std::cout << "entrando" << '\n';
     if(debugvis)  enableVisualDebug();
 
-    CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
-    if(clk && clk->hasEnded()){
-        isPlayerAttacking = false;
-        Manager->removeComponentFromEntity(gg::CLOCK,id);
+    if(isPlayerAttacking){
+        CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
+        if(clk && clk->hasEnded()){
+            isPlayerAttacking = false;
+            Manager->removeComponentFromEntity(gg::CLOCK,id);
+        }
     }
+
+    numberOfUpdatesSinceLastHability++;
 
     gg::Vector3f pTF        = PlayerTransform->getPosition();
     gg::Vector3f cTF_POS    = cTransform->getPosition();
@@ -131,6 +130,7 @@ void CAIEnem::Update(){
         if(gradovision<sol && !playerSeeing){
             enemyseen();
             arbol->reset();
+            resetHabilityUpdateCounter();
         }
 
         if(dist<Arange && !playerOnRange){
@@ -143,6 +143,7 @@ void CAIEnem::Update(){
     else if(playerSeeing){
         playerSeeing = false;
         arbol->reset();
+        resetHabilityUpdateCounter();
     }
     arbol->update();
 }
@@ -209,6 +210,11 @@ void CAIEnem::setPlayerIsAttacking(bool _b){
     }
 }
 
+void CAIEnem::explosiveWave(){
+    // PUM!
+    EventSystem->RegisterTriger(kTrig_ExpansiveWave,0,id,cTransform->getPosition(), 10,50,false,TData());
+}
+
 bool CAIEnem::getPlayerIsAttacking(){
     return isPlayerAttacking;
 }
@@ -232,6 +238,19 @@ float CAIEnem::getRage(){
 void CAIEnem::setImAttacking(bool _b){
     imAttacking = _b;
 }
+
 bool CAIEnem::getImAttacking(){
     return imAttacking;
+}
+
+void CAIEnem::resetHabilityUpdateCounter(){
+    numberOfUpdatesSinceLastHability = 0;
+}
+
+int CAIEnem::getHabilityUpdateCounter(){
+    return numberOfUpdatesSinceLastHability;
+}
+
+int CAIEnem::getEnemyType(){
+    return type;
 }

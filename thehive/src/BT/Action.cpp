@@ -1,6 +1,7 @@
 #include "Action.hpp"
 
-#define MAX_AI_SPEED            2
+#define MAX_AI_SPEED            2.f
+#define VEL_ATENUATION          0.1
 #define MAX_ALIENS_ATTACKING    1
 
 int Action::aliensAttacking = 0;
@@ -38,15 +39,20 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[MORE_RAGE]               = &Action::moreRage;    // si
     VectorAcciones[X_ALIENS_ATTACKING]      = &Action::checkAliensAttacking;   // si
 
-    VectorAcciones[X_METRES_PLAYER]         = &Action::distancia10;     // si
+    VectorAcciones[X_METRES_PLAYER]         = &Action::distancia20;     // si
     VectorAcciones[RONDAR_PLAYER]           = &Action::rond_jugador;    // si
     VectorAcciones[PAUSE]                   = &Action::alienInPause;    // si
 
     VectorAcciones[MOVE_TO_PLAYER]          = &Action::move_player;     // si
     VectorAcciones[PLAYER_SEEN]             = &Action::seen;            // si
-    VectorAcciones[MOVE_AROUND]             = &Action::move_around;     // siRANDOM
+    VectorAcciones[MOVE_AROUND]             = &Action::move_around;     // si
     VectorAcciones[MOVE_TO_LAST_POS_KWON]   = &Action::move_last;       // si
     VectorAcciones[IN_LAST_POS_KWON]        = &Action::in_last;         // si
+
+    VectorAcciones[FIVE_SINCELASTHABILITY]  = &Action::FIVE_SinceLastHability;
+    VectorAcciones[EXPANSIVE_WAVE]          = &Action::doExplosiveWave;
+    VectorAcciones[SPIT]                    = &Action::doSpit;
+    VectorAcciones[ENEMY_OVER_2_METERS]     = &Action::over_2_meters;
 
     data    = _data;
     tarea   = task;
@@ -91,10 +97,6 @@ void Action::setActive(std::string a, bool acierto){
 void Action::andar_random(){
     setActive("andar random",0);
 
-}
-
-void Action::distancia10(){//int tipo){
-    distancia(20,yo->playerPos);//int tipo){
 }
 
 void Action::in_last(){//int tipo){
@@ -202,7 +204,7 @@ void Action::rond(bool _b){
 
     cTransform->setRotation(V_AI_DEST);
 
-    cRigidBody->applyConstantVelocity(V_FINAL,MAX_AI_SPEED);
+    cRigidBody->applyConstantVelocity(V_FINAL,MAX_AI_SPEED-(yo->getEnemyType()*VEL_ATENUATION));
 }
 
 void Action::ult_cont(){
@@ -222,6 +224,14 @@ void Action::ult_cont(){
 
 }
 
+void Action::distancia10(){//int tipo){
+    distancia(10,yo->playerPos);//int tipo){
+}
+
+void Action::distancia20(){
+    distancia(20,yo->playerPos);//int tipo){
+}
+
 void Action::distancia(float _dist,gg::Vector3f obj){//int tipo){
     gg::Vector3f mio    = cTransform->getPosition();
     mio.Y=0;
@@ -234,6 +244,22 @@ void Action::distancia(float _dist,gg::Vector3f obj){//int tipo){
         s = BH_FAILURE;
     }
 
+}
+
+void Action::over_2_meters(){
+    over_X_meters(2);
+}
+
+void Action::over_X_meters(int _m){
+    gg::Vector3f obj    = yo->playerPos;
+    gg::Vector3f mio    = cTransform->getPosition();
+
+    mio.Y=0;
+    obj.Y=0;
+
+    float dist          = gg::DIST(mio,obj);
+
+    (dist>_m)? s = BH_SUCCESS : s = BH_FAILURE;
 }
 
 void Action::hit(){
@@ -275,7 +301,6 @@ void Action::isThereSomeAlienDead(){
 }
 
 void Action::moreRage(){
-    gg::cout("RAGE INCREASES");
     yo->upgradeRage();
     s = BH_SUCCESS;
 }
@@ -394,7 +419,7 @@ void Action::move_too(){
 
     direccion       = dest-mio;
     direccion       = gg::Normalice(direccion);
-    cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED);
+    cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED-(yo->getEnemyType()*VEL_ATENUATION));
     mio.Y=0;
     dest.Y=0;
     float dist = gg::DIST(mio,dest);
@@ -430,4 +455,26 @@ void Action::modifyImAttacking(bool _b){
 
 void Action::setOffsetAliensAttacking(int _i){
     aliensAttacking += _i;
+}
+
+void Action::FIVE_SinceLastHability(){
+    gg::cout(yo->getHabilityUpdateCounter());
+    if(yo->getHabilityUpdateCounter() > 300){
+        yo->resetHabilityUpdateCounter();
+        s = BH_SUCCESS;
+    }
+    else{
+        s = BH_FAILURE;
+    }
+}
+
+void Action::doExplosiveWave(){
+    yo->explosiveWave();
+    s = BH_FAILURE;
+}
+
+void Action::doSpit(){
+    gg::cout("SPIT!");
+    // yo->spit();
+    s = BH_SUCCESS;
 }

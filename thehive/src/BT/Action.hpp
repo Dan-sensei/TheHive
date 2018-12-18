@@ -39,9 +39,17 @@ class Action : public Behavior {
         void move_to();
         void move_too();
         void girar_enemigo();
+
         void distancia10();
+        void distancia20();
+        void distancia(float,gg::Vector3f);
+
+        void over_2_meters();
+        void over_X_meters(int);
+
+        void FIVE_SinceLastHability();
+
         void onrange();
-        void distancia(float _dist,gg::Vector3f obj);
         void seeing();
         void ultrasonido();
         void senyuelo();
@@ -66,8 +74,11 @@ class Action : public Behavior {
 
         void modifyImAttacking(bool);
         void setOffsetAliensAttacking(int);
-        CAIEnem* yo;
+        void doExplosiveWave();
+        void doSpit();
 
+
+        CAIEnem* yo;
         static int aliensAttacking;
 
    private:

@@ -20,7 +20,9 @@ class Factory{
 
     public:
         uint16_t createHero(const gg::Vector3f &Position,bool);
-        uint16_t createEnemy(const gg::Vector3f&,const float&,gg::Vector3f Position_player=gg::Vector3f());
+        uint16_t createSoldier(const gg::Vector3f&,const float&);
+        uint16_t createTank(const gg::Vector3f&,const float&);
+
         uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
         uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
         uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation = gg::Vector3f());

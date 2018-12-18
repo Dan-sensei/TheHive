@@ -17,18 +17,20 @@ void ScreenConsole::setprogress(int hab,float prog){
 
     }
 }
+
 void ScreenConsole::setvida(float _vida){
     // std::cout << "hacemos algo" << '\n';
     vida=_vida;
 }
+
 void ScreenConsole::setbullet(int tipo,int b_act, int b_tot){
     if(tipo==0){
-        balaP=b_act;
-        balaP_TOT=b_tot;
+        balaP       = b_act;
+        balaP_TOT   = b_tot;
 
     }else {
-        balaS=b_act;
-        balaS_TOT=b_tot;
+        balaS       = b_act;
+        balaS_TOT   = b_tot;
     }
 }
 
