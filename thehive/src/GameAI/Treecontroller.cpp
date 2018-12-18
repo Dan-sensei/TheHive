@@ -3,7 +3,9 @@
 #include <BT/RandomSequence.hpp>
 #include <BT/Action.hpp>
 #include <BT/Sequence.hpp>
+#include <BT/Inverso.hpp>
 #include <BT/Selector.hpp>
+#include <BT/RandomSelector.hpp>
 #include <iostream>
 
 
@@ -348,21 +350,8 @@
     }
 
     void Treecontroller::arbolsoldado(){
-/*
-        Action* a1= new Action(TEN_METROS,data,yo);//10 metros del jugador?
-        Action* a2= new Action(THREE_ATACK,data,yo);//hay tres atacando?
-        Action* a3= new Action(ON_RANGE,data,yo);//estoy a rango?
-        Action* a4= new Action(IN_PLACE,data,yo);//no estoy en el lugar?
-        Action* a5= new Action(PLAYER_SEEN,data,yo);//he visto al jugador?
-        Action* a6= new Action(PLAYER_SEEING,data,yo);//estoy viendo al jugador?
-        //acciones
-        Action* a7= new Action(MOVE_AROUND,data,yo);//rondar al jugador
-        Action* a8= new Action(BLOCK,data,yo);//bloquear el camino
-        Action* a9= new Action(MOVE_TO_PLAYER,data,yo);//moverse hacia el jugador
-        Action* a10= new Action(HIT,data,yo);//golpear
-        Action* a11= new Action(MOVE_TO_LAST_POS_KWON,data,yo);//mover ultima pos
-        Action* a12= new Action(JUST_MOVE,data,yo);//mover por el mapa
-*/
+        //Inverso
+        //RandomSelector
         Action* a1= new Action(RANGO_ULTRASONIDO,data,yo);//rango ultrasonido
         Action* a2= new Action(ATURDIDO,data,yo);//aturdido
 
@@ -380,15 +369,17 @@
         Action* a10= new Action(ALLY_DEAD,data,yo);//ha muerto aliado
         Action* a11= new Action(MORE_RAGE,data,yo);//aumentar enfado
         Action* a12= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando
+        Action* a14= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando
 
-        Action* a13= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando
+        //Action* a13= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando no esta ahora
+        Action* a13= new Action(MOVEP_UNTILX,data,yo);//hay x aliens atacando no esta ahora
 
-        Action* a14= new Action(X_METRES_PLAYER,data,yo);// esta a x metros o menos del jugador
+        //Action* a14= new Action(X_METRES_PLAYER,data,yo);// esta a x metros o menos del jugador no est ahora
         Action* a15= new Action(RONDAR_PLAYER,data,yo);//rondar jugador
 
-        Action* a16= new Action(GIRAR,data,yo);//no esta en la ruta
-        Action* a17= new Action(GIRAR,data,yo);//calcular ruta a bloquear
-        Action* a18= new Action(MOVE_AROUND,data,yo);//mover
+        Action* a16= new Action(COMER,data,yo);//no esta en la ruta
+        Action* a17= new Action(COMER,data,yo);//calcular ruta a bloquear
+        Action* a18= new Action(COMER,data,yo);//mover
 
         Action* a19= new Action(PAUSE,data,yo);//esperar
 
@@ -448,39 +439,48 @@
         sec2->addChild(a4);
         sec2->addChild(a5);
 
+
         Sequence* sec9= new Sequence();
         sec9->addChild(a16);
         sec9->addChild(a17);
         sec9->addChild(a18);
-        Selector* sel5= new Selector();//5
-        sel5->addChild(sec9);
-        sel5->addChild(a19);
+        RandomSelector* rsel1=new RandomSelector();
+        rsel1->addChild(sec9);
+        rsel1->addChild(a19);
+        rsel1->addChild(a15);
+        rsel1->addChild(a13);
         Sequence* sec8= new Sequence();
-        sec8->addChild(a14);
-        sec8->addChild(a15);
-        Selector* sel3= new Selector();//5
-        sel3->addChild(sec8);
-        sel3->addChild(sel5);
-        Sequence* sec7= new Sequence();
-        sec7->addChild(a10);
-        sec7->addChild(a11);
-        sec7->addChild(a12);
-        Selector* sel4= new Selector();//5
-        sel4->addChild(sec7);
-        sel4->addChild(a13);
+        sec8->addChild(a10);
+        sec8->addChild(a11);
+        sec8->addChild(a12);
         Sequence* sec6= new Sequence();
-        sec6->addChild(a9);
-        sec6->addChild(sel4);
+        //sec6->addChild(sec8);
+        //sec6->addChild(a16);
+        sec6->addChild(rsel1);
+        sec6->addChild(a16);
+        //Inverso* inv3=new Inverso(a7);
+        Selector* sel4= new Selector();//5
+        sel4->addChild(a7);
+        sel4->addChild(a20);
+        Sequence* sec7= new Sequence();
+        sec7->addChild(sel4);
+        sec7->addChild(a8);
+        Inverso* inv1=new Inverso(a9);
+        Inverso* inv2=new Inverso(a12);
+        Selector* sel3= new Selector();
+        sel3->addChild(inv1);
+        sel3->addChild(inv2);
         Sequence* sec5= new Sequence();
-        sec5->addChild(sec6);
         sec5->addChild(sel3);
-        Selector* sel2= new Selector();//5
+        sec5->addChild(sec7);
+        Selector* sel2= new Selector();
         sel2->addChild(sec5);
-        sel2->addChild(a20);
+        sel2->addChild(sec6);
+        //////////////
         Sequence* sec4= new Sequence();
         sec4->addChild(a7);
         sec4->addChild(a8);
-        Selector* sel1= new Selector();//5
+        Selector* sel1= new Selector();
         sel1->addChild(sec4);
         sel1->addChild(sel2);
         Sequence* sec3= new Sequence();
@@ -490,32 +490,119 @@
         Sequence* sec11= new Sequence();
         sec11->addChild(a23);
         sec11->addChild(a24);
-        Selector* sel7= new Selector();//5
-        sel7->addChild(sec11);
-        sel7->addChild(a25);
         Selector* sel6= new Selector();//5
-        sel6->addChild(a21);
-        sel6->addChild(a22);
+        sel6->addChild(sec11);
+        sel6->addChild(a25);
+        Selector* sel5= new Selector();//5
+        sel5->addChild(a21);
+        sel5->addChild(a22);
         Sequence* sec10= new Sequence();
+        sec10->addChild(sel5);
         sec10->addChild(sel6);
-        sec10->addChild(sel7);
 
         Sequence* sec12= new Sequence();
         sec12->addChild(a27);
         sec12->addChild(a28);
         sec12->addChild(a29);
         sec12->addChild(a30);
+        Selector* sel7= new Selector();//5
+        sel7->addChild(a26);
+        sel7->addChild(sec12);
+
+
         Selector* sel8= new Selector();//5
-        sel8->addChild(a26);
-        sel8->addChild(sec12);
+        sel8->addChild(sec1);
+        sel8->addChild(sec2);
+        sel8->addChild(sec3);
+        sel8->addChild(sec10);
+        sel8->addChild(sel7);
+        /*
+        Sequence* sec1= new Sequence();
+        sec1->addChild(a1);
+        sec1->addChild(a2);
+
+        Sequence* sec2= new Sequence();
+        sec2->addChild(a3);
+        sec2->addChild(a4);
+        sec2->addChild(a5);
 
 
-        Selector* sel9= new Selector();//5
-        sel9->addChild(sec1);
-        sel9->addChild(sec2);
-        sel9->addChild(sec3);
-        sel9->addChild(sec10);
-        sel9->addChild(sel8);
+        Sequence* sec9= new Sequence();
+        sec9->addChild(a16);
+        sec9->addChild(a17);
+        sec9->addChild(a18);
+        //RandomSelector* rsel1=new RandomSelector();
+        //rsel1->addChild(sec9);
+        //rsel1->addChild(a19);
+        //rsel1->addChild(a15);
+        //rsel1->addChild(a13);
+        Sequence* sec8= new Sequence();
+        sec8->addChild(a10);
+        sec8->addChild(a11);
+        sec8->addChild(a12);
+        Sequence* sec6= new Sequence();
+        sec6->addChild(sec8);
+        //sec6->addChild(rsel1);
+        //Inverso* inv3=new Inverso(a7);
+        Selector* sel4= new Selector();//5
+        sel4->addChild(a7);
+        sel4->addChild(a20);
+        Sequence* sec7= new Sequence();
+        sec7->addChild(sel4);
+        sec7->addChild(a8);
+        //Inverso* inv1=new Inverso(a9);
+        //Inverso* inv2=new Inverso(a12);
+        Selector* sel3= new Selector();
+        sel3->addChild(a9);
+        sel3->addChild(a14);
+        Sequence* sec5= new Sequence();
+        sec5->addChild(sel3);
+        sec5->addChild(sec7);
+        Selector* sel2= new Selector();
+        sel2->addChild(sec5);
+        sel2->addChild(sec6);
+        //////////////
+        Sequence* sec4= new Sequence();
+        sec4->addChild(a7);
+        sec4->addChild(a8);
+        Selector* sel1= new Selector();
+        sel1->addChild(sec4);
+        sel1->addChild(sel2);
+        Sequence* sec3= new Sequence();
+        sec3->addChild(a6);
+        sec3->addChild(sel1);
+
+        Sequence* sec11= new Sequence();
+        sec11->addChild(a23);
+        sec11->addChild(a24);
+        Selector* sel6= new Selector();//5
+        sel6->addChild(sec11);
+        sel6->addChild(a25);
+        Selector* sel5= new Selector();//5
+        sel5->addChild(a21);
+        sel5->addChild(a22);
+        Sequence* sec10= new Sequence();
+        sec10->addChild(sel5);
+        sec10->addChild(sel6);
+
+        Sequence* sec12= new Sequence();
+        sec12->addChild(a27);
+        sec12->addChild(a28);
+        sec12->addChild(a29);
+        sec12->addChild(a30);
+        Selector* sel7= new Selector();//5
+        sel7->addChild(a26);
+        sel7->addChild(sec12);
+
+
+        Selector* sel8= new Selector();//5
+        sel8->addChild(sec1);
+        sel8->addChild(sec2);
+        sel8->addChild(sec3);
+        sel8->addChild(sec10);
+        sel8->addChild(sel8);
+        */
+
 
         m_Children.push_back(sec1);
         m_Children.push_back(sec2);
@@ -538,8 +625,12 @@
         m_Children.push_back(sel6);
         m_Children.push_back(sel7);
         m_Children.push_back(sel8);
-        m_Children.push_back(sel9);
+        //m_Children.push_back(rsel1);
+        //m_Children.push_back(sel9);
+        //m_Children.push_back(inv1);
+        //m_Children.push_back(inv2);
+        //m_Children.push_back(inv3);
 
 
-        BT= new BehaviorTree(sel9);
+        BT= new BehaviorTree(sel8);
     }

@@ -66,17 +66,22 @@ gg::EMessageStatus CVida::MHandler_SETPTRS(){
 
 
 void CVida::Update() {
-    if(vida <= 0 && !Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
-        CTransform  *t  = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,getEntityID()));
-        CAIEnem     *AI = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
-        if(t && AI){
-            // gg::cout("DEAD ALIEN");
-            if(AI->getImAttacking())
-                Action::aliensAttacking--;
-            // Evento para que los enemigos vean que se ha muerto un aliado suyo
-            triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 5, 5000, false, TData());
-        }
+    if(vida <= 0){
+        if(!Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+            CTransform  *t  = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,getEntityID()));
+            CAIEnem     *AI = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+            if(t && AI){
+                // gg::cout("DEAD ALIEN");
+                if(AI->getImAttacking())
+                    Action::aliensAttacking--;
+                // Evento para que los enemigos vean que se ha muerto un aliado suyo
+                triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 5, 5000, false, TData());
+            }
 
-        Manager->removeEntity(getEntityID());
+            Manager->removeEntity(getEntityID());
+        }
+        else{
+                //muerto
+        }
     }
 }
