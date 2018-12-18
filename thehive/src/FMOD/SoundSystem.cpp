@@ -53,7 +53,6 @@ void SoundSystem::CLIN(){
 	// A clinear!
 	std::map<std::string,SoundEvent*>::iterator it = soundEvents.begin();
 	while(it!=soundEvents.end()){
-		std::cout << "hola" << '\n';
 		delete it->second;
 		it++;
 	}
