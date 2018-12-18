@@ -59,6 +59,9 @@ class CAIEnem : public IComponent {
         void setSigno(int);
         int getSigno();
 
+        void upgradeMaxAliensAttackingAtOnce();
+        int getMaxAliensAttackingAtOnce();
+
         void upgradeRage();
         float getRage();
 
@@ -108,6 +111,7 @@ class CAIEnem : public IComponent {
 
         gg::EEnemyType type;
         int             numberOfUpdatesSinceLastHability;
+        int             maxAliensAttacking;
 
         static bool     debugvis;
         bool            imAttacking;

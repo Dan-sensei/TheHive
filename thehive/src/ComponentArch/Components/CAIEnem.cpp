@@ -59,16 +59,17 @@ void CAIEnem::Init(){
     playerOnRange       = false;
     imAttacking         = false;
     closerAllyIsDead    = false;
-    isPlayerAttacking = false;
+    isPlayerAttacking   = false;
 
-    senpos          = gg::Vector3f(50,50,50);
-    destino         = gg::Vector3f(50,50,50);
+    senpos              = gg::Vector3f(50,50,50);
+    destino             = gg::Vector3f(50,50,50);
 
-    id              = getEntityID();
-    id2             = PlayerTransform->getEntityID();
-    ultrasonido_cont= 0;
-    rondacion_cont  = 0;
-    signo           = 1;
+    id                  = getEntityID();
+    id2                 = PlayerTransform->getEntityID();
+    ultrasonido_cont    = 0;
+    rondacion_cont      = 0;
+    signo               = 1;
+    maxAliensAttacking  = 2;
 
     data->setData("id2",new BInt(id2));
     arbol = new Treecontroller(data,type,this);
@@ -135,12 +136,6 @@ void CAIEnem::Update(){
             arbol->reset();
             resetHabilityUpdateCounter();
         }
-        //else if(gradovision>sol && playerSeeing){
-        //    playerSeeing = false;
-        //    //playerPos   =PlayerTransform->getPosition();
-        //    arbol->reset();
-        //}
-
         if(dist<Arange && !playerOnRange){
             enemyrange();
             //arbol->reset();
@@ -225,7 +220,7 @@ void CAIEnem::setPlayerIsAttacking(bool _b){
 }
 
 void CAIEnem::explosiveWave(){
-    // PUM!
+    // TODO
     EventSystem->RegisterTriger(kTrig_ExpansiveWave,0,id,cTransform->getPosition(), 10,50,false,TData());
 }
 
@@ -243,6 +238,11 @@ bool CAIEnem::getCloserAllyIsDead(){
 
 void CAIEnem::upgradeRage(){
     enfado++;
+    if(enfado >= 3){
+        gg::cout(" -- ENFADOMASMAS!!");
+        maxAliensAttacking++;
+        enfado = 1;
+    }
 }
 
 float CAIEnem::getRage(){
@@ -267,4 +267,11 @@ int CAIEnem::getHabilityUpdateCounter(){
 
 int CAIEnem::getEnemyType(){
     return type;
+}
+
+void CAIEnem::upgradeMaxAliensAttackingAtOnce(){
+    maxAliensAttacking++;
+}
+int CAIEnem::getMaxAliensAttackingAtOnce(){
+    return maxAliensAttacking;
 }

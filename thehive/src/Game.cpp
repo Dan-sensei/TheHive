@@ -72,8 +72,24 @@ void Game::RUN(){
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
     sF->createHero(gg::Vector3f(1760, 110, 350),false);
-    sF->createSoldier(gg::Vector3f(1730, 110, 390),500);
-    sF->createTank(gg::Vector3f(1730, 110, 350),1000);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),1000);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    sF->createSoldier(gg::Vector3f(1730, 110, 390),10);
+    // sF->createTank(gg::Vector3f(1730, 110, 350),1000);
     sF->createCollectableWeapon(gg::Vector3f(1760, 110, 340),2);
     sF->createCollectableWeapon(gg::Vector3f(1797, 120, 340),3);
 

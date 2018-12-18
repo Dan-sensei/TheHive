@@ -73,10 +73,10 @@ void CVida::Update() {
             if(t && AI){
                 // gg::cout("DEAD ALIEN");
                 if(AI->getImAttacking())
-                Action::aliensAttacking--;
+                    Action::aliensAttacking--;
                 // Evento para que los enemigos vean que se ha muerto un aliado suyo
 
-                triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 5, 5000, false, TData());
+                triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 20, 5000, false, TData());
             }
 
             Manager->removeEntity(getEntityID());

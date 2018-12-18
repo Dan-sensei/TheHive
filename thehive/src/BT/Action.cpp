@@ -2,7 +2,6 @@
 
 #define MAX_AI_SPEED            2.f
 #define VEL_ATENUATION          0.1
-#define MAX_ALIENS_ATTACKING    1
 
 int Action::aliensAttacking = 0;
 
@@ -35,8 +34,8 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[HIT]                     = &Action::hit;             // si
     VectorAcciones[NOT_ATTACKED]            = &Action::playerNotAttacking;   // si
 
-    VectorAcciones[ALLY_DEAD]               = &Action::isThereSomeAlienDead;   // si
-    VectorAcciones[MORE_RAGE]               = &Action::moreRage;    // si
+    VectorAcciones[ALLY_DEAD]               = &Action::isThereSomeAlienDead;    // COMENTADO -> NO SE UTILIZA
+    VectorAcciones[MORE_RAGE]               = &Action::moreRage;                // COMENTADO -> NO SE UTILIZA
     VectorAcciones[X_ALIENS_ATTACKING]      = &Action::checkAliensAttacking;   // si
 
     VectorAcciones[X_METRES_PLAYER]         = &Action::distancia20;     // si
@@ -302,29 +301,34 @@ void Action::playerNotAttacking(){
 }
 
 void Action::isThereSomeAlienDead(){
-    if(yo->getCloserAllyIsDead()){
-        s = BH_SUCCESS;
-    }
-    else{
-        s = BH_FAILURE;
-    }
+    // NO ENTRA
+    // _________
+    // gg::cout("SOME ALIEN DEAD?");
+    // if(yo->getCloserAllyIsDead()){
+    //     gg::cout(" -- SI CARACULO");
+    //     s = BH_SUCCESS;
+    // }
+    // else{
+    //     gg::cout(" -- PUES NO");
+    //     s = BH_FAILURE;
+    // }
 }
 
 void Action::moreRage(){
-    //gg::cout("RAGE INCREASES");
-    yo->upgradeRage();
-    s = BH_SUCCESS;
+    // NO ENTRA
+    // _________
+    // gg::cout("-- -----------------------");
+    // yo->upgradeRage();
+    // s = BH_SUCCESS;
 }
 
 void Action::checkAliensAttacking(){
-    if(aliensAttacking>=MAX_ALIENS_ATTACKING&&!yo->getImAttacking()){
-        // gg::cout(" -- MAX ALIENS ATTACKING");
-        s = BH_SUCCESS;
+    if(aliensAttacking <= yo->getMaxAliensAttackingAtOnce() && !yo->getImAttacking()){
+        modifyImAttacking(true);
+        s = BH_FAILURE;
     }
     else{
-        modifyImAttacking(true);
-        // gg::cout(" -- ALIENS CAN ATTACK");
-        s = BH_FAILURE;
+        s = BH_SUCCESS;
     }
 
 }
@@ -445,7 +449,7 @@ void Action::move_too(int min){
     // direccion       = dest-mio;
     // direccion       = gg::Normalice(direccion);
     // cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED-(yo->getEnemyType()*VEL_ATENUATION));
-    
+
     mio.Y=0;
     dest.Y=0;
     float dist = gg::DIST(mio,dest);

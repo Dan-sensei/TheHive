@@ -148,7 +148,8 @@ void CAgent::ENTER_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_DeadAlien){
         CAIEnem *AI = static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,getEntityID()));
         if(AI && !AI->getCloserAllyIsDead()){
-            AI->setCloserAllyIsDead(true);
+            AI->setCloserAllyIsDead(true);      // Por ahora este no hace falta
+            AI->upgradeRage();
         }
     }
 }
