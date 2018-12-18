@@ -49,6 +49,8 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[IN_LAST_POS_KWON]        = &Action::in_last;         // si
 
     VectorAcciones[MOVEP_UNTILX]            = &Action::move_player_utilx;         // si
+
+    VectorAcciones[IAMATACKING]            = &Action::imatack;         // si
     data    = _data;
     tarea   = task;
 
@@ -129,6 +131,10 @@ void Action::ultrasonido(){
 
 void Action::senyuelo(){
     checkbool(yo->senyuelo);
+
+}
+void Action::imatack(){
+    checkbool(yo->getImAttacking());
 
 }
 
@@ -350,8 +356,9 @@ void Action::move_senyuelo(){
     move_too(10);
 }
 
-
+///
 void Action::move_player_utilx(){
+    //10-25
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
         //gg::cout("move player");

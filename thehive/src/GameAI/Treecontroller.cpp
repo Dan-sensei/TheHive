@@ -397,6 +397,8 @@
         Action* a28= new Action(GIRAR,data,yo);//no hay mas de 3 comiendo
         Action* a29= new Action(GIRAR,data,yo);//mover
         Action* a30= new Action(GIRAR,data,yo);//comer
+
+        Action* a31= new Action(IAMATACKING,data,yo);//Estoy atacando
         // </NO IMPLEMENTADO>
 
         m_Children.push_back(a1);
@@ -429,6 +431,7 @@
         m_Children.push_back(a28);
         m_Children.push_back(a29);
         m_Children.push_back(a30);
+        m_Children.push_back(a31);
 
         Sequence* sec1= new Sequence();
         sec1->addChild(a1);
@@ -449,25 +452,24 @@
         rsel1->addChild(a19);
         rsel1->addChild(a15);
         rsel1->addChild(a13);
-        Sequence* sec8= new Sequence();
-        sec8->addChild(a10);
-        sec8->addChild(a11);
-        sec8->addChild(a12);
-        Sequence* sec6= new Sequence();
+        //Sequence* sec8= new Sequence();
+        //sec8->addChild(a10);
+        //sec8->addChild(a11);
+        //sec8->addChild(a12);
+        //Sequence* sec6= new Sequence();
         //sec6->addChild(sec8);
-        //sec6->addChild(a16);
-        sec6->addChild(rsel1);
-        sec6->addChild(a16);
-        //Inverso* inv3=new Inverso(a7);
-        Selector* sel4= new Selector();//5
-        sel4->addChild(a7);
-        sel4->addChild(a20);
+        //sec6->addChild(a16);///////////////////////////esto es secuencia 8
+        //sec6->addChild(rsel1);
+        //Selector* sel4= new Selector();//5
+        //sel4->addChild(a7);
+        //sel4->addChild(a20);
         Sequence* sec7= new Sequence();
-        sec7->addChild(sel4);
+        sec7->addChild(a20);
         sec7->addChild(a8);
         Inverso* inv1=new Inverso(a9);
         Inverso* inv2=new Inverso(a12);
         Selector* sel3= new Selector();
+        sel3->addChild(a31);
         sel3->addChild(inv1);
         sel3->addChild(inv2);
         Sequence* sec5= new Sequence();
@@ -475,7 +477,7 @@
         sec5->addChild(sec7);
         Selector* sel2= new Selector();
         sel2->addChild(sec5);
-        sel2->addChild(sec6);
+        sel2->addChild(rsel1);
         //////////////
         Sequence* sec4= new Sequence();
         sec4->addChild(a7);
@@ -609,9 +611,9 @@
         m_Children.push_back(sec3);
         m_Children.push_back(sec4);
         m_Children.push_back(sec5);
-        m_Children.push_back(sec6);
+        //m_Children.push_back(sec6);
         m_Children.push_back(sec7);
-        m_Children.push_back(sec8);
+        //m_Children.push_back(sec8);
         m_Children.push_back(sec9);
         m_Children.push_back(sec10);
         m_Children.push_back(sec11);
@@ -620,16 +622,14 @@
         m_Children.push_back(sel1);
         m_Children.push_back(sel2);
         m_Children.push_back(sel3);
-        m_Children.push_back(sel4);
+        //m_Children.push_back(sel4);
         m_Children.push_back(sel5);
         m_Children.push_back(sel6);
         m_Children.push_back(sel7);
         m_Children.push_back(sel8);
-        //m_Children.push_back(rsel1);
-        //m_Children.push_back(sel9);
-        //m_Children.push_back(inv1);
-        //m_Children.push_back(inv2);
-        //m_Children.push_back(inv3);
+        m_Children.push_back(rsel1);
+        m_Children.push_back(inv1);
+        m_Children.push_back(inv2);
 
 
         BT= new BehaviorTree(sel8);

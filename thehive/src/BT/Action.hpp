@@ -63,7 +63,7 @@ class Action : public Behavior {
         void checkAliensAttacking();
         void alienInPause();
         void move_player_utilx();
-
+        void imatack();
         void modifyImAttacking(bool);
         void setOffsetAliensAttacking(int);
         CAIEnem* yo;
