@@ -37,7 +37,7 @@ class Action : public Behavior {
         void comer_animal();
         void rango_visual();
         void move_to();
-        void move_too();
+        void move_too(int min);
         void girar_enemigo();
 
         void distancia10();
@@ -64,14 +64,14 @@ class Action : public Behavior {
         void rond_seny();
         void rond_jugador();
         void rond(bool = true);
-        void player_vistocono();
         void hit();
         void playerNotAttacking();
         void isThereSomeAlienDead();
         void moreRage();
         void checkAliensAttacking();
         void alienInPause();
-
+        void move_player_utilx();
+        void imatack();
         void modifyImAttacking(bool);
         void setOffsetAliensAttacking(int);
         void doExplosiveWave();

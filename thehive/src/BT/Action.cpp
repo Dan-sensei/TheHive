@@ -54,6 +54,9 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[SPIT]                    = &Action::doSpit;
     VectorAcciones[ENEMY_OVER_2_METERS]     = &Action::over_2_meters;
 
+    VectorAcciones[MOVEP_UNTILX]            = &Action::move_player_utilx;         // si
+    VectorAcciones[IAMATACKING]            = &Action::imatack;         // si
+
     data    = _data;
     tarea   = task;
 
@@ -66,14 +69,11 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
 Action::~Action(){
     //VectorAcciones eliminar
 }
-
 void Action::onInitialize(){
-    //// std::cout << "Accion onInitialize" << '\n';
     s = BH_INVALID;
 }//parámetros del mundo necesarios para el update} // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update
 
 Status Action::update() {
-    //// std::cout << "Accion Update" <<tarea<< '\n';
 
     if(VectorAcciones[tarea] != nullptr)
         (this->*VectorAcciones[tarea])();
@@ -84,7 +84,7 @@ Status Action::update() {
 
 void Action::abort(){
     Behavior::abort();
-    modifyImAttacking(false);
+    //modifyImAttacking(false);
 }
 
 void Action::setActive(std::string a, bool acierto){
@@ -100,9 +100,6 @@ void Action::andar_random(){
 }
 
 void Action::in_last(){//int tipo){
-    //// std::cout << "distancia10" << '\n';
-
-    //// std::cout << "se hace wey" << '\n';
     distancia(0.5,yo->playerPos);//int tipo){
     if(s==BH_SUCCESS){
         s=BH_FAILURE;
@@ -115,20 +112,17 @@ void Action::in_last(){//int tipo){
 void Action::checkbool(bool that){
     if(that){
         s=BH_SUCCESS;
-        //// std::cout << "cierto" << '\n';
     }else{
         s=BH_FAILURE;
     }
 }
 
 void Action::onrange(){
-    //// std::cout << "range" << '\n';
     checkbool(yo->playerOnRange);
 
 }
 
 void Action::seeing(){
-    //// std::cout << "viendo?" << '\n';
     checkbool(yo->playerSeeing);
 
 }
@@ -139,6 +133,10 @@ void Action::ultrasonido(){
 
 void Action::senyuelo(){
     checkbool(yo->senyuelo);
+
+}
+void Action::imatack(){
+    checkbool(yo->getImAttacking());
 
 }
 
@@ -163,7 +161,7 @@ void Action::rond_seny(){
 
 void Action::rond_jugador(){
     if(s!=BH_RUNNING){
-        gg::cout("RONDANDO JUGADOR");
+        //gg::cout("RONDANDO JUGADOR");
         yo->rondacion_cont=0;
         s=BH_RUNNING;
         int sign;
@@ -186,7 +184,7 @@ void Action::rond(bool _b){
         s=BH_SUCCESS;
         return;
     }
-
+//2-3 seg
     // Intentar cambiar esto
     int sign = yo->getSigno();
     //gg::genFloatRandom(-1,1)>0? sign = 1 : sign = -1;
@@ -196,10 +194,11 @@ void Action::rond(bool _b){
 
     gg::Vector3f V_AI_DEST      = dest-mio;
     gg::Vector3f V_AI_DEST_PP   = gg::Vector3f(sign*V_AI_DEST.Z,0,(-sign)*V_AI_DEST.X);
-    gg::Vector3f V_FINAL        = (V_AI_DEST_PP)*0.3;
+    gg::Vector3f V_FINAL        = gg::Normalice(V_AI_DEST_PP);
 
     V_AI_DEST.Y     = 0;
     V_AI_DEST       = gg::Normalice(V_AI_DEST);
+    V_FINAL         =(V_FINAL+V_AI_DEST*0.1);
     V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
     cTransform->setRotation(V_AI_DEST);
@@ -212,7 +211,6 @@ void Action::ult_cont(){
     res++;
     //3-4 seg
     if(res>100){
-        //// std::cout << "aturdido acabado" << '\n';
         yo->ultrasonido=false;
 
         s=BH_SUCCESS;
@@ -263,20 +261,31 @@ void Action::over_X_meters(int _m){
 }
 
 void Action::hit(){
+    gg::Vector3f mio            = cTransform->getPosition();
+    gg::Vector3f dest           = yo->destino;
+
+    gg::Vector3f V_AI_DEST      = dest-mio;
+
+    V_AI_DEST.Y     = 0;
+    V_AI_DEST       = gg::Normalice(V_AI_DEST);
+    V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
+
+    cTransform->setRotation(V_AI_DEST);
+
     if(s!=BH_RUNNING){
         cont_hit = 0;
         modifyImAttacking(true);
 
-        uint16_t hero = manager->getHeroID();
-        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
-        ht->quitarvida(0.5+(yo->getRage()/2));
 
         s = BH_RUNNING;
     }
 
     cont_hit++;
     if(cont_hit > 50){
-        modifyImAttacking(false);
+        uint16_t hero = manager->getHeroID();
+        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
+        ht->quitarvida(0.5+(yo->getRage()/2));
+        //modifyImAttacking(false);
         s = BH_SUCCESS;
     }
 }
@@ -284,6 +293,7 @@ void Action::hit(){
 void Action::playerNotAttacking(){
     if(yo->getPlayerIsAttacking()){
         s = BH_FAILURE;
+        modifyImAttacking(true);
     }
     else{
         // gg::cout("NO ATTACK");
@@ -301,17 +311,18 @@ void Action::isThereSomeAlienDead(){
 }
 
 void Action::moreRage(){
+    //gg::cout("RAGE INCREASES");
     yo->upgradeRage();
     s = BH_SUCCESS;
 }
 
 void Action::checkAliensAttacking(){
-    // gg::cout("ALIENS ATACANDO:"+std::to_string(aliensAttacking));
-    if(aliensAttacking>=MAX_ALIENS_ATTACKING){
+    if(aliensAttacking>=MAX_ALIENS_ATTACKING&&!yo->getImAttacking()){
         // gg::cout(" -- MAX ALIENS ATTACKING");
         s = BH_SUCCESS;
     }
     else{
+        modifyImAttacking(true);
         // gg::cout(" -- ALIENS CAN ATTACK");
         s = BH_FAILURE;
     }
@@ -320,7 +331,6 @@ void Action::checkAliensAttacking(){
 
 void Action::alienInPause(){
     if(s!=BH_RUNNING){
-        gg::cout("PAUSE");
         cont_pause = 0;
         s = BH_RUNNING;
     }
@@ -332,7 +342,8 @@ void Action::alienInPause(){
 }
 
 void Action::comer_animal(){
-    setActive("comer",1);
+    s = BH_SUCCESS;
+
 }
 
 void Action::girar_enemigo(){
@@ -349,48 +360,62 @@ void Action::move_to(){
 
 void Action::move_last(){
     if(s!=BH_RUNNING){
+        //gg::cout("move last");
         s=BH_RUNNING;
         yo->destino = yo->playerPos;
     }
 
-    move_too();
+    move_too(10);
 
-    if(s!=BH_RUNNING){
+    if(s==BH_SUCCESS){
         yo->playerSeen=false;
     }
 }
 
 void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
+        //gg::cout("move senyuelo");
         s=BH_RUNNING;
         yo->destino = yo->destino+((yo->senpos-yo->destino)/2);
     }
 
-    move_too();
+    move_too(10);
 }
 
-void Action::player_vistocono(){
-    // PABLO: Esta comentado, pero no se si se usa para algo
-    // CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,data->getBData("id2")->getInt()));
-    // gg::Vector3f player=cTransform2->getPosition();
+///
+void Action::move_player_utilx(){
+    //10-25
+    if(s!=BH_RUNNING){
+        s=BH_RUNNING;
+        //gg::cout("move player");
 
-    float rotate=cTransform->getRotation().Y;//grados
+        // gg::cout(" --- MOVE TO PLAYER --- ");
+    }
+    CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
+    yo->destino = cTransform2->getPosition();
+
+    move_too(15);
 }
-
 void Action::move_player(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
+        //gg::cout("move player");
+
         // gg::cout(" --- MOVE TO PLAYER --- ");
-        modifyImAttacking(true);
     }
-    CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,data->getBData("id2")->getInt()));
+
+    CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
     yo->destino = cTransform2->getPosition();
 
-    move_too();
+    move_too(5);
+    if(s==BH_SUCCESS){
+        yo->playerSeen=false;
+    }
 }
 
 void Action::move_around(){
     if(s!=BH_RUNNING){
+        //gg::cout("move around");
         s=BH_RUNNING;
 
         std::random_device rd;
@@ -403,34 +428,44 @@ void Action::move_around(){
         gg::Vector3f dest   = mio+gg::Vector3f(x,0,y);
         yo->destino         = dest;
     }
-    move_too();
+    move_too(10);
 }
 
-void Action::move_too(){
+void Action::move_too(int min){
     gg::Vector3f mio        = cTransform->getPosition();
     gg::Vector3f dest       = yo->destino;
     gg::Vector3f direccion  = dest-mio;
 
-    direccion.Y     = 0;
-    direccion       = gg::Normalice(direccion);
-    direccion       = gg::Direccion2D_to_rot(direccion);
-
-    cTransform->setRotation(direccion);
-
-    direccion       = dest-mio;
-    direccion       = gg::Normalice(direccion);
-    cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED-(yo->getEnemyType()*VEL_ATENUATION));
+    // direccion.Y     = 0;
+    // direccion       = gg::Normalice(direccion);
+    // direccion       = gg::Direccion2D_to_rot(direccion);
+    //
+    // cTransform->setRotation(direccion);
+    //
+    // direccion       = dest-mio;
+    // direccion       = gg::Normalice(direccion);
+    // cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED-(yo->getEnemyType()*VEL_ATENUATION));
+    
     mio.Y=0;
     dest.Y=0;
     float dist = gg::DIST(mio,dest);
 
-    if(dist<10){
-        modifyImAttacking(false);
+    if(dist<min){
         s = BH_SUCCESS;
     }
     else{
         s = BH_RUNNING;
-    }
+    mio=direccion;
+    mio.Y     = 0;
+    mio       = gg::Normalice(mio);
+    mio       = gg::Direccion2D_to_rot(mio);
+
+    cTransform->setRotation(mio);
+
+    direccion       = gg::Normalice(direccion);
+    cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED);
+}
+
 
 }
 

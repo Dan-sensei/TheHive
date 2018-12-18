@@ -59,6 +59,7 @@ void CAIEnem::Init(){
     playerOnRange       = false;
     imAttacking         = false;
     closerAllyIsDead    = false;
+    isPlayerAttacking = false;
 
     senpos          = gg::Vector3f(50,50,50);
     destino         = gg::Vector3f(50,50,50);
@@ -73,9 +74,9 @@ void CAIEnem::Init(){
     arbol = new Treecontroller(data,type,this);
 
     Vrange          = 30;
-    Arange          = 2;
+    Arange          = 5;
     enfado          = 1;
-    gradovision     = cos(30*3.14159265359/180.f);
+    gradovision     = cos(45*3.14159265359/180.f);
 
     numberOfUpdatesSinceLastHability = 0;
 
@@ -115,7 +116,9 @@ void CAIEnem::Update(){
     numberOfUpdatesSinceLastHability++;
 
     gg::Vector3f pTF        = PlayerTransform->getPosition();
+    pTF.Y =0;
     gg::Vector3f cTF_POS    = cTransform->getPosition();
+    cTF_POS.Y =0;
     float dist = gg::DIST(pTF,cTF_POS);
     if(dist<Vrange){
         gg::Vector3f cTF_ROT    = cTransform->getRotation();
@@ -123,7 +126,7 @@ void CAIEnem::Update(){
         gg::Vector3f diren      = pTF-cTF_POS;
 
 
-        diren.Y     = 0;
+        //diren.Y     = 0;
         diren       = gg::Normalice(diren);
         float sol   = gg::Producto(diren,dir);
 
@@ -132,9 +135,15 @@ void CAIEnem::Update(){
             arbol->reset();
             resetHabilityUpdateCounter();
         }
+        //else if(gradovision>sol && playerSeeing){
+        //    playerSeeing = false;
+        //    //playerPos   =PlayerTransform->getPosition();
+        //    arbol->reset();
+        //}
 
         if(dist<Arange && !playerOnRange){
             enemyrange();
+            //arbol->reset();
         }
         else if(playerOnRange){
             playerOnRange = false;
@@ -142,9 +151,14 @@ void CAIEnem::Update(){
     }
     else if(playerSeeing){
         playerSeeing = false;
+        //playerPos   =PlayerTransform->getPosition();
         arbol->reset();
         resetHabilityUpdateCounter();
     }
+    if(playerSeeing){
+        playerPos   =PlayerTransform->getPosition();
+    }
+    //std::cout << "atacando" <<imAttacking<< '\n';
     arbol->update();
 }
 
@@ -198,7 +212,7 @@ void CAIEnem::enableVisualDebug(){
 
 void CAIEnem::setPlayerIsAttacking(bool _b){
     isPlayerAttacking = _b;
-
+    arbol->reset();
     CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
     if(clk){
         clk->restart();
