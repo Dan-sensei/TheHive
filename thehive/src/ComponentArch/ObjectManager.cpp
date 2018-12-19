@@ -7,17 +7,7 @@
                      //  2^16
 #define MAX_ENTITIES 65536
 
-void *operator new(std::size_t size, Arena &A){
-    return A.allocate(size);
-}
-
-void operator delete(void* p, Arena &A){
-    return A.deallocate(p);
-}
-
-ObjectManager::ObjectManager()
-:memory(128)
-{
+ObjectManager::ObjectManager() {
     nextAvailableEntityID.push(1);
 
     //  Defines wich kind of messages will receive each type of component
@@ -170,7 +160,6 @@ void ObjectManager::sendMessageToAllEntities(const Message &m){
         i++;
 
         //  Found one!
-        //  Found one!
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
         //  Now we iterate over every entity that contains that component type
         while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
@@ -185,38 +174,28 @@ void ObjectManager::sendMessageToAllEntities(const Message &m){
 }
 
 void ObjectManager::UpdateAll(){
-    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[gg::UPDATE].begin();
-    std::map<uint16_t, IComponent*>::iterator entitiesIterator;
-
-    while(componentsIterator != MessageToListeningComponents[gg::UPDATE].end()){
-        entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
-        while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
-            auto current = entitiesIterator;
-            ++entitiesIterator;
-            current->second->Update();
-        }
-
-        ++componentsIterator;
-    }
+    CallFunctionOfComponentes(gg::UPDATE, &IComponent::Update);
 }
 
 void ObjectManager::FixedUpdateAll(){
-    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[gg::FIXED_UPDATE].begin();
+    CallFunctionOfComponentes(gg::FIXED_UPDATE, &IComponent::FixedUpdate);
+}
+
+void ObjectManager::CallFunctionOfComponentes(gg::MessageType mType, void (IComponent::*TypeOfUpdate)()){
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[mType].begin();
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
-    
-    while(componentsIterator != MessageToListeningComponents[gg::FIXED_UPDATE].end()){
+
+    while(componentsIterator != MessageToListeningComponents[mType].end()){
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
         while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
             auto current = entitiesIterator;
             ++entitiesIterator;
-            current->second->FixedUpdate();
+            (current->second->*TypeOfUpdate)();
         }
 
         ++componentsIterator;
     }
 }
-
-
 
 void ObjectManager::sendMessageToEntity(uint16_t EntityID, const Message &m){
 
@@ -238,27 +217,6 @@ void ObjectManager::sendMessageToEntity(uint16_t EntityID, const Message &m){
     }
 }
 
-bool ObjectManager::checkEvent(uint16_t EntityID, const Message &m){
-
-    // Same as sendMessageToAllEntities, but just for one EntityID
-    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
-    std::map<uint16_t, IComponent*> entitiesMap;
-    while(componentsIterator != MessageToListeningComponents[m.mType].end()){
-
-        entitiesMap = TypeToComponentMap[*componentsIterator];
-
-        std::map<uint16_t, IComponent*>::iterator EntityFound;
-        EntityFound = entitiesMap.find(EntityID);
-
-        if(EntityFound != entitiesMap.end()){
-            if(EntityFound->second->processMessage(m)==gg::ST_FALSE) return false;
-        }
-
-        ++componentsIterator;
-    }
-    return true;
-}
-
 IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const uint16_t &EntityID){
     //  Searchs on the map of that componentType if that EntityID exists
     std::map<uint16_t, IComponent*>::iterator found = TypeToComponentMap[cType].find(EntityID);
@@ -266,7 +224,6 @@ IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const u
     //  If exists
     if(found != TypeToComponentMap[cType].end())
         return found->second;   // <- We return the pointer to it
-
 
     //  If not
     return nullptr; //  <- We return nullptr

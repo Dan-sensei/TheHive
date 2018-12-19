@@ -4,7 +4,6 @@
 #include "IComponent.hpp"
 #include "Enum.hpp"
 #include "Message.hpp"
-#include <Arena.hpp>
 
 #include <stack>
 #include <map>
@@ -69,10 +68,6 @@ class ObjectManager{
         //========================================================================
         void clin();
 
-
-
-        //german gay
-        bool checkEvent(uint16_t EntityID, const Message &m);
         uint16_t getHeroID();
         void setHeroID(uint16_t);
 
@@ -81,6 +76,7 @@ class ObjectManager{
         ObjectManager(const ObjectManager &orig) = delete;
         void operator=(const ObjectManager &orig) = delete;
 
+        void CallFunctionOfComponentes(gg::MessageType mType, void (IComponent::*TypeOfUpdate)());
 
         //  ---
         //  Every position of this array, is a map wich contains all the
@@ -122,11 +118,6 @@ class ObjectManager{
         std::vector<gg::EComponentType> MessageToListeningComponents[gg::MESSAGE_TYPE_COUNT];
 
         std::stack<uint16_t> nextAvailableEntityID;
-
-        //  ---
-        //  Memory manager class
-        //========================================================================
-        Arena memory;
 
         //  ---
         //  Hero entity id. To avoid computing time and problems
