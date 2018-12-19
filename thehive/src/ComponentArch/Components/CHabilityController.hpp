@@ -19,14 +19,14 @@
 #include <Singleton.hpp>
 
 //class Hability;
-class CCamera;
-class CTransform;
-class CRigidBody;
-class CGun;
+// class CCamera;
+// class CTransform;
+// class CRigidBody;
+// class CGun;
 
-class GameEngine;
-class ObjectManager;
-class ggDynWorld;
+// class GameEngine;
+// class ObjectManager;
+// class ggDynWorld;
 
 class CHabilityController : public IComponent {
 
@@ -43,13 +43,13 @@ class CHabilityController : public IComponent {
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
 
-        void pulsado(int hab);
+        void ToggleSkill(int HabilityID);
 
     private:
         CHabilityController(const CHabilityController &orig) = delete;
 
 
-        Hability hab[3];
+        Hability Habilities[3];
         //Hability hab2;
         //Hability hab3;
 

@@ -22,9 +22,9 @@ CHabilityController::~CHabilityController() {
     // }
 }
 
-void CHabilityController::pulsado(int habi){
+void CHabilityController::ToggleSkill(int HabilityID){
 
-    hab[habi].init();
+    Habilities[HabilityID].init();
 
 }
 void CHabilityController::Init(){
@@ -46,9 +46,9 @@ gg::EMessageStatus CHabilityController::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CHabilityController::MHandler_SETPTRS(){
-    hab[0] = Hability1(getEntityID());
-    hab[1] = Hability2(getEntityID());
-    hab[2] = Hability3(getEntityID());
+    Habilities[0] = Hability1(getEntityID());
+    Habilities[1] = Hability2(getEntityID());
+    Habilities[2] = Hability3(getEntityID());
 
     return gg::ST_TRUE;
 }
@@ -56,7 +56,7 @@ gg::EMessageStatus CHabilityController::MHandler_SETPTRS(){
 void CHabilityController::FixedUpdate(){
     for (size_t i = 0; i < 3; i++) {
 
-        hab[i].update();
-        Singleton<ScreenConsole>::Instance()->setprogress(i,hab[i].getProg());
+        Habilities[i].update();
+        Singleton<ScreenConsole>::Instance()->setprogress(i, Habilities[i].getProg());
     }
 }

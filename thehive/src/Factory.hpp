@@ -41,8 +41,6 @@ class Factory{
         Factory(const Factory &orig) = delete;
         void operator=(const Factory &orig) = delete;
 
-        void ComponentInitializer();
-
         ObjectManager* Manager;
         GameEngine* Engine;
 

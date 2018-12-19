@@ -90,8 +90,7 @@ class CAIEnem : public IComponent {
         Blackboard* data;
 
         int signo;
-        int id;
-        int id2;
+        int ID;
         int ultrasonido_cont;
         int rondacion_cont;
 

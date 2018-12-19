@@ -11,7 +11,7 @@
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <EventSystem/CTriggerSystem.hpp>
 #include "CTransform.hpp"
-#include <Factory.hpp>
+//#include <Factory.hpp>
 #include <Util.hpp>
 
 class CGun : public IComponent {

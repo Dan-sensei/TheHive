@@ -62,17 +62,15 @@ void CAIEnem::Init(){
     isPlayerAttacking   = false;
 
     senpos              = gg::Vector3f(50,50,50);
-    playerPos       = gg::Vector3f(20,20,20);
+    playerPos           = gg::Vector3f(20,20,20);
     destino             = gg::Vector3f(50,50,50);
 
-    id                  = getEntityID();
-    id2                 = PlayerTransform->getEntityID();
+    ID                  = getEntityID();
     ultrasonido_cont    = 0;
     rondacion_cont      = 0;
     signo               = 1;
     maxAliensAttacking  = 2;
 
-    data->setData("id2",new BInt(id2));
     arbol = new Treecontroller(data,type,this);
 
     Vrange          = 30;
@@ -108,10 +106,10 @@ void CAIEnem::FixedUpdate(){
     if(debugvis)  enableVisualDebug();
 
     if(isPlayerAttacking){
-        CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
+        CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
         if(clk && clk->hasEnded()){
             isPlayerAttacking = false;
-            Manager->removeComponentFromEntity(gg::CLOCK,id);
+            Manager->removeComponentFromEntity(gg::CLOCK,ID);
         }
     }
 
@@ -178,7 +176,7 @@ void CAIEnem::MHandler_SENYUELO_END(){
     // std::cout << "sen out" << '\n';
     arbol->reset();
 }
- 
+
 void CAIEnem::enableVisualDebug(){
     float res = acos(gradovision)*180.f/3.14159265359;
 
@@ -205,20 +203,20 @@ void CAIEnem::enableVisualDebug(){
 void CAIEnem::setPlayerIsAttacking(bool _b){
     isPlayerAttacking = _b;
     arbol->reset();
-    CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
+    CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
     if(clk){
         clk->restart();
     }
     else{
         clk = new CClock();
         clk->startChrono(3000);
-        Manager->addComponentToEntity(clk,gg::CLOCK,id);
+        Manager->addComponentToEntity(clk,gg::CLOCK,ID);
     }
 }
 
 void CAIEnem::explosiveWave(){
     // TODO
-    EventSystem->RegisterTriger(kTrig_ExpansiveWave,0,id,cTransform->getPosition(), 10,50,false,TData());
+    EventSystem->RegisterTriger(kTrig_ExpansiveWave,0,ID,cTransform->getPosition(), 10,50,false,TData());
 }
 
 bool CAIEnem::getPlayerIsAttacking(){

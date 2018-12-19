@@ -52,8 +52,8 @@ class CPlayerController : public IComponent {
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
 
-        void buf();
-        void debuf();
+        void SprintBuf();
+        void SprintDebuf();
     private:
         CPlayerController();
         CPlayerController(const CPlayerController &orig) = delete;

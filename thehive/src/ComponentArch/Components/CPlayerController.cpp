@@ -123,13 +123,13 @@ void CPlayerController::FixedUpdate(){
 
     if(Engine->key(gg::GG_1)){
         Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
-        hab->pulsado(0);
+        hab->ToggleSkill(0);
     }
     if(Engine->key(gg::GG_2)){
-        hab->pulsado(1);
+        hab->ToggleSkill(1);
     }
     if(Engine->key(gg::GG_3)){
-        hab->pulsado(2);
+        hab->ToggleSkill(2);
     }
 
     if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
@@ -365,11 +365,11 @@ int CPlayerController::setSecondWeapon(CGun *_weapon){
     return ret;
 }
 
-void CPlayerController::buf(){
+void CPlayerController::SprintBuf(){
     MULT_BASE=2.5;
 }
 
-void CPlayerController::debuf(){
+void CPlayerController::SprintDebuf(){
     MULT_BASE=1;
 }
 

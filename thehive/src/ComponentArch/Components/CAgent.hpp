@@ -37,12 +37,12 @@ class CAgent : public IComponent {
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
 
         //TriggerRecordStruct holiis;
-        std::list  <TriggerRecordStruct*>  holiiis;
+        std::list  <TriggerRecordStruct*>  TriggerList;
 
         //        void update();
         static void deletetrig(TriggerRecordStruct* _pRec);
 
-        static std::list  <CAgent*>  hola;
+        static std::list  <CAgent*>  AgentList;
 
         uint16_t nCAgentID;
         unsigned long dwTriggerFlags;

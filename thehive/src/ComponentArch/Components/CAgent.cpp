@@ -11,7 +11,7 @@
 
 
 
-std::list <CAgent*>  CAgent::hola;
+std::list <CAgent*>  CAgent::AgentList;
 
 CAgent::CAgent(const unsigned long &_flags)
 :cTransform(nullptr), Engine(nullptr)
@@ -23,9 +23,9 @@ CAgent::CAgent(const unsigned long &_flags)
 
 CAgent::~CAgent() {
     std::list <CAgent*>::iterator it2 ;
-    it2=CAgent::hola.begin();
+    it2=CAgent::AgentList.begin();
     CAgent* pAgent=NULL;
-    for(unsigned long i=0; i<CAgent::hola.size();++i)
+    for(unsigned long i=0; i<CAgent::AgentList.size();++i)
     {
         pAgent=*it2;
         if (pAgent->nCAgentID==nCAgentID) {
@@ -89,7 +89,7 @@ void CAgent::Init(){
     MHandler_SETPTRS();
 }
 
-//std::list  <TriggerRecordStruct*>  hola;
+//std::list  <TriggerRecordStruct*>  AgentList;
 
 void  CAgent::SetNextTriggerUpdate(unsigned long _nCurTime){}
 
@@ -109,14 +109,14 @@ void CAgent::updatetrig(){
     std::vector<std::list<TriggerRecordStruct*>::iterator> vec;
     std::vector<std::list<TriggerRecordStruct*>::iterator>::iterator it2 = vec.begin();
 
-    std::list<TriggerRecordStruct*>::iterator it = holiiis.begin();
-    while(it != holiiis.end()){
+    std::list<TriggerRecordStruct*>::iterator it = TriggerList.begin();
+    while(it != TriggerList.end()){
         pTrig = *it;
         fDistance = gg::DIST(pTrig->vPos,TF_POS );
 
         if(fDistance > pTrig->fRadius){
             onTriggerExit(pTrig);
-            // holiiis.erase(it);
+            // TriggerList.erase(it);
             vec.push_back(it);
         }else{
             onTriggerStay(pTrig);
@@ -125,7 +125,7 @@ void CAgent::updatetrig(){
     }
 
     for(int i=0 ; i<vec.size() ; i++){
-        holiiis.erase(vec[i]);
+        TriggerList.erase(vec[i]);
     }
 }
 
@@ -397,21 +397,21 @@ void CAgent::deletetrig(TriggerRecordStruct* _pRec){
     std::list <CAgent*>::iterator it2 ;
     std::list <TriggerRecordStruct*>::iterator it;
 
-    it2=CAgent::hola.begin();
+    it2=CAgent::AgentList.begin();
     CAgent* pAgent=NULL;
-    for(unsigned long i=0; i<CAgent::hola.size();++i)
+    for(unsigned long i=0; i<CAgent::AgentList.size();++i)
     {
         pAgent=*it2;
 
-        it=pAgent->holiiis.begin();
+        it=pAgent->TriggerList.begin();
         TriggerRecordStruct* pTrig=NULL;
-        for(unsigned long e=0; e<pAgent->holiiis.size();++e)
+        for(unsigned long e=0; e<pAgent->TriggerList.size();++e)
         {
             pTrig=*it;
             if(pTrig==_pRec){
 
                 pAgent->onTriggerExit(_pRec);
-                pAgent->holiiis.erase(it);
+                pAgent->TriggerList.erase(it);
                 break;
             }
             it++;
@@ -425,9 +425,9 @@ void CAgent::deletetrig(TriggerRecordStruct* _pRec){
 }
 bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
     std::list <TriggerRecordStruct*>::iterator it;
-    it=holiiis.begin();
+    it=TriggerList.begin();
     TriggerRecordStruct* pTrig=NULL;
-    for(unsigned long i=0; i<holiiis.size();++i)
+    for(unsigned long i=0; i<TriggerList.size();++i)
     {
         pTrig=*it;
         if(pTrig==_pRec){
@@ -441,13 +441,13 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
 
     bool res=onTriggerEnter(_pRec);
     if(res)
-    holiiis.push_back(_pRec);
+    TriggerList.push_back(_pRec);
     //posible codigo init
 
     //...
     //update
     //update(_pRec);
-    //holiiis;
+    //TriggerList;
     return res;
 }
 
@@ -459,19 +459,19 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
 //    vPos=_vPos;
 //}
 void CAgent::addAgent(CAgent* agente){
-    hola.push_back(agente);
+    AgentList.push_back(agente);
 }
 void CAgent::removeAgent(std::list<CAgent*>::iterator ite){
-    hola.erase(ite);
+    AgentList.erase(ite);
 }
 
 
 
 //void CAgent::update(){
 //    std::list <TriggerRecordStruct*>::iterator it;
-//    it=holiiis.begin();
+//    it=TriggerList.begin();
 //    TriggerRecordStruct* pTrig=NULL;
-//    for(unsigned long i=0; i<holiiis.size();++i)
+//    for(unsigned long i=0; i<TriggerList.size();++i)
 //    {
 //        pTrig=*it;
 //        onTriggerStay(pTrig);

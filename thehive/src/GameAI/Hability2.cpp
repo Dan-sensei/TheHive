@@ -42,14 +42,11 @@
     void Hability2::Hab1_init (){
         //Manager = Singleton<ObjectManager>::Instance();
         CPlayerController* cPlayer = static_cast<CPlayerController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::PLAYERCONTROLLER, id));
-        cPlayer->buf();
+        cPlayer->SprintBuf();
         //cPlayer->debuf();
-
-
     }
     void Hability2::Hab1_terminate(){
 
         CPlayerController* cPlayer = static_cast<CPlayerController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::PLAYERCONTROLLER, id));
-        cPlayer->debuf();
-
+        cPlayer->SprintDebuf();
     }

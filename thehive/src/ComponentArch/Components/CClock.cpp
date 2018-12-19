@@ -1,6 +1,4 @@
 #include "CClock.hpp"
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
-#include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
 CClock::CClock()
 {
@@ -11,9 +9,7 @@ CClock::CClock()
 
 CClock::~CClock(){}
 
-void CClock::Init(){
-    engine = Singleton<GameEngine>::Instance();
-}
+void CClock::Init(){}
 
 bool CClock::startChrono(float _end){
     if(initialized){

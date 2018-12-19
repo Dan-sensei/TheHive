@@ -28,8 +28,8 @@ void CTriggerSystem::PulsoTrigger(
 
         TriggerRecordStruct pRec(_eTriggerType,_idSource,_vPos,_fRadius,0,false,_data);
         std::list<CAgent*>::iterator it2;
-        it2=CAgent::hola.begin();
-        for(unsigned long i=0; i<CAgent::hola.size();++i,it2++){
+        it2=CAgent::AgentList.begin();
+        for(unsigned long i=0; i<CAgent::AgentList.size();++i,it2++){
             pAgent=*it2;
 
             //Does agent respond to trigger?
@@ -150,9 +150,9 @@ void CTriggerSystem::Update()
   //Trigger agents
   //int g_nNumAgents=20;//numero actual de agentes
   std::list<CAgent*>::iterator it2 ;
-  it2=CAgent::hola.begin();
+  it2=CAgent::AgentList.begin();
 
-  for(unsigned long i=0; i<CAgent::hola.size();++i)
+  for(unsigned long i=0; i<CAgent::AgentList.size();++i)
   {
     pAgent=*it2;
     //hacer update eliminar
