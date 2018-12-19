@@ -7,12 +7,16 @@
 #include <GameEngine/ScreenConsole.hpp>
 #include <Singleton.hpp>
 
-#define K_DMG_VALUE 20
+#include <BT/Action.hpp>
+
+#define K_DMG_VALUE 20.f
 
 CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
 {
-    Manager = Singleton<ObjectManager>::Instance();
+    Manager         = Singleton<ObjectManager>::Instance();
+    hud             = Singleton<ScreenConsole>::Instance();
+    triggerSystem   = Singleton<CTriggerSystem>::Instance();
 }
 
 CVida::~CVida() {}
@@ -21,20 +25,17 @@ bool CVida::quitarvida(const float &_factor){
     bool ret = false;
 
     vida -= K_DMG_VALUE*_factor;
-    if(vida <= 0){
-        gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
-        vida = 0;
-        ret = true;
+    if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+        hud->setvida(vida/vida_max);
     }
-    gg::cout("DAMAGE DONE: ["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
-
-    // if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
-    //     gg::cout("HEROE--");
-    //     ret = false;
-    // }
-
-    // float res=(float)vida/vida_max;
-    // Singleton<ScreenConsole>::Instance()->setvida(res);
+    else{
+        if(vida <= 0){
+            gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
+            vida = 0;
+            ret = true;
+        }
+    }
+    gg::cout("DAMAGE DONE-> "+std::to_string(K_DMG_VALUE*_factor)+"["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
 
     return ret;
 }
@@ -66,9 +67,22 @@ gg::EMessageStatus CVida::MHandler_SETPTRS(){
 
 void CVida::FixedUpdate() {
     if(vida <= 0){
-        // gg::cout("ENTITY "+std::to_string(getEntityID())+" IS NO LONGER ALIVE!");
-        // std::cout << "BEF:" << this << '\n';
-        Manager->removeEntity(getEntityID());
-        // std::cout << "AFT:" << this << '\n';
+        if(!Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+            CTransform  *t  = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,getEntityID()));
+            CAIEnem     *AI = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+            if(t && AI){
+                // gg::cout("DEAD ALIEN");
+                if(AI->getImAttacking())
+                    Action::aliensAttacking--;
+                // Evento para que los enemigos vean que se ha muerto un aliado suyo
+
+                triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 20, 5000, false, TData());
+            }
+
+            Manager->removeEntity(getEntityID());
+        }
+        else{
+
+        }
     }
 }

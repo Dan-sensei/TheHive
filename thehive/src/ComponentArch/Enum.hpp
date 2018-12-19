@@ -23,8 +23,13 @@ namespace gg{
         //PABLONDEMADERANOSABEPROGRAMAR
         NUM_COMPONENTS
     };
+
+    // ORDENADOS DE MAYOR A MENOR VELOCIDAD DE MOVIMIENTO!!
     enum EEnemyType{
+        RUSHER,
         SOLDIER,
+        TRACKER,
+        TANK,
         NUM_ENEMY
     };
 

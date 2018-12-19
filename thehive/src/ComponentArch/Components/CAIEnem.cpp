@@ -1,5 +1,4 @@
 #include "CAIEnem.hpp"
-#include "ComponentArch/Components/CAIEnem.hpp"
 
 #include <list>
 #include "ComponentArch/Message.hpp"
@@ -16,14 +15,20 @@
 #include "EventSystem/BVector3f.hpp"
 #include "EventSystem/BBool.hpp"
 
-bool        CAIEnem::debugvis=false;
+bool        CAIEnem::debugvis=true;
 CTransform* CAIEnem::PlayerTransform;
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr),
  type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen)
-{
-    // void* a la estructura inicializadora para acceder a los elementos
+{}
+
+void CAIEnem::setSigno(int _signo){
+    signo=_signo;
+}
+
+int CAIEnem::getSigno(){
+    return signo;
 }
 
 CAIEnem::~CAIEnem() {
@@ -31,9 +36,9 @@ CAIEnem::~CAIEnem() {
 }
 
 void CAIEnem::enemyseen(){
-    playerPos   =PlayerTransform->getPosition();
-    playerSeen  =true;
-    playerSeeing=true;
+    playerPos       = PlayerTransform->getPosition();
+    playerSeen      = true;
+    playerSeeing    = true;
 }
 
 void CAIEnem::enemyrange(){
@@ -41,46 +46,46 @@ void CAIEnem::enemyrange(){
 }
 
 void CAIEnem::Init(){
-    enfado=0;
-    Engine = Singleton<GameEngine>::Instance();
-    data= new Blackboard();
-    //int id_dado=getEntityID();
+    Engine          = Singleton<GameEngine>::Instance();
+    Manager         = Singleton<ObjectManager>::Instance();
+    EventSystem     = Singleton<CTriggerSystem>::Instance();
+    data            = new Blackboard();
 
-    playerSeeing    = false;
-    playerOnRange   = false;
-    playerSeen      = false;
-    ultrasonido     = false;
-    senyuelo        = false;
-    playerOnRange   = false;
+    playerSeeing        = false;
+    playerOnRange       = false;
+    //playerSeen          = false;
+    ultrasonido         = false;
+    senyuelo            = false;
+    playerOnRange       = false;
+    imAttacking         = false;
+    closerAllyIsDead    = false;
+    isPlayerAttacking   = false;
 
-    senpos          = gg::Vector3f(50,50,50);
+    senpos              = gg::Vector3f(50,50,50);
     playerPos       = gg::Vector3f(20,20,20);
-    destino         = gg::Vector3f(50,50,50);
+    destino             = gg::Vector3f(50,50,50);
 
-    id              = getEntityID();
-    id2             = PlayerTransform->getEntityID();
-    ultrasonido_cont= 0;
-    rondacion_cont  = 0;
+    id                  = getEntityID();
+    id2                 = PlayerTransform->getEntityID();
+    ultrasonido_cont    = 0;
+    rondacion_cont      = 0;
+    signo               = 1;
+    maxAliensAttacking  = 2;
 
     data->setData("id2",new BInt(id2));
+    arbol = new Treecontroller(data,type,this);
 
-    //data->serData()
-    //// std::cout << "arbol1" << '\n';
-    //// std::cout << "creado" << '\n';
-    arbol = new Treecontroller(data,0,this);
-    //// std::cout << "creadowii" << '\n';
-
-    //// std::cout << "arbol2" << '\n';
     Vrange          = 30;
     Arange          = 5;
-    enfado          = 0;
-    gradovision     = cos(30*3.14159265359/180.f);
+    enfado          = 1;
+    gradovision     = cos(45*3.14159265359/180.f);
+
+    numberOfUpdatesSinceLastHability = 0;
 
     MHandler_SETPTRS();
 }
 
 gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
-
     if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
@@ -92,8 +97,8 @@ gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
 
 gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     // Inicializando punteros
-    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-    cAgent = static_cast<CAgent*>(Singleton<ObjectManager>::Instance()->getComponent(gg::AGENT, getEntityID()));
+    cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
+    cAgent = static_cast<CAgent*>(Manager->getComponent(gg::AGENT, getEntityID()));
 
     return gg::ST_TRUE;
 }
@@ -102,8 +107,20 @@ void CAIEnem::FixedUpdate(){
     //std::cout << "entrando" << '\n';
     if(debugvis)  enableVisualDebug();
 
+    if(isPlayerAttacking){
+        CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
+        if(clk && clk->hasEnded()){
+            isPlayerAttacking = false;
+            Manager->removeComponentFromEntity(gg::CLOCK,id);
+        }
+    }
+
+    numberOfUpdatesSinceLastHability++;
+
     gg::Vector3f pTF        = PlayerTransform->getPosition();
+    pTF.Y =0;
     gg::Vector3f cTF_POS    = cTransform->getPosition();
+    cTF_POS.Y =0;
     float dist = gg::DIST(pTF,cTF_POS);
     if(dist<Vrange){
         gg::Vector3f cTF_ROT    = cTransform->getRotation();
@@ -111,17 +128,18 @@ void CAIEnem::FixedUpdate(){
         gg::Vector3f diren      = pTF-cTF_POS;
 
 
-        diren.Y     = 0;
+        //diren.Y     = 0;
         diren       = gg::Normalice(diren);
         float sol   = gg::Producto(diren,dir);
 
         if(gradovision<sol && !playerSeeing){
             enemyseen();
             arbol->reset();
+            resetHabilityUpdateCounter();
         }
-
         if(dist<Arange && !playerOnRange){
             enemyrange();
+            //arbol->reset();
         }
         else if(playerOnRange){
             playerOnRange = false;
@@ -129,8 +147,14 @@ void CAIEnem::FixedUpdate(){
     }
     else if(playerSeeing){
         playerSeeing = false;
+        //playerPos   =PlayerTransform->getPosition();
         arbol->reset();
+        resetHabilityUpdateCounter();
     }
+    if(playerSeeing){
+        playerPos   =PlayerTransform->getPosition();
+    }
+    //std::cout << "atacando" <<imAttacking<< '\n';
     arbol->update();
 }
 
@@ -154,7 +178,7 @@ void CAIEnem::MHandler_SENYUELO_END(){
     // std::cout << "sen out" << '\n';
     arbol->reset();
 }
-
+ 
 void CAIEnem::enableVisualDebug(){
     float res = acos(gradovision)*180.f/3.14159265359;
 
@@ -176,4 +200,75 @@ void CAIEnem::enableVisualDebug(){
     diren               = gg::Normalice(diren);
     float sol           = gg::Producto(diren,dir);
     gg::Vector3f hola   = Direccion2D_to_rot(dir);
+}
+
+void CAIEnem::setPlayerIsAttacking(bool _b){
+    isPlayerAttacking = _b;
+    arbol->reset();
+    CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,id));
+    if(clk){
+        clk->restart();
+    }
+    else{
+        clk = new CClock();
+        clk->startChrono(3000);
+        Manager->addComponentToEntity(clk,gg::CLOCK,id);
+    }
+}
+
+void CAIEnem::explosiveWave(){
+    // TODO
+    EventSystem->RegisterTriger(kTrig_ExpansiveWave,0,id,cTransform->getPosition(), 10,50,false,TData());
+}
+
+bool CAIEnem::getPlayerIsAttacking(){
+    return isPlayerAttacking;
+}
+
+void CAIEnem::setCloserAllyIsDead(bool _b){
+    closerAllyIsDead = _b;
+}
+
+bool CAIEnem::getCloserAllyIsDead(){
+    return closerAllyIsDead;
+}
+
+void CAIEnem::upgradeRage(){
+    enfado++;
+    if(enfado >= 3){
+        gg::cout(" -- ENFADOMASMAS!!");
+        maxAliensAttacking++;
+        enfado = 1;
+    }
+}
+
+float CAIEnem::getRage(){
+    return enfado;
+}
+
+void CAIEnem::setImAttacking(bool _b){
+    imAttacking = _b;
+}
+
+bool CAIEnem::getImAttacking(){
+    return imAttacking;
+}
+
+void CAIEnem::resetHabilityUpdateCounter(){
+    numberOfUpdatesSinceLastHability = 0;
+}
+
+int CAIEnem::getHabilityUpdateCounter(){
+    return numberOfUpdatesSinceLastHability;
+}
+
+int CAIEnem::getEnemyType(){
+    return type;
+}
+
+void CAIEnem::upgradeMaxAliensAttackingAtOnce(){
+    maxAliensAttacking++;
+}
+int CAIEnem::getMaxAliensAttackingAtOnce(){
+    return maxAliensAttacking;
 }

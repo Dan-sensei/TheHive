@@ -36,7 +36,8 @@ void CGun::shoot(gg::Vector3f to){
         if(total_bullets!=-1){
             total_bullets--;
         }
-        Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+
+        // Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
         // Comprobar destino
         if(to.X == -1){
@@ -101,6 +102,10 @@ int CGun::getBullets(){
     return total_bullets;
 }
 
+int CGun::getTotalBullets(){
+    return ktotal_bullets;
+}
+
 int CGun::getType(){
     return WEAPON_TYPE;
 }
@@ -129,7 +134,7 @@ gg::EMessageStatus CGun::processMessage(const Message &m) {
 gg::EMessageStatus CGun::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-    Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+    // Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
     return gg::ST_TRUE;
 }
@@ -145,7 +150,6 @@ void CGun::FixedUpdate(){
             gg::cout(" -- RELOADED" , gg::Color(255, 0, 0, 1));
             reloading = false;
             total_bullets = ktotal_bullets;
-            Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
         }
     }
     else if(!canShoot){
@@ -158,4 +162,5 @@ void CGun::FixedUpdate(){
             canShoot = true;
         }
     }
+    Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 }

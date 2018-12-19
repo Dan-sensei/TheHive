@@ -16,15 +16,15 @@ CHabilityController::CHabilityController()
 }
 
 CHabilityController::~CHabilityController() {
-    for (size_t i = 0; i < 3; i++) {
-
-        delete hab[i];
-    }
+    // for (size_t i = 0; i < 3; i++) {
+    //
+    //     delete hab[i];
+    // }
 }
 
 void CHabilityController::pulsado(int habi){
 
-    hab[habi]->init();
+    hab[habi].init();
 
 }
 void CHabilityController::Init(){
@@ -46,9 +46,9 @@ gg::EMessageStatus CHabilityController::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CHabilityController::MHandler_SETPTRS(){
-    hab[0]=new Hability1(getEntityID());
-    hab[1]=new Hability2(getEntityID());
-    hab[2]=new Hability3(getEntityID());
+    hab[0] = Hability1(getEntityID());
+    hab[1] = Hability2(getEntityID());
+    hab[2] = Hability3(getEntityID());
 
     return gg::ST_TRUE;
 }
@@ -56,7 +56,7 @@ gg::EMessageStatus CHabilityController::MHandler_SETPTRS(){
 void CHabilityController::FixedUpdate(){
     for (size_t i = 0; i < 3; i++) {
 
-        hab[i]->update();
-        Singleton<ScreenConsole>::Instance()->setprogress(i,hab[i]->getProg());
+        hab[i].update();
+        Singleton<ScreenConsole>::Instance()->setprogress(i,hab[i].getProg());
     }
 }

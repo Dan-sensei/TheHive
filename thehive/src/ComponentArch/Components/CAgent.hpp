@@ -13,9 +13,11 @@
 
 #include <ComponentArch/Message.hpp>
 
+#include <ComponentArch/Components/CAIEnem.hpp>
 #include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <Singleton.hpp>
+
 
 class CTransform;
 class CVida;
@@ -76,6 +78,9 @@ class CAgent : public IComponent {
         void ENTER_func_kTrig_Senyuelo      (TriggerRecordStruct*);
         void ENTER_func_kTrig_Aturd         (TriggerRecordStruct*);
         void ENTER_func_kTrig_Pickable      (TriggerRecordStruct*);
+        void ENTER_func_kTrig_DeadAlien     (TriggerRecordStruct*);
+        void ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct*);
+        void ENTER_func_kTrig_EnemyNear     (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerStay;
         void STAY_func_kTrig_none           (TriggerRecordStruct*);
@@ -86,6 +91,9 @@ class CAgent : public IComponent {
         void STAY_func_kTrig_Senyuelo       (TriggerRecordStruct*);
         void STAY_func_kTrig_Aturd          (TriggerRecordStruct*);
         void STAY_func_kTrig_Pickable       (TriggerRecordStruct*);
+        void STAY_func_kTrig_DeadAlien      (TriggerRecordStruct*);
+        void STAY_func_kTrig_ExpansiveWave  (TriggerRecordStruct*);
+        void STAY_func_kTrig_EnemyNear      (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerExit;
         void EXIT_func_kTrig_none           (TriggerRecordStruct*);
@@ -96,6 +104,9 @@ class CAgent : public IComponent {
         void EXIT_func_kTrig_Senyuelo       (TriggerRecordStruct*);
         void EXIT_func_kTrig_Aturd          (TriggerRecordStruct*);
         void EXIT_func_kTrig_Pickable       (TriggerRecordStruct*);
+        void EXIT_func_kTrig_DeadAlien      (TriggerRecordStruct*);
+        void EXIT_func_kTrig_ExpansiveWave  (TriggerRecordStruct*);
+        void EXIT_func_kTrig_EnemyNear      (TriggerRecordStruct*);
 
 };
 

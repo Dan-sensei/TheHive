@@ -53,6 +53,8 @@ void CTriggerSystem::PulsoTrigger(
       }
 }
 
+// Ejemplo de implementacion:
+//  triggerSystem->RegisterTriger(TIPO,PRIORIDAD,ENTIDAD ORIGEN,POSICION, RADIO,TIEMPO(MS),ACTUALIZAR POSICION?,DATA);
 unsigned long CTriggerSystem::RegisterTriger(
     EnumTriggerType _eTriggerType,
     unsigned long _nPriority,

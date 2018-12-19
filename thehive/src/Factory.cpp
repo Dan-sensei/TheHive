@@ -23,7 +23,7 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     Camera->setTarget(Transform);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 
-    CVida* Vida                         = new CVida(100);
+    CVida* Vida                         = new CVida(1000);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
 
     CHabilityController* Hab                         = new CHabilityController();
@@ -41,13 +41,15 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CGun *gun = new CGun(0.4,5,15,0.5,0.5,3);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
-    CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable);
+    CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
+
+    Manager->setHeroID(hero);
 
     return hero;
 }
 
-uint16_t Factory::createEnemy(const gg::Vector3f &Position,const float &health){
+uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
@@ -60,10 +62,35 @@ uint16_t Factory::createEnemy(const gg::Vector3f &Position,const float &health){
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
-    CAgent* Agent                       = new CAgent(kTrig_Aturd|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion);
+    CAgent* Agent                       = new CAgent(kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
-    CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,gg::Vector3f(),false);
+    CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position,true);
+    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+
+    CVida* Vida                         = new CVida(health);
+    Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
+
+    return Enemy;
+}
+
+uint16_t Factory::createTank(const gg::Vector3f &Position,const float &health){
+    uint16_t Enemy = Manager->createEntity();
+    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+
+    CTransform* Transform               = new CTransform(Position, gg::Vector3f(0, 0, 0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
+
+    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
+
+    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0, 0);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
+
+    CAgent* Agent                       = new CAgent(kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
+    Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
+
+    CAIEnem* AIEnem                     = new CAIEnem(gg::TANK,30,Position,true);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
     CVida* Vida                         = new CVida(health);

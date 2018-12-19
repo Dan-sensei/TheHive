@@ -271,3 +271,11 @@ IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const u
     //  If not
     return nullptr; //  <- We return nullptr
 }
+
+uint16_t ObjectManager::getHeroID(){
+    return HERO_ID;
+}
+
+void ObjectManager::setHeroID(uint16_t _id){
+    HERO_ID = _id;
+}

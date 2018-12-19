@@ -1,35 +1,40 @@
 #ifndef TREECONTROLLER
 #define TREECONTROLLER
 
-#include "EventSystem/Blackboard.hpp"
+#include <vector>
+#include <map>
+#include <Util.hpp>
+
 #include <BT/BehaviorTree.hpp>
+
+#include "EventSystem/Blackboard.hpp"
 #include "ComponentArch/Components/CAIEnem.hpp"
 
-#include <vector>
+
 class CAIEnem;
 class Treecontroller {
-private:
-    /* data */
-    Blackboard* data;
+    public:
+        Treecontroller (Blackboard*,gg::EEnemyType,CAIEnem*);
+        Treecontroller ();
+        virtual ~Treecontroller();
 
-    using Behaviors = std::vector<Behavior*>;
-    Behaviors m_Children;
+        void reset();
+        void update();
 
-    BehaviorTree* BT;
-CAIEnem* yo;
-public:
-    Treecontroller (Blackboard* _data,int tipo,CAIEnem* ai);
-    Treecontroller ();
-    //void iniciar (Blackboard* _data);
-    virtual ~Treecontroller ();
-    void arbolsoldado();
-    void arboltracker();
-    void arbolrusher();
-    void arboltank();
+        void arbolsoldado();
+        void arboltracker();
+        void arbolrusher();
+        void arboltank();
 
+    private:
+        /* data */
+        CAIEnem* yo;
+        BehaviorTree* BT;
 
-    void reset();
-    void update();
+        using Behaviors = std::vector<Behavior*>;
+        Behaviors m_Children;
+
+        Blackboard* data;
 
 };
 #endif

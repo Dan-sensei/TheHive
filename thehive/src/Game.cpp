@@ -77,8 +77,8 @@ void Game::Init(){
 
     uint16_t h = sF->createHero(gg::Vector3f(360, 0, 350),false);     //600
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
-    sF->createEnemy(gg::Vector3f(360, -10, 390),1000);
-    sF->createEnemy(gg::Vector3f(397, 0, 350),2000);
+    sF->createSoldier(gg::Vector3f(360, -10, 390),1000);
+    sF->createSoldier(gg::Vector3f(397, 0, 350),2000);
 
     sF->createCollectableWeapon(gg::Vector3f(397, 0, 330),2);
 

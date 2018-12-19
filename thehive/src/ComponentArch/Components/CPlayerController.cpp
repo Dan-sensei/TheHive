@@ -321,6 +321,7 @@ void CPlayerController::showDebug(){
 }
 
 void CPlayerController::changeWeaponIfPossible(CGun *gun){
+    Singleton<ScreenConsole>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
     pulsacion_q = true;
     if(isPrincipal){
         isPrincipal = false;
@@ -382,7 +383,7 @@ bool CPlayerController::canPickWeapon(){
     else{
         pulsacion_f = false;
     }
-    return true;
+    return false;
 }
 
 bool CPlayerController::hasItem(const uint16_t &_item){

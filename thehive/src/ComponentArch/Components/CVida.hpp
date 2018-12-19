@@ -4,16 +4,17 @@
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
+#include <ComponentArch/Components/CTransform.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
+
 #include <GameAI/NavmeshStructs.hpp>
 #include <Util.hpp>
 #include <stack>
 
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
-#include "CTransform.hpp"
+#include <EventSystem/CTriggerSystem.hpp>
 #include <Singleton.hpp>
-
-//#include "CRigidBody.hpp"
 
 
 class CVida : public IComponent {
@@ -34,10 +35,12 @@ class CVida : public IComponent {
 
     private:
         CVida(const CVida &orig) = delete;
-        ObjectManager* Manager;
+        ObjectManager   *Manager;
+        ScreenConsole   *hud;
+        CTriggerSystem  *triggerSystem;
 
-        int vida;
-        int vida_max;
+        float vida;
+        float vida_max;
         //CRigidBody* cRigidBody;
 };
 

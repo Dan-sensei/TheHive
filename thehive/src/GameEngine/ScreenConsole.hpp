@@ -20,7 +20,7 @@ class ScreenConsole{
     public:
         void setprogress(int hab,float _prog);
         void setvida(float _vida);
-        void setbullet(int tipo,int balas);
+        void setbullet(int,int,int);
         void setVolDialogo(int _vol);
         void setVolEffect(int _vol);
         void setVolMusic(int _vol);
@@ -57,8 +57,8 @@ class ScreenConsole{
         int VolDialogo;
         int VolEffect;
         int VolMusic;
-        int balaP;
-        int balaS;
+        int balaP, balaP_TOT;
+        int balaS, balaS_TOT;
         float vida;
         float perc;
         float perc2;
