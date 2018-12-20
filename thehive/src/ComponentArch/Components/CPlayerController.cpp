@@ -3,6 +3,7 @@
 #include <States/StateMachine.hpp>
 #include <PauseState.hpp>
 
+#include <GameAI/Pathfinding.hpp>
 
 //#include <GameAI/Hability.hpp>
 //#include <GameAI/Enumhabs.hpp>
@@ -27,13 +28,10 @@
 #define MULT_DASH_FACTOR    3
 
 CPlayerController::CPlayerController()
-:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
-{
-  GranadeCreate=false;
-}
+:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr)
+{}
 
 CPlayerController::~CPlayerController() {
-    if(secondWeapon) delete secondWeapon;
 }
 
 void CPlayerController::Init(){
@@ -46,7 +44,6 @@ void CPlayerController::Init(){
     MHandler_SETPTRS();
 
     pulsacion_granada = false;
-    pulsacion_espacio = false;
     pulsacion_q = false;
     pulsacion_dash = false;
     pulsacion_f = false;
@@ -58,12 +55,7 @@ void CPlayerController::Init(){
     // El heroe siempre empezara con un arma secundaria
     // Pistola por defecto
     isPrincipal = false;
-    secondWeapon = nullptr;
 
-    actualGrenadeState = 1;
-    mapFuncGrenades.insert(std::make_pair(1,&CPlayerController::playerThrowHolyBomb));
-    mapFuncGrenades.insert(std::make_pair(2,&CPlayerController::playerThrowMatrioska));
-    mapFuncGrenades.insert(std::make_pair(3,&CPlayerController::playerThrowDopple));
     items.fill(0);
 }
 
@@ -83,11 +75,58 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
     cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()));
     // std::cout << "llega" << '\n';
-    hab = static_cast<CHabilityController*>(Manager->getComponent(gg::HAB, getEntityID()));
     //hab = static_cast<CHabilityController*>(Manager->getComponent(gg::HABILITY, getEntityID()));
 
 
     return gg::ST_TRUE;
+}
+
+void CPlayerController::Update(){
+
+    if(Engine->key(gg::GG_N))   {
+        Singleton<Pathfinding>::Instance()->SwitchDisplayNodes();
+        Engine->key(gg::GG_N)  = false;
+        std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayNodesEnabled() ? "TRUE" : "FALSE";
+        gg::cout("Display Path: " + Flag, gg::Color(0, 102, 255, 1));
+    }
+
+    if(Engine->key(gg::GG_F))   {
+        Singleton<Pathfinding>::Instance()->SwitchDisplayFacesNodes();
+        Engine->key(gg::GG_F)  = false;
+        std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayFacesNodesEnabled() ? "TRUE" : "FALSE";
+        gg::cout("Display Force Vectors: " + Flag, gg::Color(0, 102, 255, 1));
+    }
+
+    if(Engine->key(gg::GG_C))   {
+        Singleton<Pathfinding>::Instance()->SwitchDisplayConnections();
+        Engine->key(gg::GG_C)  = false;
+        std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayConnectionsEnabled() ? "TRUE" : "FALSE";
+        gg::cout("Display Faces Nodes : " + Flag, gg::Color(0, 102, 255, 1));
+    }
+
+    if(Engine->key(gg::GG_P))   {
+        Singleton<Pathfinding>::Instance()->SwitchDisplayPath();
+        Engine->key(gg::GG_P)  = false;
+        std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayPathEnabled() ? "TRUE" : "FALSE";
+        gg::cout("Display Connections: " + Flag, gg::Color(0, 102, 255, 1));
+    }
+    if(Engine->key(gg::GG_V))   {
+        Singleton<Pathfinding>::Instance()->SwitchDisplayVectors();
+        Engine->key(gg::GG_V)  = false;
+        std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayVectorsEnabled() ? "TRUE" : "FALSE";
+        gg::cout("Display Nodes: " + Flag, gg::Color(0, 102, 255, 1));
+    }
+
+    if(Engine->key(gg::GG_I))   {   camera->SwitchInvertCamera(); Engine->key(gg::GG_I)  = false;    }
+
+    gg::Vector3f Raycast;
+    bool Hit = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation(), Raycast);
+    if(Hit) Engine->Draw3DLine(Raycast, Raycast+gg::Vector3f(0, 800, 0), gg::Color(255, 0, 0, 2));
+
+
+    if(Engine->isLClickPressed() && Hit){
+        Manager->sendMessageToAllEntities(Message(gg::M_NEW_POSITION, &Raycast));
+    }
 }
 
 void CPlayerController::FixedUpdate(){
@@ -119,18 +158,7 @@ void CPlayerController::FixedUpdate(){
     // Vector que tendrá el impulso para aplicar al body
     gg::Vector3f    force;
     bool            pressed = false;
-    float           MULT_FACTOR = 1;
-
-    if(Engine->key(gg::GG_1)){
-        Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
-        hab->ToggleSkill(0);
-    }
-    if(Engine->key(gg::GG_2)){
-        hab->ToggleSkill(1);
-    }
-    if(Engine->key(gg::GG_3)){
-        hab->ToggleSkill(2);
-    }
+    float           MULT_FACTOR = 5;
 
     if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
     if(Engine->key(gg::GG_A))   A_IsPressed(force,pressed);
@@ -144,149 +172,41 @@ void CPlayerController::FixedUpdate(){
     }
     else {pulsacion_dash = false;}
 
-    if(Engine->key(JUMP_KEY)){
-        if(!pulsacion_espacio /*&& abs(cRigidBody->getVelocity().Y) < 40*/){
-            pulsacion_espacio = true;
-            cRigidBody->applyCentralForce(gg::Vector3f(0, JUMP_FORCE_FACTOR, 0));
-        }
-    }
-    else{
-        pulsacion_espacio = false;
-    }
+    if(Engine->key(JUMP_KEY))
+        cRigidBody->moveUp();
+
+    if(Engine->key(gg::GG_LCONTROL))
+        cRigidBody->moveDown();
+
+
 
     // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
     cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
-
-    // -----------------------------------
-    // Acciones de Willy
-    // -----------------------------------
-    // DISPARO
-    gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
-
-    if(Engine->key(RELOAD_KEY)){
-        CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        if(gun && !gun->getBullets() && !gun->isReloading()){
-            gun->reload();
-        }
-    }
-
-    if(Engine->isLClickPressed()){
-        CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        if(gun) gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
-    }
-
-    if(Engine->key(WEAPON_KEY) && secondWeapon){
-        CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
-        if(!pulsacion_q && !aux->isReloading()){
-            changeWeaponIfPossible(aux);
-        }
-    }
-    else{
-        pulsacion_q = false;
-    }
-
-    // Graná
-    int wheelState = Engine->getWheelState();
-    if(wheelState){
-        actualGrenadeState -= wheelState;
-        if(actualGrenadeState<1)    actualGrenadeState = 3;
-        if(actualGrenadeState>3)    actualGrenadeState = 1;
-        //gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
-    }
-    if(Engine->key(gg::GG_G)){
-        if(pulsacion_granada==false)
-            (this->*mapFuncGrenades[actualGrenadeState])();
-    }
-    else{
-        pulsacion_granada=false;
-    }
 
     // <DEBUG>
     showDebug();
     // </DEBUG>
 
-    if(Engine->key(gg::GG_P)) Engine->Close();
-}
-
-void CPlayerController::playerThrowHolyBomb(){
-    pulsacion_granada   = true;
-
-    gg::Vector3f gPos   = cTransform->getPosition();
-    gg::Vector3f from   = gPos;
-    gg::Vector3f to     = world->getRaycastVector();
-    gg::Vector3f vel    = to-from;
-
-    vel  = gg::Normalice(vel);
-    vel *= VEL_FACTOR/2;
-
-    factory->createHolyBomb(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
-}
-
-void CPlayerController::playerThrowMatrioska(){
-    pulsacion_granada   = true;
-
-    gg::Vector3f gPos   = cTransform->getPosition();
-    gg::Vector3f from   = gPos;
-    gg::Vector3f to     = world->getRaycastVector();
-    gg::Vector3f vel    = to-from;
-
-    vel  = gg::Normalice(vel);
-    vel *= VEL_FACTOR/2;
-
-    factory->createMatriuska(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
-}
-
-void CPlayerController::playerThrowDopple(){
-    pulsacion_granada   = true;
-
-    gg::Vector3f gPos   = cTransform->getPosition();
-    gg::Vector3f from   = gPos;
-    gg::Vector3f to     = world->getRaycastVector();
-    gg::Vector3f vel    = to-from;
-
-    vel  = gg::Normalice(vel);
-    vel *= VEL_FACTOR;
-
-    factory->createSenyuelo(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
+    if(Engine->key(gg::GG_Q)) Engine->Close();
 }
 
 void CPlayerController::W_IsPressed(gg::Vector3f &force, bool &pressed){
     force = gg::Vector3f(-cV.X,0,-cV.Z);
-    // if(Engine->key(ROTATE_KEY)){
-    //     cV2.X-=cV.X;
-    //     cV2.Z-=cV.Z;
-    //     camera->setCameraPositionBeforeLockRotation(cV2);
-    // };
     pressed = true;
 }
 
 void CPlayerController::S_IsPressed(gg::Vector3f &force, bool &pressed){
     force = gg::Vector3f(+cV.X,0,+cV.Z);
-    // if(Engine->key(ROTATE_KEY)){
-    //     cV2.X+=cV.X;
-    //     cV2.Z+=cV.Z;
-    //     camera->setCameraPositionBeforeLockRotation(cV2);
-    // }
     pressed = true;
 }
 
 void CPlayerController::A_IsPressed(gg::Vector3f &force, bool &pressed){
     force = gg::Vector3f(-ppV.X,0,-ppV.Z);
-    // if(Engine->key(ROTATE_KEY)){
-    //     cV2.X-=ppV.X;
-    //     cV2.Z-=ppV.Z;
-    //     camera->setCameraPositionBeforeLockRotation(cV2);
-    // };
     pressed = true;
 }
 
 void CPlayerController::D_IsPressed(gg::Vector3f &force, bool &pressed){
     force = gg::Vector3f(+ppV.X,0,+ppV.Z);
-    // if(Engine->key(ROTATE_KEY)){
-    //     cV2.X-=ppV.X;
-    //     cV2.Z-=ppV.Z;
-    //     camera->setCameraPositionBeforeLockRotation(cV2);
-    // };
     pressed = true;
 }
 
@@ -302,7 +222,7 @@ void CPlayerController::showDebug(){
     if(Engine->key(gg::GG_F1)){
         if(!debug1){
             debug1 = true;
-            debug2? debug2=false : debug2=true;
+            debug2 = !debug2; //debug2 ? debug2=false : debug2=true;
             world->setDebug(debug2);
         }
     }
@@ -318,101 +238,4 @@ void CPlayerController::showDebug(){
     //         ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
     //     );
     // }
-}
-
-void CPlayerController::changeWeaponIfPossible(CGun *gun){
-    Singleton<ScreenConsole>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
-    pulsacion_q = true;
-    if(isPrincipal){
-        isPrincipal = false;
-
-        Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
-        Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
-
-        gg::cout("| -- PRINCIPAL TO SECONDARY -- ");
-        gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
-        secondWeapon = gun;
-        gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
-    }
-    else{
-        // SIEMPRE entrara primero aqui
-        isPrincipal = true;
-
-        Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
-        Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
-
-        gg::cout("| -- SECONDARY TO PRINCIPAL -- ");
-        gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
-        secondWeapon = gun;
-        gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
-    }
-}
-
-bool CPlayerController::heroHasSecondWeapon(){
-    if(secondWeapon)    return true;
-    else                return false;
-}
-
-int CPlayerController::setSecondWeapon(CGun *_weapon){
-    int ret;
-    if(secondWeapon){
-        ret = secondWeapon->getType();
-    }
-    else{
-        ret = -1;
-    }
-    secondWeapon = _weapon;
-    return ret;
-}
-
-void CPlayerController::SprintBuf(){
-    MULT_BASE=2.5;
-}
-
-void CPlayerController::SprintDebuf(){
-    MULT_BASE=1;
-}
-
-bool CPlayerController::canPickWeapon(){
-    if(Engine->key(gg::GG_F)){
-        if(!pulsacion_f){
-            pulsacion_f = true;
-            return true;
-        }
-    }
-    else{
-        pulsacion_f = false;
-    }
-    return false;
-}
-
-bool CPlayerController::hasItem(const uint16_t &_item){
-    for(const uint16_t& i : items){
-        if(i==_item){
-            return true;
-        }
-    }
-    return false;
-}
-
-bool CPlayerController::pickItem(const uint16_t &_item){
-    // No compruebo duplicados entre items
-    // Nunca pasara esa situacion
-    for(const uint16_t &i : items){
-        if(i==0){
-            items[i] = _item;
-            return true;
-        }
-    }
-    return false;
-}
-
-bool CPlayerController::useItem(const uint16_t &_item){
-    for(const uint16_t &i : items){
-        if(i==_item){
-            items[i] = 0;
-            return true;
-        }
-    }
-    return false;
 }

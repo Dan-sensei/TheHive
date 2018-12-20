@@ -2,6 +2,7 @@
 #include <iostream>
 //#include <SMaterial>
 #include <GameEngine/EnumButtonType.hpp>
+#include <GameAI/Pathfinding.hpp>
 
 irr::IrrlichtDevice* ScreenConsole::IrrlichtDevice = nullptr;
 void ScreenConsole::setprogress(int hab,float prog){

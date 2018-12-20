@@ -28,10 +28,19 @@ class Pathfinding {
 
         void DroNodes();
 
-        uint16_t getGraphSize();
-
-        void SetDebug(bool flag);
         bool isDebugging();
+
+        void SwitchDisplayFacesNodes();
+        void SwitchDisplayConnections();
+        void SwitchDisplayNodes();
+        void SwitchDisplayPath();
+        void SwitchDisplayVectors();
+
+        inline bool isDisplayPathEnabled()          {    return DisplayPath;         };
+        inline bool isDisplayVectorsEnabled()       {    return DisplayVectors;      };
+        inline bool isDisplayFacesNodesEnabled()    {    return DisplayFacesNodes;   };
+        inline bool isDisplayConnectionsEnabled()   {    return DisplayConnections;  };
+        inline bool isDisplayNodesEnabled()         {    return DisplayNodes;        };
 
         void clear();   //  Provisional
     private:
@@ -39,7 +48,9 @@ class Pathfinding {
         Pathfinding(const Pathfinding &orig) = delete;
         Pathfinding operator=(const Pathfinding &orig) = delete;
 
-        void printStats();
+        uint16_t FindClosestNodeOfFace(const gg::Vector3f &Position, uint16_t Face);
+
+        //void printStats();
         std::vector<Node> GRAPH;
         std::vector<std::vector<Connection>> GConnections;
         std::priority_queue<Node*, std::vector<Node*>, Comparator> OpenList;
@@ -49,8 +60,13 @@ class Pathfinding {
         //Debug
         std::vector<Billboard> IDs;
         std::vector<Billboard> BillboardFaces;
-        bool Debug;
         uint16_t goal;
+
+        bool DisplayFacesNodes;
+        bool DisplayConnections;
+        bool DisplayNodes;
+        bool DisplayPath;
+        bool DisplayVectors;
 };
 
 

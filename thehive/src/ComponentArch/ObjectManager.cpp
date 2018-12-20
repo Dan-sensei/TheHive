@@ -28,10 +28,13 @@ ObjectManager::ObjectManager() {
     MessageToListeningComponents[gg::UPDATE].push_back(gg::RENDERABLE_3D);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::PLAYERCONTROLLER);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::PLAYERCONTROLLER);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::PLAYERCONTROLLER);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::NAVMESHAGENT);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::NAVMESHAGENT);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::NAVMESHAGENT);
+    MessageToListeningComponents[gg::M_NEW_POSITION].push_back(gg::NAVMESHAGENT);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::HAB);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::HAB);

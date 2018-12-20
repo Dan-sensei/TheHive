@@ -13,8 +13,8 @@
 
 NavmeshParser::NavmeshParser(){}
 
-void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File) {
-    std::ofstream CITY("../assets/BinaryFiles/NavmeshCITY.gg", std::ios::binary);
+void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File, const std::string &FileName) {
+    std::ofstream CITY("../assets/BinaryFiles/"+FileName+".gg", std::ios::binary);
 
     std::vector<Node> GRAPH;
     std::vector<std::vector<Connection>> Connections;
@@ -146,9 +146,6 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File) {
         }
     }
 
-
-    std::cout << "SQUARE_FACES -> " << SQUARE_FACES.size() << '\n';
-
     uint16_t GRAPH_SIZE = GRAPH.size();
     GG_Write(CITY, GRAPH_SIZE);
     for(auto i : GRAPH){
@@ -179,13 +176,14 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File) {
     uint16_t SQUARE_FACES_SIZE = SQUARE_FACES.size();
     GG_Write(CITY, SQUARE_FACES_SIZE);
     for(auto i : SQUARE_FACES){
-        uint16_t PORTALS_SIZE = i.Portals.size();
-        GG_Write(CITY, PORTALS_SIZE);
-        for(auto j : i.Portals)
-            GG_Write(CITY, j);
-
         GG_Write(CITY, i.TL);
         GG_Write(CITY, i.BR);
+
+        uint16_t PORTALS_SIZE = i.Portals.size();
+        GG_Write(CITY, PORTALS_SIZE);
+        for(auto j : i.Portals){
+            GG_Write(CITY, j);
+        }
     }
 }
 

@@ -2,7 +2,6 @@
 #include <cmath>
 
 #include <GameAI/Pathfinding.hpp>
-#include <cmath>
 
 CNavmeshAgent::CNavmeshAgent()
 :Engine(nullptr), cTransform(nullptr), currentWaypointID(11), currentlyMovingTowardsTarget(false), SightDistance(200000)
@@ -25,6 +24,7 @@ void CNavmeshAgent::Init(){
 gg::EMessageStatus CNavmeshAgent::processMessage(const Message &m) {
 
     if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    else if(m.mType == gg::M_NEW_POSITION) return MHandler_SETNEWPOSITION(m);
 
     return gg::ST_ERROR;
 }
@@ -40,11 +40,45 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
-#define MAXSPEED 5.f
-#define FORCE_FACTOR 600.f
+gg::EMessageStatus CNavmeshAgent::MHandler_SETNEWPOSITION(const Message &m){
+    gg::Vector3f Destination = *static_cast<gg::Vector3f*>(m.mData);
+    SetDestination(Destination);
+    return gg::ST_TRUE;
+}
+
+#define MAXSPEED 20.f
+#define FORCE_FACTOR 2000.f
+
+void CNavmeshAgent::Update(){
+    if(Singleton<Pathfinding>::Instance()->isDisplayPathEnabled() && !Waypoints.empty()){
+        std::stack<Waypoint> debug = Waypoints;
+        gg::Color color;
+        color.R = 10;
+        color.G = 255;
+        color.B = 200;
+        color.Alpha = 1;
+
+        Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 40, 0), color, 2);
+        while(!debug.empty()){
+            Waypoint first = debug.top();
+            debug.pop();
+            if(debug.empty())
+                break;
+
+            Waypoint second = debug.top();
+            Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 40, 0), second.Position + gg::Vector3f(0, 40, 0), color, 2);
+        }
+
+    }
+
+    if(Singleton<Pathfinding>::Instance()->isDisplayVectorsEnabled()){
+        Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 10, 0), cTransform->getPosition()+(gg::Normalice(DebugMoveVector)*100)+gg::Vector3f(0, 7, 0), gg::Color(255,0,0,1));
+        Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 10, 0), cTransform->getPosition()+(gg::Normalice(cRigidBody->getVelocity())*100)+gg::Vector3f(0, 10, 0), gg::Color(255,255,0,1));
+    }
+
+}
 
 void CNavmeshAgent::FixedUpdate(){
-
     if(!cTransform || !currentlyMovingTowardsTarget)  return;
 
     gg::Vector3f moveVector = Waypoints.top().Position - cTransform->getPosition();
@@ -66,13 +100,14 @@ void CNavmeshAgent::FixedUpdate(){
     } while(!stop);
 
     float modulo= gg::Modulo(moveVector);
+    DebugMoveVector = moveVector;
 
     if(modulo <= 30) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
         if(Waypoints.empty()){
             currentlyMovingTowardsTarget = false;
-            gg::Vector3f Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.7, 0, cRigidBody->getXZVelocity().Y * -0.7)*FORCE_FACTOR;
+            gg::Vector3f Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.1, 0, cRigidBody->getXZVelocity().Y * -0.1)*FORCE_FACTOR;
             cRigidBody->applyCentralForce(Counter);
         }
 
@@ -81,9 +116,6 @@ void CNavmeshAgent::FixedUpdate(){
 
     moveVector = (moveVector / modulo)*FORCE_FACTOR;
 
-    //  Debug!
-    Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 10, 0), cTransform->getPosition()+(moveVector/FORCE_FACTOR)*100+gg::Vector3f(0, 10, 0), gg::Color(0,255,0,1));
-    Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 10, 0), cTransform->getPosition()+gg::Vector3f(0, 10, 0)+cRigidBody->getVelocity()*5, gg::Color(255,255,0,1));
 
     gg::Vector2f XZVelocity = gg::Normalice(cRigidBody->getXZVelocity());
 
@@ -100,32 +132,15 @@ void CNavmeshAgent::FixedUpdate(){
     if(gg::Modulo(cRigidBody->getXZVelocity()) < MAXSPEED)
         cRigidBody->applyCentralForce(moveVector);
 
-    if(Singleton<Pathfinding>::Instance()->isDebugging()){
-        std::stack<Waypoint> debug = Waypoints;
-        gg::Color color;
-        color.R = 10;
-        color.G = 255;
-        color.B = 200;
-        color.Alpha = 1;
 
-        Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 40, 0), color, 2);
-        while(!debug.empty()){
-            Waypoint first = debug.top();
-            debug.pop();
-            if(debug.empty())
-                break;
-
-            Waypoint second = debug.top();
-            Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 40, 0), second.Position + gg::Vector3f(0, 40, 0), color, 2);
-        }
-
-    }
 }
 
 void CNavmeshAgent::SetDestination(const gg::Vector3f &Target){
+    Waypoints = std::stack<Waypoint>();
     Singleton<Pathfinding>::Instance()->FindPath(cTransform->getPosition(), Target, Waypoints);
     if(Waypoints.empty()){
         gg::cout("No hay camino");
+        currentlyMovingTowardsTarget = false;
         return;
     }
     currentlyMovingTowardsTarget = true;

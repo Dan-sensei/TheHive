@@ -8,12 +8,12 @@
 #include <GameEngine/GameEngine.hpp>
 #include <GameEngine/Camera.hpp>
 #include <Singleton.hpp>
+#include <Bullet/ggDynWorld.hpp>
 
 #include "CTransform.hpp"
 
 class ObjectManager;
 class CRigidBody;
-class ggDynWorld;
 
 class CCamera : public IComponent {
 friend class Factory;
@@ -39,8 +39,9 @@ public:
     gg::Vector3f getCameraPositionBeforeLockRotation();
     void setCameraPositionBeforeLockRotation(gg::Vector3f); // Por ahora no se usa
 
+    inline void SwitchInvertCamera(){ InvertCamera = !InvertCamera;};
+
 private:
-    CRigidBody      *CRigidbody;
     GameEngine      *Engine;
     ObjectManager   *Manager;
     Camera          *cam;
@@ -56,7 +57,7 @@ private:
     float screenW;
     float screenH;
 
-    bool daniNoSabeProgramar;
+    bool InvertCamera;
     bool collision;
 
     void getNewRotation                 (gg::Vector3f&);

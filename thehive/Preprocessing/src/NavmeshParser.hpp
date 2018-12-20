@@ -25,7 +25,7 @@ class NavmeshParser{
     public:
 
         NavmeshParser();
-        static void generateBinaryGG_Navmesh(const std::string& _File);
+        static void generateBinaryGG_Navmesh(const std::string &_File, const std::string &FileName);
 
     private:
         NavmeshParser(const NavmeshParser& orig) = delete;

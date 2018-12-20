@@ -17,7 +17,6 @@
 #include <Bullet/ggDynWorld.hpp>
 #include "CRigidBody.hpp"
 
-class ggDynWorld;
 class CRigidBody;
 
 class CNavmeshAgent : public IComponent {
@@ -28,10 +27,12 @@ class CNavmeshAgent : public IComponent {
         // Functions of IComponent
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
         virtual void FixedUpdate();
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
+        gg::EMessageStatus MHandler_SETNEWPOSITION (const Message &m);
 
         void SetDestination(const gg::Vector3f &Target);
         bool HasDestination();
@@ -52,6 +53,8 @@ class CNavmeshAgent : public IComponent {
 
         bool        currentlyMovingTowardsTarget;
         float SightDistance;
+
+        gg::Vector3f DebugMoveVector;
 };
 
 #endif

@@ -15,7 +15,6 @@
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
-#include <EventSystem/Blackboard.hpp>
 #include <States/StateMachine.hpp>
 
 
@@ -25,8 +24,6 @@
 
 PauseState::PauseState():cont(){
     Engine = Singleton<GameEngine>::Instance();
-    EventSystem = Singleton<CTriggerSystem>::Instance();
-
     //Engine->Starto();
     //Engine->HideCursor(true);
     Manager = Singleton<ObjectManager>::Instance();

@@ -10,6 +10,7 @@ namespace gg{
 
         GG_A = irr::EKEY_CODE::KEY_KEY_A,
         GG_B = irr::EKEY_CODE::KEY_KEY_B,
+        GG_C = irr::EKEY_CODE::KEY_KEY_C,
         GG_D = irr::EKEY_CODE::KEY_KEY_D,
         GG_E = irr::EKEY_CODE::KEY_KEY_E,
         GG_F = irr::EKEY_CODE::KEY_KEY_F,

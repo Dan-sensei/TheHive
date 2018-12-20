@@ -10,21 +10,17 @@
 #include <Singleton.hpp>
 #include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
-#include <EventSystem/CTriggerSystem.hpp>
 #include <Bullet/ggDynWorld.hpp>
 #include "Factory.hpp"
 
 #include <GameEngine/KEYCODES.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
+#include "CRigidBody.hpp"
+#include "CCamera.hpp"
+#include "CTransform.hpp"
 
 #define NUMBER_OF_ITEMS     3
-
-class CCamera;
-class CTransform;
-class CRigidBody;
-class CGun;
-class CHabilityController;
 
 class GameEngine;
 class ObjectManager;
@@ -39,9 +35,9 @@ class CPlayerController : public IComponent {
         // Functions of IComponent
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
         virtual void FixedUpdate();
 
-        int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
         bool canPickWeapon();
 
@@ -65,21 +61,18 @@ class CPlayerController : public IComponent {
         CTransform* cTransform;
         CRigidBody* cRigidBody;
         CCamera* camera;
-        CHabilityController* hab;
-        bool GranadeCreate;
 
         bool pulsacion_granada;
-        bool pulsacion_espacio;
         bool pulsacion_q;
         bool pulsacion_dash;
         bool pulsacion_f;
 
-        bool debug1;
+        bool debug1;class CClock;
+
         bool debug2;
         float MULT_BASE;
 
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
-        CGun *secondWeapon;
         std::array<uint16_t,NUMBER_OF_ITEMS> items;
 
         gg::Vector3f cV,ppV;
@@ -90,13 +83,6 @@ class CPlayerController : public IComponent {
         void D_IsPressed(gg::Vector3f&,bool&);
         void ApplyDash(gg::Vector3f&,float&);
         void showDebug();
-        void changeWeaponIfPossible(CGun*);
-
-        int actualGrenadeState; // 1,2,3
-        std::map<int, void (CPlayerController::*)()> mapFuncGrenades;
-        void playerThrowHolyBomb();
-        void playerThrowMatrioska();
-        void playerThrowDopple();
 };
 
 #endif

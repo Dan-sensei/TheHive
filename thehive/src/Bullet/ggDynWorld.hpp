@@ -11,7 +11,6 @@
 #include <Factory.hpp>
 #include <Singleton.hpp>
 
-#include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 
 #include <Bullet/GLDebugDrawer.h>
@@ -57,6 +56,8 @@ public:
 
     void inito(float=0, float=-10, float=0);
 
+    bool handleRayCast(gg::Vector3f,gg::Vector3f, gg::Vector3f &Result, float=-1);
+
     void addRigidBody(btRigidBody*);
     void addShape(btCollisionShape*);
     void stepSimulation(float, int=1, float=1./60.);
@@ -64,7 +65,6 @@ public:
 
     btDiscreteDynamicsWorld* getDynamicsWorld();
 
-    gg::Vector3f handleRayCast(gg::Vector3f,gg::Vector3f,float=-1);
     gg::Vector3f getRaycastVector();
     gg::Vector3f getRaycastHitPosition();
     void applyForceToRaycastCollisionBody(gg::Vector3f,gg::Vector3f);

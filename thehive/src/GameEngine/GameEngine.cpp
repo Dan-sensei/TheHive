@@ -113,7 +113,7 @@ void GameEngine::HideCursor(bool flag){
 //  Adds a camera to the scene with optional initial coordinates
 //==================================================================================
 void GameEngine::createCamera(const gg::Vector3f &position /* = {0,0,0} */, const gg::Vector3f &direction /* = {0,0,0} */) {
-
+    if(G_Camera.mCamera != nullptr) return;
     G_Camera.mCamera = smgr->addCameraSceneNode(
         0,
         irr::core::vector3df(position.X, position.Y, position.Z),
@@ -182,7 +182,7 @@ void GameEngine::createBillboard(Billboard &billboard, const gg::Vector3f &posit
 }
 
 
-bool GameEngine::key(gg::KEYCODES keyCode){
+bool& GameEngine::key(gg::KEYCODES keyCode){
     return listener.IsKeyDown(keyCode);
 }
 int GameEngine::checkbutton(){

@@ -12,6 +12,7 @@ namespace gg{
         M_INTERPOLATE_POSTSAVE,
         M_INTERPOLATE,
         M_EVENT_ACTION,
+        M_NEW_POSITION,
         //M_XPLOTATO,
         // M_PICKGUN
         MESSAGE_TYPE_COUNT

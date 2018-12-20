@@ -53,7 +53,6 @@ void BinaryParser::ReadNavmeshData(
 
             uint16_t To;
             GG_Read(inStream, To);
-
             Connections[i].emplace_back(Value, From, To);
         }
     }
@@ -63,7 +62,6 @@ void BinaryParser::ReadNavmeshData(
     for(uint16_t i = 0; i < SQUARE_FACES_SIZE; ++i){
         gg::Vector3f TL;
         GG_Read(inStream, TL);
-
         gg::Vector3f BR;
         GG_Read(inStream, BR);
 
@@ -71,12 +69,11 @@ void BinaryParser::ReadNavmeshData(
 
         uint16_t PORTALS_SIZE;
         GG_Read(inStream, PORTALS_SIZE);
-        for(uint16_t j; j < PORTALS_SIZE; ++j){
+        for(uint16_t j = 0; j < PORTALS_SIZE; ++j){
             uint16_t PortalID;
             GG_Read(inStream, PortalID);
             SQUARE_FACES.back().Portals.push_back(PortalID);
         }
-
     }
 
 }

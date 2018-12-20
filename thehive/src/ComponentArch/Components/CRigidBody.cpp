@@ -2,7 +2,6 @@
 #include <vector>
 
 #include "CTransform.hpp"
-#include "CClock.hpp"
 
 #define PI 3.14159265359
 #define FORCE_FACTOR    400.f
@@ -180,11 +179,6 @@ CRigidBody::~CRigidBody() {
 void CRigidBody::Init(){
     world->setGravity(0,-15,0);
 
-    // Hacer set del mapa de punteros a funcion
-    mapaFuncUpdate.insert(std::make_pair(Action_AbrirPuerta,&CRigidBody::Upd_MoverObjeto));
-    mapaFuncUpdate.insert(std::make_pair(Action_MoverObjeto,&CRigidBody::Upd_MoverObjeto));
-    actualUpd = nullptr;
-
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
 }
@@ -194,7 +188,6 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
 
     if (m.mType == gg::M_SETPTRS)              return MHandler_SETPTRS     ();
     //else if (m.mType == gg::M_XPLOTATO)     return MHandler_XPLOTATO(m);
-    else if (m.mType == gg::M_EVENT_ACTION)         return MHandler_DOACTION    (m);
     else if (m.mType == gg::M_INTERPOLATE_PRESAVE)  return SavePreviousStatus   ();
     else if (m.mType == gg::M_INTERPOLATE_POSTSAVE) return SaveCurrentStatus    ();
     else if (m.mType == gg::M_INTERPOLATE)          return Interpolate    (m);
@@ -202,33 +195,6 @@ gg::EMessageStatus CRigidBody::processMessage(const Message &m) {
     return gg::ST_ERROR;
 }
 
-
-//  Message handler functions_______________________________________________________________
-//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-
-gg::EMessageStatus CRigidBody::MHandler_DOACTION(Message _mes){
-    int *action = static_cast<int*>(_mes.mData);
-
-    // Mapa con funciones de update
-    EnumActionType eAction = static_cast<EnumActionType>(*action);
-    auto it = mapaFuncUpdate.find(eAction);
-    if(it == mapaFuncUpdate.end()){
-        return gg::ST_ERROR;
-    }
-    actualUpd = mapaFuncUpdate[eAction];
-
-    return gg::ST_TRUE;
-}
-
-void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
-    if(cTransform){
-        float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
-        float fuerzabomba=cdata->data.find(kDat_Damage);
-        gg::Vector3f sol =gg::Normalice(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
-
-        applyCentralForce(sol);
-    }
-}
 
 gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
     // Inicializando punteros
@@ -245,10 +211,6 @@ void CRigidBody::FixedUpdate(){
     // Deactivated (sleeping) rigid bodies don't take any processing time, except a minor broadphase collision detection impact
     // (to allow active objects to activate/wake up sleeping objects)
     body->activate(true);
-
-    if(actualUpd)
-        (this->*actualUpd)();
-    //updateCTransformPosition();
 }
 
 void CRigidBody::applyCentralImpulse(gg::Vector3f vec){
@@ -268,22 +230,10 @@ void CRigidBody::setLinearVelocity(gg::Vector3f vec){
 }
 
 void CRigidBody::applyConstantVelocity(gg::Vector3f _force,float _max_speed,bool _keyPressed){
-    float currentSpeed = gg::Modulo(getXZVelocity());
-    if(!_keyPressed && currentSpeed == 0)
-        return;
-
-    if(_keyPressed && currentSpeed < _max_speed) {    // If a key is pressed and we haven't reached max speed yet
-        _force *= FORCE_FACTOR;
-        applyCentralForce(_force);                       // Accelerate!
-    }
-    else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
-        _force = getVelocity() * gg::Vector3f(-0.2, 0, -0.2) * FORCE_FACTOR;
-        applyCentralForce(_force);                       // Stopping!
-    }
-    else {                                                          // If we reach here, any key is pressed and the speed is below 2
-        // Set it to 0
-        setLinearVelocity(gg::Vector3f(0, getVelocity().Y, 0));
-    }
+    btTransform bTransform;
+    body->getMotionState()->getWorldTransform(bTransform);
+    bTransform.getOrigin() += btVector3(_force.X*_max_speed,_force.Y*_max_speed,_force.Z*_max_speed);
+    body->getMotionState()->setWorldTransform(bTransform);
 }
 
 
@@ -345,72 +295,6 @@ bool CRigidBody::checkContactResponse(){
     return world->contactTest(body);
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------
-// Funciones del mapa
-// ----------------------------------------------------------------------------------------------------------------------------
-void CRigidBody::updateCTransformPosition(){
-    btTransform trans;
-    body->getMotionState()->getWorldTransform(trans);
-
-    if(cTransform){
-        cTransform->setPosition(getBodyPosition());
-
-        // ROTASAO
-        // if(body->getInvMass()){
-        //     btQuaternion rot = trans.getRotation();
-        //     float _X, _Y, _Z;
-        //     rot.getEulerZYX(_Z,_Y,_X);
-        //     cTransform->setRotation(
-        //         gg::Vector3f(
-        //             static_cast<float>(_X/PI*180),
-        //             static_cast<float>(_Y/PI*180),
-        //             static_cast<float>(_Z/PI*180)
-        //         )
-        //     );
-        // }
-    }
-}
-
-void CRigidBody::Upd_MoverObjeto(){
-    ObjectManager *manager = Singleton<ObjectManager>::Instance();
-    CClock *clock = static_cast<CClock*>(manager->getComponent(gg::CLOCK,getEntityID()));
-
-    if(clock){
-        if(clock->hasEnded()){
-            gg::cout(" -- CLOCK END");
-            manager->removeComponentFromEntity(gg::CLOCK,getEntityID());
-            actualUpd = nullptr;
-
-            Blackboard b;
-            b.GLOBAL_removeData("DATA_"+std::to_string(getEntityID()));
-
-        }
-        else{
-            // Update del clock
-            if(body->isKinematicObject()){
-                Blackboard b;
-                BRbData *data = static_cast<BRbData*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())));
-
-                gg::Vector3f offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
-                setOffsetBodyPosition(offset);
-            }
-        }
-    }
-    else{
-        Blackboard b;
-        BFloat *data = static_cast<BFloat*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())+"_TIME"));
-
-        float dur = data->getFloat();
-        clock = new CClock();
-        clock->startChrono(dur);
-        gg::cout(" -- CLOCK INIT ON "+std::to_string(dur));
-        manager->addComponentToEntity(clock,gg::CLOCK,getEntityID());
-
-        b.GLOBAL_removeData("DATA_"+std::to_string(getEntityID())+"_TIME");
-    }
-
-}
-
 gg::EMessageStatus CRigidBody::SavePreviousStatus(){
     Previous = Current;
 
@@ -426,6 +310,8 @@ gg::EMessageStatus CRigidBody::SaveCurrentStatus(){
 }
 gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
 
+    if(!cTransform) return gg::ST_TRUE;
+
     double Tick = *static_cast<double*>(_Tick.mData);
 
     float X = Previous.Position.X *(1-Tick) + Current.Position.X*Tick;
@@ -436,6 +322,19 @@ gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
     return gg::ST_TRUE;
 }
 
+void CRigidBody::moveUp(){
+    btTransform bTransform;
+    body->getMotionState()->getWorldTransform(bTransform);
+    bTransform.getOrigin() += btVector3(0, 20, 0);
+    body->getMotionState()->setWorldTransform(bTransform);
+}
+
+void CRigidBody::moveDown(){
+    btTransform bTransform;
+    body->getMotionState()->getWorldTransform(bTransform);
+    bTransform.getOrigin() += btVector3(0, -20, 0);
+    body->getMotionState()->setWorldTransform(bTransform);
+}
 
 CRigidBody::Status::Status(){}
 CRigidBody::Status::Status(const Status &orig){

@@ -22,7 +22,6 @@
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
-#include <EventSystem/Blackboard.hpp>
 
 #include "States/StateMachine.hpp"
 #include "Game.hpp"
@@ -31,7 +30,6 @@
 
 int main(int argc, char const *argv[]) {
     GameEngine *Engine = Singleton<GameEngine>::Instance();
-    CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
 
     Engine->Starto();
     //Engine->HideCursor(false);
@@ -54,12 +52,10 @@ int main(int argc, char const *argv[]) {
         mainstates->prueba();
         mainstates->GetActiveState()->Update();
     }
-    
-    Blackboard::ClearGlobalBlackboard();
+
     Manager->clin();
     Engine->clean();
     world->clean();
-    EventSystem->clin();
     mainstates->clin();
 
     return 0;

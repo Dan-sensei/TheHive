@@ -50,7 +50,7 @@ bool EventListener::OnEvent(const irr::SEvent& event) {
 }
 
 // This is used to check whether a key is being held down
-bool EventListener::IsKeyDown(gg::KEYCODES key) const {
+bool& EventListener::IsKeyDown(gg::KEYCODES key) {
     return keyMap[key];
 }
 

@@ -15,7 +15,6 @@
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
-#include <EventSystem/Blackboard.hpp>
 #include <States/StateMachine.hpp>
 
 
@@ -51,7 +50,6 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 
 MenuState::MenuState():cont(){
     Engine = Singleton<GameEngine>::Instance();
-    EventSystem = Singleton<CTriggerSystem>::Instance();
 
     //Engine->Starto();
     //Engine->HideCursor(true);
@@ -91,8 +89,6 @@ void MenuState::Update(){
 void MenuState::CLIN(){
     Singleton<ScreenConsole>::Instance()->CLINMenu();
 
-    Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     world->clean();
-    EventSystem->clin();
 }

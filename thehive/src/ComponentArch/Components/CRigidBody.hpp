@@ -9,23 +9,14 @@
 #include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
-#include "EventSystem/CTriggerSystem.hpp"
-
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
 #include <BulletWorldImporter/btBulletWorldImporter.h>
 #include <Bullet/ggDynWorld.hpp>
 
-#include <EventSystem/Blackboard.hpp>
-#include <EventSystem/BRbData.hpp>
-#include <EventSystem/BFloat.hpp>
-
-class ggDynWorld;
-
 //  Forward declaration de otras componentes que incluyas
 class CTransform;
-class CClock;
 
 class CRigidBody : public IComponent {
     public:
@@ -62,8 +53,6 @@ class CRigidBody : public IComponent {
         gg::EMessageStatus Interpolate (const Message &_Tick);
 
         gg::EMessageStatus MHandler_DOACTION(Message);
-        void MHandler_XPLOTATO(TriggerRecordStruct* cdata);
-
         // Funciones de CRigidBody
         void applyCentralForce(gg::Vector3f);
         void applyCentralImpulse(gg::Vector3f);
@@ -88,6 +77,9 @@ class CRigidBody : public IComponent {
         // Funciones del mapa
         void updateCTransformPosition();
         void Upd_MoverObjeto();
+
+        void moveUp();
+        void moveDown();
     private:
         struct Status {
             Status();
@@ -115,10 +107,6 @@ class CRigidBody : public IComponent {
         // Variables de 'ayuda'
         btBulletWorldImporter*      fileLoader;
 
-        // Update personalizado, Amstrad wannabe
-        using pFunc = void (CRigidBody::*)();
-        std::map<EnumActionType, pFunc> mapaFuncUpdate;
-        pFunc actualUpd;
 };
 
 #endif

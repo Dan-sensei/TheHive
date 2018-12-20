@@ -9,13 +9,11 @@
 
 CCamera::CCamera(bool _b)
 :Target(nullptr), Engine(nullptr), Manager(nullptr), cam(nullptr),
-daniNoSabeProgramar(_b)
+InvertCamera(_b)
 {}
 
 
-CCamera::~CCamera(){
-    delete CRigidbody;
-}
+CCamera::~CCamera(){}
 
 void CCamera::Init(){
     Engine = Singleton<GameEngine>::Instance();
@@ -28,14 +26,6 @@ void CCamera::Init(){
     cameraPositionBeforeLockRotation = Engine->getCamera()->getPosition();
 
     collision = false;
-    CRigidbody=new CRigidBody(
-        false,
-        cameraPositionBeforeLockRotation.X,
-        cameraPositionBeforeLockRotation.Y,
-        cameraPositionBeforeLockRotation.Z,
-        1,1,1
-    );
-
 
     screenW = static_cast<int>(Engine->getScreenWidth())/2;
     screenH = static_cast<int>(Engine->getScreenHeight())/2;
@@ -83,11 +73,6 @@ void CCamera::CameraUpdate(){
 
     // Perpendicular vector to set an offset to the right
     setPerpendicularOffsetVector(nextPosition);
-
-    /////////////////////////////////////////////////////////////////
-    // CAMERA COLLISIONS
-    /////////////////////////////////////////////////////////////////
-    fixCameraPositionOnCollision(nextPosition);
 
     // Call to updateAbsolutePosition() to avoid perspective and camera position problems
     // ¡¡¡¡ THIS MUST BE THE LAST FUNCTION TO CALL AFTER ANY CAMERA POSITION CHANGING FUNCTION !!!!
@@ -149,7 +134,7 @@ void CCamera::getNewRotation(gg::Vector3f &newRotation){
     vX -= screenW;
     vY -= screenH;
 
-    if(daniNoSabeProgramar)
+    if(InvertCamera)
         vY = -vY;
     Engine->setCursorPosition(static_cast<int>(screenW),static_cast<int>(screenH));
 
@@ -175,28 +160,6 @@ void CCamera::setFinalRotation(gg::Vector3f &newRotation,gg::Vector3f &backupRot
         cameraPositionBeforeLockRotation = cam->getPosition();
         // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
     //}
-}
-
-void CCamera::fixCameraPositionOnCollision(gg::Vector3f &nextPosition){
-    gg::Vector3f camPosition = cam->getPosition();
-    CRigidbody->setBodyPosition(nextPosition);
-    //CRigidbody->checkContactResponse();
-    // Las dos mejores lineas que he escrito en mi vida
-    //gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2;
-    //gg::Vector3f dir = (getlastHeroPosition()-nextPosition);
-    //gg::Vector3f to     = world->getRaycastVector();//choca solo
-
-
-    gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(getlastHeroPosition()-nextPosition)*0.5;
-    if(CRigidbody->checkContactResponse()){
-        std::cout << "rigid collision" << '\n';
-    }
-    if(CRigidbody->checkContactResponse()&&dynWorld->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
-        cam->setPosition(pos_on_collision);
-        //cam->setPosition(getlastHeroPosition());
-        std::cout << "mal" << '\n';
-        //Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1),3);
-    }
 }
 
 gg::Vector3f CCamera::getOffsetPositionVector(){

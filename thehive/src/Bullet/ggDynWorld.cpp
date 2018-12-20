@@ -1,6 +1,6 @@
 #include "ggDynWorld.hpp"
 
-#define FAR_RANGE_FACTOR    90.f
+#define FAR_RANGE_FACTOR    5000.f
 #define CLOSE_RANGE_FACTOR  1.f
 #define PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
 
@@ -50,6 +50,40 @@ void ggDynWorld::debugRaycast(){
     color.G = 175;
     color.B = 55;
     Singleton<GameEngine>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color,10);
+}
+
+bool ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot, gg::Vector3f &Result, float _weaponRange){
+
+    gg::Vector3f aux = gg::Vector3f(
+         sin(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) ) ,
+        -sin(rot.X  *PI/180.f) ,
+         cos(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) )
+    );
+
+
+    gg::Vector3f to =aux*FAR_RANGE_FACTOR+from;
+
+    raycastVector           = to;
+    cameraPosition          = from;
+    raycastHitPosition      = Result;
+    raycastCollisionBody    = nullptr;
+
+    btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
+
+    dynamicsWorld->rayTest(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z),callBack);
+
+    if(callBack.hasHit()){
+        Result = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
+        // <DEBUG VISUAL>
+            //CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, debugBullet));
+            //cTransform->setPosition(ret);
+        // </DEBUG VISUAL>
+
+        raycastHitPosition = Result;
+        raycastCollisionBody = const_cast<btRigidBody*>(btRigidBody::upcast(callBack.m_collisionObject));
+        return true;
+    }
+    return false;
 }
 
 void ggDynWorld::printObjects(int _end){
@@ -147,42 +181,6 @@ void ggDynWorld::setGravity(float x, float y, float z){
 
 btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
     return dynamicsWorld;
-}
-
-gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float _weaponRange){
-    if(_weaponRange == -1)  _weaponRange  = FAR_RANGE_FACTOR;
-    else                    _weaponRange *= FAR_RANGE_FACTOR;
-
-    gg::Vector3f aux = gg::Vector3f(
-         sin(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) ) ,
-        -sin(rot.X  *PI/180.f) ,
-         cos(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) )
-    );
-
-
-    gg::Vector3f to =aux*FAR_RANGE_FACTOR+from;
-
-    gg::Vector3f ret(-1,-1,-1);
-    raycastVector           = to;
-    cameraPosition          = from;
-    raycastHitPosition      = ret;
-    raycastCollisionBody    = nullptr;
-
-    btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
-
-    dynamicsWorld->rayTest(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z),callBack);
-
-    if(callBack.hasHit()){
-        ret = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
-        // <DEBUG VISUAL>
-            //CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, debugBullet));
-            //cTransform->setPosition(ret);
-        // </DEBUG VISUAL>
-
-        raycastHitPosition = ret;
-        raycastCollisionBody = const_cast<btRigidBody*>(btRigidBody::upcast(callBack.m_collisionObject));
-    }
-    return ret;
 }
 
 void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f force){

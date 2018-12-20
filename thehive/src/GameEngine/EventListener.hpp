@@ -9,7 +9,7 @@ public:
     EventListener();
 
     virtual bool OnEvent(const irr::SEvent& event);
-    virtual bool IsKeyDown(gg::KEYCODES key) const;
+    virtual bool& IsKeyDown(gg::KEYCODES key);
     virtual bool isLClickPressed();
     virtual int getWheelValue();
     virtual int checkbutton();
