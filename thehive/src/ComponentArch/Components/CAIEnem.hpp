@@ -36,6 +36,7 @@ class CAIEnem : public IComponent {
         virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
         virtual void Init();
         virtual void FixedUpdate();
+        virtual void Update();
 
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes

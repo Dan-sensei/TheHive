@@ -25,6 +25,7 @@
 
 #define MULT_RUN_FACTOR     1.5
 #define MULT_DASH_FACTOR    3
+int CPlayerController::cont_enemigos=2;
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
@@ -53,6 +54,7 @@ void CPlayerController::Init(){
     debug1 = false;
     debug2 = false;
     MULT_BASE=1;
+    pulsacion_enemigos=false;
 
 
     // El heroe siempre empezara con un arma secundaria
@@ -131,6 +133,21 @@ void CPlayerController::FixedUpdate(){
         hab->ToggleSkill(2);
     }
 
+    if(Engine->key(gg::GG_N)){
+        if(!pulsacion_enemigos){
+            if(cont_enemigos<=8){
+                cont_enemigos++;
+                factory->createSoldier(gg::Vector3f(360, -10, 390),1000);
+
+            }
+            pulsacion_enemigos=true;
+        }
+    }
+    else{
+        pulsacion_enemigos=false;
+    }
+
+
     if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
     if(Engine->key(gg::GG_A))   A_IsPressed(force,pressed);
     if(Engine->key(gg::GG_S))   S_IsPressed(force,pressed);
@@ -194,7 +211,7 @@ void CPlayerController::FixedUpdate(){
     }
     if(Engine->key(gg::GG_G)){
         if(pulsacion_granada==false)
-            (this->*mapFuncGrenades[actualGrenadeState])();
+            (this->*mapFuncGrenades[3])();
     }
     else{
         pulsacion_granada=false;
@@ -207,7 +224,7 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_P)) {
         //Engine->Close();
         Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
-        
+
     }
 
 }

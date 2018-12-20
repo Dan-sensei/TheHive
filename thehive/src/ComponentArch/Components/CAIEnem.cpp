@@ -14,6 +14,7 @@
 #include "EventSystem/BFloat.hpp"
 #include "EventSystem/BVector3f.hpp"
 #include "EventSystem/BBool.hpp"
+#include "ComponentArch/Components/CPlayerController.hpp"
 
 bool        CAIEnem::debugvis=true;
 CTransform* CAIEnem::PlayerTransform;
@@ -32,6 +33,9 @@ int CAIEnem::getSigno(){
 }
 
 CAIEnem::~CAIEnem() {
+
+    //CPlayerController::
+    CPlayerController::cont_enemigos--;
     delete arbol;
 }
 
@@ -104,9 +108,12 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
+void CAIEnem::Update(){
+
+    enableVisualDebug();
+}
 void CAIEnem::FixedUpdate(){
     //std::cout << "entrando" << '\n';
-    if(debugvis)  enableVisualDebug();
 
     if(isPlayerAttacking){
         CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
@@ -206,6 +213,8 @@ void CAIEnem::enableVisualDebug(){
 
 void CAIEnem::setPlayerIsAttacking(bool _b){
     isPlayerAttacking = _b;
+    playerPos       = PlayerTransform->getPosition();
+    playerSeen=true;
     arbol->reset();
     CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
     if(clk){

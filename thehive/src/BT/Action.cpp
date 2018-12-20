@@ -261,7 +261,7 @@ void Action::over_X_meters(int _m){
 
 void Action::hit(){
     gg::Vector3f mio            = cTransform->getPosition();
-    gg::Vector3f dest           = yo->destino;
+    gg::Vector3f dest           = yo->playerPos;
 
     gg::Vector3f V_AI_DEST      = dest-mio;
 
@@ -380,7 +380,7 @@ void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
         //gg::cout("move senyuelo");
         s=BH_RUNNING;
-        yo->destino = yo->destino+((yo->senpos-yo->destino)/2);
+        yo->destino = yo->senpos;
     }
 
     move_too(10);
