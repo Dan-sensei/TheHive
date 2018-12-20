@@ -15,7 +15,7 @@ void CGranade1::explosion(){
 
     gg::Vector3f currentPosition = cTransform->getPosition();
 
-    float   alejamiento=5,
+    float   alejamiento=3,
             ymas=10,
             decrecimiento=0.75;
 
@@ -27,7 +27,7 @@ void CGranade1::explosion(){
         vel = gg::Normalice(vel);
         vel*= VEL_FACTOR*decrecimiento;
 
-        factory->createHolyBomb(gg::Vector3f(currentPosition.X,currentPosition.Y+alejamiento,currentPosition.Z+alejamiento),vel);
+        factory->createHolyBomb(gg::Vector3f(currentPosition.X+dirs[i][0]*alejamiento,currentPosition.Y+alejamiento,currentPosition.Z+dirs[i][1]*alejamiento),vel);
     }
 
 

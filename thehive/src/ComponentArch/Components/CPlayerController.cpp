@@ -122,7 +122,6 @@ void CPlayerController::FixedUpdate(){
     float           MULT_FACTOR = 1;
 
     if(Engine->key(gg::GG_1)){
-        Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
         hab->ToggleSkill(0);
     }
     if(Engine->key(gg::GG_2)){
@@ -205,7 +204,12 @@ void CPlayerController::FixedUpdate(){
     showDebug();
     // </DEBUG>
 
-    if(Engine->key(gg::GG_P)) Engine->Close();
+    if(Engine->key(gg::GG_P)) {
+        //Engine->Close();
+        Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
+        
+    }
+
 }
 
 void CPlayerController::playerThrowHolyBomb(){
