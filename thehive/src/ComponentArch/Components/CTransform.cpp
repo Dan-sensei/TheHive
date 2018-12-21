@@ -22,14 +22,3 @@ void CTransform::setPosition(const gg::Vector3f &_Position){
 void CTransform::setRotation(const gg::Vector3f &_Rotation){
     Rotation = _Rotation;
 }
-
-//  ---
-//  Returns the current position on a GG vector
-//==================================================================================
-gg::Vector3f CTransform::getPosition(){
-    return Position;
-}
-
-gg::Vector3f CTransform::getRotation(){
-    return Rotation;
-}

@@ -58,7 +58,7 @@ public:
 
     bool handleRayCast(gg::Vector3f,gg::Vector3f, gg::Vector3f &Result, float=-1);
 
-    void addRigidBody(btRigidBody*);
+    void addRigidBody(btRigidBody*, unsigned int group = 1, unsigned int mask = 1);
     void addShape(btCollisionShape*);
     void stepSimulation(float, int=1, float=1./60.);
     void setGravity(float,float,float);

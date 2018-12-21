@@ -60,7 +60,7 @@ class Pathfinding {
         //Debug
         std::vector<Billboard> IDs;
         std::vector<Billboard> BillboardFaces;
-        uint16_t goal;
+        gg::Vector3f goal;
 
         bool DisplayFacesNodes;
         bool DisplayConnections;

@@ -28,30 +28,28 @@ void GUIController::Init(){
     back_pulsado=false;
     esc_pulsado=false;
     Engine = Singleton<GameEngine>::Instance();
-    VectorAcciones[GOPLAY] = &GUIController::gotoPlay;
-    VectorAcciones[GOCREDITS] = &GUIController::gotoCredits;
-    VectorAcciones[GOOPTIONS] = &GUIController::gotoOptions;
-    VectorAcciones[CLOSE] = &GUIController::Close;
-    VectorAcciones[GOVIDEO] = &GUIController::gotoVideo;
-    VectorAcciones[GOMUSIC] = &GUIController::gotoMusic;
-    VectorAcciones[GOCONTROLLS] = &GUIController::gotoControlls;
-    VectorAcciones[START] = &GUIController::StartGame;
-    VectorAcciones[GOMAIN] = &GUIController::gotoMain;
-    VectorAcciones[DIFF1] = &GUIController::dif1;
-    VectorAcciones[DIFF2] = &GUIController::dif2;
-    VectorAcciones[DIFF3] = &GUIController::dif3;
-    VectorAcciones[CONTINUE] = &GUIController::Continue;
-    VectorAcciones[RETURNMENU] = &GUIController::ReturnMain;
-    VectorAcciones[GOPAUSE] = &GUIController::gotoPause;
-    VectorAcciones[MOREDIALOD] = &GUIController::moreDialog;
-    VectorAcciones[LESSDIALOD] = &GUIController::lessDialog;
-    VectorAcciones[MOREMUSIC] = &GUIController::moreMusic;
-    VectorAcciones[LESSMUSIC] = &GUIController::lessMusic;
-    VectorAcciones[MOREEFFECT] = &GUIController::moreEffect;
-    VectorAcciones[LESSEFFECT] = &GUIController::lessEffect;
-    VectorAcciones[GOINITOPTIONS] = &GUIController::initOptions;
-
-
+    VectorAcciones[GOPLAY]          =       &GUIController::gotoPlay;
+    VectorAcciones[GOCREDITS]       =       &GUIController::gotoCredits;
+    VectorAcciones[GOOPTIONS]       =       &GUIController::gotoOptions;
+    VectorAcciones[CLOSE]           =       &GUIController::Close;
+    VectorAcciones[GOVIDEO]         =       &GUIController::gotoVideo;
+    VectorAcciones[GOMUSIC]         =       &GUIController::gotoMusic;
+    VectorAcciones[GOCONTROLLS]     =       &GUIController::gotoControlls;
+    VectorAcciones[START]           =       &GUIController::StartGame;
+    VectorAcciones[GOMAIN]          =       &GUIController::gotoMain;
+    VectorAcciones[DIFF1]           =       &GUIController::dif1;
+    VectorAcciones[DIFF2]           =       &GUIController::dif2;
+    VectorAcciones[DIFF3]           =       &GUIController::dif3;
+    VectorAcciones[CONTINUE]        =       &GUIController::Continue;
+    VectorAcciones[RETURNMENU]      =       &GUIController::ReturnMain;
+    VectorAcciones[GOPAUSE]         =       &GUIController::gotoPause;
+    VectorAcciones[MOREDIALOD]      =       &GUIController::moreDialog;
+    VectorAcciones[LESSDIALOD]      =       &GUIController::lessDialog;
+    VectorAcciones[MOREMUSIC]       =       &GUIController::moreMusic;
+    VectorAcciones[LESSMUSIC]       =       &GUIController::lessMusic;
+    VectorAcciones[MOREEFFECT]      =       &GUIController::moreEffect;
+    VectorAcciones[LESSEFFECT]      =       &GUIController::lessEffect;
+    VectorAcciones[GOINITOPTIONS]   =       &GUIController::initOptions;
 }
 void GUIController::update(){
     //int id=-1;
@@ -64,7 +62,7 @@ void GUIController::update(){
             }
         }
     }
-    else{
+    else {
         arriba_pulsado=false;
     }
     if(Engine->key(gg::GG_S)){
@@ -74,7 +72,7 @@ void GUIController::update(){
                 cursorpos++;
             }
         }
-    }else{
+    } else{
         bajo_pulsado=false;
     }
     if(Engine->key(gg::GG_Q)){
@@ -83,7 +81,7 @@ void GUIController::update(){
             id=Singleton<ScreenConsole>::Instance()->Pulsarboton(cursorpos);
 
         }
-    }else{
+    } else{
         enter_pulsado=false;
     }
 
@@ -98,7 +96,7 @@ void GUIController::update(){
 //but0
 void GUIController::gotoPlay(){
     dif=1;
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu2());
+    Singleton<StateMachine>::Instance()->AddState(new Game(),false);
 }
 //but1
 void GUIController::gotoCredits(){

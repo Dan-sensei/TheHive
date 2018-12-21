@@ -87,34 +87,34 @@ void CPlayerController::Update(){
         Singleton<Pathfinding>::Instance()->SwitchDisplayNodes();
         Engine->key(gg::GG_N)  = false;
         std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayNodesEnabled() ? "TRUE" : "FALSE";
-        gg::cout("Display Path: " + Flag, gg::Color(0, 102, 255, 1));
+        gg::cout("Display Nodes: " + Flag, gg::Color(0, 102, 255, 1));
     }
 
     if(Engine->key(gg::GG_F))   {
         Singleton<Pathfinding>::Instance()->SwitchDisplayFacesNodes();
         Engine->key(gg::GG_F)  = false;
         std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayFacesNodesEnabled() ? "TRUE" : "FALSE";
-        gg::cout("Display Force Vectors: " + Flag, gg::Color(0, 102, 255, 1));
+        gg::cout("Display Faces Nodes: " + Flag, gg::Color(0, 102, 255, 1));
     }
 
     if(Engine->key(gg::GG_C))   {
         Singleton<Pathfinding>::Instance()->SwitchDisplayConnections();
         Engine->key(gg::GG_C)  = false;
         std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayConnectionsEnabled() ? "TRUE" : "FALSE";
-        gg::cout("Display Faces Nodes : " + Flag, gg::Color(0, 102, 255, 1));
+        gg::cout("Display Connections : " + Flag, gg::Color(0, 102, 255, 1));
     }
 
     if(Engine->key(gg::GG_P))   {
         Singleton<Pathfinding>::Instance()->SwitchDisplayPath();
         Engine->key(gg::GG_P)  = false;
         std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayPathEnabled() ? "TRUE" : "FALSE";
-        gg::cout("Display Connections: " + Flag, gg::Color(0, 102, 255, 1));
+        gg::cout("Display Path: " + Flag, gg::Color(0, 102, 255, 1));
     }
     if(Engine->key(gg::GG_V))   {
         Singleton<Pathfinding>::Instance()->SwitchDisplayVectors();
         Engine->key(gg::GG_V)  = false;
         std::string Flag = Singleton<Pathfinding>::Instance()->isDisplayVectorsEnabled() ? "TRUE" : "FALSE";
-        gg::cout("Display Nodes: " + Flag, gg::Color(0, 102, 255, 1));
+        gg::cout("Display Force Vectors: " + Flag, gg::Color(0, 102, 255, 1));
     }
 
     if(Engine->key(gg::GG_I))   {   camera->SwitchInvertCamera(); Engine->key(gg::GG_I)  = false;    }

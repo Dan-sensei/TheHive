@@ -17,7 +17,7 @@
 #include <Bullet/ggDynWorld.hpp>
 #include "CRigidBody.hpp"
 
-class CRigidBody;
+#include <GameEngine/Clock.hpp>
 
 class CNavmeshAgent : public IComponent {
     friend class Factory;
@@ -40,21 +40,33 @@ class CNavmeshAgent : public IComponent {
         std::stack<Waypoint> Waypoints;
 
     private:
-        CNavmeshAgent();
+        CNavmeshAgent(gg::Vector3f _Size);
         CNavmeshAgent(const CNavmeshAgent &orig) = delete;
 
+        void CheckForSideCollisions(gg::Vector3f DirVector);
+        void CheckShortcut();
+        void ApplyCouterForce(const gg::Vector3f &DirVector);
+
+        gg::Clock Timer;
+        gg::Vector3f Size;
+
+        //Debugging
+        gg::Vector3f DebugMoveVector;
+        gg::Vector3f RS;
+        gg::Vector3f LS;
+        
         GameEngine* Engine;
         ggDynWorld* world;
 
         CTransform* cTransform;
-        uint16_t currentWaypointID;
 
         CRigidBody* cRigidBody;
 
-        bool        currentlyMovingTowardsTarget;
         float SightDistance;
+        uint16_t currentWaypointID;
+        bool currentlyMovingTowardsTarget;
 
-        gg::Vector3f DebugMoveVector;
+
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "ggDynWorld.hpp"
+#include "Groups.hpp"
 
 #define FAR_RANGE_FACTOR    5000.f
 #define CLOSE_RANGE_FACTOR  1.f
@@ -12,8 +13,8 @@ ggDynWorld::ggDynWorld(){
 }
 ggDynWorld::~ggDynWorld(){}
 
-void ggDynWorld::addRigidBody(btRigidBody* body){
-    dynamicsWorld->addRigidBody(body);
+void ggDynWorld::addRigidBody(btRigidBody* body, unsigned int group, unsigned int mask){
+    dynamicsWorld->addRigidBody(body, group, mask);
 }
 
 void ggDynWorld::removeRigidBody(btRigidBody *body){
@@ -69,7 +70,8 @@ bool ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot, gg::Vector3f
     raycastCollisionBody    = nullptr;
 
     btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
-
+    callBack.m_collisionFilterGroup = gg::GR_RAY;
+    callBack.m_collisionFilterMask  = gg::GR_STATIC;
     dynamicsWorld->rayTest(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z),callBack);
 
     if(callBack.hasHit()){
@@ -221,6 +223,8 @@ bool ggDynWorld::DoesItHitSomething(const gg::Vector3f &Start, const gg::Vector3
     btVector3 Endo = btVector3(End.X,End.Y,End.Z);
 
     btCollisionWorld::ClosestRayResultCallback callBack(Starto, Endo);
+    callBack.m_collisionFilterGroup = gg::GR_RAY;
+    callBack.m_collisionFilterMask  = gg::GR_STATIC;
     dynamicsWorld->rayTest(Starto, Endo, callBack);
 
     if(callBack.hasHit())   return true;

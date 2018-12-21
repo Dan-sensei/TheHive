@@ -47,7 +47,6 @@ void Pathfinding::resetGraph(){
 }
 
 void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output){
-    goal = GOAL;
     resetGraph();
     OpenList = std::priority_queue<Node*, std::vector<Node*>, Comparator>();
 
@@ -110,11 +109,12 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
         uint16_t nodes = 0;
         while(CurrentNode->ID != START) {
             Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
-            Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
+            Output.emplace(Next->Position, Next->ID, Next->Radius);
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
             ++nodes;
         }
-        //gg::cout("PATH " + std::to_string(nodes));
+        ++nodes;
+        gg::cout("PATH = " + std::to_string(nodes) + " NODES", gg::Color(204, 0, 255));
     }
     //printStats();
 }
@@ -157,21 +157,24 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     }
 
     if(!FoundStart || !FoundGoal){
-        gg::cout("LA POSICION DEL JUGADOR O GOAL, NO ESTÁ EN NINGUN POLÍGONO", gg::Color(255, 0, 0, 1));
+        gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
         return;
     }
-    gg::cout("FOUND IT! Start = " + std::to_string(StartFN) + " | Goal " + std::to_string(GoalFN));
-
+    //gg::cout("Start Face = " + std::to_string(StartFN) + " | Goal Face = " + std::to_string(GoalFN));
+    goal = GOAL;
     if(StartFN == GoalFN){
+        gg::cout("Estan en la misma cara", gg::Color(0, 204, 102));
         Output.emplace(GOAL, 0, 0);
         return;
     }
 
-    uint16_t StartPortal = FindClosestNodeOfFace(START, StartFN);
-    uint16_t EndPortal = FindClosestNodeOfFace(GOAL, GoalFN);
+    uint16_t StartPortal = FindClosestNodeOfFace(GOAL, StartFN);
+    uint16_t EndPortal = FindClosestNodeOfFace(START, GoalFN);
 
     Output.emplace(GOAL, EndPortal, GRAPH[EndPortal].Radius);
     A_Estrella(StartPortal, EndPortal, Output);
+    Output.emplace(GRAPH[StartPortal].Position, StartPortal, GRAPH[StartPortal].Radius);
+
 }
 
 uint16_t Pathfinding::FindClosestNodeOfFace(const gg::Vector3f &Position, uint16_t Node){
@@ -180,6 +183,7 @@ uint16_t Pathfinding::FindClosestNodeOfFace(const gg::Vector3f &Position, uint16
     ++Iterator;
     if(Iterator != FACES[Node].Portals.end()){
         float currentDist = gg::FastDIST(Position, GRAPH[Portal].Position);
+
         while( Iterator != FACES[Node].Portals.end()){
             float newMin = gg::FastDIST(Position, GRAPH[*Iterator].Position);
             if(newMin < currentDist) {
@@ -188,6 +192,7 @@ uint16_t Pathfinding::FindClosestNodeOfFace(const gg::Vector3f &Position, uint16
             }
             ++Iterator;
         }
+
     }
     return Portal;
 }
@@ -269,15 +274,7 @@ void Pathfinding::DroNodes(){
 
     if(DisplayNodes){
         while(i--){
-            if(i==goal){
-                 length = 200;
-                 color.Alpha = 1;
-                 color.R = 212;
-                 color.G = 175;
-                 color.B = 55;
-                 goto dro;
-            }
-            else length = 100;
+            length = 100;
 
             if(GRAPH[i].Status == Type::UNVISITED){
                 color.Alpha = 1;
@@ -297,8 +294,17 @@ void Pathfinding::DroNodes(){
                 color.G = 102;
                 color.B = 204;
             }
-            dro:
+
             Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
+
+            if(goal.X && goal.Y && goal.Z){
+                length = 200;
+                color.Alpha = 1;
+                color.R = 212;
+                color.G = 175;
+                color.B = 55;
+                Engine->Draw3DLine(goal, goal + gg::Vector3f(0,length,0), color, 5);
+            }
 
         }
     }

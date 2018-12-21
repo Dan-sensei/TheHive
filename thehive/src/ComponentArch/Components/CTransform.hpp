@@ -15,8 +15,8 @@ class CTransform : public IComponent {
         //  Functions of IComponent
 
         // Functions of this component
-        gg::Vector3f getPosition();
-        gg::Vector3f getRotation();
+        inline gg::Vector3f getPosition(){ return Position;};
+        inline gg::Vector3f getRotation(){ return Rotation;};
         void setPosition(const gg::Vector3f &_Position);
         void setRotation(const gg::Vector3f &_Rotation);
         void setScale(const gg::Vector3f &scale);

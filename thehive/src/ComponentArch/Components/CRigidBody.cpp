@@ -16,7 +16,9 @@ CRigidBody::CRigidBody(
     float sX, float sY, float sZ,
     float _mass,
     float iX, float iY, float iZ,
-    float friction
+    float friction,
+    unsigned int Group,
+    unsigned int Mask
 )
 :cTransform(nullptr), world(nullptr)
 {
@@ -64,7 +66,7 @@ CRigidBody::CRigidBody(
         }
 
         // Add the body to the dynamics world
-        world->addRigidBody(body);
+        world->addRigidBody(body, Group, Mask);
     }
     else{
         shape = new btBoxShape(btVector3(btScalar(sX), btScalar(sY), btScalar(sZ)));
@@ -98,7 +100,7 @@ CRigidBody::CRigidBody(
         }
 
         // Add the body to the dynamics world
-        world->addRigidBody(body);
+        world->addRigidBody(body, Group, Mask);
     }
 
     if(kinematic){

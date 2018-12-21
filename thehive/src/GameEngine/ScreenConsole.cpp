@@ -55,6 +55,7 @@ ScreenConsole::ScreenConsole(){
 
     ancho=(driver->getScreenSize().Width/2);
     alto=(driver->getScreenSize().Height/2);
+    ClinTimer.Restart();
 }
 //Menu principal
 int ScreenConsole::InitPause(){
@@ -68,17 +69,17 @@ int ScreenConsole::InitPause(){
 //Main Menu
 int ScreenConsole::InitMenu(){
     CLINMenu();
-    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(0,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Pathfinding"),gg::Color(0,0,0,1));
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(1,255,255,255));
 
     //IrrlichtDevice->getGUIEnvironment()->addStaticText (L"Menu principal",irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)));
 
     //IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(porc_ancho(38),porc_alto(50),porc_ancho(48),porc_alto(70)), 0, 0,
     //            L"J");
-    addButton(38,50,48,70,GOPLAY,"J");
-    addButton(38,75,48,95,GOCREDITS,"C");
-    addButton(52,50,62,70,GOOPTIONS,"O");
-    addButton(52,75,62,95,CLOSE,"S");
+    addButton(38,50,62,60,GOPLAY,"Play");
+    //addButton(38,75,48,95,GOCREDITS,"C");
+    //addButton(52,50,62,70,GOOPTIONS,"O");
+    addButton(38,75,62,85,CLOSE,"Salir");
     return 4;
 }
 //Jugar
@@ -91,7 +92,7 @@ int ScreenConsole::InitMenu2(){
     addButton(40,80,60,89,START,"Play");
 
     addButton(65,80,70,89,GOMAIN,"Back");
-return 5;
+    return 5;
 }
 //Creditos
 int ScreenConsole::InitMenu3(){
@@ -289,6 +290,11 @@ void ScreenConsole::DisplayDebug(){
             DiplayY += 17;
             ++it;
         }
+    }
+
+    if(ClinTimer.ElapsedTime().Seconds() > 0.3 && BUFFER.size() > 0){
+        BUFFER.pop_front();
+        ClinTimer.Restart();
     }
 }
 void ScreenConsole::DisplayMenu(){

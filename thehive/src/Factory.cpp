@@ -1,5 +1,6 @@
 #include "Factory.hpp"
 #include <ComponentArch/Components/ComponentHeaders.hpp>
+#include <Bullet/Groups.hpp>
 
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
@@ -69,10 +70,10 @@ uint16_t Factory::createPathFindingActor(const gg::Vector3f &Position) {
     CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/Actor.obj", Blue);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Actor1);
 
-    CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0);
+    CRigidBody* RigidBody = new CRigidBody(false, false,"", Position.X, Position.Y, Position.Z, 12,30,12, 50, 0,0,0, 0, gg::GR_AGENT, gg::GR_STATIC);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Actor1);
 
-    CNavmeshAgent* NavmeshAgent = new CNavmeshAgent();
+    CNavmeshAgent* NavmeshAgent = new CNavmeshAgent(gg::Vector3f(12,30,12));
     Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Actor1);
 
     return Actor1;
@@ -91,24 +92,24 @@ void Factory::LoadNavmeshTestMap1() {
    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
    uint16_t NavmeshGround = Manager->createEntity();
-   CRigidBody* RigidBody = new CRigidBody(false, false,"", 0, -10, 0, 680,10,800, 0, 0,0,0, 0.2);
+   CRigidBody* RigidBody = new CRigidBody(false, false,"", 0, -10, 0, 680,10,800, 0, 0,0,0, 0.2, gg::GR_STATIC, gg::GR_AGENT | gg::GR_RAY);
    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, NavmeshGround);
 
 
    uint16_t Wall_1 = Manager->createEntity();
-   CRigidBody* RigidBody_1 = new CRigidBody(false, false,"", -280, 0, -100, 160, 100,265, 0, 0,0,0, 0.2);
+   CRigidBody* RigidBody_1 = new CRigidBody(false, false,"", -280, 0, -100, 160, 100,265, 0, 0,0,0, 0.2, gg::GR_STATIC, gg::GR_AGENT | gg::GR_RAY);
    Manager->addComponentToEntity(RigidBody_1, gg::RIGID_BODY, Wall_1);
 
    uint16_t Wall_2 = Manager->createEntity();
-   CRigidBody* RigidBody_2 = new CRigidBody(false, false,"", -80, 0, 410, 215, 100,320, 0, 0,0,0, 0.2);
+   CRigidBody* RigidBody_2 = new CRigidBody(false, false,"", -80, 0, 410, 215, 100,320, 0, 0,0,0, 0.2, gg::GR_STATIC, gg::GR_AGENT | gg::GR_RAY);
    Manager->addComponentToEntity(RigidBody_2, gg::RIGID_BODY, Wall_2);
 
    uint16_t Wall_3 = Manager->createEntity();
-   CRigidBody* RigidBody_3 = new CRigidBody(false, false,"", 110, 0, 70, 80, 100, 32, 0, 0,0,0, 0.2);
+   CRigidBody* RigidBody_3 = new CRigidBody(false, false,"", 110, 0, 70, 80, 100, 32, 0, 0,0,0, 0.2, gg::GR_STATIC, gg::GR_AGENT | gg::GR_RAY);
    Manager->addComponentToEntity(RigidBody_3, gg::RIGID_BODY, Wall_3);
 
    uint16_t Wall_4 = Manager->createEntity();
-   CRigidBody* RigidBody_4 = new CRigidBody(false, false,"", -25, 0, 17, 100, 125, 28, 0, 0,0,0, 0.2);
+   CRigidBody* RigidBody_4 = new CRigidBody(false, false,"", -25, 0, 17, 100, 125, 28, 0, 0,0,0, 0.2, gg::GR_STATIC, gg::GR_AGENT | gg::GR_RAY);
    Manager->addComponentToEntity(RigidBody_4, gg::RIGID_BODY, Wall_4);
 
    //60 -450

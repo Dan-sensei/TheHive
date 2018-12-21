@@ -15,6 +15,8 @@
 #include <BulletWorldImporter/btBulletWorldImporter.h>
 #include <Bullet/ggDynWorld.hpp>
 
+#include <Bullet/Groups.hpp>
+
 //  Forward declaration de otras componentes que incluyas
 class CTransform;
 
@@ -29,7 +31,9 @@ class CRigidBody : public IComponent {
             float sX, float sY, float sZ,
             float _mass,
             float iX, float iY, float iZ,
-            float friction = 0
+            float friction = 0,
+            unsigned int Group = gg::GR_ALL,
+            unsigned int Mask = gg::GR_ALL
         );
         // Constructor de objetos fantasma -> DETECTAN TODAS LAS COLISIONES, PERO NO COLISIONAN
         CRigidBody(

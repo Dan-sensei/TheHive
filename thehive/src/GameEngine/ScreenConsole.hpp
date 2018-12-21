@@ -12,6 +12,7 @@
 #include "Singleton.hpp"
 #include "Util.hpp"
 
+#include <GameEngine/Clock.hpp>
 class GameEngine;
 
 class ScreenConsole{
@@ -113,6 +114,8 @@ class ScreenConsole{
         void HUD_arma1(ImageHUD&);      // Principal
         std::vector<irr::gui::IGUIButton*> Botones;
         std::vector<StaticText> TEXT_BUFFER;
+
+        gg::Clock ClinTimer;
 
 };
 

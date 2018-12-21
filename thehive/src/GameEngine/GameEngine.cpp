@@ -14,7 +14,7 @@ GameEngine::~GameEngine(){
 //  Initializes Irrlicht stuff
 //==================================================================================
 void GameEngine::Starto(){
-    device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080), 16, false, false, false, &listener);
+    device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1280, 720), 16, false, false, false, &listener);
     driver = device->getVideoDriver();
     smgr = device->getSceneManager();
     Material::driver = driver;
