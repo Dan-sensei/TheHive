@@ -37,6 +37,8 @@ class Pathfinding {
         Pathfinding(const Pathfinding &orig) = delete;
         Pathfinding operator=(const Pathfinding &orig) = delete;
 
+        uint16_t FindClosestNodeOfFace(const gg::Vector3f &Position, uint16_t Node);
+
         std::vector<Node> GRAPH;
         std::vector<std::vector<Connection>> GConnections;
         std::priority_queue<Node*, std::vector<Node*>, Comparator> OpenList;
@@ -46,8 +48,8 @@ class Pathfinding {
         //Debug
         std::vector<Billboard> IDs;
         std::vector<Billboard> BillboardFaces;
+        gg::Vector3f Goal;
         bool Debug;
-        uint16_t goal;
 };
 
 

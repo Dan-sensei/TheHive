@@ -12,7 +12,7 @@ bool Comparator::operator()(const Node* N1, const Node* N2){
 }
 
 Pathfinding::Pathfinding()
-:Debug(false), goal(0)
+:Debug(false)
 {
 
     //bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
@@ -69,7 +69,6 @@ void Pathfinding::resetGraph(){
 }
 
 void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output){
-    goal = GOAL;
     resetGraph();
     OpenList = std::priority_queue<Node*, std::vector<Node*>, Comparator>();
 
@@ -131,7 +130,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     else{
         while(CurrentNode->ID != START) {
             Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
-            Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
+            Output.emplace(Next->Position, Next->ID, Next->Radius);
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
         }
     }
@@ -139,9 +138,8 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
 
 void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output) {
 
-    // std::cout << "SEARCHING!" << '\n';
     uint16_t StartFN, GoalFN;
-    //float dist = std::inner_product(p.normal, (vectorSubtract(point, p.point)));
+
     bool FoundStart = false;
     bool FoundGoal = false;
     for(uint16_t i = 0; i < FACES.size(); ++i) {
@@ -170,43 +168,44 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     }
 
     if(!FoundStart || !FoundGoal){
-        gg::cout("LA POSICION DEL JUGADOR O GOAL, NO ESTÁN EN NINGUN POLÍGONO", gg::Color(255, 0, 0, 1));
+        gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
         return;
     }
     // std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
 
+    Goal = GOAL;
     if(StartFN == GoalFN){
-        Output.emplace(START, 0, 0);
+        Output.emplace(GOAL, 0, 0);
         return;
     }
 
     //  They're not in the same face, find wich Node of that face is the closest to the position
-    uint16_t StartPortal = FACES[StartFN].Portals[0];
-    if(FACES[StartFN].Portals.size() > 1){
-        float currentDist = gg::FastDIST(START, GRAPH[FACES[StartFN].Portals[0]].Position);
-        for(uint16_t i = 1; i < FACES[StartFN].Portals.size(); ++i){
-            float newMin = gg::FastDIST(START, GRAPH[FACES[StartFN].Portals[i]].Position);
-            if(newMin < currentDist) {
-                currentDist = newMin;
-                StartPortal = FACES[StartFN].Portals[i];
-            }
-        }
-    }
-
-    uint16_t EndPortal = FACES[GoalFN].Portals[0];
-    if(FACES[GoalFN].Portals.size() > 1){
-        float currentDist = gg::FastDIST(GOAL, GRAPH[FACES[GoalFN].Portals[0]].Position);
-        for(uint16_t i = 1; i < FACES[GoalFN].Portals.size(); ++i){
-            float newMin = gg::FastDIST(GOAL, GRAPH[FACES[GoalFN].Portals[i]].Position);
-            if(newMin < currentDist) {
-                currentDist = newMin;
-                EndPortal = FACES[GoalFN].Portals[i];
-            }
-        }
-    }
+    uint16_t StartPortal    =   FindClosestNodeOfFace(START, StartFN);
+    uint16_t EndPortal      =   FindClosestNodeOfFace(GOAL, GoalFN);
 
     Output.emplace(GOAL, EndPortal, GRAPH[EndPortal].Radius);
     A_Estrella(StartPortal, EndPortal, Output);
+    Output.emplace(GRAPH[StartPortal].Position, StartPortal, GRAPH[StartPortal].Radius);
+}
+
+uint16_t Pathfinding::FindClosestNodeOfFace(const gg::Vector3f &Position, uint16_t Node) {
+    auto Iterator = FACES[Node].Portals.begin();
+    uint16_t Portal = *Iterator;
+    ++Iterator;
+    if(Iterator != FACES[Node].Portals.end()){
+        float currentDist = gg::FastDIST(Position, GRAPH[Portal].Position);
+
+        while( Iterator != FACES[Node].Portals.end()){
+            float newMin = gg::FastDIST(Position, GRAPH[*Iterator].Position);
+            if(newMin < currentDist) {
+                 currentDist = newMin;
+                 Portal = *Iterator;
+            }
+            ++Iterator;
+        }
+
+    }
+    return Portal;
 }
 
 void Pathfinding::DroNodes(){
@@ -218,15 +217,7 @@ void Pathfinding::DroNodes(){
     GameEngine* Engine = Singleton<GameEngine>::Instance();
 
     while(i--){
-        if(i==goal){
-             length = 200;
-             color.Alpha = 1;
-             color.R = 212;
-             color.G = 175;
-             color.B = 55;
-             goto dro;
-        }
-        else length = 100;
+        length = 100;
 
         if(GRAPH[i].Status == Type::UNVISITED){
             color.Alpha = 1;
@@ -246,9 +237,17 @@ void Pathfinding::DroNodes(){
             color.G = 102;
             color.B = 204;
         }
-        dro:
+
         Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
 
+        if(Goal.X && Goal.Y && Goal.Z){
+            length = 200;
+            color.Alpha = 1;
+            color.R = 212;
+            color.G = 175;
+            color.B = 55;
+            Engine->Draw3DLine(Goal, Goal + gg::Vector3f(0,length,0), color, 5);
+        }
     }
 
     //  Connections
