@@ -42,6 +42,9 @@ void CAIEnem::enemyseen(){
 }
 
 void CAIEnem::enemyrange(){
+    if(!playerOnRange){
+        arbol->reset();
+    }
     playerOnRange=true;
 }
 
@@ -135,11 +138,12 @@ void CAIEnem::FixedUpdate(){
             arbol->reset();
             resetHabilityUpdateCounter();
         }
-        if(dist<Arange && !playerOnRange){
+        if(dist<Arange){
+            enemyseen();
             enemyrange();
             //arbol->reset();
         }
-        else if(playerOnRange){
+        else{
             playerOnRange = false;
         }
     }
