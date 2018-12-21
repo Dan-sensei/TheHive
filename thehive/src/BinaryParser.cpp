@@ -71,7 +71,7 @@ void BinaryParser::ReadNavmeshData(
 
         uint16_t PORTALS_SIZE;
         GG_Read(inStream, PORTALS_SIZE);
-        for(uint16_t j; j < PORTALS_SIZE; ++j){
+        for(uint16_t j = 0; j < PORTALS_SIZE; ++j){
             uint16_t PortalID;
             GG_Read(inStream, PortalID);
             SQUARE_FACES.back().Portals.push_back(PortalID);
