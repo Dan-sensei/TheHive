@@ -129,17 +129,12 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
         //// std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
-        uint16_t nodes = 0;
         while(CurrentNode->ID != START) {
             Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
             Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
-            ++nodes;
         }
-        gg::cout("PATH " + std::to_string(nodes));
     }
-
-    printStats();
 }
 
 void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output) {
@@ -151,28 +146,27 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     bool FoundGoal = false;
     for(uint16_t i = 0; i < FACES.size(); ++i) {
 
-        if(START.X < FACES[i].TL.X || START.Z > FACES[i].TL.Z)
-            continue;
+        if(!FoundStart){
+            if(START.X >= FACES[i].TL.X && START.Z <= FACES[i].TL.Z && START.X <= FACES[i].BR.X && START.Z >= FACES[i].BR.Z){
+                float FaceYCenter = (FACES[i].TL.Y + FACES[i].BR.Y)/2;
+                if(abs(FaceYCenter - START.Y) < 85){
+                    StartFN = i;
+                    FoundStart = true;
+                }
+            }
+        }
 
-        else if(START.X > FACES[i].BR.X || START.Z < FACES[i].BR.Z)
-            continue;
+        if(!FoundGoal){
+            if(GOAL.X >= FACES[i].TL.X && GOAL.Z <= FACES[i].TL.Z && GOAL.X <= FACES[i].BR.X && GOAL.Z >= FACES[i].BR.Z){
+                float FaceYCenter = (FACES[i].TL.Y + FACES[i].BR.Y)/2;
+                if(abs(FaceYCenter - GOAL.Y) < 85){
+                    GoalFN = i;
+                    FoundGoal = true;
+                }
+            }
+        }
 
-
-        StartFN = i;
-        FoundStart = true;
-        break;
-    }
-
-    for(uint16_t i = 0; i < FACES.size(); ++i) {
-        if(GOAL.X < FACES[i].TL.X || GOAL.Z > FACES[i].TL.Z)
-            continue;
-
-        else if(GOAL.X > FACES[i].BR.X || GOAL.Z < FACES[i].BR.Z)
-            continue;
-
-        GoalFN = i;
-        FoundGoal = true;
-        break;
+        if(FoundStart && FoundGoal) break;
     }
 
     if(!FoundStart || !FoundGoal){
@@ -186,7 +180,7 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
         return;
     }
 
-
+    //  They're not in the same face, find wich Node of that face is the closest to the position
     uint16_t StartPortal = FACES[StartFN].Portals[0];
     if(FACES[StartFN].Portals.size() > 1){
         float currentDist = gg::FastDIST(START, GRAPH[FACES[StartFN].Portals[0]].Position);
@@ -214,29 +208,6 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     Output.emplace(GOAL, EndPortal, GRAPH[EndPortal].Radius);
     A_Estrella(StartPortal, EndPortal, Output);
 }
-
-uint16_t Pathfinding::getGraphSize(){
-    return GRAPH.size()-1;
-}
-
-void Pathfinding::printStats(){
-    uint16_t OPEN        = 0;
-    uint16_t CLOSED      = 0;
-    uint16_t UNVISITED   = 0;
-    for(uint8_t i = 0; i < GRAPH.size(); ++i){
-        if(GRAPH[i].Status == Type::OPEN)
-            ++OPEN;
-        else if(GRAPH[i].Status == Type::CLOSED)
-            ++CLOSED;
-        else if(GRAPH[i].Status == Type::UNVISITED)
-            ++UNVISITED;
-    }
-    //// std::cout << '\n';
-    //// std::cout << "OPEN:      " << OPEN << '\n';
-    //// std::cout << "CLOSED:    " << CLOSED << '\n';
-    //// std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
-}
-
 
 void Pathfinding::DroNodes(){
     if(!Debug) return;

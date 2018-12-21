@@ -28,8 +28,6 @@ class Pathfinding {
 
         void DroNodes();
 
-        uint16_t getGraphSize();
-
         void SetDebug(bool flag);
         bool isDebugging();
 
@@ -39,7 +37,6 @@ class Pathfinding {
         Pathfinding(const Pathfinding &orig) = delete;
         Pathfinding operator=(const Pathfinding &orig) = delete;
 
-        void printStats();
         std::vector<Node> GRAPH;
         std::vector<std::vector<Connection>> GConnections;
         std::priority_queue<Node*, std::vector<Node*>, Comparator> OpenList;
