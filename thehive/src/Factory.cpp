@@ -65,7 +65,7 @@ uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health
     CAgent* Agent                       = new CAgent(kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
-    CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position,true);
+    CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position,false);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
     CVida* Vida                         = new CVida(health);

@@ -47,14 +47,14 @@ int main(int argc, char const *argv[]) {
     StateMachine *mainstates = Singleton<StateMachine>::Instance();
     //mainstates->AddState(new GameState());
     //mainstates->AddState(new GameState());
-    mainstates->AddState(new MenuState());
+    mainstates->AddState(new Game());
 
     while(Engine->isWindowOpen()) {
         mainstates->ProcessStateChanges();
         mainstates->prueba();
         mainstates->GetActiveState()->Update();
     }
-    
+
     Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     Engine->clean();
