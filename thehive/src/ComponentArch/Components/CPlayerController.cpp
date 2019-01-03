@@ -25,7 +25,7 @@
 
 #define MULT_RUN_FACTOR     1.5
 #define MULT_DASH_FACTOR    3
-int CPlayerController::cont_enemigos=2;
+//int CPlayerController::cont_enemigos=2;
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
@@ -54,7 +54,7 @@ void CPlayerController::Init(){
     debug1 = false;
     debug2 = false;
     MULT_BASE=1;
-    pulsacion_enemigos=false;
+    //pulsacion_enemigos=false;
 
 
     // El heroe siempre empezara con un arma secundaria
@@ -133,19 +133,19 @@ void CPlayerController::FixedUpdate(){
         hab->ToggleSkill(2);
     }
 
-    if(Engine->key(gg::GG_N)){
-        if(!pulsacion_enemigos){
-            if(cont_enemigos<=8){
-                cont_enemigos++;
-                factory->createSoldier(gg::Vector3f(360, -10, 390),1000);
+    //if(Engine->key(gg::GG_N)){
+    //    if(!pulsacion_enemigos){
+    //        if(cont_enemigos<=8){
+    //            cont_enemigos++;
+    //            factory->createSoldier(gg::Vector3f(360, -10, 390),1000);
 
-            }
-            pulsacion_enemigos=true;
-        }
-    }
-    else{
-        pulsacion_enemigos=false;
-    }
+    //        }
+    //        pulsacion_enemigos=true;
+    //    }
+    //}
+    //else{
+    //    pulsacion_enemigos=false;
+    //}
 
 
     if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
@@ -203,15 +203,21 @@ void CPlayerController::FixedUpdate(){
 
     // Graná
     int wheelState = Engine->getWheelState();
-    if(wheelState){
+    if(wheelState!=0){
+        //std::cout << "si" << '\n';
+        //gg::cout("entrando");
+        //gg::cout(wheelState);
+
         actualGrenadeState -= wheelState;
         if(actualGrenadeState<1)    actualGrenadeState = 3;
         if(actualGrenadeState>3)    actualGrenadeState = 1;
-        //gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
+        gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
+        //std::cout << actualGrenadeState << '\n';
     }
     if(Engine->key(gg::GG_G)){
+        //std::cout << actualGrenadeState << '\n';
         if(pulsacion_granada==false)
-            (this->*mapFuncGrenades[3])();
+            (this->*mapFuncGrenades[actualGrenadeState])();
     }
     else{
         pulsacion_granada=false;

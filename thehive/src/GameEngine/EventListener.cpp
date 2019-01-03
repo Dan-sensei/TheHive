@@ -20,14 +20,17 @@ bool EventListener::OnEvent(const irr::SEvent& event) {
     if (event.EventType == irr::EET_MOUSE_INPUT_EVENT){
         //  1 ARRIBA
         // -1 ABAJO
-        wheel = event.MouseInput.Wheel;
-        // if(event.MouseInput.Event == irr::EMIE_MOUSE_WHEEL){
-        //     //  1 ARRIBA
-        //     // -1 ABAJO
-        // }
-        // else{
-        //     wheel = event.MouseInput.Wheel;
-        // }
+        if(event.MouseInput.Event == irr::EMIE_MOUSE_WHEEL){
+            wheel = event.MouseInput.Wheel;
+            //  1 ARRIBA
+            // -1 ABAJO
+        //    std::cout << "entra" << '\n';
+        //    std::cout << wheel << '\n';
+        }
+        //else{
+
+        //    //wheel = 0;
+        //}
 
         if (event.MouseInput.Event == irr::EMIE_LMOUSE_PRESSED_DOWN){
             LCLICK = true;
@@ -59,5 +62,7 @@ bool EventListener::isLClickPressed(){
 }
 
 int EventListener::getWheelValue(){
-    return wheel;
+    int aux=wheel;
+    wheel = 0;
+    return aux;
 }

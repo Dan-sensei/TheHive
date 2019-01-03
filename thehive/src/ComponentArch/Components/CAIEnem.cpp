@@ -35,7 +35,7 @@ int CAIEnem::getSigno(){
 CAIEnem::~CAIEnem() {
 
     //CPlayerController::
-    CPlayerController::cont_enemigos--;
+    //CPlayerController::cont_enemigos--;
     delete arbol;
 }
 

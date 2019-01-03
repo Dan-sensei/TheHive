@@ -34,7 +34,7 @@ class Factory;
 class CPlayerController : public IComponent {
     friend class Factory;
     public:
-        static int cont_enemigos;
+        //static int cont_enemigos;
         virtual ~CPlayerController();
 
         // Functions of IComponent
@@ -70,7 +70,7 @@ class CPlayerController : public IComponent {
         bool GranadeCreate;
 
         bool pulsacion_granada;
-        bool pulsacion_enemigos;
+        //bool pulsacion_enemigos;
         bool pulsacion_espacio;
         bool pulsacion_q;
         bool pulsacion_dash;
