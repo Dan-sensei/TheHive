@@ -12,6 +12,7 @@ ObjectManager::ObjectManager() {
 
     //  Defines wich kind of messages will receive each type of component
     //  We just insert in the array of vectors, the component type in the messageTYpe array position
+    //  Dani deja el ingle
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::VIDA);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::VIDA);
 
@@ -29,6 +30,7 @@ ObjectManager::ObjectManager() {
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::PLAYERCONTROLLER);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::PLAYERCONTROLLER);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::PLAYERCONTROLLER);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::NAVMESHAGENT);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::NAVMESHAGENT);

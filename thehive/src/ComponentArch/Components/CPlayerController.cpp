@@ -92,6 +92,16 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
+void CPlayerController::Update(){
+    int wheelState = Engine->getWheelState();
+    if(wheelState!=0){
+        actualGrenadeState -= wheelState;
+        if(actualGrenadeState<1)    actualGrenadeState = 3;
+        if(actualGrenadeState>3)    actualGrenadeState = 1;
+        gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
+    }
+}
+
 void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !cRigidBody)  return;
@@ -132,21 +142,6 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_3)){
         hab->ToggleSkill(2);
     }
-
-    //if(Engine->key(gg::GG_N)){
-    //    if(!pulsacion_enemigos){
-    //        if(cont_enemigos<=8){
-    //            cont_enemigos++;
-    //            factory->createSoldier(gg::Vector3f(360, -10, 390),1000);
-
-    //        }
-    //        pulsacion_enemigos=true;
-    //    }
-    //}
-    //else{
-    //    pulsacion_enemigos=false;
-    //}
-
 
     if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
     if(Engine->key(gg::GG_A))   A_IsPressed(force,pressed);
@@ -202,18 +197,6 @@ void CPlayerController::FixedUpdate(){
     }
 
     // Graná
-    int wheelState = Engine->getWheelState();
-    if(wheelState!=0){
-        //std::cout << "si" << '\n';
-        //gg::cout("entrando");
-        //gg::cout(wheelState);
-
-        actualGrenadeState -= wheelState;
-        if(actualGrenadeState<1)    actualGrenadeState = 3;
-        if(actualGrenadeState>3)    actualGrenadeState = 1;
-        gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
-        //std::cout << actualGrenadeState << '\n';
-    }
     if(Engine->key(gg::GG_G)){
         //std::cout << actualGrenadeState << '\n';
         if(pulsacion_granada==false)

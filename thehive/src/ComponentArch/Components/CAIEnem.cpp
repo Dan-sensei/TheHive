@@ -109,9 +109,9 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
 }
 
 void CAIEnem::Update(){
-
     enableVisualDebug();
 }
+
 void CAIEnem::FixedUpdate(){
     //std::cout << "entrando" << '\n';
 

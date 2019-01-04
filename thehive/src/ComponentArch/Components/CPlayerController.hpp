@@ -41,7 +41,8 @@ class CPlayerController : public IComponent {
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
         virtual void FixedUpdate();
-
+        virtual void Update();
+        
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
         bool canPickWeapon();

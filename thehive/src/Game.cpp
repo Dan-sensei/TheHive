@@ -210,7 +210,6 @@ void Game::Update(){
 
 void Game::Resume(){
     Engine->HideCursor(true);
-
 }
 
 void Game::CLIN(){

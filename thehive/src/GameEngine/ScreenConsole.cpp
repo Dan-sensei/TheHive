@@ -180,14 +180,14 @@ void ScreenConsole::addButton(float x, float y, float w,float h,int id,std::stri
 void ScreenConsole::InitHUD(){
 
 
-    AddImage("hab1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(90),porc_alto(10),porc_alto(10));
-    AddImage("hab2","assets/HUD/ojetecalor.jpg",porc_ancho(9),porc_alto(90),porc_alto(10),porc_alto(10));
-    AddImage("hab3","assets/HUD/ojetecalor.jpg",porc_ancho(16),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab1","assets/HUD/cf_hud_d.jpg",porc_ancho(2),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab2","assets/HUD/cf_hud_d.jpg",porc_ancho(9),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab3","assets/HUD/cf_hud_d.jpg",porc_ancho(16),porc_alto(90),porc_alto(10),porc_alto(10));
 
-    AddImage("0arma","assets/HUD/ojetecalor.jpg",porc_ancho(75),porc_alto(85),porc_ancho(20),porc_alto(15));
-    AddImage("1arma","assets/HUD/ojetecalor.jpg",porc_ancho(70),porc_alto(80),porc_ancho(20),porc_alto(15)); // Principal
+    AddImage("0arma","assets/HUD/cf_hud_d.jpg",porc_ancho(75),porc_alto(85),porc_ancho(20),porc_alto(15));
+    AddImage("1arma","assets/HUD/cf_hud_b.jpg",porc_ancho(70),porc_alto(80),porc_ancho(20),porc_alto(15)); // Principal
 
-    AddImage("vida","assets/HUD/ojetecalor.jpg",porc_ancho(60),porc_alto(2),porc_ancho(30),porc_alto(3));
+    AddImage("vida","assets/HUD/cf_hud_d.jpg",porc_ancho(60),porc_alto(2),porc_ancho(30),porc_alto(3));
 
     //AddImage("G1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
     //AddImage("G2","assets/HUD/ojetecalor.jpg",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
@@ -201,27 +201,6 @@ void ScreenConsole::InitHUD(){
     mapHudFunctions.insert(std::make_pair("0arma",&ScreenConsole::HUD_arma0));
     mapHudFunctions.insert(std::make_pair("1arma",&ScreenConsole::HUD_arma1));
 
-    //AddImage("mongol","assets/HUD/mongol.jpg",300,300,30,30);
-    //node->setMaterialTexture(0, driver->getTexture("bg.jpg"));
-//redimensionar¿?
-//    std::map <std::string,ImageHUD>::iterator it;
-//    it=IMAGE_BUFFER.begin();
-//    matrix4* tran = it->second.texture->getTextureMatrix();
-
-    //ITexture* background = driver->getTexture("bg2.jpg");
-       //matrix4* tran = background->getTextureMatrix();
-       //tran->setScale(vector3df(0.5f,0.5f,0.5f));
-
-
-//    irr::video::SMaterial m;// = it->second.texture;
-//    m.setTexture(0,it->second.texture);
-//    m.getTextureMatrix(0).setTextureScale(.3f, .5f);
-    //irr::core::CMatrix4<float> k=m.getTextureMatrix(0);
-    //// std::cout << k[66] << '\n';
-//    // std::cout << k.getScale().X << '\n';
-    //// std::cout << m.getTextureMatrix(0) << '\';
-    //m.getTextureMatrix(0)[0][0][0][0];
-    //CMatrix4<float> k=m.getTextureMatrix(0);
     perc        =   0;
     perc2       =   0;
     perc3       =   0;
@@ -352,17 +331,17 @@ void gg::cout (const gg::Vector3f &Vector, const gg::Color &color){
 
 //////////////////////////////////////////////////////////////////////////////////////
 void ScreenConsole::HUD_hability1(ImageHUD &it){
-    driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
+    driver->draw2DRectangle(irr::video::SColor(50,255,255,255),
     irr::core::rect<irr::s32>(it.posx,it.posy,it.posx+it.width,it.posy+it.height*perc));
 }
 
 void ScreenConsole::HUD_hability2(ImageHUD &it){
-    driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
+    driver->draw2DRectangle(irr::video::SColor(50,255,255,255),
     irr::core::rect<irr::s32>(it.posx,it.posy,it.posx+it.width,it.posy+it.height*perc2));
 }
 
 void ScreenConsole::HUD_hability3(ImageHUD &it){
-    driver->draw2DRectangle(irr::video::SColor(150,255,0,0),
+    driver->draw2DRectangle(irr::video::SColor(50,255,255,255),
     irr::core::rect<irr::s32>(it.posx,it.posy,it.posx+it.width,it.posy+it.height*perc3));
 }
 
@@ -373,10 +352,10 @@ void ScreenConsole::HUD_vida(ImageHUD &it){
 
 void ScreenConsole::HUD_arma0(ImageHUD &it){
     std::string hola=std::to_string(balaS)+"/"+std::to_string(balaS_TOT);
-    font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
+    font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(255,255,255,255));
 }
 
 void ScreenConsole::HUD_arma1(ImageHUD &it){
     std::string hola=std::to_string(balaP)+"/"+std::to_string(balaP_TOT);
-    font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(150,255,0,0));
+    font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(255,255,255,255));
 }
