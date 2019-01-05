@@ -277,3 +277,11 @@ void Pathfinding::clear(){  //  Provisional
     IDs.clear();
     BillboardFaces.clear();
 }
+
+gg::Vector3f Pathfinding::getRandomNodePosition(){
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+    std::uniform_int_distribution<int> distribution(0,GRAPH.size());
+
+    return GRAPH[distribution(gen)].Position;
+}

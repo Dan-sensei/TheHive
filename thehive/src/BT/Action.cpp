@@ -418,21 +418,27 @@ void Action::move_player(){
 }
 
 void Action::move_around(){
-    if(s!=BH_RUNNING){
-        //gg::cout("move around");
-        s=BH_RUNNING;
+    CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
+    if(nvAgent){
+        if(s!=BH_RUNNING){
+            s=BH_RUNNING;
+            // Obligatorio
+            nvAgent->ResetDestination();
 
-        std::random_device rd;
-        std::default_random_engine gen(rd());
-        std::uniform_int_distribution<int> distribution(-50,50);
-        int x = distribution(gen);
-        int y = distribution(gen);
+            gg::Vector3f dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
 
-        gg::Vector3f mio    = cTransform->getPosition();
-        gg::Vector3f dest   = mio+gg::Vector3f(x,0,y);
-        yo->destino         = dest;
+            nvAgent->SetDestination(dest);
+
+        }
+        if(!nvAgent->HasDestination()){
+            // nvAgent->ResetDestination();
+            s = BH_SUCCESS;
+        }
+        // move_too(10);
     }
-    move_too(10);
+    else{
+        s = BH_SUCCESS;
+    }
 }
 
 void Action::move_too(int min){

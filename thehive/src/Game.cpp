@@ -70,15 +70,11 @@ void Game::Init(){
     Singleton<ScreenConsole>::Instance()->InitHUD();
 
     auto sF = Singleton<Factory>::Instance();
-    uint16_t key;
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-
     uint16_t h = sF->createHero(gg::Vector3f(360, 0, 350),false);     //600
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
-    sF->createSoldier(gg::Vector3f(360, -10, 390),1000);
-    sF->createSoldier(gg::Vector3f(397, 0, 350),2000);
 
     sF->createCollectableWeapon(gg::Vector3f(397, 0, 330),2);
 
@@ -90,26 +86,13 @@ void Game::Init(){
         mapPos
     );
 
-    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 20),0);
-    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 40),1);
-    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 60),2);
-    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 80),3);
-    sF->createCollectableWeapon(gg::Vector3f(-700, -20, 100),4);
-
-    sF->createCollisionableDynamicModel(
-        "assets/Models/cuboGrande.obj",
-        "assets/BoundingBoxes/cuboGrande.bullet",
-        "assets/Textures/e61.png",
-        gg::Vector3f(mapPos.X+274, mapPos.Y, mapPos.Z+50));
-
     uint16_t idEx = sF->createCollisionableDynamicModel(
         "assets/Models/ModelsForEvents/door1.obj",
         "assets/Models/ModelsForEvents/door1.bullet",
         "assets/Textures/Domino.jpg",
-        gg::Vector3f(mapPos.X+350, mapPos.Y-10, mapPos.Z+204));
-
-    key = sF->createPickableItem(gg::Vector3f(224, 0, 145));
+        gg::Vector3f(mapPos.X+350, mapPos.Y-10, mapPos.Z+207));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+345, mapPos.Y-13, mapPos.Z+215),idEx,gg::Vector3f(0,0.4,0),3200);
+
 
     idEx = sF->createCollisionableDynamicModel(
         "assets/Models/ModelsForEvents/door2.obj",
@@ -117,7 +100,14 @@ void Game::Init(){
         "assets/Textures/Domino.jpg",
         gg::Vector3f(mapPos.X+270.5, mapPos.Y-8, mapPos.Z+131));
         // i674,106,130
+    uint16_t key = sF->createPickableItem(gg::Vector3f(224, 0, 145));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+290, mapPos.Y-11, mapPos.Z+131),idEx,gg::Vector3f(0,-0.035,0),8000,key);
+
+
+    sF->createSoldier(gg::Vector3f(254,-14,79),200);
+    // sF->createSoldier(gg::Vector3f(312,-14,134),200);
+    // sF->createSoldier(gg::Vector3f(253,-14,144),200);
+    // sF->createSoldier(gg::Vector3f(266,-14,202),200);
 
     ////////////////////////////////////////////////////////////////
     // TABLA MOLONA DE CONVERSION DE LA POSICION EN EL ESPACIO 3D //
@@ -129,13 +119,16 @@ void Game::Init(){
     ////////////////////////////////////////////////////////////////
 
 
-    //factory->createCollisionableStaticModel("assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet", "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png", gg::Vector3f(700, 175, 0));
-    // uint16_t Dummy = sF->createPathFindingActor(gg::Vector3f(285, 0, 117));
+    // sF->createCollisionableStaticModel(
+    //     "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj",
+    //     "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet",
+    //     "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png",
+    //     gg::Vector3f(700, 175, 0));
     // //factory->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
     //
     // CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
     // Agent->SetDestination(gg::Vector3f(280, -20, -377));
-    //
+
     // uint16_t Navmesh = Manager->createEntity();
     // Material yelo("assets/NavMeshes/PROTOTIPO_CIUDAD.png");
     // //Material yelo("assets/Textures/ice.bmp");
@@ -145,6 +138,8 @@ void Game::Init(){
     //
     // CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", yelo);
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
+
+    // uint16_t Dummy = sF->createPathFindingActor(gg::Vector3f(285, 0, 117));
 
     // uint16_t NavmeshGround = Manager->createEntity();
     // CRigidBody* RigidBody = new CRigidBody(false, false,"", 0, -10, 0, 680,10,800, 0, 0,0,0, 0.2);

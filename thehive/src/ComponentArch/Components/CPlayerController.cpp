@@ -320,14 +320,14 @@ void CPlayerController::showDebug(){
         debug1 = false;
     }
 
-    // if(debug2){
-    //     // DEBUG ACTIVATED
-    //     gg::cout(
-    //         "(X:"+std::to_string(cTransform->getPosition().X)+
-    //         ",Y:"+std::to_string(cTransform->getPosition().Y)+
-    //         ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
-    //     );
-    // }
+    if(debug2){
+        // DEBUG ACTIVATED
+        gg::cout(
+            "(X:"+std::to_string(cTransform->getPosition().X)+
+            ",Y:"+std::to_string(cTransform->getPosition().Y)+
+            ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
+        );
+    }
 }
 
 void CPlayerController::changeWeaponIfPossible(CGun *gun){

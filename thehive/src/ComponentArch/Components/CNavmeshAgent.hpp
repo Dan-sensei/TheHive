@@ -33,6 +33,7 @@ class CNavmeshAgent : public IComponent {
 
         void SetDestination(const gg::Vector3f &Target);
         bool HasDestination();
+        void ResetDestination();
 
         std::stack<Waypoint> Waypoints;
 

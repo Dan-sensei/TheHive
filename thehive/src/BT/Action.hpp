@@ -21,6 +21,8 @@
 #include <ComponentArch/Components/CRigidBody.hpp>
 #include <ComponentArch/Components/CVida.hpp>
 
+#include <GameAI/Pathfinding.hpp>
+
 class Action : public Behavior {
     public:
         Action(Hojas task,Blackboard* _data,CAIEnem* ai);

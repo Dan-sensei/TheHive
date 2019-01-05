@@ -71,6 +71,9 @@ uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health
     CVida* Vida                         = new CVida(health);
     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
 
+    CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
+    Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
+
     return Enemy;
 }
 

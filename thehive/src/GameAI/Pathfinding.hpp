@@ -4,6 +4,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <random>
 #include "NavmeshStructs.hpp"
 #include <Util.hpp>
 #include <GameEngine/Billboard.hpp>
@@ -25,6 +26,8 @@ class Pathfinding {
         void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
         void resetGraph();
         void print();
+
+        gg::Vector3f getRandomNodePosition();
 
         void DroNodes();
 

@@ -156,3 +156,11 @@ void CNavmeshAgent::SetDestination(const gg::Vector3f &Target){
 bool CNavmeshAgent::HasDestination(){
     return currentlyMovingTowardsTarget;
 }
+
+void CNavmeshAgent::ResetDestination(){
+    while(!Waypoints.empty()){
+        Waypoints.pop();
+    }
+
+    currentlyMovingTowardsTarget = false;
+}
