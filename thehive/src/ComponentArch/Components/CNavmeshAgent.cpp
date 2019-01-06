@@ -5,7 +5,7 @@
 #include <cmath>
 
 #define MAXSPEED 30.f
-#define FORCE_FACTOR 2500.f
+#define FORCE_FACTOR 500.f
 
 
 CNavmeshAgent::CNavmeshAgent()
@@ -44,11 +44,40 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
     return gg::ST_TRUE;
 }
 
+void CNavmeshAgent::Update(){
+    //  Debug!
+    Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), cTransform->getPosition()+(moveVector*100)+gg::Vector3f(0, 5, 0), gg::Color(255,0,0,1));
+    Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), cTransform->getPosition()+(gg::Normalice(cRigidBody->getVelocity())*100)+gg::Vector3f(0, 5, 0), gg::Color(255,255,0,1));
+
+    if(Singleton<Pathfinding>::Instance()->isDebugging() && !Waypoints.empty()){
+
+        std::stack<Waypoint> debug = Waypoints;
+
+        gg::Color color;
+        color.R = 10;
+        color.G = 255;
+        color.B = 200;
+        color.Alpha = 1;
+
+        Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 40, 0), color, 2);
+        while(!debug.empty()){
+            Waypoint first = debug.top();
+            debug.pop();
+            if(debug.empty())
+            break;
+
+            Waypoint second = debug.top();
+            Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 40, 0), second.Position + gg::Vector3f(0, 40, 0), color, 2);
+        }
+    }
+
+}
+
 void CNavmeshAgent::FixedUpdate(){
 
     if(!cTransform || !currentlyMovingTowardsTarget)  return;
 
-    gg::Vector3f moveVector = Waypoints.top().Position - cTransform->getPosition();
+    moveVector = Waypoints.top().Position - cTransform->getPosition();
 
     //  Check if we can skip some nodes, but just if 0.15 seconds have passed
     if(Timer.ElapsedTime().Seconds() > 0.15) CheckShortcut();
@@ -56,7 +85,7 @@ void CNavmeshAgent::FixedUpdate(){
     float modulo= gg::Modulo(moveVector);
 
     // Check if we are close to the next destination node
-    if(modulo <= 30) {
+    if(modulo <= 20) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
 
@@ -76,33 +105,9 @@ void CNavmeshAgent::FixedUpdate(){
     //  Apply a counter force when we change direction, so we can stop on curves
     ApplyCouterForce(moveVector);
 
-    //  Debug!
-    // Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 10, 0), cTransform->getPosition()+(moveVector/FORCE_FACTOR)*100+gg::Vector3f(0, 10, 0), gg::Color(0,255,0,1));
-    // Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 10, 0), cTransform->getPosition()+gg::Vector3f(0, 10, 0)+cRigidBody->getVelocity()*5, gg::Color(255,255,0,1));
-
     if(gg::Modulo(cRigidBody->getXZVelocity()) < MAXSPEED)
         cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
 
-    // if(Singleton<Pathfinding>::Instance()->isDebugging()){
-    //     std::stack<Waypoint> debug = Waypoints;
-    //     gg::Color color;
-    //     color.R = 10;
-    //     color.G = 255;
-    //     color.B = 200;
-    //     color.Alpha = 1;
-    //
-    //     Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 40, 0), color, 2);
-    //     while(!debug.empty()){
-    //         Waypoint first = debug.top();
-    //         debug.pop();
-    //         if(debug.empty())
-    //             break;
-    //
-    //         Waypoint second = debug.top();
-    //         Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 40, 0), second.Position + gg::Vector3f(0, 40, 0), color, 2);
-    //     }
-    //
-    // }
 }
 
 void CNavmeshAgent::CheckShortcut(){
@@ -116,7 +121,7 @@ void CNavmeshAgent::CheckShortcut(){
 
         //  If the node is less than the sight distance, and we can see it without problems, the go directly to that Waypoint
         if( gg::FastDIST(cTransform->getPosition(), Waypoints.top().Position) > SightDistance ||
-            world->DoesItHitSomething(cTransform->getPosition() + gg::Vector3f(0, 10, 0), Waypoints.top().Position + gg::Vector3f(0, 10, 0))
+            world->DoesItHitSomething(cTransform->getPosition() + gg::Vector3f(0, 2, 0), Waypoints.top().Position + gg::Vector3f(0, 2, 0))
         ){
             Waypoints.push(backup);
             stop = true;

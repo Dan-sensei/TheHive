@@ -33,6 +33,7 @@ ObjectManager::ObjectManager() {
     MessageToListeningComponents[gg::UPDATE].push_back(gg::PLAYERCONTROLLER);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::NAVMESHAGENT);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::NAVMESHAGENT);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::NAVMESHAGENT);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::HAB);

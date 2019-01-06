@@ -73,8 +73,7 @@ void Game::Init(){
 
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-    uint16_t h = sF->createHero(gg::Vector3f(360, 0, 350),false);     //600
-    MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
+    sF->createHero(gg::Vector3f(360, 0, 350),false);     //600
 
     sF->createCollectableWeapon(gg::Vector3f(397, 0, 330),2);
 
@@ -104,7 +103,8 @@ void Game::Init(){
     sF->createTouchableObject(gg::Vector3f(mapPos.X+290, mapPos.Y-11, mapPos.Z+131),idEx,gg::Vector3f(0,-0.035,0),8000,key);
 
 
-    sF->createSoldier(gg::Vector3f(254,-14,79),200);
+    uint16_t h = sF->createSoldier(gg::Vector3f(254,-14,79),200);
+    MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     // sF->createSoldier(gg::Vector3f(312,-14,134),200);
     // sF->createSoldier(gg::Vector3f(253,-14,144),200);
     // sF->createSoldier(gg::Vector3f(266,-14,202),200);
@@ -146,9 +146,16 @@ void Game::Init(){
     // Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, NavmeshGround);
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
-    gg::cout("Testing", gg::Color(255, 0, 0, 1));
+    uint16_t Navmesh = Manager->createEntity();
+    Material yelo("assets/NavMeshes/L4D2Nav.png");
 
-    Singleton<Pathfinding>::Instance()->SetDebug(false);
+    CTransform* Transform = new CTransform(gg::Vector3f(0,0,0), gg::Vector3f(0,0,0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Navmesh);
+
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", yelo);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
+
+    Singleton<Pathfinding>::Instance()->SetDebug(true);
 
     MasterClock.Restart();
 

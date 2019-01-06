@@ -26,6 +26,7 @@ class CNavmeshAgent : public IComponent {
         // Functions of IComponent
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
         virtual void FixedUpdate();
 
         // Handlers
@@ -46,7 +47,8 @@ class CNavmeshAgent : public IComponent {
 
         gg::Clock Timer;
         gg::Vector3f RS, LS;
-
+        gg::Vector3f moveVector;
+        
         GameEngine* Engine;
         ggDynWorld* world;
 
