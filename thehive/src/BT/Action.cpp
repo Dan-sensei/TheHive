@@ -44,7 +44,7 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
 
     VectorAcciones[MOVE_TO_PLAYER]          = &Action::move_player;     // si
     VectorAcciones[PLAYER_SEEN]             = &Action::seen;            // si
-    VectorAcciones[MOVE_AROUND]             = &Action::move_around;     // si
+    VectorAcciones[MOVE_AROUND]             = &Action::move_around;     // si -> ES EL RANDOM WALK
     VectorAcciones[MOVE_TO_LAST_POS_KWON]   = &Action::move_last;       // si
     VectorAcciones[IN_LAST_POS_KWON]        = &Action::in_last;         // si
 
@@ -275,15 +275,15 @@ void Action::hit(){
         cont_hit = 0;
         modifyImAttacking(true);
 
+        uint16_t hero = manager->getHeroID();
+        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
+        ht->quitarvida(0.5+(yo->getRage()/2));
 
         s = BH_RUNNING;
     }
 
     cont_hit++;
     if(cont_hit > 50){
-        uint16_t hero = manager->getHeroID();
-        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
-        ht->quitarvida(0.5+(yo->getRage()/2));
         //modifyImAttacking(false);
         s = BH_SUCCESS;
     }
@@ -301,7 +301,7 @@ void Action::playerNotAttacking(){
 }
 
 void Action::isThereSomeAlienDead(){
-    // NO ENTRA
+    // NO SE USA
     // _________
     // gg::cout("SOME ALIEN DEAD?");
     // if(yo->getCloserAllyIsDead()){
@@ -315,7 +315,7 @@ void Action::isThereSomeAlienDead(){
 }
 
 void Action::moreRage(){
-    // NO ENTRA
+    // NO SE USA
     // _________
     // gg::cout("-- -----------------------");
     // yo->upgradeRage();
@@ -427,14 +427,30 @@ void Action::move_around(){
 
             gg::Vector3f dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
 
-            nvAgent->SetDestination(dest);
+            yo->destino = cTransform->getPosition();
 
+            nvAgent->SetDestination(dest);
         }
-        if(!nvAgent->HasDestination()){
-            // nvAgent->ResetDestination();
-            s = BH_SUCCESS;
+        if(s==BH_RUNNING){
+            // Intercambio EL USO DE LOS VECTORES dest y mio
+            gg::Vector3f dest           = cTransform->getPosition();    // A donde voy
+            gg::Vector3f mio            = yo->destino;                  // Donde estaba
+
+            gg::Vector3f V_AI_DEST      = dest-mio;
+
+            V_AI_DEST.Y     = 0;
+            V_AI_DEST       = gg::Normalice(V_AI_DEST);
+            V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
+
+            cTransform->setRotation(V_AI_DEST);
+
+            yo->destino = cTransform->getPosition();
+
+            if(!nvAgent->HasDestination()){
+                nvAgent->ResetDestination();
+                s = BH_SUCCESS;
+            }
         }
-        // move_too(10);
     }
     else{
         s = BH_SUCCESS;

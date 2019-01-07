@@ -19,7 +19,9 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
 
     CAIEnem::PlayerTransform=Transform;
 
-
+    CCamera* Camera                     = new CCamera(false);
+    Camera->setTarget(Transform);
+    Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 
     CVida* Vida                         = new CVida(1000);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
@@ -53,10 +55,6 @@ uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health
 
     CTransform* Transform               = new CTransform(Position, gg::Vector3f(0, 0, 0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
-
-    CCamera* Camera                     = new CCamera(false);
-    Camera->setTarget(Transform);
-    Manager->addComponentToEntity(Camera,           gg::CAMERA, Enemy);
 
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);

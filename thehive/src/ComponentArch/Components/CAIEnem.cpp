@@ -47,7 +47,7 @@ void CAIEnem::enemyseen(){
 
 void CAIEnem::enemyrange(){
     if(!playerOnRange){
-        arbol->reset();
+        resetMyOwnTree();
     }
     playerOnRange=true;
 }
@@ -104,6 +104,8 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
     cAgent = static_cast<CAgent*>(Manager->getComponent(gg::AGENT, getEntityID()));
+    // nvAgent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT,getEntityID()));
+
 
     return gg::ST_TRUE;
 }
@@ -126,23 +128,23 @@ void CAIEnem::FixedUpdate(){
     numberOfUpdatesSinceLastHability++;
 
     gg::Vector3f pTF        = PlayerTransform->getPosition();
-    pTF.Y =0;
     gg::Vector3f cTF_POS    = cTransform->getPosition();
+
+    pTF.Y =0;
     cTF_POS.Y =0;
+
     float dist = gg::DIST(pTF,cTF_POS);
     if(dist<Vrange){
         gg::Vector3f cTF_ROT    = cTransform->getRotation();
         gg::Vector3f dir        = Direccion2D(cTF_ROT);
         gg::Vector3f diren      = pTF-cTF_POS;
 
-
-        //diren.Y     = 0;
         diren       = gg::Normalice(diren);
         float sol   = gg::Producto(diren,dir);
 
         if(gradovision<sol && !playerSeeing){
             enemyseen();
-            arbol->reset();
+            resetMyOwnTree();
             resetHabilityUpdateCounter();
         }
         if(dist<Arange){
@@ -156,8 +158,7 @@ void CAIEnem::FixedUpdate(){
     }
     else if(playerSeeing){
         playerSeeing = false;
-        //playerPos   =PlayerTransform->getPosition();
-        arbol->reset();
+        resetMyOwnTree();
         resetHabilityUpdateCounter();
     }
     if(playerSeeing){
@@ -171,20 +172,24 @@ void CAIEnem::MHandler_ATURD(){
     // std::cout << "aturd" << '\n';
     ultrasonido     = true;
     ultrasonido_cont= 0;
-    arbol->reset();
-
+    resetMyOwnTree();
 }
-
 
 void CAIEnem::MHandler_SENYUELO(TriggerRecordStruct* cdata){
     senyuelo    = true;
     senpos      = cdata->vPos;
-    arbol->reset();
+    resetMyOwnTree();
 }
 
 void CAIEnem::MHandler_SENYUELO_END(){
     senyuelo    = false;
     // std::cout << "sen out" << '\n';
+    resetMyOwnTree();
+}
+
+void CAIEnem::resetMyOwnTree(){
+    CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT,getEntityID()));
+    nvAgent->ResetDestination();
     arbol->reset();
 }
 
@@ -215,7 +220,7 @@ void CAIEnem::setPlayerIsAttacking(bool _b){
     isPlayerAttacking = _b;
     playerPos       = PlayerTransform->getPosition();
     playerSeen=true;
-    arbol->reset();
+    resetMyOwnTree();
     CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
     if(clk){
         clk->restart();

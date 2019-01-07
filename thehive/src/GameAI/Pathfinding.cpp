@@ -168,7 +168,7 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     }
 
     if(!FoundStart || !FoundGoal){
-        gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
+        // gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
         return;
     }
     // std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';

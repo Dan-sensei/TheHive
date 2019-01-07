@@ -20,11 +20,12 @@
 #include <GameAI/Treecontroller.hpp>
 
 class Treecontroller;
-class CAgent;
 class GameEngine;
 class ObjectManager;
 
-class CTransform;           //  Forward declaration de otras componentes que incluyas
+class CAgent;
+class CTransform;
+class CNavmeshAgent;
 
 class CAIEnem : public IComponent {
     public:
@@ -44,6 +45,8 @@ class CAIEnem : public IComponent {
         void MHandler_SENYUELO_END();
         void MHandler_NEAR(TriggerRecordStruct* cdata){}
         void MHandler_ATURD();
+
+        void resetMyOwnTree();
 
         void enemyseen();
         void enemyrange();
@@ -108,6 +111,7 @@ class CAIEnem : public IComponent {
         CTriggerSystem  *EventSystem;
         CTransform      *cTransform;
         CAgent          *cAgent;
+        // CNavmeshAgent   *nvAgent;
 
         gg::EEnemyType type;
         int             numberOfUpdatesSinceLastHability;

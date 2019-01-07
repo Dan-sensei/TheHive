@@ -4,7 +4,7 @@
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 
-#define MAXSPEED 30.f
+#define MAXSPEED 8.f
 #define FORCE_FACTOR 500.f
 
 

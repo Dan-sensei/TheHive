@@ -68,14 +68,20 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<ScreenConsole>::Instance()->InitHUD();
-
     auto sF = Singleton<Factory>::Instance();
-
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
-    sF->createHero(gg::Vector3f(360, 0, 350),false);     //600
+    // Pos init del heroe normal
+    // 360, 0, 350
+    uint16_t h = sF->createHero(gg::Vector3f(220,-5,79),false);
+    MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     sF->createCollectableWeapon(gg::Vector3f(397, 0, 330),2);
+
+    sF->createSoldier(gg::Vector3f(254,-10, 79),200);
+    sF->createSoldier(gg::Vector3f(250,-10,133),200);
+    sF->createSoldier(gg::Vector3f(189,-10,264),200);
+    sF->createSoldier(gg::Vector3f(  9,-10,277),200);
 
     gg::Vector3f mapPos(0,0,0);
     sF->createCollisionableStaticModel(
@@ -103,11 +109,6 @@ void Game::Init(){
     sF->createTouchableObject(gg::Vector3f(mapPos.X+290, mapPos.Y-11, mapPos.Z+131),idEx,gg::Vector3f(0,-0.035,0),8000,key);
 
 
-    uint16_t h = sF->createSoldier(gg::Vector3f(254,-14,79),200);
-    MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
-    // sF->createSoldier(gg::Vector3f(312,-14,134),200);
-    // sF->createSoldier(gg::Vector3f(253,-14,144),200);
-    // sF->createSoldier(gg::Vector3f(266,-14,202),200);
 
     ////////////////////////////////////////////////////////////////
     // TABLA MOLONA DE CONVERSION DE LA POSICION EN EL ESPACIO 3D //
@@ -117,33 +118,6 @@ void Game::Init(){
     // BELNDER  -> bX,      bY,     bZ                            //
     // JEUGO    -> jX-bX,   jY+bZ,  jZ-bY                         //
     ////////////////////////////////////////////////////////////////
-
-
-    // sF->createCollisionableStaticModel(
-    //     "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.obj",
-    //     "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.bullet",
-    //     "assets/Models/CIUDAD/PROTOTIPO_CIUDAD.png",
-    //     gg::Vector3f(700, 175, 0));
-    // //factory->createStaticModel("assets/NavMeshes/L4D2Nav.obj", "assets/NavMeshes/L4D2Nav.png", gg::Vector3f(0, 0, 0));
-    //
-    // CNavmeshAgent* Agent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT, Dummy));
-    // Agent->SetDestination(gg::Vector3f(280, -20, -377));
-
-    // uint16_t Navmesh = Manager->createEntity();
-    // Material yelo("assets/NavMeshes/PROTOTIPO_CIUDAD.png");
-    // //Material yelo("assets/Textures/ice.bmp");
-    //
-    // CTransform* Transform = new CTransform(gg::Vector3f(0,80,0), gg::Vector3f(0,0,0));
-    // Manager->addComponentToEntity(Transform, gg::TRANSFORM, Navmesh);
-    //
-    // CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", yelo);
-    // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
-
-    // uint16_t Dummy = sF->createPathFindingActor(gg::Vector3f(285, 0, 117));
-
-    // uint16_t NavmeshGround = Manager->createEntity();
-    // CRigidBody* RigidBody = new CRigidBody(false, false,"", 0, -10, 0, 680,10,800, 0, 0,0,0, 0.2);
-    // Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, NavmeshGround);
 
     // std::cout << "BEGIN GAME LOOP" << '\n';
     uint16_t Navmesh = Manager->createEntity();
@@ -156,19 +130,9 @@ void Game::Init(){
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
-
     MasterClock.Restart();
-
-
-        //  SPIRAL OF DEATH. Not cool
-
-
-    //while(Engine->isWindowOpen()) {
-    //    update();
-
-    //}
-
 }
+
 void Game::Update(){
     DeltaTime = MasterClock.Restart().Seconds();
 
@@ -222,8 +186,8 @@ void Game::CLIN(){
     //Singleton<ScreenConsole>::Instance()->CLIN();
     Singleton<ScreenConsole>::Instance()->CLINNormal();
 
-    std::cout << "1/60 = " << 1/60.F << '\n';
-    std::cout << "UPDTES " << UPDATE  << '\n';
-    std::cout << "DRO " << DRO  << '\n';
+    // std::cout << "1/60 = " << 1/60.F << '\n';
+    // std::cout << "UPDTES " << UPDATE  << '\n';
+    // std::cout << "DRO " << DRO  << '\n';
 
 }
