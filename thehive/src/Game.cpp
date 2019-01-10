@@ -73,7 +73,8 @@ void Game::Init(){
 
     // Pos init del heroe normal
     // 360, 0, 350
-    uint16_t h = sF->createHero(gg::Vector3f(220,-5,79),false);
+    // 220,-5,79
+    uint16_t h = sF->createHero(gg::Vector3f(360, 0, 350),false);
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     sF->createCollectableWeapon(gg::Vector3f(397, 0, 330),2);
@@ -129,7 +130,7 @@ void Game::Init(){
     CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", yelo);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
-    Singleton<Pathfinding>::Instance()->SetDebug(true);
+    Singleton<Pathfinding>::Instance()->SetDebug(false);
     MasterClock.Restart();
 }
 
@@ -166,9 +167,9 @@ void Game::Update(){
     Engine->Dro();
     Engine->DisplayFPS();
 
-    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
-    Singleton<Pathfinding>::Instance()->DroNodes();
-    Singleton<ScreenConsole>::Instance()->DisplayDebug();
+    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    // Singleton<Pathfinding>::Instance()->DroNodes();
+    // Singleton<ScreenConsole>::Instance()->DisplayDebug();
     Singleton<ScreenConsole>::Instance()->DisplayHUD();
 
     Engine->EndDro();
