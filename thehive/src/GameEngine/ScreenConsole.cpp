@@ -180,9 +180,9 @@ void ScreenConsole::addButton(float x, float y, float w,float h,int id,std::stri
 void ScreenConsole::InitHUD(){
 
 
-    AddImage("hab1","assets/HUD/cf_hud_d.jpg",porc_ancho(2),porc_alto(90),porc_alto(10),porc_alto(10));
-    AddImage("hab2","assets/HUD/cf_hud_d.jpg",porc_ancho(9),porc_alto(90),porc_alto(10),porc_alto(10));
-    AddImage("hab3","assets/HUD/cf_hud_d.jpg",porc_ancho(16),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab1","assets/HUD/hab1.png",porc_ancho(2),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab2","assets/HUD/hab2.png",porc_ancho(9),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab3","assets/HUD/hab3.png",porc_ancho(16),porc_alto(90),porc_alto(10),porc_alto(10));
 
     AddImage("0arma","assets/HUD/cf_hud_d.jpg",porc_ancho(75),porc_alto(85),porc_ancho(20),porc_alto(15));
     AddImage("1arma","assets/HUD/cf_hud_b.jpg",porc_ancho(70),porc_alto(80),porc_ancho(20),porc_alto(15)); // Principal
