@@ -107,7 +107,7 @@ void Game::Init(){
         gg::Vector3f(mapPos.X+270.5, mapPos.Y-8, mapPos.Z+131));
         // i674,106,130
     uint16_t key = sF->createPickableItem(gg::Vector3f(224, 0, 145));
-    sF->createTouchableObject(gg::Vector3f(mapPos.X+290, mapPos.Y-11, mapPos.Z+131),idEx,gg::Vector3f(0,-0.035,0),8000,key);
+    sF->createTouchableObject(gg::Vector3f(mapPos.X+290, mapPos.Y-11, mapPos.Z+131),idEx,gg::Vector3f(0,-0.035*4,0),8000,key);
 
 
 
