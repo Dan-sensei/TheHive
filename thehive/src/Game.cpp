@@ -104,12 +104,12 @@ void Game::Init(){
     uint16_t key = sF->createPickableItem(gg::Vector3f(12, 10, -61));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+-51, mapPos.Y+1, mapPos.Z+-60),idEx,gg::Vector3f(0,-0.035*4,0),8000,key);
 
-    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/GROUND.obj", "assets/Textures/DARK.png", gg::Vector3f());
-    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/WALLS.obj", "assets/Textures/LIGHT.png", gg::Vector3f());
-    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CORNER.obj", "assets/Textures/LIGHT.png", gg::Vector3f());
-    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CUBE.obj", "assets/Textures/LIGHT.png", gg::Vector3f());
-    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/PARKOUR.obj", "assets/Textures/Domino.jpg", gg::Vector3f());
-    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/PILAR.obj", "assets/Textures/LIGHT.png", gg::Vector3f());
+    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/GROUND.obj", "assets/Textures/Domino.jpg", gg::Vector3f());
+    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/WALLS.obj", "assets/Textures/MetalPanelRectangular001_REFL_1K_SPECULAR.jpg", gg::Vector3f());
+    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CORNER.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());
+    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CUBE.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());
+    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/PARKOUR.obj", "assets/Textures/NULL_TEXT.png", gg::Vector3f());
+    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/PILAR.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());
 
     //============================================================//
     // TABLA MOLONA DE CONVERSION DE LA POSICION EN EL ESPACIO 3D //
@@ -220,7 +220,7 @@ void Game::Init(){
     // CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/CIUDAD/Presentacion1/NAVMESH.obj", yelo);
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
-    Singleton<Pathfinding>::Instance()->SetDebug(true);
+    Singleton<Pathfinding>::Instance()->SetDebug(false);
     MasterClock.Restart();
 }
 
