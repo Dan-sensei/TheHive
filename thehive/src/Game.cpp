@@ -108,7 +108,7 @@ void Game::Init(){
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/WALLS.obj", "assets/Textures/MetalPanelRectangular001_REFL_1K_SPECULAR.jpg", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CORNER.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CUBE.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());
-    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/PARKOUR.obj", "assets/Textures/NULL_TEXT.png", gg::Vector3f());
+    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/PARKOUR.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/PILAR.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());
 
     //============================================================//
