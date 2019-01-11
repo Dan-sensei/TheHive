@@ -217,7 +217,7 @@ void Pathfinding::DroNodes(){
     GameEngine* Engine = Singleton<GameEngine>::Instance();
 
     while(i--){
-        length = 100;
+        length = 50;
 
         if(GRAPH[i].Status == Type::UNVISITED){
             color.Alpha = 1;
@@ -238,10 +238,10 @@ void Pathfinding::DroNodes(){
             color.B = 204;
         }
 
-        Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
+        Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 4);
 
         if(Goal.X && Goal.Y && Goal.Z){
-            length = 200;
+            length = 100;
             color.Alpha = 1;
             color.R = 212;
             color.G = 175;
@@ -251,15 +251,15 @@ void Pathfinding::DroNodes(){
     }
 
     //  Connections
-    color.Alpha = 1;
-    color.R = 0;
-    color.G = 153;
-    color.B = 153;
-    for(uint16_t i = 0; i < GConnections.size(); ++i){
-        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 100, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 100, 0), color, 2);
-        }
-    }
+    // color.Alpha = 1;
+    // color.R = 0;
+    // color.G = 153;
+    // color.B = 153;
+    // for(uint16_t i = 0; i < GConnections.size(); ++i){
+    //     for(uint16_t j = 0; j < GConnections[i].size(); ++j){
+    //         Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 40, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 40, 0), color, 2);
+    //     }
+    // }
 
 
     //  255,20,147

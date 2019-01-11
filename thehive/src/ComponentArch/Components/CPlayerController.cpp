@@ -20,8 +20,8 @@
 #define WEAPON_KEY          gg::GG_Q
 
 #define FORCE_FACTOR        500.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*6.f
-#define DASH_FORCE_FACTOR   FORCE_FACTOR/50.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*6.2f
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/25.f
 
 #define MULT_RUN_FACTOR     1.5
 #define MULT_DASH_FACTOR    3
@@ -100,6 +100,11 @@ void CPlayerController::Update(){
         if(actualGrenadeState>3)    actualGrenadeState = 1;
         gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
     }
+
+    if(clocker.ElapsedTime().Seconds() < 0.1){
+        Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 0.5, 0), Target, gg::Color(255, 0, 0), 2);
+    }
+
 }
 
 void CPlayerController::FixedUpdate(){
@@ -171,8 +176,6 @@ void CPlayerController::FixedUpdate(){
     // -----------------------------------
     // Acciones de Willy
     // -----------------------------------
-    // DISPARO
-    gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
 
     if(Engine->key(RELOAD_KEY)){
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
@@ -181,9 +184,12 @@ void CPlayerController::FixedUpdate(){
         }
     }
 
+    // DISPARO
     if(Engine->isLClickPressed()){
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        if(gun) gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
+        Target = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+        clocker.Restart();
+        if(gun) gun->shoot(Target);
     }
 
     if(Engine->key(WEAPON_KEY) && secondWeapon){

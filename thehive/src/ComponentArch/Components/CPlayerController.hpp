@@ -17,6 +17,7 @@
 #include <GameEngine/KEYCODES.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
+#include <GameEngine/Clock.hpp>
 
 #define NUMBER_OF_ITEMS     3
 
@@ -42,7 +43,7 @@ class CPlayerController : public IComponent {
         virtual void Init();
         virtual void FixedUpdate();
         virtual void Update();
-        
+
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
         bool canPickWeapon();
@@ -59,6 +60,9 @@ class CPlayerController : public IComponent {
     private:
         CPlayerController();
         CPlayerController(const CPlayerController &orig) = delete;
+
+        gg::Clock clocker;
+        gg::Vector3f Target;
 
         ObjectManager* Manager;
         Factory* factory;

@@ -4,8 +4,8 @@
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 
-#define MAXSPEED 8.f
-#define FORCE_FACTOR 500.f
+#define MAXSPEED 5.f
+#define FORCE_FACTOR 300.f
 
 
 CNavmeshAgent::CNavmeshAgent()
@@ -59,7 +59,7 @@ void CNavmeshAgent::Update(){
         color.B = 200;
         color.Alpha = 1;
 
-        Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 40, 0), color, 2);
+        Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 10, 0), color, 2);
         while(!debug.empty()){
             Waypoint first = debug.top();
             debug.pop();
@@ -67,7 +67,7 @@ void CNavmeshAgent::Update(){
             break;
 
             Waypoint second = debug.top();
-            Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 40, 0), second.Position + gg::Vector3f(0, 40, 0), color, 2);
+            Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 10, 0), second.Position + gg::Vector3f(0, 10, 0), color, 2);
         }
     }
 
@@ -85,7 +85,7 @@ void CNavmeshAgent::FixedUpdate(){
     float modulo= gg::Modulo(moveVector);
 
     // Check if we are close to the next destination node
-    if(modulo <= 20) {
+    if(modulo <= 10) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
 
@@ -119,7 +119,7 @@ void CNavmeshAgent::CheckShortcut(){
         Waypoint backup = Waypoints.top();
         Waypoints.pop();
 
-        //  If the node is less than the sight distance, and we can see it without problems, the go directly to that Waypoint
+        //  If the node is less than the sight distance, and we can see it without problems, then go directly to that Waypoint
         if( gg::FastDIST(cTransform->getPosition(), Waypoints.top().Position) > SightDistance ||
             world->DoesItHitSomething(cTransform->getPosition() + gg::Vector3f(0, 2, 0), Waypoints.top().Position + gg::Vector3f(0, 2, 0))
         ){

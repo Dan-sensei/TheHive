@@ -425,6 +425,7 @@ gg::EMessageStatus CRigidBody::SaveCurrentStatus(){
     return gg::ST_TRUE;
 }
 gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
+    if(!cTransform) return gg::ST_TRUE;
 
     double Tick = *static_cast<double*>(_Tick.mData);
 
