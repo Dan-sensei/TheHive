@@ -80,6 +80,7 @@ class CAgent : public IComponent {
         void ENTER_func_kTrig_Pickable      (TriggerRecordStruct*);
         void ENTER_func_kTrig_DeadAlien     (TriggerRecordStruct*);
         void ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct*);
+        void ENTER_func_kTrig_ExpansiveForce (TriggerRecordStruct*);
         void ENTER_func_kTrig_EnemyNear     (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerStay;
@@ -93,6 +94,7 @@ class CAgent : public IComponent {
         void STAY_func_kTrig_Pickable       (TriggerRecordStruct*);
         void STAY_func_kTrig_DeadAlien      (TriggerRecordStruct*);
         void STAY_func_kTrig_ExpansiveWave  (TriggerRecordStruct*);
+        void STAY_func_kTrig_ExpansiveForce  (TriggerRecordStruct*);
         void STAY_func_kTrig_EnemyNear      (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerExit;
@@ -106,6 +108,7 @@ class CAgent : public IComponent {
         void EXIT_func_kTrig_Pickable       (TriggerRecordStruct*);
         void EXIT_func_kTrig_DeadAlien      (TriggerRecordStruct*);
         void EXIT_func_kTrig_ExpansiveWave  (TriggerRecordStruct*);
+        void EXIT_func_kTrig_ExpansiveForce  (TriggerRecordStruct*);
         void EXIT_func_kTrig_EnemyNear      (TriggerRecordStruct*);
 
 };

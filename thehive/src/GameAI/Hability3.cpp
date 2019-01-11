@@ -49,7 +49,7 @@
 
         CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, id));
         float id=cTransform->getEntityID();
-        EventSystem->PulsoTrigger(kTrig_Explosion,id,cTransform->getPosition(),500,mes);
+        EventSystem->PulsoTrigger(kTrig_ExpansiveForce,id,cTransform->getPosition(),500,mes);
         //EventSystem->RegisterTriger(kTrig_Explosion,1,0,cTransform->getPosition(), radius, 10000,false,mes);
 
 
