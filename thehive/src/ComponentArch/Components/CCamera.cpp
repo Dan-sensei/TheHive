@@ -189,12 +189,12 @@ void CCamera::fixCameraPositionOnCollision(gg::Vector3f &nextPosition){
 
     gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(getlastHeroPosition()-nextPosition)*0.5;
     if(CRigidbody->checkContactResponse()){
-        std::cout << "rigid collision" << '\n';
+        //std::cout << "rigid collision" << '\n';
     }
     if(CRigidbody->checkContactResponse()&&dynWorld->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
         cam->setPosition(pos_on_collision);
         //cam->setPosition(getlastHeroPosition());
-        std::cout << "mal" << '\n';
+        //std::cout << "mal" << '\n';
         //Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1),3);
     }
 }

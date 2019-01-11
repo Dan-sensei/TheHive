@@ -4,8 +4,8 @@
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 
-#define MAXSPEED 5.f
-#define FORCE_FACTOR 300.f
+#define MAXSPEED 4.f
+#define FORCE_FACTOR 250.f
 
 
 CNavmeshAgent::CNavmeshAgent()
@@ -80,7 +80,7 @@ void CNavmeshAgent::FixedUpdate(){
     moveVector = Waypoints.top().Position - cTransform->getPosition();
 
     //  Check if we can skip some nodes, but just if 0.15 seconds have passed
-    if(Timer.ElapsedTime().Seconds() > 0.15) CheckShortcut();
+    if(Timer.ElapsedTime().Seconds() > 0.3) CheckShortcut();
 
     float modulo= gg::Modulo(moveVector);
 

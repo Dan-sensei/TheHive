@@ -79,7 +79,7 @@ void Game::Init(){
     sF->createCollectableWeapon(gg::Vector3f(20, 3, 50),2);
 
     sF->createSoldier(gg::Vector3f(-10,3, -50),200);
-    //sF->createSoldier(gg::Vector3f(-45,3,-23),200);
+    sF->createSoldier(gg::Vector3f(-45,3,-23),200);
     // sF->createSoldier(gg::Vector3f(189,-10,264),200);
     // sF->createSoldier(gg::Vector3f(  9,-10,277),200);
 
@@ -104,7 +104,7 @@ void Game::Init(){
     uint16_t key = sF->createPickableItem(gg::Vector3f(12, 10, -61));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+-51, mapPos.Y+1, mapPos.Z+-60),idEx,gg::Vector3f(0,-0.035*4,0),8000,key);
 
-    //sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/GROUND.obj", "assets/Textures/DARK.png", gg::Vector3f());
+    sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/GROUND.obj", "assets/Textures/DARK.png", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/WALLS.obj", "assets/Textures/LIGHT.png", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CORNER.obj", "assets/Textures/LIGHT.png", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CUBE.obj", "assets/Textures/LIGHT.png", gg::Vector3f());
@@ -214,11 +214,11 @@ void Game::Init(){
     }
 
 
-    Material yelo("assets/Models/CIUDAD/Presentacion1/NAVMESH.png");
-
-    uint16_t Navmesh = Manager->createEntity();
-    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/CIUDAD/Presentacion1/NAVMESH.obj", yelo);
-    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
+    // Material yelo("assets/Models/CIUDAD/Presentacion1/NAVMESH.png");
+    //
+    // uint16_t Navmesh = Manager->createEntity();
+    // CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/CIUDAD/Presentacion1/NAVMESH.obj", yelo);
+    // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
     MasterClock.Restart();
