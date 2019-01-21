@@ -6,14 +6,19 @@
 #include <Util.hpp>
 
 #include <BT/BehaviorTree.hpp>
+#include <BT/Action.hpp>
 
 #include "EventSystem/Blackboard.hpp"
 #include "ComponentArch/Components/CAIEnem.hpp"
+//#include "BT/Hojas.hpp"
 
 
 class CAIEnem;
+class Action;
+//enum Hojas;
 class Treecontroller {
     public:
+
         Treecontroller (Blackboard*,gg::EEnemyType,CAIEnem*);
         Treecontroller ();
         virtual ~Treecontroller();
@@ -22,6 +27,7 @@ class Treecontroller {
         int taskactual();
         void update();
 
+        Action* addAction(Hojas ac);
         void arbolsoldado();
         void arboltracker();
         void arbolrusher();
