@@ -1,5 +1,18 @@
 #include "Action.hpp"
 
+#include "EventSystem/Blackboard.hpp"
+#include "EventSystem/BVector3f.hpp"
+#include "EventSystem/BInt.hpp"
+#include "EventSystem/BBool.hpp"
+
+#include <ComponentArch/ObjectManager.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
+#include <ComponentArch/Components/CTransform.hpp>
+#include <ComponentArch/Components/CRigidBody.hpp>
+#include <ComponentArch/Components/CVida.hpp>
+
+#include <GameAI/Pathfinding.hpp>
+
 #define MAX_AI_SPEED            2.f
 #define VEL_ATENUATION          0.1
 

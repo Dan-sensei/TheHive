@@ -167,7 +167,7 @@ void Treecontroller::arboltank(){
     sec2->addChild(addAction(MOVER_SENYUELO));
     sec2->addChild(addAction(RONDAR_SENYUELO));
 
-    Selector* sel2= new Selector();//random selector
+    Selector* sel2= new Selector();//random selector?
     sel2->addChild(addAction(EXPANSIVE_WAVE));
     sel2->addChild(addAction(SPIT));
     Sequence* sec6= new Sequence();
@@ -282,7 +282,7 @@ void Treecontroller::arbolsoldado(){
     sec3->addChild(sel1);
 
     Sequence* sec11= new Sequence();
-    sec11->addChild(addAction(IN_LAST_POS_KWON));//esta pero no se usa
+    sec11->addChild(addAction(IN_LAST_POS_KWON));
     sec11->addChild(addAction(MOVE_TO_LAST_POS_KWON));
     Selector* sel6= new Selector();
     sel6->addChild(sec11);
@@ -305,7 +305,7 @@ void Treecontroller::arbolsoldado(){
     sel7->addChild(sec12);
 
 
-    Selector* sel8= new Selector();//5
+    Selector* sel8= new Selector();
     sel8->addChild(sec1);
     sel8->addChild(sec2);
     sel8->addChild(sec3);
