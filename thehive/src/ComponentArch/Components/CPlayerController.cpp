@@ -2,6 +2,7 @@
 
 #include <States/StateMachine.hpp>
 #include <PauseState.hpp>
+#include <IAState.hpp>
 
 
 //#include <GameAI/Hability.hpp>
@@ -142,6 +143,25 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_3)){
         hab->ToggleSkill(2);
     }
+    if(Engine->key(gg::GG_M)){
+        //hab->ToggleSkill(2);
+        //devuelve ide de un objeto
+        gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation(),1000);
+        int id=world->getIDFromRaycast();
+        //std::cout << "id:" <<id<< '\n';
+        if(id=-1){
+
+            CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+            if(AIEnem){
+                //std::cout << "no hay enemigo" << '\n';
+                Singleton<StateMachine>::Instance()->AddState(new IAState(id),false);
+
+
+            }
+        }
+
+        //gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
+    }
 
     if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
     if(Engine->key(gg::GG_A))   A_IsPressed(force,pressed);
@@ -172,16 +192,17 @@ void CPlayerController::FixedUpdate(){
     // Acciones de Willy
     // -----------------------------------
     // DISPARO
-    gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
 
     if(Engine->key(RELOAD_KEY)){
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
         if(gun && !gun->getBullets() && !gun->isReloading()){
+            Manager->returnIDFromRigid(nullptr);
             gun->reload();
         }
     }
 
     if(Engine->isLClickPressed()){
+        gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
         if(gun) gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
     }

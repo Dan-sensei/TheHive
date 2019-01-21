@@ -78,6 +78,7 @@ class Action : public Behavior {
         void setOffsetAliensAttacking(int);
         void doExplosiveWave();
         void doSpit();
+        int getTask();
 
 
         CAIEnem* yo;

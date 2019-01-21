@@ -13,7 +13,10 @@ ggDynWorld::ggDynWorld(){
 ggDynWorld::~ggDynWorld(){}
 
 void ggDynWorld::addRigidBody(btRigidBody* body){
+//void ggDynWorld::addRigidBody(btRigidBody* body,unsigned int Group,unsigned int Mask){
+    //dynamicsWorld->addRigidBody(body,Group,Mask);
     dynamicsWorld->addRigidBody(body);
+    //std::cout << body->getFlags() << '\n';
 }
 
 void ggDynWorld::removeRigidBody(btRigidBody *body){
@@ -185,14 +188,16 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float
     return ret;
 }
 
-void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f force){
+int ggDynWorld::getIDFromRaycast(){
+    if(!raycastCollisionBody)
+        return -1;
+    ObjectManager* Manager = Singleton<ObjectManager>::Instance();
+    return Manager->returnIDFromRigid(raycastCollisionBody);
+}
+void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f force){
     if(!raycastCollisionBody)
         return;
-
     raycastCollisionBody->applyCentralForce(btVector3(force.X,force.Y,force.Z));
-
-    // Debe de haber alguna forma de igualar bodys para saber el CRigidBody que estamos echando atras
-
 }
 
 gg::Vector3f ggDynWorld::getRaycastVector(){

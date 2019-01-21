@@ -8,6 +8,10 @@ int Action::aliensAttacking = 0;
 Action::Action(const Action &orig){
     Action(orig.tarea,orig.data,orig.yo);
 }
+int Action::getTask(){
+    return tarea;
+}
+
 
 Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     yo = ai;

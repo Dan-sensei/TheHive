@@ -51,34 +51,31 @@ void CGun::shoot(gg::Vector3f to){
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
         //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
-
         // // std::cout << "PIM!!! -> " << total_bullets << '\n';
         gg::Vector3f from = cTransform->getPosition();
-        gg::Vector3f vel(
-            to.X-from.X,
-            to.Y-from.Y,
-            to.Z-from.Z
-        );
 
-        float length = sqrt(vel.X*vel.X + vel.Y*vel.Y + vel.Z*vel.Z);
-            vel.X /= length;
-            vel.Y /= length;
-            vel.Z /= length;
-
+        gg::Vector3f vel=gg::Normalice(to-from);
         // Se modulara segun el danyo de cada arma 0-1
-        vel.X *= FORCE_FACTOR*damage;
-        vel.Y *= FORCE_FACTOR*damage;
-        vel.Z *= FORCE_FACTOR*damage;
+        vel *= FORCE_FACTOR*damage;
 
-        from.Y += DIST_OFFSET;
 
-        Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(from,vel);
+        Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(vel);
+        float id =Singleton<ggDynWorld>::Instance()->getIDFromRaycast();
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
         //EventSystem->PulsoTrigger(kTrig_Shoot,0,to,500,mes);//sonido de disparo
-
-        TData mes;
-        mes.add(kDat_Damage,damage);
-        Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),to,5,mes);
+        /////////cambiar todo esto a una funcion de CAIENEM
+        
+        if(id!=-1){
+            CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+            if(AIEnem){
+                AIEnem->setPlayerIsAttacking(true);
+                CVida *health = static_cast<CVida*>(Manager->getComponent(gg::VIDA,id));
+                if(health){
+                    gg::cout("PUM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
+                    health->quitarvida(damage);
+                }
+            }
+        }
 
         // <DEBUG>
             // Factory *fac = Singleton<Factory>::Instance();

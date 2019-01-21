@@ -2,6 +2,8 @@
 #include <iostream>
 //#include <SMaterial>
 #include <GameEngine/EnumButtonType.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
 
 irr::IrrlichtDevice* ScreenConsole::IrrlichtDevice = nullptr;
 void ScreenConsole::setprogress(int hab,float prog){
@@ -55,6 +57,47 @@ ScreenConsole::ScreenConsole(){
     ancho=(driver->getScreenSize().Width/2);
     alto=(driver->getScreenSize().Height/2);
 }
+std::string  BoolToString(bool b)
+{
+  if(b){
+     return  std::string("true");
+  }
+  else{
+      return std::string("false");
+  }
+}
+int ScreenConsole::InitAIDebug(int id){
+    CLINMenu();
+    ObjectManager* Manager = Singleton<ObjectManager>::Instance();
+    std::cout << "id:" <<id<< '\n';
+    CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+
+    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Debug Enemigo"),gg::Color(0,0,0,1));
+
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(20),std::string("Estoy viendo al jugador:"           +BoolToString(AIEnem->playerSeeing              )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(25),std::string("He visto al jugador:"               +BoolToString(AIEnem->playerSeen                )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(30),std::string("Estoy afectado por ultrasunido:"    +BoolToString(AIEnem->ultrasonido               )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(35),std::string("Estoy afectado por senyuelo:"       +BoolToString(AIEnem->senyuelo                  )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(40),std::string("Jugador a rango:"                   +BoolToString(AIEnem->playerOnRange             )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(45),std::string("Estoy atacando:"                    +BoolToString(AIEnem->getImAttacking()          )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(50),std::string("Acaba de morir un aliado cercano:"  +BoolToString(AIEnem->getCloserAllyIsDead()     )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(55),std::string("Me esta atacando el jugador:"       +BoolToString(AIEnem->getPlayerIsAttacking()    )),gg::Color(255,0,0,1));
+
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(60),std::string("Rango de vision:"                   +std::to_string(AIEnem->Vrange                    )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(65),std::string("Rango de ataque:"                   +std::to_string(AIEnem->Arange                    )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(70),std::string("Enfado:"                            +std::to_string(AIEnem->getRage()                 )),gg::Color(255,0,0,1));
+
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(75),std::string("Tarea actual:"                      +std::to_string(AIEnem->arbol->taskactual()       )),gg::Color(255,0,0,1));
+
+
+    //ObjectManager* Manager = Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, pRec->idSource);
+
+
+    addButton(45,50,55,59,CONTINUE,"Continuar",true);
+    return 1;
+
+}
+
 //Menu principal
 int ScreenConsole::InitPause(){
     CLINMenu();

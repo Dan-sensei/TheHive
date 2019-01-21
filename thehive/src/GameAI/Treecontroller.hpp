@@ -19,6 +19,7 @@ class Treecontroller {
         virtual ~Treecontroller();
 
         void reset();
+        int taskactual();
         void update();
 
         void arbolsoldado();

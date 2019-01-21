@@ -58,6 +58,9 @@ public:
     void inito(float=0, float=-10, float=0);
 
     void addRigidBody(btRigidBody*);
+    int getIDFromRaycast();
+
+    //void addRigidBody(btRigidBody*,unsigned int Group=0,unsigned int Mask=0);
     void addShape(btCollisionShape*);
     void stepSimulation(float, int=1, float=1./60.);
     void setGravity(float,float,float);
@@ -67,7 +70,7 @@ public:
     gg::Vector3f handleRayCast(gg::Vector3f,gg::Vector3f,float=-1);
     gg::Vector3f getRaycastVector();
     gg::Vector3f getRaycastHitPosition();
-    void applyForceToRaycastCollisionBody(gg::Vector3f,gg::Vector3f);
+    void applyForceToRaycastCollisionBody(gg::Vector3f);
 
     bool contactTest(btCollisionObject*);
 

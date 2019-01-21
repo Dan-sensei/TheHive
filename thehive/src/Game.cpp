@@ -74,7 +74,8 @@ void Game::Init(){
     // Pos init del heroe normal
     // 360, 0, 350
     // 220,-5,79
-    uint16_t h = sF->createHero(gg::Vector3f(360, 0, 350),false);
+    uint16_t h = sF->createHero(gg::Vector3f(360, 0, 370),false);
+    sF->createSoldier(gg::Vector3f(360,0, 370),200);
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     sF->createCollectableWeapon(gg::Vector3f(397, 0, 330),2);

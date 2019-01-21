@@ -39,6 +39,8 @@ class ScreenConsole{
         int InitMenu6();
         int InitMenu7();
         int InitPause();
+        int InitAIDebug(int id);
+
         //int InitPause2();
         //int InitPause3();
         //int InitPause4();

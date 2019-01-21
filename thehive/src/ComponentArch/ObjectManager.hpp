@@ -12,6 +12,7 @@
 
 template <typename T>
 class Singleton;
+class btRigidBody;
 
 class ObjectManager{
     friend class Singleton<ObjectManager>;
@@ -47,6 +48,9 @@ class ObjectManager{
         //  if nothing is found, returns nullptr
         //========================================================================
         IComponent* getComponent(const gg::EComponentType &cType, const uint16_t &EntityID);
+
+        //cosas varias que dani me va a matar :D
+        int returnIDFromRigid(btRigidBody* esto);
 
         //  ---
         //  Sends a message to every component of every entity in the system

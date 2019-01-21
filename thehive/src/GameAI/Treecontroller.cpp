@@ -48,6 +48,17 @@ void Treecontroller::reset(){
         m_Children[i]->abort();
     }
 }
+int Treecontroller::taskactual(){
+    for (size_t i = 0; i < m_Children.size(); i++) {
+        //// std::cout << "borra" << i<<'\n';
+        if(m_Children[i]->getStatus()==BH_RUNNING){
+            //CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+
+            return static_cast<Action*>(m_Children[i])->getTask();
+        }
+    }
+    return -1;
+}
 
 void Treecontroller::update(){
     BT->tick();
