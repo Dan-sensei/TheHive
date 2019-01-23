@@ -74,7 +74,10 @@ class Action : public Behavior {
         void doExplosiveWave();
         void doSpit();
         int getTask();
-
+        void dash();
+        void predash();
+        void predash_to_last_player();
+        void predash_to_player();
 
         CAIEnem* yo;
         static int aliensAttacking;

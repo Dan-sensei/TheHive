@@ -259,6 +259,9 @@ void CRigidBody::applyCentralImpulse(gg::Vector3f vec){
     body->applyCentralImpulse(btVector3(vec.X,vec.Y,vec.Z));
 }
 
+void CRigidBody::clearForce(){
+    body->clearForces();
+}
 void CRigidBody::applyCentralForce(gg::Vector3f vec){
     body->applyCentralForce(btVector3(vec.X,vec.Y,vec.Z));
 }

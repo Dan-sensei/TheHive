@@ -67,6 +67,7 @@ class CRigidBody : public IComponent {
         void MHandler_XPLOTATO(TriggerRecordStruct* cdata);
 
         // Funciones de CRigidBody
+        void clearForce();
         void applyCentralForce(gg::Vector3f);
         void applyCentralImpulse(gg::Vector3f);
         void applyTorque(gg::Vector3f);

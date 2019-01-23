@@ -149,7 +149,7 @@ void CPlayerController::FixedUpdate(){
         gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation(),1000);
         int id=world->getIDFromRaycast();
         //std::cout << "id:" <<id<< '\n';
-        if(id=-1){
+        if(id!=-1){
 
             CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
             if(AIEnem){

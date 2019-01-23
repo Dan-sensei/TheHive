@@ -9,7 +9,7 @@
 #include <iostream>
 
 Treecontroller::Treecontroller(){}
-
+//hacer herencia para cada tipo de enemigo ?
 Treecontroller::Treecontroller(Blackboard *_data, gg::EEnemyType tipo, CAIEnem* ai){
     yo      = ai;
     data    = _data;
@@ -87,12 +87,12 @@ void Treecontroller::arbolrusher(){
     sec2->addChild(addAction(RONDAR_SENYUELO));
 
     Sequence* sec5= new Sequence();
-    sec5->addChild(addAction(GIRAR));//cargar dash movimiento hacia el jugador
-    sec5->addChild(addAction(GIRAR));//dash
+    sec5->addChild(addAction(PRE_DASH_TO_PLAYER));//cargar dash movimiento hacia el jugador
+    sec5->addChild(addAction(DASH));//dash
     Sequence* sec4= new Sequence();
     sec4->addChild(addAction(ON_RANGE));
-    sec4->addChild(addAction(GIRAR));//cargar dash ataque hacia jugador
-    sec4->addChild(addAction(GIRAR));//dash de ataque
+    sec4->addChild(addAction(PRE_DASH_TO_PLAYER));//cargar dash ataque hacia jugador
+    sec4->addChild(addAction(DASH));//dash de ataque
     Selector* sel1= new Selector();
     sel1->addChild(sec4);
     sel1->addChild(sec5);
@@ -104,8 +104,8 @@ void Treecontroller::arbolrusher(){
     sec8->addChild(addAction(GIRAR));//cargar dash
     sec8->addChild(addAction(GIRAR));//dash por la zona
     Sequence* sec9= new Sequence();
-    sec9->addChild(addAction(GIRAR));//cargar hacia ultima posicion
-    sec9->addChild(addAction(GIRAR));//dash
+    sec9->addChild(addAction(PRE_DASH_TO_LAST_PLAYER));//cargar hacia ultima posicion
+    sec9->addChild(addAction(DASH));//dash
     Sequence* sec7= new Sequence();
     sec7->addChild(addAction(IN_LAST_POS_KWON));
     sec7->addChild(sec9);

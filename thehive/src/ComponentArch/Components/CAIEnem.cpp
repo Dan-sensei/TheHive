@@ -22,8 +22,29 @@ CTransform* CAIEnem::PlayerTransform;
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr),
  type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen)
-{}
-
+{
+    switch (_type) {
+        case gg::SOLDIER:
+            velocity=2;
+        CanIReset=true;
+            break;
+        case gg::TANK:
+        CanIReset=true;
+        velocity=1;
+            break;
+        case gg::RUSHER:
+        CanIReset=false;
+        velocity=8;
+            break;
+        case gg::TRACKER:
+        CanIReset=true;
+        velocity=2;
+            break;
+    }
+}
+int CAIEnem::getVelocity(){
+    return velocity;
+}
 void CAIEnem::setSigno(int _signo){
     signo=_signo;
 }
@@ -46,7 +67,7 @@ void CAIEnem::enemyseen(){
 }
 
 void CAIEnem::enemyrange(){
-    if(!playerOnRange){
+    if(!playerOnRange&&CanIReset){
         resetMyOwnTree();
     }
     playerOnRange=true;
@@ -144,7 +165,9 @@ void CAIEnem::FixedUpdate(){
 
         if(gradovision<sol && !playerSeeing){
             enemyseen();
-            resetMyOwnTree();
+            if(CanIReset){
+                resetMyOwnTree();
+            }
             resetHabilityUpdateCounter();
         }
         if(dist<Arange){
@@ -158,7 +181,9 @@ void CAIEnem::FixedUpdate(){
     }
     else if(playerSeeing){
         playerSeeing = false;
-        resetMyOwnTree();
+        if(CanIReset){
+            resetMyOwnTree();
+        }
         resetHabilityUpdateCounter();
     }
     if(playerSeeing){
@@ -220,7 +245,9 @@ void CAIEnem::setPlayerIsAttacking(bool _b){
     isPlayerAttacking = _b;
     playerPos       = PlayerTransform->getPosition();
     playerSeen=true;
-    resetMyOwnTree();
+    if(CanIReset){
+        resetMyOwnTree();
+    }
     CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
     if(clk){
         clk->restart();
