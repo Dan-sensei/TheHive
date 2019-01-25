@@ -22,6 +22,7 @@ class CVida : public IComponent {
     public:
         CVida(int _vida);
         virtual ~CVida();
+        float getVida();
 
         // Functions of IComponent
         virtual gg::EMessageStatus processMessage(const Message &m);

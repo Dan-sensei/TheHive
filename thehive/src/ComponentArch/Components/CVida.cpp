@@ -21,6 +21,9 @@ CVida::CVida(int _vida)
 
 CVida::~CVida() {}
 
+float CVida::getVida(){
+    return vida;
+}
 bool CVida::quitarvida(const float &_factor){
     bool ret = false;
 

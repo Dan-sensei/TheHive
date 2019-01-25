@@ -71,15 +71,36 @@ int ScreenConsole::InitAIDebug(int id){
     ObjectManager* Manager = Singleton<ObjectManager>::Instance();
     std::cout << "id:" <<id<< '\n';
     CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+    CVida* Vida = static_cast<CVida*>(Manager->getComponent(gg::VIDA,id));
 
+
+    std::string tipo;
+
+    switch (AIEnem->getEnemyType()) {
+        case gg::SOLDIER:
+            tipo="SOLDIER";
+            break;
+        case gg::TANK:
+            tipo="TANK";
+            break;
+        case gg::RUSHER:
+            tipo="RUSHER";
+            break;
+        case gg::TRACKER:
+            break;
+    }
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Debug Enemigo"),gg::Color(0,0,0,1));
+
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(10),std::string("Tipo de enemigo:"                              +tipo                      ),gg::Color(255,0,0,1));
+
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(15),std::string("Vida:"                              +std::to_string(Vida->getVida()                      )),gg::Color(255,0,0,1));
 
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(20),std::string("Estoy viendo al jugador:"           +BoolToString(AIEnem->playerSeeing              )),gg::Color(255,0,0,1));
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(25),std::string("He visto al jugador:"               +BoolToString(AIEnem->playerSeen                )),gg::Color(255,0,0,1));
-    AddStaticTextToBuffer(porc_ancho(10),porc_alto(30),std::string("Estoy afectado por ultrasunido:"    +BoolToString(AIEnem->ultrasonido               )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(30),std::string("Estoy afectado por ultrasonido:"    +BoolToString(AIEnem->ultrasonido               )),gg::Color(255,0,0,1));
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(35),std::string("Estoy afectado por senyuelo:"       +BoolToString(AIEnem->senyuelo                  )),gg::Color(255,0,0,1));
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(40),std::string("Jugador a rango:"                   +BoolToString(AIEnem->playerOnRange             )),gg::Color(255,0,0,1));
-    AddStaticTextToBuffer(porc_ancho(10),porc_alto(45),std::string("Estoy atacando:"                    +BoolToString(AIEnem->getImAttacking()          )),gg::Color(255,0,0,1));
+    AddStaticTextToBuffer(porc_ancho(10),porc_alto(45),std::string("Puedo atacar:"                      +BoolToString(AIEnem->getImAttacking()          )),gg::Color(255,0,0,1));
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(50),std::string("Acaba de morir un aliado cercano:"  +BoolToString(AIEnem->getCloserAllyIsDead()     )),gg::Color(255,0,0,1));
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(55),std::string("Me esta atacando el jugador:"       +BoolToString(AIEnem->getPlayerIsAttacking()    )),gg::Color(255,0,0,1));
 

@@ -227,6 +227,7 @@ void CPlayerController::FixedUpdate(){
 
     // Graná
     if(Engine->key(gg::GG_G)){
+        gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
         //std::cout << actualGrenadeState << '\n';
         if(pulsacion_granada==false)
             (this->*mapFuncGrenades[actualGrenadeState])();
