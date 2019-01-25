@@ -74,6 +74,7 @@ void Game::Init(){
     // Pos init del heroe normal
     // 360, 0, 350
     uint16_t h = sF->createHero(gg::Vector3f(10,3,65),false);
+    sF->createRusher(gg::Vector3f(5,3,65),200);
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     sF->createCollectableWeapon(gg::Vector3f(20, 3, 50),2);
@@ -257,9 +258,9 @@ void Game::Update(){
     Engine->Dro();
     Engine->DisplayFPS();
 
-    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
-    Singleton<Pathfinding>::Instance()->DroNodes();
-    Singleton<ScreenConsole>::Instance()->DisplayDebug();
+    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    // Singleton<Pathfinding>::Instance()->DroNodes();
+    // Singleton<ScreenConsole>::Instance()->DisplayDebug();
     Singleton<ScreenConsole>::Instance()->DisplayHUD();
 
     Engine->EndDro();

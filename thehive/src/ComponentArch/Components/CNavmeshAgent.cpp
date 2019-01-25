@@ -7,7 +7,7 @@
 #define MAXSPEED 4.f
 #define FORCE_FACTOR 250.f
 
-
+//aqui
 CNavmeshAgent::CNavmeshAgent()
 :Engine(nullptr), cTransform(nullptr), currentWaypointID(11), currentlyMovingTowardsTarget(false), SightDistance(250000)
 {

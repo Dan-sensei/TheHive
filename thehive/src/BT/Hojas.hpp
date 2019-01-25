@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 enum Hojas {
     ANDAR_RAND,
     COMER,
@@ -35,5 +43,8 @@ enum Hojas {
     EXPANSIVE_WAVE,
     SPIT, // Es escupir en inglis
     ENEMY_OVER_2_METERS,
+    PRE_DASH_TO_PLAYER,
+    PRE_DASH_TO_LAST_PLAYER,
+    DASH,
     NUM_ACCIONES
 };

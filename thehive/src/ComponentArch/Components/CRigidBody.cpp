@@ -18,6 +18,8 @@ CRigidBody::CRigidBody(
     float _mass,
     float iX, float iY, float iZ,
     float friction
+    //unsigned int Group,
+    //unsigned int Mask
 )
 :cTransform(nullptr), world(nullptr)
 {
@@ -66,6 +68,7 @@ CRigidBody::CRigidBody(
 
         // Add the body to the dynamics world
         world->addRigidBody(body);
+        //world->addRigidBody(body,Group,Mask);
     }
     else{
         shape = new btBoxShape(btVector3(btScalar(sX), btScalar(sY), btScalar(sZ)));
@@ -100,6 +103,7 @@ CRigidBody::CRigidBody(
 
         // Add the body to the dynamics world
         world->addRigidBody(body);
+        //world->addRigidBody(body,Group,Mask);
     }
 
     if(kinematic){
@@ -255,6 +259,9 @@ void CRigidBody::applyCentralImpulse(gg::Vector3f vec){
     body->applyCentralImpulse(btVector3(vec.X,vec.Y,vec.Z));
 }
 
+void CRigidBody::clearForce(){
+    body->clearForces();
+}
 void CRigidBody::applyCentralForce(gg::Vector3f vec){
     body->applyCentralForce(btVector3(vec.X,vec.Y,vec.Z));
 }
@@ -290,7 +297,9 @@ void CRigidBody::applyConstantVelocity(gg::Vector3f _force,float _max_speed,bool
 void CRigidBody::activate(bool b){
     body->activate(b);
 }
-
+btRigidBody* CRigidBody::getBody(){
+    return body;
+}
 gg::Vector3f CRigidBody::getBodyPosition(){
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);

@@ -10,18 +10,13 @@
 
 #include <Util.hpp>
 
-#include "EventSystem/Blackboard.hpp"
-#include "EventSystem/BVector3f.hpp"
-#include "EventSystem/BInt.hpp"
-#include "EventSystem/BBool.hpp"
+class CAIEnem;
 
-#include <ComponentArch/ObjectManager.hpp>
-#include <ComponentArch/Components/CAIEnem.hpp>
-#include <ComponentArch/Components/CTransform.hpp>
-#include <ComponentArch/Components/CRigidBody.hpp>
-#include <ComponentArch/Components/CVida.hpp>
+class CRigidBody    ;
+class ObjectManager ;
+class CTransform    ;
+class Blackboard;
 
-#include <GameAI/Pathfinding.hpp>
 
 class Action : public Behavior {
     public:
@@ -78,7 +73,11 @@ class Action : public Behavior {
         void setOffsetAliensAttacking(int);
         void doExplosiveWave();
         void doSpit();
-
+        int getTask();
+        void dash();
+        void predash();
+        void predash_to_last_player();
+        void predash_to_player();
 
         CAIEnem* yo;
         static int aliensAttacking;

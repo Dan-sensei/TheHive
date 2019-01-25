@@ -1,5 +1,18 @@
 #include "Action.hpp"
 
+#include "EventSystem/Blackboard.hpp"
+#include "EventSystem/BVector3f.hpp"
+#include "EventSystem/BInt.hpp"
+#include "EventSystem/BBool.hpp"
+
+#include <ComponentArch/ObjectManager.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
+#include <ComponentArch/Components/CTransform.hpp>
+#include <ComponentArch/Components/CRigidBody.hpp>
+#include <ComponentArch/Components/CVida.hpp>
+
+#include <GameAI/Pathfinding.hpp>
+
 #define MAX_AI_SPEED            2.f
 #define VEL_ATENUATION          0.1
 
@@ -8,6 +21,10 @@ int Action::aliensAttacking = 0;
 Action::Action(const Action &orig){
     Action(orig.tarea,orig.data,orig.yo);
 }
+int Action::getTask(){
+    return tarea;
+}
+
 
 Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     yo = ai;
@@ -54,7 +71,11 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[ENEMY_OVER_2_METERS]     = &Action::over_2_meters;
 
     VectorAcciones[MOVEP_UNTILX]            = &Action::move_player_utilx;         // si
-    VectorAcciones[IAMATACKING]            = &Action::imatack;         // si
+    VectorAcciones[IAMATACKING]             = &Action::imatack;         // si
+
+    VectorAcciones[PRE_DASH_TO_PLAYER]      = &Action::predash_to_player;         // nope
+    VectorAcciones[PRE_DASH_TO_LAST_PLAYER] = &Action::predash_to_last_player;         // nope
+    VectorAcciones[DASH]                    = &Action::dash;         // nope
 
     data    = _data;
     tarea   = task;
@@ -202,7 +223,7 @@ void Action::rond(bool _b){
 
     cTransform->setRotation(V_AI_DEST);
 
-    cRigidBody->applyConstantVelocity(V_FINAL,MAX_AI_SPEED-(yo->getEnemyType()*VEL_ATENUATION));
+    cRigidBody->applyConstantVelocity(V_FINAL,yo->getVelocity()-(yo->getEnemyType()*VEL_ATENUATION));
 }
 
 void Action::ult_cont(){
@@ -259,6 +280,84 @@ void Action::over_X_meters(int _m){
     (dist>_m)? s = BH_SUCCESS : s = BH_FAILURE;
 }
 
+void Action::dash(){
+    if(s!=BH_RUNNING){
+        yo->CanIReset=false;
+    }
+    move_too(5);
+
+    if(s!=BH_RUNNING){
+        yo->CanIReset=true;
+    }
+    //if(s==BH_SUCCESS){
+    //    yo->playerSeen=false;
+    //}
+}
+void Action::predash_to_last_player(){
+
+    if(s!=BH_RUNNING){
+        yo->CanIReset=false;
+
+        if(gg::DIST(yo->destino,yo->playerPos)>30){
+            gg::Vector3f mio            = cTransform->getPosition();
+            yo->destino = mio +gg::Normalice(yo->playerPos-mio)*30;
+        }
+        else{
+            yo->destino = yo->playerPos;
+        }
+        //yo->destino = yo->playerPos;
+    }
+    predash();
+    if(s!=BH_RUNNING&&yo->destino == yo->playerPos){
+        yo->CanIReset=true;
+        yo->playerSeen=false;
+    }
+}
+void Action::predash_to_player(){
+    if(s!=BH_RUNNING){
+        yo->CanIReset=false;
+        gg::Vector3f mio            = cTransform->getPosition();
+        CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
+        //yo->destino = mio +gg::Normalice(cTransform2->getPosition()-mio)*30;
+        yo->destino = cTransform2->getPosition();
+    }
+    predash();
+    if(s!=BH_RUNNING){
+        yo->CanIReset=true;
+        gg::Vector3f mio            = cTransform->getPosition();
+        CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
+        if(gg::DIST(cTransform2->getPosition(),mio)<5){
+            uint16_t hero = manager->getHeroID();
+            CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
+            ht->quitarvida(0.5+(yo->getRage()/2));
+
+        }
+    }
+}
+void Action::predash(){
+
+    if(s!=BH_RUNNING){
+        s = BH_RUNNING;
+        //elegir destino y ponemos rotacion
+        gg::Vector3f mio            = cTransform->getPosition();
+        gg::Vector3f dest           = yo->destino;
+        gg::Vector3f V_AI_DEST      = dest-mio;
+        //yo->destino = yo->playerPos;
+
+        V_AI_DEST.Y     = 0;
+        V_AI_DEST       = gg::Normalice(V_AI_DEST);
+        V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
+
+        cTransform->setRotation(V_AI_DEST);
+        //inicializamos variables
+        cont_hit = 0;
+    }
+    cont_hit++;
+    if(cont_hit > 50){
+        s = BH_SUCCESS;
+    }
+
+}
 void Action::hit(){
     gg::Vector3f mio            = cTransform->getPosition();
     gg::Vector3f dest           = yo->playerPos;
@@ -412,9 +511,9 @@ void Action::move_player(){
     yo->destino = cTransform2->getPosition();
 
     move_too(5);
-    if(s==BH_SUCCESS){
-        yo->playerSeen=false;
-    }
+    //if(s==BH_SUCCESS){
+    //    yo->playerSeen=false;
+    //}
 }
 
 void Action::move_around(){
@@ -478,18 +577,21 @@ void Action::move_too(int min){
 
     if(dist<min){
         s = BH_SUCCESS;
+        //cRigidBody->clearForce();
+        cRigidBody->setLinearVelocity(gg::Vector3f());
+        //cRigidBody->applyConstantVelocity(gg::Vector3f(0,0,0),0);
     }
     else{
         s = BH_RUNNING;
-    mio=direccion;
-    mio.Y     = 0;
-    mio       = gg::Normalice(mio);
-    mio       = gg::Direccion2D_to_rot(mio);
+        mio=direccion;
+        mio.Y     = 0;
+        mio       = gg::Normalice(mio);
+        mio       = gg::Direccion2D_to_rot(mio);
 
-    cTransform->setRotation(mio);
+        cTransform->setRotation(mio);
 
-    direccion       = gg::Normalice(direccion);
-    cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED);
+        direccion       = gg::Normalice(direccion);
+        cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
 }
 
 

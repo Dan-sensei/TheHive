@@ -39,6 +39,8 @@ class CRigidBody : public IComponent {
             float _mass,
             float iX, float iY, float iZ,
             float friction = 0
+            //unsigned int Group=0,
+            //unsigned int Mask=0
         );
         // Constructor de objetos fantasma -> DETECTAN TODAS LAS COLISIONES, PERO NO COLISIONAN
         CRigidBody(
@@ -65,6 +67,7 @@ class CRigidBody : public IComponent {
         void MHandler_XPLOTATO(TriggerRecordStruct* cdata);
 
         // Funciones de CRigidBody
+        void clearForce();
         void applyCentralForce(gg::Vector3f);
         void applyCentralImpulse(gg::Vector3f);
         void applyTorque(gg::Vector3f);
@@ -78,6 +81,7 @@ class CRigidBody : public IComponent {
         // 'Despierta' de nuevo el objeto para que les puedan ser aplicadas fuerzas
         void activate(bool);
 
+        btRigidBody* getBody();
         gg::Vector3f getBodyPosition();
         gg::Vector3f getLinearVelocity();
         void setBodyPosition(gg::Vector3f&);

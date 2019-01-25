@@ -76,6 +76,33 @@ uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health
 
     return Enemy;
 }
+uint16_t Factory::createRusher(const gg::Vector3f &Position,const float &health){
+    uint16_t Enemy = Manager->createEntity();
+    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+
+    CTransform* Transform               = new CTransform(Position, gg::Vector3f(0, 0, 0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
+
+    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
+
+    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 80, 0,0,0, 0);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
+
+    CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
+    Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
+
+    CAIEnem* AIEnem                     = new CAIEnem(gg::RUSHER,30,Position,false);
+    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+
+    CVida* Vida                         = new CVida(health);
+    Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
+
+    CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
+    Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
+
+    return Enemy;
+}
 
 uint16_t Factory::createTank(const gg::Vector3f &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();

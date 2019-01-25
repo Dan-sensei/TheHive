@@ -14,6 +14,8 @@
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>
 #include <ComponentArch/Enum.hpp>
+#include <Bullet/ggDynWorld.hpp>
+
 #include <ComponentArch/Components/CClock.hpp>
 
 #include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
@@ -26,6 +28,7 @@ class ObjectManager;
 class CAgent;
 class CTransform;
 class CNavmeshAgent;
+class ggDynWorld;
 
 class CAIEnem : public IComponent {
     public:
@@ -75,6 +78,7 @@ class CAIEnem : public IComponent {
         void explosiveWave();
 
         int getEnemyType();
+        int getVelocity();
         // /////////////////////////////////////////////// //
         // JAVI CAMBIA LO DE LAS VARIABLES PUBLICAS !      //
         // /////////////////////////////////////////////// //
@@ -104,6 +108,7 @@ class CAIEnem : public IComponent {
         bool playerSeeing;
         bool ultrasonido;
         bool senyuelo;
+        bool            CanIReset;
 
     private:
         GameEngine      *Engine;
@@ -111,16 +116,20 @@ class CAIEnem : public IComponent {
         CTriggerSystem  *EventSystem;
         CTransform      *cTransform;
         CAgent          *cAgent;
+        ggDynWorld      *world;
+
         // CNavmeshAgent   *nvAgent;
 
         gg::EEnemyType type;
         int             numberOfUpdatesSinceLastHability;
         int             maxAliensAttacking;
+        int             velocity;
 
         static bool     debugvis;
         bool            imAttacking;
         bool            isPlayerAttacking;
         bool            closerAllyIsDead;
+        //bool            CanIReset;
 
         void enableVisualDebug();
 };

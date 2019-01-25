@@ -73,6 +73,7 @@ void MenuState::Init(){
 }
 void MenuState::Resume() {
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
+    Engine->HideCursor(false);
 
 }
 //void MenuState::submenu(){

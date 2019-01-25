@@ -13,7 +13,10 @@ ggDynWorld::ggDynWorld(){
 ggDynWorld::~ggDynWorld(){}
 
 void ggDynWorld::addRigidBody(btRigidBody* body){
+//void ggDynWorld::addRigidBody(btRigidBody* body,unsigned int Group,unsigned int Mask){
+    //dynamicsWorld->addRigidBody(body,Group,Mask);
     dynamicsWorld->addRigidBody(body);
+    //std::cout << body->getFlags() << '\n';
 }
 
 void ggDynWorld::removeRigidBody(btRigidBody *body){
@@ -149,18 +152,9 @@ btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
     return dynamicsWorld;
 }
 
-gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float _weaponRange){
-    if(_weaponRange == -1)  _weaponRange  = FAR_RANGE_FACTOR;
-    else                    _weaponRange *= FAR_RANGE_FACTOR;
 
-    gg::Vector3f aux = gg::Vector3f(
-         sin(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) ) ,
-        -sin(rot.X  *PI/180.f) ,
-         cos(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) )
-    );
+gg::Vector3f ggDynWorld::handleRayCastTo(gg::Vector3f from, gg::Vector3f to,float _weaponRange){
 
-
-    gg::Vector3f to =aux*FAR_RANGE_FACTOR+from;
 
     gg::Vector3f ret(-1,-1,-1);
     raycastVector           = to;
@@ -183,16 +177,36 @@ gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float
         raycastCollisionBody = const_cast<btRigidBody*>(btRigidBody::upcast(callBack.m_collisionObject));
     }
     return ret;
+
+}
+gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float _weaponRange){
+    if(_weaponRange == -1)  _weaponRange  = FAR_RANGE_FACTOR;
+    else                    _weaponRange *= FAR_RANGE_FACTOR;
+
+    gg::Vector3f aux = gg::Vector3f(
+         sin(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) ) ,
+        -sin(rot.X  *PI/180.f) ,
+         cos(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) )
+    );
+
+
+    gg::Vector3f to =aux*FAR_RANGE_FACTOR+from;
+
+    return handleRayCastTo(from,to,_weaponRange);
+
+
 }
 
-void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f from,gg::Vector3f force){
+int ggDynWorld::getIDFromRaycast(){
+    if(!raycastCollisionBody)
+        return -1;
+    ObjectManager* Manager = Singleton<ObjectManager>::Instance();
+    return Manager->returnIDFromRigid(raycastCollisionBody);
+}
+void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f force){
     if(!raycastCollisionBody)
         return;
-
     raycastCollisionBody->applyCentralForce(btVector3(force.X,force.Y,force.Z));
-
-    // Debe de haber alguna forma de igualar bodys para saber el CRigidBody que estamos echando atras
-
 }
 
 gg::Vector3f ggDynWorld::getRaycastVector(){

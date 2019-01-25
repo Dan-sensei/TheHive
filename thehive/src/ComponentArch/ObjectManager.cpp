@@ -3,6 +3,7 @@
 #include <GameAI/Pathfinding.hpp>
 #include <Singleton.hpp>
 #include <iostream>
+#include "Bullet/ggDynWorld.hpp"
 
                      //  2^16
 #define MAX_ENTITIES 65536
@@ -83,7 +84,31 @@ void ObjectManager::clin(){
     Singleton<Pathfinding>::Instance()->clear();    //  Provisional
 }
 
+int ObjectManager::returnIDFromRigid(btRigidBody* esto){
+    //compr esto
+    //const gg::EComponentType &cType
+    //std::cout << "hecho" << '\n';
+    std::map<uint16_t, IComponent*>::iterator found = TypeToComponentMap[gg::RIGID_BODY].begin();
+    while(found!=TypeToComponentMap[gg::RIGID_BODY].end()){
+        //std::cout << "entra" << '\n';
+        CRigidBody* cRigidBody = static_cast<CRigidBody*>(found->second);
+        if(esto!=nullptr&&cRigidBody->getBody()!=nullptr&&cRigidBody->getBody()==esto){
+            //std::cout << "si joder" << '\n';
+            //std::cout << found->first << '\n';
+            return found->first;
+        }
+        found++;
+        //std::cout << "sale" << '\n';
+        //found->second;
+    }
+    //std::cout << "sale fin" << '\n';
+return 0;
+    //  If exists
+    //if(found != TypeToComponentMap[cType].end())
+    //    return found->second;   // <- We return the pointer to it
 
+
+}
 
 uint16_t ObjectManager::createEntity() {
     //  The stack will usually contain only one element wich will
