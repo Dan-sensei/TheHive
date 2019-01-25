@@ -36,6 +36,26 @@ bool CVida::quitarvida(const float &_factor){
             gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
             vida = 0;
             ret = true;
+            //Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID());
+            //Manager->getComponent(gg::AIENEM,getEntityID());
+
+            CAIEnem* cAIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+            CPlayerController* cPlayerController = static_cast<CPlayerController*>(Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID()));
+            //cTransform = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,yo->getEntityID()));
+            switch (cAIEnem->getEnemyType()) {
+                case gg::SOLDIER:
+                    cPlayerController->currentsoldier--;
+                    break;
+                case gg::TANK:
+                cPlayerController->currenttank--;
+                    break;
+                case gg::RUSHER:
+                cPlayerController->currentrusher--;
+                    break;
+            }
+
+
+            //
         }
     }
     gg::cout("DAMAGE DONE-> "+std::to_string(K_DMG_VALUE*_factor)+"["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");

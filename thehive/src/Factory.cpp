@@ -120,11 +120,14 @@ uint16_t Factory::createTank(const gg::Vector3f &Position,const float &health){
     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
-    CAIEnem* AIEnem                     = new CAIEnem(gg::TANK,30,Position,true);
+    CAIEnem* AIEnem                     = new CAIEnem(gg::TANK,30,Position,false);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
     CVida* Vida                         = new CVida(health);
     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
+
+    CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
+    Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
 
     return Enemy;
 }

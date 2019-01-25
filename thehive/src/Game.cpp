@@ -74,18 +74,19 @@ void Game::Init(){
     // Pos init del heroe normal
     // 360, 0, 350
     uint16_t h = sF->createHero(gg::Vector3f(10,3,65),false);
-    sF->createRusher(gg::Vector3f(5,3,65),200);
+    //sF->createRusher(gg::Vector3f(5,3,65),200);
+    sF->createTank(gg::Vector3f(5,3,65),200);
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     sF->createCollectableWeapon(gg::Vector3f(20, 3, 50),2);
 
-    sF->createSoldier(gg::Vector3f(-10,3, -50),200);
+    sF->createRusher(gg::Vector3f(-10,3, -50),200);
     sF->createSoldier(gg::Vector3f(-45,3,-23),200);
     // sF->createSoldier(gg::Vector3f(189,-10,264),200);
     // sF->createSoldier(gg::Vector3f(  9,-10,277),200);
 
     gg::Vector3f mapPos(0,0,0);
-
+/*
     uint16_t idEx = sF->createCollisionableDynamicModel(
         "assets/Models/ModelsForEvents/door1.obj",
         "assets/Models/ModelsForEvents/door1.bullet",
@@ -104,7 +105,7 @@ void Game::Init(){
         // i674,106,130
     uint16_t key = sF->createPickableItem(gg::Vector3f(12, 10, -61));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+-51, mapPos.Y+1, mapPos.Z+-60),idEx,gg::Vector3f(0,-0.035*4,0),8000,key);
-
+*/
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/GROUND.obj", "assets/Textures/Domino.jpg", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/WALLS.obj", "assets/Textures/MetalPanelRectangular001_REFL_1K_SPECULAR.jpg", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CORNER.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());

@@ -30,7 +30,8 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerP
             break;
         case gg::TANK:
         CanIReset=true;
-        velocity=1;
+        velocity=2;
+        //velocity=1.75;
             break;
         case gg::RUSHER:
         CanIReset=true;
@@ -42,7 +43,7 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerP
             break;
     }
 }
-int CAIEnem::getVelocity(){
+float CAIEnem::getVelocity(){
     return velocity;
 }
 void CAIEnem::setSigno(int _signo){

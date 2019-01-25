@@ -47,6 +47,10 @@ void CPlayerController::Init(){
     camera  = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
 
+
+    pulsacion_soldier= false;
+    pulsacion_tank= false;
+    pulsacion_rusher= false;
     pulsacion_granada = false;
     pulsacion_espacio = false;
     pulsacion_q = false;
@@ -55,6 +59,15 @@ void CPlayerController::Init(){
     debug1 = false;
     debug2 = false;
     MULT_BASE=1;
+
+    maxsoldier  =10;
+    maxrusher   =10;
+    maxtank     =10;
+
+    currentsoldier=1;
+    currentrusher=1;
+    currenttank=1;
+
     //pulsacion_enemigos=false;
 
 
@@ -147,6 +160,49 @@ void CPlayerController::FixedUpdate(){
     }
     if(Engine->key(gg::GG_3)){
         hab->ToggleSkill(2);
+    }
+    if(Engine->key(gg::GG_T)){
+        if(pulsacion_soldier==false){
+            pulsacion_soldier=true;
+            if(maxsoldier>currentsoldier){
+                currentsoldier++;
+                auto sF = Singleton<Factory>::Instance();
+                sF->createSoldier(gg::Vector3f(-10,3, -50),200);
+
+            }
+
+        }
+    }
+    else{
+        pulsacion_soldier= false;
+    }
+    if(Engine->key(gg::GG_Y)){
+        if(pulsacion_tank==false){
+            pulsacion_tank=true;
+            if(maxtank>currenttank){
+                currenttank++;
+
+                auto sF = Singleton<Factory>::Instance();
+                sF->createTank(gg::Vector3f(5,3,65),200);
+            }
+        }
+    }
+    else{
+        pulsacion_tank= false;
+    }
+    if(Engine->key(gg::GG_U)){
+        if(pulsacion_rusher==false){
+            pulsacion_rusher=true;
+            if(maxrusher>currentrusher){
+                currentrusher++;
+
+                auto sF = Singleton<Factory>::Instance();
+                sF->createRusher(gg::Vector3f(-45,3,-23),200);
+            }
+        }
+    }
+    else{
+        pulsacion_rusher= false;
     }
     if(Engine->key(gg::GG_M)){
         //hab->ToggleSkill(2);

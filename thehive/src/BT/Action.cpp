@@ -359,6 +359,12 @@ void Action::predash(){
 
 }
 void Action::hit(){
+    //std::cout << yo->playerOnRange << '\n';
+    //if(yo->playerOnRange){
+    //    std::cout << "estoy a rango" << '\n';
+    //}else{
+    //    std::cout << "no lo estoy" << '\n';
+    //}
     gg::Vector3f mio            = cTransform->getPosition();
     gg::Vector3f dest           = yo->playerPos;
 
@@ -505,12 +511,19 @@ void Action::move_player(){
         //gg::cout("move player");
 
         // gg::cout(" --- MOVE TO PLAYER --- ");
+        std::cout << "empieza" << '\n';
     }
 
     CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
     yo->destino = cTransform2->getPosition();
 
     move_too(5);
+    if(s!=BH_RUNNING){
+        //gg::cout("move player");
+
+        // gg::cout(" --- MOVE TO PLAYER --- ");
+        std::cout << "acaba" << '\n';
+    }
     //if(s==BH_SUCCESS){
     //    yo->playerSeen=false;
     //}
@@ -592,6 +605,8 @@ void Action::move_too(int min){
 
         direccion       = gg::Normalice(direccion);
         cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
+        //std::cout << yo->getVelocity() << '\n';
+        //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
 }
 
 

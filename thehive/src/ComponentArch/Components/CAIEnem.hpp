@@ -78,7 +78,7 @@ class CAIEnem : public IComponent {
         void explosiveWave();
 
         int getEnemyType();
-        int getVelocity();
+        float getVelocity();
         // /////////////////////////////////////////////// //
         // JAVI CAMBIA LO DE LAS VARIABLES PUBLICAS !      //
         // /////////////////////////////////////////////// //
@@ -123,7 +123,7 @@ class CAIEnem : public IComponent {
         gg::EEnemyType type;
         int             numberOfUpdatesSinceLastHability;
         int             maxAliensAttacking;
-        int             velocity;
+        float             velocity;
 
         static bool     debugvis;
         bool            imAttacking;

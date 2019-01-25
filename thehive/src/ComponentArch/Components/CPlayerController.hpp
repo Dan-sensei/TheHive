@@ -57,7 +57,15 @@ class CPlayerController : public IComponent {
 
         void SprintBuf();
         void SprintDebuf();
+        int maxsoldier;
+        int maxrusher;
+        int maxtank;
+
+        int currentsoldier;
+        int currentrusher;
+        int currenttank;
     private:
+
         CPlayerController();
         CPlayerController(const CPlayerController &orig) = delete;
 
@@ -75,6 +83,9 @@ class CPlayerController : public IComponent {
         bool GranadeCreate;
 
         bool pulsacion_granada;
+        bool pulsacion_soldier;
+        bool pulsacion_tank;
+        bool pulsacion_rusher;
         //bool pulsacion_enemigos;
         bool pulsacion_espacio;
         bool pulsacion_q;
