@@ -511,7 +511,7 @@ void Action::move_player(){
         //gg::cout("move player");
 
         // gg::cout(" --- MOVE TO PLAYER --- ");
-        std::cout << "empieza" << '\n';
+        // std::cout << "empieza" << '\n';
     }
 
     CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
@@ -522,7 +522,7 @@ void Action::move_player(){
         //gg::cout("move player");
 
         // gg::cout(" --- MOVE TO PLAYER --- ");
-        std::cout << "acaba" << '\n';
+        // std::cout << "acaba" << '\n';
     }
     //if(s==BH_SUCCESS){
     //    yo->playerSeen=false;

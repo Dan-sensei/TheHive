@@ -69,7 +69,7 @@ std::string  BoolToString(bool b)
 int ScreenConsole::InitAIDebug(int id){
     CLINMenu();
     ObjectManager* Manager = Singleton<ObjectManager>::Instance();
-    std::cout << "id:" <<id<< '\n';
+    // std::cout << "id:" <<id<< '\n';
     CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
     CVida* Vida = static_cast<CVida*>(Manager->getComponent(gg::VIDA,id));
 
