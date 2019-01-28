@@ -86,7 +86,9 @@ void Game::Init(){
     // sF->createSoldier(gg::Vector3f(  9,-10,277),200);
 
     gg::Vector3f mapPos(0,0,0);
-/*
+
+    /*
+    // POR SI SE QUIERE CARGAR EL MAPA DE SIEMPRE
     uint16_t idEx = sF->createCollisionableDynamicModel(
         "assets/Models/ModelsForEvents/door1.obj",
         "assets/Models/ModelsForEvents/door1.bullet",
@@ -105,7 +107,8 @@ void Game::Init(){
         // i674,106,130
     uint16_t key = sF->createPickableItem(gg::Vector3f(12, 10, -61));
     sF->createTouchableObject(gg::Vector3f(mapPos.X+-51, mapPos.Y+1, mapPos.Z+-60),idEx,gg::Vector3f(0,-0.035*4,0),8000,key);
-*/
+    */
+
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/GROUND.obj", "assets/Textures/Domino.jpg", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/WALLS.obj", "assets/Textures/MetalPanelRectangular001_REFL_1K_SPECULAR.jpg", gg::Vector3f());
     sF->createStaticModel("assets/Models/CIUDAD/Presentacion1/CORNER.obj", "assets/Textures/DominoInverted.jpg", gg::Vector3f());
@@ -121,8 +124,6 @@ void Game::Init(){
     // BELNDER  -> bX,      bY,     bZ                            //
     // JEUGO    -> jX-bX,   jY+bZ,  jZ-bY                         //
     //============================================================//
-
-    // std::cout << "BEGIN GAME LOOP" << '\n';
 
     uint16_t GROUND1 = Manager->createEntity();
     CRigidBody* RigidBody_1 = new CRigidBody(false, false,"", -8.61945, -27.88897, 2.74528, 44.103, 26.624, 71.781, 0, 0,0,0, 0.2);
@@ -249,8 +250,6 @@ void Game::Update(){
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
-
-
     Engine->BeginDro();
     Manager->UpdateAll();
 
@@ -259,10 +258,11 @@ void Game::Update(){
     Engine->Dro();
     Engine->DisplayFPS();
 
+    // Consola por pantalla
+    Singleton<ScreenConsole>::Instance()->DisplayDebug();
+    Singleton<ScreenConsole>::Instance()->DisplayHUD();
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Singleton<Pathfinding>::Instance()->DroNodes();
-    // Singleton<ScreenConsole>::Instance()->DisplayDebug();
-    Singleton<ScreenConsole>::Instance()->DisplayHUD();
 
     Engine->EndDro();
 }

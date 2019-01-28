@@ -179,23 +179,10 @@ void CCamera::setFinalRotation(gg::Vector3f &newRotation,gg::Vector3f &backupRot
 
 void CCamera::fixCameraPositionOnCollision(gg::Vector3f &nextPosition){
     gg::Vector3f camPosition = cam->getPosition();
-    CRigidbody->setBodyPosition(nextPosition);
-    //CRigidbody->checkContactResponse();
     // Las dos mejores lineas que he escrito en mi vida
-    //gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2;
-    //gg::Vector3f dir = (getlastHeroPosition()-nextPosition);
-    //gg::Vector3f to     = world->getRaycastVector();//choca solo
-
-
-    gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(getlastHeroPosition()-nextPosition)*0.5;
-    if(CRigidbody->checkContactResponse()){
-        //std::cout << "rigid collision" << '\n';
-    }
-    if(CRigidbody->checkContactResponse()&&dynWorld->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
+    gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2;
+    if(dynWorld->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
         cam->setPosition(pos_on_collision);
-        //cam->setPosition(getlastHeroPosition());
-        //std::cout << "mal" << '\n';
-        //Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1),3);
     }
 }
 
