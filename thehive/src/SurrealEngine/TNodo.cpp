@@ -14,10 +14,13 @@ TNodo::TNodo(TNodo *_papa,TEntidad *_ent){
 
 TNodo::~TNodo(){
     auto it = hijos.begin();
+    int i = 0;
 
     while(it!=hijos.end()){
+        delete hijos[i];
         hijos.erase(it);
         ++it;
+        ++i;
     }
     // Con erase se borran las posiciones
     // Con shrink_to_fit se borra la memoria que ocupaba
