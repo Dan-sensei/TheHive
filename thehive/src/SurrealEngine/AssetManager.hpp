@@ -3,7 +3,8 @@
 
 #include <string>
 #include <map>
-#include "ZMesh.hpp"
+#include "ZMeshData.hpp"
+#include "ZMaterial.hpp"
 #include "OpenGEnum.hpp"
 
 class AssetManager {
@@ -11,13 +12,13 @@ class AssetManager {
 
         ~AssetManager();
 
-        static void getMesh(const std::string &Name);
-        static void getMaterial(const std::string &Name);
+        static ZMeshData* getMeshData(const std::string &Name);
+        static ZMaterial* getMaterial(const std::string &Name);
 
     private:
 
-        static std::map<std::string, ZMesh> MeshMap;
-        //static std::map<std::string, ZMaterial> MaterialMap;
+        static std::map<std::string, ZMeshData> MeshDataMap;
+        static std::map<std::string, ZMaterial> MaterialMap;
 
         AssetManager() = delete;
         AssetManager(const AssetManager &orig) = delete;
