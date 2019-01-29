@@ -15,6 +15,16 @@ class BinaryParser{
             std::vector<Face> &SQUARE_FACES
         );
 
+        static bool ImportMesh(
+            const std::string& pFile,
+            std::vector<float> &vertex,
+            std::vector<float> &uv,
+            std::vector<float> &normal,
+            std::vector<float> &tangent,
+            std::vector<float> &bitangent,
+            std::vector<unsigned short> &index
+        );
+
     private:
         BinaryParser() = delete;
         BinaryParser(const BinaryParser &orig) = delete;

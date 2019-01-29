@@ -1,5 +1,9 @@
 #include "BinaryParser.hpp"
 #include <fstream>
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+#include <cassert>
 
 template<typename T>
 std::istream & GG_Read(std::istream& _istream, T& value){
@@ -79,4 +83,91 @@ void BinaryParser::ReadNavmeshData(
 
     }
 
+}
+
+
+bool BinaryParser::ImportMesh(
+    const std::string& pFile,
+    std::vector<float> &vertex,
+    std::vector<float> &uv,
+    std::vector<float> &normal,
+    std::vector<float> &tangent,
+    std::vector<float> &bitangent,
+    std::vector<unsigned short> &index
+){
+
+    vertex.clear();
+    uv.clear();
+    normal.clear();
+    index.clear();
+    // Create an instance of the Importer class
+    Assimp::Importer importer;
+    // And have it read the given file with some example postprocessing
+    // Usually - if speed is not the most important aspect for you - you'll
+    // propably to request more postprocessing than we do in this example.
+    const aiScene* scene = importer.ReadFile( pFile,
+    aiProcess_CalcTangentSpace       |
+    aiProcess_Triangulate            |
+    aiProcess_JoinIdenticalVertices  |
+    aiProcess_SortByPType);
+
+
+    // If the import failed, report it
+    if( !scene)
+        return false;
+
+    //std::cout << "Cargando modelo '" << pFile << "'" << '\n';
+
+    aiMesh **meshes = scene->mMeshes;
+    aiVector3D* vertices;
+    aiVector3D* textureCoords;
+    aiVector3D* normales;
+    aiVector3D* tangents;
+    aiVector3D* bitangents;
+    aiFace* faces;
+
+    for(uint16_t i = 0; i < scene->mNumMeshes; ++i){
+
+             vertices   =   meshes[i]->mVertices;
+        textureCoords   =   meshes[i]->mTextureCoords[0];
+             normales   =   meshes[i]->mNormals;
+             tangents   =   meshes[i]->mTangents;
+           bitangents   =   meshes[i]->mBitangents;
+                faces   =   meshes[i]->mFaces;
+
+        for(uint16_t j = 0; j < meshes[i]->mNumVertices; ++j){
+            vertex.push_back(vertices[j].x);
+            vertex.push_back(vertices[j].y);
+            vertex.push_back(vertices[j].z);
+
+            uv.push_back(textureCoords[j].x);
+            uv.push_back(textureCoords[j].y);
+
+            normal.push_back(normales[j].x);
+            normal.push_back(normales[j].y);
+            normal.push_back(normales[j].z);
+
+            tangent.push_back(tangents[j].x);
+            tangent.push_back(tangents[j].y);
+            tangent.push_back(tangents[j].z);
+
+            bitangent.push_back(bitangents[j].x);
+            bitangent.push_back(bitangents[j].y);
+            bitangent.push_back(bitangents[j].z);
+        }
+
+
+        for(uint16_t j = 0; j < meshes[i]->mNumFaces; ++j){
+            const aiFace& Face = faces[j];
+            assert(Face.mNumIndices == 3);
+            index.push_back(Face.mIndices[0]);
+            index.push_back(Face.mIndices[1]);
+            index.push_back(Face.mIndices[2]);
+        }
+
+        // std::cout << "   |-- VERTICES: " << meshes[0]->mNumVertices << '\n';
+        // std::cout << "   |-- INDICES:  " << index.size() << '\n';
+    }
+
+    return true;
 }
