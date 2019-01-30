@@ -1,7 +1,7 @@
 #include "ZMaterial.hpp"
 #include <iostream>
 //#include "vendor/stb_image.h"
-#include <SOIL2/SOIL2.h>
+#include "AssetManager.hpp"
 
 ZMaterial::ZMaterial()
 {
@@ -20,7 +20,7 @@ ZMaterial::~ZMaterial(){
     std::cout << "Deleting textures..." << '\n';
     auto iterator = Textures.begin();
     while(iterator != Textures.end()){
-        glDeleteTextures(1, &iterator->first);
+        glDeleteTextures(1, &iterator->second);
         ++iterator;
     }
 }
@@ -29,15 +29,15 @@ void ZMaterial::attachShader(Shader *s){
     shader = s;
 }
 
-void ZMaterial::addTexture(const std::string &target, const char *path, unsigned int mode, unsigned int flags){
+void ZMaterial::addTexture(const std::string &ShaderTarget, const std::string &path, unsigned int mode, unsigned int flags){
 
-    unsigned int TextureID = SOIL_load_OGL_texture(path, mode, SOIL_CREATE_NEW_ID, flags );
-    Textures[TextureID] = shader->getUniformLocation(target);
+    unsigned int TextureID = AssetManager::getTexture(path, mode, flags);
+    Textures[shader->getUniformLocation(ShaderTarget)] = TextureID;
     //std::cout << "TexureID " << TextureID << '\n';
 }
 
-void ZMaterial::setUniformData(const std::string &target, float Data_){
-    Data[shader->getUniformLocation(target)] = Data_;
+void ZMaterial::setUniformData(const std::string &ShaderTarget, float Data_){
+    Data[shader->getUniformLocation(ShaderTarget)] = Data_;
 }
 
 void ZMaterial::Bind(){
@@ -46,14 +46,14 @@ void ZMaterial::Bind(){
     auto iterator = Textures.begin();
     while(iterator != Textures.end()){
         glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, iterator->first);
-        glUniform1i(iterator->second, i);
+        glBindTexture(GL_TEXTURE_2D, iterator->second);
+        glUniform1i(iterator->first, i);
         ++iterator;
         ++i;
     }
 
     if(Data.size() == 0) return;
-    
+
     auto DataIterator = Data.begin();
     while(DataIterator != Data.end()){
         glUniform1f(DataIterator->first, DataIterator->second);

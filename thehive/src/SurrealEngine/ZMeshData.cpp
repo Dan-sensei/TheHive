@@ -1,8 +1,9 @@
 #include "ZMeshData.hpp"
 #include <GL/glew.h>
-#include <BinaryParser.hpp>
+#include "BinaryParser.hpp"
 #include "OpenGEnum.hpp"
 #include "AssetManager.hpp"
+#include <iostream>
 
 ZMeshData::ZMeshData()
 {
