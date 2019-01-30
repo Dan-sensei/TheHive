@@ -16,6 +16,7 @@ void TCamara::setPerspectiva(float _aspect){
     // Supongo que las transformaciones de
     // la camara se hacen en el beginDraw
 
+    // Matriz PROYECCION
     // _aspect = 16/9 | 4/3 | ...
     projection = glm::perspective(
         glm::radians(fov),
@@ -23,6 +24,15 @@ void TCamara::setPerspectiva(float _aspect){
         cercano,
         lejano
     );
+
+    // Matriz VISTA
+    // TODO: Matriz vista
+
+    // Se necesita llevar las matrices a variables
+    // uniform para el calculo en glsl? -> PUEDE SER QUE SI
+
+    // GLuint PerspectiveMatrixID = glGetUniformLocation(cacadevaca,"PPM");
+    // glUniformMatrix4fv(PerspectiveMatrixID,1,GL_FALSE,&projection[0][0]);
 }
 
 // Se quedan vacios

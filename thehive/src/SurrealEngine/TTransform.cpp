@@ -1,5 +1,8 @@
 #include "TTransform.hpp"
 
+// Pila de matrices
+std::stack<glm::mat4> TEntidad::glMatrixStack;
+
 TTransform::TTransform(){}
 TTransform::~TTransform (){}
 
@@ -36,9 +39,15 @@ void TTransform::inverse(){
 }
 
 void TTransform::beginDraw(){
-
+    auto updateTransform = [this](){
+        glm::mat4 m_aux = glMatrixStack.top();
+        glMatrixStack.push( m_aux * matrix );
+    };
+    // Apilar matriz
+    (glMatrixStack.empty())? glMatrixStack.push(matrix) : updateTransform();
 }
 
 void TTransform::endDraw(){
-
+    // Desapilar matriz
+    glMatrixStack.pop();
 }
