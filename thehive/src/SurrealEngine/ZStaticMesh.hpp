@@ -4,8 +4,9 @@
 #include <vector>
 #include <cstdint>
 #include "ZMaterial.hpp"
+#include "TNodo.hpp"
 
-class ZStaticMesh{
+class ZStaticMesh : public TEntidad {
     public:
         ZStaticMesh();
         ZStaticMesh(const ZStaticMesh &orig) = delete;
@@ -13,7 +14,8 @@ class ZStaticMesh{
 
         bool load(const std::string& Name);
         void assignMaterial(ZMaterial* material_);
-        void Draw();
+        virtual void beginDraw();
+        virtual void endDraw();
 
     private:
         //Específico de OpenGL=========================================================================//
@@ -23,7 +25,7 @@ class ZStaticMesh{
             unsigned int IndexSize;
             void Bind();
             void Unbind();
-            void addVertexBuffer(std::vector<float>& data, unsigned int DataLength, uint8_t layout);
+            void addVertexBuffer(std::vector<float>& data, unsigned int DataLength);
         //=============================================================================================//
 
         ZMaterial* zmat;

@@ -6,8 +6,13 @@
 #include "ZMeshData.hpp"
 #include "ZMaterial.hpp"
 #include "OpenGEnum.hpp"
+#include "Singleton.hpp"
+
+template <typename T>
+class Singleton;
 
 class AssetManager {
+    friend class Singleton<AssetManager>;
     public:
 
         ~AssetManager();
@@ -23,10 +28,10 @@ class AssetManager {
 
         static std::unordered_map<std::string, ZMeshData>       MeshDataMap;
         static std::unordered_map<std::string, ZMaterial>       MaterialMap;
-        static std::unordered_map<std::string, Shader>          Shaders;
+        static std::unordered_map<std::string, Shader>          ShaderMap;
         static std::unordered_map<std::string, unsigned int>    TextureMap;
 
-        AssetManager() = delete;
+        AssetManager();
         AssetManager(const AssetManager &orig) = delete;
 };
 

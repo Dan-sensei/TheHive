@@ -7,22 +7,17 @@ ZMaterial::ZMaterial()
 {
 }
 
-// ZMaterial::ZMaterial(const ZMaterial& orig){
-//     std::cout << "Copiando ZMaterial" << '\n';
-//     auto iterator = orig.Textures.begin();
-//     while(iterator != orig.Textures.end()){
-//         Textures[iterator->first] = iterator->second;
-//         ++iterator;
-//     }
-// }
-
-ZMaterial::~ZMaterial(){
-    std::cout << "Deleting textures..." << '\n';
-    auto iterator = Textures.begin();
-    while(iterator != Textures.end()){
-        glDeleteTextures(1, &iterator->second);
+ZMaterial::ZMaterial(const ZMaterial& orig){
+    std::cout << "Copiando ZMaterial" << '\n';
+    auto iterator = orig.Textures.begin();
+    while(iterator != orig.Textures.end()){
+        Textures[iterator->first] = iterator->second;
         ++iterator;
     }
+}
+
+ZMaterial::~ZMaterial(){
+
 }
 
 void ZMaterial::attachShader(Shader *s){

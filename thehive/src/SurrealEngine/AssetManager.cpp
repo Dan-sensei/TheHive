@@ -5,8 +5,12 @@
 
 std::unordered_map<std::string, ZMeshData> AssetManager::MeshDataMap;
 std::unordered_map<std::string, ZMaterial> AssetManager::MaterialMap;
-std::unordered_map<std::string, Shader> AssetManager::Shaders;
+std::unordered_map<std::string, Shader> AssetManager::ShaderMap;
 std::unordered_map<std::string, unsigned int> AssetManager::TextureMap;
+
+AssetManager::AssetManager(){
+    ShaderMap["Default"].loadFiles("ShaderMap/VertexShader.glsl", nullptr, "ShaderMap/FragmentShader.glsl");
+}
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {
 
@@ -15,7 +19,7 @@ ZMaterial* AssetManager::getMaterial(const std::string &Name) {
         return &it->second;
     else {
         ZMaterial* newMat = &MaterialMap[Name];
-        newMat->attachShader(&Shaders["Default"]);
+        newMat->attachShader(&ShaderMap["Default"]);
         newMat->addTexture("DiffuseTextureSampler", "assets/Textures/DefaultDiffuse.jpg",      GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
         newMat->addTexture("NormalTextureSampler", "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
         newMat->addTexture("SpecularTextureSampler", "assets/Textures/DefaultSpecular.jpeg",   GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
@@ -38,23 +42,23 @@ ZMeshData* AssetManager::getMeshData(const std::string &Name){
 
 Shader* AssetManager::getShader(const std::string &Name) {
 
-    auto it = Shaders.find(Name);
-    if(it != Shaders.end())
+    auto it = ShaderMap.find(Name);
+    if(it != ShaderMap.end())
         return &it->second;
     else{
         std::cout << "  --No existe ningún Shader llamado '" << Name <<"', devolviendo 'Default'..." << '\n';
-        return &Shaders["Default"];
+        return &ShaderMap["Default"];
     }
 
 }
 
 Shader* AssetManager::createShader(std::string Name) {
-    if(Shaders.find(Name) == Shaders.end())
-        Shaders[Name];
+    if(ShaderMap.find(Name) == ShaderMap.end())
+        ShaderMap[Name];
     else
         std::cout << "  --Ya hay un shader con ese nombre" << '\n';
 
-    return &Shaders[Name];
+    return &ShaderMap[Name];
 }
 
 unsigned int AssetManager::getTexture(const std::string &Name, unsigned int mode, unsigned int flags){
@@ -68,3 +72,11 @@ unsigned int AssetManager::getTexture(const std::string &Name, unsigned int mode
     }
 }
 
+AssetManager::~AssetManager(){
+    std::cout << "Deleting textures..." << '\n';
+    auto iterator = TextureMap.begin();
+    while(iterator != TextureMap.end()){
+        glDeleteTextures(1, &iterator->second);
+        ++iterator;
+    }
+}
