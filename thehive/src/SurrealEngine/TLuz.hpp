@@ -3,13 +3,15 @@
 
 #include <Util.hpp>
 
-class TLuz {
+class TLuz{
+//class TLuz : public TEntidad {
     public:
         TLuz();
         TLuz(gg::Color&);
         virtual ~TLuz ();
 
         void setIntensidad(gg::Color&);
+        //void setDireccion(gg::Vector3f&);
         gg::Color getIntensidad();
 
         virtual void beginDraw();
@@ -17,6 +19,7 @@ class TLuz {
 
     private:
         gg::Color intensidad;
+        //gg::Vector3f direccion;
 
 };
 

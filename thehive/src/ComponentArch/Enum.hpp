@@ -14,6 +14,7 @@ namespace gg{
         AIENEM,
         CLOCK,
         VIDA,
+        FLOCK,
 
         CAMERA,
         AGENT,

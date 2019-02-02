@@ -169,10 +169,15 @@ float gg::Modulo(const gg::Vector2f &Vector){
 
 gg::Vector3f gg::Normalice(gg::Vector3f Vector){
     float modulo = gg::Modulo(Vector);
-    Vector.X = Vector.X/modulo;
-    Vector.Y = Vector.Y/modulo;
-    Vector.Z = Vector.Z/modulo;
-    return Vector;
+    if(modulo==0){
+        return gg::Vector3f();
+    }
+    else{
+        Vector.X = Vector.X/modulo;
+        Vector.Y = Vector.Y/modulo;
+        Vector.Z = Vector.Z/modulo;
+        return Vector;
+    }
 }
 gg::Vector3f gg::Direccion2D(gg::Vector3f rot){
     gg::Vector3f aux = gg::Vector3f(

@@ -7,6 +7,7 @@
 	#include <ComponentArch/Components/CRigidBody.hpp>
 	#include <ComponentArch/Components/CVida.hpp>
 	#include <ComponentArch/Components/CClock.hpp>
+	#include <ComponentArch/Components/CFlock.hpp>
 	#include <ComponentArch/Components/ComponentHeaders.hpp>
 	#include <ComponentArch/Components/CAIEnem.hpp>
 	#include <ComponentArch/Components/CGun.hpp>
