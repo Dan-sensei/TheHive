@@ -10,7 +10,6 @@
 #include "CAIEnem.hpp"
 
 
-
 std::list <CAgent*>  CAgent::AgentList;
 
 CAgent::CAgent(const unsigned long &_flags)

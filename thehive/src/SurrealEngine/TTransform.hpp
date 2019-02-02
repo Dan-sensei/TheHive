@@ -1,14 +1,16 @@
 #ifndef TTRANSFORM_H
 #define TTRANSFORM_H
 
-#include <Util.hpp>
-#include "TEntidad.hpp"
+#include <GL/glew.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+
+#include <Util.hpp>
+#include "TEntidad.hpp"
 
 class TTransform : public TEntidad {
     public:
@@ -30,6 +32,7 @@ class TTransform : public TEntidad {
 
     private:
         glm::mat4 matrix;
+
 };
 
 #endif

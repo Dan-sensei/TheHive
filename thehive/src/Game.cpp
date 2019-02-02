@@ -75,7 +75,7 @@ void Game::Init(){
     // 360, 0, 350
     uint16_t h = sF->createHero(gg::Vector3f(10,3,65),false);
     //sF->createRusher(gg::Vector3f(5,3,65),200);
-    sF->createTank(gg::Vector3f(5,3,65),200);
+    sF->createSwarm(gg::Vector3f(5,3,65));
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     sF->createCollectableWeapon(gg::Vector3f(20, 3, 50),2);

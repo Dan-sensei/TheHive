@@ -131,7 +131,36 @@ uint16_t Factory::createTank(const gg::Vector3f &Position,const float &health){
 
     return Enemy;
 }
+CRigidBody* Factory::createSingleSwarm( const gg::Vector3f &Position) {
+    uint16_t holyBomb = Manager->createEntity();
+    Material moradoDeLos80("assets/Textures/Blue.png");
 
+    CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
+
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
+
+    CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.X,Position.Y,Position.Z, 1,1,1, 5, 0,0,0);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
+
+
+
+    return RigidBody;
+}
+uint16_t Factory::createSwarm( const gg::Vector3f &Position) {
+    uint16_t holyBomb = Manager->createEntity();
+    CFlock* cFlock = new CFlock(Position);
+        cFlock->addFlocked(createSingleSwarm(Position));//3
+        cFlock->addFlocked(createSingleSwarm(Position));//4
+        cFlock->addFlocked(createSingleSwarm(Position));//5
+        cFlock->addFlocked(createSingleSwarm(Position));//6
+        cFlock->addFlocked(createSingleSwarm(Position));//7
+        cFlock->addFlocked(createSingleSwarm(Position));//8
+        Manager->addComponentToEntity(cFlock, gg::FLOCK, holyBomb);
+
+    return holyBomb;
+}
 uint16_t Factory::createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position) {
     uint16_t CollisionableStaticObject = Manager->createEntity();
     Material yelo(Texture);
