@@ -24,6 +24,9 @@ Treecontroller::Treecontroller(Blackboard *_data, gg::EEnemyType tipo, CAIEnem* 
         case gg::RUSHER:
             arbolrusher();
             break;
+        case gg::SWARM:
+            arbolswarm();
+            break;
         case gg::TRACKER:
             arboltracker();
             break;
@@ -73,6 +76,10 @@ void Treecontroller::update(){
 }
 
 void Treecontroller::arboltracker(){
+    BT= new BehaviorTree(addAction(GIRAR));
+}
+void Treecontroller::arbolswarm(){
+    BT= new BehaviorTree(addAction(GIRAR));
 }
 
 void Treecontroller::arbolrusher(){

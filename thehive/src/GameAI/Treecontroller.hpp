@@ -32,6 +32,7 @@ class Treecontroller {
         void arboltracker();
         void arbolrusher();
         void arboltank();
+        void arbolswarm();
 
     private:
         /* data */

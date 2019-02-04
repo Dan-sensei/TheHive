@@ -12,7 +12,7 @@
 class CFlock : public IComponent {
     public:
         CFlock();
-        CFlock(gg::Vector3f _pos);
+        CFlock(bool lider,uint16_t id=-1);
         CFlock(const CFlock &orig) = delete;
         virtual ~CFlock();
 
@@ -21,19 +21,34 @@ class CFlock : public IComponent {
         virtual void FixedUpdate();
 
         //funciones propias
-        void addFlocked(CRigidBody* me);
+        //funcionamiento a lista cerrada
         void debugtotal();
-        void ForceCenter();
-        void ChangeCenter();
         void FastSeparation();
         void FastAlignementAndCohesion();
 
+        //funciones para modificar lista
+        void addNewFlocked(uint16_t me);
+        void addFlocked(uint16_t me);
+        void setLeader(int);
+        void setIAmLeader(bool id);
+        void removerFlocked(int id);
+        void setNewLeader();
 
+        //eliminar
+        void ForceCenter();
+        void ChangeCenter();
+
+        std::list  <CRigidBody*> getFlocked();
+        void copyFlocked(int id);
+        void Muerte();
         //variables propias
-        std::list  <CRigidBody*>  Flocked;
+        //vector
+        //std::list  <CRigidBody*>* Flocked;
+        std::list  <CRigidBody*> Flocked;
 
     private:
-        
+        int leader_id;
+        bool leader;//si es el lider
         float mindist;//minima distancia para aplica separacion
         float fuerzasep;//fuerza separacion
         float fuerzacoh;//fuerza cohesion
@@ -41,7 +56,7 @@ class CFlock : public IComponent {
         gg::Vector3f mediapos;
         gg::Vector3f mediavel;
         //Esto el del swarm. posicion donde se dirigen
-        gg::Vector3f pos;
+        //gg::Vector3f pos;
 
         ObjectManager* Manager;
 

@@ -48,7 +48,7 @@ ObjectManager::ObjectManager() {
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::CLOCK);
 
-    //MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::FLOCK);
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::FLOCK);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::FLOCK);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AIENEM);
@@ -167,7 +167,7 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
 
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
-
+    std::cout << "FLOCKING SIZE " << TypeToComponentMap[gg::FLOCK].size() << '\n';
     if(Erase) return;
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);

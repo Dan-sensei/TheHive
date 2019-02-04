@@ -86,6 +86,9 @@ int ScreenConsole::InitAIDebug(int id){
         case gg::RUSHER:
             tipo="RUSHER";
             break;
+        case gg::SWARM:
+            tipo="SWARM";
+            break;
         case gg::TRACKER:
             break;
     }

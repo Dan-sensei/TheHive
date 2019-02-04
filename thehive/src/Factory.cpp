@@ -131,32 +131,47 @@ uint16_t Factory::createTank(const gg::Vector3f &Position,const float &health){
 
     return Enemy;
 }
-CRigidBody* Factory::createSingleSwarm( const gg::Vector3f &Position) {
-    uint16_t holyBomb = Manager->createEntity();
+uint16_t Factory::createSingleSwarm(const gg::Vector3f &Position,const float &health){
+    uint16_t Enemy = Manager->createEntity();
     Material moradoDeLos80("assets/Textures/Blue.png");
+    //Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
-    CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
-    Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
+    CTransform* Transform               = new CTransform(Position, gg::Vector3f(0, 0, 0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
 
     CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
-    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
 
     CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.X,Position.Y,Position.Z, 1,1,1, 5, 0,0,0);
-    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, holyBomb);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
+    CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
+    Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
+    CAIEnem* AIEnem                     = new CAIEnem(gg::SWARM,30,Position,false);
+    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
-    return RigidBody;
+    CVida* Vida                         = new CVida(health);
+    Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
+
+    CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
+    Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
+
+    //    return RigidBody;
+    return Enemy;
 }
-uint16_t Factory::createSwarm( const gg::Vector3f &Position) {
-    uint16_t holyBomb = Manager->createEntity();
-    CFlock* cFlock = new CFlock(Position);
-        cFlock->addFlocked(createSingleSwarm(Position));//3
-        cFlock->addFlocked(createSingleSwarm(Position));//4
-        cFlock->addFlocked(createSingleSwarm(Position));//5
-        cFlock->addFlocked(createSingleSwarm(Position));//6
-        cFlock->addFlocked(createSingleSwarm(Position));//7
-        cFlock->addFlocked(createSingleSwarm(Position));//8
+uint16_t Factory::createSwarm( const gg::Vector3f &Position,const float &health) {
+    uint16_t holyBomb = createSingleSwarm(Position,health);
+
+
+
+    CFlock* cFlock = new CFlock(true,holyBomb);
+    for (size_t i = 0; i < 3; i++) {
+        //uint16_t id_malo=createSingleSwarm(Position,health);
+        //CFlock* cFlock = new CFlock(true,holyBomb);
+        //cFlock->addFlocked(id_malo);//3
+        cFlock->addNewFlocked(createSingleSwarm(Position,health));//4
+    }
         Manager->addComponentToEntity(cFlock, gg::FLOCK, holyBomb);
 
     return holyBomb;

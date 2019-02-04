@@ -23,8 +23,11 @@ class Factory{
         uint16_t createSoldier(const gg::Vector3f&,const float&);
         uint16_t createRusher(const gg::Vector3f&,const float&);
         uint16_t createTank(const gg::Vector3f&,const float&);
-        CRigidBody* createSingleSwarm( const gg::Vector3f &Position);
-        uint16_t createSwarm( const gg::Vector3f &Position);
+        uint16_t createSingleSwarm(const gg::Vector3f&,const float&);
+        //uint16_t createSingleSwarm(const gg::Vector3f &Position,const float &health)
+
+        //CRigidBody* createSingleSwarm( const gg::Vector3f &Position);
+        uint16_t createSwarm( const gg::Vector3f &Position,const float &health);
 
 
         uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);

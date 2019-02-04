@@ -5,6 +5,7 @@ namespace gg{
 
     enum EComponentType{
         PLAYERCONTROLLER,
+        FLOCK,
         RIGID_BODY,
         RENDERABLE_3D,
         GRANADE,
@@ -14,7 +15,6 @@ namespace gg{
         AIENEM,
         CLOCK,
         VIDA,
-        FLOCK,
 
         CAMERA,
         AGENT,
@@ -31,6 +31,7 @@ namespace gg{
         SOLDIER,
         TRACKER,
         TANK,
+        SWARM,
         NUM_ENEMY
     };
 

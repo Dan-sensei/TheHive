@@ -64,11 +64,12 @@ void CGun::shoot(gg::Vector3f to){
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
         //EventSystem->PulsoTrigger(kTrig_Shoot,0,to,500,mes);//sonido de disparo
         /////////cambiar todo esto a una funcion de CAIENEM
-        
+
         if(id!=-1){
             CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
             if(AIEnem){
                 AIEnem->setPlayerIsAttacking(true);
+                //
                 CVida *health = static_cast<CVida*>(Manager->getComponent(gg::VIDA,id));
                 if(health){
                     gg::cout("PUM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));

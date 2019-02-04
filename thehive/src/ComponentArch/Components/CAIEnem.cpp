@@ -37,6 +37,10 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerP
         CanIReset=true;
         velocity=8;
             break;
+        case gg::SWARM:
+        CanIReset=true;
+        velocity=2;
+            break;
         case gg::TRACKER:
         CanIReset=true;
         velocity=2;

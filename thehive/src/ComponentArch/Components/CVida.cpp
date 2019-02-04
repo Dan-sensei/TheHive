@@ -103,6 +103,12 @@ void CVida::FixedUpdate() {
             }
 
             Manager->removeEntity(getEntityID());
+            //aqui se muere
+            CFlock* flock_lider = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,getEntityID()));
+            if(flock_lider){
+                flock_lider->Muerte();
+            }
+
         }
         else{
 
