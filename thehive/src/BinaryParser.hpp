@@ -17,11 +17,9 @@ class BinaryParser{
 
         static bool ImportMesh(
             const std::string& pFile,
-            std::vector<float> &vertex,
+            std::vector<float> &PositionsNormals,
             std::vector<float> &uv,
-            std::vector<float> &normal,
-            std::vector<float> &tangent,
-            std::vector<float> &bitangent,
+            std::vector<float> &TangentsBitangents,
             std::vector<unsigned short> &index
         );
 

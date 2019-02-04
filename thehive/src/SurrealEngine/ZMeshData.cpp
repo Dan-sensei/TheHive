@@ -13,9 +13,9 @@ ZMeshData::ZMeshData()
 ZMeshData::ZMeshData(const ZMeshData &orig){
     uint16_t i;
 
-    Positions.resize(orig.Positions.size());
-    for(uint16_t i = 0; i < Positions.size(); ++i){
-        Positions[i] = orig.Positions[i];
+    PositionsNormals.resize(orig.PositionsNormals.size());
+    for(uint16_t i = 0; i < PositionsNormals.size(); ++i){
+        PositionsNormals[i] = orig.PositionsNormals[i];
     }
 
     UV_Coords.resize(orig.UV_Coords.size());
@@ -23,19 +23,9 @@ ZMeshData::ZMeshData(const ZMeshData &orig){
         UV_Coords[i] = orig.UV_Coords[i];
     }
 
-    Normals.resize(orig.Normals.size());
-    for(uint16_t i = 0; i < Normals.size(); ++i){
-        Normals[i] = orig.Normals[i];
-    }
-
-    Tangents.resize(orig.Tangents.size());
-    for(uint16_t i = 0; i < Tangents.size(); ++i){
-        Tangents[i] = orig.Tangents[i];
-    }
-
-    Bitangents.resize(orig.Bitangents.size());
-    for(uint16_t i = 0; i < Bitangents.size(); ++i){
-        Bitangents[i] = orig.Bitangents[i];
+    TangentsBitangents.resize(orig.TangentsBitangents.size());
+    for(uint16_t i = 0; i < TangentsBitangents.size(); ++i){
+        TangentsBitangents[i] = orig.TangentsBitangents[i];
     }
 
     Indexes.resize(orig.Indexes.size());
@@ -52,7 +42,7 @@ ZMeshData::~ZMeshData(){
 
 bool ZMeshData::load(const std::string& path){
 
-    bool loaded = BinaryParser::ImportMesh(path, Positions, UV_Coords, Normals, Tangents, Bitangents, Indexes);
+    bool loaded = BinaryParser::ImportMesh(path, PositionsNormals, UV_Coords, TangentsBitangents, Indexes);
     if(!loaded){
         std::cout << "   --No se pudo abrir " << path << '\n';
         return false;

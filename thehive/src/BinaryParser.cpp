@@ -88,17 +88,14 @@ void BinaryParser::ReadNavmeshData(
 
 bool BinaryParser::ImportMesh(
     const std::string& pFile,
-    std::vector<float> &vertex,
+    std::vector<float> &PositionsNormals,
     std::vector<float> &uv,
-    std::vector<float> &normal,
-    std::vector<float> &tangent,
-    std::vector<float> &bitangent,
+    std::vector<float> &TangentsBitangents,
     std::vector<unsigned short> &index
 ){
 
-    vertex.clear();
+    PositionsNormals.clear();
     uv.clear();
-    normal.clear();
     index.clear();
     // Create an instance of the Importer class
     Assimp::Importer importer;
@@ -136,24 +133,24 @@ bool BinaryParser::ImportMesh(
                 faces   =   meshes[i]->mFaces;
 
         for(uint16_t j = 0; j < meshes[i]->mNumVertices; ++j){
-            vertex.push_back(vertices[j].x);
-            vertex.push_back(vertices[j].y);
-            vertex.push_back(vertices[j].z);
+            PositionsNormals.push_back(vertices[j].x);
+            PositionsNormals.push_back(vertices[j].y);
+            PositionsNormals.push_back(vertices[j].z);
+
+            PositionsNormals.push_back(normales[j].x);
+            PositionsNormals.push_back(normales[j].y);
+            PositionsNormals.push_back(normales[j].z);
 
             uv.push_back(textureCoords[j].x);
             uv.push_back(textureCoords[j].y);
 
-            normal.push_back(normales[j].x);
-            normal.push_back(normales[j].y);
-            normal.push_back(normales[j].z);
+            TangentsBitangents.push_back(tangents[j].x);
+            TangentsBitangents.push_back(tangents[j].y);
+            TangentsBitangents.push_back(tangents[j].z);
 
-            tangent.push_back(tangents[j].x);
-            tangent.push_back(tangents[j].y);
-            tangent.push_back(tangents[j].z);
-
-            bitangent.push_back(bitangents[j].x);
-            bitangent.push_back(bitangents[j].y);
-            bitangent.push_back(bitangents[j].z);
+            TangentsBitangents.push_back(bitangents[j].x);
+            TangentsBitangents.push_back(bitangents[j].y);
+            TangentsBitangents.push_back(bitangents[j].z);
         }
 
 

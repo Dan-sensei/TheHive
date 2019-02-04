@@ -10,7 +10,7 @@ class ZMaterial{
 
     public:
         ZMaterial();
-        ZMaterial(const ZMaterial& orig) = delete;
+        ZMaterial(const ZMaterial& orig);
         ~ZMaterial();
 
         void attachShader(Shader* s);
