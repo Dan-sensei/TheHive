@@ -2,9 +2,9 @@
 #define TLUZ_H
 
 #include <Util.hpp>
-
-class TLuz{
-//class TLuz : public TEntidad {
+#include "TEntidad.hpp"
+//class TLuz{
+class TLuz : public TEntidad {
     public:
         TLuz();
         TLuz(gg::Color&);

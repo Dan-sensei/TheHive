@@ -2,7 +2,7 @@
 #define TNODO_H
 
 #include "TEntidad.hpp"
-#include <vector>
+#include <deque>
 
 class TNodo {
     public:
@@ -20,10 +20,11 @@ class TNodo {
         TNodo* getPadre();
 
         void draw();
+        void drawRoot();
 
     private:
         TEntidad* entidad;
-        std::vector<TNodo*> hijos;
+        std::deque<TNodo*> hijos;
         TNodo* padre;
 };
 

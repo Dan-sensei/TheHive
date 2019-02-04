@@ -1,4 +1,5 @@
 #include "TNodo.hpp"
+#include <cstdint>
 
 //Constructor para el nodo raiz
 TNodo::TNodo(){
@@ -7,30 +8,20 @@ TNodo::TNodo(){
 }
 
 //Constructor para el resto de nodos
-TNodo::TNodo(TNodo *_papa,TEntidad *_ent){
-    !_papa? padre = nullptr : padre = _papa;
+TNodo::TNodo(TNodo *P,TEntidad *_ent){
+    !P ? padre = nullptr : padre = P;
     !_ent?  entidad = nullptr : entidad = _ent;
 }
 
 TNodo::~TNodo(){
     auto it = hijos.begin();
-    int i = 0;
-
     while(it!=hijos.end()){
-        delete hijos[i];
-        hijos.erase(it);
+        delete *it;
         ++it;
-        ++i;
     }
-    // Con erase se borran las posiciones
-    // Con shrink_to_fit se borra la memoria que ocupaba
-    hijos.shrink_to_fit();
+    hijos.clear();
 
     delete entidad;
-
-    // El puntero del padre no se borra nunca
-    // Ya que se va recorriendo el arbol de arriba abajo
-    // Sino se va a la puta
 }
 
 void TNodo::addHijo(TNodo* nodo){
@@ -38,15 +29,16 @@ void TNodo::addHijo(TNodo* nodo){
 }
 
 void TNodo::remHijo(TNodo* nodo){
-    for(int i=0 ; i<hijos.size() ; i++){
-        if(hijos[i]==nodo){
-            hijos.erase(hijos.begin()+i);
+
+    auto it = hijos.begin();
+    while(it != hijos.end()){
+        if(*it == nodo){
+            delete *it;
+            hijos.erase(it);
             break;
         }
+        ++it;
     }
-
-    // Necesario para evitar que recorra posiciones vacias
-    hijos.shrink_to_fit();
 }
 
 bool TNodo::setEntidad(TEntidad *_ent){
@@ -61,9 +53,9 @@ TEntidad* TNodo::getEntidad(){
     return entidad;
 }
 
-bool TNodo::setPadre(TNodo *_paapa){
-    if(_paapa){
-        padre = _paapa;
+bool TNodo::setPadre(TNodo *P){
+    if(P){
+        padre = P;
         return true;
     }
     return false;
@@ -74,10 +66,18 @@ TNodo* TNodo::getPadre(){
 }
 
 void TNodo::draw(){
+
     entidad->beginDraw();
 
-    for(int i=0 ; i<hijos.size() ; i++)
-        hijos[i]->draw();
+    drawRoot();
 
     entidad->endDraw();
+}
+
+void TNodo::drawRoot(){
+    auto it = hijos.begin();
+    while(it != hijos.end()){
+        (*it)->draw();
+        ++it;
+    }
 }

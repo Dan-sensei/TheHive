@@ -64,3 +64,44 @@ int main(int argc, char const *argv[]) {
 
     return 0;
 }
+
+// #include <SurrealEngine/TNodo.hpp>
+// #include <SurrealEngine/TEntidad.hpp>
+// #include <SurrealEngine/TLuz.hpp>
+// #include <SurrealEngine/TTransform.hpp>
+//
+// int main(int argc, char const *argv[]) {
+//     TNodo* Escena = new TNodo();
+//
+//     TTransform* RL = new TTransform();
+//     TTransform* RC = new TTransform();
+//
+//     TLuz* L = new TLuz();
+//
+//     TNodo* RotaLuz = new TNodo(Escena, RL);
+//     //TNodo* RotaCam = new TNodo(Escena, RC);
+//
+//     TNodo* NodoLuz = new TNodo(RotaLuz, L);
+//
+//     RotaLuz->addHijo(NodoLuz);
+//     Escena->addHijo(RotaLuz);
+//
+//     //Escena->addHijo(RotaCam);
+//
+//
+//     //Escena->remHijo(RotaLuz);
+//
+//     Escena->drawRoot();
+//
+//
+//     //
+//     // std::cout << "ESCENA ->          " << Escena << '\n';
+//     // std::cout << " RotaLuz - ID    = " << RotaLuz << '\n';
+//     // std::cout << " RotaLuz - Padre = " << RotaLuz->getPadre() << '\n';
+//     // std::cout << " RotaCam - ID    = " << RotaCam << '\n';
+//     // std::cout << " RotaCam - Padre = " << RotaCam->getPadre() << '\n';
+//
+//     std::cout << "NodoLuz Padre    = " << NodoLuz->getPadre() << '\n';
+//     delete Escena;
+//     return 0;
+// }
