@@ -235,7 +235,7 @@ void Action::rond(bool _b){
 
     cTransform->setRotation(V_AI_DEST);
 
-    cRigidBody->applyConstantVelocity(V_FINAL,yo->getVelocity()-(yo->getEnemyType()*VEL_ATENUATION));
+    cRigidBody->applyConstantVelocityNormal(V_FINAL,yo->getVelocity()-(yo->getEnemyType()*VEL_ATENUATION));
 }
 
 void Action::ult_cont(){
@@ -616,7 +616,8 @@ void Action::move_too(int min){
         cTransform->setRotation(mio);
 
         direccion       = gg::Normalice(direccion);
-        cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
+        //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
+        cRigidBody->applyConstantVelocityNormal(direccion,yo->getVelocity());
         //std::cout << yo->getVelocity() << '\n';
         //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
 }

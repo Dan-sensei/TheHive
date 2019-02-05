@@ -72,6 +72,7 @@ class CRigidBody : public IComponent {
         void applyCentralImpulse(gg::Vector3f);
         void applyTorque(gg::Vector3f);
         void applyConstantVelocity(gg::Vector3f,float,bool = true);
+        void applyConstantVelocityNormal(gg::Vector3f,float);
 
         void setLinearVelocity(gg::Vector3f);
 

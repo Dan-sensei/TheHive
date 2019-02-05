@@ -113,9 +113,9 @@ void CNavmeshAgent::FixedUpdate(){
     //  Apply a counter force when we change direction, so we can stop on curves
     ApplyCouterForce(moveVector);
 
-    if(gg::Modulo(cRigidBody->getXZVelocity()) < vel)
-        cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
-    //cRigidBody->applyConstantVelocity(moveVector,vel);para solo velocidades
+    //if(gg::Modulo(cRigidBody->getXZVelocity()) < vel)
+    //    cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
+    cRigidBody->applyConstantVelocityNormal(moveVector,vel);//para solo velocidades
 
 }
 
