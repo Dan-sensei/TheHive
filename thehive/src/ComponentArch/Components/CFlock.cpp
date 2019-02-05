@@ -138,23 +138,22 @@ void CFlock::debugtotal(){
 
 }
 void CFlock::FixedUpdate(){
-    if(Flocked.size()<=1){
-        Manager->removeComponentFromEntity(gg::FLOCK,getEntityID() );
-    }else{
 
-        if(leader){
-            //debugeando
-            //debugtotal();
-
-            //Separation
-            FastSeparation();
-            //El resto
-            FastAlignementAndCohesion();
-            //esto es codigo de swarm, basicamente para que a parte del flocking tengan todos un mismo destino
-            //ForceCenter();
-            //ChangeCenter();
-            //Muerte();
+    if(leader){
+        if(Flocked.size()<=1){
+            Manager->removeComponentFromEntity(gg::FLOCK,getEntityID() );
         }
+        //debugeando
+        //debugtotal();
+
+        //Separation
+        FastSeparation();
+        //El resto
+        FastAlignementAndCohesion();
+        //esto es codigo de swarm, basicamente para que a parte del flocking tengan todos un mismo destino
+        //ForceCenter();
+        //ChangeCenter();
+        //Muerte();
     }
 }
 void CFlock::ChangeCenter(){
