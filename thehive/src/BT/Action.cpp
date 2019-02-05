@@ -77,6 +77,8 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[PRE_DASH_TO_LAST_PLAYER] = &Action::predash_to_last_player;         // nope
     VectorAcciones[DASH]                    = &Action::dash;         // nope
 
+    VectorAcciones[IAMLEADER]                    = &Action::leader;         // nope
+
     data    = _data;
     tarea   = task;
 
@@ -137,6 +139,16 @@ void Action::checkbool(bool that){
     }
 }
 
+void Action::leader(){
+    CFlock* cFlock = static_cast<CFlock*>(manager->getComponent(gg::FLOCK,yo->getEntityID()));
+    if(cFlock){
+        checkbool(cFlock->getLeader());
+    }
+    else{
+        s=BH_FAILURE;
+    }
+//std::cout << s << '\n';
+}
 void Action::onrange(){
     checkbool(yo->playerOnRange);
 

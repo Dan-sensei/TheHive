@@ -79,7 +79,15 @@ void Treecontroller::arboltracker(){
     BT= new BehaviorTree(addAction(GIRAR));
 }
 void Treecontroller::arbolswarm(){
-    BT= new BehaviorTree(addAction(GIRAR));
+    Sequence* sec1= new Sequence();//cargar dash random+
+    sec1->addChild(addAction(IAMLEADER));
+    //sec1->addChild(addAction(HIT));
+    sec1->addChild(addAction(MOVE_AROUND));
+
+    m_Children.push_back(sec1);
+
+
+    BT= new BehaviorTree(sec1);
 }
 
 void Treecontroller::arbolrusher(){

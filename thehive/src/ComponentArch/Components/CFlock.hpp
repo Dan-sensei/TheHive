@@ -33,6 +33,7 @@ class CFlock : public IComponent {
         void setIAmLeader(bool id);
         void removerFlocked(int id);
         void setNewLeader();
+        bool getLeader();
 
         //eliminar
         void ForceCenter();

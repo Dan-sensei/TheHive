@@ -46,5 +46,6 @@ enum Hojas {
     PRE_DASH_TO_PLAYER,
     PRE_DASH_TO_LAST_PLAYER,
     DASH,
+    IAMLEADER,
     NUM_ACCIONES
 };
