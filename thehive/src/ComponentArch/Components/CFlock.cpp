@@ -152,9 +152,9 @@ void CFlock::FixedUpdate(){
         //debugtotal();
 
         //Separation
-        FastSeparation();
+        //FastSeparation();
         //El resto
-        FastAlignementAndCohesion();
+        //FastAlignementAndCohesion();
         //esto es codigo de swarm, basicamente para que a parte del flocking tengan todos un mismo destino
         //ForceCenter();
         //ChangeCenter();

@@ -4,7 +4,7 @@
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 
-#define MAXSPEED 4.f
+//#define MAXSPEED 4.f
 #define FORCE_FACTOR 250.f
 
 //aqui
@@ -23,6 +23,13 @@ void CNavmeshAgent::Init(){
     //  We check if this entity has the TRANSFORM component
     Engine = Singleton<GameEngine>::Instance();
     MHandler_SETPTRS();
+    ObjectManager* Manager=Singleton<ObjectManager>::Instance();
+    CAIEnem* ia=static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, getEntityID()));
+    if(ia){
+        vel=ia->getVelocity();
+    }else{
+        vel=0;
+    }
 }
 
 
@@ -95,6 +102,7 @@ void CNavmeshAgent::FixedUpdate(){
             currentlyMovingTowardsTarget = false;
             gg::Vector3f Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.7, 0, cRigidBody->getXZVelocity().Y * -0.7)*FORCE_FACTOR;
             cRigidBody->applyCentralForce(Counter);
+            //cRigidBody->setLinearVelocity(gg::Vector3f());//para solo velocidades
         }
 
         return;
@@ -105,8 +113,9 @@ void CNavmeshAgent::FixedUpdate(){
     //  Apply a counter force when we change direction, so we can stop on curves
     ApplyCouterForce(moveVector);
 
-    if(gg::Modulo(cRigidBody->getXZVelocity()) < MAXSPEED)
+    if(gg::Modulo(cRigidBody->getXZVelocity()) < vel)
         cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
+    //cRigidBody->applyConstantVelocity(moveVector,vel);para solo velocidades
 
 }
 

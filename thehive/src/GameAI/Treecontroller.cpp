@@ -82,7 +82,9 @@ void Treecontroller::arbolswarm(){
     Sequence* sec1= new Sequence();//cargar dash random+
     sec1->addChild(addAction(IAMLEADER));
     //sec1->addChild(addAction(HIT));
-    sec1->addChild(addAction(MOVE_AROUND));
+    sec1->addChild(addAction(MOVE_TO_PLAYER));
+
+    //sec1->addChild(addAction(MOVE_AROUND));
 
     m_Children.push_back(sec1);
 

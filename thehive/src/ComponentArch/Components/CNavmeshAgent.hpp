@@ -48,7 +48,7 @@ class CNavmeshAgent : public IComponent {
         gg::Clock Timer;
         gg::Vector3f RS, LS;
         gg::Vector3f moveVector;
-        
+
         GameEngine* Engine;
         ggDynWorld* world;
 
@@ -59,6 +59,7 @@ class CNavmeshAgent : public IComponent {
         float SightDistance;
         uint16_t currentWaypointID;
         bool        currentlyMovingTowardsTarget;
+        float vel;
 };
 
 #endif
