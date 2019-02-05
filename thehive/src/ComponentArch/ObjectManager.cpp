@@ -167,7 +167,7 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
 
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
-    std::cout << "FLOCKING SIZE " << TypeToComponentMap[gg::FLOCK].size() << '\n';
+    //std::cout << "FLOCKING SIZE " << TypeToComponentMap[gg::FLOCK].size() << '\n';
     if(Erase) return;
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);

@@ -79,17 +79,58 @@ void Treecontroller::arboltracker(){
     BT= new BehaviorTree(addAction(GIRAR));
 }
 void Treecontroller::arbolswarm(){
+    Sequence* sec6= new Sequence();//cargar dash random+
+    sec6->addChild(addAction(ON_RANGE));
+    sec6->addChild(addAction(KAMIKACE));
+
+
+
+    Sequence* sec5= new Sequence();
+    sec5->addChild(addAction(PLAYER_SEEN));//visto al jugador
+    sec5->addChild(addAction(IN_LAST_POS_KWON));
+    sec5->addChild(addAction(MOVE_TO_LAST_POS_KWON));
+    Sequence* sec4= new Sequence();
+    sec4->addChild(addAction(PLAYER_SEEING));
+    sec4->addChild(addAction(MOVE_TO_PLAYER));
+    Sequence* sec3= new Sequence();
+    sec3->addChild(addAction(RANGO_SENYUELO));
+    sec3->addChild(addAction(MOVER_SENYUELO));
+    Sequence* sec2= new Sequence();
+    sec2->addChild(addAction(RANGO_ULTRASONIDO));
+    sec2->addChild(addAction(ATURDIDO));
+    Selector* sel1= new Selector();//random selector?
+    sel1->addChild(sec2);
+    sel1->addChild(sec3);
+    sel1->addChild(sec4);
+    sel1->addChild(sec5);
+    sel1->addChild(addAction(MOVE_AROUND));
     Sequence* sec1= new Sequence();//cargar dash random+
     sec1->addChild(addAction(IAMLEADER));
-    //sec1->addChild(addAction(HIT));
-    sec1->addChild(addAction(MOVE_TO_PLAYER));
+    sec1->addChild(sel1);
 
-    //sec1->addChild(addAction(MOVE_AROUND));
+
+
+
+
+
+
+    Selector* sel2= new Selector();//random selector?
+    sel2->addChild(sec6);
+    sel2->addChild(sec1);
+    sel2->addChild(addAction(FOLLOWLEADER));
+
 
     m_Children.push_back(sec1);
+    m_Children.push_back(sec2);
+    m_Children.push_back(sec3);
+    m_Children.push_back(sec4);
+    m_Children.push_back(sec5);
+    m_Children.push_back(sec6);
+    m_Children.push_back(sel1);
+    m_Children.push_back(sel2);
 
 
-    BT= new BehaviorTree(sec1);
+    BT= new BehaviorTree(sel2);
 }
 
 void Treecontroller::arbolrusher(){

@@ -77,7 +77,9 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[PRE_DASH_TO_LAST_PLAYER] = &Action::predash_to_last_player;         // nope
     VectorAcciones[DASH]                    = &Action::dash;         // nope
 
-    VectorAcciones[IAMLEADER]                    = &Action::leader;         // nope
+    VectorAcciones[IAMLEADER]               = &Action::leader;         // nope
+    VectorAcciones[FOLLOWLEADER]            = &Action::move_leader;         // nope
+    VectorAcciones[KAMIKACE]                = &Action::kamikace;         // nope
 
     data    = _data;
     tarea   = task;
@@ -145,7 +147,7 @@ void Action::leader(){
         checkbool(cFlock->getLeader());
     }
     else{
-        s=BH_FAILURE;
+        s=BH_SUCCESS;
     }
 //std::cout << s << '\n';
 }
@@ -370,6 +372,17 @@ void Action::predash(){
     }
 
 }
+void Action::kamikace(){
+    uint16_t hero = manager->getHeroID();
+    CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
+    ht->quitarvida(0.5+(yo->getRage()/2));
+
+    CVida *mio = static_cast<CVida*>(manager->getComponent(gg::VIDA, yo->getEntityID()));
+    mio->Muerte();
+    s=BH_SUCCESS;
+
+
+}
 void Action::hit(){
     //std::cout << yo->playerOnRange << '\n';
     //if(yo->playerOnRange){
@@ -504,6 +517,31 @@ void Action::move_senyuelo(){
 }
 
 ///
+void Action::move_leader(){
+    //10-25
+    //std::cout << "se hace" << '\n';
+    if(s!=BH_RUNNING){
+        s=BH_RUNNING;
+        //gg::cout("move player");
+
+        // gg::cout(" --- MOVE TO PLAYER --- ");
+    }
+    CFlock* cF = static_cast<CFlock*>(manager->getComponent(gg::FLOCK,yo->getEntityID()));
+    if(cF){
+        CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,cF->getLeaderID()));
+        if(cTransform2){
+            yo->destino = cTransform2->getPosition();
+            move_too(3);
+
+        }
+
+    }
+    else{
+        s=BH_FAILURE;
+
+    }
+
+}
 void Action::move_player_utilx(){
     //10-25
     if(s!=BH_RUNNING){

@@ -78,8 +78,11 @@ class Action : public Behavior {
         void predash();
         void predash_to_last_player();
         void predash_to_player();
+        void kamikace();
 
         void leader();
+        void move_leader();
+
 
         CAIEnem* yo;
         static int aliensAttacking;

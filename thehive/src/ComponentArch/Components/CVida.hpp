@@ -28,6 +28,7 @@ class CVida : public IComponent {
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
         virtual void FixedUpdate();
+        void Muerte();
 
         bool quitarvida(const float&);
         // Handlers
