@@ -28,7 +28,6 @@
 #include "Game.hpp"
 #include "MenuState.hpp"
 
-
 int main(int argc, char const *argv[]) {
     GameEngine *Engine = Singleton<GameEngine>::Instance();
     CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
@@ -61,6 +60,39 @@ int main(int argc, char const *argv[]) {
     world->clean();
     EventSystem->clin();
     mainstates->clin();
+
+    // PRUEBA DE LA FUNCION DIOS Y DE TRANSFORMACIONES VARIAS
+    //
+    //
+    // #include <glm/glm.hpp>
+    // #define GLM_ENABLE_EXPERIMENTAL
+    // #include <glm/ext/matrix_clip_space.hpp>
+    // #include <glm/ext/matrix_transform.hpp>
+    // #include <glm/gtx/string_cast.hpp>
+    // #include <glm/gtx/matrix_decompose.hpp>
+    //
+    //
+    // glm::mat4 transformation(1.0f);
+    // glm::vec3 scale;
+    // glm::quat rotation;
+    // glm::vec3 translation;
+    // glm::vec3 skew;
+    // glm::vec4 perspective;
+    //
+    // transformation = glm::translate(transformation,glm::vec3(5,5,5));
+    // transformation = glm::translate(transformation,glm::vec3(1,1,1));
+    // transformation = glm::rotate(transformation,90.f,glm::vec3(0,1,0));
+    //
+    //
+    // glm::decompose(transformation, scale, rotation, translation, skew, perspective);
+    //
+    // std::cout << "TRANFORMATION - " << glm::to_string(transformation) << std::endl;
+    // std::cout << "SCALE         - " << glm::to_string(scale) << std::endl;
+    // std::cout << "ROTATION      - " << glm::to_string(rotation) << std::endl;
+    // std::cout << "TRANSLATION   - " << glm::to_string(translation) << std::endl;
+    // std::cout << "SKEW          - " << glm::to_string(skew) << std::endl;
+    // std::cout << "PERSPECTIVE   - " << glm::to_string(perspective) << std::endl;
+    //
 
     return 0;
 }
