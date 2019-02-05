@@ -1,4 +1,5 @@
 #include "TLuz.hpp"
+#include <iostream>
 
 TLuz::TLuz(){}
 TLuz::~TLuz(){}
@@ -16,5 +17,7 @@ gg::Color TLuz::getIntensidad(){
 }
 
 // Se quedan vacios
-void TLuz::beginDraw(){}
+void TLuz::beginDraw(){
+    std::cout << "Luz" << '\n';
+}
 void TLuz::endDraw(){}
