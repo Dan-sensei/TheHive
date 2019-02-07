@@ -25,6 +25,8 @@ class Model{
         gg::Vector3f getRotation();
         gg::Vector3f getScale();
 
+        void setVisibility(bool flag);
+
         //  ---
         //  We assign the material to the model
         //=============================================================

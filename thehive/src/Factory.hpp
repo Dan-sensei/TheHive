@@ -21,6 +21,8 @@ class Factory{
     public:
         uint16_t createHero(const gg::Vector3f &Position,bool);
         uint16_t createSoldier(const gg::Vector3f&,const float&);
+        uint16_t createSoldierHorda(const gg::Vector3f&,const float&,const gg::Vector3f&);
+        uint16_t createSoldierWandering(const gg::Vector3f&,const float&);
         uint16_t createRusher(const gg::Vector3f&,const float&);
         uint16_t createTank(const gg::Vector3f&,const float&);
         uint16_t createSingleSwarm(const gg::Vector3f&,const float&);

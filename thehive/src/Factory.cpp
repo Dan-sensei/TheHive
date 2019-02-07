@@ -49,6 +49,24 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     return hero;
 }
 
+uint16_t Factory::createSoldierWandering(const gg::Vector3f &Position,const float &health){
+    uint16_t Enemy =createSoldier(Position,health);
+
+    CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position,false);
+    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+
+    return Enemy;
+
+}
+uint16_t Factory::createSoldierHorda(const gg::Vector3f &Position,const float &health,const gg::Vector3f &Position2){
+    uint16_t Enemy =createSoldier(Position,health);
+
+    CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position2,true);
+    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+
+    return Enemy;
+
+}
 uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
     Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
@@ -65,8 +83,6 @@ uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health
     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
-    CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position,false);
-    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
     CVida* Vida                         = new CVida(health);
     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
@@ -166,7 +182,7 @@ uint16_t Factory::createSwarm( const gg::Vector3f &Position,const float &health)
 
 
     CFlock* cFlock = new CFlock(true,holyBomb);
-    for (size_t i = 0; i < 3; i++) {
+    for (size_t i = 0; i < 15; i++) {
         //uint16_t id_malo=createSingleSwarm(Position,health);
         //CFlock* cFlock = new CFlock(true,holyBomb);
         //cFlock->addFlocked(id_malo);//3

@@ -77,3 +77,7 @@ void Model::assignMaterial(const Material &mat) {
     if(texture)
         mModel->setMaterialTexture(0, texture);
 }
+
+void Model::setVisibility(bool flag){
+    mModel->setVisible(flag);
+}

@@ -81,7 +81,7 @@ void Game::Init(){
     sF->createCollectableWeapon(gg::Vector3f(20, 3, 50),2);
 
     sF->createRusher(gg::Vector3f(-10,3, -50),200);
-    sF->createSoldier(gg::Vector3f(-45,3,-23),200);
+    sF->createSoldierWandering(gg::Vector3f(-45,3,-23),200);
     // sF->createSoldier(gg::Vector3f(189,-10,264),200);
     // sF->createSoldier(gg::Vector3f(  9,-10,277),200);
 
