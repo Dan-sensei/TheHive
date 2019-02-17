@@ -3,6 +3,7 @@
 
 #include <Util.hpp>
 #include "TEntidad.hpp"
+#include <cstdint>
 //class TLuz{
 class TLuz : public TEntidad {
     public:
@@ -14,7 +15,7 @@ class TLuz : public TEntidad {
         //void setDireccion(gg::Vector3f&);
         gg::Color getIntensidad();
 
-        virtual void beginDraw();
+        virtual void beginDraw(uint8_t);
         virtual void endDraw();
 
     private:

@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <cstdint>
 
 class TCamara : public TEntidad {
     public:
@@ -15,7 +16,7 @@ class TCamara : public TEntidad {
 
         void setPerspectiva(float);
 
-        virtual void beginDraw();
+        virtual void beginDraw(uint8_t);
         virtual void endDraw();
 
     private:

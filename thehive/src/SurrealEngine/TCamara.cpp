@@ -1,4 +1,8 @@
 #include "TCamara.hpp"
+#include <iostream>
+#include <cstdint>
+
+
 
 TCamara::TCamara(float _fov, float _near, float _far){
     cercano = _near;
@@ -36,5 +40,9 @@ void TCamara::setPerspectiva(float _aspect){
 }
 
 // Se quedan vacios
-void TCamara::beginDraw(){}
+void TCamara::beginDraw(uint8_t tipo_ent){
+    if(tipo_ent==1)
+        std::cout << "Camara" << '\n';
+        //Meter en array de camaras
+}
 void TCamara::endDraw(){}

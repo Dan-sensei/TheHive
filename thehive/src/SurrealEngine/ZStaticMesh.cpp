@@ -72,11 +72,14 @@ void ZStaticMesh::assignMaterial(ZMaterial* material_){
 }
 
 
-void ZStaticMesh::beginDraw(){
-    glBindVertexArray(VAO);
+void ZStaticMesh::beginDraw(uint8_t tipo_ent){
 
-    zmat->Bind();
-    glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
+    if(tipo_ent!=0 && tipo_ent!=1){
+        glBindVertexArray(VAO);
+
+        zmat->Bind();
+        glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
+    }
 }
 
 void ZStaticMesh::endDraw(){}

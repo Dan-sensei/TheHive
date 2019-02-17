@@ -1,4 +1,6 @@
 #include "TTransform.hpp"
+#include <iostream>
+#include <cstdint>
 
 // Pila de matrices
 std::stack<glm::mat4> TEntidad::glMatrixStack;
@@ -16,6 +18,7 @@ void TTransform::load(glm::mat4 _m){
 
 void TTransform::translate(gg::Vector3f _vec){
     matrix = glm::translate(matrix,glm::vec3(_vec.X,_vec.Y,_vec.Z));
+
 }
 
 void TTransform::rotate(float _angle, gg::Vector3f _vec){
@@ -38,13 +41,17 @@ void TTransform::inverse(){
     matrix = glm::inverse(matrix);
 }
 
-void TTransform::beginDraw(){
+void TTransform::beginDraw(uint8_t tipo_ent){
+
     auto updateTransform = [this](){
         glm::mat4 m_aux = glMatrixStack.top();
+
+
         glMatrixStack.push( m_aux * matrix );
     };
     // Apilar matriz
     (glMatrixStack.empty())? glMatrixStack.push(matrix) : updateTransform();
+
 }
 
 void TTransform::endDraw(){

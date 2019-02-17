@@ -19,13 +19,14 @@ class TNodo {
         bool setPadre(TNodo*);
         TNodo* getPadre();
 
-        void draw();
+        void draw(uint8_t);
         void drawRoot();
 
     private:
         TEntidad* entidad;
         std::deque<TNodo*> hijos;
         TNodo* padre;
+        uint8_t tipo_ent;
 };
 
 #endif

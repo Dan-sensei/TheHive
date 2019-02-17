@@ -8,6 +8,7 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+#include <cstdint>
 
 #include <Util.hpp>
 #include "TEntidad.hpp"
@@ -27,7 +28,7 @@ class TTransform : public TEntidad {
         void transpose();
         void inverse();
 
-        virtual void beginDraw();
+        virtual void beginDraw(uint8_t);
         virtual void endDraw();
 
     private:

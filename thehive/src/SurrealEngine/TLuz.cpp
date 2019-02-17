@@ -1,5 +1,6 @@
 #include "TLuz.hpp"
 #include <iostream>
+#include <cstdint>
 
 TLuz::TLuz(){}
 TLuz::~TLuz(){}
@@ -17,7 +18,9 @@ gg::Color TLuz::getIntensidad(){
 }
 
 // Se quedan vacios
-void TLuz::beginDraw(){
-    std::cout << "Luz" << '\n';
+void TLuz::beginDraw(uint8_t tipo_ent){
+    if(tipo_ent==0)
+        std::cout << "Luz" << '\n';
+        //Meter en array de luces
 }
 void TLuz::endDraw(){}
