@@ -19,7 +19,7 @@ SoundSystem::SoundSystem(){
 	system->loadBankFile("assets/FMOD/Master_Bank.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&masterBank);
 	system->loadBankFile("assets/FMOD/Master_Bank.strings.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&stringsBank);
 	system->loadBankFile("assets/FMOD/SFX.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&SFXBank);
-	system->loadBankFile("assets/FMOD/Ambience.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&ambienceBank);
+	system->loadBankFile("assets/FMOD/Ambiente.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&ambienceBank);
 }
 
 SoundSystem::~SoundSystem(){}
