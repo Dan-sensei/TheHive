@@ -126,7 +126,7 @@ void AIDirector::update (float delta){
     }
     if(AcumulatorPico<TimePico){
         AcumulatorPico+=delta;
-        std::cout << "estoy en pico" << '\n';
+        //std::cout << "estoy en pico" << '\n';
         //invocar especial no se muy bien que hacer
     }
     //std::cout << "estres" <<estres<< '\n';
@@ -149,11 +149,13 @@ void AIDirector::clipingEnemigos(){
         diren       = gg::Normalice(diren);
         float sol   = gg::Producto(diren,dir);
         CRenderable_3D* render  = static_cast<CRenderable_3D*>(Manager->getComponent(gg::RENDERABLE_3D, (*it)->getEntityID()));
-        if(gradovision<sol){
-            render->setVisibility(true);
-        }else{
-            render->setVisibility(false);
-        }
+        //if(render){
+            if(gradovision<sol){
+                render->setVisibility(true);
+            }else{
+                render->setVisibility(false);
+            }
+        //}
         it++;
     }
 }
@@ -167,7 +169,7 @@ void AIDirector::comprobar(){
         //comprobar si me esta atacando
         CTransform* Tenemy=*it;
         CAIEnem* cAIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, Tenemy->getEntityID()));
-        if(cAIEnem->getPlayerSeeing()){
+        if(cAIEnem&&cAIEnem->getPlayerSeeing()){
             viendome++;
             float dist=gg::FastDIST(pos, Tenemy->getPosition());
             if(DIST_MIEDO>dist){
@@ -210,7 +212,7 @@ void AIDirector::busquedaCerca(){
 }
 
 void AIDirector::changeNode(AINode* nodo){
-    std::cout << "cambiamos" << '\n';
+    //std::cout << "cambiamos" << '\n';
     auto it =Njugador->nodosProximos.begin();
     while(it!=Njugador->nodosProximos.end()){
         auto it2 =nodo->nodosProximos.begin();
@@ -287,8 +289,17 @@ void AIDirector::createHorda(AINode* nodo){
     //enemigos.push_back(enemypos1);
 
     int id2=fac->createSwarm(nodo->getPos(), 2000);
-    CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    enemigos.push_back(enemypos1);
+    //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
+    //enemigos.push_back(enemypos1);//anayadir todo el flock
+    CFlock* enemyflock=static_cast<CFlock*>(Manager->getComponent(gg::FLOCK, id2));
+    auto arr=enemyflock->getFlocked();
+    auto it=arr.begin();
+    while(it!=arr.end()){
+        int id3=(*it)->getEntityID();
+        CTransform* enemypos12=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id3));
+        enemigos.push_back(enemypos12);//anayadir todo el flock
+        it++;
+    }
     return;
 
     float rango=nodo->getRange();
