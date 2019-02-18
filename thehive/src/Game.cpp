@@ -60,6 +60,9 @@ Game::Game(){
 
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
+
+
+
     Engine->HideCursor(true);
     UPDATE = 0;
     DRO = 0;
@@ -71,6 +74,7 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<ScreenConsole>::Instance()->InitHUD();
+    soundSys = Singleton<SoundSystem>::Instance();
     auto sF = Singleton<Factory>::Instance();
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
@@ -275,6 +279,8 @@ void Game::Update(){
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
     Engine->EndDro();
+
+    soundSys->update();
 }
 
 void Game::Resume(){
@@ -288,6 +294,8 @@ void Game::CLIN(){
     //EventSystem->clin();
     //Singleton<ScreenConsole>::Instance()->CLIN();
     Singleton<ScreenConsole>::Instance()->CLINNormal();
+
+    soundSys->CLIN();
 
     // std::cout << "1/60 = " << 1/60.F << '\n';
     // std::cout << "UPDTES " << UPDATE  << '\n';

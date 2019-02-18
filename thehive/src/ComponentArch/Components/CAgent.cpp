@@ -528,9 +528,9 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             relDT = 1;
             rng = 0.7;
 
-            sonido_disparo = "event:/SFX/Armas/Rifle/Rifle_disparo";
-            sonido_recarga = "event:/SFX/Armas/Rifle/Rifle_recarga";
-            sonido_desenfundado ="event:/SFX/Armas/Rifle/Rifle_desenfundado";
+            sonido_disparo = "event:/SFX/Armas/Rifle/DisparoRifle";
+            sonido_recarga = "event:/SFX/Armas/Rifle/RecargaRifle";
+            sonido_desenfundado ="event:/SFX/Armas/Rifle/DesenfundadoRifle";
             //sonido_sin_balas =;
 
 
@@ -543,9 +543,9 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             relDT = 3;
             rng = 0.4;
 
-            sonido_disparo = "event:/SFX/Armas/Escopeta/Escopeta_disparo";
-            sonido_recarga = "event:/SFX/Armas/Escopeta/Escopeta_recarga";
-            sonido_desenfundado = "event:/SFX/Armas/Escopeta/Escopeta_desenfundado";
+            sonido_disparo = "event:/SFX/Armas/Escopeta/DisparoEscopeta";
+            sonido_recarga = "event:/SFX/Armas/Escopeta/RecargaEscopeta";
+            sonido_desenfundado = "event:/SFX/Armas/Escopeta/DesenfundadoEscopeta";
             break;
         case 2:
             // Ametralladora
@@ -555,9 +555,9 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             relDT = 6;
             rng = 0.7;
 
-            sonido_disparo = "event:/SFX/Armas/Ametralladora/Ametralladora_disparo";
-            sonido_recarga = "event:/SFX/Armas/Ametralladora/Ametralladora_recarga";
-            sonido_desenfundado = "event:/SFX/Armas/Ametralladora/Ametralladora_desenfundado";
+            sonido_disparo = "event:/SFX/Armas/Ametralladora/DisparoAmetralladora";
+            sonido_recarga = "event:/SFX/Armas/Ametralladora/RecargaAmetralladora";
+            sonido_desenfundado = "event:/SFX/Armas/Ametralladora/DesenfundadoAmetralladora";
             break;
         case 3:
             // Pistola
@@ -567,9 +567,9 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             relDT = 0.5;
             rng = 0.5;
 
-            sonido_disparo = "event:/SFX/Armas/Pistola/Pistola_disparo";
-            sonido_recarga = "event:/SFX/Armas/Pistola/Pistola_recarga";
-            sonido_desenfundado = "event:/SFX/Armas/Pistola/Pistola_desenfundado";
+            sonido_disparo = "event:/SFX/Armas/Pistola/DisparoPistola";
+            sonido_recarga = "event:/SFX/Armas/Pistola/RecargaPistola";
+            sonido_desenfundado = "event:/SFX/Armas/Pistola/DesenfundadoPistola";
             break;
         case 4:
             // Katana

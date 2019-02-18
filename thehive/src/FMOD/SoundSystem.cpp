@@ -19,7 +19,7 @@ SoundSystem::SoundSystem(){
 	system->loadBankFile("assets/FMOD/Master_Bank.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&masterBank);
 	system->loadBankFile("assets/FMOD/Master_Bank.strings.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&stringsBank);
 	system->loadBankFile("assets/FMOD/SFX.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&SFXBank);
-	system->loadBankFile("assets/FMOD/Ambiente.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&ambienceBank);
+	system->loadBankFile("assets/FMOD/Ambience.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&ambienceBank);
 }
 
 SoundSystem::~SoundSystem(){}
@@ -30,6 +30,8 @@ SoundEvent* SoundSystem::createSound(const std::string &_str){
 	ForestSound *ret;
 
 	if(soundEvents.find(_str) == soundEvents.end()){
+
+		std::cout << _str << '\n';
 		ERRCHECK(system->getEvent(_str.c_str(),&event));
 		ERRCHECK(event->createInstance(&instance));
 

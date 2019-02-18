@@ -38,9 +38,9 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CPlayerController* PlayerController = new CPlayerController();
     Manager->addComponentToEntity(PlayerController, gg::PLAYERCONTROLLER, hero);
 
-    std::string Disparo_pistola = "event:/SFX/Armas/Pistola/Pistola_disparo";
-    std::string Recarga_pistola = "event:/SFX/Armas/Pistola/Pistola_recarga";
-    std::string Desen_pistola = "event:/SFX/Armas/Pistola/Pistola_desenfundado";
+    std::string Disparo_pistola = "event:/SFX/Armas/Pistola/DisparoPistola";
+    std::string Recarga_pistola = "event:/SFX/Armas/Pistola/RecargaPistola";
+    std::string Desen_pistola = "event:/SFX/Armas/Pistola/DesenfundadoPistola";
     CGun *gun = new CGun(0.4,5,15,0.5,0.5,3, Disparo_pistola, Recarga_pistola, Desen_pistola );
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 

@@ -13,9 +13,12 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
     reloading = false;
 
     SS = Singleton<SoundSystem>::Instance();
-    s_disparo = SS->createSound(sonido_disparo);
-    s_recarga = SS->createSound(sonido_recarga);
-    s_desenfundado = SS->createSound(sonido_desenfundado);
+
+    s_disparo = SS->createSound("event:/Armas/Rifle/Rifle_disparo");
+
+    //s_disparo = SS->createSound(sonido_disparo);
+    //s_recarga = SS->createSound(sonido_recarga);
+    //s_desenfundado = SS->createSound(sonido_desenfundado);
 }
 
 CGun::~CGun() {
@@ -99,7 +102,7 @@ void CGun::reload(){
     gg::cout(" -- RELOAD -- ");
     reloading = true;
     dtReload = std::chrono::high_resolution_clock::now();
-    s_recarga->play();
+    //s_recarga->play();
 }
 
 bool CGun::isReloading(){
@@ -174,5 +177,5 @@ void CGun::FixedUpdate(){
 }
 
 void CGun::desenfundado(){
-    s_desenfundado->play();
+    //s_desenfundado->play();
 }
