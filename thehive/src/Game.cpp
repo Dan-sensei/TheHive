@@ -9,6 +9,7 @@
 #include "GameEngine/Camera.hpp"
 #include "Singleton.hpp"
 #include "GameAI/Pathfinding.hpp"
+#include "GameAI/AIDirector.hpp"
 #include "GameAI/NavmeshStructs.hpp"
 
 #include "GameEngine/ScreenConsole.hpp"
@@ -49,6 +50,8 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 Game::Game(){
     Engine = Singleton<GameEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
+    Director = Singleton<AIDirector>::Instance();
+    //Director = new AIDirector();
 
     //Engine->Starto();
     //Engine->HideCursor(true);
@@ -73,19 +76,20 @@ void Game::Init(){
 
     // Pos init del heroe normal
     // 360, 0, 350
+    //esto estar en ai director
     uint16_t h = sF->createHero(gg::Vector3f(10,3,65),false);
     //sF->createRusher(gg::Vector3f(5,3,65),200);
-    sF->createSwarm(gg::Vector3f(5,3,65),100);
+    //sF->createSwarm(gg::Vector3f(5,3,65),100);
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     sF->createCollectableWeapon(gg::Vector3f(20, 3, 50),2);
 
-    sF->createRusher(gg::Vector3f(-10,3, -50),200);
-    sF->createSoldierWandering(gg::Vector3f(-45,3,-23),200);
-    // sF->createSoldier(gg::Vector3f(189,-10,264),200);
-    // sF->createSoldier(gg::Vector3f(  9,-10,277),200);
+    //sF->createRusher(gg::Vector3f(-10,3, -50),200);
+    //sF->createSoldierWandering(gg::Vector3f(-45,3,-23),200);
 
     gg::Vector3f mapPos(0,0,0);
+
+    Director->init();
 
     /*
     // POR SI SE QUIERE CARGAR EL MAPA DE SIEMPRE
@@ -228,16 +232,21 @@ void Game::Init(){
 }
 
 void Game::Update(){
+    //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
+    //std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
+
     DeltaTime = MasterClock.Restart().Seconds();
 
     if(DeltaTime > 0.25) DeltaTime = 0.25;
 
     Accumulator += DeltaTime;
     while(Accumulator >= 1/UPDATE_STEP){
-        // FIXED UPDATE
+        // FIXED UPDATE//
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
+        Director->comprobar();
+        Director->clipingEnemigos();
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
         ++UPDATE;
@@ -245,7 +254,8 @@ void Game::Update(){
     ++DRO;
 
     EventSystem->Update();
-
+    Director->update(DeltaTime);
+    //Director->clipingEnemigos();
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));

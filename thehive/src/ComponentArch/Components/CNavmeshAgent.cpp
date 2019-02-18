@@ -92,7 +92,7 @@ void CNavmeshAgent::FixedUpdate(){
     float modulo= gg::Modulo(moveVector);
 
     // Check if we are close to the next destination node
-    if(modulo <= 10) {
+    if(modulo <= 2) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
 
@@ -114,7 +114,7 @@ void CNavmeshAgent::FixedUpdate(){
     ApplyCouterForce(moveVector);
 
     //if(gg::Modulo(cRigidBody->getXZVelocity()) < vel)
-    //    cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
+    //   cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
     cRigidBody->applyConstantVelocityNormal(moveVector,vel);//para solo velocidades
 
 }
@@ -158,6 +158,7 @@ void CNavmeshAgent::SetDestination(const gg::Vector3f &Target){
     Waypoints = std::stack<Waypoint>();
     Singleton<Pathfinding>::Instance()->FindPath(cTransform->getPosition(), Target, Waypoints);
     if(Waypoints.empty()){
+        //std::cout << "EMPTY!" << '\n';
         currentlyMovingTowardsTarget = false;
         cRigidBody->setLinearVelocity(0.5);
         return;
@@ -172,9 +173,6 @@ bool CNavmeshAgent::HasDestination(){
 }
 
 void CNavmeshAgent::ResetDestination(){
-    while(!Waypoints.empty()){
-        Waypoints.pop();
-    }
-
+    Waypoints = std::stack<Waypoint>();
     currentlyMovingTowardsTarget = false;
 }

@@ -7,6 +7,8 @@ class CTriggerSystem;
 class ObjectManager;
 class ggDynWorld;
 
+class AIDirector;
+
 #include <iostream>
 #include <GameEngine/Clock.hpp>
 #include "States/State.hpp"
@@ -41,6 +43,7 @@ private:
     ObjectManager* Manager;
     ggDynWorld* world;
     CCamera* MainCamera;
+    AIDirector* Director;
 
     gg::Clock MasterClock;
     double DeltaTime;

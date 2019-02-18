@@ -79,6 +79,7 @@ class Action : public Behavior {
         void predash_to_last_player();
         void predash_to_player();
         void kamikace();
+        void look_around();
 
         void leader();
         void move_leader();

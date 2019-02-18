@@ -15,6 +15,11 @@
 
 class CAIEnem;
 class Action;
+class Parallel;
+class Sequence;
+class Selector;
+class Inverso;
+class RandomSelector;
 //enum Hojas;
 class Treecontroller {
     public:
@@ -35,6 +40,11 @@ class Treecontroller {
         void arbolswarm();
 
     private:
+        Parallel* createParallel(Behavior* condiciones);
+        Inverso* createInverso(Behavior* condiciones);
+        Sequence* createSequence();
+        Selector* createSelector();
+        RandomSelector* createRandomSelector();
         /* data */
         CAIEnem* yo;
         BehaviorTree* BT;

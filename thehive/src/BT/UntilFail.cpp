@@ -2,14 +2,23 @@
 #include "UntilFail.hpp"
 
 Status UntilFail::update(){
-  while(true){
-    m_pChild->tick();
-     if(m_pChild->getStatus()==BH_FAILURE){
+      //std::cout << "estoy aqui :D" << '\n';
+
+     Status s= m_pChild->tick();
+     //std::cout << "estatus " <<s<< '\n';
+
+     if(s==BH_FAILURE){
       return BH_SUCCESS;
     }
-    if(m_pChild->getStatus()==BH_INVALID){
-      break;
+    else{
+        return BH_RUNNING;
     }
-  }
-  return BH_INVALID;
+//  return BH_INVALID;
+}
+
+
+UntilFail::UntilFail(Behavior* _m_pChild):Decorator(_m_pChild){}
+UntilFail::UntilFail(){}
+UntilFail::~UntilFail(){}
+void UntilFail::onTerminate(Status state){
 }

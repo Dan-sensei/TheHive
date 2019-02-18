@@ -66,6 +66,8 @@ class CAIEnem : public IComponent {
         void setSigno(int);
         int getSigno();
 
+        bool getPlayerSeeing();
+
         void upgradeMaxAliensAttackingAtOnce();
         int getMaxAliensAttackingAtOnce();
 
@@ -84,6 +86,7 @@ class CAIEnem : public IComponent {
         // /////////////////////////////////////////////// //
 
         static CTransform* PlayerTransform;     //  Punteros a otras componentes
+        static CRigidBody* PlayerBody;     //  Punteros a otras componentes
         Treecontroller* arbol;
 
         gg::Vector3f playerPos;

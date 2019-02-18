@@ -24,6 +24,8 @@ class Model{
         gg::Vector3f getPosition();
         gg::Vector3f getRotation();
         gg::Vector3f getScale();
+        bool getVisibility();
+
 
         void setVisibility(bool flag);
 

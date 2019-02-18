@@ -23,6 +23,7 @@ CFlock::~CFlock(){
 
 }
 void CFlock::Muerte(){
+    //std::cout << "muero" << '\n';
     //std::cout << "mi id es" <<getEntityID()<< '\n';
     //std::cout << "antes" << '\n';
     //CFlock* prueba = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,leader_id));
@@ -49,6 +50,8 @@ void CFlock::Muerte(){
     //std::cout << "despues" << '\n';
     //prueba2->debugtotal();
     Manager->removeComponentFromEntity(gg::FLOCK,getEntityID() );
+    //std::cout << "muero final" << '\n';
+
 
 }
 void CFlock::removerFlocked(int id){
@@ -157,7 +160,7 @@ void CFlock::debugtotal(){
 
 }
 void CFlock::FixedUpdate(){
-
+//std::cout << "fixed" << '\n';
     if(leader){
         if(Flocked.size()<=1){
             //std::cout << "eliminamos todo" << '\n';
@@ -178,6 +181,8 @@ void CFlock::FixedUpdate(){
             //Muerte();
         }
     }
+    //std::cout << "fixed final" << '\n';
+
 }
 void CFlock::ChangeCenter(){
     //gg::Vector3f res;

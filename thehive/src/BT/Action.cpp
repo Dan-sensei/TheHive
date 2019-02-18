@@ -28,6 +28,9 @@ int Action::getTask(){
 
 Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     yo = ai;
+    s=BH_INVALID;
+    //m_eStatus=BH_INVALID;
+    SetStatus(BH_INVALID);
 
     VectorAcciones[ANDAR_RAND]              = &Action::andar_random;
     VectorAcciones[COMER]                   = &Action::comer_animal;
@@ -81,6 +84,8 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
     VectorAcciones[FOLLOWLEADER]            = &Action::move_leader;         // nope
     VectorAcciones[KAMIKACE]                = &Action::kamikace;         // nope
 
+    VectorAcciones[LOOKAROUND]                = &Action::look_around;         // nope
+
     data    = _data;
     tarea   = task;
 
@@ -95,12 +100,15 @@ Action::~Action(){
 }
 void Action::onInitialize(){
     s = BH_INVALID;
+    SetStatus(BH_INVALID);
 }//parámetros del mundo necesarios para el update} // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update
 
 Status Action::update() {
 
     if(VectorAcciones[tarea] != nullptr)
         (this->*VectorAcciones[tarea])();
+        SetStatus(s);
+
 
     return s;
 
@@ -296,21 +304,17 @@ void Action::over_X_meters(int _m){
 
 void Action::dash(){
     if(s!=BH_RUNNING){
-        yo->CanIReset=false;
+        CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
+        if(nvAgent){
+            nvAgent->ResetDestination();
+        }
     }
     move_too(5);
 
-    if(s!=BH_RUNNING){
-        yo->CanIReset=true;
-    }
-    //if(s==BH_SUCCESS){
-    //    yo->playerSeen=false;
-    //}
 }
 void Action::predash_to_last_player(){
 
     if(s!=BH_RUNNING){
-        yo->CanIReset=false;
 
         if(gg::DIST(yo->destino,yo->playerPos)>30){
             gg::Vector3f mio            = cTransform->getPosition();
@@ -323,13 +327,11 @@ void Action::predash_to_last_player(){
     }
     predash();
     if(s!=BH_RUNNING&&yo->destino == yo->playerPos){
-        yo->CanIReset=true;
         yo->playerSeen=false;
     }
 }
 void Action::predash_to_player(){
     if(s!=BH_RUNNING){
-        yo->CanIReset=false;
         gg::Vector3f mio            = cTransform->getPosition();
         CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
         //yo->destino = mio +gg::Normalice(cTransform2->getPosition()-mio)*30;
@@ -337,7 +339,6 @@ void Action::predash_to_player(){
     }
     predash();
     if(s!=BH_RUNNING){
-        yo->CanIReset=true;
         gg::Vector3f mio            = cTransform->getPosition();
         CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
         if(gg::DIST(cTransform2->getPosition(),mio)<5){
@@ -351,6 +352,10 @@ void Action::predash_to_player(){
 void Action::predash(){
 
     if(s!=BH_RUNNING){
+        CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
+        if(nvAgent){
+            nvAgent->ResetDestination();
+        }
         s = BH_RUNNING;
         //elegir destino y ponemos rotacion
         gg::Vector3f mio            = cTransform->getPosition();
@@ -383,6 +388,23 @@ void Action::kamikace(){
 
 
 }
+void Action::look_around(){
+    if(s!=BH_RUNNING){
+        s = BH_RUNNING;
+        yo->ultrasonido_cont    = 0;
+        int num =gg::genIntRandom(1,2);
+        yo->signo=pow(-1,num);
+    }
+    yo->ultrasonido_cont++;
+    cTransform->setRotation(cTransform->getRotation()+gg::Vector3f(0,yo->signo,0));
+    if(yo->ultrasonido_cont==30){
+        yo->signo=yo->signo*-1;
+    }
+    if(yo->ultrasonido_cont==60){
+        s = BH_SUCCESS;
+    }
+
+}
 void Action::hit(){
     //std::cout << yo->playerOnRange << '\n';
     //if(yo->playerOnRange){
@@ -402,6 +424,11 @@ void Action::hit(){
     cTransform->setRotation(V_AI_DEST);
 
     if(s!=BH_RUNNING){
+        cRigidBody->setLinearVelocity(gg::Vector3f());
+        CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
+        if(nvAgent){
+            nvAgent->ResetDestination();
+        }
         cont_hit = 0;
         modifyImAttacking(true);
 
@@ -492,24 +519,16 @@ void Action::move_to(){
     setActive("mover",1);
 }
 
-void Action::move_last(){
-    if(s!=BH_RUNNING){
-        //gg::cout("move last");
-        s=BH_RUNNING;
-        yo->destino = yo->playerPos;
-    }
-
-    move_too(10);
-
-    if(s==BH_SUCCESS){
-        yo->playerSeen=false;
-    }
-}
 
 void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
+        //std::cout << "last final" << '\n';
         //gg::cout("move senyuelo");
         s=BH_RUNNING;
+        CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
+        if(nvAgent){
+            nvAgent->ResetDestination();
+        }
         yo->destino = yo->senpos;
     }
 
@@ -558,6 +577,11 @@ void Action::move_player_utilx(){
 void Action::move_player(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
+        CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
+        if(nvAgent){
+            nvAgent->ResetDestination();
+        }
+        //std::cout << "move player inicio" << '\n';
         //gg::cout("move player");
 
         // gg::cout(" --- MOVE TO PLAYER --- ");
@@ -567,8 +591,10 @@ void Action::move_player(){
     CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
     yo->destino = cTransform2->getPosition();
 
+    //std::cout << "move player" << '\n';
     move_too(5);
     if(s!=BH_RUNNING){
+        //std::cout << "move player final" << '\n';
         //gg::cout("move player");
 
         // gg::cout(" --- MOVE TO PLAYER --- ");
@@ -579,35 +605,80 @@ void Action::move_player(){
     //}
 }
 
-void Action::move_around(){
+
+void Action::move_last(){
     CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
     if(nvAgent){
         if(s!=BH_RUNNING){
             s=BH_RUNNING;
             // Obligatorio
-            nvAgent->ResetDestination();
-
-            gg::Vector3f dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
-
+            //gg::Vector3f dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
             yo->destino = cTransform->getPosition();
-
-            nvAgent->SetDestination(dest);
+            nvAgent->SetDestination(yo->playerPos);
+            return;
         }
         if(s==BH_RUNNING){
             // Intercambio EL USO DE LOS VECTORES dest y mio
             gg::Vector3f dest           = cTransform->getPosition();    // A donde voy
             gg::Vector3f mio            = yo->destino;                  // Donde estaba
 
+            //std::cout << "dest" <<dest<< '\n';
+            //std::cout << "mio" <<mio<< '\n';
+
             gg::Vector3f V_AI_DEST      = dest-mio;
+            if(!(dest==mio)){
 
-            V_AI_DEST.Y     = 0;
-            V_AI_DEST       = gg::Normalice(V_AI_DEST);
-            V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
-            cTransform->setRotation(V_AI_DEST);
+                V_AI_DEST.Y     = 0;
+                V_AI_DEST       = gg::Normalice(V_AI_DEST);
+                V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
+                cTransform->setRotation(V_AI_DEST);
+
+                yo->destino = cTransform->getPosition();
+            }
+
+            if(!nvAgent->HasDestination()){
+                nvAgent->ResetDestination();
+                s = BH_SUCCESS;
+                yo->playerSeen=false;
+            }
+        }
+    }
+    else{
+        yo->playerSeen=false;
+        s = BH_SUCCESS;
+    }
+}
+void Action::move_around(){
+    CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
+    if(nvAgent){
+        if(s!=BH_RUNNING){
+            s=BH_RUNNING;
+            // Obligatorio
+            gg::Vector3f dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
             yo->destino = cTransform->getPosition();
+            nvAgent->SetDestination(dest);
+            return;
+        }
+        if(s==BH_RUNNING){
+            // Intercambio EL USO DE LOS VECTORES dest y mio
+            gg::Vector3f dest           = cTransform->getPosition();    // A donde voy
+            gg::Vector3f mio            = yo->destino;                  // Donde estaba
 
+            //std::cout << "dest" <<dest<< '\n';
+            //std::cout << "mio" <<mio<< '\n';
+
+            gg::Vector3f V_AI_DEST      = dest-mio;
+            if(!(dest==mio)){
+                V_AI_DEST.Y     = 0;
+                V_AI_DEST       = gg::Normalice(V_AI_DEST);
+                V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
+
+                cTransform->setRotation(V_AI_DEST);
+
+                yo->destino = cTransform->getPosition();
+            }
             if(!nvAgent->HasDestination()){
                 nvAgent->ResetDestination();
                 s = BH_SUCCESS;

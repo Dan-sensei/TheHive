@@ -2,7 +2,7 @@
 
 
 
-
+//
 
 
 
@@ -49,5 +49,6 @@ enum Hojas {
     IAMLEADER,
     FOLLOWLEADER,
     KAMIKACE,
+    LOOKAROUND,
     NUM_ACCIONES
 };

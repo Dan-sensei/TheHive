@@ -9,7 +9,7 @@
 #define MAX_ENTITIES 65536
 
 ObjectManager::ObjectManager() {
-    nextAvailableEntityID.push(1);
+    nextAvailableEntityID.push(1);//
 
     //  Defines wich kind of messages will receive each type of component
     //  We just insert in the array of vectors, the component type in the messageTYpe array position

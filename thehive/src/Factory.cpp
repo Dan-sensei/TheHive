@@ -55,6 +55,9 @@ uint16_t Factory::createSoldierWandering(const gg::Vector3f &Position,const floa
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position,false);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
+    CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
+    Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
+
     return Enemy;
 
 }
@@ -63,6 +66,9 @@ uint16_t Factory::createSoldierHorda(const gg::Vector3f &Position,const float &h
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position2,true);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+
+    CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
+    Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
 
     return Enemy;
 
@@ -87,8 +93,6 @@ uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health
     CVida* Vida                         = new CVida(health);
     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
 
-    CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
-    Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
 
     return Enemy;
 }

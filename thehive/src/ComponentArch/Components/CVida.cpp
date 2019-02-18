@@ -22,7 +22,7 @@ CVida::CVida(int _vida)
 CVida::~CVida() {}
 
 void CVida::Muerte(){
-vida=0;
+    vida=0;
 }
 float CVida::getVida(){
     return vida;
@@ -104,7 +104,6 @@ void CVida::FixedUpdate() {
 
                 triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 20, 5000, false, TData());
             }
-
             CFlock* flock_lider = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,getEntityID()));
             if(flock_lider){
                 flock_lider->Muerte();

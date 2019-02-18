@@ -134,7 +134,7 @@ void CPlayerController::FixedUpdate(){
     gg::Vector3f nextPosition = camera->getlastHeroPosition();
     bool heroRotation = true;
 
-    gg::Vector3f oPV = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
+    gg::Vector3f oPV = camera->getOffsetPositionVector();
                  cV = camera->getCameraPositionBeforeLockRotation();
     gg::Vector3f hV = nextPosition;
     // gg::Vector3f cV2 = cV;  // cV2 POR AHORA no se usa para nada
