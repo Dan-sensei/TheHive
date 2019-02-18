@@ -2,7 +2,7 @@
 
 // Pila de matrices
 std::stack<glm::mat4> TEntidad::matrixStack;
-glm::mat4 modelMatrix;
+glm::mat4 TEntidad::modelMatrix;
 
 TTransform::TTransform(){
     identity();
