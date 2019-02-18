@@ -17,7 +17,8 @@ class TEntidad {
         virtual void endDraw()      = 0;
 
     protected:
-        static std::stack<glm::mat4> glMatrixStack;
+        static std::stack<glm::mat4> matrixStack;
+        static glm::mat4 modelMatrix;
 };
 
 #endif

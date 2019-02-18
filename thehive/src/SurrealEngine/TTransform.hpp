@@ -17,7 +17,7 @@ class TTransform : public TEntidad {
     public:
         TTransform();
         TTransform(glm::mat4);
-        virtual ~TTransform ();
+        virtual ~TTransform();
 
         void load(glm::mat4);
 

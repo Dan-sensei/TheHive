@@ -11,16 +11,14 @@ class TLuz : public TEntidad {
         TLuz(gg::Color&);
         virtual ~TLuz ();
 
-        void setIntensidad(gg::Color&);
-        //void setDireccion(gg::Vector3f&);
-        gg::Color getIntensidad();
+        virtual void setIntensidad(gg::Color&);
+        virtual gg::Color getIntensidad();
 
         virtual void beginDraw(uint8_t);
         virtual void endDraw();
 
     private:
         gg::Color intensidad;
-        //gg::Vector3f direccion;
 
 };
 
