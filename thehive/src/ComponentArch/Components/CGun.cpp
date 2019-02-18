@@ -3,7 +3,7 @@
 #define FORCE_FACTOR        1000.f
 #define DIST_OFFSET         2.f
 
-CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType)
+CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType, std::string sonido_disparo, std::string sonido_recarga, std::string sonido_desenfundado)
 :Engine(nullptr), Manager(nullptr), cTransform(nullptr),
 damage(_dmg), cadence(_cadence), total_bullets(_total_bullets),
 reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
@@ -11,6 +11,11 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
     ktotal_bullets = total_bullets;
     canShoot = true;
     reloading = false;
+
+    SS = Singleton<SoundSystem>::Instance();
+    s_disparo = SS->createSound(sonido_disparo);
+    s_recarga = SS->createSound(sonido_recarga);
+    s_desenfundado = SS->createSound(sonido_desenfundado);
 }
 
 CGun::~CGun() {
@@ -32,6 +37,9 @@ void CGun::shoot(gg::Vector3f to){
             return;
         }
 
+        //SONIDO DISPARO
+        s_disparo->play();
+
         // Comprobar si no es la katana
         if(total_bullets!=-1){
             total_bullets--;
@@ -42,6 +50,7 @@ void CGun::shoot(gg::Vector3f to){
         // Comprobar destino
         if(to.X == -1){
             gg::cout("PAM! - "+std::to_string(total_bullets));
+            //SONIDO IMPACTO
             return;
         }
 
@@ -90,6 +99,7 @@ void CGun::reload(){
     gg::cout(" -- RELOAD -- ");
     reloading = true;
     dtReload = std::chrono::high_resolution_clock::now();
+    s_recarga->play();
 }
 
 bool CGun::isReloading(){
@@ -161,4 +171,8 @@ void CGun::FixedUpdate(){
         }
     }
     Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
+}
+
+void CGun::desenfundado(){
+    s_desenfundado->play();
 }

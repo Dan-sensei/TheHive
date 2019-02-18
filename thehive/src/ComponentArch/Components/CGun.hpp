@@ -11,12 +11,15 @@
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <EventSystem/CTriggerSystem.hpp>
 #include "CTransform.hpp"
+
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SoundEvent.hpp>
 //#include <Factory.hpp>
 #include <Util.hpp>
 
 class CGun : public IComponent {
     public:
-        CGun(float, float, int, float, float, int);                //  No queremos que alguien lo construya fuera (Limón)
+        CGun(float, float, int, float, float, int, std::string, std::string, std::string);                //  No queremos que alguien lo construya fuera (Limón)
         CGun(const CGun &orig) = delete;
         virtual ~CGun();
 
@@ -35,6 +38,7 @@ class CGun : public IComponent {
         int getBullets();
         int getTotalBullets();
         int getType();
+        void desenfundado();
 
 
     private:
@@ -51,6 +55,10 @@ class CGun : public IComponent {
         int     total_bullets;
         float   reloadDT;
         float   range;
+        SoundEvent*  s_disparo;
+        SoundEvent*  s_recarga;
+        SoundEvent*  s_desenfundado;
+        SoundSystem* SS;
 
         int     WEAPON_TYPE;
         bool    canShoot;
