@@ -11,6 +11,8 @@ TNodo::TNodo(){
 TNodo::TNodo(TNodo *P,TEntidad *_ent){
     !P ? padre = nullptr : padre = P;
     !_ent?  entidad = nullptr : entidad = _ent;
+
+    P->addHijo(this);
 }
 
 TNodo::~TNodo(){
@@ -66,7 +68,6 @@ TNodo* TNodo::getPadre(){
 }
 
 void TNodo::draw(){
-
     entidad->beginDraw();
 
     drawRoot();

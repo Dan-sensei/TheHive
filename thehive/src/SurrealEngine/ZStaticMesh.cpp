@@ -2,6 +2,10 @@
 #include "ZMeshData.hpp"
 #include "AssetManager.hpp"
 
+// glm::mat4 TEntidad::modelMatrix;
+// glm::mat4 TEntidad::viewMatrix;
+// glm::mat4 TEntidad::projMatrix;
+
 ZStaticMesh::ZStaticMesh()
 :VAO(0), zmat(nullptr)
 {
@@ -71,8 +75,20 @@ void ZStaticMesh::assignMaterial(ZMaterial* material_){
     zmat = material_;
 }
 
-
 void ZStaticMesh::beginDraw(){
+    Shader* sh = zmat->getShader();
+    GLuint ID = sh->getID();
+
+    GLuint M = glGetUniformLocation(ID,"M");
+    GLuint V = glGetUniformLocation(ID,"V");
+    GLuint MVP = glGetUniformLocation(ID,"MVP");
+
+    glUniformMatrix4fv(V,1,GL_FALSE,&viewMatrix[0][0]);
+    glUniformMatrix4fv(M,1,GL_FALSE,&modelMatrix[0][0]);
+
+    glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
+    glUniformMatrix4fv(MVP,1,GL_FALSE,&MVP_L[0][0]);
+
     glBindVertexArray(VAO);
 
     zmat->Bind();

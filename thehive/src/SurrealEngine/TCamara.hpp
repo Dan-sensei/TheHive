@@ -2,11 +2,14 @@
 #define TCAMARA_H
 
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include <Util.hpp>
 #include "TEntidad.hpp"
+#include <iostream>
 
 class TCamara : public TEntidad {
     public:
