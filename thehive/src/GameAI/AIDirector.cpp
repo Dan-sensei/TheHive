@@ -286,10 +286,10 @@ void AIDirector::createHorda(AINode* nodo){
     //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
     //enemigos.push_back(enemypos1);
 
-    //int id2=fac->createSwarm(nodo->getPos(), 2000);
-    //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    //enemigos.push_back(enemypos1);
-    //return;
+    int id2=fac->createSwarm(nodo->getPos(), 2000);
+    CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
+    enemigos.push_back(enemypos1);
+    return;
 
     float rango=nodo->getRange();
     gg::Vector3f dest=Pjugador->getPosition();
@@ -310,6 +310,17 @@ AINode* AIDirector::createNode(gg::Vector3f _pos,float _range){
     auto puntero=new AINode(_pos,_range);
     nodos.push_back(puntero);
     return puntero;
+}
+void AIDirector::removeEnemy(CTransform* nodo){
+    //enemigos
+    auto it=enemigos.begin();
+    while(it!=enemigos.end()){
+        if(nodo==*it){
+            enemigos.erase(it);
+            return;
+        }
+        it++;
+    }
 }
 void AIDirector::removePos(AINode* nodo){
     gg::Vector3f posicion=nodo->getPos();

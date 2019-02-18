@@ -46,6 +46,7 @@ public:
     void init();
 
     void clipingEnemigos();
+    void removeEnemy(CTransform* nodo);
 private:
     AINode* Njugador;
     CTransform* Pjugador;

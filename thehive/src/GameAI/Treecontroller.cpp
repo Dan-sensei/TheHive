@@ -121,7 +121,7 @@ void Treecontroller::arbolswarm(){
     sec1->addChild(sel1);
 
     Selector* sel2= createSelector();//random selector?
-    //sel2->addChild(sec6);
+    sel2->addChild(sec6);
     sel2->addChild(sec1);
     sel2->addChild(addAction(FOLLOWLEADER));
 

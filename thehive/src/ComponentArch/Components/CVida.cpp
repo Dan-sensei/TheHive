@@ -6,6 +6,7 @@
 #include <iostream>
 #include <GameEngine/ScreenConsole.hpp>
 #include <Singleton.hpp>
+#include <GameAI/AIDirector.hpp>
 
 #include <BT/Action.hpp>
 
@@ -39,6 +40,9 @@ bool CVida::quitarvida(const float &_factor){
             gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
             vida = 0;
             ret = true;
+            AIDirector* dir=Singleton<AIDirector>::Instance();
+            CTransform* cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,getEntityID()));
+            dir->removeEnemy(cTransform);
             //Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID());
             //Manager->getComponent(gg::AIENEM,getEntityID());
 
