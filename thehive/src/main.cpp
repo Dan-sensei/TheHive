@@ -111,6 +111,8 @@ int main(int argc, char const *argv[]) {
 #include <SurrealEngine/ZStaticMesh.hpp>
 #include <SurrealEngine/ZMaterial.hpp>
 #include <SurrealEngine/Shader.hpp>
+#include <SurrealEngine/OpenGEnum.hpp>
+#include <SurrealEngine/AssetManager.hpp>
 
 GLFWwindow* window;
 int initGL(){
@@ -148,17 +150,15 @@ int initGL(){
 int main(int argc, char const *argv[]) {
     initGL();
 
+	Singleton<AssetManager>::Instance();
+
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
 
 	// Shader molon
-    Shader* sh = new Shader();
-    if(!sh->loadFiles("assets/Shaders/VertexShader.glsl",nullptr,"assets/Shaders/FragmentShader.glsl")){
-        return 0;
-    }
-	sh->Bind();
+	Shader* sh = AssetManager::getShader("Default");
 
-	GLuint shaderID = sh->getID();
+	sh->Bind();
 
     TNodo* Escena = new TNodo();
 
@@ -191,9 +191,12 @@ int main(int argc, char const *argv[]) {
 	ZStaticMesh* 	O 	= new ZStaticMesh();
 	O->load("assets/SURREAL_TESTS/arbol.obj");
 
-	ZMaterial* 		MAT = new ZMaterial();
+
+	ZMaterial* 		MAT = AssetManager::getMaterial("Morado");
 	MAT->attachShader(sh);
-	MAT->addTexture("assets/Shaders/VertexShader.glsl","assets/Models/obradearte/prueba1.png");
+	MAT->addTexture("DiffuseTextureSampler", "assets/Models/obradearte/prueba1.png",    GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("NormalTextureSampler", "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("SpecularTextureSampler", "assets/Textures/DefaultSpecular.jpeg",   GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 	O->assignMaterial(MAT);
 
 	TNodo* RotaObj 	= new TNodo(Escena, R_O);
@@ -201,16 +204,18 @@ int main(int argc, char const *argv[]) {
 	TNodo* MeshObj	= new TNodo(TransObj, O);
 
 
+	GLuint LIGHT = sh->getUniformLocation("LightPosition_worldspace");
     do{
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	    glfwPollEvents();
 
+		glm::vec3 l = glm::vec3(10,5,-10);
+		glUniform3f(LIGHT,10, 5, -10);
+
 		// Prueba para las operaciones de transformacion
 		R_O->rotate(0.5,gg::Vector3f(0,1,0));
 
-		GLuint LIGHT = glGetUniformLocation(shaderID,"LightPosition_worldspace");
-		glUniform3f(LIGHT,0,2,0);
 
 
 		Escena->drawRoot();

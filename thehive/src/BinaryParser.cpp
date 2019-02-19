@@ -106,6 +106,7 @@ bool BinaryParser::ImportMesh(
     aiProcess_CalcTangentSpace       |
     aiProcess_Triangulate            |
     aiProcess_JoinIdenticalVertices  |
+    aiProcess_FlipUVs                |
     aiProcess_SortByPType);
 
 

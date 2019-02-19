@@ -29,7 +29,7 @@ void main() {
   vec3 MaterialDiffuseColor = texture( DiffuseTextureSampler, UV, -1.2 ).rgb;
   vec3 MaterialAmbientColor = vec3(0.04,0.04,0.04) * MaterialDiffuseColor;
   vec3 MaterialSpecularColor = texture( SpecularTextureSampler, UV ).rgb * 0.3;
-  vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, vec2(UV.x,-UV.y), -1.2 ).rgb*2.0 - 1.0);
+  vec3 TextureNormal_tangentspace = normalize(texture2D( NormalTextureSampler, vec2(UV.x,-UV.y)).rgb*2.0 - 1.0);
 
   float distance = length( LightPosition_worldspace - Position_worldspace );
   vec3 n = TextureNormal_tangentspace;

@@ -9,7 +9,7 @@ std::unordered_map<std::string, Shader> AssetManager::ShaderMap;
 std::unordered_map<std::string, unsigned int> AssetManager::TextureMap;
 
 AssetManager::AssetManager(){
-    ShaderMap["Default"].loadFiles("ShaderMap/VertexShader.glsl", nullptr, "ShaderMap/FragmentShader.glsl");
+    ShaderMap["Default"].loadFiles("assets/Shaders/VertexShader.glsl", nullptr, "assets/Shaders/FragmentShader.glsl");
 }
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {
