@@ -144,6 +144,9 @@ int initGL(){
 	    return -1;
 	}
 
+	glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
 	return 0;
 }
 
@@ -189,32 +192,44 @@ int main(int argc, char const *argv[]) {
     TTransform* 	R_O = new TTransform();
 	TTransform* 	T_O = new TTransform();
 	ZStaticMesh* 	O 	= new ZStaticMesh();
-	O->load("assets/SURREAL_TESTS/arbol.obj");
+	O->load("assets/SURREAL_TESTS/Cube.obj");
 
 
 	ZMaterial* 		MAT = AssetManager::getMaterial("Morado");
 	MAT->attachShader(sh);
-	MAT->addTexture("DiffuseTextureSampler", "assets/Models/obradearte/prueba1.png",    GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-	MAT->addTexture("NormalTextureSampler", "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-	MAT->addTexture("SpecularTextureSampler", "assets/Textures/DefaultSpecular.jpeg",   GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("DiffuseTextureSampler", 	"assets/Textures/prueba1.png",    			GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("NormalTextureSampler", 	"assets/Textures/COMUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("SpecularTextureSampler", 	"assets/Textures/DefaultSpecular.jpeg",   	GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 	O->assignMaterial(MAT);
 
 	TNodo* RotaObj 	= new TNodo(Escena, R_O);
     TNodo* TransObj = new TNodo(RotaObj, T_O);
 	TNodo* MeshObj	= new TNodo(TransObj, O);
 
+	// TTransform* 	R_O2 = new TTransform();
+	// TTransform* 	T_O2 = new TTransform();
+	// ZStaticMesh* 	O2 	= new ZStaticMesh();
+	// O2->load("assets/SURREAL_TESTS/Cube.obj");
+	// O2->assignMaterial(MAT);
+	//
+	// TNodo* RotaObj2 	= new TNodo(Escena, R_O2);
+    // TNodo* TransObj2 = new TNodo(RotaObj2, T_O2);
+	// TNodo* MeshObj2	= new TNodo(TransObj2, O2);
+	//
+	// R_O2->translate(gg::Vector3f(10, 0, 0));
 
 	GLuint LIGHT = sh->getUniformLocation("LightPosition_worldspace");
+
     do{
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	    glfwPollEvents();
 
-		glm::vec3 l = glm::vec3(10,5,-10);
-		glUniform3f(LIGHT,10, 5, -10);
+		glUniform3f(LIGHT, 7, 1, 0);
 
 		// Prueba para las operaciones de transformacion
 		R_O->rotate(0.5,gg::Vector3f(0,1,0));
+		// R_O2->rotate(0.6,gg::Vector3f(0,1,0));
 
 
 
