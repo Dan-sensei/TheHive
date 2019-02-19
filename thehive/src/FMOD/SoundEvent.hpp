@@ -9,6 +9,7 @@ class SoundEvent {
     public:
         virtual ~SoundEvent();
         void play();
+        void stop();
 
     protected:
         FMOD::Studio::EventInstance* soundInstance;

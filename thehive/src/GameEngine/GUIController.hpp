@@ -12,6 +12,9 @@
 #include <GameEngine/KEYCODES.hpp>
 #include <States/StateMachine.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SoundEvent.hpp>
+
 
 class GameEngine;
 
@@ -36,6 +39,15 @@ class GUIController{
         bool enter_pulsado;
         bool back_pulsado;
         bool esc_pulsado;
+        bool empiezo;
+
+
+            SoundEvent*  s_menu;
+            SoundEvent*  s_aceptar;
+            SoundEvent*  s_cancelar;
+            SoundEvent*  s_seleccionar;
+            SoundSystem* SS;
+
 
 void gotoPlay();
 void gotoCredits();

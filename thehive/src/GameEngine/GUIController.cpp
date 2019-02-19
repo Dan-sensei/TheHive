@@ -13,6 +13,20 @@ void GUIController::setposmax(int p){
     posmax=p;
 }
 void GUIController::Init(){
+
+//sonidos
+
+SS = Singleton<SoundSystem>::Instance();
+
+s_menu = SS->createSound("event:/Musica/MusicaMenu");
+s_aceptar = SS->createSound("event:/SFX/Menu/Aceptar");
+s_cancelar = SS->createSound("event:/SFX/Menu/Cancelar");
+s_seleccionar = SS->createSound("event:/SFX/Menu/Seleccionar");
+
+//
+
+
+
     dif=1;
     dialogue=50;
     music=50;
@@ -55,6 +69,13 @@ void GUIController::Init(){
 }
 void GUIController::update(){
     //int id=-1;
+
+    if(empiezo){
+        s_menu->play();
+        empiezo=false;
+    }
+
+
     int id =Engine->checkbutton();
     if(Engine->key(gg::GG_W)){
         if(!arriba_pulsado){
@@ -94,27 +115,37 @@ void GUIController::update(){
         if(VectorAcciones[id] != nullptr)
             (this->*VectorAcciones[id])();
     }
+
+    SS->update();
 }
 //but0
 void GUIController::gotoPlay(){
     dif=1;
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu2());
+
+    s_aceptar->play();
 }
 //but1
 void GUIController::gotoCredits(){
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu3());
+
+    s_aceptar->play();
 }
 //but2
 void GUIController::gotoOptions(){
     Singleton<StateMachine>::Instance()->AddState(new OptionState(),false);
+    s_aceptar->play();
 }
 //but3
 void GUIController::Close(){
     Singleton<GameEngine>::Instance()->Close();
+
 }
 //but4
 void GUIController::gotoVideo(){
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu5());
+
+    s_aceptar->play();
 }
 //but5
 void GUIController::gotoMusic(){
@@ -122,19 +153,27 @@ void GUIController::gotoMusic(){
     Singleton<ScreenConsole>::Instance()->setVolMusic(music);
     Singleton<ScreenConsole>::Instance()->setVolEffect(effect);
 
+    s_aceptar->play();
+
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
 }
 //but6
 void GUIController::gotoControlls(){
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu7());
+    s_aceptar->play();
 }
 //but7
 void GUIController::StartGame(){
     Singleton<StateMachine>::Instance()->AddState(new Game(),false);
+
+    s_aceptar->play();
+    s_menu->stop();
 }
 //but8
 void GUIController::gotoMain(){
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
+
+    s_cancelar->play();
 }
 //but9
 void GUIController::dif1(){
@@ -153,14 +192,17 @@ void GUIController::dif3(){
 //but12
 void GUIController::Continue(){
     Singleton<StateMachine>::Instance()->RemoveState();
+    s_cancelar->play();
 }
 //but13
 void GUIController::ReturnMain(){
     Singleton<StateMachine>::Instance()->RemoveState(2);
+    s_cancelar->play();
 }
 //but 14
 void GUIController::initOptions(){
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu4());
+    s_cancelar->play();
 }
 //but 14
 void GUIController::gotoPause(){
@@ -173,6 +215,8 @@ void GUIController::moreDialog(){
     }
     Singleton<ScreenConsole>::Instance()->setVolDialogo(dialogue);
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+
+    s_seleccionar->play();
 }
 //but 19
 void GUIController::lessDialog(){
@@ -181,6 +225,7 @@ void GUIController::lessDialog(){
     }
     Singleton<ScreenConsole>::Instance()->setVolDialogo(dialogue);
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    s_seleccionar->play();
 }
 //but 20
 void GUIController::moreMusic(){
@@ -189,6 +234,7 @@ void GUIController::moreMusic(){
     }
     Singleton<ScreenConsole>::Instance()->setVolMusic(music);
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    s_seleccionar->play();
 }
 //but 21
 void GUIController::lessMusic(){
@@ -197,6 +243,7 @@ void GUIController::lessMusic(){
     }
     Singleton<ScreenConsole>::Instance()->setVolMusic(music);
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    s_seleccionar->play();
 }
 //but 22
 void GUIController::moreEffect(){
@@ -205,6 +252,7 @@ void GUIController::moreEffect(){
     }
     Singleton<ScreenConsole>::Instance()->setVolEffect(effect);
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    s_seleccionar->play();
 }
 //but 23
 void GUIController::lessEffect(){
@@ -213,4 +261,5 @@ void GUIController::lessEffect(){
     }
     Singleton<ScreenConsole>::Instance()->setVolEffect(effect);
     setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    s_seleccionar->play();
 }

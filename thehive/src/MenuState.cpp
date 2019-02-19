@@ -60,6 +60,10 @@ MenuState::MenuState():cont(){
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
     Engine->HideCursor(false);
+
+    SS = Singleton<SoundSystem>::Instance();
+
+   s_menu = SS->createSound("event:/Musica/MusicaMenu");
 }
 
 MenuState::~MenuState(){
@@ -69,6 +73,7 @@ MenuState::~MenuState(){
 void MenuState::Init(){
 
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
+    //s_menu->play();
     //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 }
 void MenuState::Resume() {
@@ -84,6 +89,7 @@ void MenuState::Update(){
     Engine->BeginDro();
     Engine->Dro();
     cont.update();
+    //SS->update();
     Singleton<ScreenConsole>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
     Engine->EndDro();
@@ -96,4 +102,6 @@ void MenuState::CLIN(){
     Manager->clin();
     world->clean();
     EventSystem->clin();
+
+
 }

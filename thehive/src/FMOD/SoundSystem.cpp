@@ -6,8 +6,10 @@ SoundSystem::SoundSystem(){
 
 	masterBank 			= nullptr;
 	stringsBank 		= nullptr;
-	SFXBank				= nullptr;
-	ambienceBank 		= nullptr;
+	sfxBank				= nullptr;
+	ambienteBank 		= nullptr;
+	musicaBank			= nullptr;
+	vocesBank			= nullptr;
 
 	// Create the Studio System object
 	ERRCHECK(FMOD::Studio::System::create		(&system));
@@ -18,9 +20,12 @@ SoundSystem::SoundSystem(){
 
 	system->loadBankFile("assets/FMOD/Master_Bank.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&masterBank);
 	system->loadBankFile("assets/FMOD/Master_Bank.strings.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&stringsBank);
-	system->loadBankFile("assets/FMOD/SFX.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&SFXBank);
-	system->loadBankFile("assets/FMOD/Ambiente.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&ambienceBank);
+	system->loadBankFile("assets/FMOD/Ambiente.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&ambienteBank);
+	system->loadBankFile("assets/FMOD/SFX.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&sfxBank);
+	system->loadBankFile("assets/FMOD/Musica.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&musicaBank);
+	system->loadBankFile("assets/FMOD/Voces.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&vocesBank);
 }
+
 
 SoundSystem::~SoundSystem(){}
 
@@ -31,7 +36,6 @@ SoundEvent* SoundSystem::createSound(const std::string &_str){
 
 	if(soundEvents.find(_str) == soundEvents.end()){
 
-		std::cout << _str << '\n';
 		ERRCHECK(system->getEvent(_str.c_str(),&event));
 		ERRCHECK(event->createInstance(&instance));
 
@@ -62,6 +66,9 @@ void SoundSystem::CLIN(){
 
 	masterBank->unload();
 	stringsBank->unload();
-	SFXBank->unload();
+	sfxBank->unload();
+	ambienteBank->unload();
+	musicaBank->unload();
+	vocesBank->unload();
 	system->release();
 }

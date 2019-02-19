@@ -60,6 +60,14 @@ OptionState::OptionState():cont(){
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
     Engine->HideCursor(false);
+
+    SS = Singleton<SoundSystem>::Instance();
+
+    s_aceptar = SS->createSound("event:/SFX/Menu/Aceptar");
+
+
+
+
 }
 
 OptionState::~OptionState(){
@@ -68,7 +76,9 @@ OptionState::~OptionState(){
 
 void OptionState::Init(){
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu4());
+    //s_aceptar->play();
     //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
+
 }
 void OptionState::Resume() {
     Init();
@@ -82,6 +92,9 @@ void OptionState::Update(){
     Engine->BeginDro();
     Engine->Dro();
     cont.update();
+
+
+    //SS->update();
     Singleton<ScreenConsole>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
     Engine->EndDro();

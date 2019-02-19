@@ -33,8 +33,10 @@ class SoundSystem {
 
 		FMOD::Studio::Bank		*masterBank;
 		FMOD::Studio::Bank		*stringsBank;
-		FMOD::Studio::Bank		*SFXBank;
-		FMOD::Studio::Bank		*ambienceBank;
+		FMOD::Studio::Bank		*ambienteBank;
+		FMOD::Studio::Bank		*sfxBank;
+		FMOD::Studio::Bank		*musicaBank;
+		FMOD::Studio::Bank		*vocesBank;
 
 	    // std::map<std::string, FMOD::Studio::Bank*> banks;
 	    // std::map<std::string, FMOD::Studio::EventDescription*> eventDescriptions;

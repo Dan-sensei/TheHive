@@ -11,6 +11,9 @@ class ggDynWorld;
 #include "States/State.hpp"
 #include "GameEngine/GUIController.hpp"
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SoundEvent.hpp>
+
 class OptionState : public State{
 public:
     OptionState();
@@ -39,6 +42,9 @@ private:
     ObjectManager* Manager;
     ggDynWorld* world;
     GUIController cont;
+
+    SoundEvent*  s_aceptar;
+    SoundSystem* SS;
 
 };
 
