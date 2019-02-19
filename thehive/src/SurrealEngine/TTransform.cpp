@@ -23,7 +23,7 @@ void TTransform::translate(gg::Vector3f _vec){
 }
 
 void TTransform::rotate(float _angle, gg::Vector3f _axis){
-    matrix = glm::rotate(matrix,_angle,glm::vec3(_axis.X,_axis.Y,_axis.Z));
+    matrix = glm::rotate(matrix,glm::radians(_angle),glm::vec3(_axis.X,_axis.Y,_axis.Z));
 }
 
 void TTransform::scale(gg::Vector3f _vec){
@@ -46,7 +46,7 @@ void TTransform::beginDraw(){
     // Apilar matriz y aplicar transformacion a la matriz actual
     // Las grandiosas funciones lambda
     auto resto = [this](){
-        modelMatrix = modelMatrix*matrix;
+        modelMatrix = matrix*modelMatrix;
         matrixStack.push(matrix);
     };
 

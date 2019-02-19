@@ -127,7 +127,7 @@ int initGL(){
 
 	//CREAMOS UNA VENTANA Y SU CONTEXTO EN OPENGL
 	//GLFW
-	window = glfwCreateWindow( 1920, 1080, "Tutorial 01", NULL, NULL);
+	window = glfwCreateWindow( 1920, 1080, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
 	    fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
 	    glfwTerminate();
@@ -149,43 +149,69 @@ int main(int argc, char const *argv[]) {
     initGL();
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
 
+	// Shader molon
     Shader* sh = new Shader();
     if(!sh->loadFiles("assets/Shaders/VertexShader.glsl",nullptr,"assets/Shaders/FragmentShader.glsl")){
         return 0;
     }
 	sh->Bind();
 
+	GLuint shaderID = sh->getID();
+
     TNodo* Escena = new TNodo();
 
+	// Luz de prueba
+	// Esta comentado porque aun no va bien
+	// (Mirar bucle principal)
+	// TTransform* R_LUZ 	= new TTransform();
+	// TTransform* T_LUZ 	= new TTransform();
+	// TLuz*		LUZ 	= new TLuz(sh);
+	// T_LUZ->translate(gg::Vector3f(0,10,0));
+	//
+	// TNodo* 		RotaLuz 	= new TNodo(Escena,R_LUZ);
+	// TNodo* 		TransLuz 	= new TNodo(RotaLuz,T_LUZ);
+	// TNodo* 		NodoLuz 	= new TNodo(TransLuz,LUZ);
+
+	// Creacion de la camara
     TTransform* R_CAM 	= new TTransform();
 	TTransform* T_CAM 	= new TTransform();
-	TCamara* 	CAM 	= new TCamara(90,0.1f,100.f);
-	T_CAM->translate(gg::Vector3f(10,10,10));
-	CAM->setPerspectiva(16/9);
+	TCamara* 	CAM 	= new TCamara(80,0.1f,100.f);
+	T_CAM->translate(gg::Vector3f(0,5,10));
+	CAM->setPerspectiva(16.f/9.f);
 
 	TNodo* RotaCam 	= new TNodo(Escena,R_CAM);
     TNodo* TransCam = new TNodo(RotaCam,T_CAM);
 	TNodo* NodoCam 	= new TNodo(TransCam,CAM);
 
+	// Una puta obra de arte
     TTransform* 	R_O = new TTransform();
 	TTransform* 	T_O = new TTransform();
 	ZStaticMesh* 	O 	= new ZStaticMesh();
-	O->load("assets/Models/obradearte/algo.obj");
+	O->load("assets/SURREAL_TESTS/arbol.obj");
 
 	ZMaterial* 		MAT = new ZMaterial();
 	MAT->attachShader(sh);
+	MAT->addTexture("assets/Shaders/VertexShader.glsl","assets/Models/obradearte/prueba1.png");
 	O->assignMaterial(MAT);
 
 	TNodo* RotaObj 	= new TNodo(Escena, R_O);
     TNodo* TransObj = new TNodo(RotaObj, T_O);
 	TNodo* MeshObj	= new TNodo(TransObj, O);
 
+
     do{
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	    glfwPollEvents();
+
+		// Prueba para las operaciones de transformacion
+		R_O->rotate(0.5,gg::Vector3f(0,1,0));
+
+		GLuint LIGHT = glGetUniformLocation(shaderID,"LightPosition_worldspace");
+		glUniform3f(LIGHT,0,2,0);
+
 
 		Escena->drawRoot();
 

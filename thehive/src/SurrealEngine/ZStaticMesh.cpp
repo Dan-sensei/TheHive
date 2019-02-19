@@ -79,18 +79,27 @@ void ZStaticMesh::beginDraw(){
     Shader* sh = zmat->getShader();
     GLuint ID = sh->getID();
 
-    GLuint M = glGetUniformLocation(ID,"M");
+    // VISTA
     GLuint V = glGetUniformLocation(ID,"V");
-    GLuint MVP = glGetUniformLocation(ID,"MVP");
-
     glUniformMatrix4fv(V,1,GL_FALSE,&viewMatrix[0][0]);
+
+    // MODELO
+    GLuint M = glGetUniformLocation(ID,"M");
     glUniformMatrix4fv(M,1,GL_FALSE,&modelMatrix[0][0]);
 
+    // MODELO*VISTA EN 3X3
+    glm::mat3 MV = viewMatrix * modelMatrix;
+    GLuint MV3x3 = glGetUniformLocation(ID,"MV3x3");
+    glUniformMatrix4fv(MV3x3,1,GL_FALSE,&MV[0][0]);
+
+    // MODELO*VISTA*PERSPECTIVA
     glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
+    GLuint MVP = glGetUniformLocation(ID,"MVP");
     glUniformMatrix4fv(MVP,1,GL_FALSE,&MVP_L[0][0]);
 
     glBindVertexArray(VAO);
 
+    // LA FINALE
     zmat->Bind();
     glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
 }

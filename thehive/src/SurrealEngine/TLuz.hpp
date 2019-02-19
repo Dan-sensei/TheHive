@@ -3,11 +3,17 @@
 
 #include <Util.hpp>
 #include "TEntidad.hpp"
-//class TLuz{
+#include "Shader.hpp"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 class TLuz : public TEntidad {
     public:
         TLuz();
         TLuz(gg::Color&);
+        TLuz(Shader*);
+        TLuz(gg::Color&,Shader*);
         virtual ~TLuz ();
 
         virtual void setIntensidad(gg::Color&);
@@ -18,6 +24,7 @@ class TLuz : public TEntidad {
 
     private:
         gg::Color intensidad;
+        Shader* light_shader;
 
 };
 
