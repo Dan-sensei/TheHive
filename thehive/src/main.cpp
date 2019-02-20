@@ -27,7 +27,7 @@
 #include "States/StateMachine.hpp"
 #include "Game.hpp"
 #include "MenuState.hpp"
-
+/*
 int main(int argc, char const *argv[]) {
     GameEngine *Engine = Singleton<GameEngine>::Instance();
     CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
@@ -96,44 +96,149 @@ int main(int argc, char const *argv[]) {
 
     return 0;
 }
+*/
 
-// #include <SurrealEngine/TNodo.hpp>
-// #include <SurrealEngine/TEntidad.hpp>
-// #include <SurrealEngine/TLuz.hpp>
-// #include <SurrealEngine/TTransform.hpp>
-//
-// int main(int argc, char const *argv[]) {
-//     TNodo* Escena = new TNodo();
-//
-//     TTransform* RL = new TTransform();
-//     TTransform* RC = new TTransform();
-//
-//     TLuz* L = new TLuz();
-//
-//     TNodo* RotaLuz = new TNodo(Escena, RL);
-//     //TNodo* RotaCam = new TNodo(Escena, RC);
-//
-//     TNodo* NodoLuz = new TNodo(RotaLuz, L);
-//
-//     RotaLuz->addHijo(NodoLuz);
-//     Escena->addHijo(RotaLuz);
-//
-//     //Escena->addHijo(RotaCam);
-//
-//
-//     //Escena->remHijo(RotaLuz);
-//
-//     Escena->drawRoot();
-//
-//
-//     //
-//     // std::cout << "ESCENA ->          " << Escena << '\n';
-//     // std::cout << " RotaLuz - ID    = " << RotaLuz << '\n';
-//     // std::cout << " RotaLuz - Padre = " << RotaLuz->getPadre() << '\n';
-//     // std::cout << " RotaCam - ID    = " << RotaCam << '\n';
-//     // std::cout << " RotaCam - Padre = " << RotaCam->getPadre() << '\n';
-//
-//     std::cout << "NodoLuz Padre    = " << NodoLuz->getPadre() << '\n';
-//     delete Escena;
-//     return 0;
-// }
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+#include <Util.hpp>
+
+#include <SurrealEngine/TNodo.hpp>
+#include <SurrealEngine/TEntidad.hpp>
+#include <SurrealEngine/TLuz.hpp>
+#include <SurrealEngine/TCamara.hpp>
+#include <SurrealEngine/TTransform.hpp>
+#include <SurrealEngine/ZStaticMesh.hpp>
+#include <SurrealEngine/ZMaterial.hpp>
+#include <SurrealEngine/Shader.hpp>
+#include <SurrealEngine/OpenGEnum.hpp>
+#include <SurrealEngine/AssetManager.hpp>
+
+GLFWwindow* window;
+int initGL(){
+	//INICIALIZAMOS GLFW
+	if( !glfwInit() ){
+	    fprintf( stderr, "Error al inicializar GLFW\n" );
+	    return -1;
+	}
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Queremos OpenGL 3.3
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Para hacer feliz a MacOS ; Aunque no debería ser necesaria
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //No queremos el viejo OpenGL
+
+	//CREAMOS UNA VENTANA Y SU CONTEXTO EN OPENGL
+	//GLFW
+	window = glfwCreateWindow( 1920, 1080, "The Hive - ALPHA", NULL, NULL);
+	if( window == NULL ){
+	    fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
+	    glfwTerminate();
+	    return -1;
+	}
+
+	//INICIALIZAR GLEW
+	glfwMakeContextCurrent(window); // Inicializar GLEW
+	glewExperimental=true; // Se necesita en el perfil de base.
+	if (glewInit() != GLEW_OK) {
+	    fprintf(stderr, "Falló al inicializar GLEW\n");
+	    return -1;
+	}
+
+	glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+	return 0;
+}
+
+int main(int argc, char const *argv[]) {
+    initGL();
+
+	Singleton<AssetManager>::Instance();
+
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
+
+	// Shader molon
+	Shader* sh = AssetManager::getShader("Default");
+
+	sh->Bind();
+
+    TNodo* Escena = new TNodo();
+
+	// Luz de prueba
+	// Esta comentado porque aun no va bien
+	// (Mirar bucle principal)
+	// TTransform* R_LUZ 	= new TTransform();
+	// TTransform* T_LUZ 	= new TTransform();
+	// TLuz*		LUZ 	= new TLuz(sh);
+	// T_LUZ->translate(gg::Vector3f(0,10,0));
+	//
+	// TNodo* 		RotaLuz 	= new TNodo(Escena,R_LUZ);
+	// TNodo* 		TransLuz 	= new TNodo(RotaLuz,T_LUZ);
+	// TNodo* 		NodoLuz 	= new TNodo(TransLuz,LUZ);
+
+	// Creacion de la camara
+    TTransform* R_CAM 	= new TTransform();
+	TTransform* T_CAM 	= new TTransform();
+	TCamara* 	CAM 	= new TCamara(80,0.1f,100.f);
+	T_CAM->translate(gg::Vector3f(0,5,10));
+	CAM->setPerspectiva(16.f/9.f);
+
+	TNodo* RotaCam 	= new TNodo(Escena,R_CAM);
+    TNodo* TransCam = new TNodo(RotaCam,T_CAM);
+	TNodo* NodoCam 	= new TNodo(TransCam,CAM);
+
+	// Una puta obra de arte
+    TTransform* 	R_O = new TTransform();
+	TTransform* 	T_O = new TTransform();
+	ZStaticMesh* 	O 	= new ZStaticMesh();
+	O->load("assets/SURREAL_TESTS/Cube.obj");
+
+
+	ZMaterial* 		MAT = AssetManager::getMaterial("Morado");
+	MAT->attachShader(sh);
+	MAT->addTexture("DiffuseTextureSampler", 	"assets/Textures/prueba1.png",    			GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("NormalTextureSampler", 	"assets/Textures/COMUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("SpecularTextureSampler", 	"assets/Textures/DefaultSpecular.jpeg",   	GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	O->assignMaterial(MAT);
+
+	TNodo* RotaObj 	= new TNodo(Escena, R_O);
+    TNodo* TransObj = new TNodo(RotaObj, T_O);
+	TNodo* MeshObj	= new TNodo(TransObj, O);
+
+	// TTransform* 	R_O2 = new TTransform();
+	// TTransform* 	T_O2 = new TTransform();
+	// ZStaticMesh* 	O2 	= new ZStaticMesh();
+	// O2->load("assets/SURREAL_TESTS/Cube.obj");
+	// O2->assignMaterial(MAT);
+	//
+	// TNodo* RotaObj2 	= new TNodo(Escena, R_O2);
+    // TNodo* TransObj2 = new TNodo(RotaObj2, T_O2);
+	// TNodo* MeshObj2	= new TNodo(TransObj2, O2);
+	//
+	// R_O2->translate(gg::Vector3f(10, 0, 0));
+
+	GLuint LIGHT = sh->getUniformLocation("LightPosition_worldspace");
+
+    do{
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+	    glfwPollEvents();
+
+		glUniform3f(LIGHT, 7, 1, 0);
+
+		// Prueba para las operaciones de transformacion
+		R_O->rotate(0.5,gg::Vector3f(0,1,0));
+		// R_O2->rotate(0.6,gg::Vector3f(0,1,0));
+
+
+
+		Escena->drawRoot();
+
+        glfwSwapBuffers(window);
+    }while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
+
+    delete Escena;
+
+    return 0;
+}

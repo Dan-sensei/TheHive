@@ -2,6 +2,10 @@
 #include "ZMeshData.hpp"
 #include "AssetManager.hpp"
 
+// glm::mat4 TEntidad::modelMatrix;
+// glm::mat4 TEntidad::viewMatrix;
+// glm::mat4 TEntidad::projMatrix;
+
 ZStaticMesh::ZStaticMesh()
 :VAO(0), zmat(nullptr)
 {
@@ -71,15 +75,32 @@ void ZStaticMesh::assignMaterial(ZMaterial* material_){
     zmat = material_;
 }
 
+void ZStaticMesh::beginDraw(){
+    Shader* sh = zmat->getShader();
 
-void ZStaticMesh::beginDraw(uint8_t tipo_ent){
+    // VISTA
+    GLuint V = sh->getUniformLocation("V");
+    glUniformMatrix4fv(V,1,GL_FALSE,&viewMatrix[0][0]);
 
-    if(tipo_ent!=0 && tipo_ent!=1){
-        glBindVertexArray(VAO);
+    // MODELO
+    GLuint M = sh->getUniformLocation("M");
+    glUniformMatrix4fv(M,1,GL_FALSE,&modelMatrix[0][0]);
 
-        zmat->Bind();
-        glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
-    }
+    // MODELO*VISTA EN 3X3
+    glm::mat3 MV = glm::mat3(viewMatrix * modelMatrix);
+    GLuint MV3x3 = sh->getUniformLocation("MV3x3");
+    glUniformMatrix3fv(MV3x3,1,GL_FALSE,&MV[0][0]);
+
+    // MODELO*VISTA*PERSPECTIVA
+    glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
+    GLuint MVP = sh->getUniformLocation("MVP");
+    glUniformMatrix4fv(MVP,1,GL_FALSE,&MVP_L[0][0]);
+
+    glBindVertexArray(VAO);
+
+    // LA FINALE
+    zmat->Bind();
+    glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
 }
 
 void ZStaticMesh::endDraw(){}

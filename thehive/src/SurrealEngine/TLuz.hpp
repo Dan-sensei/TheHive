@@ -3,22 +3,28 @@
 
 #include <Util.hpp>
 #include "TEntidad.hpp"
-#include <cstdint>
-//class TLuz{
+#include "Shader.hpp"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 class TLuz : public TEntidad {
     public:
         TLuz();
         TLuz(gg::Color&);
+        TLuz(Shader*);
+        TLuz(gg::Color&,Shader*);
         virtual ~TLuz ();
 
         virtual void setIntensidad(gg::Color&);
         virtual gg::Color getIntensidad();
 
-        virtual void beginDraw(uint8_t);
+        virtual void beginDraw();
         virtual void endDraw();
 
     private:
         gg::Color intensidad;
+        Shader* light_shader;
 
 };
 

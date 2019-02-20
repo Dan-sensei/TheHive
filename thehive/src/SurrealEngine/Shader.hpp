@@ -1,6 +1,9 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <vector>
 #include <map>
 #include <unordered_map>
@@ -18,10 +21,12 @@ class Shader{
         void Unbind() const;
         void freeBuffer();
 
+        GLuint getID(){return ShaderID;}
+
     private:
         unsigned int ShaderID;
         unsigned int loadShader(const char *path, unsigned int type);
-        std::unordered_map<std::string, unsigned int> UniformLocations;
+        static std::unordered_map<std::string, unsigned int> UniformLocations;
 };
 
 #endif

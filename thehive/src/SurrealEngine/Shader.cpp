@@ -1,19 +1,21 @@
 #include "Shader.hpp"
-#include <GL/glew.h>
 #include <sstream>
 #include <fstream>
 #include <iostream>
+
+std::unordered_map<std::string, unsigned int> Shader::UniformLocations;
+
 
 Shader::Shader(){
 }
 
 Shader::Shader(const Shader& orig){
-    std::cout << "Copiando Shader" << '\n';
+    // std::cout << "Copiando Shader" << '\n';
     ShaderID = orig.ShaderID;
 }
 
 Shader::~Shader(){
-    std::cout << "Deleting Shader..." << '\n';
+    // std::cout << "Deleting Shader..." << '\n';
     glDeleteProgram(ShaderID);
 }
 
