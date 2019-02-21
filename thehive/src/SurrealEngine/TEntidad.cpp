@@ -6,5 +6,5 @@ glm::mat4 TEntidad::viewMatrix;
 glm::mat4 TEntidad::modelMatrix;
 
 TEntidad::~TEntidad(){}
-void TEntidad::beginDraw(uint8_t){}
+void TEntidad::beginDraw(){}
 void TEntidad::endDraw(){}

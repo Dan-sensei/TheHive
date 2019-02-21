@@ -29,9 +29,8 @@ void TCamara::setPerspectiva(float _aspect){
     );
 }
 // Se quedan vacios??
-void TCamara::beginDraw(uint8_t tipo_ent){
-    if(tipo_ent==1)
-        std::cout << "Camara" << '\n';
+void TCamara::beginDraw(){
+
     // Matriz VISTA
     // -------------------
     // Mirar la funcion Dios glm::decompose si la posicion de la camara no funciona

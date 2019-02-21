@@ -26,7 +26,7 @@ class Shader{
     private:
         unsigned int ShaderID;
         unsigned int loadShader(const char *path, unsigned int type);
-        static std::unordered_map<std::string, unsigned int> UniformLocations;
+        std::unordered_map<std::string, unsigned int> UniformLocations;
 };
 
 #endif

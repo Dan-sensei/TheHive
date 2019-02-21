@@ -1,13 +1,13 @@
 #ifndef TMOTORTAG_H
 #define TMOTORTAG_H
 
-#include <SurrealEngine/TNodo.hpp>
-#include <SurrealEngine/TEntidad.hpp>
-#include <SurrealEngine/TLuz.hpp>
-#include <SurrealEngine/TTransform.hpp>
-#include <SurrealEngine/TCamara.hpp>
-#include <SurrealEngine/ZStaticMesh.hpp>
-#include <SurrealEngine/AssetManager.hpp>
+#include "TNodo.hpp"
+#include "TEntidad.hpp"
+#include "TLuz.hpp"
+#include "TTransform.hpp"
+#include "TCamara.hpp"
+#include "ZStaticMesh.hpp"
+#include "AssetManager.hpp"
 #include <Util.hpp>
 
 class TMotorTAG {

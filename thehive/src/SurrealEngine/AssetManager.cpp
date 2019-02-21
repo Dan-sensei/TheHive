@@ -20,9 +20,9 @@ ZMaterial* AssetManager::getMaterial(const std::string &Name) {
     else {
         ZMaterial* newMat = &MaterialMap[Name];
         newMat->attachShader(&ShaderMap["Default"]);
-        newMat->addTexture("DiffuseTextureSampler", "assets/Textures/DefaultDiffuse.jpg",      GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-        newMat->addTexture("NormalTextureSampler", "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-        newMat->addTexture("SpecularTextureSampler", "assets/Textures/DefaultSpecular.jpeg",   GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        newMat->addTexture("DiffuseMap", "assets/Textures/DefaultDiffuse.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        newMat->addTexture("NormalMap", "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        newMat->addTexture("SpecularMap", "assets/Textures/DefaultSpecular.jpeg",   GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
         return newMat;
     }

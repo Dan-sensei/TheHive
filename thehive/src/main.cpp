@@ -114,6 +114,8 @@ int main(int argc, char const *argv[]) {
 #include <SurrealEngine/OpenGEnum.hpp>
 #include <SurrealEngine/AssetManager.hpp>
 
+#include "BinaryParser.hpp"
+
 GLFWwindow* window;
 int initGL(){
 	//INICIALIZAMOS GLFW
@@ -124,7 +126,7 @@ int initGL(){
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Queremos OpenGL 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Para hacer feliz a MacOS ; Aunque no debería ser necesaria
+	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Para hacer feliz a MacOS ; Aunque no debería ser necesaria
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //No queremos el viejo OpenGL
 
 	//CREAMOS UNA VENTANA Y SU CONTEXTO EN OPENGL
@@ -151,17 +153,18 @@ int initGL(){
 }
 
 int main(int argc, char const *argv[]) {
-    initGL();
+
+	initGL();
 
 	Singleton<AssetManager>::Instance();
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
 
-	// Shader molon
-	Shader* sh = AssetManager::getShader("Default");
 
-	sh->Bind();
+
+	// Shader molon
+	Shader* DefaultShader = AssetManager::getShader("Default");
 
     TNodo* Escena = new TNodo();
 
@@ -181,7 +184,7 @@ int main(int argc, char const *argv[]) {
     TTransform* R_CAM 	= new TTransform();
 	TTransform* T_CAM 	= new TTransform();
 	TCamara* 	CAM 	= new TCamara(80,0.1f,100.f);
-	T_CAM->translate(gg::Vector3f(0,5,10));
+	T_CAM->translate(gg::Vector3f(5,3,6));
 	CAM->setPerspectiva(16.f/9.f);
 
 	TNodo* RotaCam 	= new TNodo(Escena,R_CAM);
@@ -196,42 +199,45 @@ int main(int argc, char const *argv[]) {
 
 
 	ZMaterial* 		MAT = AssetManager::getMaterial("Morado");
-	MAT->attachShader(sh);
-	MAT->addTexture("DiffuseTextureSampler", 	"assets/Textures/prueba1.png",    			GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-	MAT->addTexture("NormalTextureSampler", 	"assets/Textures/COMUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-	MAT->addTexture("SpecularTextureSampler", 	"assets/Textures/DefaultSpecular.jpeg",   	GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->attachShader(DefaultShader);
+	MAT->addTexture("DiffuseMap", 	"assets/Textures/prueba1.png",    			GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("NormalMap", 	"assets/Textures/COMOUNPUTOPRO3.png",       GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+	MAT->addTexture("SpecularMap", 	"assets/Textures/DefaultSpecular.jpeg",   	GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 	O->assignMaterial(MAT);
 
 	TNodo* RotaObj 	= new TNodo(Escena, R_O);
     TNodo* TransObj = new TNodo(RotaObj, T_O);
 	TNodo* MeshObj	= new TNodo(TransObj, O);
 
-	// TTransform* 	R_O2 = new TTransform();
-	// TTransform* 	T_O2 = new TTransform();
-	// ZStaticMesh* 	O2 	= new ZStaticMesh();
-	// O2->load("assets/SURREAL_TESTS/Cube.obj");
-	// O2->assignMaterial(MAT);
-	//
-	// TNodo* RotaObj2 	= new TNodo(Escena, R_O2);
-    // TNodo* TransObj2 = new TNodo(RotaObj2, T_O2);
-	// TNodo* MeshObj2	= new TNodo(TransObj2, O2);
-	//
-	// R_O2->translate(gg::Vector3f(10, 0, 0));
+	TTransform* 	R_O2 = new TTransform();
+	TTransform* 	T_O2 = new TTransform();
+	ZStaticMesh* 	O2 	= new ZStaticMesh();
+	O2->load("assets/SURREAL_TESTS/Cube.obj");
+	O2->assignMaterial(MAT);
 
-	GLuint LIGHT = sh->getUniformLocation("LightPosition_worldspace");
+	TNodo* RotaObj2 	= new TNodo(Escena, R_O2);
+    TNodo* TransObj2 = new TNodo(RotaObj2, T_O2);
+	TNodo* MeshObj2	= new TNodo(TransObj2, O2);
+
+	R_O2->translate(gg::Vector3f(10, 0, 0));
+	DefaultShader->Bind();
+
+	std::cout << "DefaultShaderfromMain " << DefaultShader << '\n';
+	GLuint LIGHT = DefaultShader->getUniformLocation("LightPosition_worldspace");
+	GLuint OKAMERA = DefaultShader->getUniformLocation("CameraPos");
+	glUniform3f(LIGHT, 5, 6, 0);
+	glUniform3f(OKAMERA, 5,3,6);
+
 
     do{
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	    glfwPollEvents();
 
-		glUniform3f(LIGHT, 7, 1, 0);
 
 		// Prueba para las operaciones de transformacion
 		R_O->rotate(0.5,gg::Vector3f(0,1,0));
-		// R_O2->rotate(0.6,gg::Vector3f(0,1,0));
-
-
+		R_O2->rotate(0.6,gg::Vector3f(0,1,0));
 
 		Escena->drawRoot();
 

@@ -23,6 +23,8 @@ class BinaryParser{
             std::vector<unsigned short> &index
         );
 
+        static void test();
+
     private:
         BinaryParser() = delete;
         BinaryParser(const BinaryParser &orig) = delete;

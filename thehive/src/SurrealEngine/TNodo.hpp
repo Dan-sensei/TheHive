@@ -19,7 +19,7 @@ class TNodo {
         bool setPadre(TNodo*);
         TNodo* getPadre();
 
-        void draw(uint8_t);
+        void draw();
         void drawRoot();
 
     private:

@@ -78,18 +78,9 @@ void ZStaticMesh::assignMaterial(ZMaterial* material_){
 void ZStaticMesh::beginDraw(){
     Shader* sh = zmat->getShader();
 
-    // VISTA
-    GLuint V = sh->getUniformLocation("V");
-    glUniformMatrix4fv(V,1,GL_FALSE,&viewMatrix[0][0]);
-
     // MODELO
     GLuint M = sh->getUniformLocation("M");
     glUniformMatrix4fv(M,1,GL_FALSE,&modelMatrix[0][0]);
-
-    // MODELO*VISTA EN 3X3
-    glm::mat3 MV = glm::mat3(viewMatrix * modelMatrix);
-    GLuint MV3x3 = sh->getUniformLocation("MV3x3");
-    glUniformMatrix3fv(MV3x3,1,GL_FALSE,&MV[0][0]);
 
     // MODELO*VISTA*PERSPECTIVA
     glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;

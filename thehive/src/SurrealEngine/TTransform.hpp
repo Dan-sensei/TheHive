@@ -28,7 +28,7 @@ class TTransform : public TEntidad {
         void transpose();
         void inverse();
 
-        virtual void beginDraw(uint8_t);
+        virtual void beginDraw();
         virtual void endDraw();
 
     private:

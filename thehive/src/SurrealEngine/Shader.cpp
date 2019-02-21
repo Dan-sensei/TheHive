@@ -3,9 +3,6 @@
 #include <fstream>
 #include <iostream>
 
-std::unordered_map<std::string, unsigned int> Shader::UniformLocations;
-
-
 Shader::Shader(){
 }
 

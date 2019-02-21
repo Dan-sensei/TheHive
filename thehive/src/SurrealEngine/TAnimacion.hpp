@@ -14,7 +14,7 @@ class TAnimacion: public TEntidad {
         virtual ~TAnimacion ();
 
 
-        virtual void beginDraw(uint8_t);
+        virtual void beginDraw();
         virtual void endDraw();
 
     private:

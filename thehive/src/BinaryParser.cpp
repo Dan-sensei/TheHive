@@ -85,6 +85,24 @@ void BinaryParser::ReadNavmeshData(
 
 }
 
+void BinaryParser::test(){
+
+    std::ifstream inStream("assets/BinaryFiles/Level.dat", std::ios::binary);
+    uint8_t size = 0;
+    GG_Read(inStream, size);
+    std::string str;
+    char chr;
+    for(uint8_t i = 0; i < size; ++i){
+        GG_Read(inStream, chr);
+        str += chr;
+    }
+
+    std::cout << "STRING  " << str << '\n';
+    int THE_INT;
+    GG_Read(inStream, THE_INT);
+    std::cout << "THE_INT " << THE_INT << '\n';
+}
+
 
 bool BinaryParser::ImportMesh(
     const std::string& pFile,
