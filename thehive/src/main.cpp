@@ -113,6 +113,7 @@ int main(int argc, char const *argv[]) {
 #include <SurrealEngine/Shader.hpp>
 #include <SurrealEngine/OpenGEnum.hpp>
 #include <SurrealEngine/AssetManager.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 
 #include "BinaryParser.hpp"
 
@@ -164,89 +165,36 @@ int main(int argc, char const *argv[]) {
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
 
+	TMotorTAG ROOT;
 
+	int8_t SH_ID = ROOT.addShaderToMap("Default",true);
 
-	// Shader molon
-	Shader* DefaultShader = AssetManager::getShader("Default");
-
-    TNodo* Escena = new TNodo();
-
-	// Luz de prueba
-	// Esta comentado porque aun no va bien
-	// (Mirar bucle principal)
-	// TTransform* R_LUZ 	= new TTransform();
-	// TTransform* T_LUZ 	= new TTransform();
-	// TLuz*		LUZ 	= new TLuz(sh);
-	// T_LUZ->translate(gg::Vector3f(0,10,0));
-	//
-	// TNodo* 		RotaLuz 	= new TNodo(Escena,R_LUZ);
-	// TNodo* 		TransLuz 	= new TNodo(RotaLuz,T_LUZ);
-	// TNodo* 		NodoLuz 	= new TNodo(TransLuz,LUZ);
-
-	// Creacion de la camara
-    TTransform* R_CAM 	= new TTransform();
-	TTransform* T_CAM 	= new TTransform();
-	TCamara* 	CAM 	= new TCamara(80,0.1f,100.f);
-	T_CAM->translate(gg::Vector3f(5,3,6));
-	CAM->setPerspectiva(16.f/9.f);
-
-	TNodo* RotaCam 	= new TNodo(Escena,R_CAM);
-    TNodo* TransCam = new TNodo(RotaCam,T_CAM);
-	TNodo* NodoCam 	= new TNodo(TransCam,CAM);
-
-	// Una puta obra de arte
-    TTransform* 	R_O = new TTransform();
-	TTransform* 	T_O = new TTransform();
-	ZStaticMesh* 	O 	= new ZStaticMesh();
-	O->load("assets/BinaryFiles/BinaryModels/Cube.modelgg");
-
-
-	ZMaterial* 		MAT = AssetManager::getMaterial("Morado");
-	MAT->attachShader(DefaultShader);
-	MAT->addTexture("DiffuseMap", 	"assets/Textures/prueba1.png",    			GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-	MAT->addTexture("NormalMap", 	"assets/Textures/COMOUNPUTOPRO3.png",       GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-	MAT->addTexture("SpecularMap", 	"assets/Textures/DefaultSpecular.jpeg",   	GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-	O->assignMaterial(MAT);
-
-	TNodo* RotaObj 	= new TNodo(Escena, R_O);
-    TNodo* TransObj = new TNodo(RotaObj, T_O);
-	TNodo* MeshObj	= new TNodo(TransObj, O);
-
-	TTransform* 	R_O2 = new TTransform();
-	TTransform* 	T_O2 = new TTransform();
-	ZStaticMesh* 	O2 	= new ZStaticMesh();
-	O2->load("assets/BinaryFiles/BinaryModels/Cube.modelgg");
-	O2->assignMaterial(MAT);
-
-	TNodo* RotaObj2 	= new TNodo(Escena, R_O2);
-    TNodo* TransObj2 = new TNodo(RotaObj2, T_O2);
-	TNodo* MeshObj2	= new TNodo(TransObj2, O2);
-
-	R_O2->translate(gg::Vector3f(10, 0, 0));
-	DefaultShader->Bind();
-
-	GLuint LIGHT = DefaultShader->getUniformLocation("LightPosition_worldspace");
-	GLuint OKAMERA = DefaultShader->getUniformLocation("CameraPos");
-	glUniform3f(LIGHT, 5, 6, 0);
-	glUniform3f(OKAMERA, 5,3,6);
-
+    // TNodo* Escena = new TNodo();
+	gg::Color color_luz;
+	TNodo* LUZ = ROOT.crearLuz(color_luz,gg::Vector3f(5, 6, 0),gg::Vector3f(),SH_ID);
+	TNodo* OKAMERA = ROOT.crearCamara(90,0.1f,100.f,gg::Vector3f(5,3,6),gg::Vector3f(),16.f/9.f);
+	TNodo* OBJ1 = ROOT.crearMalla("assets/BinaryFiles/BinaryModels/Basura_Cajas.modelgg",gg::Vector3f(),gg::Vector3f());
+	ROOT.bindMaterialToMesh(OBJ1,
+		"Morado",
+		"assets/Textures/prueba1.png",
+		"assets/Textures/COMOUNPUTOPRO3.png",
+		"assets/Textures/DefaultSpecular.jpeg",
+		SH_ID);
 
     do{
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	    glfwPollEvents();
 
-
 		// Prueba para las operaciones de transformacion
-		R_O->rotate(0.5,gg::Vector3f(0,1,0));
-		R_O2->rotate(0.6,gg::Vector3f(0,1,0));
+		ROOT.rotate(OBJ1,0.5,gg::Vector3f(0,1,0));
 
-		Escena->drawRoot();
+		ROOT.draw();
 
         glfwSwapBuffers(window);
     }while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
 
-    delete Escena;
+    // delete Escena;
 
     return 0;
 }
