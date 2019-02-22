@@ -195,7 +195,7 @@ int main(int argc, char const *argv[]) {
     TTransform* 	R_O = new TTransform();
 	TTransform* 	T_O = new TTransform();
 	ZStaticMesh* 	O 	= new ZStaticMesh();
-	O->load("assets/SURREAL_TESTS/Cube.obj");
+	O->load("assets/BinaryFiles/BinaryModels/Cube.modelgg");
 
 
 	ZMaterial* 		MAT = AssetManager::getMaterial("Morado");
@@ -212,7 +212,7 @@ int main(int argc, char const *argv[]) {
 	TTransform* 	R_O2 = new TTransform();
 	TTransform* 	T_O2 = new TTransform();
 	ZStaticMesh* 	O2 	= new ZStaticMesh();
-	O2->load("assets/SURREAL_TESTS/Cube.obj");
+	O2->load("assets/BinaryFiles/BinaryModels/Cube.modelgg");
 	O2->assignMaterial(MAT);
 
 	TNodo* RotaObj2 	= new TNodo(Escena, R_O2);
@@ -222,7 +222,6 @@ int main(int argc, char const *argv[]) {
 	R_O2->translate(gg::Vector3f(10, 0, 0));
 	DefaultShader->Bind();
 
-	std::cout << "DefaultShaderfromMain " << DefaultShader << '\n';
 	GLuint LIGHT = DefaultShader->getUniformLocation("LightPosition_worldspace");
 	GLuint OKAMERA = DefaultShader->getUniformLocation("CameraPos");
 	glUniform3f(LIGHT, 5, 6, 0);

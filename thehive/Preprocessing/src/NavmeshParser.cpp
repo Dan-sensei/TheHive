@@ -11,10 +11,11 @@
 #include "Util.hpp"
 #include "BinaryHelper.hpp"
 
+#include "FILE_DIRECTORIES.hpp"
+
 NavmeshParser::NavmeshParser(){}
 
-void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File, const std::string &FileName) {
-    std::ofstream CITY("../assets/BinaryFiles/"+FileName, std::ios::binary);
+void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const std::string& FileOutput) {
 
     std::vector<Node> GRAPH;
     std::vector<std::vector<Connection>> Connections;
@@ -25,7 +26,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File, const std
 
     Assimp::Importer importer;
 
-    const aiScene* scene = importer.ReadFile( "../"+_File,0);
+    const aiScene* scene = importer.ReadFile(FileInput,0);
 
 
     if( !scene){
@@ -33,7 +34,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File, const std
         return;
     }
 
-    std::cout << "Loading model '" << _File << "'" << '\n';
+    std::cout << "Loading model '" << FileInput << "'" << '\n';
 
     aiMesh **meshes = scene->mMeshes;
     aiVector3D* vertices;
@@ -149,6 +150,8 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File, const std
 
     std::cout << "SQUARE_FACES -> " << SQUARE_FACES.size() << '\n';
 
+    std::ofstream CITY(NAVMESH_BINARYFILES_OUTPUT_DIR+FileOutput, std::ios::binary);
+
     uint16_t GRAPH_SIZE = GRAPH.size();
     GG_Write(CITY, GRAPH_SIZE);
     for(auto i : GRAPH){
@@ -181,7 +184,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string& _File, const std
     for(auto i : SQUARE_FACES){
         GG_Write(CITY, i.TL);
         GG_Write(CITY, i.BR);
-        
+
         uint16_t PORTALS_SIZE = i.Portals.size();
         GG_Write(CITY, PORTALS_SIZE);
         for(auto j : i.Portals)
