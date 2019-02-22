@@ -86,20 +86,45 @@ void BinaryParser::ReadNavmeshData(
 
 void BinaryParser::test(){
 
-    std::ifstream inStream("assets/BinaryFiles/Level.dat", std::ios::binary);
-    uint8_t size = 0;
-    GG_Read(inStream, size);
-    std::string str;
-    char chr;
-    for(uint8_t i = 0; i < size; ++i){
-        GG_Read(inStream, chr);
-        str += chr;
-    }
+    std::ifstream inStream("assets/BinaryFiles/City.data", std::ios::binary);
+    for(uint16_t i = 0; i < 7; ++i){
+        uint8_t size = 0;
+        GG_Read(inStream, size);
+        std::string str;
+        char chr;
+        for(uint8_t i = 0; i < size; ++i){
+            GG_Read(inStream, chr);
+            str += chr;
+        }
+        str+=".modelgg";
+        std::cout << "Model->  " << str << '\n';
+        float x,y,z;
+        GG_Read(inStream, x);
+        GG_Read(inStream, y);
+        GG_Read(inStream, z);
+        std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
+        GG_Read(inStream, x);
+        GG_Read(inStream, y);
+        GG_Read(inStream, z);
+        std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
 
-    std::cout << "STRING  " << str << '\n';
-    int THE_INT;
-    GG_Read(inStream, THE_INT);
-    std::cout << "THE_INT " << THE_INT << '\n';
+        bool HasCollider;
+        GG_Read(inStream, HasCollider);
+        std::cout << "Collider? = " << HasCollider << '\n';
+        if(HasCollider){
+            GG_Read(inStream, x);
+            GG_Read(inStream, y);
+            GG_Read(inStream, z);
+            std::cout << "      -Center: " << x << ", " << y << ", " << z << '\n';
+            GG_Read(inStream, x);
+            GG_Read(inStream, y);
+            GG_Read(inStream, z);
+            std::cout << "      -Size: " << x << ", " << y << ", " << z << '\n';
+        }
+
+        std::cout << '\n';
+
+    }
 }
 
 

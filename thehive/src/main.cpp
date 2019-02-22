@@ -154,6 +154,9 @@ int initGL(){
 
 int main(int argc, char const *argv[]) {
 
+	// BinaryParser::test();
+	// return 0;
+
 	initGL();
 
 	Singleton<AssetManager>::Instance();
