@@ -191,6 +191,7 @@ int main(int argc, char const *argv[]) {
     }while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
 
     // EL DELETE!!!!!
+	glfwTerminate();
 
     return 0;
 }

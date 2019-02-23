@@ -29,8 +29,6 @@ class TEntidad {
         static glm::mat4 projMatrix;
         static glm::mat4 viewMatrix;
 
-        // static glm::vec3 *lightPointsList;
-
 };
 
 #endif

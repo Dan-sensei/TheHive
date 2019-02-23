@@ -37,8 +37,9 @@ class TMotorTAG {
         TNodo* ESCENA;
         AssetManager* gestorRecursos;
 
-        TNodo* bindTransform(const gg::Vector3f& pos, const gg::Vector3f& rot);
         std::map<uint8_t,Shader*> shaderMap;
+        
+        TNodo* bindTransform(const gg::Vector3f& pos, const gg::Vector3f& rot);
 };
 
 #endif

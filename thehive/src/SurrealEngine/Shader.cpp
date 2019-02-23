@@ -12,7 +12,7 @@ Shader::Shader(const Shader& orig){
 }
 
 Shader::~Shader(){
-    // std::cout << "Deleting Shader..." << '\n';
+    std::cout << "Deleting Shader..." << '\n';
     glDeleteProgram(ShaderID);
 }
 
