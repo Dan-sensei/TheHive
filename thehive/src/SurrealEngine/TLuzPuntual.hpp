@@ -14,8 +14,8 @@ class TLuzPuntual : public TLuz {
         void setPosicion(gg::Vector3f&);
         gg::Vector3f getPosicion();
 
-        virtual void beginDraw();
-        virtual void endDraw();
+        virtual void beginDraw(const uint8_t&);
+        virtual void endDraw(const uint8_t&);
 
     private:
         gg::Vector3f posicion;

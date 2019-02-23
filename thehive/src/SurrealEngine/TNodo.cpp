@@ -67,18 +67,30 @@ TNodo* TNodo::getPadre(){
     return padre;
 }
 
-void TNodo::draw(){
-    entidad->beginDraw();
+void TNodo::draw(const uint8_t &T_ID){
+    entidad->beginDraw(T_ID);
 
-    drawRoot();
+    drawRoot(T_ID);
 
-    entidad->endDraw();
+    entidad->endDraw(T_ID);
 }
 
+// Este es llamado desde el main (PURE ROOT)
 void TNodo::drawRoot(){
+    for(uint8_t REC = 0 ; REC < 3 ; ++REC){
+        auto it = hijos.begin();
+        while(it != hijos.end()){
+            (*it)->draw(REC);
+            ++it;
+        }
+    }
+}
+
+// Este para los demas
+void TNodo::drawRoot(const uint8_t &T_ID){
     auto it = hijos.begin();
     while(it != hijos.end()){
-        (*it)->draw();
+        (*it)->draw(T_ID);
         ++it;
     }
 }

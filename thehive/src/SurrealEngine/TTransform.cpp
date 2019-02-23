@@ -42,7 +42,7 @@ void TTransform::inverse(){
     matrix = glm::inverse(matrix);
 }
 
-void TTransform::beginDraw(){
+void TTransform::beginDraw(const uint8_t &T_ID){
     // Apilar matriz y aplicar transformacion a la matriz actual
     // Las grandiosas funciones lambda
     auto resto = [this](){
@@ -58,7 +58,7 @@ void TTransform::beginDraw(){
     (matrixStack.empty())? it1() : resto();
 }
 
-void TTransform::endDraw(){
+void TTransform::endDraw(const uint8_t &T_ID){
     // Desapilar matriz y ponerla como la actual
     modelMatrix = matrixStack.top();
     matrixStack.pop();

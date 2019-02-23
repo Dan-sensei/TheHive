@@ -154,10 +154,6 @@ int initGL(){
 }
 
 int main(int argc, char const *argv[]) {
-
-	// BinaryParser::test();
-	// return 0;
-
 	initGL();
 
 	Singleton<AssetManager>::Instance();
@@ -169,10 +165,7 @@ int main(int argc, char const *argv[]) {
 
 	int8_t SH_ID = ROOT.addShaderToMap("Default",true);
 
-    // TNodo* Escena = new TNodo();
 	gg::Color color_luz;
-	TNodo* LUZ = ROOT.crearLuz(color_luz,gg::Vector3f(5, 6, 0),gg::Vector3f(),SH_ID);
-	TNodo* OKAMERA = ROOT.crearCamara(90,0.1f,100.f,gg::Vector3f(5,3,6),gg::Vector3f(),16.f/9.f);
 	TNodo* OBJ1 = ROOT.crearMalla("assets/BinaryFiles/BinaryModels/Basura_Cajas.modelgg",gg::Vector3f(),gg::Vector3f());
 	ROOT.bindMaterialToMesh(OBJ1,
 		"Morado",
@@ -180,6 +173,9 @@ int main(int argc, char const *argv[]) {
 		"assets/Textures/COMOUNPUTOPRO3.png",
 		"assets/Textures/DefaultSpecular.jpeg",
 		SH_ID);
+
+	TNodo* LUZ = ROOT.crearLuz(color_luz,gg::Vector3f(5, 6, 0),gg::Vector3f(),SH_ID);
+	TNodo* OKAMERA = ROOT.crearCamara(90,0.1f,100.f,gg::Vector3f(5,3,6),gg::Vector3f(),16.f/9.f);
 
     do{
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -194,7 +190,7 @@ int main(int argc, char const *argv[]) {
         glfwSwapBuffers(window);
     }while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
 
-    // delete Escena;
+    // EL DELETE!!!!!
 
     return 0;
 }

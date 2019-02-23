@@ -18,7 +18,7 @@ gg::Vector3f TLuzDirigida::getDireccion(){
 
 
 // Se quedan vacios
-void TLuzDirigida::beginDraw(){
+void TLuzDirigida::beginDraw(const uint8_t &T_ID){
     std::cout << "Luz Dirigida" << '\n';
 }
-void TLuzDirigida::endDraw(){}
+void TLuzDirigida::endDraw(const uint8_t &T_ID){}
