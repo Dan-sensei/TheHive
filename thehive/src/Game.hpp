@@ -46,6 +46,8 @@ private:
     CCamera* MainCamera;
     AIDirector* Director;
     SoundSystem* soundSys;
+    SoundEvent* s_basica;
+    SoundEvent* s_accion;
 
     gg::Clock MasterClock;
     double DeltaTime;

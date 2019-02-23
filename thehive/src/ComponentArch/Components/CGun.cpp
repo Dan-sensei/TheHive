@@ -3,7 +3,7 @@
 #define FORCE_FACTOR        1000.f
 #define DIST_OFFSET         2.f
 
-CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType, std::string sonido_disparo, std::string sonido_recarga, std::string sonido_desenfundado)
+CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType, std::string sonido_disparo, std::string sonido_recarga, std::string sonido_desenfundado,std::string sonido_vacio)
 :Engine(nullptr), Manager(nullptr), cTransform(nullptr),
 damage(_dmg), cadence(_cadence), total_bullets(_total_bullets),
 reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
@@ -14,11 +14,11 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
 
     SS = Singleton<SoundSystem>::Instance();
 
-    //s_disparo = SS->createSound("event:/Armas/Rifle/Rifle_disparo");
 
     s_disparo = SS->createSound(sonido_disparo);
     s_recarga = SS->createSound(sonido_recarga);
     s_desenfundado = SS->createSound(sonido_desenfundado);
+    s_vacio = SS->createSound(sonido_vacio);
 }
 
 CGun::~CGun() {
@@ -35,6 +35,10 @@ void CGun::shoot(gg::Vector3f to){
         // Comprobar balas
         if(!total_bullets){
             gg::cout("Click!");
+
+            //Sonido arma vacia
+            s_vacio->play();
+
             //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
             return;
@@ -54,6 +58,7 @@ void CGun::shoot(gg::Vector3f to){
         if(to.X == -1){
             gg::cout("PAM! - "+std::to_string(total_bullets));
             //SONIDO IMPACTO
+
             return;
         }
 
@@ -99,9 +104,28 @@ void CGun::shoot(gg::Vector3f to){
 
 void CGun::reload(){
     // NEED TO APPLY THE RELOAD TIME
+
+
+    if(WEAPON_TYPE==1)
+        reload_escopeta();
+
     gg::cout(" -- RELOAD -- ");
     reloading = true;
     dtReload = std::chrono::high_resolution_clock::now();
+    s_recarga->play();
+
+}
+
+
+
+void CGun::reload_escopeta(){
+
+    gg::cout(" -- RELOAD -- ");
+    reloading = true;
+    dtReload = std::chrono::high_resolution_clock::now();
+
+
+    s_recarga->play();
     s_recarga->play();
 }
 

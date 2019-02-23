@@ -8,6 +8,14 @@ GUIController::GUIController()
 {
   Init();
 }
+
+
+GUIController::~GUIController(){
+
+    SS->CLIN();
+
+}
+
 void GUIController::setposmax(int p){
     cursorpos=0;
     posmax=p;
@@ -22,6 +30,8 @@ s_menu = SS->createSound("event:/Musica/MusicaMenu");
 s_aceptar = SS->createSound("event:/SFX/Menu/Aceptar");
 s_cancelar = SS->createSound("event:/SFX/Menu/Cancelar");
 s_seleccionar = SS->createSound("event:/SFX/Menu/Seleccionar");
+
+s_menu->play();
 
 //
 
@@ -70,10 +80,7 @@ s_seleccionar = SS->createSound("event:/SFX/Menu/Seleccionar");
 void GUIController::update(){
     //int id=-1;
 
-    if(empiezo){
-        s_menu->play();
-        empiezo=false;
-    }
+
 
 
     int id =Engine->checkbutton();

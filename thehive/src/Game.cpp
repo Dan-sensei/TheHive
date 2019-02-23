@@ -75,6 +75,8 @@ Game::~Game(){
 void Game::Init(){
     Singleton<ScreenConsole>::Instance()->InitHUD();
     soundSys = Singleton<SoundSystem>::Instance();
+    s_basica = soundSys->createSound("event:/Musica/MusicaBasica");
+    s_basica->play();
     auto sF = Singleton<Factory>::Instance();
     Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
 
@@ -94,6 +96,8 @@ void Game::Init(){
     gg::Vector3f mapPos(0,0,0);
 
     Director->init();
+
+
 
     /*
     // POR SI SE QUIERE CARGAR EL MAPA DE SIEMPRE

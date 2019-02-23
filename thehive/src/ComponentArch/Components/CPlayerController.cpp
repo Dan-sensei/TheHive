@@ -256,7 +256,7 @@ void CPlayerController::FixedUpdate(){
 
     if(Engine->key(RELOAD_KEY)){
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        if(gun && !gun->getBullets() && !gun->isReloading()){
+        if(gun && !gun->isReloading()){
             Manager->returnIDFromRigid(nullptr);
             gun->reload();
         }
@@ -427,7 +427,7 @@ void CPlayerController::changeWeaponIfPossible(CGun *gun){
 
 
         secondWeapon->desenfundado();
-        
+
         gg::cout("| -- PRINCIPAL TO SECONDARY -- ");
         gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
         secondWeapon = gun;

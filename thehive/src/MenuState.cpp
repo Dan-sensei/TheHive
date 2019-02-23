@@ -61,9 +61,9 @@ MenuState::MenuState():cont(){
     //world->inito();
     Engine->HideCursor(false);
 
-    SS = Singleton<SoundSystem>::Instance();
+    //SS = Singleton<SoundSystem>::Instance();
 
-   s_menu = SS->createSound("event:/Musica/MusicaMenu");
+ //  s_menu = SS->createSound("event:/Musica/MusicaMenu");
 }
 
 MenuState::~MenuState(){
@@ -75,10 +75,13 @@ void MenuState::Init(){
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
     //s_menu->play();
     //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
+
+
 }
 void MenuState::Resume() {
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
     Engine->HideCursor(false);
+
 
 }
 //void MenuState::submenu(){
@@ -101,7 +104,9 @@ void MenuState::CLIN(){
     Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     world->clean();
-    EventSystem->clin();
+    //EventSystem->clin();
+
+
 
 
 }

@@ -22,6 +22,7 @@ class GameEngine;
 class GUIController{
     public:
         GUIController();
+        ~GUIController();
         void update();
         void setposmax(int p);
     private:

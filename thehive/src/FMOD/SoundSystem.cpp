@@ -16,7 +16,7 @@ SoundSystem::SoundSystem(){
 	ERRCHECK(system->getLowLevelSystem			(&lowLevelSystem));
 	ERRCHECK(lowLevelSystem->setSoftwareFormat	(0,FMOD_SPEAKERMODE_5POINT1,0));
 	ERRCHECK(lowLevelSystem->setOutput			(FMOD_OUTPUTTYPE_AUTODETECT));
-	ERRCHECK(system->initialize					(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+	ERRCHECK(system->initialize					(512, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_NORMAL, 0));
 
 	system->loadBankFile("assets/FMOD/Master_Bank.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&masterBank);
 	system->loadBankFile("assets/FMOD/Master_Bank.strings.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&stringsBank);

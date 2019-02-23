@@ -19,7 +19,7 @@
 
 class CGun : public IComponent {
     public:
-        CGun(float, float, int, float, float, int, std::string, std::string, std::string);                //  No queremos que alguien lo construya fuera (Limón)
+        CGun(float, float, int, float, float, int, std::string, std::string, std::string, std::string);                //  No queremos que alguien lo construya fuera (Limón)
         CGun(const CGun &orig) = delete;
         virtual ~CGun();
 
@@ -39,6 +39,7 @@ class CGun : public IComponent {
         int getTotalBullets();
         int getType();
         void desenfundado();
+        void reload_escopeta();
 
 
     private:
@@ -55,9 +56,11 @@ class CGun : public IComponent {
         int     total_bullets;
         float   reloadDT;
         float   range;
+
         SoundEvent*  s_disparo;
         SoundEvent*  s_recarga;
         SoundEvent*  s_desenfundado;
+        SoundEvent*  s_vacio;
         SoundSystem* SS;
 
         int     WEAPON_TYPE;

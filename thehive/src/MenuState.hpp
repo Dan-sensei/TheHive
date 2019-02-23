@@ -43,8 +43,8 @@ private:
     ggDynWorld* world;
     GUIController cont;
 
-    SoundEvent*  s_menu;
-    SoundSystem* SS;
+    //SoundEvent*  s_menu;
+//    SoundSystem* SS;
 
 };
 

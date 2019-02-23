@@ -13,6 +13,9 @@
 
 #include <ComponentArch/Message.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SoundEvent.hpp>
+
 #include <ComponentArch/Components/CAIEnem.hpp>
 #include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
@@ -66,8 +69,14 @@ class CAgent : public IComponent {
         GameEngine      *Engine;
         CTransform      *cTransform;
         ObjectManager   *oManager;
+        SoundEvent*  s_llave;
+        SoundEvent*  s_arma;
+        SoundEvent*  s_expansive;
+        SoundEvent*  s_esfuerzo;
+        SoundEvent*  s_overload;
+        SoundSystem* SS;
 
-        void getWeaponInformation(float&, float&, float&, float&, int&, int, std::string&,std::string&,std::string&);
+        void getWeaponInformation(float&, float&, float&, float&, int&, int, std::string&,std::string&,std::string&,std::string&);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerEnter;
         void ENTER_func_kTrig_none          (TriggerRecordStruct*);
