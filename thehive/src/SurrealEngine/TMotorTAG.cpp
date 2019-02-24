@@ -5,7 +5,15 @@ TMotorTAG::TMotorTAG(){
     gestorRecursos = Singleton<AssetManager>::Instance();
 }
 
-TMotorTAG::~TMotorTAG(){}
+TMotorTAG::~TMotorTAG(){
+    std::cout << "DeleTAG..." << '\n';
+    delete ESCENA;
+
+    // auto it = shaderMap.begin();
+    // while(it != shaderMap.end()){
+    //     delete it->second;
+    // }
+}
 
 TNodo* TMotorTAG::crearCamara(const float& _fov, const float& _near, const float& _far, const gg::Vector3f& pos, const gg::Vector3f& rot, const float& _ppv){
     TCamara* C = new TCamara(_fov,_near,_far);

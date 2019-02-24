@@ -19,8 +19,9 @@ class TNodo {
         bool setPadre(TNodo*);
         TNodo* getPadre();
 
-        void draw();
+        void draw(const uint8_t&);
         void drawRoot();
+        void drawRoot(const uint8_t&);
 
     private:
         TEntidad* entidad;

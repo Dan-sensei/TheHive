@@ -19,11 +19,12 @@
 class TEntidad {
     public:
         virtual ~TEntidad()         = 0;
-        virtual void beginDraw()    = 0;
-        virtual void endDraw()      = 0;
+        virtual void beginDraw(const uint8_t&)    = 0;
+        virtual void endDraw(const uint8_t&)      = 0;
 
     protected:
         static std::stack<glm::mat4> matrixStack;
+
         static glm::mat4 modelMatrix;
         static glm::mat4 projMatrix;
         static glm::mat4 viewMatrix;

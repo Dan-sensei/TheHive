@@ -28,19 +28,13 @@ void TCamara::setPerspectiva(float _aspect){
         lejano
     );
 }
-// Se quedan vacios??
-void TCamara::beginDraw(){
 
+void TCamara::beginDraw(const uint8_t &T_ID){
     // Matriz VISTA
     // -------------------
     // Mirar la funcion Dios glm::decompose si la posicion de la camara no funciona
-
-    // viewMatrix = glm::lookAt(
-    //     // glm::vec3(20,0,0),
-    //     glm::vec3(modelMatrix[3]),  // CameraPosition   -> Cambia con los eventos de teclado
-    //     target,                             // CameraTarget     -> Cambia con los eventos de teclado
-    //     glm::vec3(0,1,0)                    // UpVector
-    // );
-    viewMatrix = glm::inverse(modelMatrix);
+    if(T_ID == 1){
+        viewMatrix = glm::inverse(modelMatrix);
+    }
 }
-void TCamara::endDraw(){}
+void TCamara::endDraw(const uint8_t &T_ID){}

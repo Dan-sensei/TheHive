@@ -14,8 +14,8 @@ class TAnimacion: public TEntidad {
         virtual ~TAnimacion ();
 
 
-        virtual void beginDraw();
-        virtual void endDraw();
+        virtual void beginDraw(const uint8_t&);
+        virtual void endDraw(const uint8_t&);
 
     private:
         std::array<ZStaticMesh, 5> poses;

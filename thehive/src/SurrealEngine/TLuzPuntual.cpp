@@ -18,7 +18,7 @@ gg::Vector3f TLuzPuntual::getPosicion(){
 
 
 // Se quedan vacios
-void TLuzPuntual::beginDraw(){
+void TLuzPuntual::beginDraw(const uint8_t &T_ID){
     std::cout << "Luz Puntual" << '\n';
 }
-void TLuzPuntual::endDraw(){}
+void TLuzPuntual::endDraw(const uint8_t &T_ID){}

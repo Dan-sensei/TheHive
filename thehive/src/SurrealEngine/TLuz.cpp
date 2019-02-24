@@ -27,12 +27,14 @@ gg::Color TLuz::getIntensidad(){
 }
 
 // Se quedan vacios
-void TLuz::beginDraw(){
+void TLuz::beginDraw(const uint8_t &T_ID){
     // Mandar como uniform
-    if(light_shader){
-        GLuint UL = light_shader->getUniformLocation("LightPosition_worldspace");
-        glm::vec3 pos = glm::vec3(modelMatrix[3]);
-        glUniform3f(UL,pos.x,pos.y,pos.z);
+    if(T_ID == 0){
+        if(light_shader){
+            GLuint UL = light_shader->getUniformLocation("LightPosition_worldspace");
+            glm::vec3 pos = glm::vec3(modelMatrix[3]);
+            glUniform3f(UL,pos.x,pos.y,pos.z);
+        }
     }
 }
-void TLuz::endDraw(){}
+void TLuz::endDraw(const uint8_t &T_ID){}

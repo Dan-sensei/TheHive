@@ -28,8 +28,8 @@ class TTransform : public TEntidad {
         void transpose();
         void inverse();
 
-        virtual void beginDraw();
-        virtual void endDraw();
+        virtual void beginDraw(const uint8_t&);
+        virtual void endDraw(const uint8_t&);
 
     private:
         glm::mat4 matrix;
