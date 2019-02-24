@@ -6,7 +6,6 @@
 
 ggDynWorld::ggDynWorld(){
     debugDrawer = Singleton<GLDebugDrawer>::Instance();
-
     Factory *fac = Singleton<Factory>::Instance();
     //debugBullet = fac->createDebugBullet(gg::Vector3f());
 }

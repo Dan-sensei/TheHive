@@ -11,7 +11,7 @@ Factory::Factory() {
 }
 
 uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+    Material moradoDeLos80("assets/Textures/prueba1.png");
 
     uint16_t hero = Manager->createEntity();
     CTransform* Transform               = new CTransform(gg::Vector3f(0, 0, 10), gg::Vector3f(0, 0, 0));

@@ -49,8 +49,6 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
 
     // std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
 
-    Connections.resize(meshes[0]->mNumFaces);
-
     uint16_t ID_Counter = 0;
 
     std::vector<std::vector<Edge>> FACES(meshes[0]->mNumFaces);
@@ -148,7 +146,6 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
     }
 
 
-    std::cout << "SQUARE_FACES -> " << SQUARE_FACES.size() << '\n';
 
     std::ofstream CITY(NAVMESH_BINARYFILES_OUTPUT_DIR+FileOutput, std::ios::binary);
 
