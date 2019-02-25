@@ -215,10 +215,10 @@ void create(){
 	//glTexCoord2f(1,0);glVertex2f(0.3,0.15);
 	//glTexCoord2f(0,0);glVertex2f(0.05,0.15);
 
-		glTexCoord2f(0,1080);	glVertex2f(12,60);
-		glTexCoord2f(1920,1080);glVertex2f(80,60);
-		glTexCoord2f(1920,0);	glVertex2f(80,120);
-		glTexCoord2f(0,0);		glVertex2f(12,120);
+		glTexCoord2f(0,1080);		glVertex2f(12,60);
+		glTexCoord2f(1920,1080);	glVertex2f(80,60);
+		glTexCoord2f(1920,0);		glVertex2f(80,120);
+		glTexCoord2f(0,0);			glVertex2f(12,120);
 
 	//glVertex2i(12,60); glVertex2i(80,60);
 	//glVertex2i(80,120);glVertex2i(12,120);

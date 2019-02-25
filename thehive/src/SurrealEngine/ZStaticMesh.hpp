@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include "ZMaterial.hpp"
+#include "ZMeshData.hpp"
 #include "TNodo.hpp"
 
 class ZStaticMesh : public TEntidad {
@@ -18,16 +19,8 @@ class ZStaticMesh : public TEntidad {
         virtual void endDraw(const uint8_t&);
 
     private:
-        //Específico de OpenGL=========================================================================//
-            unsigned int VAO;
-            std::vector<unsigned int> VBOs;
-            unsigned int IndexBuffer;
-            unsigned int IndexSize;
-            void Bind();
-            void Unbind();
-            void addVertexBuffer(std::vector<float>& data, unsigned int DataLength);
-        //=============================================================================================//
 
+        ZMeshData* mesh;
         ZMaterial* zmat;
 };
 
