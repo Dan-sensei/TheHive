@@ -118,6 +118,8 @@ int main(int argc, char const *argv[]) {
 #include "BinaryParser.hpp"
 
 GLFWwindow* window;
+void draw();
+void create();
 int initGL(){
 	//INICIALIZAMOS GLFW
 	if( !glfwInit() ){
@@ -186,6 +188,7 @@ int main(int argc, char const *argv[]) {
 		ROOT.rotate(OBJ1,0.5,gg::Vector3f(0,1,0));
 
 		ROOT.draw();
+		//draw();
 
         glfwSwapBuffers(window);
     }while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
@@ -194,4 +197,53 @@ int main(int argc, char const *argv[]) {
 	glfwTerminate();
 
     return 0;
+}
+
+
+
+void create(){
+	auto Manager = Singleton<AssetManager>::Instance();
+
+
+	auto HUDtext=Manager->getTexture("assets/HUD/ojetecalor.jpg",GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D,HUDtext);
+	glColor3f(1,1,1);
+	glBegin(GL_QUADS);
+	//coordenadas
+	//glTexCoord2f(0,1);glVertex2f(0.05,0.05);
+	//glTexCoord2f(1,1);glVertex2f(0.3,0.05);
+	//glTexCoord2f(1,0);glVertex2f(0.3,0.15);
+	//glTexCoord2f(0,0);glVertex2f(0.05,0.15);
+
+		glTexCoord2f(0,1080);	glVertex2f(12,60);
+		glTexCoord2f(1920,1080);glVertex2f(80,60);
+		glTexCoord2f(1920,0);	glVertex2f(80,120);
+		glTexCoord2f(0,0);		glVertex2f(12,120);
+
+	//glVertex2i(12,60); glVertex2i(80,60);
+	//glVertex2i(80,120);glVertex2i(12,120);
+
+	//glVertex2i(5,5); glVertex2i(-5,5);
+	//glVertex2i(-5,-5);glVertex2i(5,-5);
+
+	glEnd();
+}
+void draw(){
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	//gluOrtho2D(0,1,1,0);//screen values left rigth bottom top
+	gluOrtho2D(0,1920,1080,0);
+	//gluOrtho2D(-10,10,-10,10);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	create();
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
 }
