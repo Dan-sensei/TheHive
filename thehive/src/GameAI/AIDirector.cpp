@@ -288,19 +288,22 @@ void AIDirector::createHorda(AINode* nodo){
     //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
     //enemigos.push_back(enemypos1);
 
-    int id2=fac->createSwarm(nodo->getPos(), 2000);
-    //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    //enemigos.push_back(enemypos1);//anayadir todo el flock
-    CFlock* enemyflock=static_cast<CFlock*>(Manager->getComponent(gg::FLOCK, id2));
-    auto arr=enemyflock->getFlocked();
-    auto it=arr.begin();
-    while(it!=arr.end()){
-        int id3=(*it)->getEntityID();
-        CTransform* enemypos12=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id3));
-        enemigos.push_back(enemypos12);//anayadir todo el flock
-        it++;
-    }
-    return;
+    // Pruebas olareto del swarm
+    // ----------------------------
+    // int id2=fac->createSwarm(nodo->getPos(), 2000);
+    // //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
+    // //enemigos.push_back(enemypos1);//anayadir todo el flock
+    // CFlock* enemyflock=static_cast<CFlock*>(Manager->getComponent(gg::FLOCK, id2));
+    // auto arr=enemyflock->getFlocked();
+    // auto it=arr.begin();
+    // while(it!=arr.end()){
+    //     int id3=(*it)->getEntityID();
+    //     CTransform* enemypos12=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id3));
+    //     enemigos.push_back(enemypos12);//anayadir todo el flock
+    //     it++;
+    // }
+    // return;
+    // ----------------------------
 
     float rango=nodo->getRange();
     gg::Vector3f dest=Pjugador->getPosition();
