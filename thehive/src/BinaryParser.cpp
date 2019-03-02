@@ -95,15 +95,15 @@ void BinaryParser::ReadNavmeshData(
 void BinaryParser::test(){
 
     std::ifstream inStream("assets/BinaryFiles/City.data", std::ios::binary);
-    for(uint16_t i = 0; i < 9; ++i){
-        uint8_t size = 0;
-        GG_Read(inStream, size);
-        std::string str;
-        char chr;
-        for(uint8_t i = 0; i < size; ++i){
-            GG_Read(inStream, chr);
-            str += chr;
-        }
+    uint8_t NUMBER_OF_OBJECTS = 0;
+    GG_Read(inStream, NUMBER_OF_OBJECTS);
+
+    std::cout << "NUM " << (uint16_t)NUMBER_OF_OBJECTS << '\n';
+
+    for(uint16_t i = 0; i < NUMBER_OF_OBJECTS; ++i){
+        uint8_t MODEL = 0;
+        GG_Read(inStream, MODEL);
+        std::string str = std::to_string(MODEL);
         str+=".obj";
 
         auto Manager = Singleton<ObjectManager>::Instance();
@@ -127,7 +127,7 @@ void BinaryParser::test(){
         CTransform* Transform = new CTransform(Position, Rotation);
         Manager->addComponentToEntity(Transform, gg::TRANSFORM, NewEntity);
         Material yelo("assets/Textures/prueba1.png");
-        CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Objects/"+str, yelo);
+        CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/CALLE_PRINCIPAL/"+str, yelo);
         Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, NewEntity);
 
         std::cout << "Collider? = " << HasCollider << '\n';
@@ -166,36 +166,33 @@ bool BinaryParser::ImportMesh(
 
     std::ifstream Model(BinaryFile, std::ios::binary);
 
-    uint16_t POSITIONS_AND_NORMALS_SIZE = 0;
+    uint16_t i = 0;
     float FloatV;
-    GG_Read(Model, POSITIONS_AND_NORMALS_SIZE);
-    PositionsNormals.reserve(POSITIONS_AND_NORMALS_SIZE);
-    for(uint16_t i = 0; i < POSITIONS_AND_NORMALS_SIZE; ++i){
+    GG_Read(Model, i);  // POSITIONS_AND_NORMALS_SIZE
+    PositionsNormals.reserve(i);
+    while(i--){
         GG_Read(Model, FloatV);
         PositionsNormals.emplace_back(FloatV);
     }
 
-    uint16_t UV_COORDS_SIZE = 0;
-    GG_Read(Model, UV_COORDS_SIZE);
-    uv.reserve(UV_COORDS_SIZE);
-    for(uint16_t i = 0; i < UV_COORDS_SIZE; ++i){
+    GG_Read(Model, i);  // UV_COORDS_SIZE
+    uv.reserve(i);
+    while(i--){
         GG_Read(Model, FloatV);
         uv.emplace_back(FloatV);
     }
 
-    uint16_t TANGENTS_AND_BITANGENTS_SIZE = 0;
-    GG_Read(Model, TANGENTS_AND_BITANGENTS_SIZE);
-    TangentsBitangents.reserve(TANGENTS_AND_BITANGENTS_SIZE);
-    for(uint16_t i = 0; i < TANGENTS_AND_BITANGENTS_SIZE; ++i){
+    GG_Read(Model, i);  // TANGENTS_AND_BITANGENTS_SIZE
+    TangentsBitangents.reserve(i);
+    while(i--){
         GG_Read(Model, FloatV);
         TangentsBitangents.emplace_back(FloatV);
     }
 
-    uint16_t INDEX_SIZE = 0;
-    GG_Read(Model, INDEX_SIZE);
-    index.reserve(INDEX_SIZE);
+    GG_Read(Model, i);  // INDEX_SIZE
+    index.reserve(i);
     unsigned short UnsignedShortV = 0;
-    for(uint16_t i = 0; i < INDEX_SIZE; ++i){
+    while(i--){
         GG_Read(Model, UnsignedShortV);
         index.emplace_back(UnsignedShortV);
     }
