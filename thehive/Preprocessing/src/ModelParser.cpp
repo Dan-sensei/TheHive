@@ -60,6 +60,10 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
            bitangents   =   meshes[i]->mBitangents;
                 faces   =   meshes[i]->mFaces;
 
+            std::cout << "VERTEX " << meshes[i]->mNumVertices << '\n';
+
+            std::cout << "Positions&Normals " << meshes[i]->mNumVertices*6 << '\n';
+
             PositionsNormals.reserve(meshes[i]->mNumVertices*6);
             uv.reserve(meshes[i]->mNumVertices*2);
             TangentsBitangents.reserve(meshes[i]->mNumVertices*6);

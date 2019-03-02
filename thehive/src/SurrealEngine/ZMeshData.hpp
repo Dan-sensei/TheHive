@@ -4,22 +4,23 @@
 #include <vector>
 #include <cstdint>
 #include <string>
-#include "ZMaterial.hpp"
 
-struct ZMeshData{
+class ZMeshData{
 
+    public:
         ZMeshData();
         ZMeshData(const ZMeshData &orig);
         ~ZMeshData();
 
         bool load(const std::string& path);
+        void draw();
 
-        std::vector< float > PositionsNormals;
-        std::vector< float > UV_Coords;
-        std::vector< float > TangentsBitangents;
-        std::vector< unsigned short > Indexes;
+        unsigned int VAO;
+    private:
+        unsigned int IndexSize;
+        std::vector<unsigned int> VBOs;
 
-        ZMaterial* zmat;
+        void addVertexBuffer(std::vector<float>& data, unsigned int DataLength);
 };
 
 #endif
