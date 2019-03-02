@@ -28,6 +28,17 @@ int Shader::getUniformLocation(std::string target){
         return location;
     }
 }
+int Shader::getAttribLocation(std::string target){
+    auto UniformSearch = AtribLocations.find(target);
+    if(UniformSearch != AtribLocations.end()){
+        return UniformSearch->second;
+    }
+    else{
+        int location = glGetAttribLocation(ShaderID, target.c_str());
+        AtribLocations[target] = location;
+        return location;
+    }
+}
 
 void Shader::Bind() const{
     glUseProgram(ShaderID);

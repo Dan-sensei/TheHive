@@ -118,8 +118,6 @@ int main(int argc, char const *argv[]) {
 #include "BinaryParser.hpp"
 
 GLFWwindow* window;
-void draw();
-void create();
 int initGL(){
 	//INICIALIZAMOS GLFW
 	if( !glfwInit() ){
@@ -134,7 +132,8 @@ int initGL(){
 
 	//CREAMOS UNA VENTANA Y SU CONTEXTO EN OPENGL
 	//GLFW
-	window = glfwCreateWindow( 1920, 1080, "The Hive - ALPHA", NULL, NULL);
+	//testeo de resolucion
+	window = glfwCreateWindow( 1080, 720, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
 	    fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
 	    glfwTerminate();
@@ -186,9 +185,7 @@ int main(int argc, char const *argv[]) {
 
 		// Prueba para las operaciones de transformacion
 		ROOT.rotate(OBJ1,0.5,gg::Vector3f(0,1,0));
-
 		ROOT.draw();
-		//draw();
 
         glfwSwapBuffers(window);
     }while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
@@ -199,51 +196,9 @@ int main(int argc, char const *argv[]) {
     return 0;
 }
 
-
-
-void create(){
-	auto Manager = Singleton<AssetManager>::Instance();
-
-
-	auto HUDtext=Manager->getTexture("assets/HUD/ojetecalor.jpg",GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D,HUDtext);
-	glColor3f(1,1,1);
-	glBegin(GL_QUADS);
-	//coordenadas
-	//glTexCoord2f(0,1);glVertex2f(0.05,0.05);
-	//glTexCoord2f(1,1);glVertex2f(0.3,0.05);
-	//glTexCoord2f(1,0);glVertex2f(0.3,0.15);
-	//glTexCoord2f(0,0);glVertex2f(0.05,0.15);
-
-		glTexCoord2f(0,1080);	glVertex2f(12,60);
-		glTexCoord2f(1920,1080);glVertex2f(80,60);
-		glTexCoord2f(1920,0);	glVertex2f(80,120);
-		glTexCoord2f(0,0);		glVertex2f(12,120);
-
-	//glVertex2i(12,60); glVertex2i(80,60);
-	//glVertex2i(80,120);glVertex2i(12,120);
-
-	//glVertex2i(5,5); glVertex2i(-5,5);
-	//glVertex2i(-5,-5);glVertex2i(5,-5);
-
-	glEnd();
+/*
+quiero eso en motor2D para los botones y au
+static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+{
 }
-void draw(){
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	//gluOrtho2D(0,1,1,0);//screen values left rigth bottom top
-	gluOrtho2D(0,1920,1080,0);
-	//gluOrtho2D(-10,10,-10,10);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-
-	create();
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-}
+*/
