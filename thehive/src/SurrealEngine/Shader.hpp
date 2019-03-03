@@ -17,6 +17,8 @@ class Shader{
 
         bool loadFiles(const char* VertexShader, const char* GeometryShader, const char* FragmentShader);
         int getUniformLocation(std::string target);
+        int getAttribLocation(std::string target);
+        
         void Bind() const;
         void Unbind() const;
         void freeBuffer();
@@ -27,6 +29,7 @@ class Shader{
         unsigned int ShaderID;
         unsigned int loadShader(const char *path, unsigned int type);
         std::unordered_map<std::string, unsigned int> UniformLocations;
+        std::unordered_map<std::string, unsigned int> AtribLocations;
 };
 
 #endif
