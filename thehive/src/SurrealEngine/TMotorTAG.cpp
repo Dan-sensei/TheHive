@@ -140,7 +140,26 @@ void TMotorTAG::setPosition(TNodo* _node, const glm::vec3& _offpos){
 void TMotorTAG::setRotation(TNodo* _node,const glm::vec3& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
 }
+void TMotorTAG::PointAt(TNodo *_node, const gg::Vector3f& _offpos){
+    auto trans =static_cast<TTransform*>(_node->getPadre()->getEntidad());
+    auto dir=glm::normalize(glm::vec3(_offpos.X,_offpos.Y,_offpos.Z)-trans->getDatos());
 
+    auto x=glm::degrees(glm::acos(dir.x));
+    auto y=glm::degrees(glm::acos(dir.y));
+    auto z=glm::degrees(glm::acos(dir.z));
+    //la condicion puede invertirse
+    if(dir.x<0){
+        x=360-x;
+    }
+    if(dir.y<0){
+        y=360-y;
+    }
+    if(dir.z<0){
+        z=360-z;
+    }
+    setRotation(_node, glm::vec3(x,y,z));
+
+}
 
 
 bool TMotorTAG::Initialize(){

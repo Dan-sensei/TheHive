@@ -35,7 +35,9 @@ class TTransform : public TEntidad {
         void setRotation(glm::vec3 _vec);
 
         glm::mat4 matrix;
+        glm::vec3 getDatos();
     private:
+        glm::vec3 datos;
 
 };
 
