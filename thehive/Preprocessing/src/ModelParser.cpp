@@ -40,7 +40,7 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
     }
 
 
-    std::cout << "Loading " << FileInput << "..." << '\n';
+    std::cout << "Hacking " << FileInput << " --> " << FileOutput << '\n';
     //std::cout << "Cargando modelo '" << pFile << "'" << '\n';
 
     aiMesh **meshes = scene->mMeshes;
@@ -60,9 +60,9 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
            bitangents   =   meshes[i]->mBitangents;
                 faces   =   meshes[i]->mFaces;
 
-            std::cout << "VERTEX " << meshes[i]->mNumVertices << '\n';
+            //std::cout << "VERTEX " << meshes[i]->mNumVertices << '\n';
 
-            std::cout << "Positions&Normals " << meshes[i]->mNumVertices*6 << '\n';
+            //std::cout << "Positions&Normals " << meshes[i]->mNumVertices*6 << '\n';
 
             PositionsNormals.reserve(meshes[i]->mNumVertices*6);
             uv.reserve(meshes[i]->mNumVertices*2);

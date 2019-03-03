@@ -1,7 +1,7 @@
 #ifndef _PAUSESTATE_H
 #define _PAUSESTATE_H
 
-class GameEngine;
+#include <SurrealEngine/TMotorTAG.hpp>
 class CTriggerSystem;
 
 class ObjectManager;
@@ -34,7 +34,7 @@ public:
     */
 
 private:
-    GameEngine* Engine;
+    TMotorTAG* Engine;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;

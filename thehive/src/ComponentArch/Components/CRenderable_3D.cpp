@@ -1,13 +1,13 @@
 #include "CRenderable_3D.hpp"
 #include <ComponentArch/ObjectManager.hpp>
-#include <GameEngine/GameEngine.hpp>
 #include "CTransform.hpp"
 
-CRenderable_3D::CRenderable_3D(const std::string &pathToModel, const Material &material)
-:_3DModel(), cTransform(nullptr)
+CRenderable_3D::CRenderable_3D(const std::string &pathToModel, ZMaterial* material)
+:_3DModel(nullptr), cTransform(nullptr)
 {
-    Singleton<GameEngine>::Instance()->createModel(_3DModel, pathToModel);
-    _3DModel.assignMaterial(material);
+    Surreal = Singleton<TMotorTAG>::Instance();
+    _3DModel = Surreal->crearMalla(pathToModel.c_str());
+    Surreal->bindMaterialToMesh(_3DModel, material);
 }
 
 CRenderable_3D::CRenderable_3D(const CRenderable_3D &orig){
@@ -38,8 +38,8 @@ gg::EMessageStatus CRenderable_3D::processMessage(const Message &m) {
 void CRenderable_3D::Update(){
     if(cTransform){
         //  If exists, we get its position, and asign it to the _3DModel
-        _3DModel.setPosition(cTransform->getPosition());
-        _3DModel.setRotation(cTransform->getRotation());
+        Surreal->setPosition(_3DModel, cTransform->getPosition());
+        Surreal->setRotation(_3DModel, cTransform->getRotation());
     }
 }
 

@@ -8,7 +8,7 @@
 #include <Util.hpp>
 
 #include <Singleton.hpp>
-#include <GameEngine/GameEngine.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Bullet/ggDynWorld.hpp>
@@ -74,7 +74,7 @@ class CPlayerController : public IComponent {
 
         ObjectManager* Manager;
         Factory* factory;
-        GameEngine* Engine;
+        TMotorTAG* Engine;
         ggDynWorld* world;
         CTransform* cTransform;
         CRigidBody* cRigidBody;

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <BinaryParser.hpp>
 #include "Singleton.hpp"
-#include <GameEngine/GameEngine.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 #include <numeric>
 
 
@@ -27,30 +27,30 @@ Pathfinding::~Pathfinding(){
 void Pathfinding::SetDebug(bool flag){
     Debug = flag;
 
-    if(flag && IDs.empty()){
-        IDs.resize(GRAPH.size());
-        uint16_t i = GRAPH.size();
-        while(i--){
-
-            Singleton<GameEngine>::Instance()->createBillboard(IDs[i], GRAPH[i].Position + gg::Vector3f(0, 60, 0));
-            IDs[i].setText(std::to_string(i) );
-            uint8_t color[4] = {1, 0, 0, 0};
-            IDs[i].setColor(color);
-        }
-
-        BillboardFaces.resize(FACES.size());
-        uint16_t j = FACES.size();
-        while(j--){
-            uint8_t color[4] = {1, 0, 0, 0};
-
-            Singleton<GameEngine>::Instance()->createBillboard(BillboardFaces[j], FACES[j].TL + gg::Vector3f(0, 60+j*2, 0));
-            BillboardFaces[j].setText(std::to_string(j));
-            BillboardFaces[j].setColor(color);
-        }
-    }
-    else if(!flag && !IDs.empty()){
-        IDs.clear();
-    }
+    // if(flag && IDs.empty()){
+    //     IDs.resize(GRAPH.size());
+    //     uint16_t i = GRAPH.size();
+    //     while(i--){
+    //
+    //         Singleton<GameEngine>::Instance()->createBillboard(IDs[i], GRAPH[i].Position + gg::Vector3f(0, 60, 0));
+    //         IDs[i].setText(std::to_string(i) );
+    //         uint8_t color[4] = {1, 0, 0, 0};
+    //         IDs[i].setColor(color);
+    //     }
+    //
+    //     BillboardFaces.resize(FACES.size());
+    //     uint16_t j = FACES.size();
+    //     while(j--){
+    //         uint8_t color[4] = {1, 0, 0, 0};
+    //
+    //         Singleton<GameEngine>::Instance()->createBillboard(BillboardFaces[j], FACES[j].TL + gg::Vector3f(0, 60+j*2, 0));
+    //         BillboardFaces[j].setText(std::to_string(j));
+    //         BillboardFaces[j].setColor(color);
+    //     }
+    // }
+    // else if(!flag && !IDs.empty()){
+    //     IDs.clear();
+    // }
 }
 
 bool Pathfinding::isDebugging(){
@@ -124,8 +124,8 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     }
 
     if(CurrentNode->ID != GOAL) {
-        gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
-        //// std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
+        ////gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
+        std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
         while(CurrentNode->ID != START) {
@@ -168,7 +168,7 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     }
 
     if(!FoundStart || !FoundGoal){
-        // gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
+        // //gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
         return;
     }
     // std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
@@ -214,7 +214,7 @@ void Pathfinding::DroNodes(){
     uint8_t i = GRAPH.size();
     uint8_t length = 0;
 
-    GameEngine* Engine = Singleton<GameEngine>::Instance();
+    TMotorTAG* Engine = Singleton<TMotorTAG>::Instance();
 
     while(i--){
         length = 50;
@@ -238,7 +238,7 @@ void Pathfinding::DroNodes(){
             color.B = 204;
         }
 
-        Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 4);
+        Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color);
 
         if(Goal.X && Goal.Y && Goal.Z){
             length = 100;
@@ -246,7 +246,7 @@ void Pathfinding::DroNodes(){
             color.R = 212;
             color.G = 175;
             color.B = 55;
-            Engine->Draw3DLine(Goal, Goal + gg::Vector3f(0,length,0), color, 5);
+            Engine->Draw3DLine(Goal, Goal + gg::Vector3f(0,length,0), color);
         }
     }
 

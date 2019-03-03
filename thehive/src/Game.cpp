@@ -17,6 +17,7 @@
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include <EventSystem/Blackboard.hpp>
 #include "BinaryParser.hpp"
+#include <SurrealEngine/TMotorTAG.hpp>
 
 #define MOVEMENT_SPEED 1.f
 
@@ -48,7 +49,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 //============================================================================================
 
 Game::Game(){
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
     //Engine->Starto();
@@ -58,7 +59,7 @@ Game::Game(){
 
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
-    Engine->HideCursor(true);
+    //Engine->HideCursor(true);
     UPDATE = 0;
     DRO = 0;
 }
@@ -68,20 +69,18 @@ Game::~Game(){
 }
 
 void Game::Init(){
-    Singleton<ScreenConsole>::Instance()->InitHUD();
+    //Singleton<ScreenConsole>::Instance()->InitHUD();
     BinaryParser::test();
     auto sF = Singleton<Factory>::Instance();
-    Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
+    Engine->crearCamara(90,0.1f,100.f, gg::Vector3f(7,5,10),gg::Vector3f(),16.f/9.f);
 
+    Engine->print();
     // Pos init del heroe normal
     // 360, 0, 350
-    uint16_t h = sF->createHero(gg::Vector3f(0,50,0),false);
+    uint16_t h = sF->createHero(gg::Vector3f(0,0,0),false);
     //sF->createRusher(gg::Vector3f(5,3,65),200);
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
-
-
-
 
     // Material yelo("assets/Models/CIUDAD/Presentacion1/NAVMESH.png");
     //
@@ -90,12 +89,14 @@ void Game::Init(){
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     Singleton<Pathfinding>::Instance()->SetDebug(false);
-    // world->setDebug(true);
+    world->setDebug(true);
     MasterClock.Restart();
 }
 
 void Game::Update(){
     DeltaTime = MasterClock.Restart().Seconds();
+
+    Engine->PollEvents();
 
     if(DeltaTime > 0.25) DeltaTime = 0.25;
 
@@ -117,25 +118,26 @@ void Game::Update(){
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
-    Engine->BeginDro();
+    Engine->BeginDraw();
     Manager->UpdateAll();
 
-    MainCamera->CameraUpdate();
+    //MainCamera->CameraUpdate();
+    //Engine->print();
 
-    Engine->Dro();
-    Engine->DisplayFPS();
+    Engine->draw();
+    //Engine->DisplayFPS();
 
     // Consola por pantalla
-    Singleton<ScreenConsole>::Instance()->DisplayDebug();
-    Singleton<ScreenConsole>::Instance()->DisplayHUD();
+    // Singleton<ScreenConsole>::Instance()->DisplayDebug();
+    // Singleton<ScreenConsole>::Instance()->DisplayHUD();
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
-    Engine->EndDro();
+    Engine->EndDraw();
 }
 
 void Game::Resume(){
-    Engine->HideCursor(true);
+    //Engine->HideCursor(true);
 }
 
 void Game::CLIN(){
@@ -144,7 +146,7 @@ void Game::CLIN(){
     world->clear();//clean es el vuestro// clear solo vacia los rigidbody sin quitar las fisicas
     //EventSystem->clin();
     //Singleton<ScreenConsole>::Instance()->CLIN();
-    Singleton<ScreenConsole>::Instance()->CLINNormal();
+    //Singleton<ScreenConsole>::Instance()->CLINNormal();
 
     // std::cout << "1/60 = " << 1/60.F << '\n';
     // std::cout << "UPDTES " << UPDATE  << '\n';

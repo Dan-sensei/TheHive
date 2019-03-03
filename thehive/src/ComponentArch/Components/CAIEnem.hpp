@@ -18,11 +18,10 @@
 
 #include <ComponentArch/Components/CClock.hpp>
 
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+#include <SurrealEngine/TMotorTAG.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <GameAI/Treecontroller.hpp>
 
 class Treecontroller;
-class GameEngine;
 class ObjectManager;
 
 class CAgent;
@@ -111,7 +110,7 @@ class CAIEnem : public IComponent {
         bool            CanIReset;
 
     private:
-        GameEngine      *Engine;
+        TMotorTAG      *Engine;
         ObjectManager   *Manager;
         CTriggerSystem  *EventSystem;
         CTransform      *cTransform;

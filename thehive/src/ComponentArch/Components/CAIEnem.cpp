@@ -79,7 +79,7 @@ void CAIEnem::enemyrange(){
 }
 
 void CAIEnem::Init(){
-    Engine          = Singleton<GameEngine>::Instance();
+    Engine          = Singleton<TMotorTAG>::Instance();
     Manager         = Singleton<ObjectManager>::Instance();
     EventSystem     = Singleton<CTriggerSystem>::Instance();
     world           = Singleton<ggDynWorld>::Instance();
@@ -252,9 +252,9 @@ void CAIEnem::enableVisualDebug(){
     gg::Vector3f fin2   = dir1*Vrange+cTransform->getPosition();
     gg::Vector3f fin3   = dir2*Vrange+cTransform->getPosition();
 
-    Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1),3);
-    Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1),3);
-    Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1),3);
+    Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
+    Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
+    Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
 
     gg::Vector3f diren  = PlayerTransform->getPosition()-cTransform->getPosition();
     diren.Y             = 0;
@@ -301,7 +301,7 @@ bool CAIEnem::getCloserAllyIsDead(){
 void CAIEnem::upgradeRage(){
     enfado++;
     if(enfado >= 3){
-        gg::cout(" -- ENFADOMASMAS!!");
+        //gg::cout(" -- ENFADOMASMAS!!");
         maxAliensAttacking++;
         enfado = 1;
     }

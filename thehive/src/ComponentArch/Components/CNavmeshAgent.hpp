@@ -1,22 +1,23 @@
 #ifndef CNAVMESHAGENT_H
 #define CNAVMESHAGENT_H
 
-
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
 #include <GameAI/NavmeshStructs.hpp>
 #include <Util.hpp>
 #include <stack>
 
-#include <GameEngine/GameEngine.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <Singleton.hpp>
 
 #include "CTransform.hpp"
 
-#include <Bullet/ggDynWorld.hpp>
-#include "CRigidBody.hpp"
+
+
 #include <GameEngine/Clock.hpp>
+class CRigidBody;
+class ggDynWorld;
 
 class CNavmeshAgent : public IComponent {
     friend class Factory;
@@ -48,8 +49,8 @@ class CNavmeshAgent : public IComponent {
         gg::Clock Timer;
         gg::Vector3f RS, LS;
         gg::Vector3f moveVector;
-        
-        GameEngine* Engine;
+
+        TMotorTAG* Engine;
         ggDynWorld* world;
 
         CTransform* cTransform;

@@ -31,8 +31,11 @@ class TTransform : public TEntidad {
         virtual void beginDraw(const uint8_t&);
         virtual void endDraw(const uint8_t&);
 
-    private:
+        void setPosition(gg::Vector3f _vec);
+        void setRotation(gg::Vector3f _vec);
+        
         glm::mat4 matrix;
+    private:
 
 };
 

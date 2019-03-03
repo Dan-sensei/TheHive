@@ -1,7 +1,7 @@
 #ifndef _IASTATE_H
 #define _IASTATE_H
 
-class GameEngine;
+#include <SurrealEngine/TMotorTAG.hpp>
 class CTriggerSystem;
 
 class ObjectManager;
@@ -35,7 +35,7 @@ public:
 
 private:
     int id;
-    GameEngine* Engine;
+    TMotorTAG* Engine;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;

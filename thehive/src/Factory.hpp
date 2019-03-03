@@ -2,7 +2,7 @@
 #define FACTORY_H
 
 #include <ComponentArch/ObjectManager.hpp>
-#include <GameEngine/GameEngine.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
 
@@ -30,9 +30,9 @@ class Factory{
         uint16_t createSwarm( const gg::Vector3f &Position,const float &health);
 
 
-        uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
-        uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
-        uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation = gg::Vector3f());
+        //uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
+        //uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
+        //uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation = gg::Vector3f());
         uint16_t createPathFindingActor(const gg::Vector3f &Position);
         uint16_t createHolyBomb(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
         uint16_t createMatriuska(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
@@ -49,7 +49,7 @@ class Factory{
         void operator=(const Factory &orig) = delete;
 
         ObjectManager* Manager;
-        GameEngine* Engine;
+        TMotorTAG* Engine;
 
 };
 

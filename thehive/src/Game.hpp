@@ -1,7 +1,7 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-class GameEngine;
+class TMotorTAG;
 class CTriggerSystem;
 
 class ObjectManager;
@@ -36,7 +36,7 @@ public:
     */
 
 private:
-    GameEngine* Engine;
+    TMotorTAG* Engine;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;

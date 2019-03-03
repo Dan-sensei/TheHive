@@ -5,16 +5,15 @@
 #include <ComponentArch/Message.hpp>
 #include <cstdint>
 #include <cmath>
-#include <GameEngine/GameEngine.hpp>
-#include <GameEngine/Camera.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/TNodo.hpp>
 #include <Singleton.hpp>
 
 #include "CTransform.hpp"
+#include <ComponentArch/ObjectManager.hpp>
 
-class ObjectManager;
 class CRigidBody;
 class ggDynWorld;
-
 class CCamera : public IComponent {
 friend class Factory;
 public:
@@ -30,7 +29,6 @@ public:
 
     gg::Vector3f getCameraPosition();
     gg::Vector3f getCameraRotation();
-    gg::Vector3f getCameraTarget();
     gg::Vector3f getOffsetPositionVector();
 
     void moveCameraPosition(gg::Vector3f);
@@ -41,9 +39,9 @@ public:
 
 private:
     CRigidBody      *CRigidbody;
-    GameEngine      *Engine;
+    TMotorTAG       *Engine;
     ObjectManager   *Manager;
-    Camera          *cam;
+    TNodo           *cam;
     CTransform      *Target;
     ggDynWorld      *dynWorld;
 
@@ -52,6 +50,9 @@ private:
     gg::Vector3f offsetPositionVector;
     gg::Vector3f pos_on_collision;
     gg::Vector3f last_cam_position;
+
+    gg::Vector3f Pos;
+    gg::Vector3f Rot;
 
     float screenW;
     float screenH;

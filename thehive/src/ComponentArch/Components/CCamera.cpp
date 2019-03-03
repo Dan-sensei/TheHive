@@ -1,5 +1,6 @@
 #include "CCamera.hpp"
 #include <ComponentArch/ObjectManager.hpp>
+#include <Bullet/ggDynWorld.hpp>
 
 #define PI                  3.1415926535897932384626433832795028841971693993751058209749445923078164062
 #define DEGREES_TO_RADIANS  PI/180.f
@@ -18,14 +19,14 @@ CCamera::~CCamera(){
 }
 
 void CCamera::Init(){
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
     dynWorld = Singleton<ggDynWorld>::Instance();
     cam = Engine->getCamera();
 
     lastHeroPosition = Target->getPosition();
 
-    cameraPositionBeforeLockRotation = Engine->getCamera()->getPosition();
+    cameraPositionBeforeLockRotation = Pos;
 
     collision = false;
     CRigidbody=new CRigidBody(
@@ -37,8 +38,8 @@ void CCamera::Init(){
     );
 
 
-    screenW = static_cast<int>(Engine->getScreenWidth())/2;
-    screenH = static_cast<int>(Engine->getScreenHeight())/2;
+    screenW = Engine->getScreenWidth();
+    screenH = Engine->getScreenHeight();
 }
 
 void CCamera::setTarget(CTransform *T) {
@@ -49,10 +50,10 @@ void CCamera::CameraUpdate(){
     gg::Vector3f nextPosition = Target->getPosition();
     lastHeroPosition = nextPosition;
 
-    cam->bindTargetAndRotation(true);
+    //cam->bindTargetAndRotation(true);
 
-    gg::Vector3f camPosition = cam->getPosition();
-    gg::Vector3f backupRotation = cam->getRotation();
+    gg::Vector3f camPosition = Pos;
+    gg::Vector3f backupRotation = Rot;
     gg::Vector3f newRotation = backupRotation;
     gg::Vector3f finalXRVector;
     gg::Vector3f finalYRVector;
@@ -79,7 +80,8 @@ void CCamera::CameraUpdate(){
         finalYRVector.Y+HEIGHT,
         finalXRVector.Z
     );
-    cam->setPosition(camPosition+auxCamvector);
+    Pos = camPosition+auxCamvector;
+    Engine->setPosition(cam, Pos);
 
     // Perpendicular vector to set an offset to the right
     setPerpendicularOffsetVector(nextPosition);
@@ -92,13 +94,13 @@ void CCamera::CameraUpdate(){
     // Call to updateAbsolutePosition() to avoid perspective and camera position problems
     // ¡¡¡¡ THIS MUST BE THE LAST FUNCTION TO CALL AFTER ANY CAMERA POSITION CHANGING FUNCTION !!!!
     // [IRRLICHT FUNCTION]
-    cam->updateAbsolutePosition();
+    //cam->updateAbsolutePosition();
 
     setFinalRotation(newRotation,backupRotation, true);
 }
 
 void CCamera::setHorizontalAxis(gg::Vector3f &nextPosition,gg::Vector3f &finalXRVector,gg::Vector3f &newRotation,gg::Vector3f &ret_position){
-    gg::Vector3f cam_position = cam->getPosition();
+    gg::Vector3f cam_position = Pos;
     float angle,newX,newZ;
 
     angle   = newRotation.Y*DEGREES_TO_RADIANS;
@@ -129,7 +131,7 @@ void CCamera::setVerticalAxis(gg::Vector3f &nextPosition,gg::Vector3f &finalYRVe
 
 void CCamera::setPerpendicularOffsetVector(gg::Vector3f &nextPosition){
     // Update camera position
-    gg::Vector3f camPosition = cam->getPosition();
+    gg::Vector3f camPosition = Pos;
     gg::Vector3f ppV(
         nextPosition.Z-camPosition.Z,
         0,
@@ -142,7 +144,7 @@ void CCamera::setPerpendicularOffsetVector(gg::Vector3f &nextPosition){
 }
 
 void CCamera::getNewRotation(gg::Vector3f &newRotation){
-    int vX,vY;
+    double vX,vY;
     // Set the coordinates to an absolute 0 on the center of the screen
     // Set the mouse new coordinate to the center(0,0)
     Engine->getCursorPosition(vX,vY);
@@ -151,7 +153,6 @@ void CCamera::getNewRotation(gg::Vector3f &newRotation){
 
     if(daniNoSabeProgramar)
         vY = -vY;
-    Engine->setCursorPosition(static_cast<int>(screenW),static_cast<int>(screenH));
 
     // ------------------------------------------ //
     // NO SE QUE ES MAS OPTIMO :lenny_face:
@@ -165,24 +166,30 @@ void CCamera::getNewRotation(gg::Vector3f &newRotation){
 
 void CCamera::setFinalRotation(gg::Vector3f &newRotation,gg::Vector3f &backupRotation,bool heroRotation){
     // SECOND set the camera rotation
-    if(newRotation.X > -60 && newRotation.X <= 60)
-        cam->setRotation(newRotation);
-    else
-        cam->setRotation(backupRotation);
+    if(newRotation.X > -60 && newRotation.X <= 60){
+        Engine->setRotation(cam, heroRotation);
+        Rot = newRotation;
+
+    }
+    else{
+        Engine->setRotation(cam, backupRotation);
+        Rot = backupRotation;
+    }
 
     // If heroRotation is FALSE, the hero won't move with the camera rotation
     //if(heroRotation){
-        cameraPositionBeforeLockRotation = cam->getPosition();
+        cameraPositionBeforeLockRotation = Pos;
         // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
     //}
 }
 
 void CCamera::fixCameraPositionOnCollision(gg::Vector3f &nextPosition){
-    gg::Vector3f camPosition = cam->getPosition();
+    gg::Vector3f camPosition = Pos;
     // Las dos mejores lineas que he escrito en mi vida
     gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2;
     if(dynWorld->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
-        cam->setPosition(pos_on_collision);
+        Engine->setPosition(cam, pos_on_collision);
+        Pos = pos_on_collision;
     }
 }
 
@@ -191,18 +198,11 @@ gg::Vector3f CCamera::getOffsetPositionVector(){
 }
 
 gg::Vector3f CCamera::getCameraPosition(){
-    GameEngine *Engine = Singleton<GameEngine>::Instance();
-    return Engine->getCamera()->getPosition();
+    return Pos;
 }
 
 gg::Vector3f CCamera::getCameraRotation(){
-    GameEngine *Engine = Singleton<GameEngine>::Instance();
-    return Engine->getCamera()->getRotation();
-}
-
-gg::Vector3f CCamera::getCameraTarget(){
-    GameEngine *Engine = Singleton<GameEngine>::Instance();
-    return Engine->getCamera()->getTarget();
+    return Rot;
 }
 
 gg::Vector3f CCamera::getlastHeroPosition(){
@@ -218,11 +218,6 @@ void CCamera::setCameraPositionBeforeLockRotation(gg::Vector3f vector){
 }
 
 void CCamera::moveCameraPosition(gg::Vector3f _offPos){
-    cam->setPosition(
-        gg::Vector3f(
-            cam->getPosition().X + _offPos.X,
-            cam->getPosition().Y + _offPos.Y,
-            cam->getPosition().Z + _offPos.Z
-        )
-    );
+    Pos += _offPos;
+    Engine->setPosition(cam, Pos);
 }

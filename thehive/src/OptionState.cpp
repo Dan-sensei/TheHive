@@ -50,7 +50,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 //============================================================================================
 
 OptionState::OptionState():cont(){
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
     //Engine->Starto();
@@ -59,7 +59,7 @@ OptionState::OptionState():cont(){
 
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
-    Engine->HideCursor(false);
+    //Engine->HideCursor(false);
 }
 
 OptionState::~OptionState(){
@@ -79,12 +79,12 @@ void OptionState::Resume() {
 
 //}
 void OptionState::Update(){
-    Engine->BeginDro();
-    Engine->Dro();
+    Engine->BeginDraw();
+    Engine->draw();
     cont.update();
     Singleton<ScreenConsole>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
-    Engine->EndDro();
+    Engine->EndDraw();
 }
 
 void OptionState::CLIN(){

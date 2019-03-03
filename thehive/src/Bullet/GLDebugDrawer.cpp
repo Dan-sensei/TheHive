@@ -14,7 +14,7 @@ void	GLDebugDrawer::drawLine(const btVector3& _from,const btVector3& _to,const b
 	// float color[4] = {_fromColor.getX(),_fromColor.getY(),_fromColor.getZ(),0};
 	float color[4] = {226,45,13,0};
 
-	Singleton<GameEngine>::Instance()->draw3DLine(from,to,color);
+	//Singleton<GameEngine>::Instance()->draw3DLine(from,to,color);
 }
 
 void	GLDebugDrawer::drawLine(const btVector3& _from,const btVector3& _to,const btVector3& _color)

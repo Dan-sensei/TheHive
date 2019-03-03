@@ -40,7 +40,7 @@ CPlayerController::~CPlayerController() {
 
 void CPlayerController::Init(){
     //  We check if this entity has the TRANSFORM component
-    Engine  = Singleton<GameEngine>::Instance();
+    Engine  = Singleton<TMotorTAG>::Instance();
     world   = Singleton<ggDynWorld>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
     factory = Singleton<Factory>::Instance();
@@ -112,11 +112,11 @@ void CPlayerController::Update(){
         actualGrenadeState -= wheelState;
         if(actualGrenadeState<1)    actualGrenadeState = 3;
         if(actualGrenadeState>3)    actualGrenadeState = 1;
-        gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
+        //gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
     }
 
     if(clocker.ElapsedTime().Seconds() < 0.1){
-        Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 0.5, 0), Target, gg::Color(255, 0, 0), 2);
+        Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 0.5, 0), Target, gg::Color(255, 0, 0));
     }
 
 }
@@ -408,11 +408,11 @@ void CPlayerController::showDebug(){
 
     if(debug2){
         // DEBUG ACTIVATED
-        gg::cout(
-            "(X:"+std::to_string(cTransform->getPosition().X)+
-            ",Y:"+std::to_string(cTransform->getPosition().Y)+
-            ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
-        );
+        // gg::cout(
+        //     "(X:"+std::to_string(cTransform->getPosition().X)+
+        //     ",Y:"+std::to_string(cTransform->getPosition().Y)+
+        //     ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
+        // );
     }
 }
 
@@ -425,10 +425,10 @@ void CPlayerController::changeWeaponIfPossible(CGun *gun){
         Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
         Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
 
-        gg::cout("| -- PRINCIPAL TO SECONDARY -- ");
-        gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
+        //gg::cout("| -- PRINCIPAL TO SECONDARY -- ");
+        //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
         secondWeapon = gun;
-        gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
+        //gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
     }
     else{
         // SIEMPRE entrara primero aqui
@@ -437,10 +437,10 @@ void CPlayerController::changeWeaponIfPossible(CGun *gun){
         Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
         Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
 
-        gg::cout("| -- SECONDARY TO PRINCIPAL -- ");
-        gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
+        //gg::cout("| -- SECONDARY TO PRINCIPAL -- ");
+        //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
         secondWeapon = gun;
-        gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
+        //gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
     }
 }
 

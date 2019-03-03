@@ -167,7 +167,7 @@ void Action::seen(){
 
 void Action::rond_seny(){
     if(s!=BH_RUNNING){
-        // gg::cout("RONDANDO SENYUELO");
+        // //gg::cout("RONDANDO SENYUELO");
         yo->destino=yo->senpos;
         yo->rondacion_cont=0;
         s=BH_RUNNING;
@@ -181,7 +181,7 @@ void Action::rond_seny(){
 
 void Action::rond_jugador(){
     if(s!=BH_RUNNING){
-        //gg::cout("RONDANDO JUGADOR");
+        ////gg::cout("RONDANDO JUGADOR");
         yo->rondacion_cont=0;
         s=BH_RUNNING;
         int sign;
@@ -400,7 +400,7 @@ void Action::playerNotAttacking(){
         modifyImAttacking(true);
     }
     else{
-        // gg::cout("NO ATTACK");
+        // //gg::cout("NO ATTACK");
         s = BH_SUCCESS;
     }
 }
@@ -408,13 +408,13 @@ void Action::playerNotAttacking(){
 void Action::isThereSomeAlienDead(){
     // NO SE USA
     // _________
-    // gg::cout("SOME ALIEN DEAD?");
+    // //gg::cout("SOME ALIEN DEAD?");
     // if(yo->getCloserAllyIsDead()){
-    //     gg::cout(" -- SI CARACULO");
+    //     //gg::cout(" -- SI CARACULO");
     //     s = BH_SUCCESS;
     // }
     // else{
-    //     gg::cout(" -- PUES NO");
+    //     //gg::cout(" -- PUES NO");
     //     s = BH_FAILURE;
     // }
 }
@@ -422,7 +422,7 @@ void Action::isThereSomeAlienDead(){
 void Action::moreRage(){
     // NO SE USA
     // _________
-    // gg::cout("-- -----------------------");
+    // //gg::cout("-- -----------------------");
     // yo->upgradeRage();
     // s = BH_SUCCESS;
 }
@@ -469,7 +469,7 @@ void Action::move_to(){
 
 void Action::move_last(){
     if(s!=BH_RUNNING){
-        //gg::cout("move last");
+        ////gg::cout("move last");
         s=BH_RUNNING;
         yo->destino = yo->playerPos;
     }
@@ -483,7 +483,7 @@ void Action::move_last(){
 
 void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
-        //gg::cout("move senyuelo");
+        ////gg::cout("move senyuelo");
         s=BH_RUNNING;
         yo->destino = yo->senpos;
     }
@@ -496,9 +496,9 @@ void Action::move_player_utilx(){
     //10-25
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
-        //gg::cout("move player");
+        ////gg::cout("move player");
 
-        // gg::cout(" --- MOVE TO PLAYER --- ");
+        // //gg::cout(" --- MOVE TO PLAYER --- ");
     }
     CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
     yo->destino = cTransform2->getPosition();
@@ -508,9 +508,9 @@ void Action::move_player_utilx(){
 void Action::move_player(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
-        //gg::cout("move player");
+        ////gg::cout("move player");
 
-        // gg::cout(" --- MOVE TO PLAYER --- ");
+        // //gg::cout(" --- MOVE TO PLAYER --- ");
         // std::cout << "empieza" << '\n';
     }
 
@@ -519,9 +519,9 @@ void Action::move_player(){
 
     move_too(5);
     if(s!=BH_RUNNING){
-        //gg::cout("move player");
+        ////gg::cout("move player");
 
-        // gg::cout(" --- MOVE TO PLAYER --- ");
+        // //gg::cout(" --- MOVE TO PLAYER --- ");
         // std::cout << "acaba" << '\n';
     }
     //if(s==BH_SUCCESS){
@@ -613,7 +613,7 @@ void Action::move_too(int min){
 }
 
 void Action::onTerminate(Status state){//tener cuidado de cerrar todos los recursos que abramos
-  // gg::cout("ON TERMINATE: ["+std::to_string(state)+"]");
+  // //gg::cout("ON TERMINATE: ["+std::to_string(state)+"]");
 }
 
 void Action::modifyImAttacking(bool _b){
@@ -636,7 +636,7 @@ void Action::setOffsetAliensAttacking(int _i){
 }
 
 void Action::FIVE_SinceLastHability(){
-    gg::cout(yo->getHabilityUpdateCounter());
+    //gg::cout(yo->getHabilityUpdateCounter());
     if(yo->getHabilityUpdateCounter() > 300){
         yo->resetHabilityUpdateCounter();
         s = BH_SUCCESS;
@@ -652,7 +652,7 @@ void Action::doExplosiveWave(){
 }
 
 void Action::doSpit(){
-    gg::cout("SPIT!");
+    //gg::cout("SPIT!");
     // yo->spit();
     s = BH_SUCCESS;
 }

@@ -14,7 +14,7 @@
 #include <ComponentArch/Message.hpp>
 
 #include <ComponentArch/Components/CAIEnem.hpp>
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+#include <SurrealEngine/TMotorTAG.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <Singleton.hpp>
 
@@ -63,7 +63,7 @@ class CAgent : public IComponent {
         //uint16_t getEntityID();upda
 
     private:
-        GameEngine      *Engine;
+        TMotorTAG      *Engine;
         CTransform      *cTransform;
         ObjectManager   *oManager;
 

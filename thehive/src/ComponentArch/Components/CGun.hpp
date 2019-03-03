@@ -7,7 +7,6 @@
 
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <EventSystem/CTriggerSystem.hpp>
 #include "CTransform.hpp"
@@ -38,7 +37,6 @@ class CGun : public IComponent {
 
 
     private:
-        GameEngine* Engine;
         ObjectManager* Manager;
 
         //  Punteros a otras componentes

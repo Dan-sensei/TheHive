@@ -3,17 +3,19 @@
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
-#include <GameEngine/Model.hpp>
+#include <SurrealEngine/ZStaticMesh.hpp>
+#include <SurrealEngine/ZMaterial.hpp>
 #include <map>
 #include <iostream>
 #include <Singleton.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 
 
 class CTransform;
 
 class CRenderable_3D : public IComponent {
     public:
-        CRenderable_3D(const std::string &pathToModel, const Material &material);
+        CRenderable_3D(const std::string &pathToModel, ZMaterial* material);
         CRenderable_3D(const CRenderable_3D &orig);
         virtual ~CRenderable_3D();
 
@@ -26,7 +28,8 @@ class CRenderable_3D : public IComponent {
         gg::EMessageStatus MHandler_SETPTRS();
 
     private:
-        Model _3DModel;
+        TNodo* _3DModel;
+        TMotorTAG* Surreal;
 
         CTransform* cTransform;
 };

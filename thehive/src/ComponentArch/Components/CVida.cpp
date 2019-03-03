@@ -15,7 +15,7 @@ CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
 {
     Manager         = Singleton<ObjectManager>::Instance();
-    hud             = Singleton<ScreenConsole>::Instance();
+    //hud             = Singleton<ScreenConsole>::Instance();
     triggerSystem   = Singleton<CTriggerSystem>::Instance();
 }
 
@@ -29,11 +29,11 @@ bool CVida::quitarvida(const float &_factor){
 
     vida -= K_DMG_VALUE*_factor;
     if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
-        hud->setvida(vida/vida_max);
+        //hud->setvida(vida/vida_max);
     }
     else{
         if(vida <= 0){
-            gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
+            //gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
             vida = 0;
             ret = true;
             //Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID());
@@ -58,7 +58,7 @@ bool CVida::quitarvida(const float &_factor){
             //
         }
     }
-    gg::cout("DAMAGE DONE-> "+std::to_string(K_DMG_VALUE*_factor)+"["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
+    //gg::cout("DAMAGE DONE-> "+std::to_string(K_DMG_VALUE*_factor)+"["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
 
     return ret;
 }
@@ -94,7 +94,7 @@ void CVida::FixedUpdate() {
             CTransform  *t  = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,getEntityID()));
             CAIEnem     *AI = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
             if(t && AI){
-                // gg::cout("DEAD ALIEN");
+                // //gg::cout("DEAD ALIEN");
                 if(AI->getImAttacking())
                     Action::aliensAttacking--;
                 // Evento para que los enemigos vean que se ha muerto un aliado suyo

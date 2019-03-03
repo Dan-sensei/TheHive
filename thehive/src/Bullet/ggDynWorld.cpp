@@ -51,7 +51,7 @@ void ggDynWorld::debugRaycast(){
     color.R = 212;
     color.G = 175;
     color.B = 55;
-    Singleton<GameEngine>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color,10);
+    //Singleton<GameEngine>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color,10);
 }
 
 void ggDynWorld::printObjects(int _end){

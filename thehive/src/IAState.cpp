@@ -5,17 +5,11 @@
 #include <string>
 #include <stack>
 
-#include "ComponentArch/ObjectManager.hpp"
-#include "GameEngine/Camera.hpp"
 #include "Singleton.hpp"
-#include "GameAI/Pathfinding.hpp"
-#include "GameAI/NavmeshStructs.hpp"
+
 
 #include "GameEngine/ScreenConsole.hpp"
 
-#include "Factory.hpp"
-#include <ComponentArch/Components/CNavmeshAgent.hpp>
-#include <EventSystem/Blackboard.hpp>
 #include <States/StateMachine.hpp>
 
 
@@ -50,15 +44,14 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 //============================================================================================
 
 IAState::IAState(int _id):cont(),id(_id){
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     //Engine->Starto();
     //Engine->HideCursor(true);
-    Manager = Singleton<ObjectManager>::Instance();
 
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
-    Engine->HideCursor(false);
+    //Engine->HideCursor(false);
 }
 
 IAState::~IAState(){
@@ -79,12 +72,12 @@ void IAState::Resume() {
 
 //}
 void IAState::Update(){
-    Engine->BeginDro();
-    Engine->Dro();
+    Engine->BeginDraw();
+    Engine->draw();
     cont.update();
     Singleton<ScreenConsole>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
-    Engine->EndDro();
+    Engine->EndDraw();
 }
 
 void IAState::CLIN(){

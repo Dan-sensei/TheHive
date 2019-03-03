@@ -98,54 +98,52 @@ void BinaryParser::test(){
     uint8_t NUMBER_OF_OBJECTS = 0;
     GG_Read(inStream, NUMBER_OF_OBJECTS);
 
-    std::cout << "NUM " << (uint16_t)NUMBER_OF_OBJECTS << '\n';
+    //std::cout << "NUM " << (uint16_t)NUMBER_OF_OBJECTS << '\n';
 
     for(uint16_t i = 0; i < NUMBER_OF_OBJECTS; ++i){
         uint8_t MODEL = 0;
         GG_Read(inStream, MODEL);
         std::string str = std::to_string(MODEL);
-        str+=".obj";
+        str+=".modelgg";
 
         auto Manager = Singleton<ObjectManager>::Instance();
         uint16_t NewEntity = Manager->createEntity();
 
-        std::cout << "Model->  " << str << '\n';
+        //std::cout << "Model->  " << str << '\n';
         float x,y,z;
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
-        gg::Vector3f Position(x,y,z);
-        std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
+        gg::Vector3f Position(-x,y,z);
+        //std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
         gg::Vector3f Rotation(x,y,z);
-        std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
+        //std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
 
         bool HasCollider;
         GG_Read(inStream, HasCollider);
-        CTransform* Transform = new CTransform(Position, Rotation);
-        Manager->addComponentToEntity(Transform, gg::TRANSFORM, NewEntity);
-        Material yelo("assets/Textures/prueba1.png");
-        CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/CALLE_PRINCIPAL/"+str, yelo);
-        Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, NewEntity);
+        ZMaterial* Dark = AssetManager::getMaterial("Default");
+        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation);
+        Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
 
-        std::cout << "Collider? = " << HasCollider << '\n';
+        //std::cout << "Collider? = " << HasCollider << '\n';
         if(HasCollider){
             float sx,sz,sy;
             GG_Read(inStream, x);
             GG_Read(inStream, y);
             GG_Read(inStream, z);
-            std::cout << "      -Center: " << x << ", " << y << ", " << z << '\n';
+            //std::cout << "      -Center: " << x << ", " << y << ", " << z << '\n';
             GG_Read(inStream, sx);
             GG_Read(inStream, sy);
             GG_Read(inStream, sz);
-            std::cout << "      -Size: " << x << ", " << y << ", " << z << '\n';
-            CRigidBody* RIGID = new CRigidBody(false, false,"", x/2, y/2, z/2, sx/2, sy/2, sz/2, 0, 0,0,0, 0.2);
-            Manager->addComponentToEntity(RIGID, gg::RIGID_BODY, NewEntity);
+            //std::cout << "      -Size: " << x << ", " << y << ", " << z << '\n';
+            CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(-x, y, z, 0, 0, 0, sx/2, sy/2, sz/2);
+            Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewEntity);
         }
 
-        std::cout << '\n';
+        //std::cout << '\n';
 
     }
 }

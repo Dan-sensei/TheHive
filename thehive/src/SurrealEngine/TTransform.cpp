@@ -58,6 +58,19 @@ void TTransform::beginDraw(const uint8_t &T_ID){
     (matrixStack.empty())? it1() : resto();
 }
 
+void TTransform::setPosition(gg::Vector3f _vec){
+    identity();
+    //pos=glm::vec3(0,0,0);
+    translate( _vec);
+}
+void TTransform::setRotation(gg::Vector3f _vec){
+    identity();
+    //rot=glm::vec3(0,0,0);
+    rotate(_vec.X, gg::Vector3f(1,0,0));
+    rotate(_vec.Y, gg::Vector3f(0,1,0));
+    rotate(_vec.Z, gg::Vector3f(0,0,1));
+}
+
 void TTransform::endDraw(const uint8_t &T_ID){
     // Desapilar matriz y ponerla como la actual
     modelMatrix = matrixStack.top();

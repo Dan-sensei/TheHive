@@ -3,6 +3,7 @@
 
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
+#include "CRigidBody.hpp"
 
 #define MAXSPEED 4.f
 #define FORCE_FACTOR 250.f
@@ -21,7 +22,7 @@ CNavmeshAgent::~CNavmeshAgent() {
 
 void CNavmeshAgent::Init(){
     //  We check if this entity has the TRANSFORM component
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     MHandler_SETPTRS();
 }
 
@@ -59,7 +60,7 @@ void CNavmeshAgent::Update(){
         color.B = 200;
         color.Alpha = 1;
 
-        Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 10, 0), color, 2);
+        Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 10, 0), color);
         while(!debug.empty()){
             Waypoint first = debug.top();
             debug.pop();
@@ -67,7 +68,7 @@ void CNavmeshAgent::Update(){
             break;
 
             Waypoint second = debug.top();
-            Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 10, 0), second.Position + gg::Vector3f(0, 10, 0), color, 2);
+            Engine->Draw3DLine(first.Position + gg::Vector3f(0, 10, 0), second.Position + gg::Vector3f(0, 10, 0), color);
         }
     }
 

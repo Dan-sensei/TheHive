@@ -386,7 +386,7 @@ void CRigidBody::Upd_MoverObjeto(){
 
     if(clock){
         if(clock->hasEnded()){
-            gg::cout(" -- CLOCK END");
+            //gg::cout(" -- CLOCK END");
             manager->removeComponentFromEntity(gg::CLOCK,getEntityID());
             actualUpd = nullptr;
 
@@ -412,7 +412,7 @@ void CRigidBody::Upd_MoverObjeto(){
         float dur = data->getFloat();
         clock = new CClock();
         clock->startChrono(dur);
-        gg::cout(" -- CLOCK INIT ON "+std::to_string(dur));
+        //gg::cout(" -- CLOCK INIT ON "+std::to_string(dur));
         manager->addComponentToEntity(clock,gg::CLOCK,getEntityID());
 
         b.GLOBAL_removeData("DATA_"+std::to_string(getEntityID())+"_TIME");

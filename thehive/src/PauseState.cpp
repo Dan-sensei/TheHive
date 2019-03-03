@@ -6,10 +6,7 @@
 #include <stack>
 
 #include "ComponentArch/ObjectManager.hpp"
-#include "GameEngine/Camera.hpp"
 #include "Singleton.hpp"
-#include "GameAI/Pathfinding.hpp"
-#include "GameAI/NavmeshStructs.hpp"
 
 #include "GameEngine/ScreenConsole.hpp"
 
@@ -24,7 +21,7 @@
 
 
 PauseState::PauseState():cont(){
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
     //Engine->Starto();
@@ -33,7 +30,7 @@ PauseState::PauseState():cont(){
 
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
-    Engine->HideCursor(false);
+    //Engine->HideCursor(false);
 }
 
 PauseState::~PauseState(){
@@ -54,12 +51,12 @@ void PauseState::Init(){
 //}
 void PauseState::Update(){
 
-    Engine->BeginDro();
-    Engine->Dro();
+    Engine->BeginDraw();
+    Engine->draw();
     cont.update();
     Singleton<ScreenConsole>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
-    Engine->EndDro();
+    Engine->EndDraw();
 }
 
 void PauseState::CLIN(){

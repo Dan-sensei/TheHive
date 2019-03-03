@@ -3,15 +3,19 @@
 #include <ComponentArch/Components/CGranade0.hpp>
 #include <ComponentArch/Components/CGranade1.hpp>
 #include <ComponentArch/Components/CGranade2.hpp>
+#include <SurrealEngine/ZMaterial.hpp>
+#include <SurrealEngine/AssetManager.hpp>
 
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
 
 }
 
 uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
-    Material moradoDeLos80("assets/Textures/prueba1.png");
+
+
+    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
 
     uint16_t hero = Manager->createEntity();
     CTransform* Transform               = new CTransform(gg::Vector3f(0, 0, 10), gg::Vector3f(0, 0, 0));
@@ -29,7 +33,7 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
     CHabilityController* Hab                         = new CHabilityController();
     Manager->addComponentToEntity(Hab,             gg::HAB, hero);
 
-    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/Hero.obj", moradoDeLos80);
+    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/BinaryFiles/BinaryModels/Hero.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, hero);
 
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Hero.bullet", Position.X, Position.Y, Position.Z, -1,-1,-1, 50, 0,0,0);
@@ -51,7 +55,8 @@ uint16_t Factory::createHero(const gg::Vector3f &Position,bool _b) {
 
 uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
+
 
     CTransform* Transform               = new CTransform(Position, gg::Vector3f(0, 0, 0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
@@ -78,7 +83,8 @@ uint16_t Factory::createSoldier(const gg::Vector3f &Position,const float &health
 }
 uint16_t Factory::createRusher(const gg::Vector3f &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
+
 
     CTransform* Transform               = new CTransform(Position, gg::Vector3f(0, 0, 0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
@@ -106,7 +112,8 @@ uint16_t Factory::createRusher(const gg::Vector3f &Position,const float &health)
 
 uint16_t Factory::createTank(const gg::Vector3f &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
+    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
+
 
     CTransform* Transform               = new CTransform(Position, gg::Vector3f(0, 0, 0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
@@ -133,7 +140,8 @@ uint16_t Factory::createTank(const gg::Vector3f &Position,const float &health){
 }
 uint16_t Factory::createSingleSwarm(const gg::Vector3f &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    Material moradoDeLos80("assets/Textures/Blue.png");
+    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
+
     //Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
     CTransform* Transform               = new CTransform(Position, gg::Vector3f(0, 0, 0));
@@ -176,54 +184,55 @@ uint16_t Factory::createSwarm( const gg::Vector3f &Position,const float &health)
 
     return holyBomb;
 }
-uint16_t Factory::createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position) {
-    uint16_t CollisionableStaticObject = Manager->createEntity();
-    Material yelo(Texture);
+// uint16_t Factory::createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position) {
+//     uint16_t CollisionableStaticObject = Manager->createEntity();
+//     Material yelo(Texture);
+//
+//     CTransform* Transform = new CTransform(gg::Vector3f(0,0,0),gg::Vector3f(0,0,0));
+//     Manager->addComponentToEntity(Transform, gg::TRANSFORM, CollisionableStaticObject);
+//
+//     CRenderable_3D* Renderable_3D = new CRenderable_3D(Path, yelo);
+//     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, CollisionableStaticObject);
+//
+//     CRigidBody* RigidBody = new CRigidBody(false, true,BulletPath, Position.X, Position.Y, Position.Z, -1,-1,-1, 0, 0,0,0, 0.2);
+//     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, CollisionableStaticObject);
+//
+//     return CollisionableStaticObject;
+// }
 
-    CTransform* Transform = new CTransform(gg::Vector3f(0,0,0),gg::Vector3f(0,0,0));
-    Manager->addComponentToEntity(Transform, gg::TRANSFORM, CollisionableStaticObject);
-
-    CRenderable_3D* Renderable_3D = new CRenderable_3D(Path, yelo);
-    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, CollisionableStaticObject);
-
-    CRigidBody* RigidBody = new CRigidBody(false, true,BulletPath, Position.X, Position.Y, Position.Z, -1,-1,-1, 0, 0,0,0, 0.2);
-    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, CollisionableStaticObject);
-
-    return CollisionableStaticObject;
-}
-
-uint16_t Factory::createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position) {
-    uint16_t CollisionableDynamicObject = Manager->createEntity();
-    Material yelo(Texture);
-
-    CTransform* Transform = new CTransform(gg::Vector3f(0,0,0),gg::Vector3f(0,0,0));
-    Manager->addComponentToEntity(Transform, gg::TRANSFORM, CollisionableDynamicObject);
-
-    CRenderable_3D* Renderable_3D = new CRenderable_3D(Path, yelo);
-    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, CollisionableDynamicObject);
-
-    CRigidBody* RigidBody = new CRigidBody(true,true,BulletPath, Position.X, Position.Y, Position.Z, -1,-1,-1, 500, 0,0,0);
-    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, CollisionableDynamicObject);
-
-    return CollisionableDynamicObject;
-}
-
-uint16_t Factory::createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation) {
-    uint16_t CollisionableStaticObject = Manager->createEntity();
-    Material yelo(Texture);
-
-    CTransform* Transform = new CTransform(Position, Rotation);
-    Manager->addComponentToEntity(Transform, gg::TRANSFORM, CollisionableStaticObject);
-
-    CRenderable_3D* Renderable_3D = new CRenderable_3D(Path, yelo);
-    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, CollisionableStaticObject);
-
-    return CollisionableStaticObject;
-}
+// uint16_t Factory::createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position) {
+//     uint16_t CollisionableDynamicObject = Manager->createEntity();
+//     Material yelo(Texture);
+//
+//     CTransform* Transform = new CTransform(gg::Vector3f(0,0,0),gg::Vector3f(0,0,0));
+//     Manager->addComponentToEntity(Transform, gg::TRANSFORM, CollisionableDynamicObject);
+//
+//     CRenderable_3D* Renderable_3D = new CRenderable_3D(Path, yelo);
+//     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, CollisionableDynamicObject);
+//
+//     CRigidBody* RigidBody = new CRigidBody(true,true,BulletPath, Position.X, Position.Y, Position.Z, -1,-1,-1, 500, 0,0,0);
+//     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, CollisionableDynamicObject);
+//
+//     return CollisionableDynamicObject;
+// }
+//
+// uint16_t Factory::createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation) {
+//     uint16_t CollisionableStaticObject = Manager->createEntity();
+//     Material yelo(Texture);
+//
+//     CTransform* Transform = new CTransform(Position, Rotation);
+//     Manager->addComponentToEntity(Transform, gg::TRANSFORM, CollisionableStaticObject);
+//
+//     CRenderable_3D* Renderable_3D = new CRenderable_3D(Path, yelo);
+//     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, CollisionableStaticObject);
+//
+//     return CollisionableStaticObject;
+// }
 
 uint16_t Factory::createPathFindingActor(const gg::Vector3f &Position) {
     uint16_t Actor1 = Manager->createEntity();
-    Material Blue("assets/Textures/Blue.png");
+    ZMaterial* Blue = AssetManager::getMaterial("Blue");
+
 
     CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));   // 300, 0, 700
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Actor1);
@@ -242,12 +251,13 @@ uint16_t Factory::createPathFindingActor(const gg::Vector3f &Position) {
 
 uint16_t Factory::createSenyuelo( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    Material moradoDeLos80("assets/Textures/Blue.png");
+    ZMaterial* Blue = AssetManager::getMaterial("Blue");
+
 
     CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", Blue);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
     CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.X,Position.Y,Position.Z, 1,1,1, 5, 0,0,0);
@@ -262,12 +272,12 @@ uint16_t Factory::createSenyuelo( const gg::Vector3f &Position, const gg::Vector
 }
 uint16_t Factory::createMatriuska( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    Material moradoDeLos80("assets/Textures/Blue.png");
+    ZMaterial* Blue = AssetManager::getMaterial("Blue");
 
     CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", Blue);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
     CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.X,Position.Y,Position.Z, 1,1,1, 5, 0,0,0);
@@ -282,12 +292,12 @@ uint16_t Factory::createMatriuska( const gg::Vector3f &Position, const gg::Vecto
 }
 uint16_t Factory::createHolyBomb( const gg::Vector3f &Position, const gg::Vector3f &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    Material moradoDeLos80("assets/Textures/Blue.png");
+    ZMaterial* Blue = AssetManager::getMaterial("Blue");
 
     CTransform* Transform = new CTransform(Position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
+    CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/bullet.obj", Blue);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
     CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.X,Position.Y,Position.Z, 1,1,1, 5, 0,0,0);
@@ -303,12 +313,12 @@ uint16_t Factory::createHolyBomb( const gg::Vector3f &Position, const gg::Vector
 
 uint16_t Factory::createCollectableWeapon(const gg::Vector3f &_position, int _weaponType){
     uint16_t weapon = Manager->createEntity();
-    Material w_mat("assets/Textures/ice.bmp");
+    ZMaterial* Blue = AssetManager::getMaterial("Blue");
 
     CTransform *transform = new CTransform(_position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, weapon);
 
-    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/weapon.obj", w_mat);
+    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/weapon.obj", Blue);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, weapon);
 
     CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.X,_position.Y,_position.Z, -1,-1,-1, 25, 0,0,0);
@@ -324,12 +334,13 @@ uint16_t Factory::createCollectableWeapon(const gg::Vector3f &_position, int _we
 
 uint16_t Factory::createPickableItem(const gg::Vector3f &_position){
     uint16_t item = Manager->createEntity();
-    Material w_mat("assets/Textures/pese.jpg");
+    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
+
 
     CTransform *transform = new CTransform(_position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, item);
 
-    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/weapon.obj", w_mat);
+    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/weapon.obj", moradoDeLos80);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, item);
 
     CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.X,_position.Y,_position.Z, -1,-1,-1, 25, 0,0,0);
@@ -344,12 +355,13 @@ uint16_t Factory::createPickableItem(const gg::Vector3f &_position){
 
 uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uint16_t &_id, const gg::Vector3f &vel, const float &_dur, uint16_t _item){
     uint16_t t_obj = Manager->createEntity();
-    Material w_mat("assets/Textures/e61.png");
+    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
+
 
     CTransform *transform = new CTransform(_position, gg::Vector3f(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, t_obj);
 
-    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/Cube.obj", w_mat);
+    CRenderable_3D *renderable = new CRenderable_3D("assets/Models/Cube.obj", moradoDeLos80);
     // CRenderable_3D *renderable = new CRenderable_3D("assets/Models/cuboGrande.obj", w_mat);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, t_obj);
 
@@ -377,12 +389,12 @@ uint16_t Factory::createTouchableObject(const gg::Vector3f &_position, const uin
 
 uint16_t Factory::createDebugBullet(const gg::Vector3f &_pos){
     uint16_t debug = Manager->createEntity();
-    Material moradoDeLos80("assets/Textures/Blue.png");
+    ZMaterial* Blue = AssetManager::getMaterial("Blue");
 
     CTransform* Transform               = new CTransform(_pos, gg::Vector3f(0, 0, 0));
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, debug);
 
-    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
+    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/bullet.obj", Blue);
     Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, debug);
 
     return debug;
