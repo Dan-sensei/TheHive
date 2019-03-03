@@ -45,7 +45,7 @@ class GameEngine{
         //  Creates and returns a camera object. It optionally accepts a position
         //  and looking direction
         //==================================================================================
-        void createCamera(const gg::Vector3f &position = {0,0,0}, const gg::Vector3f &direction = {0,0,0});
+        void createCamera(const glm::vec3 &position = {0,0,0}, const glm::vec3 &direction = {0,0,0});
         Camera* getCamera();
         int getScreenWidth();
         int getScreenHeight();
@@ -53,19 +53,19 @@ class GameEngine{
         void getCursorPosition(int&,int&);
 
 
-        void draw3DLine(const gg::Vector3f&, const gg::Vector3f&, const float[4]);
-        void Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, const gg::Color &Color = gg::Color(), float thickness = 1);
+        void draw3DLine(const glm::vec3&, const glm::vec3&, const float[4]);
+        void Draw3DLine(const glm::vec3 &Origin, const glm::vec3 &Target, const gg::Color &Color = gg::Color(), float thickness = 1);
 
 
         //  ---
         //  Creates and returns a model object. It optionally accepts a position
         //==================================================================================
-        void createModel(Model &model, const std::string &path, const gg::Vector3f &position = {0,0,0});
+        void createModel(Model &model, const std::string &path, const glm::vec3 &position = {0,0,0});
 
         //  ---
         //  Creates and returns a billboard object. It optionally accepts a position
         //==================================================================================
-        void createBillboard(Billboard &billboard, const gg::Vector3f &position = {0,0,0});
+        void createBillboard(Billboard &billboard, const glm::vec3 &position = {0,0,0});
 
         bool key(gg::KEYCODES keyCode);
         int checkbutton();

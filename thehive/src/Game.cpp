@@ -72,13 +72,13 @@ void Game::Init(){
     //Singleton<ScreenConsole>::Instance()->InitHUD();
     BinaryParser::test();
     auto sF = Singleton<Factory>::Instance();
-    Engine->crearCamara(90,0.1f,100.f, gg::Vector3f(7,5,10),gg::Vector3f(),16.f/9.f);
+    Engine->crearCamara(90,0.1f,100.f, glm::vec3(7,5,10),glm::vec3(),16.f/9.f);
 
     Engine->print();
     // Pos init del heroe normal
     // 360, 0, 350
-    uint16_t h = sF->createHero(gg::Vector3f(0,0,0),false);
-    //sF->createRusher(gg::Vector3f(5,3,65),200);
+    uint16_t h = sF->createHero(glm::vec3(0,0,0),false);
+    //sF->createRusher(glm::vec3(5,3,65),200);
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 

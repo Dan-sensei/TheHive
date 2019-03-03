@@ -99,14 +99,14 @@ unsigned long  CAgent::GetTriggerFlags(){
     return dwTriggerFlags;
 }
 
-gg::Vector3f CAgent::GetPosition(){
+glm::vec3 CAgent::GetPosition(){
     return cTransform->getPosition();
 }
 
 void CAgent::updatetrig(){
     TriggerRecordStruct *pTrig;
     float fDistance;
-    gg::Vector3f TF_POS = cTransform->getPosition();
+    glm::vec3 TF_POS = cTransform->getPosition();
 
     std::vector<std::list<TriggerRecordStruct*>::iterator> vec;
     std::vector<std::list<TriggerRecordStruct*>::iterator>::iterator it2 = vec.begin();
@@ -114,7 +114,7 @@ void CAgent::updatetrig(){
     std::list<TriggerRecordStruct*>::iterator it = TriggerList.begin();
     while(it != TriggerList.end()){
         pTrig = *it;
-        fDistance = gg::DIST(pTrig->vPos,TF_POS );
+        fDistance = glm::distance(pTrig->vPos,TF_POS );
 
         if(fDistance > pTrig->fRadius){
             onTriggerExit(pTrig);
@@ -276,16 +276,16 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
                 oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
 
-                gg::Vector3f pos(
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().X,
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Y+5,
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Z
+                glm::vec3 pos(
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().x,
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().y+5,
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().z
                 );
                 uint16_t weapon = Singleton<Factory>::Instance()->createCollectableWeapon(pos,_wtype_actual);
 
-                gg::Vector3f from = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition();
-                gg::Vector3f to = Singleton<ggDynWorld>::Instance()->getRaycastVector();
-                gg::Vector3f vec = (to-from)*30;
+                glm::vec3 from = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition();
+                glm::vec3 to = Singleton<ggDynWorld>::Instance()->getRaycastVector();
+                glm::vec3 vec = (to-from)*30.f;
                 static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,weapon))->applyCentralForce(vec);
             }
 
@@ -462,7 +462,7 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
     return res;
 }
 
-//CAgent::CAgent(unsigned long _dwTriggerFlags,gg::Vector3f _vPos){
+//CAgent::CAgent(unsigned long _dwTriggerFlags,glm::vec3 _vPos){
 //    nCAgentID=id2;
 //    id2++;
 //    dwTriggerFlags=_dwTriggerFlags;

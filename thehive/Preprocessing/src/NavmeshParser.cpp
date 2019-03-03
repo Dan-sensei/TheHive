@@ -21,7 +21,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
     std::vector<std::vector<Connection>> Connections;
     std::vector<Face> SQUARE_FACES;
 
-    std::vector<gg::Vector3f> vertex;
+    std::vector<glm::vec3> vertex;
     std::list<Edge> Edges;
 
     Assimp::Importer importer;
@@ -56,38 +56,38 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
     for(uint16_t j = 0; j < meshes[0]->mNumFaces; ++j) {
         const aiFace& Face = faces[j];
 
-        std::vector<gg::Vector3f> minX;
-        std::vector<gg::Vector3f> maxX;
+        std::vector<glm::vec3> minX;
+        std::vector<glm::vec3> maxX;
 
         for(uint16_t i = 0; i < Face.mNumIndices; ++i){
-            if(!minX.empty() && minX.front().X - vertex[Face.mIndices[i]].X > 0.001) {
+            if(!minX.empty() && minX.front().x - vertex[Face.mIndices[i]].x > 0.001) {
                 minX.clear();
                 minX.push_back(vertex[Face.mIndices[i]]);
             }
-            else if(minX.empty() || abs(vertex[Face.mIndices[i]].X - minX.front().X) < 0.001) {
+            else if(minX.empty() || abs(vertex[Face.mIndices[i]].x - minX.front().x) < 0.001) {
                 minX.push_back(vertex[Face.mIndices[i]]);
             }
 
-            if(!maxX.empty() && vertex[Face.mIndices[i]].X - maxX.front().X > 0.001) {
+            if(!maxX.empty() && vertex[Face.mIndices[i]].x - maxX.front().x > 0.001) {
                 maxX.clear();
                 maxX.push_back(vertex[Face.mIndices[i]]);
             }
-            else if(maxX.empty() || abs(vertex[Face.mIndices[i]].X - maxX.front().X) < 0.001) {
+            else if(maxX.empty() || abs(vertex[Face.mIndices[i]].x - maxX.front().x) < 0.001) {
                 maxX.push_back(vertex[Face.mIndices[i]]);
             }
         }
 
-        gg::Vector3f TL = minX.front();
-        gg::Vector3f BL = minX.front();
+        glm::vec3 TL = minX.front();
+        glm::vec3 BL = minX.front();
         for(uint16_t i = 1; i < minX.size(); ++i){
-            if(minX[i].Z > TL.Z)
+            if(minX[i].z > TL.z)
                 TL = minX[i];
         }
 
-        gg::Vector3f TR = maxX.front();
-        gg::Vector3f BR = maxX.front();
+        glm::vec3 TR = maxX.front();
+        glm::vec3 BR = maxX.front();
         for(uint16_t i = 1; i < maxX.size(); ++i){
-            if(maxX[i].Z < BR.Z)
+            if(maxX[i].z < BR.z)
                 BR = maxX[i];
         }
 
@@ -112,9 +112,8 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
                     (*it).ID = ID_Counter;
                     FACES[j].push_back(*it);
                     FACES[(*it).face].push_back(*it);
-
-                    gg::Vector3f NodeCoords = gg::Vector3f((vertex[(*it).vertex1] + vertex[(*it).vertex2])/2);
-                    GRAPH.emplace_back(ID_Counter, j, (*it).face, NodeCoords, gg::DIST(NodeCoords, vertex[(*it).vertex1]));
+                    glm::vec3 NodeCoords = (vertex[(*it).vertex1] + vertex[(*it).vertex2])/2.f;
+                    GRAPH.emplace_back(ID_Counter, j, (*it).face, NodeCoords, glm::distance(NodeCoords, vertex[(*it).vertex1]));
                     found = true;
                     ++ID_Counter;
                     Edges.erase(it);
@@ -141,7 +140,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
     for(uint16_t i = 0; i < Connections.size(); ++i){
         for(uint16_t j = 0; j < Connections[i].size(); ++j){
             if(Connections[i][j].Value == 0)
-                Connections[i][j].Value = gg::DIST(GRAPH[Connections[i][j].From].Position, GRAPH[Connections[i][j].To].Position);
+                Connections[i][j].Value = glm::distance(GRAPH[Connections[i][j].From].Position, GRAPH[Connections[i][j].To].Position);
         }
     }
 

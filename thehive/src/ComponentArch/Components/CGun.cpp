@@ -20,7 +20,7 @@ CGun::~CGun() {
 
 }
 
-void CGun::shoot(gg::Vector3f to){
+void CGun::shoot(glm::vec3 to){
     CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
     if(canShoot && !reloading){
         // Activar cadencia
@@ -43,7 +43,7 @@ void CGun::shoot(gg::Vector3f to){
         // Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
         // Comprobar destino
-        if(to.X == -1){
+        if(to.x == -1){
             //gg::cout("PAM! - "+std::to_string(total_bullets));
             return;
         }
@@ -55,9 +55,9 @@ void CGun::shoot(gg::Vector3f to){
         //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
         // // std::cout << "PIM!!! -> " << total_bullets << '\n';
-        gg::Vector3f from = cTransform->getPosition();
+        glm::vec3 from = cTransform->getPosition();
 
-        gg::Vector3f vel=gg::Normalice(to-from);
+        glm::vec3 vel=glm::normalize(to-from);
         // Se modulara segun el danyo de cada arma 0-1
         vel *= FORCE_FACTOR*damage;
 
@@ -83,7 +83,7 @@ void CGun::shoot(gg::Vector3f to){
 
         // <DEBUG>
             // Factory *fac = Singleton<Factory>::Instance();
-            // fac->createDebugBullet(gg::Vector3f(to));
+            // fac->createDebugBullet(glm::vec3(to));
         // </DEBUG>
     }
 }

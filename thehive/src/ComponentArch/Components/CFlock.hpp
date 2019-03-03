@@ -53,10 +53,10 @@ class CFlock : public IComponent {
         float fuerzasep;//fuerza separacion
         float fuerzacoh;//fuerza cohesion
         //media de posicion y velocidad, (sirven para hacer los calculos mas rapidos)
-        gg::Vector3f mediapos;
-        gg::Vector3f mediavel;
+        glm::vec3 mediapos;
+        glm::vec3 mediavel;
         //Esto el del swarm. posicion donde se dirigen
-        //gg::Vector3f pos;
+        //glm::vec3 pos;
 
         ObjectManager* Manager;
 

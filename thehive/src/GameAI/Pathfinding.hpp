@@ -22,12 +22,12 @@ class Pathfinding {
     public:
         ~Pathfinding();
 
-        void FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output);
+        void FindPath(const glm::vec3 &START, const glm::vec3 &GOAL, std::stack<Waypoint> &Output);
         void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
         void resetGraph();
         void print();
 
-        gg::Vector3f getRandomNodePosition();
+        glm::vec3 getRandomNodePosition();
 
         void DroNodes();
 
@@ -40,7 +40,7 @@ class Pathfinding {
         Pathfinding(const Pathfinding &orig) = delete;
         Pathfinding operator=(const Pathfinding &orig) = delete;
 
-        uint16_t FindClosestNodeOfFace(const gg::Vector3f &Position, uint16_t Node);
+        uint16_t FindClosestNodeOfFace(const glm::vec3 &Position, uint16_t Node);
 
         std::vector<Node> GRAPH;
         std::vector<std::vector<Connection>> GConnections;
@@ -51,7 +51,7 @@ class Pathfinding {
         //Debug
         std::vector<Billboard> IDs;
         std::vector<Billboard> BillboardFaces;
-        gg::Vector3f Goal;
+        glm::vec3 Goal;
         bool Debug;
 };
 

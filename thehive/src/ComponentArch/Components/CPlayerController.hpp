@@ -70,7 +70,7 @@ class CPlayerController : public IComponent {
         CPlayerController(const CPlayerController &orig) = delete;
 
         gg::Clock clocker;
-        gg::Vector3f Target;
+        glm::vec3 Target;
 
         ObjectManager* Manager;
         Factory* factory;
@@ -100,13 +100,13 @@ class CPlayerController : public IComponent {
         CGun *secondWeapon;
         std::array<uint16_t,NUMBER_OF_ITEMS> items;
 
-        gg::Vector3f cV,ppV;
-        // std::map<int, void (CPlayerController::*)(gg::Vector3f&,bool&)> mapPlayerActions;
-        void W_IsPressed(gg::Vector3f&,bool&);
-        void A_IsPressed(gg::Vector3f&,bool&);
-        void S_IsPressed(gg::Vector3f&,bool&);
-        void D_IsPressed(gg::Vector3f&,bool&);
-        void ApplyDash(gg::Vector3f&,float&);
+        glm::vec3 cV,ppV;
+        // std::map<int, void (CPlayerController::*)(glm::vec3&,bool&)> mapPlayerActions;
+        void W_IsPressed(glm::vec3&,bool&);
+        void A_IsPressed(glm::vec3&,bool&);
+        void S_IsPressed(glm::vec3&,bool&);
+        void D_IsPressed(glm::vec3&,bool&);
+        void ApplyDash(glm::vec3&,float&);
         void showDebug();
         void changeWeaponIfPossible(CGun*);
 

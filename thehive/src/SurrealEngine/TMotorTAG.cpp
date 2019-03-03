@@ -30,7 +30,7 @@ void TMotorTAG::clean(){
     delete TMotorTAG::KEYS;
 }
 
-void TMotorTAG::Draw3DLine(const gg::Vector3f &From, const gg::Vector3f &To, const gg::Color &c){
+void TMotorTAG::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c){
 
 }
 
@@ -51,7 +51,7 @@ void TMotorTAG::PollEvents()     {   glfwPollEvents();  }
 
 void TMotorTAG::getCursorPosition(double &posX, double &posY) {  glfwGetCursorPos(window, &posX, &posY); }
 
-TNodo* TMotorTAG::crearCamara(const float& _fov, const float& _near, const float& _far, const gg::Vector3f& pos, const gg::Vector3f& rot, const float& _ppv){
+TNodo* TMotorTAG::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::vec3& rot, const float& _ppv){
     TCamara* C = new TCamara(_fov,_near,_far);
     C->setPerspectiva(_ppv);
 
@@ -75,14 +75,14 @@ void TMotorTAG::print(){
     glm::decompose(static_cast<TTransform*>(main_camera->getPadre()->getEntidad())->modelMatrix, scale, rotation, translation, skew, perspective);
 }
 
-TNodo* TMotorTAG::crearLuz(gg::Color &_color, const gg::Vector3f& pos, const gg::Vector3f& rot, Shader* sh){
+TNodo* TMotorTAG::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec3& rot, Shader* sh){
     TLuz* L = new TLuz(_color,sh);
     TNodo* Luz = new TNodo(bindTransform(pos,rot),L);
 
     return Luz;
 }
 
-TNodo* TMotorTAG::crearMalla(const char* _path, const gg::Vector3f& pos, const gg::Vector3f& rot){
+TNodo* TMotorTAG::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot){
     ZStaticMesh* M = new ZStaticMesh();
     M->load(_path);
 
@@ -91,7 +91,7 @@ TNodo* TMotorTAG::crearMalla(const char* _path, const gg::Vector3f& pos, const g
     return Malla;
 }
 
-TNodo* TMotorTAG::bindTransform(const gg::Vector3f& pos, const gg::Vector3f& rot){
+TNodo* TMotorTAG::bindTransform(const glm::vec3& pos, const glm::vec3& rot){
     TTransform* Rotate = new TTransform();
     TTransform* Translate = new TTransform();
 
@@ -124,20 +124,20 @@ void TMotorTAG::EndDraw(){
     glfwSwapBuffers(window);
 }
 
-void TMotorTAG::move(TNodo *_node, const gg::Vector3f& _offpos){
+void TMotorTAG::move(TNodo *_node, const glm::vec3& _offpos){
     static_cast<TTransform*>(_node->getPadre()->getEntidad())->translate(_offpos);
 }
 
-void TMotorTAG::rotate(TNodo *_node,const float& _angle,const gg::Vector3f& _offrot){
+void TMotorTAG::rotate(TNodo *_node,const float& _angle,const glm::vec3& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->rotate(_angle,_offrot);
 }
 
 
-void TMotorTAG::setPosition(TNodo* _node, const gg::Vector3f& _offpos){
+void TMotorTAG::setPosition(TNodo* _node, const glm::vec3& _offpos){
     static_cast<TTransform*>(_node->getPadre()->getEntidad())->setPosition(_offpos);
 }
 
-void TMotorTAG::setRotation(TNodo* _node,const gg::Vector3f& _offrot){
+void TMotorTAG::setRotation(TNodo* _node,const glm::vec3& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
 }
 

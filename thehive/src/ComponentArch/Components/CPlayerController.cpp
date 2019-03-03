@@ -116,7 +116,7 @@ void CPlayerController::Update(){
     }
 
     if(clocker.ElapsedTime().Seconds() < 0.1){
-        Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 0.5, 0), Target, gg::Color(255, 0, 0));
+        Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 0.5, 0), Target, gg::Color(255, 0, 0));
     }
 
 }
@@ -131,24 +131,24 @@ void CPlayerController::FixedUpdate(){
     // -----------------------------------------------------------------------------
 
     //  If exists, we get its position
-    gg::Vector3f nextPosition = camera->getlastHeroPosition();
+    glm::vec3 nextPosition = camera->getlastHeroPosition();
     bool heroRotation = true;
 
-    gg::Vector3f oPV = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
+    glm::vec3 oPV = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
                  cV = camera->getCameraPositionBeforeLockRotation();
-    gg::Vector3f hV = nextPosition;
-    // gg::Vector3f cV2 = cV;  // cV2 POR AHORA no se usa para nada
+    glm::vec3 hV = nextPosition;
+    // glm::vec3 cV2 = cV;  // cV2 POR AHORA no se usa para nada
 
     // cV es un vector direccion camara-heroe
     cV -= oPV;
     cV -= hV;
-    cV  = gg::Normalice(cV);
+    cV  = glm::normalize(cV);
 
     // Vector perpendicular al vector direccion
-    ppV = gg::Vector3f(-cV.Z,0,cV.X);
+    ppV = glm::vec3(-cV.z,0,cV.x);
 
     // Vector que tendrá el impulso para aplicar al body
-    gg::Vector3f    force;
+    glm::vec3    force;
     bool            pressed = false;
     float           MULT_FACTOR = 1;
 
@@ -167,7 +167,7 @@ void CPlayerController::FixedUpdate(){
             if(maxsoldier>currentsoldier){
                 currentsoldier++;
                 auto sF = Singleton<Factory>::Instance();
-                sF->createSoldier(gg::Vector3f(-10,3, -50),200);
+                sF->createSoldier(glm::vec3(-10,3, -50),200);
 
             }
 
@@ -183,7 +183,7 @@ void CPlayerController::FixedUpdate(){
                 currenttank++;
 
                 auto sF = Singleton<Factory>::Instance();
-                sF->createTank(gg::Vector3f(5,3,65),200);
+                sF->createTank(glm::vec3(5,3,65),200);
             }
         }
     }
@@ -197,7 +197,7 @@ void CPlayerController::FixedUpdate(){
                 currentrusher++;
 
                 auto sF = Singleton<Factory>::Instance();
-                sF->createRusher(gg::Vector3f(-45,3,-23),200);
+                sF->createRusher(glm::vec3(-45,3,-23),200);
             }
         }
     }
@@ -207,7 +207,7 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_M)){
         //hab->ToggleSkill(2);
         //devuelve ide de un objeto
-        gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation(),1000);
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation(),1000);
         int id=world->getIDFromRaycast();
         //std::cout << "id:" <<id<< '\n';
         if(id!=-1){
@@ -237,9 +237,9 @@ void CPlayerController::FixedUpdate(){
     else {pulsacion_dash = false;}
 
     if(Engine->key(JUMP_KEY)){
-        if(!pulsacion_espacio /*&& abs(cRigidBody->getVelocity().Y) < 40*/){
+        if(!pulsacion_espacio /*&& abs(cRigidBody->getVelocity().y) < 40*/){
             pulsacion_espacio = true;
-            cRigidBody->applyCentralForce(gg::Vector3f(0, JUMP_FORCE_FACTOR, 0));
+            cRigidBody->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
         }
     }
     else{
@@ -264,7 +264,7 @@ void CPlayerController::FixedUpdate(){
 
     // DISPARO
     if(Engine->isLClickPressed()){
-        gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
         Target = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
         clocker.Restart();
@@ -283,7 +283,7 @@ void CPlayerController::FixedUpdate(){
 
     // Graná
     if(Engine->key(gg::GG_G)){
-        gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
         //std::cout << actualGrenadeState << '\n';
         if(pulsacion_granada==false)
             (this->*mapFuncGrenades[actualGrenadeState])();
@@ -307,89 +307,89 @@ void CPlayerController::FixedUpdate(){
 void CPlayerController::playerThrowHolyBomb(){
     pulsacion_granada   = true;
 
-    gg::Vector3f gPos   = cTransform->getPosition();
-    gg::Vector3f from   = gPos;
-    gg::Vector3f to     = world->getRaycastVector();
-    gg::Vector3f vel    = to-from;
+    glm::vec3 gPos   = cTransform->getPosition();
+    glm::vec3 from   = gPos;
+    glm::vec3 to     = world->getRaycastVector();
+    glm::vec3 vel    = to-from;
 
-    vel  = gg::Normalice(vel);
+    vel  = glm::normalize(vel);
     vel *= VEL_FACTOR/2;
 
-    factory->createHolyBomb(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
+    factory->createHolyBomb(glm::vec3(gPos.x,gPos.y+5,gPos.z),vel);
 }
 
 void CPlayerController::playerThrowMatrioska(){
     pulsacion_granada   = true;
 
-    gg::Vector3f gPos   = cTransform->getPosition();
-    gg::Vector3f from   = gPos;
-    gg::Vector3f to     = world->getRaycastVector();
-    gg::Vector3f vel    = to-from;
+    glm::vec3 gPos   = cTransform->getPosition();
+    glm::vec3 from   = gPos;
+    glm::vec3 to     = world->getRaycastVector();
+    glm::vec3 vel    = to-from;
 
-    vel  = gg::Normalice(vel);
+    vel  = glm::normalize(vel);
     vel *= VEL_FACTOR/2;
 
-    factory->createMatriuska(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
+    factory->createMatriuska(glm::vec3(gPos.x,gPos.y+5,gPos.z),vel);
 }
 
 void CPlayerController::playerThrowDopple(){
     pulsacion_granada   = true;
 
-    gg::Vector3f gPos   = cTransform->getPosition();
-    gg::Vector3f from   = gPos;
-    gg::Vector3f to     = world->getRaycastVector();
-    gg::Vector3f vel    = to-from;
+    glm::vec3 gPos   = cTransform->getPosition();
+    glm::vec3 from   = gPos;
+    glm::vec3 to     = world->getRaycastVector();
+    glm::vec3 vel    = to-from;
 
-    vel  = gg::Normalice(vel);
+    vel  = glm::normalize(vel);
     vel *= VEL_FACTOR;
 
-    factory->createSenyuelo(gg::Vector3f(gPos.X,gPos.Y+5,gPos.Z),vel);
+    factory->createSenyuelo(glm::vec3(gPos.x,gPos.y+5,gPos.z),vel);
 }
 
-void CPlayerController::W_IsPressed(gg::Vector3f &force, bool &pressed){
-    force = gg::Vector3f(-cV.X,0,-cV.Z);
+void CPlayerController::W_IsPressed(glm::vec3 &force, bool &pressed){
+    force = glm::vec3(-cV.x,0,-cV.z);
     // if(Engine->key(ROTATE_KEY)){
-    //     cV2.X-=cV.X;
-    //     cV2.Z-=cV.Z;
+    //     cV2.x-=cV.x;
+    //     cV2.z-=cV.z;
     //     camera->setCameraPositionBeforeLockRotation(cV2);
     // };
     pressed = true;
 }
 
-void CPlayerController::S_IsPressed(gg::Vector3f &force, bool &pressed){
-    force = gg::Vector3f(+cV.X,0,+cV.Z);
+void CPlayerController::S_IsPressed(glm::vec3 &force, bool &pressed){
+    force = glm::vec3(+cV.x,0,+cV.z);
     // if(Engine->key(ROTATE_KEY)){
-    //     cV2.X+=cV.X;
-    //     cV2.Z+=cV.Z;
+    //     cV2.x+=cV.x;
+    //     cV2.z+=cV.z;
     //     camera->setCameraPositionBeforeLockRotation(cV2);
     // }
     pressed = true;
 }
 
-void CPlayerController::A_IsPressed(gg::Vector3f &force, bool &pressed){
-    force = gg::Vector3f(-ppV.X,0,-ppV.Z);
+void CPlayerController::A_IsPressed(glm::vec3 &force, bool &pressed){
+    force = glm::vec3(-ppV.x,0,-ppV.z);
     // if(Engine->key(ROTATE_KEY)){
-    //     cV2.X-=ppV.X;
-    //     cV2.Z-=ppV.Z;
+    //     cV2.x-=ppV.x;
+    //     cV2.z-=ppV.z;
     //     camera->setCameraPositionBeforeLockRotation(cV2);
     // };
     pressed = true;
 }
 
-void CPlayerController::D_IsPressed(gg::Vector3f &force, bool &pressed){
-    force = gg::Vector3f(+ppV.X,0,+ppV.Z);
+void CPlayerController::D_IsPressed(glm::vec3 &force, bool &pressed){
+    force = glm::vec3(+ppV.x,0,+ppV.z);
     // if(Engine->key(ROTATE_KEY)){
-    //     cV2.X-=ppV.X;
-    //     cV2.Z-=ppV.Z;
+    //     cV2.x-=ppV.x;
+    //     cV2.z-=ppV.z;
     //     camera->setCameraPositionBeforeLockRotation(cV2);
     // };
     pressed = true;
 }
 
-void CPlayerController::ApplyDash(gg::Vector3f &force,float &MULT_FACTOR){
+void CPlayerController::ApplyDash(glm::vec3 &force,float &MULT_FACTOR){
     MULT_FACTOR = MULT_DASH_FACTOR;
-    force.X *= DASH_FORCE_FACTOR;
-    force.Z *= DASH_FORCE_FACTOR;
+    force.x *= DASH_FORCE_FACTOR;
+    force.z *= DASH_FORCE_FACTOR;
 
     pulsacion_dash = true;
 }
@@ -409,9 +409,9 @@ void CPlayerController::showDebug(){
     if(debug2){
         // DEBUG ACTIVATED
         // gg::cout(
-        //     "(X:"+std::to_string(cTransform->getPosition().X)+
-        //     ",Y:"+std::to_string(cTransform->getPosition().Y)+
-        //     ",Z:"+std::to_string(cTransform->getPosition().Z)+")"
+        //     "(X:"+std::to_string(cTransform->getPosition().x)+
+        //     ",Y:"+std::to_string(cTransform->getPosition().y)+
+        //     ",Z:"+std::to_string(cTransform->getPosition().z)+")"
         // );
     }
 }

@@ -11,14 +11,14 @@ class Camera{
         Camera(const Camera &orig);
         ~Camera();
 
-        void setPosition(const gg::Vector3f &newPosition);
-        void setRotation(const gg::Vector3f &newRotation);
+        void setPosition(const glm::vec3 &newPosition);
+        void setRotation(const glm::vec3 &newRotation);
 
-        gg::Vector3f getPosition();
-        gg::Vector3f getRotation();
+        glm::vec3 getPosition();
+        glm::vec3 getRotation();
 
-        void setTarget(const gg::Vector3f &target);
-        gg::Vector3f getTarget();
+        void setTarget(const glm::vec3 &target);
+        glm::vec3 getTarget();
 
         void updateAbsolutePosition();
         void bindTargetAndRotation(bool);

@@ -26,17 +26,17 @@ class TMotorTAG {
     public:
         ~TMotorTAG();
 
-        TNodo* crearCamara(const float&, const float&, const float&, const gg::Vector3f&, const gg::Vector3f&, const float&);
-        TNodo* crearLuz(gg::Color&, const gg::Vector3f&, const gg::Vector3f&, Shader* sh);
-        TNodo* crearMalla(const char*, const gg::Vector3f& = gg::Vector3f(), const gg::Vector3f& = gg::Vector3f());
+        TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
+        TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
+        TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3());
 
         int8_t addShaderToMap(const char*,bool);
         bool bindMaterialToMesh(TNodo*,ZMaterial*);
 
-        void move(TNodo*,const gg::Vector3f&);
-        void rotate(TNodo*,const float&,const gg::Vector3f&);
-        void setPosition(TNodo* _node, const gg::Vector3f& _offpos);
-        void setRotation(TNodo* _node,const gg::Vector3f& _offrot);
+        void move(TNodo*,const glm::vec3&);
+        void rotate(TNodo*,const float&,const glm::vec3&);
+        void setPosition(TNodo* _node, const glm::vec3& _offpos);
+        void setRotation(TNodo* _node,const glm::vec3& _offrot);
 
         void BeginDraw();
         void draw();
@@ -54,7 +54,7 @@ class TMotorTAG {
         void getCursorPosition(double &posX, double &posY);
         void clean();
 
-        void Draw3DLine(const gg::Vector3f &From, const gg::Vector3f &To, const gg::Color &c);
+        void Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c);
 
         inline bool key(gg::KEYCODES keyCode){ return KEYS[keyCode];};
         void print();
@@ -66,7 +66,7 @@ class TMotorTAG {
         TNodo* ESCENA;
         AssetManager* gestorRecursos;
 
-        TNodo* bindTransform(const gg::Vector3f& pos, const gg::Vector3f& rot);
+        TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot);
 
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);

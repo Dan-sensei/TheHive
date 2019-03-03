@@ -39,7 +39,7 @@ class Action : public Behavior {
 
         void distancia10();
         void distancia20();
-        void distancia(float,gg::Vector3f);
+        void distancia(float,glm::vec3);
 
         void over_2_meters();
         void over_X_meters(int);

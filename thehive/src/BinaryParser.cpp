@@ -34,7 +34,7 @@ void BinaryParser::ReadNavmeshData(
         uint16_t NODE_2;
         GG_Read(Navmesh, NODE_2);
 
-        gg::Vector3f Position;
+        glm::vec3 Position;
         GG_Read(Navmesh, Position);
 
         float Radius;
@@ -71,10 +71,10 @@ void BinaryParser::ReadNavmeshData(
 
     SQUARE_FACES.reserve(SQUARE_FACES_SIZE);
     for(uint16_t i = 0; i < SQUARE_FACES_SIZE; ++i){
-        gg::Vector3f TL;
+        glm::vec3 TL;
         GG_Read(Navmesh, TL);
 
-        gg::Vector3f BR;
+        glm::vec3 BR;
         GG_Read(Navmesh, BR);
 
         SQUARE_FACES.emplace_back(TL, BR);
@@ -114,12 +114,12 @@ void BinaryParser::test(){
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
-        gg::Vector3f Position(-x,y,z);
+        glm::vec3 Position(-x,y,z);
         //std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
-        gg::Vector3f Rotation(x,y,z);
+        glm::vec3 Rotation(x,y,z);
         //std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
 
         bool HasCollider;

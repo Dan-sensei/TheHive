@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <iostream>
-
+#include <glm/glm.hpp>
 
 
 namespace gg{
@@ -115,7 +115,7 @@ namespace gg{
     //  the sqrt, but:
     //      sqrt(x) < sqrt(y) = x < y   Therefore, the condition remains the same
     //===============================================================================
-    float FastDIST(const Vector3f &Vector1, const Vector3f &Vector2);
+    float FastDIST(const glm::vec3 &Vector1, const glm::vec3 &Vector2);
 
     float Modulo(const Vector3f &Vector);
     float Modulo(const Vector2f &Vector);
@@ -123,9 +123,9 @@ namespace gg{
     Vector3f Normalice(Vector3f Vector);
     Vector2f Normalice(Vector2f Vector);
 
-    Vector3f Direccion2D(Vector3f rot);
-    Vector3f Direccion3D(Vector3f rot);
-    Vector3f Direccion2D_to_rot(Vector3f rot);
+    glm::vec3 Direccion2D(glm::vec3 rot);
+    glm::vec3 Direccion3D(glm::vec3 rot);
+    glm::vec3 Direccion2D_to_rot(glm::vec3 rot);
     float Producto(const Vector3f &dir,const Vector3f &diren);
 
 
@@ -156,7 +156,7 @@ namespace gg{
     };
 };
 
-std::ostream& operator<<(std::ostream& os, const gg::Vector3f &v1);
+//std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1);
 //template <typename T>
 //T gg::T::operator+ (T v1);
 

@@ -40,7 +40,7 @@ PauseState::~PauseState(){
 void PauseState::Init(){
 
     Singleton<ScreenConsole>::Instance()->InitPause();
-    //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
+    //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
  void PauseState::Resume(){
     Init();

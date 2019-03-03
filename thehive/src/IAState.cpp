@@ -61,7 +61,7 @@ IAState::~IAState(){
 void IAState::Init(){
 
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitAIDebug(id));
-    //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
+    //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
 void IAState::Resume() {
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitAIDebug(id));

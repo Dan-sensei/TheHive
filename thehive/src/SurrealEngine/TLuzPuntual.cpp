@@ -4,15 +4,15 @@
 TLuzPuntual::TLuzPuntual(){}
 TLuzPuntual::~TLuzPuntual(){}
 
-TLuzPuntual::TLuzPuntual(gg::Color &_color,gg::Vector3f& pos)
+TLuzPuntual::TLuzPuntual(gg::Color &_color,glm::vec3& pos)
 :TLuz(_color){
     posicion = pos;
 }
-void TLuzPuntual::setPosicion(gg::Vector3f& dir ){
+void TLuzPuntual::setPosicion(glm::vec3& dir ){
     posicion= dir;
 }
 
-gg::Vector3f TLuzPuntual::getPosicion(){
+glm::vec3 TLuzPuntual::getPosicion(){
     return posicion;
 }
 

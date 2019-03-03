@@ -192,12 +192,12 @@ gg::Vector3f gg::Direccion3D(gg::Vector3f rot){
 
     return aux;
 }
-gg::Vector3f gg::Direccion2D_to_rot(gg::Vector3f rot){
-float aux2=asin(rot.X)*180.f/PI;
-    if(rot.Z<0){
+glm::vec3 gg::Direccion2D_to_rot(glm::vec3 rot){
+float aux2=asin(rot.x)*180.f/PI;
+    if(rot.z<0){
         aux2=180-aux2;
     }
-    gg::Vector3f aux = gg::Vector3f(
+    glm::vec3 aux = glm::vec3(
          0,
          aux2,
          0
@@ -260,7 +260,7 @@ uint16_t gg::genIntRandom(uint16_t min, uint16_t max){
 }
 
 
-std::ostream& operator<<(std::ostream& os, const gg::Vector3f &v1){
-    os << "(" << v1.X<< "," << v1.Y << "," << v1.Z << ")";
+std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1){
+    os << "(" << v1.x<< "," << v1.y << "," << v1.z << ")";
     return os;
 }

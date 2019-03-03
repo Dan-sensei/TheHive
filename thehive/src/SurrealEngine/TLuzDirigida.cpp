@@ -4,15 +4,15 @@
 TLuzDirigida::TLuzDirigida(){}
 TLuzDirigida::~TLuzDirigida(){}
 
-TLuzDirigida::TLuzDirigida(gg::Color &_color,gg::Vector3f& dir)
+TLuzDirigida::TLuzDirigida(gg::Color &_color,glm::vec3& dir)
 :TLuz(_color){
     direccion = dir;
 }
-void TLuzDirigida::setDireccion(gg::Vector3f& dir ){
+void TLuzDirigida::setDireccion(glm::vec3& dir ){
     direccion= dir;
 }
 
-gg::Vector3f TLuzDirigida::getDireccion(){
+glm::vec3 TLuzDirigida::getDireccion(){
     return direccion;
 }
 

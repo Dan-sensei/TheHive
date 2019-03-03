@@ -8,23 +8,23 @@
 
 class CTransform : public IComponent {
     public:
-        CTransform(const gg::Vector3f &Position, const gg::Vector3f &Rotation);
+        CTransform(const glm::vec3 &Position, const glm::vec3 &Rotation);
         CTransform(const CTransform &orig);
         virtual ~CTransform();
 
         //  Functions of IComponent
 
         // Functions of this component
-        gg::Vector3f getPosition();
-        gg::Vector3f getRotation();
-        void setPosition(const gg::Vector3f &_Position);
-        void setRotation(const gg::Vector3f &_Rotation);
-        void setScale(const gg::Vector3f &scale);
+        glm::vec3 getPosition();
+        glm::vec3 getRotation();
+        void setPosition(const glm::vec3 &_Position);
+        void setRotation(const glm::vec3 &_Rotation);
+        void setScale(const glm::vec3 &scale);
 
 
     private:
-        gg::Vector3f Position;
-        gg::Vector3f Rotation;
+        glm::vec3 Position;
+        glm::vec3 Rotation;
 };
 
 #endif

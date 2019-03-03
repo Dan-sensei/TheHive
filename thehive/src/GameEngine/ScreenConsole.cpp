@@ -391,8 +391,8 @@ void ScreenConsole::DisplayHUD(){
 void gg::cout (const std::string &Text, const gg::Color &color){
     Singleton<ScreenConsole>::Instance()->AddTextToBuffer(Text, color);
 }
-void gg::cout (const gg::Vector3f &Vector, const gg::Color &color){
-    std::string VectorString = "(" + std::to_string(Vector.X) + "," + std::to_string(Vector.Y) + "," + std::to_string(Vector.Z) + ")";
+void gg::cout (const glm::vec3 &Vector, const gg::Color &color){
+    std::string VectorString = "(" + std::to_string(Vector.x) + "," + std::to_string(Vector.y) + "," + std::to_string(Vector.z) + ")";
     Singleton<ScreenConsole>::Instance()->AddTextToBuffer(VectorString, color);
 }
 

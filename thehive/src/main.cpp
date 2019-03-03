@@ -135,11 +135,11 @@ int main(int argc, char const *argv[]) {
 //
 //
 // 	gg::Color color_luz;
-// 	TNodo* OBJ1 = ROOT->crearMalla("assets/BinaryFiles/BinaryModels/Basura_Cajas.modelgg",gg::Vector3f(),gg::Vector3f());
+// 	TNodo* OBJ1 = ROOT->crearMalla("assets/BinaryFiles/BinaryModels/Basura_Cajas.modelgg",glm::vec3(),glm::vec3());
 // 	ROOT->bindMaterialToMesh(OBJ1, MAT);
 //
-// 	TNodo* LUZ = ROOT->crearLuz(color_luz,gg::Vector3f(5, 6, 0),gg::Vector3f(), Def);
-// 	TNodo* OKAMERA = ROOT->crearCamara(90,0.1f,100.f,gg::Vector3f(5,3,6),gg::Vector3f(),16.f/9.f);
+// 	TNodo* LUZ = ROOT->crearLuz(color_luz,glm::vec3(5, 6, 0),glm::vec3(), Def);
+// 	TNodo* OKAMERA = ROOT->crearCamara(90,0.1f,100.f,glm::vec3(5,3,6),glm::vec3(),16.f/9.f);
 //
 //     do{
 //         ROOT->BeginDraw();
@@ -147,7 +147,7 @@ int main(int argc, char const *argv[]) {
 // 	    glfwPollEvents();
 //
 // 		// Prueba para las operaciones de transformacion
-// 		ROOT->rotate(OBJ1,0.5,gg::Vector3f(0,1,0));
+// 		ROOT->rotate(OBJ1,0.5,glm::vec3(0,1,0));
 //
 // 		ROOT->draw();
 // 		//draw();

@@ -18,16 +18,16 @@ void TTransform::load(glm::mat4 _m){
     matrix = _m;
 }
 
-void TTransform::translate(gg::Vector3f _vec){
-    matrix = glm::translate(matrix,glm::vec3(_vec.X,_vec.Y,_vec.Z));
+void TTransform::translate(glm::vec3 _vec){
+    matrix = glm::translate(matrix,_vec);
 }
 
-void TTransform::rotate(float _angle, gg::Vector3f _axis){
-    matrix = glm::rotate(matrix,glm::radians(_angle),glm::vec3(_axis.X,_axis.Y,_axis.Z));
+void TTransform::rotate(float _angle, glm::vec3 _axis){
+    matrix = glm::rotate(matrix,glm::radians(_angle),_axis);
 }
 
-void TTransform::scale(gg::Vector3f _vec){
-    matrix = glm::scale(matrix,glm::vec3(_vec.X,_vec.Y,_vec.Z));
+void TTransform::scale(glm::vec3 _vec){
+    matrix = glm::scale(matrix,_vec);
 }
 
 void TTransform::identity(){
@@ -58,17 +58,17 @@ void TTransform::beginDraw(const uint8_t &T_ID){
     (matrixStack.empty())? it1() : resto();
 }
 
-void TTransform::setPosition(gg::Vector3f _vec){
+void TTransform::setPosition(glm::vec3 _vec){
     identity();
     //pos=glm::vec3(0,0,0);
     translate( _vec);
 }
-void TTransform::setRotation(gg::Vector3f _vec){
+void TTransform::setRotation(glm::vec3 _vec){
     identity();
     //rot=glm::vec3(0,0,0);
-    rotate(_vec.X, gg::Vector3f(1,0,0));
-    rotate(_vec.Y, gg::Vector3f(0,1,0));
-    rotate(_vec.Z, gg::Vector3f(0,0,1));
+    rotate(_vec.x, glm::vec3(1,0,0));
+    rotate(_vec.y, glm::vec3(0,1,0));
+    rotate(_vec.z, glm::vec3(0,0,1));
 }
 
 void TTransform::endDraw(const uint8_t &T_ID){

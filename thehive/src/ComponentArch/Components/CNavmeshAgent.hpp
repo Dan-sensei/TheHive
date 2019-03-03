@@ -33,7 +33,7 @@ class CNavmeshAgent : public IComponent {
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
 
-        void SetDestination(const gg::Vector3f &Target);
+        void SetDestination(const glm::vec3 &Target);
         bool HasDestination();
         void ResetDestination();
 
@@ -44,11 +44,11 @@ class CNavmeshAgent : public IComponent {
         CNavmeshAgent(const CNavmeshAgent &orig) = delete;
 
         void CheckShortcut();
-        void ApplyCouterForce(const gg::Vector3f &DirVector);
+        void ApplyCouterForce(const glm::vec3 &DirVector);
 
         gg::Clock Timer;
-        gg::Vector3f RS, LS;
-        gg::Vector3f moveVector;
+        glm::vec3 RS, LS;
+        glm::vec3 moveVector;
 
         TMotorTAG* Engine;
         ggDynWorld* world;

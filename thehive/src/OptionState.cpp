@@ -68,7 +68,7 @@ OptionState::~OptionState(){
 
 void OptionState::Init(){
     cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu4());
-    //Engine->createCamera(gg::Vector3f(0, 30, 30), gg::Vector3f(0, 0, 0));
+    //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
 void OptionState::Resume() {
     Init();

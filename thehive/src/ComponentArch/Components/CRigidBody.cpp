@@ -226,9 +226,9 @@ gg::EMessageStatus CRigidBody::MHandler_DOACTION(Message _mes){
 
 void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
     if(cTransform){
-        float distancia=gg::DIST(cTransform->getPosition(),cdata->vPos);
+        float distancia=glm::distance(cTransform->getPosition(),cdata->vPos);
         float fuerzabomba=cdata->data.find(kDat_Damage);
-        gg::Vector3f sol =gg::Normalice(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
+        glm::vec3 sol =glm::normalize(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
 
         applyCentralForce(sol);
     }
@@ -255,27 +255,27 @@ void CRigidBody::FixedUpdate(){
     //updateCTransformPosition();
 }
 
-void CRigidBody::applyCentralImpulse(gg::Vector3f vec){
-    body->applyCentralImpulse(btVector3(vec.X,vec.Y,vec.Z));
+void CRigidBody::applyCentralImpulse(glm::vec3 vec){
+    body->applyCentralImpulse(btVector3(vec.x,vec.y,vec.z));
 }
 
 void CRigidBody::clearForce(){
     body->clearForces();
 }
-void CRigidBody::applyCentralForce(gg::Vector3f vec){
-    body->applyCentralForce(btVector3(vec.X,vec.Y,vec.Z));
+void CRigidBody::applyCentralForce(glm::vec3 vec){
+    body->applyCentralForce(btVector3(vec.x,vec.y,vec.z));
 }
 
-void CRigidBody::applyTorque(gg::Vector3f vec){
-    body->applyTorque(btVector3(vec.X,vec.Y,vec.Z));
+void CRigidBody::applyTorque(glm::vec3 vec){
+    body->applyTorque(btVector3(vec.x,vec.y,vec.z));
 }
 
-void CRigidBody::setLinearVelocity(gg::Vector3f vec){
-    body->setLinearVelocity(btVector3(vec.X,vec.Y,vec.Z));
+void CRigidBody::setLinearVelocity(glm::vec3 vec){
+    body->setLinearVelocity(btVector3(vec.x,vec.y,vec.z));
 }
 
-void CRigidBody::applyConstantVelocity(gg::Vector3f _force,float _max_speed,bool _keyPressed){
-    float currentSpeed = gg::Modulo(getXZVelocity());
+void CRigidBody::applyConstantVelocity(glm::vec3 _force,float _max_speed,bool _keyPressed){
+    float currentSpeed = glm::length(getXZVelocity());
     if(!_keyPressed && currentSpeed == 0)
         return;
 
@@ -284,12 +284,12 @@ void CRigidBody::applyConstantVelocity(gg::Vector3f _force,float _max_speed,bool
         applyCentralForce(_force);                       // Accelerate!
     }
     else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
-        _force = getVelocity() * gg::Vector3f(-0.2, 0, -0.2) * FORCE_FACTOR;
+        _force = getVelocity() * glm::vec3(-0.2, 0, -0.2) * FORCE_FACTOR;
         applyCentralForce(_force);                       // Stopping!
     }
     else {                                                          // If we reach here, any key is pressed and the speed is below 2
         // Set it to 0
-        setLinearVelocity(gg::Vector3f(0, getVelocity().Y, 0));
+        setLinearVelocity(glm::vec3(0, getVelocity().y, 0));
     }
 }
 
@@ -300,54 +300,54 @@ void CRigidBody::activate(bool b){
 btRigidBody* CRigidBody::getBody(){
     return body;
 }
-gg::Vector3f CRigidBody::getBodyPosition(){
+glm::vec3 CRigidBody::getBodyPosition(){
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);
 
-    return gg::Vector3f(
+    return glm::vec3(
         static_cast<float>(trans.getOrigin().getX()),
         static_cast<float>(trans.getOrigin().getY()),
         static_cast<float>(trans.getOrigin().getZ())
     );
 }
 
-void CRigidBody::setBodyPosition(gg::Vector3f &_pos){
+void CRigidBody::setBodyPosition(glm::vec3 &_pos){
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);
 
     trans.setOrigin(btVector3(
-        _pos.X,
-        _pos.Y,
-        _pos.Z
+        _pos.x,
+        _pos.y,
+        _pos.z
     ));
     body->getMotionState()->setWorldTransform(trans);
 }
 
-void CRigidBody::setOffsetBodyPosition(gg::Vector3f &_off){
+void CRigidBody::setOffsetBodyPosition(glm::vec3 &_off){
     btTransform trans;
     body->getMotionState()->getWorldTransform(trans);
 
     trans.setOrigin(btVector3(
-        trans.getOrigin().getX()+_off.X,
-        trans.getOrigin().getY()+_off.Y,
-        trans.getOrigin().getZ()+_off.Z
+        trans.getOrigin().getX()+_off.x,
+        trans.getOrigin().getY()+_off.y,
+        trans.getOrigin().getZ()+_off.z
     ));
     body->getMotionState()->setWorldTransform(trans);
 }
 
-gg::Vector3f CRigidBody::getLinearVelocity(){
-    return gg::Vector3f(
+glm::vec3 CRigidBody::getLinearVelocity(){
+    return glm::vec3(
         static_cast<float>(body->getLinearVelocity().getX()),
         static_cast<float>(body->getLinearVelocity().getY()),
         static_cast<float>(body->getLinearVelocity().getZ())
     );
 }
 
-gg::Vector3f CRigidBody::getVelocity(){
-    return gg::Vector3f(body->getLinearVelocity().getX(), body->getLinearVelocity().getY(), body->getLinearVelocity().getZ());
+glm::vec3 CRigidBody::getVelocity(){
+    return glm::vec3(body->getLinearVelocity().getX(), body->getLinearVelocity().getY(), body->getLinearVelocity().getZ());
 }
-gg::Vector2f CRigidBody::getXZVelocity(){
-    return gg::Vector2f(body->getLinearVelocity().getX(), body->getLinearVelocity().getZ());
+glm::vec2 CRigidBody::getXZVelocity(){
+    return glm::vec2(body->getLinearVelocity().getX(), body->getLinearVelocity().getZ());
 }
 
 bool CRigidBody::checkContactResponse(){
@@ -370,7 +370,7 @@ void CRigidBody::updateCTransformPosition(){
         //     float _X, _Y, _Z;
         //     rot.getEulerZYX(_Z,_Y,_X);
         //     cTransform->setRotation(
-        //         gg::Vector3f(
+        //         glm::vec3(
         //             static_cast<float>(_X/PI*180),
         //             static_cast<float>(_Y/PI*180),
         //             static_cast<float>(_Z/PI*180)
@@ -400,7 +400,7 @@ void CRigidBody::Upd_MoverObjeto(){
                 Blackboard b;
                 BRbData *data = static_cast<BRbData*>(b.GLOBAL_getBData("DATA_"+std::to_string(getEntityID())));
 
-                gg::Vector3f offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
+                glm::vec3 offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
                 setOffsetBodyPosition(offset);
             }
         }
@@ -438,11 +438,11 @@ gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
 
     double Tick = *static_cast<double*>(_Tick.mData);
 
-    float X = Previous.Position.X *(1-Tick) + Current.Position.X*Tick;
-    float Y = Previous.Position.Y *(1-Tick) + Current.Position.Y*Tick;
-    float Z = Previous.Position.Z *(1-Tick) + Current.Position.Z*Tick;
+    float X = Previous.Position.x *(1-Tick) + Current.Position.x*Tick;
+    float Y = Previous.Position.y *(1-Tick) + Current.Position.y*Tick;
+    float Z = Previous.Position.z *(1-Tick) + Current.Position.z*Tick;
 
-    cTransform->setPosition(gg::Vector3f(X,Y,Z));
+    cTransform->setPosition(glm::vec3(X,Y,Z));
     return gg::ST_TRUE;
 }
 

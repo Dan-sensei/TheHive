@@ -7,7 +7,7 @@
 ggDynWorld::ggDynWorld(){
     debugDrawer = Singleton<GLDebugDrawer>::Instance();
     Factory *fac = Singleton<Factory>::Instance();
-    //debugBullet = fac->createDebugBullet(gg::Vector3f());
+    //debugBullet = fac->createDebugBullet(glm::vec3());
 }
 ggDynWorld::~ggDynWorld(){}
 
@@ -152,21 +152,21 @@ btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
 }
 
 
-gg::Vector3f ggDynWorld::handleRayCastTo(gg::Vector3f from, gg::Vector3f to,float _weaponRange){
+glm::vec3 ggDynWorld::handleRayCastTo(glm::vec3 from, glm::vec3 to,float _weaponRange){
 
 
-    gg::Vector3f ret(-1,-1,-1);
+    glm::vec3 ret(-1,-1,-1);
     raycastVector           = to;
     cameraPosition          = from;
     raycastHitPosition      = ret;
     raycastCollisionBody    = nullptr;
 
-    btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z));
+    btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.x,from.y,from.z),btVector3(to.x,to.y,to.z));
 
-    dynamicsWorld->rayTest(btVector3(from.X,from.Y,from.Z),btVector3(to.X,to.Y,to.Z),callBack);
+    dynamicsWorld->rayTest(btVector3(from.x,from.y,from.z),btVector3(to.x,to.y,to.z),callBack);
 
     if(callBack.hasHit()){
-        ret = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
+        ret = glm::vec3(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
         // <DEBUG VISUAL>
             //CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, debugBullet));
             //cTransform->setPosition(ret);
@@ -178,18 +178,18 @@ gg::Vector3f ggDynWorld::handleRayCastTo(gg::Vector3f from, gg::Vector3f to,floa
     return ret;
 
 }
-gg::Vector3f ggDynWorld::handleRayCast(gg::Vector3f from, gg::Vector3f rot,float _weaponRange){
+glm::vec3 ggDynWorld::handleRayCast(glm::vec3 from, glm::vec3 rot,float _weaponRange){
     if(_weaponRange == -1)  _weaponRange  = FAR_RANGE_FACTOR;
     else                    _weaponRange *= FAR_RANGE_FACTOR;
 
-    gg::Vector3f aux = gg::Vector3f(
-         sin(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) ) ,
-        -sin(rot.X  *PI/180.f) ,
-         cos(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) )
+    glm::vec3 aux = glm::vec3(
+         sin(rot.y  *PI/180.f)*(cos(rot.x  *PI/180.f) ) ,
+        -sin(rot.x  *PI/180.f) ,
+         cos(rot.y  *PI/180.f)*(cos(rot.x  *PI/180.f) )
     );
 
 
-    gg::Vector3f to =aux*FAR_RANGE_FACTOR+from;
+    glm::vec3 to =aux*FAR_RANGE_FACTOR+from;
 
     return handleRayCastTo(from,to,_weaponRange);
 
@@ -202,38 +202,38 @@ int ggDynWorld::getIDFromRaycast(){
     ObjectManager* Manager = Singleton<ObjectManager>::Instance();
     return Manager->returnIDFromRigid(raycastCollisionBody);
 }
-void ggDynWorld::applyForceToRaycastCollisionBody(gg::Vector3f force){
+void ggDynWorld::applyForceToRaycastCollisionBody(glm::vec3 force){
     if(!raycastCollisionBody)
         return;
-    raycastCollisionBody->applyCentralForce(btVector3(force.X,force.Y,force.Z));
+    raycastCollisionBody->applyCentralForce(btVector3(force.x,force.y,force.z));
 }
 
-gg::Vector3f ggDynWorld::getRaycastVector(){
+glm::vec3 ggDynWorld::getRaycastVector(){
     return raycastVector;
 }
 
-gg::Vector3f ggDynWorld::getRaycastHitPosition(){
+glm::vec3 ggDynWorld::getRaycastHitPosition(){
     return raycastHitPosition;
 }
 
-bool ggDynWorld::RayCastTest(const gg::Vector3f &Start, const gg::Vector3f &End, gg::Vector3f &CollisionResult){
+bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult){
 
-    btVector3 Starto = btVector3(Start.X,Start.Y,Start.Z);
-    btVector3 Endo = btVector3(End.X,End.Y,End.Z);
+    btVector3 Starto = btVector3(Start.x,Start.y,Start.z);
+    btVector3 Endo = btVector3(End.x,End.y,End.z);
 
     btCollisionWorld::ClosestRayResultCallback callBack(Starto, Endo);
     dynamicsWorld->rayTest(Starto, Endo, callBack);
 
     if(callBack.hasHit()){
-        CollisionResult = gg::Vector3f(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
+        CollisionResult = glm::vec3(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
         return true;
     }
     return false;
 }
 
-bool ggDynWorld::DoesItHitSomething(const gg::Vector3f &Start, const gg::Vector3f &End){
-    btVector3 Starto = btVector3(Start.X,Start.Y,Start.Z);
-    btVector3 Endo = btVector3(End.X,End.Y,End.Z);
+bool ggDynWorld::DoesItHitSomething(const glm::vec3 &Start, const glm::vec3 &End){
+    btVector3 Starto = btVector3(Start.x,Start.y,Start.z);
+    btVector3 Endo = btVector3(End.x,End.y,End.z);
 
     btCollisionWorld::ClosestRayResultCallback callBack(Starto, Endo);
     dynamicsWorld->rayTest(Starto, Endo, callBack);

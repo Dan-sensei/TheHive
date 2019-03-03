@@ -19,7 +19,7 @@
 bool        CAIEnem::debugvis=true;
 CTransform* CAIEnem::PlayerTransform;
 
-CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen)
+CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos, bool _playerSeen)
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr), world(nullptr),
  type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen)
 {
@@ -95,9 +95,9 @@ void CAIEnem::Init(){
     closerAllyIsDead    = false;
     isPlayerAttacking   = false;
 
-    senpos              = gg::Vector3f(50,50,50);
-    playerPos           = gg::Vector3f(20,20,20);
-    destino             = gg::Vector3f(50,50,50);
+    senpos              = glm::vec3(50,50,50);
+    playerPos           = glm::vec3(20,20,20);
+    destino             = glm::vec3(50,50,50);
 
     ID                  = getEntityID();
     ultrasonido_cont    = 0;
@@ -154,24 +154,24 @@ void CAIEnem::FixedUpdate(){
 
     numberOfUpdatesSinceLastHability++;
 
-    gg::Vector3f pTF        = PlayerTransform->getPosition();
-    gg::Vector3f cTF_POS    = cTransform->getPosition();
+    glm::vec3 pTF        = PlayerTransform->getPosition();
+    glm::vec3 cTF_POS    = cTransform->getPosition();
 
-    pTF.Y =0;
-    cTF_POS.Y =0;
+    pTF.y =0;
+    cTF_POS.y =0;
 
-    float dist = gg::DIST(pTF,cTF_POS);
+    float dist = glm::distance(pTF,cTF_POS);
     if(dist<Vrange){
-        gg::Vector3f cTF_ROT    = cTransform->getRotation();
-        gg::Vector3f dir        = Direccion2D(cTF_ROT);
-        gg::Vector3f diren      = pTF-cTF_POS;
+        glm::vec3 cTF_ROT    = cTransform->getRotation();
+        glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
+        glm::vec3 diren      = pTF-cTF_POS;
 
-        diren       = gg::Normalice(diren);
-        float sol   = gg::Producto(diren,dir);
+        diren       = glm::normalize(diren);
+        float sol   = glm::dot(diren,dir);
 
         if(gradovision<sol){
             //comprobar raytracing
-            gg::Vector3f STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTF_POS,pTF,1000);
+            glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTF_POS,pTF,1000);
             int id=world->getIDFromRaycast();
             if(id==Manager->getHeroID()){
                 if(!playerSeeing){
@@ -243,24 +243,24 @@ void CAIEnem::resetMyOwnTree(){
 void CAIEnem::enableVisualDebug(){
     float res = acos(gradovision)*180.f/3.14159265359;
 
-    gg::Vector3f dir    = Direccion2D( cTransform->getRotation());
-    gg::Vector3f dir1   = Direccion2D( cTransform->getRotation()+gg::Vector3f(0,res,0));
-    gg::Vector3f dir2   = Direccion2D( cTransform->getRotation()-gg::Vector3f(0,res,0));
+    glm::vec3 dir    = gg::Direccion2D( cTransform->getRotation());
+    glm::vec3 dir1   = gg::Direccion2D( cTransform->getRotation()+glm::vec3(0,res,0));
+    glm::vec3 dir2   = gg::Direccion2D( cTransform->getRotation()-glm::vec3(0,res,0));
 
-    gg::Vector3f inicio = cTransform->getPosition();
-    gg::Vector3f fin    = dir*Vrange+cTransform->getPosition();
-    gg::Vector3f fin2   = dir1*Vrange+cTransform->getPosition();
-    gg::Vector3f fin3   = dir2*Vrange+cTransform->getPosition();
+    glm::vec3 inicio = cTransform->getPosition();
+    glm::vec3 fin    = dir*Vrange+cTransform->getPosition();
+    glm::vec3 fin2   = dir1*Vrange+cTransform->getPosition();
+    glm::vec3 fin3   = dir2*Vrange+cTransform->getPosition();
 
     Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
     Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
     Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
 
-    gg::Vector3f diren  = PlayerTransform->getPosition()-cTransform->getPosition();
-    diren.Y             = 0;
-    diren               = gg::Normalice(diren);
-    float sol           = gg::Producto(diren,dir);
-    gg::Vector3f hola   = Direccion2D_to_rot(dir);
+    glm::vec3 diren  = PlayerTransform->getPosition()-cTransform->getPosition();
+    diren.y             = 0;
+    diren               = glm::normalize(diren);
+    float sol           = glm::dot(diren,dir);
+    glm::vec3 hola   = gg::Direccion2D_to_rot(dir);
 }
 
 void CAIEnem::setPlayerIsAttacking(bool _b){

@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <iostream>
-
+#include <glm/glm.hpp>
 
 
 namespace gg{
@@ -125,7 +125,7 @@ namespace gg{
 
     Vector3f Direccion2D(Vector3f rot);
     Vector3f Direccion3D(Vector3f rot);
-    Vector3f Direccion2D_to_rot(Vector3f rot);
+    glm::vec3 Direccion2D_to_rot(glm::vec3 rot);
     float Producto(const Vector3f &dir,const Vector3f &diren);
 
 
@@ -156,7 +156,7 @@ namespace gg{
     };
 };
 
-std::ostream& operator<<(std::ostream& os, const gg::Vector3f &v1);
+std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1);
 //template <typename T>
 //T gg::T::operator+ (T v1);
 

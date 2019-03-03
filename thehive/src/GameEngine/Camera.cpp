@@ -17,15 +17,15 @@ Camera::~Camera() {
 //  ---
 //  Sets the camera position
 //==================================================================================
-void Camera::setPosition(const gg::Vector3f &newPosition){
+void Camera::setPosition(const glm::vec3 &newPosition){
     mCamera->setPosition(
-        irr::core::vector3df(newPosition.X, newPosition.Y, newPosition.Z)
+        irr::core::vector3df(newPosition.x, newPosition.y, newPosition.z)
     );
 }
 
-void Camera::setRotation(const gg::Vector3f &newRotation){
+void Camera::setRotation(const glm::vec3 &newRotation){
     mCamera->setRotation(
-        irr::core::vector3df(newRotation.X, newRotation.Y, newRotation.Z)
+        irr::core::vector3df(newRotation.x, newRotation.y, newRotation.z)
     );
 }
 
@@ -33,26 +33,26 @@ void Camera::setRotation(const gg::Vector3f &newRotation){
 //  ---
 //  Returns the position of the camera
 //==================================================================================
-gg::Vector3f Camera::getPosition(){
-    gg::Vector3f currentPositionGG;
+glm::vec3 Camera::getPosition(){
+    glm::vec3 currentPositionGG;
     irr::core::vector3df currentPositionIRR = mCamera->getPosition();
 
     // Convert the Irrlicht vector to GG vector
-    currentPositionGG.X = currentPositionIRR.X;
-    currentPositionGG.Y = currentPositionIRR.Y;
-    currentPositionGG.Z = currentPositionIRR.Z;
+    currentPositionGG.x = currentPositionIRR.X;
+    currentPositionGG.y = currentPositionIRR.Y;
+    currentPositionGG.z = currentPositionIRR.Z;
 
     return currentPositionGG;
 }
 
-gg::Vector3f Camera::getRotation(){
-    gg::Vector3f currentRotationGG;
+glm::vec3 Camera::getRotation(){
+    glm::vec3 currentRotationGG;
     irr::core::vector3df currentRotationIRR = mCamera->getRotation();
 
     // Convert the Irrlicht vector to GG vector
-    currentRotationGG.X = currentRotationIRR.X;
-    currentRotationGG.Y = currentRotationIRR.Y;
-    currentRotationGG.Z = currentRotationIRR.Z;
+    currentRotationGG.x = currentRotationIRR.X;
+    currentRotationGG.y = currentRotationIRR.Y;
+    currentRotationGG.z = currentRotationIRR.Z;
 
     return currentRotationGG;
 }
@@ -68,12 +68,12 @@ void Camera::bindTargetAndRotation(bool bound){
 //  ---
 //  Sets where the camera should be looking at
 //==================================================================================
-void Camera::setTarget(const gg::Vector3f &target){
-    mCamera->setTarget(irr::core::vector3df(target.X, target.Y, target.Z));
+void Camera::setTarget(const glm::vec3 &target){
+    mCamera->setTarget(irr::core::vector3df(target.x, target.y, target.z));
 }
 
-gg::Vector3f Camera::getTarget(){
-    return gg::Vector3f(
+glm::vec3 Camera::getTarget(){
+    return glm::vec3(
         mCamera->getTarget().X,
         mCamera->getTarget().Y,
         mCamera->getTarget().Z);

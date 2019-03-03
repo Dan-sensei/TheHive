@@ -21,9 +21,9 @@ class TTransform : public TEntidad {
 
         void load(glm::mat4);
 
-        void translate(gg::Vector3f);
-        void rotate(float, gg::Vector3f);
-        void scale(gg::Vector3f);
+        void translate(glm::vec3);
+        void rotate(float, glm::vec3);
+        void scale(glm::vec3);
         void identity();
         void transpose();
         void inverse();
@@ -31,9 +31,9 @@ class TTransform : public TEntidad {
         virtual void beginDraw(const uint8_t&);
         virtual void endDraw(const uint8_t&);
 
-        void setPosition(gg::Vector3f _vec);
-        void setRotation(gg::Vector3f _vec);
-        
+        void setPosition(glm::vec3 _vec);
+        void setRotation(glm::vec3 _vec);
+
         glm::mat4 matrix;
     private:
 

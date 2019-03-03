@@ -68,24 +68,24 @@ class CRigidBody : public IComponent {
 
         // Funciones de CRigidBody
         void clearForce();
-        void applyCentralForce(gg::Vector3f);
-        void applyCentralImpulse(gg::Vector3f);
-        void applyTorque(gg::Vector3f);
-        void applyConstantVelocity(gg::Vector3f,float,bool = true);
+        void applyCentralForce(glm::vec3);
+        void applyCentralImpulse(glm::vec3);
+        void applyTorque(glm::vec3);
+        void applyConstantVelocity(glm::vec3,float,bool = true);
 
-        void setLinearVelocity(gg::Vector3f);
+        void setLinearVelocity(glm::vec3);
 
-        gg::Vector3f getVelocity();
-        gg::Vector2f getXZVelocity();
+        glm::vec3 getVelocity();
+        glm::vec2 getXZVelocity();
 
         // 'Despierta' de nuevo el objeto para que les puedan ser aplicadas fuerzas
         void activate(bool);
 
         btRigidBody* getBody();
-        gg::Vector3f getBodyPosition();
-        gg::Vector3f getLinearVelocity();
-        void setBodyPosition(gg::Vector3f&);
-        void setOffsetBodyPosition(gg::Vector3f&);
+        glm::vec3 getBodyPosition();
+        glm::vec3 getLinearVelocity();
+        void setBodyPosition(glm::vec3&);
+        void setOffsetBodyPosition(glm::vec3&);
 
         bool checkContactResponse();
 
@@ -98,8 +98,8 @@ class CRigidBody : public IComponent {
             Status(const Status &orig);
             ~Status();
 
-            gg::Vector3f Position;
-            gg::Vector3f Rotation;
+            glm::vec3 Position;
+            glm::vec3 Rotation;
         };
 
         Status Previous;

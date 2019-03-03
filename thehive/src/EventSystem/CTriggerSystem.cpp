@@ -19,7 +19,7 @@ CTriggerSystem::~CTriggerSystem(){}
 void CTriggerSystem::PulsoTrigger(
     EnumTriggerType _eTriggerType,
     unsigned long _idSource,
-    const gg::Vector3f& _vPos,
+    const glm::vec3& _vPos,
     float _fRadius,
     TData _data)
     {
@@ -42,7 +42,7 @@ void CTriggerSystem::PulsoTrigger(
 
             //Check radius
             //
-            fDistance=gg::DIST(pRec.vPos,pAgent->GetPosition());//funcion calcular la distancia
+            fDistance=glm::distance(pRec.vPos,pAgent->GetPosition());//funcion calcular la distancia
             if(fDistance > pRec.fRadius)
                 continue;
 
@@ -59,7 +59,7 @@ unsigned long CTriggerSystem::RegisterTriger(
     EnumTriggerType _eTriggerType,
     unsigned long _nPriority,
     unsigned long _idSource,
-    const gg::Vector3f& _vPos,
+    const glm::vec3& _vPos,
     float _fRadius,
     float _fDuration,
     bool _bDynamicSourcePos,
@@ -178,7 +178,7 @@ void CTriggerSystem::Update()
         continue;
       //Check radius
       //
-      fDistance=gg::DIST(pRec->vPos,pAgent->GetPosition());//funcion calcular la distancia
+      fDistance=glm::distance(pRec->vPos,pAgent->GetPosition());//funcion calcular la distancia
       if(fDistance > pRec->fRadius)
         continue;
       //handletriger return true if the agent responded
@@ -198,7 +198,7 @@ void CTriggerSystem::Update()
 TriggerRecordStruct::TriggerRecordStruct(
     EnumTriggerType     _eTriggerType,
     unsigned long       _idSource,
-    const gg::Vector3f  _vPos,
+    const glm::vec3  _vPos,
     float               _fRadius,
     unsigned long       _fDuration,
     bool                _bDynamicSourcePos,

@@ -28,7 +28,7 @@ class CGun : public IComponent {
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
 
         // Funciones propias de CGun
-        void shoot(gg::Vector3f);
+        void shoot(glm::vec3);
         void reload();
         bool isReloading();
         int getBullets();

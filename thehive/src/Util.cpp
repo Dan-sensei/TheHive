@@ -141,10 +141,10 @@ float gg::DIST(const gg::Vector3f &Vector1, const gg::Vector3f &Vector2){
     );
 }
 
-float gg::FastDIST(const Vector3f &Vector1, const Vector3f &Vector2){
-    return  (Vector1.X-Vector2.X)*(Vector1.X-Vector2.X)+
-            (Vector1.Y-Vector2.Y)*(Vector1.Y-Vector2.Y)+
-            (Vector1.Z-Vector2.Z)*(Vector1.Z-Vector2.Z);
+float gg::FastDIST(const glm::vec3 &Vector1, const glm::vec3 &Vector2){
+    return  (Vector1.x-Vector2.x)*(Vector1.x-Vector2.x)+
+            (Vector1.y-Vector2.y)*(Vector1.y-Vector2.y)+
+            (Vector1.z-Vector2.z)*(Vector1.z-Vector2.z);
 }
 
 
@@ -179,30 +179,30 @@ gg::Vector3f gg::Normalice(gg::Vector3f Vector){
         return Vector;
     }
 }
-gg::Vector3f gg::Direccion2D(gg::Vector3f rot){
-    gg::Vector3f aux = gg::Vector3f(
-         sin(rot.Y  *PI/180.f) ,
+glm::vec3 gg::Direccion2D(glm::vec3 rot){
+    glm::vec3 aux = glm::vec3(
+         sin(rot.y  *PI/180.f) ,
          0 ,
-         cos(rot.Y  *PI/180.f)
+         cos(rot.y  *PI/180.f)
     );
 
     return aux;
 }
-gg::Vector3f gg::Direccion3D(gg::Vector3f rot){
-    gg::Vector3f aux = gg::Vector3f(
-        sin(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) ) ,
-        -sin(rot.X  *PI/180.f) ,
-        cos(rot.Y  *PI/180.f)*(cos(rot.X  *PI/180.f) )
+glm::vec3 gg::Direccion3D(glm::vec3 rot){
+    glm::vec3 aux = glm::vec3(
+        sin(rot.y  *PI/180.f)*(cos(rot.x  *PI/180.f) ) ,
+        -sin(rot.x  *PI/180.f) ,
+        cos(rot.y  *PI/180.f)*(cos(rot.x  *PI/180.f) )
     );
 
     return aux;
 }
-gg::Vector3f gg::Direccion2D_to_rot(gg::Vector3f rot){
-float aux2=asin(rot.X)*180.f/PI;
-    if(rot.Z<0){
+glm::vec3 gg::Direccion2D_to_rot(glm::vec3 rot){
+float aux2=asin(rot.x)*180.f/PI;
+    if(rot.z<0){
         aux2=180-aux2;
     }
-    gg::Vector3f aux = gg::Vector3f(
+    glm::vec3 aux = glm::vec3(
          0,
          aux2,
          0
@@ -265,7 +265,7 @@ uint16_t gg::genIntRandom(uint16_t min, uint16_t max){
 }
 
 
-std::ostream& operator<<(std::ostream& os, const gg::Vector3f &v1){
-    os << "(" << v1.X<< "," << v1.Y << "," << v1.Z << ")";
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const gg::Vector3f &v1){
+//     os << "(" << v1.X<< "," << v1.Y << "," << v1.Z << ")";
+//     return os;
+// }

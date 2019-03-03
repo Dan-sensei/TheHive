@@ -17,15 +17,15 @@ Model::~Model(){
 //  ---
 //  Sets the camera position
 //==================================================================================
-void Model::setPosition(const gg::Vector3f &newPosition){
+void Model::setPosition(const glm::vec3 &newPosition){
     mModel->setPosition(
-        irr::core::vector3df(newPosition.X, newPosition.Y, newPosition.Z)
+        irr::core::vector3df(newPosition.x, newPosition.y, newPosition.z)
     );
 }
 
-void Model::setRotation(const gg::Vector3f &newRotation){
+void Model::setRotation(const glm::vec3 &newRotation){
     mModel->setRotation(
-        irr::core::vector3df(newRotation.X, newRotation.Y, newRotation.Z)
+        irr::core::vector3df(newRotation.x, newRotation.y, newRotation.z)
     );
 }
 
@@ -33,38 +33,38 @@ void Model::setRotation(const gg::Vector3f &newRotation){
 //  ---
 //  Returns the position of the camera
 //==================================================================================
-gg::Vector3f Model::getPosition(){
-    gg::Vector3f currentPositionGG;
+glm::vec3 Model::getPosition(){
+    glm::vec3 currentPositionGG;
     irr::core::vector3df currentPositionIRR = mModel->getPosition();
 
     // Convert the Irrlicht vector to GG vector
-    currentPositionGG.X = currentPositionIRR.X;
-    currentPositionGG.Y = currentPositionIRR.Y;
-    currentPositionGG.Z = currentPositionIRR.Z;
+    currentPositionGG.x = currentPositionIRR.X;
+    currentPositionGG.y = currentPositionIRR.Y;
+    currentPositionGG.z = currentPositionIRR.Z;
 
     return currentPositionGG;
 }
 
-gg::Vector3f Model::getRotation(){
-    gg::Vector3f currentRotationGG;
+glm::vec3 Model::getRotation(){
+    glm::vec3 currentRotationGG;
     irr::core::vector3df currentRotationIRR = mModel->getRotation();
 
     // Convert the Irrlicht vector to GG vector
-    currentRotationGG.X = currentRotationIRR.X;
-    currentRotationGG.Y = currentRotationIRR.Y;
-    currentRotationGG.Z = currentRotationIRR.Z;
+    currentRotationGG.x = currentRotationIRR.X;
+    currentRotationGG.y = currentRotationIRR.Y;
+    currentRotationGG.z = currentRotationIRR.Z;
 
     return currentRotationGG;
 }
 
-gg::Vector3f Model::getScale(){
-    gg::Vector3f currentScaleGG;
+glm::vec3 Model::getScale(){
+    glm::vec3 currentScaleGG;
     irr::core::vector3df currentScaleIRR = mModel->getScale();
 
     // Convert the Irrlicht vector to GG vector
-    currentScaleGG.X = currentScaleIRR.X;
-    currentScaleGG.Y = currentScaleIRR.Y;
-    currentScaleGG.Z = currentScaleIRR.Z;
+    currentScaleGG.x = currentScaleIRR.X;
+    currentScaleGG.y = currentScaleIRR.Y;
+    currentScaleGG.z = currentScaleIRR.Z;
 
     return currentScaleGG;
 }
