@@ -17,13 +17,20 @@ TTransform::TTransform(glm::mat4 _m){
 void TTransform::load(glm::mat4 _m){
     matrix = _m;
 }
+glm::vec3 TTransform::getDatos(){
+    return datos;
+}
 
 void TTransform::translate(gg::Vector3f _vec){
-    matrix = glm::translate(matrix,glm::vec3(_vec.X,_vec.Y,_vec.Z));
+    auto input = glm::vec3(_vec.X,_vec.Y,_vec.Z);
+    matrix = glm::translate(matrix,input);
+    datos+=input;
 }
 
 void TTransform::rotate(float _angle, gg::Vector3f _axis){
-    matrix = glm::rotate(matrix,glm::radians(_angle),glm::vec3(_axis.X,_axis.Y,_axis.Z));
+    auto input = glm::vec3(_axis.X,_axis.Y,_axis.Z);
+    matrix = glm::rotate(matrix,glm::radians(_angle),input);
+    datos+=input*_angle;
 }
 
 void TTransform::scale(gg::Vector3f _vec){
@@ -60,12 +67,12 @@ void TTransform::beginDraw(const uint8_t &T_ID){
 
 void TTransform::setPosition(gg::Vector3f _vec){
     identity();
-    //pos=glm::vec3(0,0,0);
+    datos=glm::vec3(0,0,0);
     translate( _vec);
 }
 void TTransform::setRotation(gg::Vector3f _vec){
     identity();
-    //rot=glm::vec3(0,0,0);
+    datos=glm::vec3(0,0,0);
     rotate(_vec.X, gg::Vector3f(1,0,0));
     rotate(_vec.Y, gg::Vector3f(0,1,0));
     rotate(_vec.Z, gg::Vector3f(0,0,1));

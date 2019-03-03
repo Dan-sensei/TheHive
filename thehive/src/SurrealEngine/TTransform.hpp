@@ -33,9 +33,11 @@ class TTransform : public TEntidad {
 
         void setPosition(gg::Vector3f _vec);
         void setRotation(gg::Vector3f _vec);
-        
+
         glm::mat4 matrix;
+        glm::vec3 getDatos();
     private:
+        glm::vec3 datos;
 
 };
 

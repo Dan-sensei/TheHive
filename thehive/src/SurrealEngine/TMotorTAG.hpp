@@ -44,6 +44,7 @@ class TMotorTAG {
 
         void PollEvents();
 
+        void PointAt(TNodo *_node, const gg::Vector3f& _offpos);
         inline bool isLClickPressed(){ return LCLICK; };
         inline int getWheelState(){return wheel;};
         inline bool isWindowOpen(){ return !glfwWindowShouldClose(window);};
