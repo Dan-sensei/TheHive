@@ -1,5 +1,4 @@
 #include "Shader.hpp"
-#include <GL/glew.h>
 #include <sstream>
 #include <fstream>
 #include <iostream>
@@ -8,7 +7,7 @@ Shader::Shader(){
 }
 
 Shader::Shader(const Shader& orig){
-    std::cout << "Copiando Shader" << '\n';
+    // std::cout << "Copiando Shader" << '\n';
     ShaderID = orig.ShaderID;
 }
 
@@ -26,6 +25,17 @@ int Shader::getUniformLocation(std::string target){
     else{
         int location = glGetUniformLocation(ShaderID, target.c_str());
         UniformLocations[target] = location;
+        return location;
+    }
+}
+int Shader::getAttribLocation(std::string target){
+    auto UniformSearch = AtribLocations.find(target);
+    if(UniformSearch != AtribLocations.end()){
+        return UniformSearch->second;
+    }
+    else{
+        int location = glGetAttribLocation(ShaderID, target.c_str());
+        AtribLocations[target] = location;
         return location;
     }
 }

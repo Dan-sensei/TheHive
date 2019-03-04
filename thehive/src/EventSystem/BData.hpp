@@ -13,7 +13,7 @@ public:
     virtual int             getInt();
     virtual float           getFloat();
     virtual std::string     getString();
-    virtual gg::Vector3f    getVector3f();
+    virtual glm::vec3    getVector3f();
     virtual bool            getBool();
 
 

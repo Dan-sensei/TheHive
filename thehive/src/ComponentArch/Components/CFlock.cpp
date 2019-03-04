@@ -145,7 +145,7 @@ void CFlock::debugtotal(){
 
     /*
     //std::cout << pos << '\n';
-    gg::Vector3f media;
+    glm::vec3 media;
     while (it!=Flocked.end()){
         CRigidBody* body=*it;
         media+=body->getBodyPosition();
@@ -180,14 +180,25 @@ void CFlock::FixedUpdate(){
             //ChangeCenter();
             //Muerte();
         }
+        //debugeando
+        //debugtotal();
+
+        //Separation
+        FastSeparation();
+        //El resto
+        FastAlignementAndCohesion();
+        //esto es codigo de swarm, basicamente para que a parte del flocking tengan todos un mismo destino
+        //ForceCenter();
+        //ChangeCenter();
+        //Muerte();
     }
     //std::cout << "fixed final" << '\n';
 
 }
 void CFlock::ChangeCenter(){
-    //gg::Vector3f res;
-    //res.X=gg::genFloatRandom(-0.5,0.5);
-    //res.Y=gg::genFloatRandom(-0.5,0.5);
+    //glm::vec3 res;
+    //res.x=gg::genFloatRandom(-0.5,0.5);
+    //res.y=gg::genFloatRandom(-0.5,0.5);
     //pos+=res;
 
 }
@@ -199,7 +210,7 @@ void CFlock::ForceCenter(){
         CRigidBody* body=*it;
 
 
-        gg::Vector3f dir=gg::Normalice(pos-body->getBodyPosition());
+        glm::vec3 dir=glm::normalize(pos-body->getBodyPosition());
         dir=dir*20;
         //std::cout << "dir=" <<dir<< '\n';
         body->applyCentralForce(dir);
@@ -227,8 +238,8 @@ int CFlock::getLeaderID(){
     return leader_id;
 }
 void CFlock::FastSeparation(){
-    mediapos=gg::Vector3f();
-    mediavel=gg::Vector3f();
+    mediapos=glm::vec3();
+    mediavel=glm::vec3();
     //int i=0;
     auto it=Flocked.begin();
     while (it!=Flocked.end()){
@@ -249,7 +260,7 @@ void CFlock::FastSeparation(){
                     //std::cout << "dist="<<dist << '\n';
                     //std::cout << "mindist="<<mindist << '\n';
                     //aplicamos la separation
-                    gg::Vector3f dir=gg::Normalice(body->getBodyPosition()-body2->getBodyPosition());
+                    glm::vec3 dir=glm::normalize(body->getBodyPosition()-body2->getBodyPosition());
                     float escala=1-sqrt(dist/mindist);
                     dir=dir*escala*fuerzasep;
                     //std::cout << "dir=" <<dir<< '\n';
@@ -270,14 +281,15 @@ void CFlock::FastAlignementAndCohesion(){
     while (it!=Flocked.end()){
         CRigidBody* body=*it;
         //alignement aun no implementado
-        gg::Vector3f mediavel_real=(mediavel-body->getVelocity()/(Flocked.size()-1));
+        float size = (Flocked.size()-1);
+        glm::vec3 mediavel_real=(mediavel-body->getVelocity()/size);
         //std::cout << mediavel_real << '\n';
         //utilizar la media de las velicidades para alinearlo
         //cohesion
-        gg::Vector3f mediapos_real=((mediapos-body->getBodyPosition())/(Flocked.size()-1));
+        glm::vec3 mediapos_real=((mediapos-body->getBodyPosition())/size);
         //std::cout << "media real" << '\n';
         //std::cout << mediapos_real << '\n';
-        gg::Vector3f dir=gg::Normalice(mediapos_real-body->getBodyPosition());
+        glm::vec3 dir=glm::normalize(mediapos_real-body->getBodyPosition());
         dir=dir*fuerzacoh;
         body->applyCentralForce(dir);
         it++;

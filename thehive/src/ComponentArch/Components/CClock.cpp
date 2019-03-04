@@ -16,7 +16,7 @@ bool CClock::startChrono(float _end){
         return false;
     }
     else{
-        // gg::cout("INIT CHRONO ON "+std::to_string(_end));
+        // //gg::cout("INIT CHRONO ON "+std::to_string(_end));
         limitReached = false;
         initialized = true;
         msEnd       = _end;

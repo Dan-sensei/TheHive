@@ -1,9 +1,9 @@
 #include "BinaryParser.hpp"
 #include <fstream>
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
-#include <cassert>
+#include <experimental/filesystem>
+#include <ComponentArch/Components/ComponentHeaders.hpp>
+#include <ComponentArch/ObjectManager.hpp>
+
 
 template<typename T>
 std::istream & GG_Read(std::istream& _istream, T& value){
@@ -11,73 +11,79 @@ std::istream & GG_Read(std::istream& _istream, T& value){
 }
 
 void BinaryParser::ReadNavmeshData(
-    const std::string &_File,
+    const std::string &BinaryFile,
     std::vector<Node> &GRAPH,
     std::vector<std::vector<Connection>> &Connections,
     std::vector<Face> &SQUARE_FACES
 ){
 
-    std::ifstream inStream(_File, std::ios::binary);
+    std::ifstream Navmesh(BinaryFile, std::ios::binary);
 
     uint16_t GRAPH_SIZE;
-    GG_Read(inStream, GRAPH_SIZE);
+    GG_Read(Navmesh, GRAPH_SIZE);
+
+    GRAPH.reserve(GRAPH_SIZE);
     for(uint16_t i = 0; i < GRAPH_SIZE; ++i){
 
         uint16_t ID;
-        GG_Read(inStream, ID);
+        GG_Read(Navmesh, ID);
 
         uint16_t NODE_1;
-        GG_Read(inStream, NODE_1);
+        GG_Read(Navmesh, NODE_1);
 
         uint16_t NODE_2;
-        GG_Read(inStream, NODE_2);
+        GG_Read(Navmesh, NODE_2);
 
-        gg::Vector3f Position;
-        GG_Read(inStream, Position);
+        glm::vec3 Position;
+        GG_Read(Navmesh, Position);
 
         float Radius;
-        GG_Read(inStream, Radius);
+        GG_Read(Navmesh, Radius);
 
         GRAPH.emplace_back(ID, NODE_1, NODE_2, Position, Radius);
     }
 
     uint16_t CONNECTIONS_SIZE;
-    GG_Read(inStream, CONNECTIONS_SIZE);
+    GG_Read(Navmesh, CONNECTIONS_SIZE);
+    Connections.reserve(CONNECTIONS_SIZE);
     Connections.resize(CONNECTIONS_SIZE);
 
     for(uint16_t i = 0; i < CONNECTIONS_SIZE; ++i){
         uint16_t CONNECTION_X_SIZE;
-        GG_Read(inStream, CONNECTION_X_SIZE);
+        GG_Read(Navmesh, CONNECTION_X_SIZE);
+        Connections[i].reserve(CONNECTION_X_SIZE);
         for(uint16_t j = 0; j < CONNECTION_X_SIZE; ++j){
             float Value;
-            GG_Read(inStream, Value);
+            GG_Read(Navmesh, Value);
 
             uint16_t From;
-            GG_Read(inStream, From);
+            GG_Read(Navmesh, From);
 
             uint16_t To;
-            GG_Read(inStream, To);
+            GG_Read(Navmesh, To);
 
             Connections[i].emplace_back(Value, From, To);
         }
     }
 
     uint16_t SQUARE_FACES_SIZE;
-    GG_Read(inStream, SQUARE_FACES_SIZE);
-    for(uint16_t i = 0; i < SQUARE_FACES_SIZE; ++i){
-        gg::Vector3f TL;
-        GG_Read(inStream, TL);
+    GG_Read(Navmesh, SQUARE_FACES_SIZE);
 
-        gg::Vector3f BR;
-        GG_Read(inStream, BR);
+    SQUARE_FACES.reserve(SQUARE_FACES_SIZE);
+    for(uint16_t i = 0; i < SQUARE_FACES_SIZE; ++i){
+        glm::vec3 TL;
+        GG_Read(Navmesh, TL);
+
+        glm::vec3 BR;
+        GG_Read(Navmesh, BR);
 
         SQUARE_FACES.emplace_back(TL, BR);
 
         uint16_t PORTALS_SIZE;
-        GG_Read(inStream, PORTALS_SIZE);
+        GG_Read(Navmesh, PORTALS_SIZE);
         for(uint16_t j = 0; j < PORTALS_SIZE; ++j){
             uint16_t PortalID;
-            GG_Read(inStream, PortalID);
+            GG_Read(Navmesh, PortalID);
             SQUARE_FACES.back().Portals.push_back(PortalID);
         }
 
@@ -86,8 +92,65 @@ void BinaryParser::ReadNavmeshData(
 }
 
 
+void BinaryParser::test(){
+
+    std::ifstream inStream("assets/BinaryFiles/City.data", std::ios::binary);
+    uint8_t NUMBER_OF_OBJECTS = 0;
+    GG_Read(inStream, NUMBER_OF_OBJECTS);
+
+    //std::cout << "NUM " << (uint16_t)NUMBER_OF_OBJECTS << '\n';
+
+    for(uint16_t i = 0; i < NUMBER_OF_OBJECTS; ++i){
+        uint8_t MODEL = 0;
+        GG_Read(inStream, MODEL);
+        std::string str = std::to_string(MODEL);
+        str+=".modelgg";
+
+        auto Manager = Singleton<ObjectManager>::Instance();
+        uint16_t NewEntity = Manager->createEntity();
+
+        //std::cout << "Model->  " << str << '\n';
+        float x,y,z;
+        GG_Read(inStream, x);
+        GG_Read(inStream, y);
+        GG_Read(inStream, z);
+        glm::vec3 Position(-x,y,z);
+        //std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
+        GG_Read(inStream, x);
+        GG_Read(inStream, y);
+        GG_Read(inStream, z);
+        glm::vec3 Rotation(x,y,z);
+        //std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
+
+        bool HasCollider;
+        GG_Read(inStream, HasCollider);
+        ZMaterial* Dark = AssetManager::getMaterial("Default");
+        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation);
+        Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
+
+        //std::cout << "Collider? = " << HasCollider << '\n';
+        if(HasCollider){
+            float sx,sz,sy;
+            GG_Read(inStream, x);
+            GG_Read(inStream, y);
+            GG_Read(inStream, z);
+            //std::cout << "      -Center: " << x << ", " << y << ", " << z << '\n';
+            GG_Read(inStream, sx);
+            GG_Read(inStream, sy);
+            GG_Read(inStream, sz);
+            //std::cout << "      -Size: " << x << ", " << y << ", " << z << '\n';
+            CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(-x, y, z, 0, 0, 0, sx/2, sy/2, sz/2);
+            Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewEntity);
+        }
+
+        //std::cout << '\n';
+
+    }
+}
+
+
 bool BinaryParser::ImportMesh(
-    const std::string& pFile,
+    const std::string& BinaryFile,
     std::vector<float> &PositionsNormals,
     std::vector<float> &uv,
     std::vector<float> &TangentsBitangents,
@@ -96,74 +159,40 @@ bool BinaryParser::ImportMesh(
 
     PositionsNormals.clear();
     uv.clear();
+    TangentsBitangents.clear();
     index.clear();
-    // Create an instance of the Importer class
-    Assimp::Importer importer;
-    // And have it read the given file with some example postprocessing
-    // Usually - if speed is not the most important aspect for you - you'll
-    // propably to request more postprocessing than we do in this example.
-    const aiScene* scene = importer.ReadFile( pFile,
-    aiProcess_CalcTangentSpace       |
-    aiProcess_Triangulate            |
-    aiProcess_JoinIdenticalVertices  |
-    aiProcess_SortByPType);
 
+    std::ifstream Model(BinaryFile, std::ios::binary);
 
-    // If the import failed, report it
-    if( !scene)
-        return false;
+    uint16_t i = 0;
+    float FloatV;
+    GG_Read(Model, i);  // POSITIONS_AND_NORMALS_SIZE
+    PositionsNormals.reserve(i);
+    while(i--){
+        GG_Read(Model, FloatV);
+        PositionsNormals.emplace_back(FloatV);
+    }
 
-    //std::cout << "Cargando modelo '" << pFile << "'" << '\n';
+    GG_Read(Model, i);  // UV_COORDS_SIZE
+    uv.reserve(i);
+    while(i--){
+        GG_Read(Model, FloatV);
+        uv.emplace_back(FloatV);
+    }
 
-    aiMesh **meshes = scene->mMeshes;
-    aiVector3D* vertices;
-    aiVector3D* textureCoords;
-    aiVector3D* normales;
-    aiVector3D* tangents;
-    aiVector3D* bitangents;
-    aiFace* faces;
+    GG_Read(Model, i);  // TANGENTS_AND_BITANGENTS_SIZE
+    TangentsBitangents.reserve(i);
+    while(i--){
+        GG_Read(Model, FloatV);
+        TangentsBitangents.emplace_back(FloatV);
+    }
 
-    for(uint16_t i = 0; i < scene->mNumMeshes; ++i){
-
-             vertices   =   meshes[i]->mVertices;
-        textureCoords   =   meshes[i]->mTextureCoords[0];
-             normales   =   meshes[i]->mNormals;
-             tangents   =   meshes[i]->mTangents;
-           bitangents   =   meshes[i]->mBitangents;
-                faces   =   meshes[i]->mFaces;
-
-        for(uint16_t j = 0; j < meshes[i]->mNumVertices; ++j){
-            PositionsNormals.push_back(vertices[j].x);
-            PositionsNormals.push_back(vertices[j].y);
-            PositionsNormals.push_back(vertices[j].z);
-
-            PositionsNormals.push_back(normales[j].x);
-            PositionsNormals.push_back(normales[j].y);
-            PositionsNormals.push_back(normales[j].z);
-
-            uv.push_back(textureCoords[j].x);
-            uv.push_back(textureCoords[j].y);
-
-            TangentsBitangents.push_back(tangents[j].x);
-            TangentsBitangents.push_back(tangents[j].y);
-            TangentsBitangents.push_back(tangents[j].z);
-
-            TangentsBitangents.push_back(bitangents[j].x);
-            TangentsBitangents.push_back(bitangents[j].y);
-            TangentsBitangents.push_back(bitangents[j].z);
-        }
-
-
-        for(uint16_t j = 0; j < meshes[i]->mNumFaces; ++j){
-            const aiFace& Face = faces[j];
-            assert(Face.mNumIndices == 3);
-            index.push_back(Face.mIndices[0]);
-            index.push_back(Face.mIndices[1]);
-            index.push_back(Face.mIndices[2]);
-        }
-
-        // std::cout << "   |-- VERTICES: " << meshes[0]->mNumVertices << '\n';
-        // std::cout << "   |-- INDICES:  " << index.size() << '\n';
+    GG_Read(Model, i);  // INDEX_SIZE
+    index.reserve(i);
+    unsigned short UnsignedShortV = 0;
+    while(i--){
+        GG_Read(Model, UnsignedShortV);
+        index.emplace_back(UnsignedShortV);
     }
 
     return true;

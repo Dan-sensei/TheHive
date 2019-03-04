@@ -3,6 +3,7 @@
 
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
+#include "CRigidBody.hpp"
 
 //#define MAXSPEED 4.f
 #define FORCE_FACTOR 250.f
@@ -21,7 +22,7 @@ CNavmeshAgent::~CNavmeshAgent() {
 
 void CNavmeshAgent::Init(){
     //  We check if this entity has the TRANSFORM component
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     MHandler_SETPTRS();
     ObjectManager* Manager=Singleton<ObjectManager>::Instance();
     CAIEnem* ia=static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, getEntityID()));
@@ -53,8 +54,8 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
 
 void CNavmeshAgent::Update(){
     //  Debug!
-    Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), cTransform->getPosition()+(moveVector*100)+gg::Vector3f(0, 5, 0), gg::Color(255,0,0,1));
-    Engine->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), cTransform->getPosition()+(gg::Normalice(cRigidBody->getVelocity())*100)+gg::Vector3f(0, 5, 0), gg::Color(255,255,0,1));
+    Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(moveVector*100.f)+glm::vec3(0, 5, 0), gg::Color(255,0,0,1));
+    Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(glm::normalize(cRigidBody->getVelocity())*100.f)+glm::vec3(0, 5, 0), gg::Color(255,255,0,1));
 
     if(Singleton<Pathfinding>::Instance()->isDebugging() && !Waypoints.empty()){
 
@@ -66,7 +67,7 @@ void CNavmeshAgent::Update(){
         color.B = 200;
         color.Alpha = 1;
 
-        Singleton<GameEngine>::Instance()->Draw3DLine(cTransform->getPosition() + gg::Vector3f(0, 5, 0), debug.top().Position + gg::Vector3f(0, 10, 0), color, 2);
+        Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), debug.top().Position + glm::vec3(0, 10, 0), color);
         while(!debug.empty()){
             Waypoint first = debug.top();
             debug.pop();
@@ -74,7 +75,7 @@ void CNavmeshAgent::Update(){
             break;
 
             Waypoint second = debug.top();
-            Singleton<GameEngine>::Instance()->Draw3DLine(first.Position + gg::Vector3f(0, 10, 0), second.Position + gg::Vector3f(0, 10, 0), color, 2);
+            Engine->Draw3DLine(first.Position + glm::vec3(0, 10, 0), second.Position + glm::vec3(0, 10, 0), color);
         }
     }
 
@@ -89,7 +90,7 @@ void CNavmeshAgent::FixedUpdate(){
     //  Check if we can skip some nodes, but just if 0.15 seconds have passed
     if(Timer.ElapsedTime().Seconds() > 0.3) CheckShortcut();
 
-    float modulo= gg::Modulo(moveVector);
+    float modulo= glm::length(moveVector);
 
     // Check if we are close to the next destination node
     if(modulo <= 2) {
@@ -100,9 +101,9 @@ void CNavmeshAgent::FixedUpdate(){
         if(Waypoints.empty()){
             // Stop moving
             currentlyMovingTowardsTarget = false;
-            gg::Vector3f Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.7, 0, cRigidBody->getXZVelocity().Y * -0.7)*FORCE_FACTOR;
+            glm::vec3 Counter = glm::vec3(cRigidBody->getXZVelocity().x * -0.7f, 0, cRigidBody->getXZVelocity().y * -0.7f)*FORCE_FACTOR;
             cRigidBody->applyCentralForce(Counter);
-            //cRigidBody->setLinearVelocity(gg::Vector3f());//para solo velocidades
+            //cRigidBody->setLinearVelocity(glm::vec3());//para solo velocidades
         }
 
         return;
@@ -113,9 +114,17 @@ void CNavmeshAgent::FixedUpdate(){
     //  Apply a counter force when we change direction, so we can stop on curves
     ApplyCouterForce(moveVector);
 
-    //if(gg::Modulo(cRigidBody->getXZVelocity()) < vel)
+
+    //if(glm::length(cRigidBody->getXZVelocity()) < vel)
     //   cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
+
+
+
     cRigidBody->applyConstantVelocityNormal(moveVector,vel);//para solo velocidades
+
+    // if(glm::length(cRigidBody->getXZVelocity()) < MAXSPEED)
+    //     cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5f);
+
 
 }
 
@@ -130,7 +139,7 @@ void CNavmeshAgent::CheckShortcut(){
 
         //  If the node is less than the sight distance, and we can see it without problems, then go directly to that Waypoint
         if( gg::FastDIST(cTransform->getPosition(), Waypoints.top().Position) > SightDistance ||
-            world->DoesItHitSomething(cTransform->getPosition() + gg::Vector3f(0, 2, 0), Waypoints.top().Position + gg::Vector3f(0, 2, 0))
+            world->DoesItHitSomething(cTransform->getPosition() + glm::vec3(0, 2, 0), Waypoints.top().Position + glm::vec3(0, 2, 0))
         ){
             Waypoints.push(backup);
             stop = true;
@@ -140,27 +149,27 @@ void CNavmeshAgent::CheckShortcut(){
     Timer.Restart();
 }
 
-void CNavmeshAgent::ApplyCouterForce(const gg::Vector3f &DirVector){
-    gg::Vector2f XZVelocity = gg::Normalice(cRigidBody->getXZVelocity());
+void CNavmeshAgent::ApplyCouterForce(const glm::vec3 &DirVector){
+    glm::vec2 XZVelocity = glm::normalize(cRigidBody->getXZVelocity());
 
-    float dot = DirVector.X * XZVelocity.X  +  DirVector.Z * XZVelocity.Y;
-    float det = DirVector.X * XZVelocity.Y  -  DirVector.Z * XZVelocity.X;
+    float dot = DirVector.x * XZVelocity.x  +  DirVector.z * XZVelocity.y;
+    float det = DirVector.x * XZVelocity.y  -  DirVector.z * XZVelocity.x;
     float angle = atan2(det, dot);
 
-    gg::Vector3f Counter = gg::Vector3f();
+    glm::vec3 Counter = glm::vec3();
     if(cos(angle) < 0.98) {
-        Counter = gg::Vector3f(cRigidBody->getXZVelocity().X * -0.12, 0, cRigidBody->getXZVelocity().Y * -0.12)*FORCE_FACTOR*(abs(sin(angle))*1.2);
+        Counter = glm::vec3(cRigidBody->getXZVelocity().x * -0.12f, 0, cRigidBody->getXZVelocity().y * -0.12f)*FORCE_FACTOR*(abs(sin(angle))*1.2f);
         cRigidBody->applyCentralForce(Counter);
     }
 }
 
-void CNavmeshAgent::SetDestination(const gg::Vector3f &Target){
+void CNavmeshAgent::SetDestination(const glm::vec3 &Target){
     Waypoints = std::stack<Waypoint>();
     Singleton<Pathfinding>::Instance()->FindPath(cTransform->getPosition(), Target, Waypoints);
     if(Waypoints.empty()){
         //std::cout << "EMPTY!" << '\n';
         currentlyMovingTowardsTarget = false;
-        cRigidBody->setLinearVelocity(0.5);
+        cRigidBody->setLinearVelocity(glm::vec3(0.5));
         return;
     }
     CheckShortcut();

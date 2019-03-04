@@ -4,6 +4,7 @@
 #include "TEntidad.hpp"
 #include "ZStaticMesh.hpp"
 #include <array>
+#include <cstdint>
 
 class TAnimacion: public TEntidad {
 
@@ -13,8 +14,8 @@ class TAnimacion: public TEntidad {
         virtual ~TAnimacion ();
 
 
-        virtual void beginDraw(int);
-        virtual void endDraw();
+        virtual void beginDraw(const uint8_t&);
+        virtual void endDraw(const uint8_t&);
 
     private:
         std::array<ZStaticMesh, 5> poses;

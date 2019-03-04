@@ -5,7 +5,6 @@
 #include <ComponentArch/Message.hpp>
 
 #include <Singleton.hpp>
-#include <GameEngine/GameEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 
 #include <EventSystem/EnumTriggerType.hpp>

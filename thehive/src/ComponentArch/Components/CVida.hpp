@@ -11,7 +11,7 @@
 #include <Util.hpp>
 #include <stack>
 
-#include <GameEngine/GameEngine.hpp>
+
 #include <ComponentArch/ObjectManager.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Singleton.hpp>
@@ -38,7 +38,7 @@ class CVida : public IComponent {
     private:
         CVida(const CVida &orig) = delete;
         ObjectManager   *Manager;
-        ScreenConsole   *hud;
+        //ScreenConsole   *hud;
         CTriggerSystem  *triggerSystem;
 
         float vida;

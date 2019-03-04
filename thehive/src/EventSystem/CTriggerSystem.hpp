@@ -26,14 +26,14 @@ struct TriggerRecordStruct
     TriggerRecordStruct(
         EnumTriggerType _eTriggerType,
         unsigned long _idSource,
-        const gg::Vector3f _vPos,
+        const glm::vec3 _vPos,
         float _fRadius,
         unsigned long _fDuration,
         bool _bDynamicSourcePos,
         TData _data
     );
     TriggerRecordStruct(const TriggerRecordStruct &orig);
-    gg::Vector3f vPos;
+    glm::vec3 vPos;
     TData data;
     std::chrono::high_resolution_clock::time_point nTimeStamp;
     unsigned long nTriggerID;
@@ -57,14 +57,14 @@ public:
     void PulsoTrigger(
         EnumTriggerType _eTriggerType,
         unsigned long _idSource,
-        const gg::Vector3f& _vPos,
+        const glm::vec3& _vPos,
         float _fRadius,
         TData _data);
     unsigned long RegisterTriger(
         EnumTriggerType _eTriggerType,
         unsigned long _nPriority,
         unsigned long _idSource,
-        const gg::Vector3f& _vPos,
+        const glm::vec3& _vPos,
         float _fRadius,
         float _fDuration,
         bool _bDynamicSourcePos,

@@ -5,16 +5,15 @@
 #include <ComponentArch/Message.hpp>
 #include <cstdint>
 #include <cmath>
-#include <GameEngine/GameEngine.hpp>
-#include <GameEngine/Camera.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/TNodo.hpp>
 #include <Singleton.hpp>
 
 #include "CTransform.hpp"
+#include <ComponentArch/ObjectManager.hpp>
 
-class ObjectManager;
 class CRigidBody;
 class ggDynWorld;
-
 class CCamera : public IComponent {
 friend class Factory;
 public:
@@ -28,30 +27,32 @@ public:
     void setTarget(CTransform* T);
     void CameraUpdate();
 
-    gg::Vector3f getCameraPosition();
-    gg::Vector3f getCameraRotation();
-    gg::Vector3f getCameraTarget();
-    gg::Vector3f getOffsetPositionVector();
+    glm::vec3 getCameraPosition();
+    glm::vec3 getCameraRotation();
+    glm::vec3 getOffsetPositionVector();
 
-    void moveCameraPosition(gg::Vector3f);
+    void moveCameraPosition(glm::vec3);
 
-    gg::Vector3f getlastHeroPosition();
-    gg::Vector3f getCameraPositionBeforeLockRotation();
-    void setCameraPositionBeforeLockRotation(gg::Vector3f); // Por ahora no se usa
+    glm::vec3 getlastHeroPosition();
+    glm::vec3 getCameraPositionBeforeLockRotation();
+    void setCameraPositionBeforeLockRotation(glm::vec3); // Por ahora no se usa
 
 private:
     CRigidBody      *CRigidbody;
-    GameEngine      *Engine;
+    TMotorTAG       *Engine;
     ObjectManager   *Manager;
-    Camera          *cam;
+    TNodo           *cam;
     CTransform      *Target;
     ggDynWorld      *dynWorld;
 
-    gg::Vector3f lastHeroPosition;
-    gg::Vector3f cameraPositionBeforeLockRotation;
-    gg::Vector3f offsetPositionVector;
-    gg::Vector3f pos_on_collision;
-    gg::Vector3f last_cam_position;
+    glm::vec3 lastHeroPosition;
+    glm::vec3 cameraPositionBeforeLockRotation;
+    glm::vec3 offsetPositionVector;
+    glm::vec3 pos_on_collision;
+    glm::vec3 last_cam_position;
+
+    glm::vec3 Pos;
+    glm::vec3 Rot;
 
     float screenW;
     float screenH;
@@ -59,12 +60,12 @@ private:
     bool daniNoSabeProgramar;
     bool collision;
 
-    void getNewRotation                 (gg::Vector3f&);
-    void setFinalRotation               (gg::Vector3f&,gg::Vector3f&,bool);
-    void setHorizontalAxis              (gg::Vector3f&,gg::Vector3f&,gg::Vector3f&,gg::Vector3f&);
-    void setVerticalAxis                (gg::Vector3f&,gg::Vector3f&,gg::Vector3f&, gg::Vector3f&);
-    void fixCameraPositionOnCollision   (gg::Vector3f&);
-    void setPerpendicularOffsetVector   (gg::Vector3f&);
+    void getNewRotation                 (glm::vec3&);
+    void setFinalRotation               (glm::vec3&,glm::vec3&,bool);
+    void setHorizontalAxis              (glm::vec3&,glm::vec3&,glm::vec3&,glm::vec3&);
+    void setVerticalAxis                (glm::vec3&,glm::vec3&,glm::vec3&, glm::vec3&);
+    void fixCameraPositionOnCollision   (glm::vec3&);
+    void setPerpendicularOffsetVector   (glm::vec3&);
 
 };
 

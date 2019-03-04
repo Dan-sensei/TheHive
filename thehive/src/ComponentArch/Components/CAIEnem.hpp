@@ -18,11 +18,10 @@
 
 #include <ComponentArch/Components/CClock.hpp>
 
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+#include <SurrealEngine/TMotorTAG.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <GameAI/Treecontroller.hpp>
 
 class Treecontroller;
-class GameEngine;
 class ObjectManager;
 
 class CAgent;
@@ -32,7 +31,7 @@ class ggDynWorld;
 
 class CAIEnem : public IComponent {
     public:
-        CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen);
+        CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos, bool _playerSeen);
         CAIEnem(const CAIEnem &orig) = delete;
         virtual ~CAIEnem();
 
@@ -89,9 +88,9 @@ class CAIEnem : public IComponent {
         static CRigidBody* PlayerBody;     //  Punteros a otras componentes
         Treecontroller* arbol;
 
-        gg::Vector3f playerPos;
-        gg::Vector3f senpos;
-        gg::Vector3f destino;
+        glm::vec3 playerPos;
+        glm::vec3 senpos;
+        glm::vec3 destino;
         float enfado;
         float agresividad;
         float Vrange;
@@ -114,7 +113,7 @@ class CAIEnem : public IComponent {
         bool            CanIReset;
 
     private:
-        GameEngine      *Engine;
+        TMotorTAG      *Engine;
         ObjectManager   *Manager;
         CTriggerSystem  *EventSystem;
         CTransform      *cTransform;

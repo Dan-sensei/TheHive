@@ -6,14 +6,12 @@
 #include "Singleton.hpp"
 #include "Util.hpp"
 
-#include <GameEngine/GameEngine.hpp>
+
 #include <GameEngine/ScreenConsole.hpp>
 #include <GameEngine/EnumButtonType.hpp>
 #include <GameEngine/KEYCODES.hpp>
 #include <States/StateMachine.hpp>
-
-
-class GameEngine;
+#include <SurrealEngine/TMotorTAG.hpp>
 
 
 class GUIController{
@@ -65,7 +63,7 @@ void lessEffect();
 void initOptions();
 
 
-        GameEngine* Engine;
+        TMotorTAG* Engine;
         using pFunc = void(GUIController::*)();
         pFunc VectorAcciones[Butn];
 

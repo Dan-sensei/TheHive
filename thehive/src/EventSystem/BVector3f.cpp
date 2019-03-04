@@ -1,6 +1,6 @@
 #include "BVector3f.hpp"
 
-BVector3f::BVector3f(gg::Vector3f _Value)
+BVector3f::BVector3f(glm::vec3 _Value)
 :Value(_Value)
 {}
 
@@ -12,6 +12,6 @@ BVector3f::BVector3f(const BVector3f &orig){
 BVector3f::~BVector3f(){}
 
 
-gg::Vector3f BVector3f::getVector3f(){
+glm::vec3 BVector3f::getVector3f(){
     return Value;
 }

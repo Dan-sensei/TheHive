@@ -2,7 +2,7 @@
 #define FACTORY_H
 
 #include <ComponentArch/ObjectManager.hpp>
-#include <GameEngine/GameEngine.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
 
@@ -19,31 +19,31 @@ class Factory{
     friend class Singleton<Factory>;
 
     public:
-        uint16_t createHero(const gg::Vector3f &Position,bool);
-        uint16_t createSoldier(const gg::Vector3f&,const float&);
-        uint16_t createSoldierHorda(const gg::Vector3f&,const float&,const gg::Vector3f&);
-        uint16_t createSoldierWandering(const gg::Vector3f&,const float&);
-        uint16_t createRusher(const gg::Vector3f&,const float&);
-        uint16_t createTank(const gg::Vector3f&,const float&);
-        uint16_t createSingleSwarm(const gg::Vector3f&,const float&);
-        //uint16_t createSingleSwarm(const gg::Vector3f &Position,const float &health)
+        uint16_t createHero(const glm::vec3 &Position,bool);
+        uint16_t createSoldier(const glm::vec3&,const float&);
+        uint16_t createSoldierHorda(const glm::vec3&,const float&,const glm::vec3&);
+        uint16_t createSoldierWandering(const glm::vec3&,const float&);
+        uint16_t createRusher(const glm::vec3&,const float&);
+        uint16_t createTank(const glm::vec3&,const float&);
+        uint16_t createSingleSwarm(const glm::vec3&,const float&);
+        //uint16_t createSingleSwarm(const glm::vec3 &Position,const float &health)
 
-        //CRigidBody* createSingleSwarm( const gg::Vector3f &Position);
-        uint16_t createSwarm( const gg::Vector3f &Position,const float &health);
+        //CRigidBody* createSingleSwarm( const glm::vec3 &Position);
+        uint16_t createSwarm( const glm::vec3 &Position,const float &health);
 
 
-        uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
-        uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const gg::Vector3f &Position);
-        uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const gg::Vector3f &Position, const gg::Vector3f &Rotation = gg::Vector3f());
-        uint16_t createPathFindingActor(const gg::Vector3f &Position);
-        uint16_t createHolyBomb(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
-        uint16_t createMatriuska(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
-        uint16_t createSenyuelo(const gg::Vector3f &Position, const gg::Vector3f &Impulse);
-        uint16_t createCollectableWeapon(const gg::Vector3f&, int);
-        uint16_t createPickableItem(const gg::Vector3f&);
-        uint16_t createTouchableObject(const gg::Vector3f&, const uint16_t&, const gg::Vector3f&, const float&, uint16_t=0);
+        // uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
+        // uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
+        // uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const glm::vec3 &Position, const glm::vec3 &Rotation = glm::vec3());
+        uint16_t createPathFindingActor(const glm::vec3 &Position);
+        uint16_t createHolyBomb(const glm::vec3 &Position, const glm::vec3 &Impulse);
+        uint16_t createMatriuska(const glm::vec3 &Position, const glm::vec3 &Impulse);
+        uint16_t createSenyuelo(const glm::vec3 &Position, const glm::vec3 &Impulse);
+        uint16_t createCollectableWeapon(const glm::vec3&, int);
+        uint16_t createPickableItem(const glm::vec3&);
+        uint16_t createTouchableObject(const glm::vec3&, const uint16_t&, const glm::vec3&, const float&, uint16_t=0);
 
-        uint16_t createDebugBullet(const gg::Vector3f&);
+        uint16_t createDebugBullet(const glm::vec3&);
     private:
 
         Factory();
@@ -51,7 +51,7 @@ class Factory{
         void operator=(const Factory &orig) = delete;
 
         ObjectManager* Manager;
-        GameEngine* Engine;
+        TMotorTAG* Engine;
 
 };
 

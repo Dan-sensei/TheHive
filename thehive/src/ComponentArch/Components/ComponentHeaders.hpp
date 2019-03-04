@@ -14,4 +14,6 @@
 	#include <ComponentArch/Components/CTransform.hpp>
 	#include <ComponentArch/Components/CRenderable_3D.hpp>
 	#include <ComponentArch/Components/CAgent.hpp>
+	#include <ComponentArch/Components/CStaticModel.hpp>
+	#include <ComponentArch/Components/CSimpleStaticRigidBody.hpp>
 #endif

@@ -1,10 +1,14 @@
 #include "TTransform.hpp"
 
 // Pila de matrices
-std::stack<glm::mat4> TEntidad::glMatrixStack;
+// std::stack<glm::mat4> TEntidad::matrixStack;
+// glm::mat4 TEntidad::modelMatrix;
 
-TTransform::TTransform(){}
-TTransform::~TTransform (){}
+TTransform::TTransform(){
+    identity();
+}
+
+TTransform::~TTransform(){}
 
 TTransform::TTransform(glm::mat4 _m){
     matrix = _m;
@@ -13,17 +17,24 @@ TTransform::TTransform(glm::mat4 _m){
 void TTransform::load(glm::mat4 _m){
     matrix = _m;
 }
-
-void TTransform::translate(gg::Vector3f _vec){
-    matrix = glm::translate(matrix,glm::vec3(_vec.X,_vec.Y,_vec.Z));
+glm::vec3 TTransform::getDatos(){
+    return datos;
 }
 
-void TTransform::rotate(float _angle, gg::Vector3f _vec){
-    matrix = glm::rotate(matrix,_angle,glm::vec3(_vec.X,_vec.Y,_vec.Z));
+void TTransform::translate(glm::vec3 _vec){
+    auto input = _vec;
+    matrix = glm::translate(matrix,input);
+    datos+=input;
 }
 
-void TTransform::scale(gg::Vector3f _vec){
-    matrix = glm::scale(matrix,glm::vec3(_vec.X,_vec.Y,_vec.Z));
+void TTransform::rotate(float _angle, glm::vec3 _axis){
+    auto input = _axis;
+    matrix = glm::rotate(matrix,glm::radians(_angle),input);
+    datos+=input*_angle;
+}
+
+void TTransform::scale(glm::vec3 _vec){
+    matrix = glm::scale(matrix,_vec);
 }
 
 void TTransform::identity(){
@@ -38,16 +49,37 @@ void TTransform::inverse(){
     matrix = glm::inverse(matrix);
 }
 
-void TTransform::beginDraw(){
-    auto updateTransform = [this](){
-        glm::mat4 m_aux = glMatrixStack.top();
-        glMatrixStack.push( m_aux * matrix );
+void TTransform::beginDraw(const uint8_t &T_ID){
+    // Apilar matriz y aplicar transformacion a la matriz actual
+    // Las grandiosas funciones lambda
+    auto resto = [this](){
+        modelMatrix = matrix*modelMatrix;
+        matrixStack.push(matrix);
     };
-    // Apilar matriz
-    (glMatrixStack.empty())? glMatrixStack.push(matrix) : updateTransform();
+
+    auto it1 = [this](){
+        modelMatrix = matrix;
+        matrixStack.push(matrix);
+    };
+
+    (matrixStack.empty())? it1() : resto();
 }
 
-void TTransform::endDraw(){
-    // Desapilar matriz
-    glMatrixStack.pop();
+void TTransform::setPosition(glm::vec3 _vec){
+    identity();
+    datos=glm::vec3(0,0,0);
+    translate( _vec);
+}
+void TTransform::setRotation(glm::vec3 _vec){
+    identity();
+    datos=glm::vec3(0,0,0);
+    rotate(_vec.x, glm::vec3(1,0,0));
+    rotate(_vec.y, glm::vec3(0,1,0));
+    rotate(_vec.z, glm::vec3(0,0,1));
+}
+
+void TTransform::endDraw(const uint8_t &T_ID){
+    // Desapilar matriz y ponerla como la actual
+    modelMatrix = matrixStack.top();
+    matrixStack.pop();
 }

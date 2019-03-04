@@ -37,7 +37,7 @@ CAgent::~CAgent() {
 
 
 void CAgent::Init(){
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
 
     nCAgentID=getEntityID();
     addAgent(this);
@@ -99,14 +99,14 @@ unsigned long  CAgent::GetTriggerFlags(){
     return dwTriggerFlags;
 }
 
-gg::Vector3f CAgent::GetPosition(){
+glm::vec3 CAgent::GetPosition(){
     return cTransform->getPosition();
 }
 
 void CAgent::updatetrig(){
     TriggerRecordStruct *pTrig;
     float fDistance;
-    gg::Vector3f TF_POS = cTransform->getPosition();
+    glm::vec3 TF_POS = cTransform->getPosition();
 
     std::vector<std::list<TriggerRecordStruct*>::iterator> vec;
     std::vector<std::list<TriggerRecordStruct*>::iterator>::iterator it2 = vec.begin();
@@ -114,7 +114,7 @@ void CAgent::updatetrig(){
     std::list<TriggerRecordStruct*>::iterator it = TriggerList.begin();
     while(it != TriggerList.end()){
         pTrig = *it;
-        fDistance = gg::DIST(pTrig->vPos,TF_POS );
+        fDistance = glm::distance(pTrig->vPos,TF_POS );
 
         if(fDistance > pTrig->fRadius){
             onTriggerExit(pTrig);
@@ -142,7 +142,7 @@ void CAgent::ENTER_func_kTrig_Gunfire       (TriggerRecordStruct *_pRec){}
 
 void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_ExpansiveWave){
-        gg::cout(" --- HACE PUM --- ");
+        //gg::cout(" --- HACE PUM --- ");
     }
 }
 void CAgent::ENTER_func_kTrig_ExpansiveForce (TriggerRecordStruct *_pRec){
@@ -170,7 +170,7 @@ void CAgent::ENTER_func_kTrig_Explosion   (TriggerRecordStruct *_pRec){
             CVida *health = static_cast<CVida*>(oManager->getComponent(gg::VIDA,nCAgentID));
             if(health){
                 float damage = _pRec->data.find(kDat_Damage)/1000;
-                // gg::cout("BOOOOOOOOOOM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
+                // //gg::cout("BOOOOOOOOOOM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
                 health->quitarvida(damage);
             }
         }
@@ -191,7 +191,7 @@ void CAgent::ENTER_func_kTrig_Shoot       (TriggerRecordStruct *_pRec){
         CVida *health = static_cast<CVida*>(oManager->getComponent(gg::VIDA,nCAgentID));
         if(health){
             float damage = _pRec->data.find(kDat_Damage);
-            gg::cout("PUM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
+            //gg::cout("PUM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
 
             health->quitarvida(damage);
 
@@ -253,7 +253,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
             if(!cpc->heroHasSecondWeapon()){
                 // Puedo recoger el arma del suelo
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
-                gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
+                //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
                 getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
 
@@ -265,7 +265,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 // Puedo recoger el arma del suelo
                 int _wtype_actual = gun->getType();
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
-                gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
+                //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
                 getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
 
@@ -276,16 +276,16 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
                 oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
 
-                gg::Vector3f pos(
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().X,
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Y+5,
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().Z
+                glm::vec3 pos(
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().x,
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().y+5,
+                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().z
                 );
                 uint16_t weapon = Singleton<Factory>::Instance()->createCollectableWeapon(pos,_wtype_actual);
 
-                gg::Vector3f from = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition();
-                gg::Vector3f to = Singleton<ggDynWorld>::Instance()->getRaycastVector();
-                gg::Vector3f vec = (to-from)*30;
+                glm::vec3 from = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition();
+                glm::vec3 to = Singleton<ggDynWorld>::Instance()->getRaycastVector();
+                glm::vec3 vec = (to-from)*30.f;
                 static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,weapon))->applyCentralForce(vec);
             }
 
@@ -316,7 +316,7 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
         if(item && !cpc->hasItem(item)){
             // El heroe no ha cogido el item en concreto para realizar la accion
-            gg::cout("You shall not PASS!!!");
+            //gg::cout("You shall not PASS!!!");
             return;
         }
         // Usa y destruye el item
@@ -326,7 +326,7 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
         if(!isDone){
             uint16_t eIdObj     = _pRec->data.find(kDat_EntId);
             int actionId        = _pRec->data.find(kDat_Action);
-            gg::cout("ID: "+std::to_string(eIdObj)+" || ACTION: "+std::to_string(actionId));
+            //gg::cout("ID: "+std::to_string(eIdObj)+" || ACTION: "+std::to_string(actionId));
 
             // Esta done la accion del jugador
             _pRec->data.clearData(kDat_Done);
@@ -345,14 +345,14 @@ void CAgent::STAY_func_kTrig_Pickable    (TriggerRecordStruct *_pRec){
 
         bool result = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER, nCAgentID))->pickItem(id);
         if(result){
-            gg::cout(" -- Picked object: "+std::to_string(id));
+            //gg::cout(" -- Picked object: "+std::to_string(id));
             // Ha podido coger el item
             _pRec->nExpirationTime = 20;
             oManager->removeEntity(id);
         }
         else{
             // No ha podido cogerlo
-            gg::cout(" -- Can't pick object: "+std::to_string(id)+" -> FULL POCKETS");
+            //gg::cout(" -- Can't pick object: "+std::to_string(id)+" -> FULL POCKETS");
         }
     }
 }
@@ -384,7 +384,7 @@ void CAgent::EXIT_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){
         CAIEnem *AI = static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,getEntityID()));
         if(AI){
             AI->setCloserAllyIsDead(false);
-            gg::cout("ROMERO");
+            //gg::cout("ROMERO");
         }
     }
 }
@@ -462,7 +462,7 @@ bool CAgent::HandleTrig(TriggerRecordStruct* _pRec){
     return res;
 }
 
-//CAgent::CAgent(unsigned long _dwTriggerFlags,gg::Vector3f _vPos){
+//CAgent::CAgent(unsigned long _dwTriggerFlags,glm::vec3 _vPos){
 //    nCAgentID=id2;
 //    id2++;
 //    dwTriggerFlags=_dwTriggerFlags;
@@ -561,11 +561,11 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             break;
     }
 
-    gg::cout(" --- GUN PICKED --- ");
-    gg::cout(" - - DMG= "       + std::to_string(dmg));
-    gg::cout(" - - CADENCE= "   + std::to_string(cdc));
-    gg::cout(" - - BULLETS= "   + std::to_string(tb));
-    gg::cout(" - - DT= "        + std::to_string(relDT));
-    gg::cout(" - - RANGE= "     + std::to_string(rng));
-    gg::cout(" ------------------ ");
+    //gg::cout(" --- GUN PICKED --- ");
+    //gg::cout(" - - DMG= "       + std::to_string(dmg));
+    //gg::cout(" - - CADENCE= "   + std::to_string(cdc));
+    //gg::cout(" - - BULLETS= "   + std::to_string(tb));
+    //gg::cout(" - - DT= "        + std::to_string(relDT));
+    //gg::cout(" - - RANGE= "     + std::to_string(rng));
+    //gg::cout(" ------------------ ");
 }

@@ -112,12 +112,12 @@ void GameEngine::HideCursor(bool flag){
 //  ---
 //  Adds a camera to the scene with optional initial coordinates
 //==================================================================================
-void GameEngine::createCamera(const gg::Vector3f &position /* = {0,0,0} */, const gg::Vector3f &direction /* = {0,0,0} */) {
+void GameEngine::createCamera(const glm::vec3 &position /* = {0,0,0} */, const glm::vec3 &direction /* = {0,0,0} */) {
 
     G_Camera.mCamera = smgr->addCameraSceneNode(
         0,
-        irr::core::vector3df(position.X, position.Y, position.Z),
-        irr::core::vector3df(direction.X, direction.Y, direction.Z)
+        irr::core::vector3df(position.x, position.y, position.z),
+        irr::core::vector3df(direction.x, direction.y, direction.z)
     );
 
 }
@@ -146,13 +146,13 @@ void GameEngine::setCursorPosition(int x, int y){
 }
 
 // Para debuggear
-void GameEngine::draw3DLine(const gg::Vector3f &_start, const gg::Vector3f &_finish, const float _color[4]){
+void GameEngine::draw3DLine(const glm::vec3 &_start, const glm::vec3 &_finish, const float _color[4]){
     irr::video::SMaterial m;
     m.Lighting = false;
     driver->setMaterial(m);
     driver->setTransform(irr::video::ETS_WORLD, irr::core::matrix4());
-    irr::core::vector3df start(_start.X,_start.Y,_start.Z);
-    irr::core::vector3df finish(_finish.X,_finish.Y,_finish.Z);
+    irr::core::vector3df start(_start.x,_start.y,_start.z);
+    irr::core::vector3df finish(_finish.x,_finish.y,_finish.z);
     irr::video::SColor color(_color[0],_color[1],_color[2],_color[3]);
 
     driver->draw3DLine(start,finish,color);
@@ -162,7 +162,7 @@ void GameEngine::draw3DLine(const gg::Vector3f &_start, const gg::Vector3f &_fin
 //  ---
 //  Adds a 3D model to the scene on the desired position or 0, 0, 0 by default
 //==================================================================================
-void GameEngine::createModel(Model &model, const std::string &path, const gg::Vector3f &position /* = {0,0,0} */) {
+void GameEngine::createModel(Model &model, const std::string &path, const glm::vec3 &position /* = {0,0,0} */) {
 
     model.mModel = smgr->addAnimatedMeshSceneNode(smgr->getMesh(path.c_str()));
 
@@ -175,10 +175,10 @@ void GameEngine::createModel(Model &model, const std::string &path, const gg::Ve
 //  ---
 //  Adds a billboard to the scene on the desired position or 0, 0, 0 by default
 //==================================================================================
-void GameEngine::createBillboard(Billboard &billboard, const gg::Vector3f &position /* = {0,0,0} */) {
+void GameEngine::createBillboard(Billboard &billboard, const glm::vec3 &position /* = {0,0,0} */) {
     irr::gui::IGUIFont *font = device->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
     billboard.billboard = smgr->addBillboardTextSceneNode(font, L"CUANTOS ARRECIFES TENES");
-    billboard.billboard->setPosition(irr::core::vector3df(position.X, position.Y, position.Z));
+    billboard.billboard->setPosition(irr::core::vector3df(position.x, position.y, position.z));
 }
 
 
@@ -208,11 +208,11 @@ void GameEngine::Close(){
     device->closeDevice();
 }
 
-void GameEngine::Draw3DLine(const gg::Vector3f &Origin, const gg::Vector3f &Target, const gg::Color &Color, float thickness) {
+void GameEngine::Draw3DLine(const glm::vec3 &Origin, const glm::vec3 &Target, const gg::Color &Color, float thickness) {
     irr::video::SMaterial m;
     m.Lighting = false;
     m.Thickness = thickness;
     driver->setMaterial(m);
     driver->setTransform(irr::video::ETS_WORLD, irr::core::matrix4());
-    driver->draw3DLine(irr::core::vector3df(Origin.X, Origin.Y, Origin.Z), irr::core::vector3df(Target.X, Target.Y, Target.Z), irr::video::SColor(Color.Alpha, Color.R, Color.G, Color.B));
+    driver->draw3DLine(irr::core::vector3df(Origin.x, Origin.y, Origin.z), irr::core::vector3df(Target.x, Target.y, Target.z), irr::video::SColor(Color.Alpha, Color.R, Color.G, Color.B));
 }

@@ -2,24 +2,29 @@
 #define TLUZ_H
 
 #include <Util.hpp>
+#include "TEntidad.hpp"
+#include "Shader.hpp"
 
-class TLuz{
-//class TLuz : public TEntidad {
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+class TLuz : public TEntidad {
     public:
         TLuz();
         TLuz(gg::Color&);
+        TLuz(Shader*);
+        TLuz(gg::Color&,Shader*);
         virtual ~TLuz ();
 
-        void setIntensidad(gg::Color&);
-        //void setDireccion(gg::Vector3f&);
-        gg::Color getIntensidad();
+        virtual void setIntensidad(gg::Color&);
+        virtual gg::Color getIntensidad();
 
-        virtual void beginDraw();
-        virtual void endDraw();
+        virtual void beginDraw(const uint8_t&);
+        virtual void endDraw(const uint8_t&);
 
     private:
         gg::Color intensidad;
-        //gg::Vector3f direccion;
+        Shader* light_shader;
 
 };
 

@@ -39,7 +39,7 @@ public:
 
     void removePos(AINode* nodo);
 
-    AINode* createNode(gg::Vector3f _pos,float _range);
+    AINode* createNode(glm::vec3 _pos,float _range);
 
 
     void clean();
@@ -73,7 +73,7 @@ private:
 class AINode {
 public:
     AINode();
-    AINode(gg::Vector3f,float _range);
+    AINode(glm::vec3,float _range);
     AINode(const AINode &orig);
     void addNode(AINode*);
 
@@ -81,12 +81,12 @@ public:
 
     std::vector<AINode* > nodosProximos;
 
-    gg::Vector3f getPos();
+    glm::vec3 getPos();
     bool getonRange();
     void setonRange(bool);
     float getRange();
 private:
-    gg::Vector3f pos;
+    glm::vec3 pos;
     bool onRange;
     float range;
 

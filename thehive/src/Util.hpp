@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <iostream>
-
+#include <glm/glm.hpp>
 
 
 namespace gg{
@@ -73,64 +73,17 @@ namespace gg{
 
     //    int16_t X, Y;
     //};
-
-
-
-    /*          FLOAT       */
-    struct Vector3f{
-        Vector3f(float _X = 0, float _Y = 0, float _Z = 0);
-        Vector3f(const Vector3f &orig);
-
-        float X, Y, Z;
-        Vector3f operator+ (const Vector3f &v1);
-        Vector3f operator- (const Vector3f &v1);
-        Vector3f operator* (const float &multiplier);
-        Vector3f operator* (const Vector3f &v1);
-        Vector3f operator/ (const float &divider);
-
-        void operator+= (const Vector3f &v1);
-        void operator-= (const Vector3f &v1);
-        void operator*= (const float &v1);
-        void operator*= (const Vector3f &v1);
-        void operator/= (const float &divider);
-
-        bool operator== (const Vector3f &v);
-    };
-
-
-
-    struct Vector2f{
-        Vector2f(float _X = 0, float _Y = 0);
-        Vector2f(const Vector2f &orig);
-
-        Vector2f operator* (const float &multiplier);
-
-        float X, Y;
-    };
-
-    float DIST(const Vector3f &Vector1, const Vector3f &Vector2);
-
+    
     //  ---
     //  This is just used for checking distances between points. It doesn't compute
     //  the sqrt, but:
     //      sqrt(x) < sqrt(y) = x < y   Therefore, the condition remains the same
     //===============================================================================
-    float FastDIST(const Vector3f &Vector1, const Vector3f &Vector2);
+    float FastDIST(const glm::vec3 &Vector1, const glm::vec3 &Vector2);
 
-    float Modulo(const Vector3f &Vector);
-    float Modulo(const Vector2f &Vector);
-
-    Vector3f Normalice(Vector3f Vector);
-    Vector2f Normalice(Vector2f Vector);
-
-    Vector3f Direccion2D(Vector3f rot);
-    Vector3f Direccion3D(Vector3f rot);
-    Vector3f Direccion2D_to_rot(Vector3f rot);
-    float Producto(const Vector3f &dir,const Vector3f &diren);
-
-
-    template <typename T>
-    T operator+=(const T &v1, const T &v2);
+    glm::vec3 Direccion2D(glm::vec3 rot);
+    glm::vec3 Direccion3D(glm::vec3 rot);
+    glm::vec3 Direccion2D_to_rot(glm::vec3 rot);
 
     float genFloatRandom(float min, float max);
     uint16_t genIntRandom(uint16_t min, uint16_t max);
@@ -156,7 +109,7 @@ namespace gg{
     };
 };
 
-std::ostream& operator<<(std::ostream& os, const gg::Vector3f &v1);
+//std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1);
 //template <typename T>
 //T gg::T::operator+ (T v1);
 

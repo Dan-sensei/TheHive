@@ -37,7 +37,7 @@ AIDirector::AIDirector (int _id,float _duracion,int _cooldown)
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
     /*
     cargar los puntos de  spawn del mapa
-    AINode* AIDirector::createNode(gg::Vector3f _pos,float _range){
+    AINode* AIDirector::createNode(glm::vec3 _pos,float _range){
     //rellenar node con proximidad y rango
 
     */
@@ -67,9 +67,9 @@ void AIDirector::init(){
     canWander=true;
     canHorde=true;
     //Creacion de nodos
-    Njugador= createNode(gg::Vector3f(5,3,65),5);
+    Njugador= createNode(glm::vec3(5,3,0),5);
     Njugador->setonRange(true);
-    //uint16_t h = sF->createHero(gg::Vector3f(10,3,65),false);
+    //uint16_t h = sF->createHero(glm::vec3(10,3,65),false);
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
 
 
@@ -81,7 +81,7 @@ Pjugador(nullptr),Njugador(nullptr){
     Manager = Singleton<ObjectManager>::Instance();
     fac = Singleton<Factory>::Instance();
     //Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
-    //Njugador= createNode(gg::Vector3f(5,3,65),5);
+    //Njugador= createNode(glm::vec3(5,3,65),5);
 
 
 
@@ -134,20 +134,20 @@ void AIDirector::update (float delta){
 void AIDirector::clipingEnemigos(){
     CCamera* camera  = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, Manager->getHeroID()));
     float gradovision     = cos(90*3.14159265359/180.f);
-    gg::Vector3f cTF_POS    = camera->getCameraPosition();//camara
-    cTF_POS.Y =0;
-    gg::Vector3f cTF_ROT    = camera->getCameraRotation();
-    gg::Vector3f dir        = Direccion2D(cTF_ROT);
+    glm::vec3 cTF_POS    = camera->getCameraPosition();//camara
+    cTF_POS.y =0;
+    glm::vec3 cTF_ROT    = camera->getCameraRotation();
+    glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
 
 
     auto it=enemigos.begin();
     while(it!=enemigos.end()){
-        gg::Vector3f pTF        = (*it)->getPosition();//enemigo
-        pTF.Y =0;
+        glm::vec3 pTF        = (*it)->getPosition();//enemigo
+        pTF.y =0;
         //float dist = gg::DIST(pTF,cTF_POS);
-        gg::Vector3f diren      = pTF-cTF_POS;
-        diren       = gg::Normalice(diren);
-        float sol   = gg::Producto(diren,dir);
+        glm::vec3 diren      = pTF-cTF_POS;
+        diren       = glm::normalize(diren);
+        float sol   = glm::dot(diren,dir);
         CRenderable_3D* render  = static_cast<CRenderable_3D*>(Manager->getComponent(gg::RENDERABLE_3D, (*it)->getEntityID()));
         //if(render){
             if(gradovision<sol){
@@ -164,7 +164,7 @@ void AIDirector::comprobar(){
     auto it= enemigos.begin();
     int viendome=0;
     float estresantes=0;
-    gg::Vector3f pos= Pjugador->getPosition();
+    glm::vec3 pos= Pjugador->getPosition();
     while(it!=enemigos.end()){
         //comprobar si me esta atacando
         CTransform* Tenemy=*it;
@@ -265,7 +265,7 @@ void AIDirector::createWandering(AINode* nodo){
     float rango=nodo->getRange();
     int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
     for (int i = 0; i < enemigosint; i++) {
-        gg::Vector3f deltapos(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
+        glm::vec3 deltapos(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
 
         int id=fac->createSoldierWandering(nodo->getPos()+deltapos, 2000);
         CTransform* enemypos=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
@@ -275,7 +275,7 @@ void AIDirector::createWandering(AINode* nodo){
 }
 void AIDirector::createHorda(AINode* nodo){
 
-    //gg::Vector3f dest1=Pjugador->getPosition();
+    //glm::vec3 dest1=Pjugador->getPosition();
     //int id2=fac->createSoldierHorda(nodo->getPos(), 2000,dest1);
     //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
     //enemigos.push_back(enemypos1);
@@ -306,13 +306,13 @@ void AIDirector::createHorda(AINode* nodo){
     // ----------------------------
 
     float rango=nodo->getRange();
-    gg::Vector3f dest=Pjugador->getPosition();
+    glm::vec3 dest=Pjugador->getPosition();
     int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
     for (int i = 0; i < enemigosint; i++) {
-        gg::Vector3f deltapos(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
-        gg::Vector3f posibuena=nodo->getPos();
+        glm::vec3 deltapos(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
+        glm::vec3 posibuena=nodo->getPos();
         posibuena=posibuena+deltapos;
-        int id=fac->createSoldierHorda(nodo->getPos()+deltapos, 2000,dest);
+        int id=fac->createSoldierHorda(nodo->getPos()+deltapos, 2000, dest);
         CTransform* enemypos=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
         //enemypos->getPosition()
         enemigos.push_back(enemypos);
@@ -320,7 +320,7 @@ void AIDirector::createHorda(AINode* nodo){
     }
 
 }
-AINode* AIDirector::createNode(gg::Vector3f _pos,float _range){
+AINode* AIDirector::createNode(glm::vec3 _pos,float _range){
     auto puntero=new AINode(_pos,_range);
     nodos.push_back(puntero);
     return puntero;
@@ -337,12 +337,12 @@ void AIDirector::removeEnemy(CTransform* nodo){
     }
 }
 void AIDirector::removePos(AINode* nodo){
-    gg::Vector3f posicion=nodo->getPos();
+    glm::vec3 posicion=nodo->getPos();
     auto it= enemigos.begin();
     while(it!=enemigos.end()){
-        gg::Vector3f pos = (*it)->getPosition();
+        glm::vec3 pos = (*it)->getPosition();
         pos-=posicion;
-        if(abs(pos.X)<=nodo->getRange()&&abs(pos.Z)<=nodo->getRange()){
+        if(abs(pos.x)<=nodo->getRange()&&abs(pos.z)<=nodo->getRange()){
             enemigos.erase(it);
             numEnemigos--;
             Manager->removeEntity((*it)->getEntityID());
@@ -358,9 +358,9 @@ jefe dejamos de invocar
 
 //codigo de nodo
 AINode::AINode(){}
-AINode::AINode(gg::Vector3f _pos,float _range):pos(_pos),onRange(false),range(_range){}
+AINode::AINode(glm::vec3 _pos,float _range):pos(_pos),onRange(false),range(_range){}
 AINode::AINode(const AINode &orig):pos(orig.pos),onRange(orig.onRange),range(orig.range){}
-gg::Vector3f AINode::getPos(){
+glm::vec3 AINode::getPos(){
     return pos;
 }
 bool AINode::getonRange(){

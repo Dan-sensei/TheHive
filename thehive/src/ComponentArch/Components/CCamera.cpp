@@ -1,5 +1,6 @@
 #include "CCamera.hpp"
 #include <ComponentArch/ObjectManager.hpp>
+#include <Bullet/ggDynWorld.hpp>
 
 #define PI                  3.1415926535897932384626433832795028841971693993751058209749445923078164062
 #define DEGREES_TO_RADIANS  PI/180.f
@@ -18,27 +19,27 @@ CCamera::~CCamera(){
 }
 
 void CCamera::Init(){
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
     dynWorld = Singleton<ggDynWorld>::Instance();
     cam = Engine->getCamera();
 
     lastHeroPosition = Target->getPosition();
 
-    cameraPositionBeforeLockRotation = Engine->getCamera()->getPosition();
+    cameraPositionBeforeLockRotation = Pos;
 
     collision = false;
     CRigidbody=new CRigidBody(
         false,
-        cameraPositionBeforeLockRotation.X,
-        cameraPositionBeforeLockRotation.Y,
-        cameraPositionBeforeLockRotation.Z,
+        cameraPositionBeforeLockRotation.x,
+        cameraPositionBeforeLockRotation.y,
+        cameraPositionBeforeLockRotation.z,
         1,1,1
     );
 
 
-    screenW = static_cast<int>(Engine->getScreenWidth())/2;
-    screenH = static_cast<int>(Engine->getScreenHeight())/2;
+    screenW = Engine->getScreenWidth();
+    screenH = Engine->getScreenHeight();
 }
 
 void CCamera::setTarget(CTransform *T) {
@@ -46,17 +47,17 @@ void CCamera::setTarget(CTransform *T) {
 }
 
 void CCamera::CameraUpdate(){
-    gg::Vector3f nextPosition = Target->getPosition();
+    glm::vec3 nextPosition = Target->getPosition();
     lastHeroPosition = nextPosition;
 
-    cam->bindTargetAndRotation(true);
+    //cam->bindTargetAndRotation(true);
 
-    gg::Vector3f camPosition = cam->getPosition();
-    gg::Vector3f backupRotation = cam->getRotation();
-    gg::Vector3f newRotation = backupRotation;
-    gg::Vector3f finalXRVector;
-    gg::Vector3f finalYRVector;
-    gg::Vector3f finalCameraPosition;
+    glm::vec3 camPosition = Pos;
+    glm::vec3 backupRotation = Rot;
+    glm::vec3 newRotation = backupRotation;
+    glm::vec3 finalXRVector;
+    glm::vec3 finalYRVector;
+    glm::vec3 finalCameraPosition;
 
     /////////////////////////////////////////////////////////////////
     // SET ROTATION
@@ -74,12 +75,13 @@ void CCamera::CameraUpdate(){
     setVerticalAxis(nextPosition,finalYRVector,newRotation,finalCameraPosition);
 
     // FIRST we have to set the camera position
-    gg::Vector3f auxCamvector(
-        finalXRVector.X,
-        finalYRVector.Y+HEIGHT,
-        finalXRVector.Z
+    glm::vec3 auxCamvector(
+        finalXRVector.x,
+        finalYRVector.y+HEIGHT,
+        finalXRVector.z
     );
-    cam->setPosition(camPosition+auxCamvector);
+    Pos = camPosition+auxCamvector;
+    Engine->setPosition(cam, Pos);
 
     // Perpendicular vector to set an offset to the right
     setPerpendicularOffsetVector(nextPosition);
@@ -92,57 +94,57 @@ void CCamera::CameraUpdate(){
     // Call to updateAbsolutePosition() to avoid perspective and camera position problems
     // ¡¡¡¡ THIS MUST BE THE LAST FUNCTION TO CALL AFTER ANY CAMERA POSITION CHANGING FUNCTION !!!!
     // [IRRLICHT FUNCTION]
-    cam->updateAbsolutePosition();
+    //cam->updateAbsolutePosition();
 
     setFinalRotation(newRotation,backupRotation, true);
 }
 
-void CCamera::setHorizontalAxis(gg::Vector3f &nextPosition,gg::Vector3f &finalXRVector,gg::Vector3f &newRotation,gg::Vector3f &ret_position){
-    gg::Vector3f cam_position = cam->getPosition();
+void CCamera::setHorizontalAxis(glm::vec3 &nextPosition,glm::vec3 &finalXRVector,glm::vec3 &newRotation,glm::vec3 &ret_position){
+    glm::vec3 cam_position = Pos;
     float angle,newX,newZ;
 
-    angle   = newRotation.Y*DEGREES_TO_RADIANS;
+    angle   = newRotation.y*DEGREES_TO_RADIANS;
     newX    = RADIUS * sin(angle);
     newZ    = RADIUS * cos(angle);
 
-    cam_position.X += newX;
-    cam_position.Z += newZ;
+    cam_position.x += newX;
+    cam_position.z += newZ;
 
     // Now set the 'OFFSET' to the nextPosition to cheat the player eyes
     finalXRVector = nextPosition-cam_position;
     ret_position = cam_position;
 }
 
-void CCamera::setVerticalAxis(gg::Vector3f &nextPosition,gg::Vector3f &finalYRVector,gg::Vector3f &newRotation, gg::Vector3f &finalCameraPosition){
+void CCamera::setVerticalAxis(glm::vec3 &nextPosition,glm::vec3 &finalYRVector,glm::vec3 &newRotation, glm::vec3 &finalCameraPosition){
     float angle,newY,newZ;
 
-    angle = -newRotation.X*DEGREES_TO_RADIANS;
+    angle = -newRotation.x*DEGREES_TO_RADIANS;
     newY = RADIUS * sin(angle);
     newZ = RADIUS * cos(angle);
 
-    finalCameraPosition.Y += newY;
-    finalCameraPosition.X += newZ;
+    finalCameraPosition.y += newY;
+    finalCameraPosition.x += newZ;
 
     // Now set the 'OFFSET' to the nextPosition to cheat the player eyes
     finalYRVector = nextPosition-finalCameraPosition;
 }
 
-void CCamera::setPerpendicularOffsetVector(gg::Vector3f &nextPosition){
+void CCamera::setPerpendicularOffsetVector(glm::vec3 &nextPosition){
     // Update camera position
-    gg::Vector3f camPosition = cam->getPosition();
-    gg::Vector3f ppV(
-        nextPosition.Z-camPosition.Z,
+    glm::vec3 camPosition = Pos;
+    glm::vec3 ppV(
+        nextPosition.z-camPosition.z,
         0,
-        -(nextPosition.X-camPosition.X)
+        -(nextPosition.x-camPosition.x)
     );
-    ppV = gg::Normalice(ppV);
+    ppV = glm::normalize(ppV);
     offsetPositionVector = ppV;
 
     moveCameraPosition(ppV);
 }
 
-void CCamera::getNewRotation(gg::Vector3f &newRotation){
-    int vX,vY;
+void CCamera::getNewRotation(glm::vec3 &newRotation){
+    double vX,vY;
     // Set the coordinates to an absolute 0 on the center of the screen
     // Set the mouse new coordinate to the center(0,0)
     Engine->getCursorPosition(vX,vY);
@@ -151,78 +153,71 @@ void CCamera::getNewRotation(gg::Vector3f &newRotation){
 
     if(daniNoSabeProgramar)
         vY = -vY;
-    Engine->setCursorPosition(static_cast<int>(screenW),static_cast<int>(screenH));
 
     // ------------------------------------------ //
     // NO SE QUE ES MAS OPTIMO :lenny_face:
-    newRotation += (gg::Vector3f(vY,vX,0))/CAMERA_ATENUATION;
+    newRotation += (glm::vec3(vY,vX,0))/CAMERA_ATENUATION;
     // ------------------------------------------ //
-    // newRotation.X += vY/CAMERA_ATENUATION;
-    // newRotation.Y += vX/CAMERA_ATENUATION;
-    // newRotation.Z  = 0;
+    // newRotation.x += vY/CAMERA_ATENUATION;
+    // newRotation.y += vX/CAMERA_ATENUATION;
+    // newRotation.z  = 0;
     // ------------------------------------------ //
 }
 
-void CCamera::setFinalRotation(gg::Vector3f &newRotation,gg::Vector3f &backupRotation,bool heroRotation){
+void CCamera::setFinalRotation(glm::vec3 &newRotation,glm::vec3 &backupRotation,bool heroRotation){
     // SECOND set the camera rotation
-    if(newRotation.X > -60 && newRotation.X <= 60)
-        cam->setRotation(newRotation);
-    else
-        cam->setRotation(backupRotation);
+    if(newRotation.x > -60 && newRotation.x <= 60){
+        Engine->setRotation(cam, newRotation);
+        Rot = newRotation;
+
+    }
+    else{
+        Engine->setRotation(cam, backupRotation);
+        Rot = backupRotation;
+    }
 
     // If heroRotation is FALSE, the hero won't move with the camera rotation
     //if(heroRotation){
-        cameraPositionBeforeLockRotation = cam->getPosition();
-        // mod->setRotation(gg::Vector3f(0,newRotation.Y,0));
+        cameraPositionBeforeLockRotation = Pos;
+        // mod->setRotation(glm::vec3(0,newRotation.y,0));
     //}
 }
 
-void CCamera::fixCameraPositionOnCollision(gg::Vector3f &nextPosition){
-    gg::Vector3f camPosition = cam->getPosition();
+void CCamera::fixCameraPositionOnCollision(glm::vec3 &nextPosition){
+    glm::vec3 camPosition = Pos;
     // Las dos mejores lineas que he escrito en mi vida
-    gg::Vector3f FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2;
+    glm::vec3 FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2f;
     if(dynWorld->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
-        cam->setPosition(pos_on_collision);
+        Engine->setPosition(cam, pos_on_collision);
+        Pos = pos_on_collision;
     }
 }
 
-gg::Vector3f CCamera::getOffsetPositionVector(){
+glm::vec3 CCamera::getOffsetPositionVector(){
     return offsetPositionVector;
 }
 
-gg::Vector3f CCamera::getCameraPosition(){
-    GameEngine *Engine = Singleton<GameEngine>::Instance();
-    return Engine->getCamera()->getPosition();
+glm::vec3 CCamera::getCameraPosition(){
+    return Pos;
 }
 
-gg::Vector3f CCamera::getCameraRotation(){
-    GameEngine *Engine = Singleton<GameEngine>::Instance();
-    return Engine->getCamera()->getRotation();
+glm::vec3 CCamera::getCameraRotation(){
+    return Rot;
 }
 
-gg::Vector3f CCamera::getCameraTarget(){
-    GameEngine *Engine = Singleton<GameEngine>::Instance();
-    return Engine->getCamera()->getTarget();
-}
-
-gg::Vector3f CCamera::getlastHeroPosition(){
+glm::vec3 CCamera::getlastHeroPosition(){
     return lastHeroPosition;
 }
 
-gg::Vector3f CCamera::getCameraPositionBeforeLockRotation(){
+glm::vec3 CCamera::getCameraPositionBeforeLockRotation(){
     return cameraPositionBeforeLockRotation;
 }
 
-void CCamera::setCameraPositionBeforeLockRotation(gg::Vector3f vector){
+void CCamera::setCameraPositionBeforeLockRotation(glm::vec3 vector){
     cameraPositionBeforeLockRotation = vector;
 }
 
-void CCamera::moveCameraPosition(gg::Vector3f _offPos){
-    cam->setPosition(
-        gg::Vector3f(
-            cam->getPosition().X + _offPos.X,
-            cam->getPosition().Y + _offPos.Y,
-            cam->getPosition().Z + _offPos.Z
-        )
-    );
+void CCamera::moveCameraPosition(glm::vec3 _offPos){
+    Pos += _offPos;
+    Engine->setPosition(cam, Pos);
 }

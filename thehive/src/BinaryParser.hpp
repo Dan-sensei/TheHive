@@ -9,19 +9,21 @@ class BinaryParser{
         ~BinaryParser();
 
         static void ReadNavmeshData(
-            const std::string &_File,
+            const std::string &BinaryFile,
             std::vector<Node> &GRAPH,
             std::vector<std::vector<Connection>> &Connections,
             std::vector<Face> &SQUARE_FACES
         );
 
         static bool ImportMesh(
-            const std::string& pFile,
+            const std::string& BinaryFile,
             std::vector<float> &PositionsNormals,
             std::vector<float> &uv,
             std::vector<float> &TangentsBitangents,
             std::vector<unsigned short> &index
         );
+
+        static void test();
 
     private:
         BinaryParser() = delete;

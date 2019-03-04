@@ -2,7 +2,7 @@
 #include <iostream>
 #include <BinaryParser.hpp>
 #include "Singleton.hpp"
-#include <GameEngine/GameEngine.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 #include <numeric>
 
 
@@ -27,30 +27,30 @@ Pathfinding::~Pathfinding(){
 void Pathfinding::SetDebug(bool flag){
     Debug = flag;
 
-    if(flag && IDs.empty()){
-        IDs.resize(GRAPH.size());
-        uint16_t i = GRAPH.size();
-        while(i--){
-
-            Singleton<GameEngine>::Instance()->createBillboard(IDs[i], GRAPH[i].Position + gg::Vector3f(0, 60, 0));
-            IDs[i].setText(std::to_string(i) );
-            uint8_t color[4] = {1, 0, 0, 0};
-            IDs[i].setColor(color);
-        }
-
-        BillboardFaces.resize(FACES.size());
-        uint16_t j = FACES.size();
-        while(j--){
-            uint8_t color[4] = {1, 0, 0, 0};
-
-            Singleton<GameEngine>::Instance()->createBillboard(BillboardFaces[j], FACES[j].TL + gg::Vector3f(0, 60+j*2, 0));
-            BillboardFaces[j].setText(std::to_string(j));
-            BillboardFaces[j].setColor(color);
-        }
-    }
-    else if(!flag && !IDs.empty()){
-        IDs.clear();
-    }
+    // if(flag && IDs.empty()){
+    //     IDs.resize(GRAPH.size());
+    //     uint16_t i = GRAPH.size();
+    //     while(i--){
+    //
+    //         Singleton<GameEngine>::Instance()->createBillboard(IDs[i], GRAPH[i].Position + glm::vec3(0, 60, 0));
+    //         IDs[i].setText(std::to_string(i) );
+    //         uint8_t color[4] = {1, 0, 0, 0};
+    //         IDs[i].setColor(color);
+    //     }
+    //
+    //     BillboardFaces.resize(FACES.size());
+    //     uint16_t j = FACES.size();
+    //     while(j--){
+    //         uint8_t color[4] = {1, 0, 0, 0};
+    //
+    //         Singleton<GameEngine>::Instance()->createBillboard(BillboardFaces[j], FACES[j].TL + glm::vec3(0, 60+j*2, 0));
+    //         BillboardFaces[j].setText(std::to_string(j));
+    //         BillboardFaces[j].setColor(color);
+    //     }
+    // }
+    // else if(!flag && !IDs.empty()){
+    //     IDs.clear();
+    // }
 }
 
 bool Pathfinding::isDebugging(){
@@ -124,8 +124,8 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     }
 
     if(CurrentNode->ID != GOAL) {
-        gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
-        //// std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
+        ////gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
+        std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
         while(CurrentNode->ID != START) {
@@ -136,7 +136,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     }
 }
 
-void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output) {
+void Pathfinding::FindPath(const glm::vec3 &START, const glm::vec3 &GOAL, std::stack<Waypoint> &Output) {
 
     uint16_t StartFN, GoalFN;
 
@@ -145,9 +145,9 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     for(uint16_t i = 0; i < FACES.size(); ++i) {
 
         if(!FoundStart){
-            if(START.X >= FACES[i].TL.X && START.Z <= FACES[i].TL.Z && START.X <= FACES[i].BR.X && START.Z >= FACES[i].BR.Z){
-                float FaceYCenter = (FACES[i].TL.Y + FACES[i].BR.Y)/2;
-                if(abs(FaceYCenter - START.Y) < 85){
+            if(START.x >= FACES[i].TL.x && START.z <= FACES[i].TL.z && START.x <= FACES[i].BR.x && START.z >= FACES[i].BR.z){
+                float FaceYCenter = (FACES[i].TL.y + FACES[i].BR.y)/2;
+                if(abs(FaceYCenter - START.y) < 85){
                     StartFN = i;
                     FoundStart = true;
                 }
@@ -155,9 +155,9 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
         }
 
         if(!FoundGoal){
-            if(GOAL.X >= FACES[i].TL.X && GOAL.Z <= FACES[i].TL.Z && GOAL.X <= FACES[i].BR.X && GOAL.Z >= FACES[i].BR.Z){
-                float FaceYCenter = (FACES[i].TL.Y + FACES[i].BR.Y)/2;
-                if(abs(FaceYCenter - GOAL.Y) < 85){
+            if(GOAL.x >= FACES[i].TL.x && GOAL.z <= FACES[i].TL.z && GOAL.x <= FACES[i].BR.x && GOAL.z >= FACES[i].BR.z){
+                float FaceYCenter = (FACES[i].TL.y + FACES[i].BR.y)/2;
+                if(abs(FaceYCenter - GOAL.y) < 85){
                     GoalFN = i;
                     FoundGoal = true;
                 }
@@ -168,7 +168,7 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     }
 
     if(!FoundStart || !FoundGoal){
-        // gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
+        // //gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
         return;
     }
     // std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
@@ -188,15 +188,15 @@ void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, 
     Output.emplace(GRAPH[StartPortal].Position, StartPortal, GRAPH[StartPortal].Radius);
 }
 
-uint16_t Pathfinding::FindClosestNodeOfFace(const gg::Vector3f &Position, uint16_t Node) {
+uint16_t Pathfinding::FindClosestNodeOfFace(const glm::vec3 &Position, uint16_t Node) {
     auto Iterator = FACES[Node].Portals.begin();
     uint16_t Portal = *Iterator;
     ++Iterator;
     if(Iterator != FACES[Node].Portals.end()){
-        float currentDist = gg::FastDIST(Position, GRAPH[Portal].Position);
+        float currentDist = glm::distance(Position, GRAPH[Portal].Position);
 
         while( Iterator != FACES[Node].Portals.end()){
-            float newMin = gg::FastDIST(Position, GRAPH[*Iterator].Position);
+            float newMin = glm::distance(Position, GRAPH[*Iterator].Position);
             if(newMin < currentDist) {
                  currentDist = newMin;
                  Portal = *Iterator;
@@ -214,7 +214,7 @@ void Pathfinding::DroNodes(){
     uint8_t i = GRAPH.size();
     uint8_t length = 0;
 
-    GameEngine* Engine = Singleton<GameEngine>::Instance();
+    TMotorTAG* Engine = Singleton<TMotorTAG>::Instance();
 
     while(i--){
         length = 50;
@@ -238,15 +238,15 @@ void Pathfinding::DroNodes(){
             color.B = 204;
         }
 
-        Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 4);
+        Engine->Draw3DLine(GRAPH[i].Position, glm::vec3(GRAPH[i].Position.x, GRAPH[i].Position.y + length, GRAPH[i].Position.z), color);
 
-        if(Goal.X && Goal.Y && Goal.Z){
+        if(Goal.x && Goal.y && Goal.z){
             length = 100;
             color.Alpha = 1;
             color.R = 212;
             color.G = 175;
             color.B = 55;
-            Engine->Draw3DLine(Goal, Goal + gg::Vector3f(0,length,0), color, 5);
+            Engine->Draw3DLine(Goal, Goal + glm::vec3(0,length,0), color);
         }
     }
 
@@ -257,7 +257,7 @@ void Pathfinding::DroNodes(){
     // color.B = 153;
     // for(uint16_t i = 0; i < GConnections.size(); ++i){
     //     for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-    //         Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 40, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 40, 0), color, 2);
+    //         Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 40, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 40, 0), color, 2);
     //     }
     // }
 
@@ -268,8 +268,8 @@ void Pathfinding::DroNodes(){
     // color.G = 20;
     // color.B = 147;
     // for(uint16_t i = 0; i < FACES.size(); ++i){
-    //     Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + gg::Vector3f(0, 100, 0), color, 2);
-    //     Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + gg::Vector3f(0, 100, 0), color, 2);
+    //     Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + glm::vec3(0, 100, 0), color, 2);
+    //     Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + glm::vec3(0, 100, 0), color, 2);
     // }
 }
 
@@ -278,7 +278,7 @@ void Pathfinding::clear(){  //  Provisional
     BillboardFaces.clear();
 }
 
-gg::Vector3f Pathfinding::getRandomNodePosition(){
+glm::vec3 Pathfinding::getRandomNodePosition(){
     std::random_device rd;
     std::default_random_engine gen(rd());
     std::uniform_int_distribution<int> distribution(0,GRAPH.size());

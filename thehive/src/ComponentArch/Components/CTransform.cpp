@@ -3,7 +3,7 @@
 #include <ComponentArch/ObjectManager.hpp>
 
 
-CTransform::CTransform(const gg::Vector3f &_Position, const gg::Vector3f &_Rotation)
+CTransform::CTransform(const glm::vec3 &_Position, const glm::vec3 &_Rotation)
 :Position(_Position), Rotation(_Rotation)
 {}
 
@@ -15,21 +15,21 @@ CTransform::CTransform(const CTransform &orig){
 CTransform::~CTransform(){}
 
 
-void CTransform::setPosition(const gg::Vector3f &_Position){
+void CTransform::setPosition(const glm::vec3 &_Position){
     Position = _Position;
 }
 
-void CTransform::setRotation(const gg::Vector3f &_Rotation){
+void CTransform::setRotation(const glm::vec3 &_Rotation){
     Rotation = _Rotation;
 }
 
 //  ---
 //  Returns the current position on a GG vector
 //==================================================================================
-gg::Vector3f CTransform::getPosition(){
+glm::vec3 CTransform::getPosition(){
     return Position;
 }
 
-gg::Vector3f CTransform::getRotation(){
+glm::vec3 CTransform::getRotation(){
     return Rotation;
 }

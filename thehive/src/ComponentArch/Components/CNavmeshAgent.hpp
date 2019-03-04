@@ -1,22 +1,23 @@
 #ifndef CNAVMESHAGENT_H
 #define CNAVMESHAGENT_H
 
-
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
 #include <GameAI/NavmeshStructs.hpp>
 #include <Util.hpp>
 #include <stack>
 
-#include <GameEngine/GameEngine.hpp>
+#include <SurrealEngine/TMotorTAG.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <Singleton.hpp>
 
 #include "CTransform.hpp"
 
-#include <Bullet/ggDynWorld.hpp>
-#include "CRigidBody.hpp"
+
+
 #include <GameEngine/Clock.hpp>
+class CRigidBody;
+class ggDynWorld;
 
 class CNavmeshAgent : public IComponent {
     friend class Factory;
@@ -32,7 +33,7 @@ class CNavmeshAgent : public IComponent {
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
 
-        void SetDestination(const gg::Vector3f &Target);
+        void SetDestination(const glm::vec3 &Target);
         bool HasDestination();
         void ResetDestination();
 
@@ -43,13 +44,13 @@ class CNavmeshAgent : public IComponent {
         CNavmeshAgent(const CNavmeshAgent &orig) = delete;
 
         void CheckShortcut();
-        void ApplyCouterForce(const gg::Vector3f &DirVector);
+        void ApplyCouterForce(const glm::vec3 &DirVector);
 
         gg::Clock Timer;
-        gg::Vector3f RS, LS;
-        gg::Vector3f moveVector;
+        glm::vec3 RS, LS;
+        glm::vec3 moveVector;
 
-        GameEngine* Engine;
+        TMotorTAG* Engine;
         ggDynWorld* world;
 
         CTransform* cTransform;
