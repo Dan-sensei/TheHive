@@ -47,8 +47,7 @@ private:
     double Tick; //PARA LA INTERPOLACION
     float Accumulator;
 
-    uint UPDATE;
-    uint DRO;
+    gg::Color col;
 };
 
 

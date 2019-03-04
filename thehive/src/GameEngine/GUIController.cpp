@@ -1,6 +1,7 @@
 #include "GUIController.hpp"
 #include <iostream>
 #include <Game.hpp>
+#include <GameEngine/GameEngine.hpp>
 #include <OptionState.hpp>
 //#include <SMaterial>
 GUIController::GUIController()
@@ -27,7 +28,7 @@ void GUIController::Init(){
     enter_pulsado=false;
     back_pulsado=false;
     esc_pulsado=false;
-    Engine = Singleton<GameEngine>::Instance();
+    //Engine = Singleton<GameEngine>::Instance();
     VectorAcciones[GOPLAY] = &GUIController::gotoPlay;
     VectorAcciones[GOCREDITS] = &GUIController::gotoCredits;
     VectorAcciones[GOOPTIONS] = &GUIController::gotoOptions;
@@ -110,7 +111,7 @@ void GUIController::gotoOptions(){
 }
 //but3
 void GUIController::Close(){
-    Singleton<GameEngine>::Instance()->Close();
+    //Singleton<GameEngine>::Instance()->Close();
 }
 //but4
 void GUIController::gotoVideo(){

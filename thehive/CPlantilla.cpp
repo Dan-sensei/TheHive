@@ -1,5 +1,5 @@
 #include "CPlantilla.hpp"
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
 CPlantilla::CPlantilla(Var 1, Var 2)
@@ -14,7 +14,7 @@ CPlantilla::~CPlantilla() {
 
 void CPlantilla::Init(){
 
-    engine = Singleton<GameEngine>::Instance();
+    //engine = Singleton<GameEngine>::Instance();
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();

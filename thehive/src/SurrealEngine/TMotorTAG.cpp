@@ -16,8 +16,10 @@ TMotorTAG::TMotorTAG()
     Initialize();
     gestorRecursos = Singleton<AssetManager>::Instance();
 
-    uint16_t i = 349;
-    while(i--) TMotorTAG::KEYS[i] = false;
+    for(uint16_t i = 0; i < 349; ++i)
+        TMotorTAG::KEYS[i] = false;
+
+
 }
 
 TMotorTAG::~TMotorTAG(){
@@ -25,14 +27,18 @@ TMotorTAG::~TMotorTAG(){
 
 void TMotorTAG::clean(){
     std::cout << "DeleTAG..." << '\n';
+    delete TMotorTAG::KEYS;
     delete ESCENA;
     glfwTerminate();
-    delete TMotorTAG::KEYS;
 }
 
 void TMotorTAG::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c){
-
+    //Singleton<Debug>::Instance()->DroLine(From, To, c);
 }
+
+glm::mat4 TMotorTAG::getMVP(){
+    return ESCENA->getEntidad()->modelMatrix;
+};
 
 void TMotorTAG::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {  KEYS[key] = action; }
 
@@ -140,6 +146,7 @@ void TMotorTAG::setPosition(TNodo* _node, const glm::vec3& _offpos){
 void TMotorTAG::setRotation(TNodo* _node,const glm::vec3& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
 }
+
 void TMotorTAG::PointAt(TNodo *_node, const gg::Vector3f& _offpos){
     auto trans =static_cast<TTransform*>(_node->getPadre()->getEntidad());
     auto dir=glm::normalize(glm::vec3(_offpos.X,_offpos.Y,_offpos.Z)-trans->getDatos());

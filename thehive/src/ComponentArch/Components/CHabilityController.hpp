@@ -4,7 +4,7 @@
 #include <cmath>
 #include <map>
 
-#include <GameEngine/GameEngine.hpp>
+
 #include <Bullet/ggDynWorld.hpp>
 #include <GameEngine/KEYCODES.hpp>
 

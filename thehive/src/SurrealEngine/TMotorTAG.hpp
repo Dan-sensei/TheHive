@@ -17,12 +17,14 @@
 #include "AssetManager.hpp"
 #include <SurrealEngine/KEYCODES.hpp>
 #include "TCamara.hpp"
+#include "Debug.hpp"
 
 template <typename T>
 class Singleton;
 
 class TMotorTAG {
     friend class Singleton<TMotorTAG>;
+    friend class Debug;
     public:
         ~TMotorTAG();
 
@@ -60,15 +62,16 @@ class TMotorTAG {
         inline bool key(gg::KEYCODES keyCode){ return KEYS[keyCode];};
         void print();
         bool Initialize();
-        GLFWwindow* window;
     private:
         TMotorTAG();
 
         TNodo* ESCENA;
+        GLFWwindow* window;
         AssetManager* gestorRecursos;
 
         TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot);
 
+        glm::mat4 getMVP();
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
         static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -80,6 +83,8 @@ class TMotorTAG {
 
         static int Half_Window_Width;
         static int Half_Window_Height;
+
+        Debug* Debugger;
 
         TNodo* main_camera;
         TCamara* cam_;

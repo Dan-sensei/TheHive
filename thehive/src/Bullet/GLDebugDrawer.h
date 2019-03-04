@@ -6,7 +6,6 @@
 #include <irrlicht/irrlicht.h>
 #include <LinearMath/btIDebugDraw.h>
 
-#include <GameEngine/GameEngine.hpp>
 #include <Singleton.hpp>
 #include <Util.hpp>
 

@@ -11,7 +11,7 @@
 #include <Util.hpp>
 #include <stack>
 
-#include <GameEngine/GameEngine.hpp>
+
 #include <ComponentArch/ObjectManager.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Singleton.hpp>

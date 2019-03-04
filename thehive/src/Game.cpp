@@ -48,7 +48,9 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 */
 //============================================================================================
 
-Game::Game(){
+Game::Game()
+:Accumulator(0)
+{
     Engine = Singleton<TMotorTAG>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
@@ -60,8 +62,6 @@ Game::Game(){
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
     //Engine->HideCursor(true);
-    UPDATE = 0;
-    DRO = 0;
 }
 
 Game::~Game(){
@@ -72,21 +72,22 @@ void Game::Init(){
     //Singleton<ScreenConsole>::Instance()->InitHUD();
     BinaryParser::test();
     auto sF = Singleton<Factory>::Instance();
-    Engine->crearCamara(90,0.1f,100.f, glm::vec3(7,5,10),glm::vec3(),16.f/9.f);
-
+    Engine->crearCamara(90,0.1f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
+    Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
     Engine->print();
     // Pos init del heroe normal
     // 360, 0, 350
-    uint16_t h = sF->createHero(glm::vec3(0,0,0),false);
+    uint16_t h = sF->createHero(glm::vec3(0,20,0),false);
     //sF->createRusher(glm::vec3(5,3,65),200);
 
-    MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
+    //MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     // Material yelo("assets/Models/CIUDAD/Presentacion1/NAVMESH.png");
     //
     // uint16_t Navmesh = Manager->createEntity();
     // CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/CIUDAD/Presentacion1/NAVMESH.obj", yelo);
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
+    Accumulator = 0;
 
     Singleton<Pathfinding>::Instance()->SetDebug(false);
     world->setDebug(true);
@@ -108,9 +109,7 @@ void Game::Update(){
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
-        ++UPDATE;
     }
-    ++DRO;
 
     EventSystem->Update();
 
@@ -121,6 +120,7 @@ void Game::Update(){
     Engine->BeginDraw();
     Manager->UpdateAll();
 
+    //std::cout << "Update" << '\n';
     //MainCamera->CameraUpdate();
     //Engine->print();
 
@@ -142,8 +142,8 @@ void Game::Resume(){
 
 void Game::CLIN(){
     //Blackboard::ClearGlobalBlackboard();
-    Manager->clin();// este esta bien creo
-    world->clear();//clean es el vuestro// clear solo vacia los rigidbody sin quitar las fisicas
+    Manager->clin(); // este esta bien creo
+    world->clear();  //clean es el vuestro// clear solo vacia los rigidbody sin quitar las fisicas
     //EventSystem->clin();
     //Singleton<ScreenConsole>::Instance()->CLIN();
     //Singleton<ScreenConsole>::Instance()->CLINNormal();

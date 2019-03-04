@@ -6,7 +6,7 @@
 #include "Singleton.hpp"
 #include "Util.hpp"
 
-#include <GameEngine/GameEngine.hpp>
+
 #include <GameEngine/ScreenConsole.hpp>
 #include <GameEngine/EnumButtonType.hpp>
 #include <GameEngine/KEYCODES.hpp>
