@@ -77,11 +77,11 @@ void Game::Init(){
     Engine->print();
     // Pos init del heroe normal
     // 360, 0, 350
-    uint16_t h = sF->createHero(glm::vec3(0,0,0),false);
+    uint16_t h = sF->createHero(glm::vec3(0,10,0),false);
     //sF->createRusher(glm::vec3(5,3,65),200);
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
-
+    Accumulator = 0;
     // Material yelo("assets/Models/CIUDAD/Presentacion1/NAVMESH.png");
     //
     // uint16_t Navmesh = Manager->createEntity();
@@ -91,17 +91,30 @@ void Game::Init(){
     Singleton<Pathfinding>::Instance()->SetDebug(false);
     world->setDebug(true);
     MasterClock.Restart();
+
+    // std::cout << "\n -- INIT -- " << '\n';
 }
 
 void Game::Update(){
+
     DeltaTime = MasterClock.Restart().Seconds();
 
+    // std::cout << " - POLL EVENTS" << '\n';
     Engine->PollEvents();
+
 
     if(DeltaTime > 0.25) DeltaTime = 0.25;
 
+    // std::cout << " - WHILE" << '\n';
     Accumulator += DeltaTime;
+
+    // std::cout << "  - Delta time1 : " << DeltaTime << '\n';
+    // if(DeltaTime > 10000) throw std::exception();
     while(Accumulator >= 1/UPDATE_STEP){
+        // std::cout << "  - Delta time2 : " << DeltaTime << '\n';
+        // std::cout << "  - Accumulator : " << Accumulator << '\n';
+        // if(Accumulator > 10000) throw std::exception();
+
         // FIXED UPDATE
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
@@ -112,18 +125,23 @@ void Game::Update(){
     }
     ++DRO;
 
+    // std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
 
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
+    // std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();
+
+    // std::cout << "  - UPDATE ALL" << '\n';
     Manager->UpdateAll();
 
     //MainCamera->CameraUpdate();
     //Engine->print();
 
+    // std::cout << "  - DRAW" << '\n';
     Engine->draw();
     //Engine->DisplayFPS();
 
@@ -133,6 +151,7 @@ void Game::Update(){
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
+    // std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();
 }
 
