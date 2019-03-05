@@ -82,12 +82,19 @@ void Game::Init(){
     // 360, 0, 350
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,6,0),false);
+    uint16_t h = sF->createHero(glm::vec3(0,6,0),1);
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
     Director->init();
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
+
+    // auto cam = Engine->getCamera();
+    //
+    // Engine->setPosition(cam, glm::vec3(2,10,10));
+
+    //static_cast<TCamara*>(cam->getEntidad())->setTarget(glm::vec3(0,0,0));
+
     Accumulator = 0;
     // Material yelo("assets/Models/CIUDAD/Presentacion1/NAVMESH.png");
     //
@@ -145,7 +152,7 @@ void Game::Update(){
     Manager->UpdateAll();
 
     //std::cout << "Update" << '\n';
-    //MainCamera->CameraUpdate();
+    MainCamera->CameraUpdate();
     //Engine->print();
 
     // std::cout << "  - DRAW" << '\n';

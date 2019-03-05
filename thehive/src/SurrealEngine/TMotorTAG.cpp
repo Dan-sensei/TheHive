@@ -209,7 +209,7 @@ bool TMotorTAG::Initialize(){
     glEnable(GL_CULL_FACE);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    glfwSetInputMode(window, GLFW_CURSOR_DISABLED, GL_TRUE);
+    glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
 

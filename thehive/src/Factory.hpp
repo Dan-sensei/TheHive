@@ -19,7 +19,7 @@ class Factory{
     friend class Singleton<Factory>;
 
     public:
-        uint16_t createHero(const glm::vec3 &Position,bool);
+        uint16_t createHero(const glm::vec3 &Position,int8_t);
         uint16_t createSoldier(const glm::vec3&,const float&);
         uint16_t createSoldierHorda(const glm::vec3&,const float&,const glm::vec3&);
         uint16_t createSoldierWandering(const glm::vec3&,const float&);

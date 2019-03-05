@@ -12,7 +12,7 @@ Factory::Factory() {
 
 }
 
-uint16_t Factory::createHero(const glm::vec3 &Position,bool _b) {
+uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 
 
     ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
@@ -23,7 +23,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,bool _b) {
 
     CAIEnem::PlayerTransform=Transform;
 
-    CCamera* Camera                     = new CCamera(false);
+    CCamera* Camera                     = new CCamera(_b);
     Camera->setTarget(Transform);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 

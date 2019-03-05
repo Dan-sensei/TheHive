@@ -18,6 +18,7 @@ class TCamara : public TEntidad {
 
         void changeFov(float);
         void setPerspectiva(float);
+        void setTarget(glm::vec3 &t_pos);
 
         virtual void beginDraw(const uint8_t&);
         virtual void endDraw(const uint8_t&);
@@ -27,6 +28,7 @@ class TCamara : public TEntidad {
         glm::vec3 target;
 
         bool inverted;
+        bool hasTarget;
 
 };
 

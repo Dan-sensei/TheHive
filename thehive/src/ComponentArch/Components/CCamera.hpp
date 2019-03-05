@@ -12,7 +12,6 @@
 #include "CTransform.hpp"
 #include <ComponentArch/ObjectManager.hpp>
 
-class CRigidBody;
 class ggDynWorld;
 class CCamera : public IComponent {
 friend class Factory;
@@ -33,39 +32,30 @@ public:
 
     void moveCameraPosition(glm::vec3);
 
-    glm::vec3 getlastHeroPosition();
-    glm::vec3 getCameraPositionBeforeLockRotation();
-    void setCameraPositionBeforeLockRotation(glm::vec3); // Por ahora no se usa
+    void getDirectionVector(glm::vec3 &Output);
 
 private:
-    CRigidBody      *CRigidbody;
     TMotorTAG       *Engine;
-    ObjectManager   *Manager;
     TNodo           *cam;
     CTransform      *Target;
     ggDynWorld      *dynWorld;
 
-    glm::vec3 lastHeroPosition;
-    glm::vec3 cameraPositionBeforeLockRotation;
-    glm::vec3 offsetPositionVector;
     glm::vec3 pos_on_collision;
-    glm::vec3 last_cam_position;
 
-    glm::vec3 Pos;
+    glm::vec3 CurrentPosition;
     glm::vec3 Rot;
 
     float screenW;
     float screenH;
 
-    bool daniNoSabeProgramar;
+    int8_t InvertCamera;
     bool collision;
 
-    void getNewRotation                 (glm::vec3&);
-    void setFinalRotation               (glm::vec3&,glm::vec3&,bool);
-    void setHorizontalAxis              (glm::vec3&,glm::vec3&,glm::vec3&,glm::vec3&);
-    void setVerticalAxis                (glm::vec3&,glm::vec3&,glm::vec3&, glm::vec3&);
     void fixCameraPositionOnCollision   (glm::vec3&);
     void setPerpendicularOffsetVector   (glm::vec3&);
+
+    double prevX, prevY;
+    float t, p;
 
 };
 

@@ -10,7 +10,7 @@ class ggDynWorld;
 class AIDirector;
 
 #include <iostream>
-#include <GameEngine/Clock.hpp>
+#include <SurrealEngine/Clock.hpp>
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
 
