@@ -18,6 +18,7 @@
 #include <SurrealEngine/KEYCODES.hpp>
 #include "TCamara.hpp"
 #include "Debug.hpp"
+#include "Clock.hpp"
 
 template <typename T>
 class Singleton;
@@ -32,8 +33,9 @@ class TMotorTAG {
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
         TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3());
 
-        int8_t addShaderToMap(const char*,bool);
         bool bindMaterialToMesh(TNodo*,ZMaterial*);
+
+        void DisplayFPS();
 
         void move(TNodo*,const glm::vec3&);
         void rotate(TNodo*,const float&,const glm::vec3&);
@@ -65,9 +67,17 @@ class TMotorTAG {
     private:
         TMotorTAG();
 
+        gg::Clock FPS_Clock;
+
         TNodo* ESCENA;
         GLFWwindow* window;
         AssetManager* gestorRecursos;
+        Debug* Debugger;
+
+        TNodo* main_camera;
+        TCamara* cam_;
+
+        uint16_t FPS;
 
         TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot);
 
@@ -84,10 +94,6 @@ class TMotorTAG {
         static int Half_Window_Width;
         static int Half_Window_Height;
 
-        Debug* Debugger;
-
-        TNodo* main_camera;
-        TCamara* cam_;
 };
 
 #endif

@@ -157,7 +157,7 @@ void Game::Update(){
 
     // std::cout << "  - DRAW" << '\n';
     Engine->draw();
-    //Engine->DisplayFPS();
+    Engine->DisplayFPS();
 
     // Consola por pantalla
     // Singleton<ScreenConsole>::Instance()->DisplayDebug();

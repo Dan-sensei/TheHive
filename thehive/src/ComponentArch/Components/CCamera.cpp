@@ -42,15 +42,15 @@ void CCamera::CameraUpdate(){
     Engine->getCursorPosition(x, y);
     t += (prevX - x) * 0.005f;
     p += (y - prevY) * 0.005f * InvertCamera;
+    
+    prevX = x;
+    prevY = y;
 
     if(t < 0) t = 2*PI;
     else if(t > 2*PI) t = 0;
 
     if(p < -PI/2+0.2) p = -PI/2+0.2;
     else if(p > PI/2-0.2) p = PI/2-0.2;
-
-    prevX = x;
-    prevY = y;
 
     glm::vec3 _target = Target->getPosition();
 

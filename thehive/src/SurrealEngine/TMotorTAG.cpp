@@ -10,7 +10,7 @@ int TMotorTAG::Half_Window_Width;
 int TMotorTAG::Half_Window_Height;
 
 TMotorTAG::TMotorTAG()
-:main_camera(nullptr)
+:main_camera(nullptr), FPS(0)
 {
     ESCENA = new TNodo();
     Initialize();
@@ -30,6 +30,15 @@ void TMotorTAG::clean(){
     delete TMotorTAG::KEYS;
     delete ESCENA;
     glfwTerminate();
+}
+
+void TMotorTAG::DisplayFPS(){
+    if(FPS_Clock.ElapsedTime().Seconds() > 1){
+        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS);
+        glfwSetWindowTitle(window, TEXT.c_str());
+        FPS = 0;
+        FPS_Clock.Restart();
+    }
 }
 
 void TMotorTAG::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c){
@@ -123,6 +132,7 @@ void TMotorTAG::BeginDraw(){
 }
 
 void TMotorTAG::draw(){
+    ++FPS;
     ESCENA->drawRoot();
 }
 
