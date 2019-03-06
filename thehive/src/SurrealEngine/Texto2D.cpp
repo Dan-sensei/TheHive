@@ -6,88 +6,9 @@
 #include "Singleton.hpp"
 #include "Letra2DManager.hpp"
 
+#define SCREENW 1080.0f
+#define SCREENH 720.0f
 
-/*
-
-altura 64
-1400X800
-minusculas
-inicio_y minusculas 64
-
-letra   X       W
-a       1       32
-b       47      33
-c       94      30
-d       138     34
-e       185     30
-f       225     28
-g       261     34
-h       309     32
-i       356     19
-j       392     26
-k       430     37
-l       477     17
-m       509     47
-n       571     32
-o       619     31
-p       662     34
-q       712     32
-r       757     25
-s       793     29
-t       836     21
-u       871     33
-v       918     36
-w       966     51
-x       1024    40
-y       1075    33
-z       1120    33
-
-
-
-MAYUSCULAS
-inicio_y MAYUSCULAS 198
-
-
-letra   X       W
-
-A       0       42
-B       56      41
-C       111     40
-D       162     42
-E       217     41
-F       270     41
-G       322     40
-H       375     46
-I       433     20
-J       465     41
-K       518     48
-L       573     34
-M       622     52
-N       686     46
-O       745     43
-P       801     42
-Q       856     43
-R       913     42
-S       967     40
-T       1022    40
-U       1073    43
-V       1132    46
-W       1188    62
-X       1255    52
-Y       1319    46
-
-inicio_y Z 266
-
-Z      0        43
-
-
-
-
-*/
-
-// glm::mat4 TEntidad::modelMatrix;
-// glm::mat4 TEntidad::viewMatrix;
-// glm::mat4 TEntidad::projMatrix;
 float Texto2D::getX(){
     return X;
 }
@@ -102,20 +23,43 @@ float Texto2D::getH(){
 }
 
 float Texto2D::ChangeChar(float x,float y,char cha){
+
+    //std::cout << "cha:" <<cha<< '\n';
+    //std::cout << "X:" <<x<< '\n';
+    //std::cout << "Y:" <<y<< '\n';
+
     float _x,_y,_w,_h;
     float T_x,T_y,T_w,T_h;
     _x=x*2.0-1;
-    _y=(y*-2.0)+1;
+    _y=y*-2.0+1;
     auto letra=Manager->getChar(cha);
     letra.resize(tamanyo);
     _w=(x+letra.getW())*2.0-1;
-    _h=((y+letra.getH())*-2.0)+1;
+    _h=(y+letra.getH())*-2.0+1;
 
         T_x=letra.getTX();
         T_w=letra.getTW();
 
         T_y=letra.getTY();
         T_h=letra.getTH();
+        //std::cout << "X:" <<_x<< '\n';
+        //std::cout << "Y:" <<_y<< '\n';
+
+        //std::cout << "LW:" <<letra.getW()<< '\n';
+        //std::cout << "LH:" <<letra.getH()<< '\n';
+
+        //std::cout << "W:" <<_w<< '\n';
+        //std::cout << "H:" <<_h<< '\n';
+
+        //std::cout << "TX:" <<T_x<< '\n';
+        //std::cout << "TY:" <<T_y<< '\n';
+        //std::cout << "TW:" <<T_w<< '\n';
+        //std::cout << "TH:" <<T_h<< '\n';
+
+        //std::cout << "aux1:" <<aux1<< '\n';
+        //std::cout << "aux2:" <<aux2<< '\n';
+
+
         float vertices[] = {
         //  Position      Color             Texcoords
             _x,  _y,  T_x, T_y, // Top-left
@@ -125,22 +69,50 @@ float Texto2D::ChangeChar(float x,float y,char cha){
         };
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER,sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
         return letra.getW();
 }
-Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra):Texto2D(x,y,w,h,Palabra,0.05){
+Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra,glm::vec4 _color,float tam):Texto2D(x,y,Palabra,_color,tam){
+
+
+std::cout << "se hace este" << '\n';
+
+    float _w=0,_h=0,rx=0,ry=0;
+    _w=getSizeX();
+    _h=getSizeY();//0-1
+
+
+    rx=(w-x-_w)/2.0;
+    rx=rx+x;
+
+    ry=(h-y-_h)/2.0;
+    ry=ry+y;
+
+
+    setPos(rx,ry);
+
+
+
 
 }
-Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra,float tam)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),separacion(0.05),tamanyo(tam),palabra(Palabra)
+void Texto2D::setText(std::string pal){
+    palabra=pal;
+}
+
+Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,float tam)
+:VAO(0),VBO(0),EBO(0),color(_color),textureID(0),separacion(0.05),tamanyo(tam),palabra(Palabra)
 {
     auto sh=Singleton<AssetManager>::Instance()->getShader("2D");
 
     float _x,_y,_w,_h;
-    _x=x*2.0-1;
-    _w=w*2.0-1;
+    _x=x;
+    _w=0;
 
-    _y=(y*-2.0)+1;
-    _h=(h*-2.0)+1;
+    _y=y;
+    _h=0;
+    //_y=(y*-2.0)+1;
+    //_x=x*2.0-1;
 
     X=_x;
     W=_w-_x;
@@ -237,6 +209,11 @@ _h=letra.getH();
     	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
     		4*sizeof(float), (void*)(2*sizeof(float)));
 
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
 }
 void Texto2D::setPos(float x,float y){
     //glDeleteVertexArrays(1, &VBO);
@@ -285,6 +262,7 @@ float Texto2D::getSizeX(){
 }
 
 void Texto2D::Draw(){
+
     auto sh=Singleton<AssetManager>::Instance()->getShader("2D");
     sh->Bind();
     //metemos el color
@@ -322,10 +300,18 @@ void Texto2D::Draw(){
 
     glBindVertexArray(VAO);
 //
+//std::cout << "dibujando" << '\n';
+//std::cout << "X:" <<X<< '\n';
+//std::cout << "Y:" <<Y<< '\n';
+//std::cout << "Palabra:" <<palabra<< '\n';
+//color=glm::vec4(1,1,1,1);
+//std::cout << "Color:" <<"("<<color[0]<<","<<color[1]<<","<<color[2]<<","<<color[3]<<")"<< '\n';
+//std::cout << "tamanyo:" <<tamanyo<< '\n';
+
 //palabra
 //glDisable(GL_BLEND);
 
-float incx=X;
+float incx=X;//opengl
 separacion=0;//si queremos espaci entre las palabras
 int max=palabra.size();
 for (int i = 0; i < max; i++) {
@@ -334,6 +320,7 @@ for (int i = 0; i < max; i++) {
     {
         float tam=ChangeChar(incx,Y,'G');
         incx=incx+tam+separacion;
+        //SCREENW
     }
     else{
         float tam=ChangeChar(incx,Y,palabra[i]);
@@ -348,6 +335,8 @@ for (int i = 0; i < max; i++) {
 }
 
 Texto2D::~Texto2D(){
+    std::cout << "DELETE TEXTO" << '\n';
+
     glDeleteBuffers(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);

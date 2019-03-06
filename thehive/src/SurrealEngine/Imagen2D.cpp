@@ -26,6 +26,11 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
 :VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0)
 {
     auto sh=Singleton<AssetManager>::Instance()->getShader("2D");
+    X=x;
+    W=w;
+
+    Y=y;
+    H=h;
 
     float _x,_y,_w,_h;
     _x=x*2.0-1;
@@ -34,11 +39,6 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
     _y=(y*-2.0)+1;
     _h=(h*-2.0)+1;
 
-    X=_x;
-    W=_w-_x;
-
-    Y=_y;
-    H=_h-_y;
 
     float vertices[] = {
     //  Position      Color             Texcoords
@@ -105,6 +105,10 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
     	glEnableVertexAttribArray(texAttrib);
     	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
     		4*sizeof(float), (void*)(2*sizeof(float)));
+
+            glBindVertexArray(0);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 }
 void Imagen2D::setPos(float x,float y,float w,float h){

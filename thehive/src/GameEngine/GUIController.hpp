@@ -7,12 +7,11 @@
 #include "Util.hpp"
 
 
-#include <GameEngine/ScreenConsole.hpp>
 #include <GameEngine/EnumButtonType.hpp>
 #include <GameEngine/KEYCODES.hpp>
 #include <States/StateMachine.hpp>
 #include <SurrealEngine/TMotorTAG.hpp>
-
+class Motor2D;
 
 class GUIController{
     public:
@@ -64,6 +63,7 @@ void initOptions();
 
 
         TMotorTAG* Engine;
+        Motor2D* Engine2D;
         using pFunc = void(GUIController::*)();
         pFunc VectorAcciones[Butn];
 

@@ -97,13 +97,17 @@ float Letra2D::getX(){
     return X;
 }
 float Letra2D::getW(){
-    return W;
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    float ancho = mode->width;
+    return (W/ancho);
 }
 float Letra2D::getY(){
     return Y;
 }
 float Letra2D::getH(){
-    return H;
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    float alto = mode->height;
+    return (H/alto);
 }
 float Letra2D::getTX(){
     return TX;
@@ -127,6 +131,10 @@ Letra2D::~Letra2D(){
 
 }
 void Letra2D::init2(){
+
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    float ancho = mode->width;
+    float alto = mode->height;
     H=HEIGTH;//constante
 
     TX=(X)/TWIDTH;
@@ -136,8 +144,8 @@ void Letra2D::init2(){
     TH=(Y+H)/THEIGTH;
 
     ratio=W/H;
-    W=((W)/SCREENW);//SCREEN W porcentual
-    H=((H)/SCREENH);//SCREEN H
+    W=((W)/ancho);//SCREEN W porcentual
+    H=((H)/alto);//SCREEN H
 }
 void Letra2D::resize(float alto){
     //redimensionar una letra

@@ -20,6 +20,9 @@
 #include "BinaryParser.hpp"
 #include <SurrealEngine/TMotorTAG.hpp>
 
+#include <GameEngine/Motor2D.hpp>
+
+
 #define MOVEMENT_SPEED 1.f
 
 #define FRAMERATE 60.f
@@ -53,6 +56,9 @@ Game::Game()
 :Accumulator(0)
 {
     Engine = Singleton<TMotorTAG>::Instance();
+    Engine2D = Singleton<Motor2D>::Instance();
+
+
     EventSystem = Singleton<CTriggerSystem>::Instance();
     Director = Singleton<AIDirector>::Instance();
     //Director = new AIDirector();
@@ -105,7 +111,8 @@ void Game::Init(){
     Singleton<Pathfinding>::Instance()->SetDebug(false);
     //world->setDebug(true);
     MasterClock.Restart();
-
+    Engine2D->InitHUD();
+    Engine2D->prueba();
     // std::cout << "\n -- INIT -- " << '\n';
 }
 
@@ -166,6 +173,8 @@ void Game::Update(){
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';
+    Engine2D->DisplayHUD();
+    Engine2D->draw();
     Engine->EndDraw();
 }
 

@@ -8,7 +8,7 @@
 #include "ComponentArch/ObjectManager.hpp"
 #include "Singleton.hpp"
 
-#include "GameEngine/ScreenConsole.hpp"
+#include "GameEngine/Motor2D.hpp"
 #include <EventSystem/CTriggerSystem.hpp>
 #include <States/StateMachine.hpp>
 
@@ -58,11 +58,14 @@ MenuState::~MenuState(){
 
 void MenuState::Init(){
 
-    cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
+    Singleton<Motor2D>::Instance()->InitMenu();
+    Singleton<Motor2D>::Instance()->prueba();
+    Engine->HideCursor(false);
+
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
 void MenuState::Resume() {
-    cont.setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
+    cont.setposmax(Singleton<Motor2D>::Instance()->InitMenu());
     //Engine->HideCursor(false);
 
 }
@@ -72,14 +75,21 @@ void MenuState::Resume() {
 //}
 void MenuState::Update(){
     Engine->BeginDraw();
-    Engine->draw();
+    //Engine->draw();
     cont.update();
-    Singleton<ScreenConsole>::Instance()->DisplayMenu();
+    //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
+    Singleton<Motor2D>::Instance()->draw();
+    Singleton<Motor2D>::Instance()->checkbuton();
+    Singleton<Motor2D>::Instance()->aplyhover();
+    //Engine2D->draw();
+    //Engine2D->checkbuton();
+
     Engine->EndDraw();
 }
 
 void MenuState::CLIN(){
-    Singleton<ScreenConsole>::Instance()->CLINMenu();
+    Singleton<Motor2D>::Instance()->CLINMenu();
+    Singleton<Motor2D>::Instance()->CLINMenu();
     EventSystem->clin();
 }
