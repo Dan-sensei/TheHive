@@ -31,7 +31,7 @@ class Debug{
     public:
         Debug();
 
-        void DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color &c);
+        void DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color &c, const glm::mat4 &MVP);
         void log_gl_params();
         void _print_shader_info_log(GLuint shader_index);
         void _print_programme_info_log(GLuint programme);

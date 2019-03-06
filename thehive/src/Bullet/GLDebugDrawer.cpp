@@ -1,4 +1,5 @@
 #include "GLDebugDrawer.h"
+#include <SurrealEngine/SurrealEngine.hpp>
 
 GLDebugDrawer::GLDebugDrawer()
 :m_debugMode(0)
@@ -12,9 +13,10 @@ void	GLDebugDrawer::drawLine(const btVector3& _from,const btVector3& _to,const b
 	glm::vec3 from(_from.getX(),_from.getY(),_from.getZ());
 	glm::vec3 to(_to.getX(),_to.getY(),_to.getZ());
 	// float color[4] = {_fromColor.getX(),_fromColor.getY(),_fromColor.getZ(),0};
-	float color[4] = {226,45,13,0};
 
-	//Singleton<GameEngine>::Instance()->draw3DLine(from,to,color);
+	gg::Color color(226,45,13);
+
+	Singleton<SurrealEngine>::Instance()->Draw3DLine(from,to,color);
 }
 
 void	GLDebugDrawer::drawLine(const btVector3& _from,const btVector3& _to,const btVector3& _color)

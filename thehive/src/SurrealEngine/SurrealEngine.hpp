@@ -81,7 +81,6 @@ class SurrealEngine {
 
         TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot);
 
-        glm::mat4 getMVP();
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
         static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);

@@ -32,7 +32,7 @@ Debug::Debug(){
     Line.emplace_back(0);
     Line.emplace_back(0);
     Line.emplace_back(0);
-    Line.emplace_back(0);
+    Line.emplace_back(100);
     Line.emplace_back(0);
 
     glGenVertexArrays(1, &LineVAO);
@@ -45,6 +45,8 @@ Debug::Debug(){
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glBindVertexArray(0);
+
+    AssetManager::getShader("Default")->Bind();
 }
 
 
@@ -52,19 +54,27 @@ Debug::Debug(){
 Debug::~Debug(){
 }
 
-void Debug::DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color &c){
+void Debug::DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color &c, const glm::mat4 &MVP){
+    glBindVertexArray(LineVAO);
+
     Line[0] = Init.x;
     Line[1] = Init.y;
     Line[2] = Init.z;
-    Line[3] = Init.x;
-    Line[4] = Init.y;
-    Line[5] = Init.z;
+    Line[3] = End.x;
+    Line[4] = End.y;
+    Line[5] = End.z;
     glBindBuffer(GL_ARRAY_BUFFER, LineVBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, 6*sizeof(float), &Line[0]);
 
     LineShader->Bind();
     glUniform3f(ColorID, c.R, c.G, c.B);
-    //glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &(Singleton<SurrealEngine>::Instance()->getMVP())[0][0]);
+    glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &(MVP)[0][0]);
+
+    glDrawArrays(GL_LINES, 0, 2);
+
+    AssetManager::getShader("Default")->Bind();
+    glBindVertexArray(0);
+
 }
 //reiniciar el log
 bool Debug::restart_gl_log() {

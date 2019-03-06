@@ -42,12 +42,10 @@ void SurrealEngine::DisplayFPS(){
 }
 
 void SurrealEngine::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c){
-    //Singleton<Debug>::Instance()->DroLine(From, To, c);
+    glm::mat4 MVP = ESCENA->getEntidad()->projMatrix * ESCENA->getEntidad()->viewMatrix * ESCENA->getEntidad()->modelMatrix;
+    Singleton<Debug>::Instance()->DroLine(From, To, c, MVP);
 }
 
-glm::mat4 SurrealEngine::getMVP(){
-    return ESCENA->getEntidad()->modelMatrix;
-};
 
 void SurrealEngine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {  KEYS[key] = action; }
 

@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <irrlicht/irrlicht.h>
 #include <LinearMath/btIDebugDraw.h>
 
 #include <Singleton.hpp>

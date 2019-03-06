@@ -103,7 +103,7 @@ void Game::Init(){
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     Singleton<Pathfinding>::Instance()->SetDebug(false);
-    //world->setDebug(true);
+    world->setDebug(true);
     MasterClock.Restart();
 
     // std::cout << "\n -- INIT -- " << '\n';
@@ -131,15 +131,15 @@ void Game::Update(){
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
-        Director->comprobar();
-        Director->clipingEnemigos();
+        // Director->comprobar();
+        // Director->clipingEnemigos();
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
     }
 
     // std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
-    Director->update(DeltaTime);
+    //Director->update(DeltaTime);
     //Director->clipingEnemigos();
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
@@ -162,7 +162,7 @@ void Game::Update(){
     // Consola por pantalla
     // Singleton<ScreenConsole>::Instance()->DisplayDebug();
     // Singleton<ScreenConsole>::Instance()->DisplayHUD();
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';
