@@ -6,8 +6,6 @@
 #include "Singleton.hpp"
 #include "Letra2DManager.hpp"
 
-#define SCREENW 1080.0f
-#define SCREENH 720.0f
 
 float Texto2D::getX(){
     return X;
@@ -44,6 +42,8 @@ float Texto2D::ChangeChar(float x,float y,char cha){
         T_h=letra.getTH();
         //std::cout << "X:" <<_x<< '\n';
         //std::cout << "Y:" <<_y<< '\n';
+        //std::cout << "W:" <<_w<< '\n';
+        //std::cout << "H:" <<_h<< '\n';
 
         //std::cout << "LW:" <<letra.getW()<< '\n';
         //std::cout << "LH:" <<letra.getH()<< '\n';
@@ -320,7 +320,6 @@ for (int i = 0; i < max; i++) {
     {
         float tam=ChangeChar(incx,Y,'G');
         incx=incx+tam+separacion;
-        //SCREENW
     }
     else{
         float tam=ChangeChar(incx,Y,palabra[i]);

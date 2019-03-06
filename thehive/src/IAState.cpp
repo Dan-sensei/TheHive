@@ -7,7 +7,8 @@
 
 #include "Singleton.hpp"
 
-
+#include <EventSystem/CTriggerSystem.hpp>
+#include <Bullet/ggDynWorld.hpp>
 #include "GameEngine/ScreenConsole.hpp"
 
 #include <States/StateMachine.hpp>

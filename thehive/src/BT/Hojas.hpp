@@ -2,7 +2,7 @@
 
 
 
-
+//
 
 
 
@@ -46,5 +46,9 @@ enum Hojas {
     PRE_DASH_TO_PLAYER,
     PRE_DASH_TO_LAST_PLAYER,
     DASH,
+    IAMLEADER,
+    FOLLOWLEADER,
+    KAMIKACE,
+    LOOKAROUND,
     NUM_ACCIONES
 };

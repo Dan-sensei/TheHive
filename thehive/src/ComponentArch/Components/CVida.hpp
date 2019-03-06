@@ -11,7 +11,7 @@
 #include <Util.hpp>
 #include <stack>
 
-#include <GameEngine/GameEngine.hpp>
+
 #include <ComponentArch/ObjectManager.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Singleton.hpp>
@@ -28,6 +28,7 @@ class CVida : public IComponent {
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
         virtual void FixedUpdate();
+        void Muerte();
 
         bool quitarvida(const float&);
         // Handlers

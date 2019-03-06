@@ -17,7 +17,7 @@
 #include <GameEngine/KEYCODES.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
-#include <GameEngine/Clock.hpp>
+#include <SurrealEngine/Clock.hpp>
 
 #define NUMBER_OF_ITEMS     3
 

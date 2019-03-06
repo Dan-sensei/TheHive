@@ -354,7 +354,7 @@ void Motor2D::InitHUD(){
     AddImage("0arma","assets/HUD/cf_hud_d.jpg",75,85,20,15);
     AddImage("1arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
 
-    AddImage("vida","assets/HUD/cf_hud_d.jpg",60,2,30,3);
+    AddImage("vida","assets/HUD/cf_hud_d.jpg",60,2,35,7);
 
     //AddImage("G1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
     //AddImage("G2","assets/HUD/ojetecalor.jpg",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));

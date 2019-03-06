@@ -10,14 +10,16 @@ int TMotorTAG::Half_Window_Width;
 int TMotorTAG::Half_Window_Height;
 
 TMotorTAG::TMotorTAG()
-:main_camera(nullptr)
+:main_camera(nullptr), FPS(0)
 {
     ESCENA = new TNodo();
     Initialize();
     gestorRecursos = Singleton<AssetManager>::Instance();
 
-    uint16_t i = 349;
-    while(i--) TMotorTAG::KEYS[i] = false;
+    for(uint16_t i = 0; i < 349; ++i)
+        TMotorTAG::KEYS[i] = false;
+
+
 }
 
 TMotorTAG::~TMotorTAG(){
@@ -25,14 +27,27 @@ TMotorTAG::~TMotorTAG(){
 
 void TMotorTAG::clean(){
     std::cout << "DeleTAG..." << '\n';
+    delete TMotorTAG::KEYS;
     delete ESCENA;
     glfwTerminate();
-    delete TMotorTAG::KEYS;
+}
+
+void TMotorTAG::DisplayFPS(){
+    if(FPS_Clock.ElapsedTime().Seconds() > 1){
+        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS);
+        glfwSetWindowTitle(window, TEXT.c_str());
+        FPS = 0;
+        FPS_Clock.Restart();
+    }
 }
 
 void TMotorTAG::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c){
-
+    //Singleton<Debug>::Instance()->DroLine(From, To, c);
 }
+
+glm::mat4 TMotorTAG::getMVP(){
+    return ESCENA->getEntidad()->modelMatrix;
+};
 
 void TMotorTAG::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {  KEYS[key] = action; }
 
@@ -117,6 +132,7 @@ void TMotorTAG::BeginDraw(){
 }
 
 void TMotorTAG::draw(){
+    ++FPS;
     ESCENA->drawRoot();
 }
 
@@ -183,8 +199,9 @@ bool TMotorTAG::Initialize(){
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Para hacer feliz a MacOS ; Aunque no debería ser necesaria
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //No queremos el viejo OpenGL
 
-    float ancho = 1080;
-    float alto = 720;
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    float ancho = mode->width;
+    float alto = mode->height;
 
 	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
@@ -207,7 +224,7 @@ bool TMotorTAG::Initialize(){
 
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    glfwSetInputMode(window, GLFW_CURSOR_DISABLED, GL_TRUE);
+    glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
 

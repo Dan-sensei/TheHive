@@ -5,7 +5,7 @@
 #include <cmath>
 #include "CRigidBody.hpp"
 
-#define MAXSPEED 4.f
+//#define MAXSPEED 4.f
 #define FORCE_FACTOR 250.f
 
 //aqui
@@ -24,6 +24,13 @@ void CNavmeshAgent::Init(){
     //  We check if this entity has the TRANSFORM component
     Engine = Singleton<TMotorTAG>::Instance();
     MHandler_SETPTRS();
+    ObjectManager* Manager=Singleton<ObjectManager>::Instance();
+    CAIEnem* ia=static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, getEntityID()));
+    if(ia){
+        vel=ia->getVelocity();
+    }else{
+        vel=0;
+    }
 }
 
 
@@ -86,7 +93,7 @@ void CNavmeshAgent::FixedUpdate(){
     float modulo= glm::length(moveVector);
 
     // Check if we are close to the next destination node
-    if(modulo <= 10) {
+    if(modulo <= 2) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
 
@@ -96,6 +103,7 @@ void CNavmeshAgent::FixedUpdate(){
             currentlyMovingTowardsTarget = false;
             glm::vec3 Counter = glm::vec3(cRigidBody->getXZVelocity().x * -0.7f, 0, cRigidBody->getXZVelocity().y * -0.7f)*FORCE_FACTOR;
             cRigidBody->applyCentralForce(Counter);
+            //cRigidBody->setLinearVelocity(glm::vec3());//para solo velocidades
         }
 
         return;
@@ -106,8 +114,17 @@ void CNavmeshAgent::FixedUpdate(){
     //  Apply a counter force when we change direction, so we can stop on curves
     ApplyCouterForce(moveVector);
 
-    if(glm::length(cRigidBody->getXZVelocity()) < MAXSPEED)
-        cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5f);
+
+    //if(glm::length(cRigidBody->getXZVelocity()) < vel)
+    //   cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
+
+
+
+    cRigidBody->applyConstantVelocityNormal(moveVector,vel);//para solo velocidades
+
+    // if(glm::length(cRigidBody->getXZVelocity()) < MAXSPEED)
+    //     cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5f);
+
 
 }
 
@@ -150,6 +167,7 @@ void CNavmeshAgent::SetDestination(const glm::vec3 &Target){
     Waypoints = std::stack<Waypoint>();
     Singleton<Pathfinding>::Instance()->FindPath(cTransform->getPosition(), Target, Waypoints);
     if(Waypoints.empty()){
+        //std::cout << "EMPTY!" << '\n';
         currentlyMovingTowardsTarget = false;
         cRigidBody->setLinearVelocity(glm::vec3(0.5));
         return;
@@ -164,9 +182,6 @@ bool CNavmeshAgent::HasDestination(){
 }
 
 void CNavmeshAgent::ResetDestination(){
-    while(!Waypoints.empty()){
-        Waypoints.pop();
-    }
-
+    Waypoints = std::stack<Waypoint>();
     currentlyMovingTowardsTarget = false;
 }

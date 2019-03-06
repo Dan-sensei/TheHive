@@ -27,7 +27,7 @@ void GUIController::Init(){
     enter_pulsado=false;
     back_pulsado=false;
     esc_pulsado=false;
-    Engine = Singleton<GameEngine>::Instance();
+    Engine = Singleton<TMotorTAG>::Instance();
     VectorAcciones[GOPLAY] = &GUIController::gotoPlay;
     VectorAcciones[GOCREDITS] = &GUIController::gotoCredits;
     VectorAcciones[GOOPTIONS] = &GUIController::gotoOptions;
@@ -55,7 +55,6 @@ void GUIController::Init(){
 }
 void GUIController::update(){
     //int id=-1;
-    int id =Engine->checkbutton();
     if(Engine->key(gg::GG_W)){
         if(!arriba_pulsado){
             arriba_pulsado=true;
@@ -77,23 +76,26 @@ void GUIController::update(){
     }else{
         bajo_pulsado=false;
     }
-    if(Engine->key(gg::GG_Q)){
-        if(!enter_pulsado){
-            enter_pulsado=true;
-            id=Singleton<ScreenConsole>::Instance()->Pulsarboton(cursorpos);
-
-        }
-    }else{
-        enter_pulsado=false;
-    }
+    //
+    // int id =Engine->checkbutton();
+    //
+    // if(Engine->key(gg::GG_Q)){
+    //     if(!enter_pulsado){
+    //         enter_pulsado=true;
+    //         id=Singleton<ScreenConsole>::Instance()->Pulsarboton(cursorpos);
+    //
+    //     }
+    // }else{
+    //     enter_pulsado=false;
+    // }
 
 
     /////////
     //int id =Engine->checkbutton();
-    if(id!=-1){
-        if(VectorAcciones[id] != nullptr)
-            (this->*VectorAcciones[id])();
-    }
+    // if(id!=-1){
+    //     if(VectorAcciones[id] != nullptr)
+    //         (this->*VectorAcciones[id])();
+    // }
 }
 //but0
 void GUIController::gotoPlay(){
@@ -110,7 +112,7 @@ void GUIController::gotoOptions(){
 }
 //but3
 void GUIController::Close(){
-    Singleton<GameEngine>::Instance()->Close();
+    //Singleton<GameEngine>::Instance()->Close();
 }
 //but4
 void GUIController::gotoVideo(){

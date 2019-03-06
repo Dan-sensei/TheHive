@@ -18,6 +18,7 @@
 
 bool        CAIEnem::debugvis=true;
 CTransform* CAIEnem::PlayerTransform;
+CRigidBody* CAIEnem::PlayerBody;
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos, bool _playerSeen)
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr), world(nullptr),
@@ -26,29 +27,27 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
     switch (_type) {
         case gg::SOLDIER:
             velocity=2;
-        CanIReset=true;
             break;
         case gg::TANK:
-        CanIReset=true;
         velocity=2;
         //velocity=1.75;
             break;
         case gg::RUSHER:
-        CanIReset=true;
         velocity=8;
             break;
         case gg::SWARM:
-        CanIReset=true;
-        velocity=2;
+        velocity=1;
             break;
         case gg::TRACKER:
-        CanIReset=true;
         velocity=2;
             break;
     }
 }
 float CAIEnem::getVelocity(){
     return velocity;
+}
+bool CAIEnem::getPlayerSeeing(){
+    return playerSeeing;
 }
 void CAIEnem::setSigno(int _signo){
     signo=_signo;
@@ -71,10 +70,8 @@ void CAIEnem::enemyseen(){
     playerSeeing    = true;
 }
 
+
 void CAIEnem::enemyrange(){
-    if(!playerOnRange&&CanIReset){
-        resetMyOwnTree();
-    }
     playerOnRange=true;
 }
 
@@ -84,6 +81,8 @@ void CAIEnem::Init(){
     EventSystem     = Singleton<CTriggerSystem>::Instance();
     world           = Singleton<ggDynWorld>::Instance();
     data            = new Blackboard();
+    PlayerTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
+    PlayerBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
 
     playerSeeing        = false;
     playerOnRange       = false;
@@ -96,7 +95,7 @@ void CAIEnem::Init(){
     isPlayerAttacking   = false;
 
     senpos              = glm::vec3(50,50,50);
-    playerPos           = glm::vec3(20,20,20);
+    //playerPos           = glm::vec3(20,20,20);
     destino             = glm::vec3(50,50,50);
 
     ID                  = getEntityID();
@@ -171,46 +170,52 @@ void CAIEnem::FixedUpdate(){
 
         if(gradovision<sol){
             //comprobar raytracing
-            glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTF_POS,pTF,1000);
+            //CRigidBody* body = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
+            //glm::vec3 posmala        = PlayerBody->getBodyPosition();
+
+
+            glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTF_POS,PlayerBody->getBodyPosition(),1000);
             int id=world->getIDFromRaycast();
             if(id==Manager->getHeroID()){
-                if(!playerSeeing){
-                    enemyseen();
-                    if(CanIReset){
-                        resetMyOwnTree();
-                    }
-                    resetHabilityUpdateCounter();
-                }
-            }
-            //else if(playerSeeing){
-            //    playerSeeing = false;
-            //    if(CanIReset){
-            //        resetMyOwnTree();
-            //    }
-            //    resetHabilityUpdateCounter();
-            //}
+                //lo veo
+                playerSeen      = true;
+                playerSeeing    = true;
+                playerPos       = PlayerTransform->getPosition();
 
+                //resetHabilityUpdateCounter();
+            }
+            else if(playerSeeing){
+                //no lo veo
+                playerSeeing = false;
+                //playerSeen = true;
+                resetHabilityUpdateCounter();
+            }
+        }
+        else if(playerSeeing){
+            //no lo veo
+            playerSeeing = false;
+            //playerSeen = true;
+            resetHabilityUpdateCounter();
         }
 
         if(dist<Arange){
-            enemyseen();
-            enemyrange();
-            //arbol->reset();
+            //lo tengo encima
+            playerSeen      = true;
+            playerSeeing    = true;
+            playerOnRange   =  true;
+            playerPos       = PlayerTransform->getPosition();
+
         }
         else{
+            //no lo tengo encima
             playerOnRange = false;
         }
     }
-    else if(playerSeeing){
-        playerSeeing = false;
-        if(CanIReset){
-            resetMyOwnTree();
-        }
-        resetHabilityUpdateCounter();
-    }
-    if(playerSeeing){
-        playerPos   =PlayerTransform->getPosition();
-    }
+    //if(playerSeeing){
+    //    playerPos       = PlayerTransform->getPosition();
+
+    //}
+    //std::cout << "mi pos?" <<playerPos<< '\n';
     //std::cout << "atacando" <<imAttacking<< '\n';
     arbol->update();
 }
@@ -267,9 +272,7 @@ void CAIEnem::setPlayerIsAttacking(bool _b){
     isPlayerAttacking = _b;
     playerPos       = PlayerTransform->getPosition();
     playerSeen=true;
-    if(CanIReset){
-        resetMyOwnTree();
-    }
+    //resetMyOwnTree();
     CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
     if(clk){
         clk->restart();

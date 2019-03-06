@@ -7,7 +7,6 @@
 #include <btBulletCollisionCommon.h>
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
 
-#include <GameEngine/GameEngine.hpp>
 #include <Factory.hpp>
 #include <Singleton.hpp>
 

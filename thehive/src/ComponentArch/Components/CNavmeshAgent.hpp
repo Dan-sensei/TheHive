@@ -15,7 +15,7 @@
 
 
 
-#include <GameEngine/Clock.hpp>
+#include <SurrealEngine/Clock.hpp>
 class CRigidBody;
 class ggDynWorld;
 
@@ -60,6 +60,7 @@ class CNavmeshAgent : public IComponent {
         float SightDistance;
         uint16_t currentWaypointID;
         bool        currentlyMovingTowardsTarget;
+        float vel;
 };
 
 #endif

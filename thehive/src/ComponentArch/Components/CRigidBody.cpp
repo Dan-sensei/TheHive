@@ -274,6 +274,11 @@ void CRigidBody::setLinearVelocity(glm::vec3 vec){
     body->setLinearVelocity(btVector3(vec.x,vec.y,vec.z));
 }
 
+void CRigidBody::applyConstantVelocityNormal(glm::vec3 _force,float _max_speed){
+    if(glm::length(getXZVelocity()) < _max_speed)
+        applyCentralForce(_force*(FORCE_FACTOR/2)*_max_speed);
+
+}
 void CRigidBody::applyConstantVelocity(glm::vec3 _force,float _max_speed,bool _keyPressed){
     float currentSpeed = glm::length(getXZVelocity());
     if(!_keyPressed && currentSpeed == 0)

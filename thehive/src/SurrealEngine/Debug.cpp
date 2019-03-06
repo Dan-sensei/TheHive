@@ -16,11 +16,55 @@
 #include "Mesh.hpp"
 #include "AssetManager.hpp"
 */
+
+#include <SurrealEngine/AssetManager.hpp>
+
 #include <stdio.h>
 Debug::Debug(){
+    LineShader = AssetManager::getShader("Lines");
+    LineShader->Bind();
+    ColorID = LineShader->getUniformLocation("Color");
+    MVP_ID = LineShader->getUniformLocation("MVP");
+
+
+    Line.reserve(6);
+    Line.emplace_back(0);
+    Line.emplace_back(0);
+    Line.emplace_back(0);
+    Line.emplace_back(0);
+    Line.emplace_back(0);
+    Line.emplace_back(0);
+
+    glGenVertexArrays(1, &LineVAO);
+    glBindVertexArray(LineVAO);
+
+        glGenBuffers(1, &LineVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, LineVBO);
+        glBufferData(GL_ARRAY_BUFFER, Line.size()*sizeof(float), &Line[0], GL_DYNAMIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glBindVertexArray(0);
 }
 
+
+
 Debug::~Debug(){
+}
+
+void Debug::DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color &c){
+    Line[0] = Init.x;
+    Line[1] = Init.y;
+    Line[2] = Init.z;
+    Line[3] = Init.x;
+    Line[4] = Init.y;
+    Line[5] = Init.z;
+    glBindBuffer(GL_ARRAY_BUFFER, LineVBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 6*sizeof(float), &Line[0]);
+
+    LineShader->Bind();
+    glUniform3f(ColorID, c.R, c.G, c.B);
+    //glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &(Singleton<TMotorTAG>::Instance()->getMVP())[0][0]);
 }
 //reiniciar el log
 bool Debug::restart_gl_log() {

@@ -9,7 +9,7 @@
 #define MAX_ENTITIES 65536
 
 ObjectManager::ObjectManager() {
-    nextAvailableEntityID.push(1);
+    nextAvailableEntityID.push(1);//
 
     //  Defines wich kind of messages will receive each type of component
     //  We just insert in the array of vectors, the component type in the messageTYpe array position
@@ -167,7 +167,7 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
 
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
-    std::cout << "FLOCKING SIZE " << TypeToComponentMap[gg::FLOCK].size() << '\n';
+    //std::cout << "FLOCKING SIZE " << TypeToComponentMap[gg::FLOCK].size() << '\n';
     if(Erase) return;
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);
@@ -185,6 +185,7 @@ void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16
 
 void ObjectManager::sendMessageToAllEntities(const Message &m){
     // We iterate over every component in the map that expects to receive that kind of message
+
     std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
     // First we search for a component type that expects that message type

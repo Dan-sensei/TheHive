@@ -7,8 +7,10 @@ class CTriggerSystem;
 class ObjectManager;
 class ggDynWorld;
 
+class AIDirector;
+
 #include <iostream>
-#include <GameEngine/Clock.hpp>
+#include <SurrealEngine/Clock.hpp>
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
 
@@ -42,14 +44,14 @@ private:
     ObjectManager* Manager;
     ggDynWorld* world;
     CCamera* MainCamera;
+    AIDirector* Director;
 
     gg::Clock MasterClock;
     double DeltaTime;
     double Tick; //PARA LA INTERPOLACION
     float Accumulator;
 
-    uint UPDATE;
-    uint DRO;
+    gg::Color col;
 };
 
 

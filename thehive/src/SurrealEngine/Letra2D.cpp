@@ -1,6 +1,9 @@
 #include "Letra2D.hpp"
 #include "ZMeshData.hpp"
 #include "AssetManager.hpp"
+#include "Singleton.hpp"
+#include <SurrealEngine/TMotorTAG.hpp>
+
 #include <iostream>
 #include <SOIL2/SOIL2.h>
 
@@ -10,8 +13,6 @@
 #define MAYUSCULAS 198.0f
 #define MINUSCULAS 64.0f
 
-#define SCREENW 1080.0f
-#define SCREENH 720.0f
 /*
 
 altura 64
@@ -97,13 +98,19 @@ float Letra2D::getX(){
     return X;
 }
 float Letra2D::getW(){
-    return (W/SCREENW);
+    //auto motor =Singleton<TMotorTAG>::Instance();
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    float ancho = mode->width;
+
+    return (W/ancho);
 }
 float Letra2D::getY(){
     return Y;
 }
 float Letra2D::getH(){
-    return (H/SCREENH);
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    float alto = mode->height;
+    return (H/alto);
 }
 float Letra2D::getTX(){
     return TX;
@@ -127,6 +134,9 @@ Letra2D::~Letra2D(){
 
 }
 void Letra2D::init2(){
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    float ancho = mode->width;
+    float alto = mode->height;
     H=HEIGTH;//constante
 
     TX=(X)/TWIDTH;
@@ -136,23 +146,12 @@ void Letra2D::init2(){
     TH=(Y+H)/THEIGTH;
 
     ratio=W/H;
-    W=((W)/SCREENW);//SCREEN W porcentual
-    H=((H)/SCREENH);//SCREEN H
+    //W=((W));//SCREEN W porcentual
+    //H=((H));//SCREEN H
 }
 void Letra2D::resize(float alto){
-    //redimensionar una letra
-    //alto en porcentage
-    //float tamy=alto*SCREENH;
-
-    //alto en pixeles
-    float tamy=alto;
-    float tamx=tamy*ratio;
-    W=tamx;//SCREEN W porcentual
-    H=tamy;//SCREEN H
-
-    //W=tamx;//SCREEN W
-    //H=tamy;//SCREEN H
-
+    H=alto;//SCREEN H
+    W=H*ratio;//SCREEN W porcentual
 }
 void Letra2D::inita(){
     X=1;

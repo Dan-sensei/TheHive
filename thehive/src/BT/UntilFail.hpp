@@ -6,6 +6,10 @@
 
 class UntilFail : public Decorator{
     public:
-     Status update();
+        UntilFail(Behavior* _m_pChild);
+        UntilFail();
+        virtual ~UntilFail();
+        virtual void onTerminate(Status state);
+        virtual Status update();
 };
 #endif

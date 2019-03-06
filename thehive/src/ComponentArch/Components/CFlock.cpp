@@ -23,7 +23,14 @@ CFlock::~CFlock(){
 
 }
 void CFlock::Muerte(){
+    //std::cout << "muero" << '\n';
+    //std::cout << "mi id es" <<getEntityID()<< '\n';
+    //std::cout << "antes" << '\n';
+    //CFlock* prueba = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,leader_id));
+    //prueba->debugtotal();
+
     if(leader){
+        //std::cout << "soy lider" << '\n';
         removerFlocked(leader_id);
         //pasar el testigo
         //debugtotal();
@@ -33,12 +40,18 @@ void CFlock::Muerte(){
 
     }
     else{
+        //std::cout << "no soy lider" << '\n';
         //eliminame de la lista papu
         CFlock* flock_lider = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,leader_id));
         flock_lider->removerFlocked(getEntityID());
     }
     //destruir esta entidad
+    //CFlock* prueba2 = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,leader_id));
+    //std::cout << "despues" << '\n';
+    //prueba2->debugtotal();
     Manager->removeComponentFromEntity(gg::FLOCK,getEntityID() );
+    //std::cout << "muero final" << '\n';
+
 
 }
 void CFlock::removerFlocked(int id){
@@ -60,12 +73,18 @@ void CFlock::removerFlocked(int id){
     */
 
 }
+
+bool CFlock::getLeader(){
+    return leader;
+}
+
 void CFlock::setNewLeader(){
-    if(Flocked.size()>1){
+    if(Flocked.size()>0){
         //ese es el puto lider
         auto it=Flocked.begin();
         CRigidBody* body=*it;
         int id=body->getEntityID();//WTF
+        //std::cout << "elegimos" <<id<< '\n';
         CFlock* flock_lider = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,id));
         flock_lider->setIAmLeader(true);
         flock_lider->setLeader(id);
@@ -83,6 +102,9 @@ void CFlock::setNewLeader(){
 
 
     }
+    //else{
+    //    std::cout << "no elegimos" << '\n';
+    //}
 
 }
 //flock_lider->copyFlocked(leader_id);
@@ -138,10 +160,25 @@ void CFlock::debugtotal(){
 
 }
 void CFlock::FixedUpdate(){
-
+//std::cout << "fixed" << '\n';
     if(leader){
         if(Flocked.size()<=1){
+            //std::cout << "eliminamos todo" << '\n';
             Manager->removeComponentFromEntity(gg::FLOCK,getEntityID() );
+        }
+        else{
+
+            //debugeando
+            //debugtotal();
+
+            //Separation
+            FastSeparation();
+            //El resto
+            FastAlignementAndCohesion();
+            //esto es codigo de swarm, basicamente para que a parte del flocking tengan todos un mismo destino
+            //ForceCenter();
+            //ChangeCenter();
+            //Muerte();
         }
         //debugeando
         //debugtotal();
@@ -155,6 +192,8 @@ void CFlock::FixedUpdate(){
         //ChangeCenter();
         //Muerte();
     }
+    //std::cout << "fixed final" << '\n';
+
 }
 void CFlock::ChangeCenter(){
     //glm::vec3 res;
@@ -195,7 +234,9 @@ void CFlock::addFlocked(uint16_t me){
     Flocked.push_back(body);
 }
 
-
+int CFlock::getLeaderID(){
+    return leader_id;
+}
 void CFlock::FastSeparation(){
     mediapos=glm::vec3();
     mediavel=glm::vec3();

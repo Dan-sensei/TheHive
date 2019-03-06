@@ -10,7 +10,7 @@ ADDITIONAL_H :=  -I ./include -I ./src -I /usr/include/bullet
 ADDITIONAL_LIB := -L ./lib
 LIBRARIES := -lGL -lGLEW -lGLU -lglut -lglfw -lSOIL2 -lassimp -lIrrlicht -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader -lBullet2FileLoader
 
-COMPILER := g++
+COMPILER := g++ -std=c++17 -O3
 
 EXE := main
 

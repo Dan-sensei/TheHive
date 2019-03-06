@@ -17,12 +17,15 @@
 #include "AssetManager.hpp"
 #include <SurrealEngine/KEYCODES.hpp>
 #include "TCamara.hpp"
+#include "Debug.hpp"
+#include "Clock.hpp"
 
 template <typename T>
 class Singleton;
 
 class TMotorTAG {
     friend class Singleton<TMotorTAG>;
+    friend class Debug;
     public:
         ~TMotorTAG();
 
@@ -30,8 +33,9 @@ class TMotorTAG {
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
         TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3());
 
-        int8_t addShaderToMap(const char*,bool);
         bool bindMaterialToMesh(TNodo*,ZMaterial*);
+
+        void DisplayFPS();
 
         void move(TNodo*,const glm::vec3&);
         void rotate(TNodo*,const float&,const glm::vec3&);
@@ -60,15 +64,24 @@ class TMotorTAG {
         inline bool key(gg::KEYCODES keyCode){ return KEYS[keyCode];};
         void print();
         bool Initialize();
-        GLFWwindow* window;
     private:
         TMotorTAG();
 
+        gg::Clock FPS_Clock;
+
         TNodo* ESCENA;
+        GLFWwindow* window;
         AssetManager* gestorRecursos;
+        Debug* Debugger;
+
+        TNodo* main_camera;
+        TCamara* cam_;
+
+        uint16_t FPS;
 
         TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot);
 
+        glm::mat4 getMVP();
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
         static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -81,8 +94,6 @@ class TMotorTAG {
         static int Half_Window_Width;
         static int Half_Window_Height;
 
-        TNodo* main_camera;
-        TCamara* cam_;
 };
 
 #endif

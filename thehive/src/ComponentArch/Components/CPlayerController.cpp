@@ -131,17 +131,10 @@ void CPlayerController::FixedUpdate(){
     // -----------------------------------------------------------------------------
 
     //  If exists, we get its position
-    glm::vec3 nextPosition = camera->getlastHeroPosition();
+
     bool heroRotation = true;
 
-    glm::vec3 oPV = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA,getEntityID()))->getOffsetPositionVector();
-                 cV = camera->getCameraPositionBeforeLockRotation();
-    glm::vec3 hV = nextPosition;
-    // glm::vec3 cV2 = cV;  // cV2 POR AHORA no se usa para nada
-
-    // cV es un vector direccion camara-heroe
-    cV -= oPV;
-    cV -= hV;
+    camera->getDirectionVector(cV);
     cV  = glm::normalize(cV);
 
     // Vector perpendicular al vector direccion
@@ -366,7 +359,7 @@ void CPlayerController::S_IsPressed(glm::vec3 &force, bool &pressed){
     pressed = true;
 }
 
-void CPlayerController::A_IsPressed(glm::vec3 &force, bool &pressed){
+void CPlayerController::D_IsPressed(glm::vec3 &force, bool &pressed){
     force = glm::vec3(-ppV.x,0,-ppV.z);
     // if(Engine->key(ROTATE_KEY)){
     //     cV2.x-=ppV.x;
@@ -376,7 +369,7 @@ void CPlayerController::A_IsPressed(glm::vec3 &force, bool &pressed){
     pressed = true;
 }
 
-void CPlayerController::D_IsPressed(glm::vec3 &force, bool &pressed){
+void CPlayerController::A_IsPressed(glm::vec3 &force, bool &pressed){
     force = glm::vec3(+ppV.x,0,+ppV.z);
     // if(Engine->key(ROTATE_KEY)){
     //     cV2.x-=ppV.x;

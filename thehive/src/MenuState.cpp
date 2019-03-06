@@ -9,8 +9,7 @@
 #include "Singleton.hpp"
 
 #include "GameEngine/ScreenConsole.hpp"
-
-#include <EventSystem/Blackboard.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
 #include <States/StateMachine.hpp>
 
 
@@ -50,10 +49,6 @@ MenuState::MenuState():cont(){
 
     //Engine->Starto();
     //Engine->HideCursor(true);
-    Manager = Singleton<ObjectManager>::Instance();
-
-    world = Singleton<ggDynWorld>::Instance();
-    //world->inito();
     //Engine->HideCursor(false);
 }
 
@@ -86,9 +81,5 @@ void MenuState::Update(){
 
 void MenuState::CLIN(){
     Singleton<ScreenConsole>::Instance()->CLINMenu();
-
-    Blackboard::ClearGlobalBlackboard();
-    Manager->clin();
-    world->clean();
     EventSystem->clin();
 }

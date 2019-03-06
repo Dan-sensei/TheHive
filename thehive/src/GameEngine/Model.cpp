@@ -50,7 +50,7 @@ glm::vec3 Model::getRotation(){
     irr::core::vector3df currentRotationIRR = mModel->getRotation();
 
     // Convert the Irrlicht vector to GG vector
-    currentRotationGG.x = currentRotationIRR.X;
+    currentRotationGG.x = currentRotationIRR.Z;
     currentRotationGG.y = currentRotationIRR.Y;
     currentRotationGG.z = currentRotationIRR.Z;
 
@@ -76,4 +76,11 @@ void Model::assignMaterial(const Material &mat) {
     irr::video::ITexture * texture = mat.mMaterial.getTexture(0);
     if(texture)
         mModel->setMaterialTexture(0, texture);
+}
+bool Model::getVisibility(){
+    return mModel->isVisible();
+}
+
+void Model::setVisibility(bool flag){
+    mModel->setVisible(flag);
 }

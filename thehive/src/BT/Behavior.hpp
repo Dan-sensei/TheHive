@@ -17,5 +17,6 @@ class Behavior{
        virtual void abort();
        Status tick();
        Status getStatus();
+       void SetStatus(Status m_eStatus);
 };
 #endif

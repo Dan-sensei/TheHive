@@ -24,6 +24,10 @@ class Model{
         glm::vec3 getPosition();
         glm::vec3 getRotation();
         glm::vec3 getScale();
+        bool getVisibility();
+
+
+        void setVisibility(bool flag);
 
         //  ---
         //  We assign the material to the model

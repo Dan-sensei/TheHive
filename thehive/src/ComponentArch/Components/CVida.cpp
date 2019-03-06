@@ -6,6 +6,7 @@
 #include <iostream>
 #include <GameEngine/ScreenConsole.hpp>
 #include <Singleton.hpp>
+#include <GameAI/AIDirector.hpp>
 
 #include <BT/Action.hpp>
 
@@ -21,6 +22,9 @@ CVida::CVida(int _vida)
 
 CVida::~CVida() {}
 
+void CVida::Muerte(){
+    vida=0;
+}
 float CVida::getVida(){
     return vida;
 }
@@ -36,6 +40,7 @@ bool CVida::quitarvida(const float &_factor){
             //gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
             vida = 0;
             ret = true;
+
             //Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID());
             //Manager->getComponent(gg::AIENEM,getEntityID());
 
@@ -101,13 +106,14 @@ void CVida::FixedUpdate() {
 
                 triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 20, 5000, false, TData());
             }
-
-            Manager->removeEntity(getEntityID());
-            //aqui se muere
+            AIDirector* dir=Singleton<AIDirector>::Instance();
+            dir->removeEnemy(t);
             CFlock* flock_lider = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,getEntityID()));
             if(flock_lider){
                 flock_lider->Muerte();
             }
+            Manager->removeEntity(getEntityID());
+            //aqui se muere
 
         }
         else{

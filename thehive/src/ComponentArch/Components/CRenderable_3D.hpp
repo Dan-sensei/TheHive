@@ -26,6 +26,8 @@ class CRenderable_3D : public IComponent {
 
         //  Handler
         gg::EMessageStatus MHandler_SETPTRS();
+        void setVisibility(bool flag);
+
 
     private:
         TNodo* _3DModel;
