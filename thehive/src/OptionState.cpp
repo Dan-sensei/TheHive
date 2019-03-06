@@ -50,7 +50,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 //============================================================================================
 
 OptionState::OptionState():cont(){
-    Engine = Singleton<TMotorTAG>::Instance();
+    Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
     //Engine->Starto();

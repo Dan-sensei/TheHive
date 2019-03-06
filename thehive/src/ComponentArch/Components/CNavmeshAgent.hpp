@@ -7,7 +7,7 @@
 #include <Util.hpp>
 #include <stack>
 
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <Singleton.hpp>
 
@@ -50,7 +50,7 @@ class CNavmeshAgent : public IComponent {
         glm::vec3 RS, LS;
         glm::vec3 moveVector;
 
-        TMotorTAG* Engine;
+        SurrealEngine* Engine;
         ggDynWorld* world;
 
         CTransform* cTransform;

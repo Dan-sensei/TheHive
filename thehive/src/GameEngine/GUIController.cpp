@@ -27,7 +27,7 @@ void GUIController::Init(){
     enter_pulsado=false;
     back_pulsado=false;
     esc_pulsado=false;
-    Engine = Singleton<TMotorTAG>::Instance();
+    Engine = Singleton<SurrealEngine>::Instance();
     VectorAcciones[GOPLAY] = &GUIController::gotoPlay;
     VectorAcciones[GOCREDITS] = &GUIController::gotoCredits;
     VectorAcciones[GOOPTIONS] = &GUIController::gotoOptions;

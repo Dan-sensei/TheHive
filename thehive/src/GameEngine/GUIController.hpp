@@ -11,7 +11,7 @@
 #include <GameEngine/EnumButtonType.hpp>
 #include <GameEngine/KEYCODES.hpp>
 #include <States/StateMachine.hpp>
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 
 
 class GUIController{
@@ -63,7 +63,7 @@ void lessEffect();
 void initOptions();
 
 
-        TMotorTAG* Engine;
+        SurrealEngine* Engine;
         using pFunc = void(GUIController::*)();
         pFunc VectorAcciones[Butn];
 

@@ -15,6 +15,8 @@ in vec3 VertexPosT;
 
 uniform vec3 LightPosition_worldspace;
 
+#define BASE_FACTOR 0.2
+
 void main() {
 
 
@@ -26,7 +28,7 @@ void main() {
 
   // Material properties
   vec3 MaterialDiffuseColor = texture( DiffuseMap, UV).rgb;
-  vec3 MaterialAmbientColor = vec3(0.04,0.04,0.04) * MaterialDiffuseColor;
+  vec3 MaterialAmbientColor = vec3(BASE_FACTOR) * MaterialDiffuseColor;
   vec3 MaterialSpecularColor = texture( SpecularMap, UV ).rgb * 0.3;
   vec3 TextureNormal_tangentspace = normalize(texture2D( NormalMap, vec2(UV.x,-UV.y)).rgb*2.0 - 1.0);
 

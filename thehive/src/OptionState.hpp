@@ -1,7 +1,7 @@
 #ifndef _OPTIONSTATE_H
 #define _OPTIONSTATE_H
 
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 class CTriggerSystem;
 
 class ObjectManager;
@@ -34,7 +34,7 @@ public:
     */
 
 private:
-    TMotorTAG* Engine;
+    SurrealEngine* Engine;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;

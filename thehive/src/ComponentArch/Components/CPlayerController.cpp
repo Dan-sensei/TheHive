@@ -40,7 +40,7 @@ CPlayerController::~CPlayerController() {
 
 void CPlayerController::Init(){
     //  We check if this entity has the TRANSFORM component
-    Engine  = Singleton<TMotorTAG>::Instance();
+    Engine  = Singleton<SurrealEngine>::Instance();
     world   = Singleton<ggDynWorld>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
     factory = Singleton<Factory>::Instance();

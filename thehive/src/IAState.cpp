@@ -45,7 +45,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 //============================================================================================
 
 IAState::IAState(int _id):cont(),id(_id){
-    Engine = Singleton<TMotorTAG>::Instance();
+    Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     //Engine->Starto();
     //Engine->HideCursor(true);

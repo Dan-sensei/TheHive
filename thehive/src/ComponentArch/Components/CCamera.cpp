@@ -18,7 +18,7 @@ CCamera::~CCamera(){
 }
 
 void CCamera::Init(){
-    Engine = Singleton<TMotorTAG>::Instance();
+    Engine = Singleton<SurrealEngine>::Instance();
     dynWorld = Singleton<ggDynWorld>::Instance();
     cam = Engine->getCamera();
 
@@ -42,7 +42,7 @@ void CCamera::CameraUpdate(){
     Engine->getCursorPosition(x, y);
     t += (prevX - x) * 0.005f;
     p += (y - prevY) * 0.005f * InvertCamera;
-    
+
     prevX = x;
     prevY = y;
 

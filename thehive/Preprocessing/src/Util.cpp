@@ -4,9 +4,6 @@
 
 #define PI 3.14159265359
 
-
-
-
 glm::vec3 gg::Direccion2D_to_rot(glm::vec3 rot){
     float aux2=asin(rot.x)*180.f/PI;
     if(rot.z<0){

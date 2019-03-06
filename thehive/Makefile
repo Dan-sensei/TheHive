@@ -53,6 +53,9 @@ clean:
 	$(call printSuccess,  "[OK]")
 	$(call br)
 
+pre:
+	cd Preprocessing && $(MAKE) clean
+
 init:
 	./$(EXE)
 

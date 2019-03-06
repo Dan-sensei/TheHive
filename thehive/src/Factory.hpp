@@ -2,7 +2,7 @@
 #define FACTORY_H
 
 #include <ComponentArch/ObjectManager.hpp>
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
 
@@ -51,7 +51,7 @@ class Factory{
         void operator=(const Factory &orig) = delete;
 
         ObjectManager* Manager;
-        TMotorTAG* Engine;
+        SurrealEngine* Engine;
 
 };
 

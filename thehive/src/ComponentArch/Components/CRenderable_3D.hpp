@@ -8,7 +8,7 @@
 #include <map>
 #include <iostream>
 #include <Singleton.hpp>
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 
 
 class CTransform;
@@ -31,7 +31,7 @@ class CRenderable_3D : public IComponent {
 
     private:
         TNodo* _3DModel;
-        TMotorTAG* Surreal;
+        SurrealEngine* Surreal;
 
         CTransform* cTransform;
 };

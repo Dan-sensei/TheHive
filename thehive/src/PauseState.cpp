@@ -21,7 +21,7 @@
 
 
 PauseState::PauseState():cont(){
-    Engine = Singleton<TMotorTAG>::Instance();
+    Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
     //Engine->Starto();

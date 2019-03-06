@@ -2,7 +2,7 @@
 #include <iostream>
 #include <BinaryParser.hpp>
 #include "Singleton.hpp"
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 #include <numeric>
 
 
@@ -214,7 +214,7 @@ void Pathfinding::DroNodes(){
     uint8_t i = GRAPH.size();
     uint8_t length = 0;
 
-    TMotorTAG* Engine = Singleton<TMotorTAG>::Instance();
+    SurrealEngine* Engine = Singleton<SurrealEngine>::Instance();
 
     while(i--){
         length = 50;

@@ -5,7 +5,7 @@
 #include <iostream>
 
 ZMeshData::ZMeshData()
-:VAO(0)
+:VAO(0), IndexSize(0)
 {
     glGenVertexArrays(1, &VAO);
 }
@@ -45,16 +45,12 @@ bool ZMeshData::load(const std::string& path){
 
     IndexSize = Indexes.size();
 
-    unsigned int IndexBuffer;
-    glGenBuffers(1, &IndexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indexes.size()*sizeof(unsigned short), &(Indexes[0]), GL_STATIC_DRAW);
-
-    addVertexBuffer(PositionsNormals, 6);
-    addVertexBuffer(UV_Coords, 2);
-    addVertexBuffer(TangentsBitangents, 6);
 
     glBindVertexArray(VAO);
+
+        addVertexBuffer(PositionsNormals, 6);
+        addVertexBuffer(UV_Coords, 2);
+        addVertexBuffer(TangentsBitangents, 6);
 
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
@@ -78,7 +74,11 @@ bool ZMeshData::load(const std::string& path){
         glBindVertexBuffer(1, VBOs[1], 0, 8);
         glBindVertexBuffer(2, VBOs[2], 0, 24);
 
+        unsigned int IndexBuffer;
+        glGenBuffers(1, &IndexBuffer);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indexes.size()*sizeof(unsigned short), &(Indexes[0]), GL_STATIC_DRAW);
+
     glBindVertexArray(0);
 
     return true;

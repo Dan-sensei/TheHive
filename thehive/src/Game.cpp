@@ -18,7 +18,7 @@
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include <EventSystem/Blackboard.hpp>
 #include "BinaryParser.hpp"
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 
 #define MOVEMENT_SPEED 1.f
 
@@ -52,7 +52,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 Game::Game()
 :Accumulator(0)
 {
-    Engine = Singleton<TMotorTAG>::Instance();
+    Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     Director = Singleton<AIDirector>::Instance();
     //Director = new AIDirector();

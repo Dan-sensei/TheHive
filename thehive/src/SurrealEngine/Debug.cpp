@@ -64,7 +64,7 @@ void Debug::DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color
 
     LineShader->Bind();
     glUniform3f(ColorID, c.R, c.G, c.B);
-    //glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &(Singleton<TMotorTAG>::Instance()->getMVP())[0][0]);
+    //glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &(Singleton<SurrealEngine>::Instance()->getMVP())[0][0]);
 }
 //reiniciar el log
 bool Debug::restart_gl_log() {

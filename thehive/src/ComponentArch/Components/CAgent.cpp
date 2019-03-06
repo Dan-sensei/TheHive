@@ -37,7 +37,7 @@ CAgent::~CAgent() {
 
 
 void CAgent::Init(){
-    Engine = Singleton<TMotorTAG>::Instance();
+    Engine = Singleton<SurrealEngine>::Instance();
 
     nCAgentID=getEntityID();
     addAgent(this);
@@ -276,11 +276,15 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
                 oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
 
-                glm::vec3 pos(
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().x,
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().y+5,
-                    static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().z
-                );
+                // glm::vec3 pos(
+                //     static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().x,
+                //     static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().y+5,
+                //     static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().z
+                // );
+
+                glm::vec3 pos = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition();
+                pos.y += 5;
+
                 uint16_t weapon = Singleton<Factory>::Instance()->createCollectableWeapon(pos,_wtype_actual);
 
                 glm::vec3 from = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition();

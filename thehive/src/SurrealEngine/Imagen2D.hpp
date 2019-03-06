@@ -25,10 +25,6 @@ class Imagen2D {
         float getY();
         float getH();
 
-
-
-
-
     private:
             glm::vec4 color;
             unsigned int VAO;

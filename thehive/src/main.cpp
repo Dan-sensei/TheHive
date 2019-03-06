@@ -28,10 +28,10 @@
 #include "Game.hpp"
 #include "MenuState.hpp"
 
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 
 int main(int argc, char const *argv[]) {
-    TMotorTAG *Engine = Singleton<TMotorTAG>::Instance();
+    SurrealEngine *Engine = Singleton<SurrealEngine>::Instance();
     CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
 
     //Engine->Starto();
@@ -115,14 +115,14 @@ int main(int argc, char const *argv[]) {
 // #include <SurrealEngine/Shader.hpp>
 // #include <SurrealEngine/OpenGEnum.hpp>
 // #include <SurrealEngine/AssetManager.hpp>
-// #include <SurrealEngine/TMotorTAG.hpp>
+// #include <SurrealEngine/SurrealEngine.hpp>
 //
 // #include "BinaryParser.hpp"
 //
 //
 // int main(int argc, char const *argv[]) {
 //
-// 	TMotorTAG* ROOT = Singleton<TMotorTAG>::Instance();
+// 	SurrealEngine* ROOT = Singleton<SurrealEngine>::Instance();
 //
 //
 // 	auto window = ROOT->window;

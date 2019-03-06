@@ -1,7 +1,7 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-class TMotorTAG;
+class SurrealEngine;
 class CTriggerSystem;
 
 class ObjectManager;
@@ -38,7 +38,7 @@ public:
     */
 
 private:
-    TMotorTAG* Engine;
+    SurrealEngine* Engine;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;

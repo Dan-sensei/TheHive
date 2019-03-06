@@ -5,7 +5,7 @@
 #include <ComponentArch/Message.hpp>
 #include <cstdint>
 #include <cmath>
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 #include <SurrealEngine/TNodo.hpp>
 #include <Singleton.hpp>
 
@@ -35,7 +35,7 @@ public:
     void getDirectionVector(glm::vec3 &Output);
 
 private:
-    TMotorTAG       *Engine;
+    SurrealEngine       *Engine;
     TNodo           *cam;
     CTransform      *Target;
     ggDynWorld      *dynWorld;

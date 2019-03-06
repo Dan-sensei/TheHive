@@ -76,7 +76,7 @@ void CAIEnem::enemyrange(){
 }
 
 void CAIEnem::Init(){
-    Engine          = Singleton<TMotorTAG>::Instance();
+    Engine          = Singleton<SurrealEngine>::Instance();
     Manager         = Singleton<ObjectManager>::Instance();
     EventSystem     = Singleton<CTriggerSystem>::Instance();
     world           = Singleton<ggDynWorld>::Instance();

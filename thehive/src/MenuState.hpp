@@ -1,7 +1,7 @@
 #ifndef _MENUSTATE_H
 #define _MENUSTATE_H
 
-#include <SurrealEngine/TMotorTAG.hpp>
+#include <SurrealEngine/SurrealEngine.hpp>
 class CTriggerSystem;
 
 class ObjectManager;
@@ -34,7 +34,7 @@ public:
     */
 
 private:
-    TMotorTAG* Engine;
+    SurrealEngine* Engine;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
