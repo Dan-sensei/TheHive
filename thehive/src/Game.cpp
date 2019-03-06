@@ -7,6 +7,7 @@
 
 #include "ComponentArch/ObjectManager.hpp"
 #include "GameEngine/Camera.hpp"
+#include "GameEngine/Motor2D.hpp"
 #include "Singleton.hpp"
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/NavmeshStructs.hpp"
@@ -48,8 +49,9 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 */
 //============================================================================================
 
-Game::Game(){
+Game::Game():Accumulator(0){
     Engine = Singleton<TMotorTAG>::Instance();
+    Engine2D = Singleton<Motor2D>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
 
     //Engine->Starto();
@@ -69,12 +71,15 @@ Game::~Game(){
 }
 
 void Game::Init(){
+    Accumulator=0;
     //Singleton<ScreenConsole>::Instance()->InitHUD();
     BinaryParser::test();
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.1f,100.f, glm::vec3(7,5,10),glm::vec3(),16.f/9.f);
 
     Engine->print();
+    Engine2D->prueba();
+    Engine2D->InitHUD();
     // Pos init del heroe normal
     // 360, 0, 350
     uint16_t h = sF->createHero(glm::vec3(0,0,0),false);
@@ -133,6 +138,8 @@ void Game::Update(){
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
+    Engine2D->checkbuton();
+    Engine2D->draw();
     Engine->EndDraw();
 }
 

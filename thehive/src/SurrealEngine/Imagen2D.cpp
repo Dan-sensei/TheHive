@@ -39,6 +39,10 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
 
     Y=_y;
     H=_h-_y;
+    //std::cout << "X:" <<_x<< '\n';
+    //std::cout << "Y:" <<_y<< '\n';
+    //std::cout << "W:" <<_w<< '\n';
+    //std::cout << "H:" <<_h<< '\n';
 
     float vertices[] = {
     //  Position      Color             Texcoords
@@ -70,6 +74,7 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
     	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
     	    sizeof(elements), elements, GL_STATIC_DRAW);
+
 
             //textura
 
@@ -105,6 +110,12 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
     	glEnableVertexAttribArray(texAttrib);
     	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
     		4*sizeof(float), (void*)(2*sizeof(float)));
+
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
 
 }
 void Imagen2D::setPos(float x,float y,float w,float h){
@@ -152,8 +163,6 @@ void Imagen2D::Draw(){
     glUniform4fv(inputColour,1,&color[0]);
 
 
-
-
     glActiveTexture(GL_TEXTURE0 + 0);
     glBindTexture(GL_TEXTURE_2D, textureID);
     auto loc=sh->getUniformLocation("DiffuseMap");
@@ -187,6 +196,7 @@ void Imagen2D::Draw(){
 }
 
 Imagen2D::~Imagen2D(){
+    std::cout << "DELETE IMAGEN2D" << '\n';
     glDeleteBuffers(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);

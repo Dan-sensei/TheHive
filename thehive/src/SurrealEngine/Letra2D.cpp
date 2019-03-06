@@ -97,13 +97,13 @@ float Letra2D::getX(){
     return X;
 }
 float Letra2D::getW(){
-    return W;
+    return (W/SCREENW);
 }
 float Letra2D::getY(){
     return Y;
 }
 float Letra2D::getH(){
-    return H;
+    return (H/SCREENH);
 }
 float Letra2D::getTX(){
     return TX;

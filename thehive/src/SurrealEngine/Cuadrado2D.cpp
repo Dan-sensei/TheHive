@@ -69,6 +69,12 @@ Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
     		2*sizeof(float), 0);
 
 
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+
 }
 void Cuadrado2D::setPos(float x,float y,float w,float h){
     //glDeleteVertexArrays(1, &VBO);
@@ -124,6 +130,8 @@ void Cuadrado2D::Draw(){
 }
 
 Cuadrado2D::~Cuadrado2D(){
+    std::cout << "DELETE CUADRADO" << '\n';
+
     glDeleteBuffers(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);

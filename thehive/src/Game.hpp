@@ -12,7 +12,7 @@ class ggDynWorld;
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
 
-
+class Motor2D;
 class Game : public State{
 public:
     Game();
@@ -37,6 +37,7 @@ public:
 
 private:
     TMotorTAG* Engine;
+    Motor2D* Engine2D;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;

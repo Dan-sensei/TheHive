@@ -140,9 +140,9 @@ void TMotorTAG::setPosition(TNodo* _node, const glm::vec3& _offpos){
 void TMotorTAG::setRotation(TNodo* _node,const glm::vec3& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
 }
-void TMotorTAG::PointAt(TNodo *_node, const gg::Vector3f& _offpos){
+void TMotorTAG::PointAt(TNodo *_node, const glm::vec3& _offpos){
     auto trans =static_cast<TTransform*>(_node->getPadre()->getEntidad());
-    auto dir=glm::normalize(glm::vec3(_offpos.X,_offpos.Y,_offpos.Z)-trans->getDatos());
+    auto dir=glm::normalize(_offpos-trans->getDatos());
 
     auto x=glm::degrees(glm::acos(dir.x));
     auto y=glm::degrees(glm::acos(dir.y));
@@ -158,7 +158,16 @@ void TMotorTAG::PointAt(TNodo *_node, const gg::Vector3f& _offpos){
         z=360-z;
     }
     setRotation(_node, glm::vec3(x,y,z));
+    /*
+    auto trans =static_cast<TTransform*>(_node->getPadre()->getEntidad());
+    //
+    auto res=glm::LookAt(trans->getDatos(),_offpos,glm::vec3(0,1,0));
+    */
+    // glEnable(GL_DEPTH_TEST);
+    // glDepthFunc(GL_LESS);
 
+    // glCullFace (GL_BACK);
+    // glEnable(GL_CULL_FACE);
 }
 
 
@@ -174,8 +183,8 @@ bool TMotorTAG::Initialize(){
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Para hacer feliz a MacOS ; Aunque no debería ser necesaria
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //No queremos el viejo OpenGL
 
-    float ancho = 1920;
-    float alto = 1080;
+    float ancho = 1080;
+    float alto = 720;
 
 	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
@@ -195,11 +204,7 @@ bool TMotorTAG::Initialize(){
 	    return false;
 	}
 
-	glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
 
-    glCullFace (GL_BACK);
-    glEnable(GL_CULL_FACE);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window, GLFW_CURSOR_DISABLED, GL_TRUE);
