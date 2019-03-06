@@ -189,8 +189,9 @@ bool SurrealEngine::Initialize(){
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Para hacer feliz a MacOS ; Aunque no debería ser necesaria
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //No queremos el viejo OpenGL
 
-    float ancho = 1920;
-    float alto = 1080;
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    float ancho = mode->width;
+    float alto = mode->height;
 
 	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
