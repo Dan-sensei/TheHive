@@ -121,7 +121,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA){
         GG_Read(inStream, y);
         GG_Read(inStream, z);
         glm::vec3 Rotation(x,y,z);
-        if(MODEL == 37) std::cout << "Rotation " << Rotation.x << ", " << Rotation.y << ", " << Rotation.z << '\n';
+        //if(MODEL == 37) std::cout << "Rotation " << Rotation.x << ", " << Rotation.y << ", " << Rotation.z << '\n';
         //std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
 
         bool HasCollider;

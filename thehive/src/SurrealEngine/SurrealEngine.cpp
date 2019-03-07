@@ -201,7 +201,7 @@ bool SurrealEngine::Initialize(){
     float ancho = mode->width;
     float alto = mode->height;
 
-	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
+	window = glfwCreateWindow( 1920, 1080, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
 	    //fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
 	    glfwTerminate();

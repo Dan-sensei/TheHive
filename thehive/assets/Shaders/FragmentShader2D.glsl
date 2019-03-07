@@ -8,6 +8,7 @@ in vec2 Texcoord;
 out vec4 frag_colour;
 
 void main() {
-    frag_colour = texture(DiffuseMap, Texcoord)*inputColour;
+
+    frag_colour = texture2D(DiffuseMap, Texcoord)*inputColour;;
 
 };

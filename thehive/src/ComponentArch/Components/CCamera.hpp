@@ -16,7 +16,7 @@ class ggDynWorld;
 class CCamera : public IComponent {
 friend class Factory;
 public:
-    CCamera(bool);
+    CCamera(int8_t);
     CCamera(const CCamera &orig) = delete;
     virtual ~CCamera ();
 

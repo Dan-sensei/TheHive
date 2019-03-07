@@ -87,7 +87,7 @@ void Game::Init(){
     // 360, 0, 350
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,20,50),1);
+    uint16_t h = sF->createHero(glm::vec3(0,20,50),-1);
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
     Director->init();
@@ -110,10 +110,10 @@ void Game::Init(){
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     Singleton<Pathfinding>::Instance()->SetDebug(false);
-    world->setDebug(true);
+    //world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
-    Engine2D->prueba();
+    //Engine2D->prueba();
     // std::cout << "\n -- INIT -- " << '\n';
 }
 
@@ -167,17 +167,17 @@ void Game::Update(){
 
     // std::cout << "  - DRAW" << '\n';
     Engine->draw();
-    Engine->DisplayFPS();
+    //Engine->DisplayFPS();
+    Engine2D->DisplayHUD();
+    //Engine2D->draw();
 
     // Consola por pantalla
     // Singleton<ScreenConsole>::Instance()->DisplayDebug();
     // Singleton<ScreenConsole>::Instance()->DisplayHUD();
-    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';
-    Engine2D->DisplayHUD();
-    Engine2D->draw();
     Engine->EndDraw();
 }
 

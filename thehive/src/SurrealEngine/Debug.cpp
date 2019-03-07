@@ -52,10 +52,13 @@ Debug::Debug(){
 
 
 Debug::~Debug(){
+    glDeleteBuffers(1, &LineVBO);
+    glDeleteVertexArrays(1, &LineVAO);
 }
 
 void Debug::DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color &c, const glm::mat4 &MVP){
     glBindVertexArray(LineVAO);
+    //std::cout << "LINEVAO " << LineVAO << '\n';
 
     Line[0] = Init.x;
     Line[1] = Init.y;
@@ -72,8 +75,10 @@ void Debug::DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color
 
     glDrawArrays(GL_LINES, 0, 2);
 
-    AssetManager::getShader("Default")->Bind();
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    AssetManager::getShader("Default")->Bind();
 
 }
 //reiniciar el log

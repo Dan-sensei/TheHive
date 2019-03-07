@@ -19,10 +19,10 @@ class Cuadrado2D {
 
 
     private:
-            glm::vec4 color;
-            unsigned int VAO;
-            unsigned int VBO;
-            unsigned int EBO;
+        glm::vec4 color;
+        unsigned int VAO;
+        unsigned int VBO;
+        unsigned int EBO;
 };
 
 #endif

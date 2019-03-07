@@ -311,25 +311,27 @@ void Texto2D::Draw(){
 //palabra
 //glDisable(GL_BLEND);
 
-float incx=X;//opengl
-separacion=0;//si queremos espaci entre las palabras
-int max=palabra.size();
-for (int i = 0; i < max; i++) {
+    float incx=X;//opengl
+    separacion=0;//si queremos espaci entre las palabras
+    int max=palabra.size();
+    for (int i = 0; i < max; i++) {
 
-    if(palabra[i]==' ')
-    {
-        float tam=ChangeChar(incx,Y,'G');
-        incx=incx+tam+separacion;
-        //SCREENW
+        if(palabra[i]==' ')
+        {
+            float tam=ChangeChar(incx,Y,'G');
+            incx=incx+tam+separacion;
+            //SCREENW
+        }
+        else{
+            float tam=ChangeChar(incx,Y,palabra[i]);
+            incx=incx+tam+separacion;
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        }
+
     }
-    else{
-        float tam=ChangeChar(incx,Y,palabra[i]);
-        incx=incx+tam+separacion;
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    }
-
-}
+    glBindVertexArray(0);
     Singleton<AssetManager>::Instance()->getShader("Default")->Bind();
 
 }
@@ -337,8 +339,8 @@ for (int i = 0; i < max; i++) {
 Texto2D::~Texto2D(){
     std::cout << "DELETE TEXTO" << '\n';
 
-    glDeleteBuffers(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &VAO);
 
 }

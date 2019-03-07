@@ -8,7 +8,7 @@
 #define HEIGHT              0.4
 #define RADIUS              2.5
 
-CCamera::CCamera(bool _b)
+CCamera::CCamera(int8_t _b)
 :Target(nullptr), Engine(nullptr), cam(nullptr),
 InvertCamera(_b)
 {}
