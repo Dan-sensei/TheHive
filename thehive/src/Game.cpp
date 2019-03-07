@@ -87,7 +87,7 @@ void Game::Init(){
     // 360, 0, 350
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,20,50),1);
+    uint16_t h = sF->createHero(glm::vec3(0,20,10),1);
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
     Director->init();

@@ -136,9 +136,10 @@ void AIDirector::clipingEnemigos(){
     float gradovision     = cos(90*3.14159265359/180.f);
     glm::vec3 cTF_POS    = camera->getCameraPosition();//camara
     cTF_POS.y =0;
-    glm::vec3 cTF_ROT    = camera->getCameraRotation();
-    glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
-
+    // glm::vec3 cTF_ROT    = camera->getCameraRotation();
+    // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
+    glm::vec3 dir = Pjugador->getPosition() - cTF_POS;
+    dir.y = 0;
 
     auto it=enemigos.begin();
     while(it!=enemigos.end()){
