@@ -177,6 +177,14 @@ void SurrealEngine::PointAt(TNodo *_node, const glm::vec3& _offpos){
 }
 
 
+void SurrealEngine::HideCursor(bool t){
+    if(t){
+        glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }else{
+        glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+}
+
 bool SurrealEngine::Initialize(){
 	//INICIALIZAMOS GLFW
 	if( !glfwInit() ){

@@ -4,15 +4,111 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
 void Motor2D::draw(){
-    auto it=BOTONES.begin();
-    while(it!=BOTONES.end()){
+
+    auto it=TEXT.begin();
+    while(it!=TEXT.end()){
         (*it)->Draw();
+        it++;
     }
 
+    auto it2 = IMAGENES.begin();
+    while(it2!=IMAGENES.end()){
+        auto img =it2->second;
+        img->Draw();
+        it2++;
+    }
+    auto it3=BOTONES.begin();
+    while(it3!=BOTONES.end()){
+        (*it3)->Draw();
+        it3++;
+    }
+    //Cuadrado2D boton(0  ,0  ,1    ,1);
+    //boton.setColor(glm::vec4(1,0,0,1));
+    //boton.Draw();
+    //lo mas sencillo
+    Imagen2D img (0,0,1,1,"assets/HUD/ojetecalor.jpg");
+    img.Draw();
+    //std::cout << "dibujando" << '\n';
+    //Texto2D nuevo( 0, 0,"Name",glm::vec4(1,0,0,1),30);
+    //nuevo.Draw();
+
+}
+void Motor2D::prueba(){
+    //std::cout << "prueba" << '\n';
+    //addText(30,30,"GERMAN GAY",glm::vec4(1,1,0,1),20);
+    //AddImage("vida","assets/HUD/ojetecalor.jpg",0,0,30,30);
+    addButton(0,0,30,30,GOPLAY,"assets/HUD/ojetecalor.jpg","assets/HUD/mongol.jpg","GeMAN",false);
+    //std::cout << "end prueba" << '\n';
+
+
+}
+int Motor2D::checkbuton(){
+    if(motor->isLClickPressed()==false){
+        return -1;
+    }
+    std::cout << "pulsado" << '\n';
+    double x,y;
+
+    motor->getCursorPosition(x,y);
+    auto it=BOTONES.begin();
+    while(it!=BOTONES.end()){
+        auto but=*it;
+        if(but->checkOn(x, y)){
+            return but->getType();
+        }
+        it++;
+    }
+    return -1;
+
+
+}
+void Motor2D::aplyhover(){
+    double x,y;
+    motor->isLClickPressed();
+    motor->getCursorPosition(x,y);
+    auto it=BOTONES.begin();
+    while(it!=BOTONES.end()){
+        auto but=*it;
+        if(but->checkOn(x, y)){
+            //std::cout << "encima" << '\n';
+            //setImage
+            but->hover(true);
+        }
+        else{
+
+            but->hover(false);
+        }
+        it++;
+    }
+
+
+}
+void Motor2D::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){
+    float x,y,w,h;
+    x=_posx/100.0;
+    y=_posy/100.0;
+    w=(_posx+_width)/100.0;
+    h=(_posy+_height)/100.0;
+    auto nuevo = new Imagen2D(x,y,w,h,source);
+    //auto nuevo = new Imagen2D (0,0,0.5,0.5,"assets/HUD/ojetecalor.jpg");
+
+    std::cout << "nuevo " << nuevo << '\n';
+    IMAGENES.push_back(std::make_pair(palabra,nuevo));
+    //
 }
 void Motor2D::addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus){
+    h=(y+h)/100.0;
+    w=(x+w)/100.0;
+    x=x/100.0;
+    y=y/100.0;
     auto nuevo=new Boton2D(x,y,w,h,id,imagenP,imagenS,texto,focus);
     BOTONES.push_back(nuevo);
+}
+void Motor2D::addText(float x, float y,const std::string &Name,glm::vec4 _color,float tam){
+    x=x/100.0;
+    y=y/100.0;
+    auto nuevo=new Texto2D( x, y,Name,_color,tam);
+    TEXT.push_back(nuevo);
 }
 irr::IrrlichtDevice* Motor2D::IrrlichtDevice = nullptr;
 void Motor2D::setprogress(int hab,float prog){
@@ -60,11 +156,13 @@ float Motor2D::porc_ancho(float x){
     return ((ancho*2)/100.0)*x;
 }
 Motor2D::Motor2D(){
-    font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
-    irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
+    motor = Singleton<SurrealEngine>::Instance();
 
-    ancho=(driver->getScreenSize().Width/2);
-    alto=(driver->getScreenSize().Height/2);
+    //font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
+    //irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
+
+    //ancho=(driver->getScreenSize().Width/2);
+    //alto=(driver->getScreenSize().Height/2);
 }
 std::string  Motor2D::BoolToString(bool b)
 {
@@ -101,6 +199,31 @@ int Motor2D::InitAIDebug(int id){
         case gg::TRACKER:
             break;
     }
+    addText(45, 10,"Debug Enemigo");
+
+    addText(10, 10,"Tipo de enemigo:"  +tipo , glm::vec4(1,0,0,1));
+
+    addText(10,15,"Vida:"                              +std::to_string(Vida->getVida()                      ),glm::vec4(1,0,0,1));
+
+    addText(10,20,"Estoy viendo al jugador:"           +BoolToString(AIEnem->playerSeeing                   ),glm::vec4(1,0,0,1));
+    addText(10,25,"He visto al jugador:"               +BoolToString(AIEnem->playerSeen                     ),glm::vec4(1,0,0,1));
+    addText(10,30,"Estoy afectado por ultrasonido:"    +BoolToString(AIEnem->ultrasonido                    ),glm::vec4(1,0,0,1));
+    addText(10,35,"Estoy afectado por senyuelo:"       +BoolToString(AIEnem->senyuelo                       ),glm::vec4(1,0,0,1));
+    addText(10,40,"Jugador a rango:"                   +BoolToString(AIEnem->playerOnRange                  ),glm::vec4(1,0,0,1));
+    addText(10,45,"Puedo atacar:"                      +BoolToString(AIEnem->getImAttacking()               ),glm::vec4(1,0,0,1));
+    addText(10,50,"Acaba de morir un aliado cercano:"  +BoolToString(AIEnem->getCloserAllyIsDead()          ),glm::vec4(1,0,0,1));
+    addText(10,55,"Me esta atacando el jugador:"       +BoolToString(AIEnem->getPlayerIsAttacking()         ),glm::vec4(1,0,0,1));
+
+    addText(10,60,"Rango de vision:"                   +std::to_string(AIEnem->Vrange                       ),glm::vec4(1,0,0,1));
+    addText(10,65,"Rango de ataque:"                   +std::to_string(AIEnem->Arange                       ),glm::vec4(1,0,0,1));
+    addText(10,70,"Enfado:"                            +std::to_string(AIEnem->getRage()                    ),glm::vec4(1,0,0,1));
+
+    addText(10,75,"Tarea actual:"                      +std::to_string(AIEnem->arbol->taskactual()          ),glm::vec4(1,0,0,1));
+
+
+
+
+/*
     AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Debug Enemigo"),gg::Color(0,0,0,1));
 
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(10),std::string("Tipo de enemigo:"                              +tipo                      ),gg::Color(255,0,0,1));
@@ -121,12 +244,12 @@ int Motor2D::InitAIDebug(int id){
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(70),std::string("Enfado:"                            +std::to_string(AIEnem->getRage()                 )),gg::Color(255,0,0,1));
 
     AddStaticTextToBuffer(porc_ancho(10),porc_alto(75),std::string("Tarea actual:"                      +std::to_string(AIEnem->arbol->taskactual()       )),gg::Color(255,0,0,1));
-
+*/
 
     //ObjectManager* Manager = Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, pRec->idSource);
 
 
-    addButton(45,50,55,59,CONTINUE,"imagenP","imagenS","Continuar",true);
+    addButton(45,50,10,9,CONTINUE,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Continuar",true);
     return 1;
 
 }
@@ -134,98 +257,109 @@ int Motor2D::InitAIDebug(int id){
 //Menu principal
 int Motor2D::InitPause(){
     CLINMenu();
-    addButton(45,50,55,59,CONTINUE,"imagenP","imagenS","Continuar",true);
-    addButton(45,60,55,69,GOOPTIONS,"imagenP","imagenS","Opciones");
-    addButton(45,70,55,79,RETURNMENU,"imagenP","imagenS","Salir al menu");
+    addButton(45,50,10,9,CONTINUE,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Continuar",true);
+    addButton(45,60,10,9,GOOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Opciones");
+    addButton(45,70,10,9,RETURNMENU,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Salir al menu");
     return 3;
 
 }
 //Main Menu
 int Motor2D::InitMenu(){
     CLINMenu();
-    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(0,0,0,1));
-    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(1,255,255,255));
+    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(0,0,0,1));
+    addText(45,10,"Menu principal");
 
-    //IrrlichtDevice->getGUIEnvironment()->addStaticText (L"Menu principal",irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)));
-
-    //IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(porc_ancho(38),porc_alto(50),porc_ancho(48),porc_alto(70)), 0, 0,
-    //            L"J");
-    addButton(38,50,48,70,GOPLAY,"imagenP","imagenS","J");
-    addButton(38,75,48,95,GOCREDITS,"imagenP","imagenS","C");
-    addButton(52,50,62,70,GOOPTIONS,"imagenP","imagenS","O");
-    addButton(52,75,62,95,CLOSE,"imagenP","imagenS","S");
+    addButton(38,50,10,20,GOPLAY,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","J");
+    addButton(38,75,10,20,GOCREDITS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","C");
+    addButton(52,50,10,20,GOOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","O");
+    addButton(52,75,10,20,CLOSE,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","S");
     return 4;
 }
 //Jugar
 int Motor2D::InitMenu2(){
     CLINMenu();
-    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Play"),gg::Color(0,0,0,1));
-    addButton(45,50,55,59,DIFF1,"imagenP","imagenS","Larva",true);
-    addButton(45,60,55,69,DIFF2,"imagenP","imagenS","Alien");
-    addButton(45,70,55,79,DIFF3,"imagenP","imagenS","The hive");
-    addButton(40,80,60,89,START,"imagenP","imagenS","Play");
+    addText(45,10,"Play");
+    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Play"),gg::Color(0,0,0,1));
+    addButton(45,50,10,9,DIFF1,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Larva",true);
+    addButton(45,60,10,9,DIFF2,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Alien");
+    addButton(45,70,10,9,DIFF3,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","The hive");
+    addButton(40,80,20,9,START,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Play");
 
-    addButton(65,80,70,89,GOMAIN,"imagenP","imagenS","Back");
+    addButton(65,80,5,9,GOMAIN,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
 return 5;
 }
 //Creditos
 int Motor2D::InitMenu3(){
     CLINMenu();
-    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Credits"),gg::Color(0,0,0,1));
+    addText(45,10,"Credits");
 
-    addButton(65,80,70,89,GOMAIN,"imagenP","imagenS","Back");
+    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Credits"),gg::Color(0,0,0,1));
+
+    addButton(65,80,5,9,GOMAIN,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
     return 1;
 }
 //Opciones
 int Motor2D::InitMenu4(){
     CLINMenu();
-    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Options"),gg::Color(0,0,0,1));
+    addText(45,10,"Options");
 
-    addButton(45,50,55,59,GOVIDEO,"imagenP","imagenS","Graphics");
-    addButton(45,60,55,69,GOMUSIC,"imagenP","imagenS","Audio");
-    addButton(45,70,55,79,GOCONTROLLS,"imagenP","imagenS","Controlls");
+    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Options"),gg::Color(0,0,0,1));
 
-    addButton(65,80,70,89,CONTINUE,"imagenP","imagenS","Back");
+    addButton(45,50,10,9,GOVIDEO,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Graphics");
+    addButton(45,60,10,9,GOMUSIC,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Audio");
+    addButton(45,70,10,9,GOCONTROLLS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Controlls");
+
+    addButton(65,80,5,9,CONTINUE,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
     return 4;
 }
 //graficos
 int Motor2D::InitMenu5(){
     CLINMenu();
-    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Video"),gg::Color(0,0,0,1));
+    addText(45,10,"Video");
+    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Video"),gg::Color(0,0,0,1));
 
-    addButton(65,80,70,89,GOINITOPTIONS,"imagenP","imagenS","Back");
+    addButton(65,80,5,9,GOINITOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
     return 1;
 }
 //sonido
 int Motor2D::InitMenu6(){
     CLINMenu();
-    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Audio"),gg::Color(0,0,0,1));
-    AddStaticTextToBuffer(porc_ancho(30),porc_alto(51),std::string("Dialogues"),gg::Color(0,0,0,1));
-    AddStaticTextToBuffer(porc_ancho(40),porc_alto(51),std::to_string(VolDialogo),gg::Color(0,0,0,1));
-    addButton(50,50,52,55,MOREDIALOD,"imagenP","imagenS","+");
-    addButton(53,50,55,55,LESSDIALOD,"imagenP","imagenS","-");
-    AddStaticTextToBuffer(porc_ancho(30),porc_alto(57),std::string("Music"),gg::Color(0,0,0,1));
-    AddStaticTextToBuffer(porc_ancho(40),porc_alto(57),std::to_string(VolMusic),gg::Color(0,0,0,1));
-    addButton(50,56,52,61,MOREMUSIC,"imagenP","imagenS","+");
-    addButton(53,56,55,61,LESSMUSIC,"imagenP","imagenS","-");
-    AddStaticTextToBuffer(porc_ancho(30),porc_alto(63),std::string("Effects"),gg::Color(0,0,0,1));
-    AddStaticTextToBuffer(porc_ancho(40),porc_alto(63),std::to_string(VolEffect),gg::Color(0,0,0,1));
-    addButton(50,62,52,67,MOREEFFECT,"imagenP","imagenS","+");
-    addButton(53,62,55,67,LESSEFFECT,"imagenP","imagenS","-");
-    addButton(65,80,70,89,GOINITOPTIONS,"imagenP","imagenS","Back");
+
+
+
+    addText(45,10,"Audio"    );
+    addText(30,51,"Dialogues"    );
+    addText(40,51,""+VolDialogo );
+
+    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Audio"),gg::Color(0,0,0,1));
+    //AddStaticTextToBuffer(porc_ancho(30),porc_alto(51),std::string("Dialogues"),gg::Color(0,0,0,1));
+    //AddStaticTextToBuffer(porc_ancho(40),porc_alto(51),std::to_string(VolDialogo),gg::Color(0,0,0,1));
+    addButton(50,50,2,5,MOREDIALOD,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","+");
+    addButton(53,50,2,5,LESSDIALOD,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","-");
+    addText(30,57,"Music"    );
+    addText(40,57,""+VolMusic);
+    //AddStaticTextToBuffer(porc_ancho(30),porc_alto(57),std::string("Music"),gg::Color(0,0,0,1));
+    //AddStaticTextToBuffer(porc_ancho(40),porc_alto(57),std::to_string(VolMusic),gg::Color(0,0,0,1));
+    addButton(50,56,2,5,MOREMUSIC,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","+");
+    addButton(53,56,2,5,LESSMUSIC,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","-");
+    addText(30,63,"Effects"    );
+    addText(40,63,""+VolEffect  );
+    //AddStaticTextToBuffer(porc_ancho(30),porc_alto(63),std::string("Effects"),gg::Color(0,0,0,1));
+    //AddStaticTextToBuffer(porc_ancho(40),porc_alto(63),std::to_string(VolEffect),gg::Color(0,0,0,1));
+    addButton(50,62,2,5,MOREEFFECT,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","+");
+    addButton(53,62,2,5,LESSEFFECT,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","-");
+    addButton(65,80,5,9,GOINITOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
     return 7;
 }
 //controles
 int Motor2D::InitMenu7(){
     CLINMenu();
-    AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Controlls"),gg::Color(0,0,0,1));
+    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Controlls"),gg::Color(0,0,0,1));
+    addText(45,10,"Controlls");
 
-    addButton(65,80,70,89,GOINITOPTIONS,"imagenP","imagenS","Back");
+    addButton(65,80,5,9,GOINITOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
     return 1;
-    //IrrlichtDevice->getGUIEnvironment()->addButton(irr::core::rect<irr::s32>(porc_ancho(65),porc_alto(80),porc_ancho(70),porc_alto(89)), 0, 2);
-    //AddStaticTextToBuffer(porc_ancho(65.5),porc_alto(83),std::string("Back"),gg::Color(0,0,0,1));
 }
-//Singleton<Motor2D>::Instance()->Pulsarboton(cursorpos);
 
 int Motor2D::Pulsarboton(int but){
     return Botones.at(but)->getID();
@@ -233,14 +367,14 @@ int Motor2D::Pulsarboton(int but){
 void Motor2D::InitHUD(){
 
 
-    AddImage("hab1","assets/HUD/hab1.png",porc_ancho(2),porc_alto(90),porc_alto(10),porc_alto(10));
-    AddImage("hab2","assets/HUD/hab2.png",porc_ancho(9),porc_alto(90),porc_alto(10),porc_alto(10));
-    AddImage("hab3","assets/HUD/hab3.png",porc_ancho(16),porc_alto(90),porc_alto(10),porc_alto(10));
+    AddImage("hab1","assets/HUD/hab1.png",2, 90,10,10);
+    AddImage("hab2","assets/HUD/hab2.png",12, 90,10,10);
+    AddImage("hab3","assets/HUD/hab3.png",22,90,10,10);
 
-    AddImage("0arma","assets/HUD/cf_hud_d.jpg",porc_ancho(75),porc_alto(85),porc_ancho(20),porc_alto(15));
-    AddImage("1arma","assets/HUD/cf_hud_b.jpg",porc_ancho(70),porc_alto(80),porc_ancho(20),porc_alto(15)); // Principal
+    AddImage("0arma","assets/HUD/cf_hud_d.jpg",75,85,20,15);
+    AddImage("1arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
 
-    AddImage("vida","assets/HUD/cf_hud_d.jpg",porc_ancho(60),porc_alto(2),porc_ancho(30),porc_alto(3));
+    AddImage("vida","assets/HUD/cf_hud_d.jpg",60,2,35,7);
 
     //AddImage("G1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
     //AddImage("G2","assets/HUD/ojetecalor.jpg",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
@@ -266,23 +400,17 @@ void Motor2D::InitHUD(){
 
 }
 
-void Motor2D::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){
-    auto nuevo = new Imagen2D(_posx,_posy,_width,_height,source);
 
-    IMAGENES.push_back(std::make_pair(palabra,nuevo));
-    //
-}
 
-void Motor2D::AddTextToBuffer(const std::string &Text, const gg::Color &color){
-    if(BUFFER.size()>35)
-        BUFFER.pop_front();
+//void Motor2D::AddTextToBuffer(const std::string &Text, const gg::Color &color){
+//    if(BUFFER.size()>35)
+//        BUFFER.pop_front();
 
-    BUFFER.emplace_back(Text, color);
-}
-void Motor2D::AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color){
-
-    TEXT_BUFFER.emplace_back(x,y,Text, color);
-}
+//    BUFFER.emplace_back(Text, color);
+//}
+//void Motor2D::AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color){
+//    TEXT_BUFFER.emplace_back(x,y,Text, color);
+//}
 Motor2D::BufferText::BufferText(const std::string &_Text, const gg::Color &_Color)
 :Text(_Text), Color(_Color)
 {}
@@ -293,6 +421,8 @@ void Motor2D::CLINMenu(){
     //liberar eso
     //std::vector<Cuadrado2D*> RECTANGULOS;
     //std::vector<Boton2D*> BOTONES;
+    //std::vector<Boton2D*> TEXT;
+
 
 
 }
@@ -300,23 +430,30 @@ void Motor2D::CLINNormal(){
     //liberar eso
     //std::vector<Cuadrado2D*> RECTANGULOS;
     //std::vector<Boton2D*> BOTONES;
-    //std::vector<std::pair<std::string,Imagen2D*>> IMAGENES;
-
-
-
-}
-void Motor2D::DisplayDebug(){
-    if(true){
-        auto it = BUFFER.begin();
-        uint16_t DiplayY = 10;
-        while (it!=BUFFER.end()){
-            irr::core::stringw WS((*it).Text.c_str());
-            font->draw(WS, irr::core::rect<irr::s32>(20,DiplayY,700,50), irr::video::SColor((*it).Color.Alpha*255,(*it).Color.R,(*it).Color.G,(*it).Color.B));
-            DiplayY += 17;
-            ++it;
-        }
+    //std::vector<Boton2D*> TEXT;
+    auto it = IMAGENES.begin();
+    float X,Y,H,W,T_W,T_H;
+    while(it!=IMAGENES.end()){
+        delete it->second;
+        it++;
     }
+    IMAGENES.clear();
+
+
+
 }
+//void Motor2D::DisplayDebug(){
+//    if(true){
+//        auto it = BUFFER.begin();
+//        uint16_t DiplayY = 10;
+//        while (it!=BUFFER.end()){
+//            irr::core::stringw WS((*it).Text.c_str());
+//            font->draw(WS, irr::core::rect<irr::s32>(20,DiplayY,700,50), irr::video::SColor((*it).Color.Alpha*255,(*it).Color.R,(*it).Color.G,(*it).Color.B));
+//            DiplayY += 17;
+//            ++it;
+//        }
+//    }
+//}
 void Motor2D::DisplayMenu(){
     IrrlichtDevice->getGUIEnvironment()->drawAll();
     auto it = TEXT_BUFFER.begin();
@@ -371,7 +508,7 @@ void Motor2D::HUD_hability1(Imagen2D *it){
     w=it->getW();
     h=it->getH();
 
-    Cuadrado2D boton(x  ,y  ,x+w    ,y+h*perc);
+    Cuadrado2D boton(x  ,y  ,w    ,(h-y)*perc+y);
     boton.setColor(glm::vec4(1,1,1,0.25));
 
 
@@ -423,6 +560,7 @@ void Motor2D::HUD_vida(Imagen2D *it){
 //necesitamos escribir por pantalla
 void Motor2D::HUD_arma0(Imagen2D *it){
 
+    //hace falta lo de los botones aqui
     //std::string hola=std::to_string(balaS)+"/"+std::to_string(balaS_TOT);
     //font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(255,255,255,255));
 }

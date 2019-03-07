@@ -20,6 +20,9 @@
 #include "BinaryParser.hpp"
 #include <SurrealEngine/SurrealEngine.hpp>
 
+#include <GameEngine/Motor2D.hpp>
+
+
 #define MOVEMENT_SPEED 1.f
 
 #define FRAMERATE 60.f
@@ -53,6 +56,7 @@ Game::Game()
 :Accumulator(0)
 {
     Engine = Singleton<SurrealEngine>::Instance();
+    Engine2D = Singleton<Motor2D>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     Director = Singleton<AIDirector>::Instance();
     //Director = new AIDirector();
@@ -73,7 +77,7 @@ Game::~Game(){
 
 void Game::Init(){
     //Singleton<ScreenConsole>::Instance()->InitHUD();
-    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.1f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
@@ -108,7 +112,8 @@ void Game::Init(){
     Singleton<Pathfinding>::Instance()->SetDebug(false);
     world->setDebug(true);
     MasterClock.Restart();
-
+    Engine2D->InitHUD();
+    Engine2D->prueba();
     // std::cout << "\n -- INIT -- " << '\n';
 }
 
@@ -171,6 +176,8 @@ void Game::Update(){
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';
+    Engine2D->DisplayHUD();
+    Engine2D->draw();
     Engine->EndDraw();
 }
 

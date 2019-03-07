@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Game.hpp>
 #include <OptionState.hpp>
+#include <GameEngine/Motor2D.hpp>
 //#include <SMaterial>
 GUIController::GUIController()
 :Engine(nullptr)
@@ -28,21 +29,22 @@ void GUIController::Init(){
     back_pulsado=false;
     esc_pulsado=false;
     Engine = Singleton<SurrealEngine>::Instance();
-    VectorAcciones[GOPLAY] = &GUIController::gotoPlay;
+    Engine2D = Singleton<Motor2D>::Instance();
+    VectorAcciones[GOPLAY] =    &GUIController::gotoPlay;
     VectorAcciones[GOCREDITS] = &GUIController::gotoCredits;
     VectorAcciones[GOOPTIONS] = &GUIController::gotoOptions;
-    VectorAcciones[CLOSE] = &GUIController::Close;
-    VectorAcciones[GOVIDEO] = &GUIController::gotoVideo;
-    VectorAcciones[GOMUSIC] = &GUIController::gotoMusic;
+    VectorAcciones[CLOSE] =     &GUIController::Close;
+    VectorAcciones[GOVIDEO] =   &GUIController::gotoVideo;
+    VectorAcciones[GOMUSIC] =   &GUIController::gotoMusic;
     VectorAcciones[GOCONTROLLS] = &GUIController::gotoControlls;
-    VectorAcciones[START] = &GUIController::StartGame;
-    VectorAcciones[GOMAIN] = &GUIController::gotoMain;
-    VectorAcciones[DIFF1] = &GUIController::dif1;
-    VectorAcciones[DIFF2] = &GUIController::dif2;
-    VectorAcciones[DIFF3] = &GUIController::dif3;
-    VectorAcciones[CONTINUE] = &GUIController::Continue;
+    VectorAcciones[START] =     &GUIController::StartGame;
+    VectorAcciones[GOMAIN] =    &GUIController::gotoMain;
+    VectorAcciones[DIFF1] =     &GUIController::dif1;
+    VectorAcciones[DIFF2] =     &GUIController::dif2;
+    VectorAcciones[DIFF3] =     &GUIController::dif3;
+    VectorAcciones[CONTINUE] =  &GUIController::Continue;
     VectorAcciones[RETURNMENU] = &GUIController::ReturnMain;
-    VectorAcciones[GOPAUSE] = &GUIController::gotoPause;
+    VectorAcciones[GOPAUSE] =   &GUIController::gotoPause;
     VectorAcciones[MOREDIALOD] = &GUIController::moreDialog;
     VectorAcciones[LESSDIALOD] = &GUIController::lessDialog;
     VectorAcciones[MOREMUSIC] = &GUIController::moreMusic;
@@ -54,7 +56,7 @@ void GUIController::Init(){
 
 }
 void GUIController::update(){
-    //int id=-1;
+    /*
     if(Engine->key(gg::GG_W)){
         if(!arriba_pulsado){
             arriba_pulsado=true;
@@ -76,13 +78,15 @@ void GUIController::update(){
     }else{
         bajo_pulsado=false;
     }
+    */
+
     //
     // int id =Engine->checkbutton();
     //
     // if(Engine->key(gg::GG_Q)){
     //     if(!enter_pulsado){
     //         enter_pulsado=true;
-    //         id=Singleton<ScreenConsole>::Instance()->Pulsarboton(cursorpos);
+    //         id=Engine2D->Pulsarboton(cursorpos);
     //
     //     }
     // }else{
@@ -91,20 +95,21 @@ void GUIController::update(){
 
 
     /////////
-    //int id =Engine->checkbutton();
-    // if(id!=-1){
-    //     if(VectorAcciones[id] != nullptr)
-    //         (this->*VectorAcciones[id])();
-    // }
+    int id =Engine2D->checkbuton();
+     if(id!=-1){
+         std::cout << "id" <<id<< '\n';
+         if(VectorAcciones[id] != nullptr)
+             (this->*VectorAcciones[id])();
+     }
 }
 //but0
 void GUIController::gotoPlay(){
     dif=1;
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu2());
+    Engine2D->InitMenu2();
 }
 //but1
 void GUIController::gotoCredits(){
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu3());
+    Engine2D->InitMenu3();
 }
 //but2
 void GUIController::gotoOptions(){
@@ -116,19 +121,19 @@ void GUIController::Close(){
 }
 //but4
 void GUIController::gotoVideo(){
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu5());
+    Engine2D->InitMenu5();
 }
 //but5
 void GUIController::gotoMusic(){
-    Singleton<ScreenConsole>::Instance()->setVolDialogo(dialogue);
-    Singleton<ScreenConsole>::Instance()->setVolMusic(music);
-    Singleton<ScreenConsole>::Instance()->setVolEffect(effect);
+    Engine2D->setVolDialogo(dialogue);
+    Engine2D->setVolMusic(music);
+    Engine2D->setVolEffect(effect);
 
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    Engine2D->InitMenu6();
 }
 //but6
 void GUIController::gotoControlls(){
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu7());
+    Engine2D->InitMenu7();
 }
 //but7
 void GUIController::StartGame(){
@@ -136,7 +141,7 @@ void GUIController::StartGame(){
 }
 //but8
 void GUIController::gotoMain(){
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu());
+    Engine2D->InitMenu();
 }
 //but9
 void GUIController::dif1(){
@@ -162,57 +167,57 @@ void GUIController::ReturnMain(){
 }
 //but 14
 void GUIController::initOptions(){
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu4());
+    Engine2D->InitMenu4();
 }
 //but 14
 void GUIController::gotoPause(){
-    setposmax(Singleton<ScreenConsole>::Instance()->InitPause());
+    Engine2D->InitPause();
 }
 //but 18
 void GUIController::moreDialog(){
     if(dialogue!=dialogue_max){
         dialogue++;
     }
-    Singleton<ScreenConsole>::Instance()->setVolDialogo(dialogue);
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    Engine2D->setVolDialogo(dialogue);
+    Engine2D->InitMenu6();
 }
 //but 19
 void GUIController::lessDialog(){
     if(dialogue!=0){
         dialogue--;
     }
-    Singleton<ScreenConsole>::Instance()->setVolDialogo(dialogue);
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    Engine2D->setVolDialogo(dialogue);
+    Engine2D->InitMenu6();
 }
 //but 20
 void GUIController::moreMusic(){
     if(music!=music_max){
         music++;
     }
-    Singleton<ScreenConsole>::Instance()->setVolMusic(music);
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    Engine2D->setVolMusic(music);
+    Engine2D->InitMenu6();
 }
 //but 21
 void GUIController::lessMusic(){
     if(music!=0){
         music--;
     }
-    Singleton<ScreenConsole>::Instance()->setVolMusic(music);
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    Engine2D->setVolMusic(music);
+    Engine2D->InitMenu6();
 }
 //but 22
 void GUIController::moreEffect(){
     if(effect!=effect_max){
         effect++;
     }
-    Singleton<ScreenConsole>::Instance()->setVolEffect(effect);
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    Engine2D->setVolEffect(effect);
+    Engine2D->InitMenu6();
 }
 //but 23
 void GUIController::lessEffect(){
     if(effect!=0){
         effect--;
     }
-    Singleton<ScreenConsole>::Instance()->setVolEffect(effect);
-    setposmax(Singleton<ScreenConsole>::Instance()->InitMenu6());
+    Engine2D->setVolEffect(effect);
+    Engine2D->InitMenu6();
 }

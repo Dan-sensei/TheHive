@@ -28,6 +28,7 @@ class SurrealEngine {
     friend class Debug;
     public:
         ~SurrealEngine();
+        void HideCursor(bool t);
 
         TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);

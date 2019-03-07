@@ -13,6 +13,7 @@
 #include "Util.hpp"
 
 
+#include "SurrealEngine/SurrealEngine.hpp"
 #include "SurrealEngine/Imagen2D.hpp"
 #include "SurrealEngine/Boton2D.hpp"
 #include "SurrealEngine/Cuadrado2D.hpp"
@@ -33,7 +34,7 @@ class Motor2D{
         void setVolDialogo(int _vol);
         void setVolEffect(int _vol);
         void setVolMusic(int _vol);
-        void DisplayDebug();
+        //void DisplayDebug();
         void DisplayHUD();
         void DisplayMenu();
 
@@ -49,6 +50,7 @@ class Motor2D{
         int InitMenu7();
         int InitPause();
         int InitAIDebug(int id);
+        void prueba();
 
         //int InitPause2();
         //int InitPause3();
@@ -57,19 +59,23 @@ class Motor2D{
         void draw();
 
 
-        void AddTextToBuffer(const std::string &Text, const gg::Color &color);
-        void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
+        //void AddTextToBuffer(const std::string &Text, const gg::Color &color);
+        //void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
         void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
         void addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus=false);
         int Pulsarboton(int but);
+        void addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(0,0,0,1),float tam=0.1);
+        int checkbuton();
+        void aplyhover();
     private:
         //nuevo
         //std::vector<Cuadrado2D*> RECTANGULOS;
+        SurrealEngine* motor;
         std::vector<Boton2D*> BOTONES;
+        std::vector<Texto2D*> TEXT;
         //std::vector<Imagen2D*> IMAGENES;
         std::vector<std::pair<std::string,Imagen2D*>> IMAGENES;
         std::map<std::string,void(Motor2D::*)(Imagen2D*)> mapHudFunctions;
-
 
 
 
