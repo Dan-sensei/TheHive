@@ -92,9 +92,9 @@ void BinaryParser::ReadNavmeshData(
 }
 
 
-void BinaryParser::test(){
+void BinaryParser::LoadLevelData(const std::string &DATA){
 
-    std::ifstream inStream("assets/BinaryFiles/City.data", std::ios::binary);
+    std::ifstream inStream(DATA, std::ios::binary);
     uint8_t NUMBER_OF_OBJECTS = 0;
     GG_Read(inStream, NUMBER_OF_OBJECTS);
 
@@ -114,14 +114,14 @@ void BinaryParser::test(){
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
-        glm::vec3 Position(-x,y,z);
+        glm::vec3 Position(x,y,z);
         //std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
         //if(MODEL == 45) std::cout << "Position " << Position.x << ", " << Position.y << ", " << Position.z << '\n';
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
         glm::vec3 Rotation(x,y,z);
-        //if(MODEL == 45) std::cout << "Rotation " << Rotation.x << ", " << Rotation.y << ", " << Rotation.z << '\n';
+        if(MODEL == 37) std::cout << "Rotation " << Rotation.x << ", " << Rotation.y << ", " << Rotation.z << '\n';
         //std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
 
         bool HasCollider;
@@ -132,18 +132,24 @@ void BinaryParser::test(){
 
         //std::cout << "Collider? = " << HasCollider << '\n';
         if(HasCollider){
-            float sx,sz,sy;
             GG_Read(inStream, x);
             GG_Read(inStream, y);
             GG_Read(inStream, z);
-            //if(MODEL == 45) std::cout << "Center " << x << ", " << y << ", " << z << '\n';
+
+            float rx, ry, rz, rw;
+            GG_Read(inStream, rx);
+            GG_Read(inStream, ry);
+            GG_Read(inStream, rz);
+            GG_Read(inStream, rw);
+            //if(MODEL == 45) std::cout << "R " << rx << ", " << ry << ", " << rz << '\n';
             //std::cout << "      -Center: " << x << ", " << y << ", " << z << '\n';
+            float sx,sz,sy;
             GG_Read(inStream, sx);
             GG_Read(inStream, sy);
             GG_Read(inStream, sz);
             //if(MODEL == 45) std::cout << "Size " << sx << ", " << sy << ", " << sz << '\n';
             //std::cout << "      -Size: " << x << ", " << y << ", " << z << '\n';
-            CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(-x, y, z, 0, 0, 0, sx/2, sy/2, sz/2);
+            CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
             Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewEntity);
         }
 

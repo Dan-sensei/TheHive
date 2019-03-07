@@ -8,7 +8,7 @@ OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 
 LIBRARIES := -lassimp
 
-COMPILER := g++
+COMPILER := g++ -O3
 
 EXE := BinaryFiles
 

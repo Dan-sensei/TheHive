@@ -51,6 +51,8 @@ private:
     float Accumulator;
 
     gg::Color col;
+    TNodo* luz;
+    CTransform* playerpos;
 };
 
 

@@ -23,7 +23,7 @@ class BinaryParser{
             std::vector<unsigned short> &index
         );
 
-        static void test();
+        static void LoadLevelData(const std::string &DARTA);
 
     private:
         BinaryParser() = delete;

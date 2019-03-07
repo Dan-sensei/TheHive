@@ -2,7 +2,7 @@
 
 CSimpleStaticRigidBody::CSimpleStaticRigidBody(
     float x, float y, float z,
-    float rx, float ry, float rz,
+    float rx, float ry, float rz, float rw,
     float sX, float sY, float sZ
 ){
     world = Singleton<ggDynWorld>::Instance();
@@ -11,7 +11,7 @@ CSimpleStaticRigidBody::CSimpleStaticRigidBody(
 
     transform.setIdentity();
     transform.setOrigin(btVector3(x,y,z));
-    transform.setRotation(btQuaternion(rx, ry, rz, 1));
+    transform.setRotation(btQuaternion(rx, ry, rz, rw));
     myMotionState = new btDefaultMotionState(transform);
 
     world->addShape(shape);
@@ -22,6 +22,7 @@ CSimpleStaticRigidBody::CSimpleStaticRigidBody(
 
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
     body = new btRigidBody(rbInfo);
+    //body->setCenterOfMassTransform(transform);
 
     body->setFriction(btScalar(0.2));
 

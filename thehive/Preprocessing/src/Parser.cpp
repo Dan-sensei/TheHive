@@ -15,15 +15,9 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_Model("../assets/Objects/InicioCasa.obj",                 "InicioCasa.modelgg");
     ModelParser::generateBinaryGG_Model("../assets/Objects/Nave.obj",                       "Nave.modelgg");
     ModelParser::generateBinaryGG_Model("../assets/Objects/TuboRoto.obj",                   "TuboRoto.modelgg");
-    ModelParser::generateBinaryGG_Model("../assets/Objects/SQUARE.obj",                     "SQUARE.modelgg");
-
-    ModelParser::generateBinaryGG_Model("../assets/Models/CALLE_PRINCIPAL/5.obj",            "5.modelgg");
-
-    for(uint16_t i = 30; i < 93; ++i)
-        ModelParser::generateBinaryGG_Model("../assets/Models/CALLE_PRINCIPAL/"+std::to_string(i)+".obj",            std::to_string(i)+".modelgg");
-
-    for(uint16_t i = 130; i < 138; ++i)
-        ModelParser::generateBinaryGG_Model("../assets/Models/CALLE_PRINCIPAL/"+std::to_string(i)+".obj",            std::to_string(i)+".modelgg");
+    
+    for(uint16_t i = 1; i < 139; ++i)
+        ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i)+".modelgg");
 
     ModelParser::generateBinaryGG_Model("../assets/Models/Hero.obj",                         "Hero.modelgg");
     ModelParser::generateBinaryGG_Model("../assets/Models/SOLDIER.obj",                     "SOLDIER.modelgg");

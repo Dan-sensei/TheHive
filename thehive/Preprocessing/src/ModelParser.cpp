@@ -69,33 +69,33 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
             TangentsBitangents.reserve(meshes[i]->mNumVertices*6);
 
         for(uint16_t j = 0; j < meshes[i]->mNumVertices; ++j){
-            PositionsNormals.push_back(vertices[j].x);
-            PositionsNormals.push_back(vertices[j].y);
-            PositionsNormals.push_back(vertices[j].z);
+            PositionsNormals.emplace_back(vertices[j].x);
+            PositionsNormals.emplace_back(vertices[j].y);
+            PositionsNormals.emplace_back(vertices[j].z);
 
-            PositionsNormals.push_back(normales[j].x);
-            PositionsNormals.push_back(normales[j].y);
-            PositionsNormals.push_back(normales[j].z);
+            PositionsNormals.emplace_back(normales[j].x);
+            PositionsNormals.emplace_back(normales[j].y);
+            PositionsNormals.emplace_back(normales[j].z);
 
-            uv.push_back(textureCoords[j].x);
-            uv.push_back(textureCoords[j].y);
+            uv.emplace_back(textureCoords[j].x);
+            uv.emplace_back(textureCoords[j].y);
 
-            TangentsBitangents.push_back(tangents[j].x);
-            TangentsBitangents.push_back(tangents[j].y);
-            TangentsBitangents.push_back(tangents[j].z);
+            TangentsBitangents.emplace_back(tangents[j].x);
+            TangentsBitangents.emplace_back(tangents[j].y);
+            TangentsBitangents.emplace_back(tangents[j].z);
 
-            TangentsBitangents.push_back(bitangents[j].x);
-            TangentsBitangents.push_back(bitangents[j].y);
-            TangentsBitangents.push_back(bitangents[j].z);
+            TangentsBitangents.emplace_back(bitangents[j].x);
+            TangentsBitangents.emplace_back(bitangents[j].y);
+            TangentsBitangents.emplace_back(bitangents[j].z);
         }
 
         index.reserve(meshes[i]->mNumFaces*3);
         for(uint16_t j = 0; j < meshes[i]->mNumFaces; ++j){
             const aiFace& Face = faces[j];
             assert(Face.mNumIndices == 3);
-            index.push_back(Face.mIndices[0]);
-            index.push_back(Face.mIndices[1]);
-            index.push_back(Face.mIndices[2]);
+            index.emplace_back(Face.mIndices[0]);
+            index.emplace_back(Face.mIndices[1]);
+            index.emplace_back(Face.mIndices[2]);
         }
     }
 

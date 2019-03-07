@@ -73,21 +73,24 @@ Game::~Game(){
 
 void Game::Init(){
     //Singleton<ScreenConsole>::Instance()->InitHUD();
-    BinaryParser::test();
+    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.1f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
-    Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
+    luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
     Engine->print();
     // Pos init del heroe normal
     // 360, 0, 350
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,6,0),1);
+    uint16_t h = sF->createHero(glm::vec3(0,20,50),1);
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
     Director->init();
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
+    playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
+
 
     // auto cam = Engine->getCamera();
     //
@@ -144,7 +147,9 @@ void Game::Update(){
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
-
+    glm::vec3 pos = playerpos->getPosition();
+    pos.y += 7;
+    Engine->setPosition(luz, pos);
     // std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();
 
