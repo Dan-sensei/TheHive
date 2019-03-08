@@ -88,7 +88,7 @@ void Game::Init(){
     Engine->HideCursor(true);
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,20,50),-1);
+    uint16_t h = sF->createHero(glm::vec3(0,20,10),1);
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
     Director->init();
@@ -96,22 +96,15 @@ void Game::Init(){
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
 
+    // uint16_t n = Manager->createEntity();
+    // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/TEST.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,5,0), glm::vec3());
+    // Manager->addComponentToEntity(m,gg::STATICMODEL,n);
 
-    // auto cam = Engine->getCamera();
-    //
-    // Engine->setPosition(cam, glm::vec3(2,10,10));
-
-    //static_cast<TCamara*>(cam->getEntidad())->setTarget(glm::vec3(0,0,0));
 
     Accumulator = 0;
-    // Material yelo("assets/Models/CIUDAD/Presentacion1/NAVMESH.png");
-    //
-    // uint16_t Navmesh = Manager->createEntity();
-    // CRenderable_3D* Renderable_3D = new CRenderable_3D("assets/Models/CIUDAD/Presentacion1/NAVMESH.obj", yelo);
-    // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
-    Singleton<Pathfinding>::Instance()->SetDebug(false);
-    //world->setDebug(true);
+    //Singleton<Pathfinding>::Instance()->SetDebug(true);
+    // world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
     //Engine2D->prueba();
@@ -176,7 +169,7 @@ void Game::Update(){
     // Singleton<ScreenConsole>::Instance()->DisplayDebug();
     // Singleton<ScreenConsole>::Instance()->DisplayHUD();
     //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
-    // Singleton<Pathfinding>::Instance()->DroNodes();
+    //Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();

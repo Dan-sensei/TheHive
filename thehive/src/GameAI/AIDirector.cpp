@@ -28,6 +28,8 @@ depende del estres invocar unas cosas u otras
 #define DIST_MIEDO 1000.f
 #define SUBIDARESTA 0.1f
 #define BAJADARESTA 0.3f
+
+#define GRADOVISION cos(90*3.14159265359/180.f)
 //no se usa
 AIDirector::AIDirector (int _id,float _duracion,int _cooldown)
 : Manager(nullptr),fac(nullptr)
@@ -42,12 +44,14 @@ AIDirector::AIDirector (int _id,float _duracion,int _cooldown)
 
     */
 }
+
 void AIDirector::clean(){
     activado=false;
     numEnemigos=0;
     enemigos.clear();
 
 }
+
 void AIDirector::init(){
     activado=true;
     numEnemigos=0;
@@ -133,12 +137,12 @@ void AIDirector::update (float delta){
 }
 void AIDirector::clipingEnemigos(){
     CCamera* camera  = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, Manager->getHeroID()));
-    float gradovision     = cos(90*3.14159265359/180.f);
     glm::vec3 cTF_POS    = camera->getCameraPosition();//camara
     cTF_POS.y =0;
-    glm::vec3 cTF_ROT    = camera->getCameraRotation();
-    glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
-
+    // glm::vec3 cTF_ROT    = camera->getCameraRotation();
+    // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
+    glm::vec3 dir = Pjugador->getPosition() - cTF_POS;
+    dir.y = 0;
 
     auto it=enemigos.begin();
     while(it!=enemigos.end()){
@@ -150,11 +154,11 @@ void AIDirector::clipingEnemigos(){
         float sol   = glm::dot(diren,dir);
         CRenderable_3D* render  = static_cast<CRenderable_3D*>(Manager->getComponent(gg::RENDERABLE_3D, (*it)->getEntityID()));
         //if(render){
-            if(gradovision<sol){
-                render->setVisibility(true);
-            }else{
-                render->setVisibility(false);
-            }
+        if(GRADOVISION<sol){
+            render->setVisibility(true);
+        }else{
+            render->setVisibility(false);
+        }
         //}
         it++;
     }

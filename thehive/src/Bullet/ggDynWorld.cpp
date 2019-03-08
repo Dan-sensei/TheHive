@@ -179,16 +179,13 @@ glm::vec3 ggDynWorld::handleRayCastTo(glm::vec3 from, glm::vec3 to,float _weapon
     return ret;
 
 }
-glm::vec3 ggDynWorld::handleRayCast(glm::vec3 from, glm::vec3 rot,float _weaponRange){
+glm::vec3 ggDynWorld::handleRayCast(glm::vec3 from, glm::vec3 Target,float _weaponRange){
     if(_weaponRange == -1)  _weaponRange  = FAR_RANGE_FACTOR;
     else                    _weaponRange *= FAR_RANGE_FACTOR;
 
-    glm::vec3 aux = glm::vec3(
-         sin(rot.y  *PI/180.f)*(cos(rot.x  *PI/180.f) ) ,
-        -sin(rot.x  *PI/180.f) ,
-         cos(rot.y  *PI/180.f)*(cos(rot.x  *PI/180.f) )
-    );
 
+    Target.y += 1;
+    glm::vec3 aux = Target - from;
 
     glm::vec3 to =aux*FAR_RANGE_FACTOR+from;
 

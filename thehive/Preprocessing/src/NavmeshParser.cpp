@@ -44,7 +44,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
        faces   =   meshes[0]->mFaces;
 
     for(uint16_t j = 0; j < meshes[0]->mNumVertices; ++j){
-        vertex.emplace_back(vertices[j].x*-1, vertices[j].y, vertices[j].z);
+        vertex.emplace_back(vertices[j].x, vertices[j].y, vertices[j].z);
     }
 
     // std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';

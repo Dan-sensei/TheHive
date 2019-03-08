@@ -27,7 +27,6 @@ public:
     void CameraUpdate();
 
     glm::vec3 getCameraPosition();
-    glm::vec3 getCameraRotation();
     glm::vec3 getOffsetPositionVector();
 
     void moveCameraPosition(glm::vec3);
@@ -43,7 +42,6 @@ private:
     glm::vec3 pos_on_collision;
 
     glm::vec3 CurrentPosition;
-    glm::vec3 Rot;
 
     float screenW;
     float screenH;

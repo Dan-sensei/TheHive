@@ -200,7 +200,7 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_M)){
         //hab->ToggleSkill(2);
         //devuelve ide de un objeto
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation(),1000);
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition(),1000);
         int id=world->getIDFromRaycast();
         //std::cout << "id:" <<id<< '\n';
         if(id!=-1){
@@ -257,9 +257,9 @@ void CPlayerController::FixedUpdate(){
 
     // DISPARO
     if(Engine->isLClickPressed()){
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        Target = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+        Target = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
         clocker.Restart();
         if(gun) gun->shoot(Target);
     }
@@ -276,7 +276,7 @@ void CPlayerController::FixedUpdate(){
 
     // Graná
     if(Engine->key(gg::GG_G)){
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getCameraRotation());
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
         //std::cout << actualGrenadeState << '\n';
         if(pulsacion_granada==false)
             (this->*mapFuncGrenades[actualGrenadeState])();

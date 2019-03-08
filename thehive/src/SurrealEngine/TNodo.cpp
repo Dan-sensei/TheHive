@@ -2,13 +2,17 @@
 #include <cstdint>
 
 //Constructor para el nodo raiz
-TNodo::TNodo(){
+TNodo::TNodo()
+:Visibility(true)
+{
     padre = nullptr;
     entidad = nullptr;
 }
 
 //Constructor para el resto de nodos
-TNodo::TNodo(TNodo *P,TEntidad *_ent){
+TNodo::TNodo(TNodo *P,TEntidad *_ent)
+:Visibility(true)
+{
     !P ? padre = nullptr : padre = P;
     !_ent?  entidad = nullptr : entidad = _ent;
 
@@ -75,6 +79,10 @@ void TNodo::draw(const uint8_t &T_ID){
     entidad->endDraw(T_ID);
 }
 
+void TNodo::setVisibility(bool Flag){
+    Visibility = Flag;
+}
+
 // Este es llamado desde el main (PURE ROOT)
 void TNodo::drawRoot(){
     for(uint8_t REC = 0 ; REC < 3 ; ++REC){
@@ -88,6 +96,7 @@ void TNodo::drawRoot(){
 
 // Este para los demas
 void TNodo::drawRoot(const uint8_t &T_ID){
+    if(!Visibility) return;
     auto it = hijos.begin();
     while(it != hijos.end()){
         (*it)->draw(T_ID);

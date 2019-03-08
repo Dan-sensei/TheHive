@@ -82,11 +82,6 @@ glm::vec3 CCamera::getCameraPosition(){
     return CurrentPosition;
 }
 
-glm::vec3 CCamera::getCameraRotation(){
-    return Rot;
-}
-
-
 void CCamera::moveCameraPosition(glm::vec3 _offPos){
     CurrentPosition += _offPos;
     Engine->setPosition(cam, CurrentPosition);
