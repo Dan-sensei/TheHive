@@ -23,11 +23,14 @@ class TNodo {
         void drawRoot();
         void drawRoot(const uint8_t&);
 
+        void setVisibility(bool Flag);
+
     private:
         TEntidad* entidad;
         std::deque<TNodo*> hijos;
         TNodo* padre;
         uint8_t tipo_ent;
+        bool Visibility;
 };
 
 #endif

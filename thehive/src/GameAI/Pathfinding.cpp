@@ -146,21 +146,21 @@ void Pathfinding::FindPath(const glm::vec3 &START, const glm::vec3 &GOAL, std::s
 
         if(!FoundStart){
             if(START.x >= FACES[i].TL.x && START.z <= FACES[i].TL.z && START.x <= FACES[i].BR.x && START.z >= FACES[i].BR.z){
-                float FaceYCenter = (FACES[i].TL.y + FACES[i].BR.y)/2;
-                if(abs(FaceYCenter - START.y) < 85){
+                // float FaceYCenter = (FACES[i].TL.y + FACES[i].BR.y)/2;
+                // if(abs(FaceYCenter - START.y) < 85){
                     StartFN = i;
                     FoundStart = true;
-                }
+                //}
             }
         }
 
         if(!FoundGoal){
             if(GOAL.x >= FACES[i].TL.x && GOAL.z <= FACES[i].TL.z && GOAL.x <= FACES[i].BR.x && GOAL.z >= FACES[i].BR.z){
-                float FaceYCenter = (FACES[i].TL.y + FACES[i].BR.y)/2;
-                if(abs(FaceYCenter - GOAL.y) < 85){
+                // float FaceYCenter = (FACES[i].TL.y + FACES[i].BR.y)/2;
+                // if(abs(FaceYCenter - GOAL.y) < 85){
                     GoalFN = i;
                     FoundGoal = true;
-                }
+                //}
             }
         }
 
@@ -213,7 +213,6 @@ void Pathfinding::DroNodes(){
     gg::Color color;
     uint8_t i = GRAPH.size();
     uint8_t length = 0;
-
     SurrealEngine* Engine = Singleton<SurrealEngine>::Instance();
 
     while(i--){

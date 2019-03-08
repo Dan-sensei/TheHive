@@ -222,8 +222,9 @@ bool SurrealEngine::Initialize(){
 	glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    glCullFace (GL_BACK);
+    glFrontFace(GL_CCW);
     glEnable(GL_CULL_FACE);
+    glCullFace (GL_BACK);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);

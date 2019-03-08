@@ -24,9 +24,7 @@ void CRenderable_3D::Init(){
 }
 
 void CRenderable_3D::setVisibility(bool flag){
-    // if(_3DModel.getVisibility()!=flag){
-    //     _3DModel.setVisibility(flag);
-    // }
+    _3DModel->getPadre()->getPadre()->setVisibility(flag);
 }
 
 gg::EMessageStatus CRenderable_3D::processMessage(const Message &m) {

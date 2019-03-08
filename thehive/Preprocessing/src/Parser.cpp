@@ -15,7 +15,9 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_Model("../assets/Objects/InicioCasa.obj",                 "InicioCasa.modelgg");
     ModelParser::generateBinaryGG_Model("../assets/Objects/Nave.obj",                       "Nave.modelgg");
     ModelParser::generateBinaryGG_Model("../assets/Objects/TuboRoto.obj",                   "TuboRoto.modelgg");
-    
+
+    ModelParser::generateBinaryGG_Model("../assets/NavMeshes/TEST.obj",                        "TEST.modelgg");
+
     for(uint16_t i = 1; i < 139; ++i)
         ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i)+".modelgg");
 

@@ -30,8 +30,8 @@
 
 #include <SurrealEngine/SurrealEngine.hpp>
 #include <vector>
-int main(int argc, char const *argv[]) {
 
+int main(int argc, char const *argv[]) {
 
 
     SurrealEngine *Engine = Singleton<SurrealEngine>::Instance();

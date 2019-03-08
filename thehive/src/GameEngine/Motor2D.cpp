@@ -92,7 +92,7 @@ void Motor2D::AddImage(std::string palabra,std::string source,float _posx,float 
     auto nuevo = new Imagen2D(x,y,w,h,source);
     //auto nuevo = new Imagen2D (0,0,0.5,0.5,"assets/HUD/ojetecalor.jpg");
 
-    std::cout << "nuevo " << nuevo << '\n';
+    //std::cout << "nuevo " << nuevo << '\n';
     IMAGENES.push_back(std::make_pair(palabra,nuevo));
     //
 }

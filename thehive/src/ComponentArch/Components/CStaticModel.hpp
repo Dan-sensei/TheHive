@@ -14,7 +14,11 @@ class CStaticModel : public IComponent {
         CStaticModel(const CStaticModel &orig);
         virtual ~CStaticModel();
 
+        void setVisibility(bool flag);
+        
+
     private:
+        TNodo* _3DModel;
 
 };
 
