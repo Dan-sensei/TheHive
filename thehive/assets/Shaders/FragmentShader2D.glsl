@@ -9,6 +9,6 @@ out vec4 frag_colour;
 
 void main() {
 
-    frag_colour = texture2D(DiffuseMap, Texcoord)*inputColour;;
+    frag_colour = texture(DiffuseMap, Texcoord)*inputColour;
 
 };

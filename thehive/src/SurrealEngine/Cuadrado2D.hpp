@@ -19,6 +19,7 @@ class Cuadrado2D {
 
 
     private:
+        float index;
         glm::vec4 color;
         unsigned int VAO;
         unsigned int VBO;

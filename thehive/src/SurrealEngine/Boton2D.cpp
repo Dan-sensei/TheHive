@@ -28,7 +28,9 @@ Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std:
         text.setColor(color);
     }
 }
-
+void Boton2D::setSesgo(float res){
+    Imagen.setSesgado(res);
+}
 int Boton2D::getType(){
     return tipo;
 }
@@ -37,8 +39,10 @@ void Boton2D::hover(bool dato){
         //sec
         hov=dato;
         Imagen.setImage(imgHover_Selected);
+        setColor(glm::vec4(0,111/250.0,0,1));
     }else if(dato!=hov){
         //princ
+        setColor(glm::vec4(0,75/250.0,0,1));
         hov=dato;
         Imagen.setImage(imgPrincipal);
 
@@ -57,6 +61,7 @@ void Boton2D::setPos(float x,float y,float w,float h){
 }
 void Boton2D::setColor(glm::vec4 _color){
     Imagen.setColor(_color);
+    text.setColor(_color);
 }
 void Boton2D::setImage(const std::string &Name){
     Imagen.setImage(Name);
@@ -65,8 +70,8 @@ void Boton2D::setImage(const std::string &Name){
 
 
 void Boton2D::Draw(){
-    Imagen.Draw();
     text.Draw();
+    Imagen.Draw();
 
 }
 

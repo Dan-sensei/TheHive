@@ -11,39 +11,41 @@ void Motor2D::draw(){
         it++;
     }
 
+    auto it3=BOTONES.begin();
+    while(it3!=BOTONES.end()){
+        (*it3)->Draw();
+        it3++;
+    }
     auto it2 = IMAGENES.begin();
     while(it2!=IMAGENES.end()){
         auto img =it2->second;
         img->Draw();
         it2++;
     }
-    auto it3=BOTONES.begin();
-    while(it3!=BOTONES.end()){
-        (*it3)->Draw();
-        it3++;
-    }
     //Cuadrado2D boton(0  ,0  ,1    ,1);
     //boton.setColor(glm::vec4(1,0,0,1));
     //boton.Draw();
     //lo mas sencillo
-    Imagen2D img (0,0,1,1,"assets/HUD/ojetecalor.jpg");
-    img.Draw();
+    //Imagen2D img (0,0,1,1,"assets/HUD/Botonsolo.png");
+    //img.Draw();
     //std::cout << "dibujando" << '\n';
     //Texto2D nuevo( 0, 0,"Name",glm::vec4(1,0,0,1),30);
+    //nuevo.Draw();
+    //Texto2D nuevo(0,0.05,"Menu principal",glm::vec4(1,0,0,1),30);
     //nuevo.Draw();
 
 }
 void Motor2D::prueba(){
     //std::cout << "prueba" << '\n';
     //addText(30,30,"GERMAN GAY",glm::vec4(1,1,0,1),20);
-    //AddImage("vida","assets/HUD/ojetecalor.jpg",0,0,30,30);
-    addButton(0,0,30,30,GOPLAY,"assets/HUD/ojetecalor.jpg","assets/HUD/mongol.jpg","GeMAN",false);
+    //AddImage("vida","assets/HUD/Botonsolo.png",0,0,30,30);
+    addButton(0,0,30,30,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/mongol.jpg","GeMAN",false);
     //std::cout << "end prueba" << '\n';
 
 
 }
 int Motor2D::checkbuton(){
-    if(motor->isLClickPressed()==false){
+    if(motor->isLClicked()==false){
         return -1;
     }
     std::cout << "pulsado" << '\n';
@@ -54,6 +56,7 @@ int Motor2D::checkbuton(){
     while(it!=BOTONES.end()){
         auto but=*it;
         if(but->checkOn(x, y)){
+            std::cout << "entra" <<but->getType()<< '\n';
             return but->getType();
         }
         it++;
@@ -64,7 +67,6 @@ int Motor2D::checkbuton(){
 }
 void Motor2D::aplyhover(){
     double x,y;
-    motor->isLClickPressed();
     motor->getCursorPosition(x,y);
     auto it=BOTONES.begin();
     while(it!=BOTONES.end()){
@@ -90,25 +92,28 @@ void Motor2D::AddImage(std::string palabra,std::string source,float _posx,float 
     w=(_posx+_width)/100.0;
     h=(_posy+_height)/100.0;
     auto nuevo = new Imagen2D(x,y,w,h,source);
-    //auto nuevo = new Imagen2D (0,0,0.5,0.5,"assets/HUD/ojetecalor.jpg");
+    //auto nuevo = new Imagen2D (0,0,0.5,0.5,"assets/HUD/Botonsolo.png");
 
     std::cout << "nuevo " << nuevo << '\n';
     IMAGENES.push_back(std::make_pair(palabra,nuevo));
     //
 }
-void Motor2D::addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus){
+Boton2D* Motor2D::addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus,glm::vec4 _color){
     h=(y+h)/100.0;
     w=(x+w)/100.0;
     x=x/100.0;
     y=y/100.0;
     auto nuevo=new Boton2D(x,y,w,h,id,imagenP,imagenS,texto,focus);
+    nuevo->setColor(_color);
     BOTONES.push_back(nuevo);
+    return nuevo;
+
 }
 void Motor2D::addText(float x, float y,const std::string &Name,glm::vec4 _color,float tam){
     x=x/100.0;
     y=y/100.0;
-    auto nuevo=new Texto2D( x, y,Name,_color,tam);
-    TEXT.push_back(nuevo);
+    auto nuevo=new Texto2D( x, y,Name,_color);
+    TEXT.push_back(nuevo);//
 }
 irr::IrrlichtDevice* Motor2D::IrrlichtDevice = nullptr;
 void Motor2D::setprogress(int hab,float prog){
@@ -249,7 +254,7 @@ int Motor2D::InitAIDebug(int id){
     //ObjectManager* Manager = Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, pRec->idSource);
 
 
-    addButton(45,50,10,9,CONTINUE,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Continuar",true);
+    addButton(45,50,10,9,CONTINUE,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Continuar",true);
     return 1;
 
 }
@@ -257,73 +262,93 @@ int Motor2D::InitAIDebug(int id){
 //Menu principal
 int Motor2D::InitPause(){
     CLINMenu();
-    addButton(45,50,10,9,CONTINUE,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Continuar",true);
-    addButton(45,60,10,9,GOOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Opciones");
-    addButton(45,70,10,9,RETURNMENU,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Salir al menu");
+    addButton(40,31,20,10,CONTINUE,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Continuar",true);
+    addButton(40,43,20,10,GOOPTIONS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Opciones");
+    addButton(40,55,20,10,RETURNMENU,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Salir al menu");
+
+
     return 3;
 
 }
 //Main Menu
 int Motor2D::InitMenu(){
     CLINMenu();
+    AddImage("fondo","assets/HUD/menu.png",0,0,100,100);
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(0,0,0,1));
     addText(45,10,"Menu principal");
 
-    addButton(38,50,10,20,GOPLAY,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","J");
-    addButton(38,75,10,20,GOCREDITS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","C");
-    addButton(52,50,10,20,GOOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","O");
-    addButton(52,75,10,20,CLOSE,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","S");
+    auto but1=addButton(39,57,7,12,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","J");
+    but1->setSesgo(-0.015);
+    but1=addButton(37,70,8,14,GOCREDITS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","C");
+    but1->setSesgo(-0.02);
+    but1=addButton(54,57,7,12,GOOPTIONS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","O");
+    but1->setSesgo(0.015);
+    but1=addButton(55,70,8,14,CLOSE,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","S");
+    but1->setSesgo(0.02);
     return 4;
 }
 //Jugar
 int Motor2D::InitMenu2(){
     CLINMenu();
+    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+
     addText(45,10,"Play");
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Play"),gg::Color(0,0,0,1));
-    addButton(45,50,10,9,DIFF1,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Larva",true);
-    addButton(45,60,10,9,DIFF2,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Alien");
-    addButton(45,70,10,9,DIFF3,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","The hive");
-    addButton(40,80,20,9,START,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Play");
+    addButton(40,21,20,10,DIFF1,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Larva",true);
+    addButton(40,33,20,10,DIFF2,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Alien");
+    addButton(40,45,20,10,DIFF3,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","The hive");
+    addButton(30,60,40,20,START,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Play");
 
-    addButton(65,80,5,9,GOMAIN,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
+    addButton(20,20,5,9,GOMAIN,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
 return 5;
 }
 //Creditos
 int Motor2D::InitMenu3(){
     CLINMenu();
+    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+
     addText(45,10,"Credits");
 
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Credits"),gg::Color(0,0,0,1));
 
-    addButton(65,80,5,9,GOMAIN,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
+    addButton(20,20,5,9,GOMAIN,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
+
     return 1;
 }
 //Opciones
 int Motor2D::InitMenu4(){
     CLINMenu();
+    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+
     addText(45,10,"Options");
 
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Options"),gg::Color(0,0,0,1));
 
-    addButton(45,50,10,9,GOVIDEO,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Graphics");
-    addButton(45,60,10,9,GOMUSIC,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Audio");
-    addButton(45,70,10,9,GOCONTROLLS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Controlls");
+    addButton(40,31,20,10,GOVIDEO,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Graphics");
+    addButton(40,43,20,10,GOMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Audio");
+    addButton(40,55,20,10,GOCONTROLLS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Controlls");
 
-    addButton(65,80,5,9,CONTINUE,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
+    addButton(20,20,5,9,CONTINUE,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
+
     return 4;
 }
 //graficos
 int Motor2D::InitMenu5(){
     CLINMenu();
+    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+
     addText(45,10,"Video");
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Video"),gg::Color(0,0,0,1));
+    addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
 
-    addButton(65,80,5,9,GOINITOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
     return 1;
 }
 //sonido
 int Motor2D::InitMenu6(){
     CLINMenu();
+
+    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+
 
 
 
@@ -334,30 +359,36 @@ int Motor2D::InitMenu6(){
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Audio"),gg::Color(0,0,0,1));
     //AddStaticTextToBuffer(porc_ancho(30),porc_alto(51),std::string("Dialogues"),gg::Color(0,0,0,1));
     //AddStaticTextToBuffer(porc_ancho(40),porc_alto(51),std::to_string(VolDialogo),gg::Color(0,0,0,1));
-    addButton(50,50,2,5,MOREDIALOD,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","+");
-    addButton(53,50,2,5,LESSDIALOD,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","-");
-    addText(30,57,"Music"    );
+    addButton(50,50,2,5,MOREDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","M");
+    addButton(53,50,2,5,LESSDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","m");
+    std::cout << VolMusic << '\n';
+    addText(30,57,"Music"  );
     addText(40,57,""+VolMusic);
     //AddStaticTextToBuffer(porc_ancho(30),porc_alto(57),std::string("Music"),gg::Color(0,0,0,1));
     //AddStaticTextToBuffer(porc_ancho(40),porc_alto(57),std::to_string(VolMusic),gg::Color(0,0,0,1));
-    addButton(50,56,2,5,MOREMUSIC,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","+");
-    addButton(53,56,2,5,LESSMUSIC,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","-");
+    addButton(50,56,2,5,MOREMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","M");
+    addButton(53,56,2,5,LESSMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","m");
     addText(30,63,"Effects"    );
     addText(40,63,""+VolEffect  );
     //AddStaticTextToBuffer(porc_ancho(30),porc_alto(63),std::string("Effects"),gg::Color(0,0,0,1));
     //AddStaticTextToBuffer(porc_ancho(40),porc_alto(63),std::to_string(VolEffect),gg::Color(0,0,0,1));
-    addButton(50,62,2,5,MOREEFFECT,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","+");
-    addButton(53,62,2,5,LESSEFFECT,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","-");
-    addButton(65,80,5,9,GOINITOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
+    addButton(50,62,2,5,MOREEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","M");
+    addButton(53,62,2,5,LESSEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","m");
+
+    addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
+
     return 7;
 }
 //controles
 int Motor2D::InitMenu7(){
     CLINMenu();
+    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+
     //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Controlls"),gg::Color(0,0,0,1));
     addText(45,10,"Controlls");
 
-    addButton(65,80,5,9,GOINITOPTIONS,"assets/HUD/ojetecalor.jpg","assets/HUD/ojetecalor.jpg","Back");
+    addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
+
     return 1;
 }
 
@@ -374,11 +405,11 @@ void Motor2D::InitHUD(){
     AddImage("0arma","assets/HUD/cf_hud_d.jpg",75,85,20,15);
     AddImage("1arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
 
-    AddImage("vida","assets/HUD/cf_hud_d.jpg",60,2,35,7);
+    AddImage("vida","assets/HUD/Vida.png",60,2,35,7);
 
-    //AddImage("G1","assets/HUD/ojetecalor.jpg",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
-    //AddImage("G2","assets/HUD/ojetecalor.jpg",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
-    //AddImage("G3","assets/HUD/ojetecalor.jpg",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
+    //AddImage("G1","assets/HUD/Botonsolo.png",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
+    //AddImage("G2","assets/HUD/Botonsolo.png",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
+    //AddImage("G3","assets/HUD/Botonsolo.png",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
 
     // MAPA A FUNCIONES MOLON
     mapHudFunctions.insert(std::make_pair("hab1",&Motor2D::HUD_hability1));
@@ -422,6 +453,27 @@ void Motor2D::CLINMenu(){
     //std::vector<Cuadrado2D*> RECTANGULOS;
     //std::vector<Boton2D*> BOTONES;
     //std::vector<Boton2D*> TEXT;
+    auto it = IMAGENES.begin();
+    float X,Y,H,W,T_W,T_H;
+    while(it!=IMAGENES.end()){
+        delete it->second;
+        it++;
+    }
+    IMAGENES.clear();
+
+    auto it2=TEXT.begin();
+    while(it2!=TEXT.end()){
+        delete (*it2);
+        it2++;
+    }
+    TEXT.clear();
+
+    auto it3=BOTONES.begin();
+    while(it3!=BOTONES.end()){
+        delete (*it3);
+        it3++;
+    }
+    BOTONES.clear();
 
 
 
@@ -471,7 +523,7 @@ void Motor2D::DisplayMenu(){
 }
 void Motor2D::DisplayHUD(){
     if(true){
-        //irr::video::ITexture* images = driver->getTexture("assets/HUD/ojetecalor.jpg");
+        //irr::video::ITexture* images = driver->getTexture("assets/HUD/Botonsolo.png");
         //driver->draw2DImage(images, irr::core::position2d<irr::s32>(50,50),
         //irr::core::rect<irr::s32>(0,0,342,224), 0,
         //irr::video::SColor(255,255,255,255), true);
@@ -488,7 +540,7 @@ void Motor2D::DisplayHUD(){
             it++;
         }
         //
-        //AddImage("G3","assets/HUD/ojetecalor.jpg",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
+        //AddImage("G3","assets/HUD/Botonsolo.png",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
         float ale=porc_alto(2);
         Cuadrado2D horizontal(-0.1  ,0  ,0.1    ,0.001);
         Cuadrado2D vertical(0  ,-0.1  ,0.001    ,0.1);

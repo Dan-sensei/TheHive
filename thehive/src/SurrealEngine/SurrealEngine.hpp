@@ -47,6 +47,10 @@ class SurrealEngine {
         void draw();
         void EndDraw();
 
+        bool isLClicked();
+        void resetClicked();
+
+
         void PollEvents();
 
         void PointAt(TNodo *_node, const glm::vec3& _offpos);
@@ -88,6 +92,7 @@ class SurrealEngine {
 
         static bool* KEYS;
         static bool LCLICK;
+        static bool clicked;
         static int wheel;
         static int IdButon;
 

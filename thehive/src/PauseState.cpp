@@ -14,6 +14,8 @@
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include <EventSystem/Blackboard.hpp>
 #include <States/StateMachine.hpp>
+#include "GameEngine/Motor2D.hpp"
+
 
 
 #define MOVEMENT_SPEED 1.f
@@ -23,14 +25,7 @@
 PauseState::PauseState():cont(){
     Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
-
-    //Engine->Starto();
-    //Engine->HideCursor(true);
-    Manager = Singleton<ObjectManager>::Instance();
-
-    world = Singleton<ggDynWorld>::Instance();
-    //world->inito();
-    //Engine->HideCursor(false);
+    Engine->HideCursor(false);
 }
 
 PauseState::~PauseState(){
@@ -39,10 +34,12 @@ PauseState::~PauseState(){
 
 void PauseState::Init(){
 
-    Singleton<ScreenConsole>::Instance()->InitPause();
+    Engine->HideCursor(false);
+    Singleton<Motor2D>::Instance()->InitPause();
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
  void PauseState::Resume(){
+
     Init();
 }
 //void PauseState::submenu(){
@@ -51,16 +48,26 @@ void PauseState::Init(){
 //}
 void PauseState::Update(){
 
+    Engine->PollEvents();
+
     Engine->BeginDraw();
-    Engine->draw();
+    //Engine->draw();
     cont.update();
-    Singleton<ScreenConsole>::Instance()->DisplayMenu();
+    //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
+    Singleton<Motor2D>::Instance()->draw();
+    Singleton<Motor2D>::Instance()->checkbuton();
+    Singleton<Motor2D>::Instance()->aplyhover();
+    //Engine2D->draw();
+    //Engine2D->checkbuton();
+
     Engine->EndDraw();
+    Engine->resetClicked();
+    
 }
 
 void PauseState::CLIN(){
-    Singleton<ScreenConsole>::Instance()->CLINMenu();
+    Singleton<Motor2D>::Instance()->CLINMenu();
 
     //Blackboard::ClearGlobalBlackboard();
     //Manager->clin();

@@ -46,10 +46,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 MenuState::MenuState():cont(){
     Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
-
-    //Engine->Starto();
-    //Engine->HideCursor(true);
-    //Engine->HideCursor(false);
+    Engine->HideCursor(false);
 }
 
 MenuState::~MenuState(){
@@ -59,13 +56,13 @@ MenuState::~MenuState(){
 void MenuState::Init(){
 
     Singleton<Motor2D>::Instance()->InitMenu();
-    Singleton<Motor2D>::Instance()->prueba();
+    //Singleton<Motor2D>::Instance()->prueba();
     Engine->HideCursor(false);
 
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
 void MenuState::Resume() {
-    cont.setposmax(Singleton<Motor2D>::Instance()->InitMenu());
+    Init();
     //Engine->HideCursor(false);
 
 }
@@ -74,6 +71,8 @@ void MenuState::Resume() {
 
 //}
 void MenuState::Update(){
+    Engine->PollEvents();
+
     Engine->BeginDraw();
     //Engine->draw();
     cont.update();
@@ -86,6 +85,7 @@ void MenuState::Update(){
     //Engine2D->checkbuton();
 
     Engine->EndDraw();
+    Engine->resetClicked();
 }
 
 void MenuState::CLIN(){

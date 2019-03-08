@@ -10,8 +10,6 @@
 #define MAYUSCULAS 198.0f
 #define MINUSCULAS 64.0f
 
-#define SCREENW 1080.0f
-#define SCREENH 720.0f
 /*
 
 altura 64
@@ -205,7 +203,7 @@ void Letra2D::initg(){
     Y=MINUSCULAS;
 }
 void Letra2D::inith(){
-    X=4309;
+    X=309;
     W=32;
 
     Y=MINUSCULAS;
@@ -386,7 +384,6 @@ void Letra2D::initK(){
     Y=MAYUSCULAS;
 }
 void Letra2D::initL(){
-    std::cout << "entra al inint L" << '\n';
     X=573;
     W=34;
 

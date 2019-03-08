@@ -11,7 +11,7 @@
 #define HEIGTH         720.0f
 
 Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1),index(0)
 {
 
     float _x,_y,_w,_h;
@@ -30,8 +30,8 @@ Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
 
 
     GLuint elements[] = {
-        0, 1, 2,
-    	2, 3, 0
+        2, 1, 0,
+    	0, 3, 2
     };
 
 
@@ -103,6 +103,9 @@ void Cuadrado2D::Draw(){
     //metemos el color
     GLuint inputColour = sh->getUniformLocation("inputColour");
     glUniform4fv(inputColour,1,&color[0]);
+
+    //GLuint Zindex = sh->getUniformLocation("Zindex");
+    //glUniform1f(Zindex,index);
 
 
     glBindVertexArray(VAO);

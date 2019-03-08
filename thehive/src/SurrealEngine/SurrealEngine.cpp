@@ -3,6 +3,7 @@
 
 bool* SurrealEngine::KEYS = new bool[349];
 bool SurrealEngine::LCLICK = false;
+bool SurrealEngine::clicked = false;
 int SurrealEngine::wheel;
 int SurrealEngine::IdButon;
 
@@ -49,11 +50,20 @@ void SurrealEngine::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const
 
 void SurrealEngine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {  KEYS[key] = action; }
 
+void SurrealEngine::resetClicked(){
+    clicked=false;
+}
+bool SurrealEngine::isLClicked(){
+    return clicked;
+}
 void SurrealEngine::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+        clicked=true;
         LCLICK = true;
-    else if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    }
+    else if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
         LCLICK = false;
+    }
 }
 
 void SurrealEngine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
@@ -201,7 +211,7 @@ bool SurrealEngine::Initialize(){
     float ancho = mode->width;
     float alto = mode->height;
 
-	window = glfwCreateWindow( 1920, 1080, "The Hive - ALPHA", NULL, NULL);
+	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
 	    //fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
 	    glfwTerminate();
@@ -224,6 +234,9 @@ bool SurrealEngine::Initialize(){
 
     glCullFace (GL_BACK);
     glEnable(GL_CULL_FACE);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable( GL_BLEND );
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);

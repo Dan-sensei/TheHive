@@ -51,8 +51,8 @@ int main(int argc, char const *argv[]) {
     StateMachine *mainstates = Singleton<StateMachine>::Instance();
     //mainstates->AddState(new GameState());
     //mainstates->AddState(new GameState());
-    mainstates->AddState(new Game());
-    //mainstates->AddState(new MenuState());
+    //mainstates->AddState(new Game());
+    mainstates->AddState(new MenuState());
 
     while(Engine->isWindowOpen()) {
         mainstates->ProcessStateChanges();

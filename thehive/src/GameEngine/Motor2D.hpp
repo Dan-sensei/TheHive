@@ -21,7 +21,7 @@
 #include <GameEngine/EnumButtonType.hpp>
 
 
-
+class Boton2D;
 class GameEngine;
 
 class Motor2D{
@@ -62,9 +62,9 @@ class Motor2D{
         //void AddTextToBuffer(const std::string &Text, const gg::Color &color);
         //void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
         void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
-        void addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus=false);
+        Boton2D* addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus=false,glm::vec4 _color=glm::vec4(0,75/250.0,0,1));
         int Pulsarboton(int but);
-        void addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(0,0,0,1),float tam=0.1);
+        void addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(1,0,0,1),float tam=0.1);
         int checkbuton();
         void aplyhover();
     private:

@@ -24,8 +24,11 @@ class Imagen2D {
         float getW();
         float getY();
         float getH();
+        void setSesgado(float res);
 
     private:
+
+            float index;
             glm::vec4 color;
             unsigned int VAO;
             unsigned int VBO;

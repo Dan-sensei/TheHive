@@ -21,9 +21,44 @@ float Imagen2D::getY(){
 float Imagen2D::getH(){
     return H;
 }
+void Imagen2D::setSesgado(float res){
+    float sesgado=res;
+
+    float sni=sesgado/2.0;
+    float _x,_y,_w,_h;
+    _x=X*2.0-1;
+    _w=W*2.0-1;
+
+    _y=(Y*-2.0)+1;
+    _h=(H*-2.0)+1;
+    //float vertices[] = {
+    ////  Position      Color             Texcoords
+    //    _x+sni,  _y,  0.0f, 0.0f, // Top-left
+    //    _w+sesgado,  _y,  1.0f, 0.0f, // Top-right
+    //    _w-sesgado,  _h,  1.0f, 1.0f, // Bottom-right
+    //    _x-sni,  _h,  0.0f, 1.0f  // Bottom-left
+    //};
+    if(res>0){
+        float aux=sni;
+        sni=sesgado;
+        sesgado=aux;
+    }
+    float vertices[] = {
+    //  Position      Color             Texcoords
+        _x-sesgado,  _y,  0.0f, 0.0f, // Top-left
+        _w-sni,  _y,  1.0f, 0.0f, // Top-right
+        _w+sni,  _h,  1.0f, 1.0f, // Bottom-right
+        _x+sesgado,  _h,  0.0f, 1.0f  // Bottom-left
+    };
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    //glBufferData(GL_ARRAY_BUFFER,sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 
 Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(0)
 {
     X=x;
     W=w;
@@ -37,7 +72,6 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
 
     _y=(y*-2.0)+1;
     _h=(h*-2.0)+1;
-
 
     float vertices[] = {
     //  Position      Color             Texcoords
@@ -73,8 +107,8 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
         textureID = Manager->getTexture(Name,   GN::RGBA,0);
 
         //activamos transparencias
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //glEnable( GL_BLEND );
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable( GL_BLEND );
 
     	//habilitamos in
 
@@ -116,7 +150,6 @@ void Imagen2D::setPos(float x,float y,float w,float h){
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glBindVertexArray(0);
 
-    std::cout << "entra" << '\n';
 }
 
 void Imagen2D::setColor(glm::vec4 _color){
@@ -124,7 +157,6 @@ void Imagen2D::setColor(glm::vec4 _color){
 }
 
 void Imagen2D::setImage(const std::string &Name){
-    std::cout << "set i" << '\n';
     auto Manager = Singleton<AssetManager>::Instance();
     textureID=Manager->getTexture(Name,   GN::RGBA,0);
 }
@@ -136,6 +168,8 @@ void Imagen2D::Draw(){
     //metemos el color
     GLuint inputColour = sh->getUniformLocation("inputColour");
     glUniform4fv(inputColour,1,&color[0]);
+    GLuint Zindex = sh->getUniformLocation("Zindex");
+    glUniform1f(Zindex,index);
 
     glActiveTexture(GL_TEXTURE0 + 0);
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -151,9 +185,8 @@ void Imagen2D::Draw(){
 }
 
 Imagen2D::~Imagen2D(){
-    std::cout << "DELETE IMAGEN" << '\n';
-    glDeleteBuffers(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &VAO);
 
 }

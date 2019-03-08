@@ -15,8 +15,8 @@ class Boton2D {
     public:
         //Boton2D();
 
-        Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std::string &imgP,const std::string &imgS,const std::string &texto,bool focus=false,glm::vec4 color=glm::vec4(0,0,0,1),float tam=30);
-
+        Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std::string &imgP,const std::string &imgS,const std::string &texto,bool focus=false,glm::vec4 color=glm::vec4(1,0,0,1),float tam=30);
+        void setSesgo(float res);
         Boton2D(const Boton2D &orig) = delete;
         ~Boton2D();
 

@@ -22,11 +22,12 @@ float Texto2D::getH(){
     return H;
 }
 
+void Texto2D::setText(std::string pal){
+    palabra=pal;
+}
 float Texto2D::ChangeChar(float x,float y,char cha){
 
     //std::cout << "cha:" <<cha<< '\n';
-    //std::cout << "X:" <<x<< '\n';
-    //std::cout << "Y:" <<y<< '\n';
 
     float _x,_y,_w,_h;
     float T_x,T_y,T_w,T_h;
@@ -76,7 +77,6 @@ float Texto2D::ChangeChar(float x,float y,char cha){
 Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra,glm::vec4 _color,float tam):Texto2D(x,y,Palabra,_color,tam){
 
 
-std::cout << "se hace este" << '\n';
 
     float _w=0,_h=0,rx=0,ry=0;
     _w=getSizeX();
@@ -94,14 +94,10 @@ std::cout << "se hace este" << '\n';
 
 
 
-
-}
-void Texto2D::setText(std::string pal){
-    palabra=pal;
 }
 
 Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,float tam)
-:VAO(0),VBO(0),EBO(0),color(_color),textureID(0),separacion(0.05),tamanyo(tam),palabra(Palabra)
+:VAO(0),VBO(0),EBO(0),color(_color),textureID(0),separacion(0.05),tamanyo(tam),palabra(Palabra),index(-1)
 {
     auto sh=Singleton<AssetManager>::Instance()->getShader("2D");
 
@@ -114,10 +110,10 @@ Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,flo
     //_y=(y*-2.0)+1;
     //_x=x*2.0-1;
 
-    X=_x;
+    X=x;
     W=_w-_x;
 
-    Y=_y;
+    Y=y;
     H=_h-_y;
 
 //altura 64
@@ -131,7 +127,7 @@ float T_x,T_y,T_w,T_h;
 Manager = Singleton<Letra2DManager>::Instance();
 
 auto letra=Manager->getChar('a');
-letra.resize(400);
+letra.resize(tamanyo);
 
 
 _w=letra.getW();
@@ -154,8 +150,8 @@ _h=letra.getH();
 
 
     GLuint elements[] = {
-        0, 1, 2,
-    	2, 3, 0
+        2, 1, 0,
+    	0, 3, 2
     };
 
 
@@ -269,6 +265,8 @@ void Texto2D::Draw(){
     GLuint inputColour = sh->getUniformLocation("inputColour");
     glUniform4fv(inputColour,1,&color[0]);
 
+    GLuint Zindex = sh->getUniformLocation("Zindex");
+    glUniform1f(Zindex,index);
 
 
 

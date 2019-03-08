@@ -98,6 +98,7 @@ void GUIController::update(){
     int id =Engine2D->checkbuton();
      if(id!=-1){
          std::cout << "id" <<id<< '\n';
+         std::cout << "entramos" << '\n';
          if(VectorAcciones[id] != nullptr)
              (this->*VectorAcciones[id])();
      }
@@ -105,6 +106,7 @@ void GUIController::update(){
 //but0
 void GUIController::gotoPlay(){
     dif=1;
+    std::cout << "llega" << '\n';
     Engine2D->InitMenu2();
 }
 //but1
@@ -137,6 +139,8 @@ void GUIController::gotoControlls(){
 }
 //but7
 void GUIController::StartGame(){
+    Engine2D->CLINMenu();
+
     Singleton<StateMachine>::Instance()->AddState(new Game(),false);
 }
 //but8

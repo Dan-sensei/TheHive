@@ -85,6 +85,7 @@ void Game::Init(){
     Engine->print();
     // Pos init del heroe normal
     // 360, 0, 350
+    Engine->HideCursor(true);
 
 
     uint16_t h = sF->createHero(glm::vec3(0,20,50),-1);
@@ -182,13 +183,18 @@ void Game::Update(){
 }
 
 void Game::Resume(){
+    Engine->HideCursor(true);
+    Engine2D->InitHUD();
+
+
     //Engine->HideCursor(true);
 }
 
 void Game::CLIN(){
     //Blackboard::ClearGlobalBlackboard();
-    Manager->clin(); // este esta bien creo
-    world->clear();  //clean es el vuestro// clear solo vacia los rigidbody sin quitar las fisicas
+    Manager->clin();
+    world->clear();
+    //Engine2D->CLINNormal();
     //EventSystem->clin();
     //Singleton<ScreenConsole>::Instance()->CLIN();
     //Singleton<ScreenConsole>::Instance()->CLINNormal();
