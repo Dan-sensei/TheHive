@@ -3,6 +3,10 @@
 //#include <SMaterial>
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
+#include "SurrealEngine/Imagen2D.hpp"
+#include "SurrealEngine/Boton2D.hpp"
+#include "SurrealEngine/Cuadrado2D.hpp"
+#include "SurrealEngine/Texto2D.hpp"
 Motor2D::~Motor2D(){
     CLINMenu();
 }
@@ -13,7 +17,6 @@ void Motor2D::draw(){
         (*it)->Draw();
         it++;
     }
-
     auto it3=BOTONES.begin();
     while(it3!=BOTONES.end()){
         (*it3)->Draw();
@@ -25,6 +28,8 @@ void Motor2D::draw(){
         img->Draw();
         it2++;
     }
+
+
     //Cuadrado2D boton(0  ,0  ,1    ,1);
     //boton.setColor(glm::vec4(1,0,0,1));
     //boton.Draw();
@@ -37,6 +42,11 @@ void Motor2D::draw(){
     //Texto2D nuevo(0,0.05,"Menu principal",glm::vec4(1,0,0,1),30);
     //nuevo.Draw();
 
+}
+Cuadrado2D* Motor2D::addRect(float x, float y,float w, float h){
+    auto nuevo =new Cuadrado2D(x,y,w,h);
+    RECTANGULOS.push_back(nuevo);
+    return nuevo;
 }
 void Motor2D::prueba(){
     //std::cout << "prueba" << '\n';
@@ -115,7 +125,7 @@ Boton2D* Motor2D::addButton(float x, float y, float w,float h,EnumButtonType id,
 void Motor2D::addText(float x, float y,const std::string &Name,glm::vec4 _color,float tam){
     x=x/100.0;
     y=y/100.0;
-    auto nuevo=new Texto2D( x, y,Name,_color);
+    auto nuevo=new Texto2D( x, y,Name,_color,tam);
     TEXT.push_back(nuevo);//
 }
 void Motor2D::setprogress(int hab,float prog){
@@ -393,14 +403,44 @@ int Motor2D::InitMenu7(){
 void Motor2D::InitHUD(){
 
 
-    AddImage("hab1","assets/HUD/hab1.png",2, 90,10,10);
-    AddImage("hab2","assets/HUD/hab2.png",12, 90,10,10);
-    AddImage("hab3","assets/HUD/hab3.png",22,90,10,10);
+    AddImage("hab1","assets/HUD/hab1.png",  2, 90,7,10);
+    auto boton=addRect(                     2, 90,7,10);
+    boton->setColor(glm::vec4(1,1,1,0.25));
 
+
+    AddImage("hab2","assets/HUD/hab2.png",  12, 90,7,10);
+    boton=addRect(                          12, 90,7,10);
+    boton->setColor(glm::vec4(1,1,1,0.25));
+
+
+    AddImage("hab3","assets/HUD/hab3.png",  22,90,7,10);
+    boton=addRect(                          22,90,7,10);
+    boton->setColor(glm::vec4(1,1,1,0.25));
+
+
+    float _x,_y,x,y,w,h;
+    x=75;
+    y=85;
+    w=20;
+    h=15;
+    _x= x+w*0.5;
+    _y= y+h*0.5;
     AddImage("0arma","assets/HUD/cf_hud_d.jpg",75,85,20,15);
+    addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
+    x=70;
+    y=80;
+    w=20;
+    h=15;
+    _x= x+w*0.5;
+    _y= y+h*0.5;
     AddImage("1arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
+    addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 
-    AddImage("vida","assets/HUD/Vida.png",60,2,35,7);
+
+    AddImage("vida","assets/HUD/Vida.png",  60,2,35,7);
+    boton=addRect(                          60,2,35,7);
+    boton->setColor(glm::vec4(0,1,0,0.6));
+
 
     //AddImage("G1","assets/HUD/Botonsolo.png",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
     //AddImage("G2","assets/HUD/Botonsolo.png",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
@@ -464,6 +504,15 @@ void Motor2D::CLINMenu(){
     }
     BOTONES.clear();
 
+    auto it4=RECTANGULOS.begin();
+    while(it4!=RECTANGULOS.end()){
+        delete (*it4);
+        it4++;
+    }
+    RECTANGULOS.clear();
+
+
+
 
 
 }
@@ -489,10 +538,10 @@ void Motor2D::DisplayHUD(){
         float X,Y,H,W,T_W,T_H;
         while(it!=IMAGENES.end()){
             auto img =it->second;
-            img->Draw();
             if(mapHudFunctions.find(it->first) != mapHudFunctions.end())
                 (this->*mapHudFunctions[it->first])(img);
 
+                img->Draw();
             it++;
         }
         //
@@ -516,12 +565,8 @@ void Motor2D::HUD_hability1(Imagen2D *it){
     w=it->getW();
     h=it->getH();
 
-    Cuadrado2D boton(x  ,y  ,w    ,(h-y)*perc+y);
-    boton.setColor(glm::vec4(1,1,1,0.25));
-
-
-
-    boton.Draw();
+    RECTANGULOS[0]->setPos(x, y, w, y+(h-y)*perc);
+    RECTANGULOS[0]->Draw();
 }
 
 void Motor2D::HUD_hability2(Imagen2D *it){
@@ -531,12 +576,8 @@ void Motor2D::HUD_hability2(Imagen2D *it){
     w=it->getW();
     h=it->getH();
 
-    Cuadrado2D boton(x  ,y  ,x+w    ,y+h*perc2);
-    boton.setColor(glm::vec4(1,1,1,0.25));
-
-
-
-    boton.Draw();
+    RECTANGULOS[1]->setPos(x, y, w, y+(h-y)*perc2);
+    RECTANGULOS[1]->Draw();
 }
 
 void Motor2D::HUD_hability3(Imagen2D *it){
@@ -545,11 +586,8 @@ void Motor2D::HUD_hability3(Imagen2D *it){
     y=it->getY();
     w=it->getW();
     h=it->getH();
-
-    Cuadrado2D boton(x  ,y  ,x+w    ,y+h*perc3);
-    boton.setColor(glm::vec4(1,1,1,0.25));
-
-    boton.Draw();
+    RECTANGULOS[2]->setPos(x, y, w, y+(h-y)*perc3);
+    RECTANGULOS[2]->Draw();
 }
 
 void Motor2D::HUD_vida(Imagen2D *it){
@@ -560,22 +598,22 @@ void Motor2D::HUD_vida(Imagen2D *it){
     h=it->getH();
 
 
-    Cuadrado2D boton(x  ,y  ,x+w*vida    ,y+h);
-    boton.setColor(glm::vec4(0,1,0,0.6));
-
-    boton.Draw();
+    //Cuadrado2D boton(0 ,0  ,1  ,1);
+    RECTANGULOS[3]->setPos(x, y, x+(w-x)*vida , h);
+    RECTANGULOS[3]->Draw();
 }
 //necesitamos escribir por pantalla
 void Motor2D::HUD_arma0(Imagen2D *it){
 
-    //hace falta lo de los botones aqui
-    //std::string hola=std::to_string(balaS)+"/"+std::to_string(balaS_TOT);
-    //font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(255,255,255,255));
+    std::string hola=std::to_string(balaS)+"/"+std::to_string(balaS_TOT);
+    TEXT[0]->setText(hola);
+    TEXT[0]->Draw();
 }
 
 void Motor2D::HUD_arma1(Imagen2D *it){
-    //std::string hola=std::to_string(balaP)+"/"+std::to_string(balaP_TOT);
-    //font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(255,255,255,255));
+    std::string hola=std::to_string(balaP)+"/"+std::to_string(balaP_TOT);
+    TEXT[1]->setText(hola);
+    TEXT[1]->Draw();
 }
 
 

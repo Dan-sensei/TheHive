@@ -73,9 +73,24 @@ W       1188    62
 X       1255    52
 Y       1319    46
 
-inicio_y Z 266
+inicio_y Z 330
 
-Z      0        43
+Z       0       43
+0       54      39
+1       107     25
+2       143     38
+3       193     36
+4       241     37
+5       293     36
+6       343     37
+7       392     41
+8       443     37
+9       495     38
++       548     36
+-       599     23
+/       635     38
+¿       681     30
+?       732     29
 
 
 
@@ -139,12 +154,34 @@ Letra2DManager::Letra2DManager()
     mapHudFunctions.insert(std::make_pair('Z',&Letra2D::initZ));
 
 
+    mapHudFunctions.insert(std::make_pair('0',&Letra2D::init0));
+    mapHudFunctions.insert(std::make_pair('1',&Letra2D::init1));
+    mapHudFunctions.insert(std::make_pair('2',&Letra2D::init2));
+    mapHudFunctions.insert(std::make_pair('3',&Letra2D::init3));
+    mapHudFunctions.insert(std::make_pair('4',&Letra2D::init4));
+    mapHudFunctions.insert(std::make_pair('5',&Letra2D::init5));
+    mapHudFunctions.insert(std::make_pair('6',&Letra2D::init6));
+    mapHudFunctions.insert(std::make_pair('7',&Letra2D::init7));
+    mapHudFunctions.insert(std::make_pair('8',&Letra2D::init8));
+    mapHudFunctions.insert(std::make_pair('9',&Letra2D::init9));
+
+
+
+    mapHudFunctions.insert(std::make_pair('+',&Letra2D::initmore));
+    mapHudFunctions.insert(std::make_pair('-',&Letra2D::initless));
+    mapHudFunctions.insert(std::make_pair('/',&Letra2D::initdoblada));
+    //mapHudFunctions.insert(std::make_pair('¿',&Letra2D::initint1));
+    //mapHudFunctions.insert(std::make_pair('?',&Letra2D::initint2));
+
+
+
+
 }
 Letra2D Letra2DManager::getChar(char letra){
     Letra2D sol;
     if(mapHudFunctions.find(letra) != mapHudFunctions.end())
         (sol.*mapHudFunctions[letra])();
-    sol.init2();
+    sol.secondinit();
     return sol;
 
 }

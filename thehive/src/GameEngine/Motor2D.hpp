@@ -14,15 +14,16 @@
 
 
 #include "SurrealEngine/SurrealEngine.hpp"
-#include "SurrealEngine/Imagen2D.hpp"
-#include "SurrealEngine/Boton2D.hpp"
-#include "SurrealEngine/Cuadrado2D.hpp"
+
 
 #include <GameEngine/EnumButtonType.hpp>
 
 
 class Boton2D;
+class Imagen2D;
+class Cuadrado2D;
 class GameEngine;
+class Texto2D;
 
 class Motor2D{
     friend class Singleton<Motor2D>;
@@ -63,12 +64,13 @@ class Motor2D{
         //void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
         void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
         Boton2D* addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus=false,glm::vec4 _color=glm::vec4(0,75/250.0,0,1));
-        void addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(1,0,0,1),float tam=0.1);
+        void addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(1,0,0,1),float tam=20);
+        Cuadrado2D* addRect(float x, float y,float w, float h);
         int checkbuton();
         void aplyhover();
     private:
         //nuevo
-        //std::vector<Cuadrado2D*> RECTANGULOS;
+        std::vector<Cuadrado2D*> RECTANGULOS;
         SurrealEngine* motor;
         std::vector<Boton2D*> BOTONES;
         std::vector<Texto2D*> TEXT;

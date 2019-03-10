@@ -80,10 +80,28 @@ class Letra2D {
         void initZ();
 
 
+        void init0();
+        void init1();
+        void init2();
+        void init3();
+        void init4();
+        void init5();
+        void init6();
+        void init7();
+        void init8();
+        void init9();
+
+        void initmore();
+        void initless();
+        void initdoblada();
+        void initint1();
+        void initint2();
+
+
         void resize(float alto);
 
 
-        void init2();
+        void secondinit();
     private:
         std::map<char,void(Letra2D::*)()> mapHudFunctions;
         //using pFunc = void(Action::*)();

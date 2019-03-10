@@ -64,17 +64,11 @@ void Cuadrado2D::setPos(float x,float y,float w,float h){
     glBindVertexArray(VAO);
 
     float _x,_y,_w,_h;
-    _x=x/WIDTH;
-    _w=w/WIDTH;
+    _x=x*2.0-1;
+    _w=w*2.0-1;
 
-    _y=y/HEIGTH;
-    _h=h/HEIGTH;
-
-    //_x=x*2.0-1;
-    //_w=w*2.0-1;
-
-    //_y=(y*-2.0)+1;
-    //_h=(h*-2.0)+1;
+    _y=(y*-2.0)+1;
+    _h=(h*-2.0)+1;
 
     float vertices[] = {
         _x,  _y,   // Top-left

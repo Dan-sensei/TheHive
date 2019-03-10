@@ -7,8 +7,10 @@
 #define HEIGTH 64.0f
 #define THEIGTH 800.0f
 #define TWIDTH 1400.0f
-#define MAYUSCULAS 198.0f
+
 #define MINUSCULAS 64.0f
+#define MAYUSCULAS 198.0f
+#define NUMEROS 330.0f
 
 /*
 
@@ -125,7 +127,7 @@ Letra2D::Letra2D()
 Letra2D::~Letra2D(){
 
 }
-void Letra2D::init2(){
+void Letra2D::secondinit(){
 
     auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     float ancho = mode->width;
@@ -469,5 +471,98 @@ void Letra2D::initZ(){
     X=0;
     W=43;
 
-    Y=266;
+    Y=NUMEROS;
+}
+
+void Letra2D::init0(){
+    X=54;
+    W=39;
+
+    Y=NUMEROS;
+}
+void Letra2D::init1(){
+    X=107;
+    W=25;
+
+    Y=NUMEROS;
+}
+void Letra2D::init2(){
+    X=143;
+    W=38;
+
+    Y=NUMEROS;
+}
+void Letra2D::init3(){
+    X=193;
+    W=36;
+
+    Y=NUMEROS;
+}
+
+void Letra2D::init4(){
+    X=241;
+    W=37;
+
+    Y=NUMEROS;
+}
+void Letra2D::init5(){
+    X=293;
+    W=36;
+
+    Y=NUMEROS;
+}
+void Letra2D::init6(){
+    X=343;
+    W=37;
+
+    Y=NUMEROS;
+}
+void Letra2D::init7(){
+    X=392;
+    W=41;
+
+    Y=NUMEROS;
+}
+void Letra2D::init8(){
+    X=443;
+    W=37;
+
+    Y=NUMEROS;
+}
+
+void Letra2D::init9(){
+    X=495;
+    W=38;
+
+    Y=NUMEROS;
+}
+void Letra2D::initmore(){
+    X=548;
+    W=36;
+
+    Y=NUMEROS;
+}
+void Letra2D::initless(){
+    X=599;
+    W=23;
+
+    Y=NUMEROS;
+}
+void Letra2D::initdoblada(){
+    X=635;
+    W=38;
+
+    Y=NUMEROS;
+}
+void Letra2D::initint1(){
+    X=681;
+    W=30;
+
+    Y=NUMEROS;
+}
+void Letra2D::initint2(){
+    X=732;
+    W=29;
+
+    Y=NUMEROS;
 }

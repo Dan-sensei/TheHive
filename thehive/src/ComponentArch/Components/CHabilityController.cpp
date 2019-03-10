@@ -57,6 +57,6 @@ void CHabilityController::FixedUpdate(){
     for (size_t i = 0; i < 3; i++) {
 
         Habilities[i]->update();
-        //Singleton<Motor2D>::Instance()->setprogress(i, Habilities[i]->getProg());
+        Singleton<Motor2D>::Instance()->setprogress(i, Habilities[i]->getProg());
     }
 }
