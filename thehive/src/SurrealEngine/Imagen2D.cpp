@@ -6,9 +6,6 @@
 
 
 
-// glm::mat4 TEntidad::modelMatrix;
-// glm::mat4 TEntidad::viewMatrix;
-// glm::mat4 TEntidad::projMatrix;
 float Imagen2D::getX(){
     return X;
 }

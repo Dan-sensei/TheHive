@@ -2,9 +2,9 @@
 #include <Util.hpp>
 #include <string>
 //#include <GameAI/Hability.hpp>
-#include <GameEngine/ScreenConsole.hpp>
+#include <GameEngine/Motor2D.hpp>
 #include <Singleton.hpp>
-// #include <GameEngine/ScreenConsole.hpp>
+// #include <GameEngine/Motor2D.hpp>
 
 
 CHabilityController::CHabilityController()
@@ -57,6 +57,6 @@ void CHabilityController::FixedUpdate(){
     for (size_t i = 0; i < 3; i++) {
 
         Habilities[i]->update();
-        //Singleton<ScreenConsole>::Instance()->setprogress(i, Habilities[i]->getProg());
+        //Singleton<Motor2D>::Instance()->setprogress(i, Habilities[i]->getProg());
     }
 }

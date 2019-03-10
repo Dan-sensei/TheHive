@@ -38,7 +38,7 @@ class CVida : public IComponent {
     private:
         CVida(const CVida &orig) = delete;
         ObjectManager   *Manager;
-        //ScreenConsole   *hud;
+        //Motor2D   *hud;
         CTriggerSystem  *triggerSystem;
 
         float vida;

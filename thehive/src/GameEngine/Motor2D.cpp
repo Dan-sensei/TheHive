@@ -3,6 +3,9 @@
 //#include <SMaterial>
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
+Motor2D::~Motor2D(){
+    CLINMenu();
+}
 void Motor2D::draw(){
 
     auto it=TEXT.begin();
@@ -115,7 +118,6 @@ void Motor2D::addText(float x, float y,const std::string &Name,glm::vec4 _color,
     auto nuevo=new Texto2D( x, y,Name,_color);
     TEXT.push_back(nuevo);//
 }
-irr::IrrlichtDevice* Motor2D::IrrlichtDevice = nullptr;
 void Motor2D::setprogress(int hab,float prog){
     if(hab==0){
         perc=1-prog;
@@ -154,12 +156,7 @@ void Motor2D::setbullet(int tipo,int b_act, int b_tot){
     }
 }
 
-float Motor2D::porc_alto(float x){
-    return ((alto*2)/100.0)*x;
-}
-float Motor2D::porc_ancho(float x){
-    return ((ancho*2)/100.0)*x;
-}
+
 Motor2D::Motor2D(){
     motor = Singleton<SurrealEngine>::Instance();
 
@@ -392,9 +389,7 @@ int Motor2D::InitMenu7(){
     return 1;
 }
 
-int Motor2D::Pulsarboton(int but){
-    return Botones.at(but)->getID();
-}
+
 void Motor2D::InitHUD(){
 
 
@@ -442,19 +437,13 @@ void Motor2D::InitHUD(){
 //void Motor2D::AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color){
 //    TEXT_BUFFER.emplace_back(x,y,Text, color);
 //}
-Motor2D::BufferText::BufferText(const std::string &_Text, const gg::Color &_Color)
-:Text(_Text), Color(_Color)
-{}
-Motor2D::StaticText::StaticText(float _x,float _y, std::string _Text,gg::Color _Color)
-:Text(_Text),Color(_Color),posx(_x),posy(_y)
-{}
+
 void Motor2D::CLINMenu(){
     //liberar eso
     //std::vector<Cuadrado2D*> RECTANGULOS;
     //std::vector<Boton2D*> BOTONES;
     //std::vector<Boton2D*> TEXT;
     auto it = IMAGENES.begin();
-    float X,Y,H,W,T_W,T_H;
     while(it!=IMAGENES.end()){
         delete it->second;
         it++;
@@ -484,7 +473,6 @@ void Motor2D::CLINNormal(){
     //std::vector<Boton2D*> BOTONES;
     //std::vector<Boton2D*> TEXT;
     auto it = IMAGENES.begin();
-    float X,Y,H,W,T_W,T_H;
     while(it!=IMAGENES.end()){
         delete it->second;
         it++;
@@ -494,41 +482,9 @@ void Motor2D::CLINNormal(){
 
 
 }
-//void Motor2D::DisplayDebug(){
-//    if(true){
-//        auto it = BUFFER.begin();
-//        uint16_t DiplayY = 10;
-//        while (it!=BUFFER.end()){
-//            irr::core::stringw WS((*it).Text.c_str());
-//            font->draw(WS, irr::core::rect<irr::s32>(20,DiplayY,700,50), irr::video::SColor((*it).Color.Alpha*255,(*it).Color.R,(*it).Color.G,(*it).Color.B));
-//            DiplayY += 17;
-//            ++it;
-//        }
-//    }
-//}
-void Motor2D::DisplayMenu(){
-    IrrlichtDevice->getGUIEnvironment()->drawAll();
-    auto it = TEXT_BUFFER.begin();
-    while (it!=TEXT_BUFFER.end()){
-        irr::core::stringw WS((*it).Text.c_str());
-        font->draw(WS, irr::core::rect<irr::s32>((*it).posx,(*it).posy,(*it).posx+100,(*it).posy+100),irr::video::SColor((*it).Color.Alpha*255,(*it).Color.R,(*it).Color.G,(*it).Color.B));
-        //DiplayY += 17;
-        //->draw(L"Menu principal", irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)), irr::video::SColor(255,155,155,155));
-        ++it;
-    }
-    //IrrlichtDevice->getGUIEnvironment()->addStaticText (L"Menu principal",irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)));
-    //font->draw(L"Menu principal", irr::core::rect<irr::s32>(porc_ancho(45),porc_alto(10),porc_ancho(55),porc_alto(30)), irr::video::SColor(255,155,155,155));
 
-
-}
 void Motor2D::DisplayHUD(){
     if(true){
-        //irr::video::ITexture* images = driver->getTexture("assets/HUD/Botonsolo.png");
-        //driver->draw2DImage(images, irr::core::position2d<irr::s32>(50,50),
-        //irr::core::rect<irr::s32>(0,0,342,224), 0,
-        //irr::video::SColor(255,255,255,255), true);
-        //driver->draw2DImage(images, irr::core::position2d<irr::s32>(50,50));
-
         auto it = IMAGENES.begin();
         float X,Y,H,W,T_W,T_H;
         while(it!=IMAGENES.end()){
@@ -541,7 +497,7 @@ void Motor2D::DisplayHUD(){
         }
         //
         //AddImage("G3","assets/HUD/Botonsolo.png",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
-        float ale=porc_alto(2);
+        //float ale=porc_alto(2);
         Cuadrado2D horizontal(-0.1  ,0  ,0.1    ,0.001);
         Cuadrado2D vertical(0  ,-0.1  ,0.001    ,0.1);
 
@@ -620,4 +576,13 @@ void Motor2D::HUD_arma0(Imagen2D *it){
 void Motor2D::HUD_arma1(Imagen2D *it){
     //std::string hola=std::to_string(balaP)+"/"+std::to_string(balaP_TOT);
     //font->draw(hola.c_str(), irr::core::rect<irr::s32>(it.posx+(it.width/100)*65,it.posy+(it.height/100)*70,700,50), irr::video::SColor(255,255,255,255));
+}
+
+
+void gg::cout (const std::string &Text, const gg::Color &color){
+    //Singleton<Motor2D>::Instance()->AddTextToBuffer(Text, color);
+}
+void gg::cout (const glm::vec3 &Vector, const gg::Color &color){
+    //std::string VectorString = "(" + std::to_string(Vector.x) + "," + std::to_string(Vector.y) + "," + std::to_string(Vector.z) + ")";
+    //Singleton<Motor2D>::Instance()->AddTextToBuffer(VectorString, color);
 }

@@ -11,7 +11,7 @@
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/NavmeshStructs.hpp"
 
-#include "GameEngine/ScreenConsole.hpp"
+#include "GameEngine/Motor2D.hpp"
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
@@ -58,6 +58,7 @@ OptionState::OptionState():cont(){
 }
 
 OptionState::~OptionState(){
+    CLIN();
 
 }
 
@@ -89,7 +90,7 @@ void OptionState::Update(){
 
     Engine->EndDraw();
     Engine->resetClicked();
-    
+
 }
 
 void OptionState::CLIN(){

@@ -8,7 +8,7 @@
 #include "ComponentArch/ObjectManager.hpp"
 #include "Singleton.hpp"
 
-#include "GameEngine/ScreenConsole.hpp"
+#include "GameEngine/Motor2D.hpp"
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
@@ -29,6 +29,7 @@ PauseState::PauseState():cont(){
 }
 
 PauseState::~PauseState(){
+    CLIN();
 
 }
 
@@ -63,7 +64,7 @@ void PauseState::Update(){
 
     Engine->EndDraw();
     Engine->resetClicked();
-    
+
 }
 
 void PauseState::CLIN(){

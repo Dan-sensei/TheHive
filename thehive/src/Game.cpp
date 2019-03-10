@@ -12,7 +12,7 @@
 #include "GameAI/AIDirector.hpp"
 #include "GameAI/NavmeshStructs.hpp"
 
-#include "GameEngine/ScreenConsole.hpp"
+#include "GameEngine/Motor2D.hpp"
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
@@ -76,7 +76,6 @@ Game::~Game(){
 }
 
 void Game::Init(){
-    //Singleton<ScreenConsole>::Instance()->InitHUD();
     //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     auto sF = Singleton<Factory>::Instance();
@@ -164,10 +163,7 @@ void Game::Update(){
     //Engine->DisplayFPS();
     Engine2D->DisplayHUD();
     //Engine2D->draw();
-
     // Consola por pantalla
-    // Singleton<ScreenConsole>::Instance()->DisplayDebug();
-    // Singleton<ScreenConsole>::Instance()->DisplayHUD();
     //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
@@ -189,8 +185,6 @@ void Game::CLIN(){
     world->clear();
     //Engine2D->CLINNormal();
     //EventSystem->clin();
-    //Singleton<ScreenConsole>::Instance()->CLIN();
-    //Singleton<ScreenConsole>::Instance()->CLINNormal();
 
     // std::cout << "1/60 = " << 1/60.F << '\n';
     // std::cout << "UPDTES " << UPDATE  << '\n';

@@ -4,7 +4,7 @@
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 #include <iostream>
-#include <GameEngine/ScreenConsole.hpp>
+#include <GameEngine/Motor2D.hpp>
 #include <Singleton.hpp>
 #include <GameAI/AIDirector.hpp>
 
@@ -16,7 +16,7 @@ CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
 {
     Manager         = Singleton<ObjectManager>::Instance();
-    //hud             = Singleton<ScreenConsole>::Instance();
+    //hud             = Singleton<Motor2D>::Instance();
     triggerSystem   = Singleton<CTriggerSystem>::Instance();
 }
 

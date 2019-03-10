@@ -1,5 +1,5 @@
 #include "CGun.hpp"
-#include <GameEngine/ScreenConsole.hpp>
+#include <GameEngine/Motor2D.hpp>
 #include <Bullet/ggDynWorld.hpp>
 #include "CAIEnem.hpp"
 
@@ -40,7 +40,7 @@ void CGun::shoot(glm::vec3 to){
             total_bullets--;
         }
 
-        // Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
+        // Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
         // Comprobar destino
         if(to.x == -1){
@@ -134,7 +134,7 @@ gg::EMessageStatus CGun::processMessage(const Message &m) {
 gg::EMessageStatus CGun::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-    // Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
+    // Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
     return gg::ST_TRUE;
 }
@@ -162,5 +162,5 @@ void CGun::FixedUpdate(){
             canShoot = true;
         }
     }
-    //Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
+    //Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 }

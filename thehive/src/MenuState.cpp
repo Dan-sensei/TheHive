@@ -50,6 +50,7 @@ MenuState::MenuState():cont(){
 }
 
 MenuState::~MenuState(){
+    CLIN();
 
 }
 
@@ -89,7 +90,6 @@ void MenuState::Update(){
 }
 
 void MenuState::CLIN(){
-    Singleton<Motor2D>::Instance()->CLINMenu();
     Singleton<Motor2D>::Instance()->CLINMenu();
     EventSystem->clin();
 }

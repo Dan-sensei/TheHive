@@ -18,7 +18,7 @@
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/NavmeshStructs.hpp"
 
-#include "GameEngine/ScreenConsole.hpp"
+#include "GameEngine/Motor2D.hpp"
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>

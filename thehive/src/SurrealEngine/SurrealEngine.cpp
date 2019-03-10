@@ -164,7 +164,20 @@ void SurrealEngine::setPosition(TNodo* _node, const glm::vec3& _offpos){
 void SurrealEngine::setRotation(TNodo* _node,const glm::vec3& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
 }
-
+glm::vec3 SurrealEngine::vectorUp(){
+    auto v=ESCENA->getEntidad()->viewMatrix;
+    return glm::vec3(v[0][1], v[1][1], v[2][1]);
+}
+glm::vec3 SurrealEngine::vectorRigth(){
+    auto v=ESCENA->getEntidad()->viewMatrix;
+    return glm::vec3(v[0][0], v[1][0], v[2][0]);
+}
+glm::mat4  SurrealEngine::getMVP(){
+    return  ESCENA->getEntidad()->projMatrix * ESCENA->getEntidad()->viewMatrix * ESCENA->getEntidad()->modelMatrix;
+}
+glm::mat4  SurrealEngine::getM(){
+    return ESCENA->getEntidad()->modelMatrix;
+}
 void SurrealEngine::PointAt(TNodo *_node, const glm::vec3& _offpos){
     auto trans =static_cast<TTransform*>(_node->getPadre()->getEntidad());
     auto dir=glm::normalize(glm::vec3(_offpos.x,_offpos.y,_offpos.z)-trans->getDatos());

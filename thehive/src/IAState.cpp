@@ -9,7 +9,7 @@
 
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Bullet/ggDynWorld.hpp>
-#include "GameEngine/ScreenConsole.hpp"
+#include "GameEngine/Motor2D.hpp"
 
 #include <States/StateMachine.hpp>
 
@@ -61,11 +61,11 @@ IAState::~IAState(){
 
 void IAState::Init(){
 
-    cont.setposmax(Singleton<ScreenConsole>::Instance()->InitAIDebug(id));
+    Singleton<Motor2D>::Instance()->InitAIDebug(id);
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
 void IAState::Resume() {
-    cont.setposmax(Singleton<ScreenConsole>::Instance()->InitAIDebug(id));
+    Singleton<Motor2D>::Instance()->InitAIDebug(id);
 
 }
 //void IAState::submenu(){
@@ -73,14 +73,23 @@ void IAState::Resume() {
 
 //}
 void IAState::Update(){
+    Engine->PollEvents();
+
     Engine->BeginDraw();
-    Engine->draw();
+    //Engine->draw();
     cont.update();
-    Singleton<ScreenConsole>::Instance()->DisplayMenu();
+    //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
+    Singleton<Motor2D>::Instance()->draw();
+    Singleton<Motor2D>::Instance()->checkbuton();
+    Singleton<Motor2D>::Instance()->aplyhover();
+    //Engine2D->draw();
+    //Engine2D->checkbuton();
+
     Engine->EndDraw();
+    Engine->resetClicked();
 }
 
 void IAState::CLIN(){
-    Singleton<ScreenConsole>::Instance()->CLINMenu();
+    Singleton<Motor2D>::Instance()->CLINMenu();
 }

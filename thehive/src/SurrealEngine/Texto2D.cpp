@@ -335,7 +335,6 @@ void Texto2D::Draw(){
 }
 
 Texto2D::~Texto2D(){
-    std::cout << "DELETE TEXTO" << '\n';
 
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);

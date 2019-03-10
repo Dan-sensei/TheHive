@@ -88,9 +88,6 @@ Z      0        43
 
 */
 
-// glm::mat4 TEntidad::modelMatrix;
-// glm::mat4 TEntidad::viewMatrix;
-// glm::mat4 TEntidad::projMatrix;
 float Letra2D::getX(){
     return X;
 }

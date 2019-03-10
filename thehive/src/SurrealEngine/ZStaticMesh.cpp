@@ -1,9 +1,6 @@
 #include "ZStaticMesh.hpp"
 #include "AssetManager.hpp"
 
-// glm::mat4 TEntidad::modelMatrix;
-// glm::mat4 TEntidad::viewMatrix;
-// glm::mat4 TEntidad::projMatrix;
 
 ZStaticMesh::ZStaticMesh()
 :zmat(nullptr)

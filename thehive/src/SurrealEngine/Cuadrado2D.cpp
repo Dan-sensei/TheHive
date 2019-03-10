@@ -4,9 +4,7 @@
 #include <iostream>
 
 
-// glm::mat4 TEntidad::modelMatrix;
-// glm::mat4 TEntidad::viewMatrix;
-// glm::mat4 TEntidad::projMatrix;
+
 #define WIDTH          1080.0f
 #define HEIGTH         720.0f
 

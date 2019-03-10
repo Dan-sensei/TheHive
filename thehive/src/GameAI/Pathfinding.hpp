@@ -7,7 +7,7 @@
 #include <random>
 #include "NavmeshStructs.hpp"
 #include <Util.hpp>
-#include <GameEngine/Billboard.hpp>
+#include <SurrealEngine/BillboardBueno.hpp>
 
 template <typename T>
 class Singleton;
@@ -49,8 +49,8 @@ class Pathfinding {
         std::vector<Face> FACES;
 
         //Debug
-        std::vector<Billboard> IDs;
-        std::vector<Billboard> BillboardFaces;
+        std::vector<BillboardBueno> IDs;
+        std::vector<BillboardBueno> BillboardFaces;
         glm::vec3 Goal;
         bool Debug;
 };

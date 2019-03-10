@@ -82,10 +82,6 @@ Z      0        43
 
 */
 
-// glm::mat4 TEntidad::modelMatrix;
-// glm::mat4 TEntidad::viewMatrix;
-// glm::mat4 TEntidad::projMatrix;
-
 Letra2DManager::Letra2DManager()
 {
     mapHudFunctions.insert(std::make_pair('a',&Letra2D::inita));

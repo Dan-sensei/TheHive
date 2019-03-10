@@ -49,7 +49,10 @@ class SurrealEngine {
 
         bool isLClicked();
         void resetClicked();
-
+        glm::vec3 vectorUp();
+        glm::vec3 vectorRigth();
+        glm::mat4  getMVP();
+        glm::mat4  getM();
 
         void PollEvents();
 

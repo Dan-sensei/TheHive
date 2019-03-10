@@ -8,7 +8,7 @@
 //#include <GameAI/Hability.hpp>
 //#include <GameAI/Enumhabs.hpp>
 
-// #include <GameEngine/ScreenConsole.hpp>
+// #include <GameEngine/Motor2D.hpp>
 
 #define VEL_FACTOR          2000.f
 #define MAX_HERO_SPEED      6
@@ -410,7 +410,7 @@ void CPlayerController::showDebug(){
 }
 
 void CPlayerController::changeWeaponIfPossible(CGun *gun){
-    Singleton<ScreenConsole>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
+    Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
     pulsacion_q = true;
     if(isPrincipal){
         isPrincipal = false;

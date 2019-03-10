@@ -1,6 +1,6 @@
 #include "Hability.hpp"
 //#include "Enum.hpp"
-#include <GameEngine/ScreenConsole.hpp>
+#include <GameEngine/Motor2D.hpp>
 #include <Singleton.hpp>
 
 /* data */
@@ -62,7 +62,7 @@ bool Hability::terminar(float _dur,bool& res){
     if (prog>=1){
         prog=1;
     }
-    //Singleton<ScreenConsole>::Instance()->setprogress(tipo,prog);
+    //Singleton<Motor2D>::Instance()->setprogress(tipo,prog);
     return res;
 }
 
