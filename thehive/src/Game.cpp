@@ -19,6 +19,7 @@
 #include <EventSystem/Blackboard.hpp>
 #include "BinaryParser.hpp"
 #include <SurrealEngine/SurrealEngine.hpp>
+#include <SurrealEngine/BillboardBueno.hpp>
 
 #include <GameEngine/Motor2D.hpp>
 
@@ -166,6 +167,8 @@ void Game::Update(){
     // Consola por pantalla
     //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
+    BillboardBueno nuevo(0,2,10,"assets/HUD/Botonsolo.png");
+    nuevo.Draw();
 
     // std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();

@@ -106,7 +106,6 @@ void GUIController::update(){
 //but0
 void GUIController::gotoPlay(){
     dif=1;
-    std::cout << "llega" << '\n';
     Engine2D->InitMenu2();
 }
 //but1

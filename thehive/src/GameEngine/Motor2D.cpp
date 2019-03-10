@@ -61,7 +61,6 @@ int Motor2D::checkbuton(){
     if(motor->isLClicked()==false){
         return -1;
     }
-    std::cout << "pulsado" << '\n';
     double x,y;
 
     motor->getCursorPosition(x,y);
@@ -69,7 +68,6 @@ int Motor2D::checkbuton(){
     while(it!=BOTONES.end()){
         auto but=*it;
         if(but->checkOn(x, y)){
-            std::cout << "entra" <<but->getType()<< '\n';
             return but->getType();
         }
         it++;
@@ -550,10 +548,10 @@ void Motor2D::DisplayHUD(){
         float X,Y,H,W,T_W,T_H;
         while(it!=IMAGENES.end()){
             auto img =it->second;
+            img->Draw();
             if(mapHudFunctions.find(it->first) != mapHudFunctions.end())
                 (this->*mapHudFunctions[it->first])(img);
 
-                img->Draw();
             it++;
         }
         RECTANGULOS[4]->Draw();

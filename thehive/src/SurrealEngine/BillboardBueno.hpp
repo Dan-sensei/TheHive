@@ -5,6 +5,7 @@
 #include <cstdint>
 #include "ZMaterial.hpp"
 #include "TNodo.hpp"
+class SurrealEngine;
 
 class BillboardBueno {
     public:
@@ -26,7 +27,15 @@ class BillboardBueno {
         float getH();
 
     private:
-
+            Shader* inicio;
+            Shader* fin;
+            unsigned long MVP                      ;
+            unsigned long particleCenter_wordspace ;
+            unsigned long CameraRight_worldspace   ;
+            unsigned long CameraUp_worldspace      ;
+            unsigned long inputColour              ;
+            unsigned long loc              ;
+            SurrealEngine* engine;
             glm::vec3 centro;
             float index;
             glm::vec4 color;

@@ -54,8 +54,8 @@ Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
         //activamos transparencias
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //glEnable( GL_BLEND );
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable( GL_BLEND );
 
         //habilitamos in
         glEnableVertexAttribArray(0);

@@ -11,8 +11,27 @@
 
 
 BillboardBueno::BillboardBueno(float x,float y,float z,const std::string &Name)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(0),centro(x,y,z)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(0),centro(x,y,z),inicio(nullptr),fin(nullptr)
 {
+    auto sh=Singleton<AssetManager>::Instance();
+    inicio=sh->getShader("Bill");
+    fin=sh->getShader("Default");
+    //std::cout << "centro:"  <<"("<<centro.x<<","<<centro.y<<","<<centro.z<<")"<< '\n';
+    //std::cout << "up:"      <<"("<<up    .x<<","<<up    .y<<","<<up    .z<<")"<< '\n';
+    //std::cout << "rigth:"   <<"("<<rigth .x<<","<<rigth .y<<","<<rigth .z<<")"<< '\n';
+    //auto MVP2=engine
+
+    MVP                      = inicio->getUniformLocation("MVP");
+    particleCenter_wordspace = inicio->getUniformLocation("particleCenter_wordspace");
+    CameraRight_worldspace   = inicio->getUniformLocation("CameraRight_worldspace");
+    CameraUp_worldspace      = inicio->getUniformLocation("CameraUp_worldspace");
+    inputColour              = inicio->getUniformLocation("inputColour");
+    loc                      = inicio->getUniformLocation("DiffuseMap");
+
+
+
+
+    engine=Singleton<SurrealEngine>::Instance();
     float _x,_y,_w,_h;
     _x=-0.5;
     _w=0.5;
@@ -93,64 +112,34 @@ void BillboardBueno::Draw(){
 
 
 
-    auto engine=Singleton<SurrealEngine>::Instance();
     auto up=    engine->vectorUp();
     auto MVP2=    engine->getMVP();
     auto rigth= engine->vectorRigth();
     rigth*=2;
     up*=2;
-    //auto centro =glm::vec3(0,20,10);
-    //auto centro =glm::vec3(0,2,10);//pos del mundo
-    //glm::vec3 x1,x2,x3,x4;
-    //x1=centro;
-    //x2=centro+rigth;
-    //x3=centro+rigth-up;
-    //x4=centro-up;
-    //x1=centro-rigth+up;//izquierda arriba
-    //x2=centro+rigth+up;//derecha arriba
-    //x3=centro+rigth-up;//derecha bajo
-    //x4=centro-rigth-up;//izquierda bajo
 
-    //engine->Draw3DLine( x1,x2,gg::Color(255,0,255,255));
-    //engine->Draw3DLine( x3,x2,gg::Color(255,0,255,255));
-    //engine->Draw3DLine( x3,x4,gg::Color(255,0,255,255));
-    //engine->Draw3DLine( x1,x4,gg::Color(255,0,255,255));
-
-
-
-    auto sh=Singleton<AssetManager>::Instance()->getShader("Bill");
-    sh->Bind();
+    inicio->Bind();
     //std::cout << "centro:"  <<"("<<centro.x<<","<<centro.y<<","<<centro.z<<")"<< '\n';
     //std::cout << "up:"      <<"("<<up    .x<<","<<up    .y<<","<<up    .z<<")"<< '\n';
     //std::cout << "rigth:"   <<"("<<rigth .x<<","<<rigth .y<<","<<rigth .z<<")"<< '\n';
     //auto MVP2=engine
 
-    GLuint MVP = sh->getUniformLocation("MVP");
     glUniformMatrix4fv(MVP, 1, GL_FALSE, &(MVP2)[0][0]);
-
-    GLuint particleCenter_wordspace = sh->getUniformLocation("particleCenter_wordspace");
     glUniform3fv(particleCenter_wordspace,1,&centro[0]);
-
-    GLuint CameraRight_worldspace = sh->getUniformLocation("CameraRight_worldspace");
     glUniform3fv(CameraRight_worldspace,1,&rigth[0]);
-
-    GLuint CameraUp_worldspace = sh->getUniformLocation("CameraUp_worldspace");
     glUniform3fv(CameraUp_worldspace,1,&up[0]);
-    //metemos el color
-    GLuint inputColour = sh->getUniformLocation("inputColour");
     glUniform4fv(inputColour,1,&color[0]);
+    glUniform1i(loc, 0);
 
 
     glActiveTexture(GL_TEXTURE0 + 0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    auto loc=sh->getUniformLocation("DiffuseMap");
-    glUniform1i(loc, 0);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
 
-    Singleton<AssetManager>::Instance()->getShader("Default")->Bind();
+    fin->Bind();
 
 }
 

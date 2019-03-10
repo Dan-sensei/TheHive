@@ -8,7 +8,10 @@ in vec2 Texcoord;
 out vec4 frag_colour;
 
 void main() {
-
-    frag_colour = texture(DiffuseMap, Texcoord)*inputColour;
+    vec4 color = texture(DiffuseMap, Texcoord)*inputColour;
+    if(color.a<0.1){
+        discard;
+    }
+    frag_colour = color;
 
 };
