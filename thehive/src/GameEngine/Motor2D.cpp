@@ -441,6 +441,18 @@ void Motor2D::InitHUD(){
     boton=addRect(                          60,2,35,7);
     boton->setColor(glm::vec4(0,1,0,0.6));
 
+    //cruceta
+    float anchura,longitud,c;
+    anchura=0.001;
+    longitud=0.02;
+    c=0.5;
+    boton=addRect(c-longitud,c-anchura,c+longitud,c+anchura);
+    boton->setColor(glm::vec4(0,0,0,1));
+    //ratio d epantalla para tenerlo exacto
+    anchura=0.001;
+    longitud=0.033;
+    boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
+    boton->setColor(glm::vec4(0,0,0,1));
 
     //AddImage("G1","assets/HUD/Botonsolo.png",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
     //AddImage("G2","assets/HUD/Botonsolo.png",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
@@ -544,11 +556,9 @@ void Motor2D::DisplayHUD(){
                 img->Draw();
             it++;
         }
-        //
-        //AddImage("G3","assets/HUD/Botonsolo.png",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
-        //float ale=porc_alto(2);
-        Cuadrado2D horizontal(-0.1  ,0  ,0.1    ,0.001);
-        Cuadrado2D vertical(0  ,-0.1  ,0.001    ,0.1);
+        RECTANGULOS[4]->Draw();
+        RECTANGULOS[5]->Draw();
+
 
 
     }

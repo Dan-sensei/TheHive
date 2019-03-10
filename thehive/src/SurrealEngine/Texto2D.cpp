@@ -34,32 +34,15 @@ float Texto2D::ChangeChar(float x,float y,char cha){
     _x=x*2.0-1;
     _y=y*-2.0+1;
     auto letra=Manager->getChar(cha);
-    letra.resize(tamanyo);
-    _w=(x+letra.getW())*2.0-1;
-    _h=(y+letra.getH())*-2.0+1;
+    letra->resize(tamanyo);
+    _w=(x+letra->getW())*2.0-1;
+    _h=(y+letra->getH())*-2.0+1;
 
-        T_x=letra.getTX();
-        T_w=letra.getTW();
+        T_x=letra->getTX();
+        T_w=letra->getTW();
 
-        T_y=letra.getTY();
-        T_h=letra.getTH();
-        //std::cout << "X:" <<_x<< '\n';
-        //std::cout << "Y:" <<_y<< '\n';
-
-        //std::cout << "LW:" <<letra.getW()<< '\n';
-        //std::cout << "LH:" <<letra.getH()<< '\n';
-
-        //std::cout << "W:" <<_w<< '\n';
-        //std::cout << "H:" <<_h<< '\n';
-
-        //std::cout << "TX:" <<T_x<< '\n';
-        //std::cout << "TY:" <<T_y<< '\n';
-        //std::cout << "TW:" <<T_w<< '\n';
-        //std::cout << "TH:" <<T_h<< '\n';
-
-        //std::cout << "aux1:" <<aux1<< '\n';
-        //std::cout << "aux2:" <<aux2<< '\n';
-
+        T_y=letra->getTY();
+        T_h=letra->getTH();
 
         float vertices[] = {
         //  Position      Color             Texcoords
@@ -69,12 +52,14 @@ float Texto2D::ChangeChar(float x,float y,char cha){
             _x,  _h,  T_x, T_h  // Bottom-left
         };
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER,sizeof(vertices), vertices, GL_STATIC_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        return letra.getW();
+        return letra->getW();
 }
-Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra,glm::vec4 _color,float tam):Texto2D(x,y,Palabra,_color,tam){
+Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra,glm::vec4 _color,float tam)
+:Texto2D(x,y,Palabra,_color,tam)
+{
 
 
 
@@ -97,9 +82,16 @@ Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra,glm:
 }
 
 Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,float tam)
-:VAO(0),VBO(0),EBO(0),color(_color),textureID(0),separacion(0.05),tamanyo(tam),palabra(Palabra),index(-1)
+:VAO(0),VBO(0),EBO(0),color(_color),textureID(0),separacion(0.05),tamanyo(tam),palabra(Palabra),index(-1),inicio(nullptr),fin(nullptr)
 {
-    auto sh=Singleton<AssetManager>::Instance()->getShader("2D");
+    auto sh=Singleton<AssetManager>::Instance();
+    inicio=sh->getShader("2D");
+    fin=sh->getShader("Default");
+    inputColour = inicio->getUniformLocation("inputColour");
+    Zindex = inicio->getUniformLocation("Zindex");
+    textura=inicio->getUniformLocation("DiffuseMap");
+
+
 
     float _x,_y,_w,_h;
     _x=x;
@@ -116,28 +108,28 @@ Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,flo
     Y=y;
     H=_h-_y;
 
-//altura 64
-//inicio_y MAYUSCULAS 198
-//L       573     34
-//1400X800//dibujo
-//1080, 720//pantalla
-float T_x,T_y,T_w,T_h;
-//imprimir una letra usando el manager
+    //altura 64
+    //inicio_y MAYUSCULAS 198
+    //L       573     34
+    //1400X800//dibujo
+    //1080, 720//pantalla
+    float T_x,T_y,T_w,T_h;
+    //imprimir una letra usando el manager
 
-Manager = Singleton<Letra2DManager>::Instance();
+    Manager = Singleton<Letra2DManager>::Instance();
 
-auto letra=Manager->getChar('a');
-letra.resize(tamanyo);
+    auto letra=Manager->getChar('a');
+    letra->resize(tamanyo);
 
 
-_w=letra.getW();
-_h=letra.getH();
+    _w=letra->getW();
+    _h=letra->getH();
 
-    T_x=letra.getTX();
-    T_w=letra.getTW();
+    T_x=letra->getTX();
+    T_w=letra->getTW();
 
-    T_y=letra.getTY();
-    T_h=letra.getTH();
+    T_y=letra->getTY();
+    T_h=letra->getTH();
 
 
     float vertices[] = {
@@ -194,16 +186,16 @@ _h=letra.getH();
 
 
     	//habilitamos in
-
-    	GLint posAttrib = sh->getAttribLocation( "position");
-    	glEnableVertexAttribArray(posAttrib);
-    	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(0);
+    	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
     		4*sizeof(float), 0);
 
-    	GLint texAttrib = sh->getAttribLocation("texcoord");
-    	glEnableVertexAttribArray(texAttrib);
-    	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE,
+    	glEnableVertexAttribArray(1);
+    	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
     		4*sizeof(float), (void*)(2*sizeof(float)));
+
+
+
 
         glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -226,13 +218,13 @@ void Texto2D::setImage(const std::string &Name){
 }
 float  Texto2D::getWid(char car){
     auto letra=Manager->getChar(car);
-    letra.resize(tamanyo);
-    return letra.getW();
+    letra->resize(tamanyo);
+    return letra->getW();
 }
 float Texto2D::getSizeY(){
     auto letra=Manager->getChar('R');
-    letra.resize(tamanyo);
-    return letra.getH();
+    letra->resize(tamanyo);
+    return letra->getH();
 
 }
 float Texto2D::getSizeX(){
@@ -259,55 +251,21 @@ float Texto2D::getSizeX(){
 
 void Texto2D::Draw(){
 
-    auto sh=Singleton<AssetManager>::Instance()->getShader("2D");
-    sh->Bind();
+    inicio->Bind();
     //metemos el color
-    GLuint inputColour = sh->getUniformLocation("inputColour");
     glUniform4fv(inputColour,1,&color[0]);
-
-    GLuint Zindex = sh->getUniformLocation("Zindex");
     glUniform1f(Zindex,index);
+    glUniform1i(textura, 0);
 
 
 
     glActiveTexture(GL_TEXTURE0 + 0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    auto loc=sh->getUniformLocation("DiffuseMap");
-    glUniform1i(loc, 0);
 
 
-    //cargado textura
-/*
-    auto Manager = Singleton<AssetManager>::Instance();
-    auto HUDtext=Manager->getTexture("assets/HUD/ojetecalor.jpg",GL_TEXTURE_2D);
-
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D,textureID);
-    int width, height;
-    unsigned char* image =
-    SOIL_load_image("img.png", &width, &height, 0, SOIL_LOAD_RGB);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image);//buffer?
-
-    //auto loc=sh->getUniformLocation("DiffuseMap");
-    //glActiveTexture(GL_TEXTURE0 );
-    //glActiveTexture(HUDtext );
-    //glBindTexture(GL_TEXTURE_2D, HUDtext);
-    //glUniform1i(loc, HUDtext);
-
-*/
 
     glBindVertexArray(VAO);
-//
-//std::cout << "dibujando" << '\n';
-//std::cout << "X:" <<X<< '\n';
-//std::cout << "Y:" <<Y<< '\n';
-//std::cout << "Palabra:" <<palabra<< '\n';
-//color=glm::vec4(1,1,1,1);
-//std::cout << "Color:" <<"("<<color[0]<<","<<color[1]<<","<<color[2]<<","<<color[3]<<")"<< '\n';
-//std::cout << "tamanyo:" <<tamanyo<< '\n';
 
-//palabra
-//glDisable(GL_BLEND);
 
     float incx=X;//opengl
     separacion=0;//si queremos espaci entre las palabras
@@ -318,7 +276,6 @@ void Texto2D::Draw(){
         {
             float tam=ChangeChar(incx,Y,'G');
             incx=incx+tam+separacion;
-            //SCREENW
         }
         else{
             float tam=ChangeChar(incx,Y,palabra[i]);
@@ -330,7 +287,7 @@ void Texto2D::Draw(){
     }
 
     glBindVertexArray(0);
-    Singleton<AssetManager>::Instance()->getShader("Default")->Bind();
+    fin->Bind();
 
 }
 

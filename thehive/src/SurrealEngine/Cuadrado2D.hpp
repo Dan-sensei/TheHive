@@ -6,6 +6,8 @@
 #include "ZMaterial.hpp"
 #include "TNodo.hpp"
 
+class Shader;
+
 class Cuadrado2D {
     public:
         Cuadrado2D(float x,float y,float w,float h);
@@ -19,6 +21,9 @@ class Cuadrado2D {
 
 
     private:
+        unsigned long inputColour;
+        Shader* inicio;
+        Shader* fin;
         float index;
         glm::vec4 color;
         unsigned int VAO;

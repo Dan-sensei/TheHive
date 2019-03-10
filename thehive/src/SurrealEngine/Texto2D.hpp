@@ -7,6 +7,7 @@
 #include "TNodo.hpp"
 
 class Letra2DManager;
+class Shader;
 class Texto2D {
     public:
         //Texto2D();
@@ -39,6 +40,11 @@ class Texto2D {
 
 
     private:
+            unsigned long Zindex;
+            unsigned long textura;
+            unsigned long inputColour;
+            Shader* inicio;
+            Shader* fin;
             float index;
             std::string palabra;
             glm::vec4 color;

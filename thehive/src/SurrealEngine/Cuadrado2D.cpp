@@ -9,8 +9,13 @@
 #define HEIGTH         720.0f
 
 Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),index(0)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1),index(0),inicio(nullptr),fin(nullptr)
 {
+    auto sh=Singleton<AssetManager>::Instance();
+    inicio=sh->getShader("Plano");
+    fin=sh->getShader("Default");
+    inputColour = inicio->getUniformLocation("inputColour");
+
 
     float _x,_y,_w,_h;
     _x=x*2.0-1;
@@ -79,7 +84,8 @@ void Cuadrado2D::setPos(float x,float y,float w,float h){
     //glBindVertexArray(VAO);
     //glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+
     glBindVertexArray(0);
 
 
@@ -90,21 +96,15 @@ void Cuadrado2D::setColor(glm::vec4 _color){
 
 
 void Cuadrado2D::Draw(){
-    auto sh=Singleton<AssetManager>::Instance()->getShader("Plano");
-    sh->Bind();
+    inicio->Bind();
     //metemos el color
-    GLuint inputColour = sh->getUniformLocation("inputColour");
     glUniform4fv(inputColour,1,&color[0]);
-
-    //GLuint Zindex = sh->getUniformLocation("Zindex");
-    //glUniform1f(Zindex,index);
-
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
-    Singleton<AssetManager>::Instance()->getShader("Default")->Bind();
+    fin->Bind();
 
 }
 

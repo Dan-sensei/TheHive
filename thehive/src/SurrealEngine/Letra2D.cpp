@@ -94,16 +94,12 @@ float Letra2D::getX(){
     return X;
 }
 float Letra2D::getW(){
-    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    float ancho = mode->width;
     return (W/ancho);
 }
 float Letra2D::getY(){
     return Y;
 }
 float Letra2D::getH(){
-    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    float alto = mode->height;
     return (H/alto);
 }
 float Letra2D::getTX(){
@@ -119,19 +115,21 @@ float Letra2D::getTH(){
     return TH;
 }
 
-Letra2D::Letra2D()
+Letra2D::Letra2D(float _ancho,float _alto):ancho(_ancho),alto(_alto)
 {
-
 }
 
 Letra2D::~Letra2D(){
 
 }
+void Letra2D::setW(float _ancho){
+    ancho=_ancho;
+}
+void Letra2D::setH(float _alto){
+    alto=_alto;
+}
 void Letra2D::secondinit(){
 
-    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    float ancho = mode->width;
-    float alto = mode->height;
     H=HEIGTH;//constante
 
     TX=(X)/TWIDTH;
@@ -145,18 +143,10 @@ void Letra2D::secondinit(){
     H=((H)/alto);//SCREEN H
 }
 void Letra2D::resize(float alto){
-    //redimensionar una letra
-    //alto en porcentage
-    //float tamy=alto*SCREENH;
-
-    //alto en pixeles
     float tamy=alto;
     float tamx=tamy*ratio;
     W=tamx;//SCREEN W porcentual
     H=tamy;//SCREEN H
-
-    //W=tamx;//SCREEN W
-    //H=tamy;//SCREEN H
 
 }
 void Letra2D::inita(){

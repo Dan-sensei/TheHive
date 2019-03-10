@@ -9,7 +9,7 @@
 class Letra2D {
     public:
         //Letra2D();
-        Letra2D();
+        Letra2D(float _ancho,float _alto);
 
         //Letra2D(const Letra2D &orig) = delete;
         ~Letra2D();
@@ -99,7 +99,8 @@ class Letra2D {
 
 
         void resize(float alto);
-
+        void setW(float _ancho);
+        void setH(float _alto);
 
         void secondinit();
     private:
@@ -109,6 +110,7 @@ class Letra2D {
             float X,Y,W,H;
             float TX,TY,TW,TH;
             float ratio;
+            float ancho,alto;
 
 };
 

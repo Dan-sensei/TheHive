@@ -97,8 +97,12 @@ Z       0       43
 
 */
 
-Letra2DManager::Letra2DManager()
+Letra2DManager::Letra2DManager():letraux(nullptr)
 {
+    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    ancho = mode->width;
+    alto = mode->height;
+
     mapHudFunctions.insert(std::make_pair('a',&Letra2D::inita));
     mapHudFunctions.insert(std::make_pair('b',&Letra2D::initb));
     mapHudFunctions.insert(std::make_pair('c',&Letra2D::initc));
@@ -175,25 +179,16 @@ Letra2DManager::Letra2DManager()
 
 
 
+    letraux=new Letra2D(ancho,alto);
 
 }
-Letra2D Letra2DManager::getChar(char letra){
-    Letra2D sol;
+Letra2D* Letra2DManager::getChar(char letra){
     if(mapHudFunctions.find(letra) != mapHudFunctions.end())
-        (sol.*mapHudFunctions[letra])();
-    sol.secondinit();
-    return sol;
+        (letraux->*mapHudFunctions[letra])();
+    letraux->secondinit();
+    return letraux;
 
 }
-//Letra2D Letra2DManager::getChar(char letra){
-//    Letra2D sol();
-//        //if(mapHudFunctions.find(letra) != mapHudFunctions.end())
-//        //    (sol->*mapHudFunctions[letra])();
-//
-//    sol.init2();
-//    return sol;
-//}
-
 Letra2DManager::~Letra2DManager(){
-
+    delete letraux;
 }

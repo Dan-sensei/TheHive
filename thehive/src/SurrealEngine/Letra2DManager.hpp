@@ -19,12 +19,14 @@ class Letra2DManager {
         Letra2DManager(const Letra2DManager &orig) = delete;
         ~Letra2DManager();
 
-        Letra2D getChar(char letra);
+        Letra2D* getChar(char letra);
 
-
+        float ancho;
+        float alto;
 
 
     private:
+        Letra2D* letraux;
         std::map<char,void(Letra2D::*)()> mapHudFunctions;
         //using pFunc = void(Action::*)();
 

@@ -55,8 +55,14 @@ void Imagen2D::setSesgado(float res){
 }
 
 Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(0)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(0),inicio(nullptr),fin(nullptr)
 {
+    auto sh=Singleton<AssetManager>::Instance();
+    inicio=sh->getShader("2D");
+    fin=sh->getShader("Default");
+    inputColour = inicio->getUniformLocation("inputColour");
+    Zindex = inicio->getUniformLocation("Zindex");
+    textura=inicio->getUniformLocation("DiffuseMap");
     X=x;
     W=w;
 
@@ -160,24 +166,20 @@ void Imagen2D::setImage(const std::string &Name){
 
 void Imagen2D::Draw(){
 
-    auto sh=Singleton<AssetManager>::Instance()->getShader("2D");
-    sh->Bind();
+    inicio->Bind();
     //metemos el color
-    GLuint inputColour = sh->getUniformLocation("inputColour");
     glUniform4fv(inputColour,1,&color[0]);
-    GLuint Zindex = sh->getUniformLocation("Zindex");
     glUniform1f(Zindex,index);
+    glUniform1i(textura, 0);
 
     glActiveTexture(GL_TEXTURE0 + 0);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    auto loc=sh->getUniformLocation("DiffuseMap");
-    glUniform1i(loc, 0);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
 
-    Singleton<AssetManager>::Instance()->getShader("Default")->Bind();
+    fin->Bind();
 
 }
 

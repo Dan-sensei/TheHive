@@ -5,7 +5,7 @@
 #include <cstdint>
 #include "ZMaterial.hpp"
 #include "TNodo.hpp"
-
+class Shader;
 class Imagen2D {
     public:
         //Imagen2D();
@@ -25,8 +25,12 @@ class Imagen2D {
         float getY();
         float getH();
         void setSesgado(float res);
-
     private:
+        unsigned long Zindex;
+        unsigned long textura;
+        unsigned long inputColour;
+        Shader* inicio;
+        Shader* fin;
 
             float index;
             glm::vec4 color;
