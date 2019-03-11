@@ -18,7 +18,7 @@ int main(int argc, char const *argv[]) {
 
     ModelParser::generateBinaryGG_Model("../assets/NavMeshes/TEST.obj",                        "TEST.modelgg");
 
-    for(uint16_t i = 1; i < 139; ++i)
+    for(uint16_t i = 1; i < 144; ++i)
         ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i)+".modelgg");
 
     ModelParser::generateBinaryGG_Model("../assets/Models/Hero.obj",                         "Hero.modelgg");

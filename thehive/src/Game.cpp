@@ -77,7 +77,9 @@ Game::~Game(){
 }
 
 void Game::Init(){
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.1f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
@@ -89,6 +91,10 @@ void Game::Init(){
 
 
     uint16_t h = sF->createHero(glm::vec3(0,20,10),1);
+    for (size_t i = 0; i < 50; i++) {
+        sF->createRusher(glm::vec3(0,20,10), 10);
+
+    }
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
     Director->init();
@@ -104,7 +110,7 @@ void Game::Init(){
     Accumulator = 0;
 
     //Singleton<Pathfinding>::Instance()->SetDebug(true);
-    // world->setDebug(true);
+    world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
     //Engine2D->prueba();
@@ -161,11 +167,11 @@ void Game::Update(){
 
     // std::cout << "  - DRAW" << '\n';
     Engine->draw();
-    //Engine->DisplayFPS();
+    Engine->DisplayFPS();
     Engine2D->DisplayHUD();
     //Engine2D->draw();
     // Consola por pantalla
-    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
     BillboardBueno nuevo(0,2,10,"assets/HUD/Botonsolo.png");
     nuevo.Draw();
