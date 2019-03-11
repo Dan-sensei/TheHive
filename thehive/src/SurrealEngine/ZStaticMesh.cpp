@@ -25,6 +25,7 @@ void ZStaticMesh::assignMaterial(ZMaterial* material_){
 void ZStaticMesh::beginDraw(const uint8_t &T_ID){
     if(T_ID == 2){
         Shader* sh = zmat->getShader();
+        zmat->Bind();
 
         // MODELO
         GLuint M = sh->getUniformLocation("M");
@@ -36,7 +37,6 @@ void ZStaticMesh::beginDraw(const uint8_t &T_ID){
         glUniformMatrix4fv(MVP,1,GL_FALSE,&MVP_L[0][0]);
 
         // LA FINALE
-        zmat->Bind();
         mesh->draw();
     }
 }

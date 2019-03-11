@@ -76,20 +76,23 @@ Game::~Game(){
 }
 
 void Game::Init(){
-    //Singleton<ScreenConsole>::Instance()->InitHUD();
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
-    BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     auto sF = Singleton<Factory>::Instance();
+
+    //Singleton<ScreenConsole>::Instance()->InitHUD();
+    // BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
+
     Engine->crearCamara(90,0.1f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
-    Engine->print();
-    // Pos init del heroe normal
-    // 360, 0, 350
+    // Engine->print();
+
+    uint16_t h = sF->createHero(glm::vec3(0,5,50),1);
+
+    sF->createSoldier(glm::vec3(5,5,50),1000);
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,20,50),1);
-    //sF->createRusher(glm::vec3(0, 6, 0), 10);
-    //sF->createRusher(glm::vec3(5,3,65),200);
+    // sF->createRusher(glm::vec3(-10,5,50), 10);
+
     Director->init();
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
@@ -110,16 +113,21 @@ void Game::Init(){
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     Singleton<Pathfinding>::Instance()->SetDebug(false);
-    // world->setDebug(true);
+    world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
+
+
     //Engine2D->prueba();
     // std::cout << "\n -- INIT -- " << '\n';
 }
 
 void Game::Update(){
-    //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
-    //std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
+    // CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,S_PRUEBA));
+    // std::cout << "X:" <<cTransform2->getPosition().x<< '\n';
+    // std::cout << "Y:" <<cTransform2->getPosition().y<< '\n';
+    // std::cout << "Z:" <<cTransform2->getPosition().z<< '\n';
+
 
     DeltaTime = MasterClock.Restart().Seconds();
 
@@ -167,14 +175,14 @@ void Game::Update(){
 
     // std::cout << "  - DRAW" << '\n';
     Engine->draw();
-    //Engine->DisplayFPS();
+    Engine->DisplayFPS();
     Engine2D->DisplayHUD();
     //Engine2D->draw();
 
     // Consola por pantalla
     // Singleton<ScreenConsole>::Instance()->DisplayDebug();
     // Singleton<ScreenConsole>::Instance()->DisplayHUD();
-    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';

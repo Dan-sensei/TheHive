@@ -54,3 +54,7 @@ void ZMaterial::Bind(){
         ++DataIterator;
     }
 }
+
+void ZMaterial::clear(){
+    Textures.clear();
+}
