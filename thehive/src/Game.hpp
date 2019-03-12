@@ -14,6 +14,7 @@ class AIDirector;
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
 
+#include <SurrealEngine/NatureGenerator.hpp>
 
 class Motor2D;
 class Game : public State{
@@ -55,6 +56,7 @@ private:
     gg::Color col;
     TNodo* luz;
     CTransform* playerpos;
+
 };
 
 

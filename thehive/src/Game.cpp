@@ -67,8 +67,8 @@ Game::Game()
     Manager = Singleton<ObjectManager>::Instance();
 
     world = Singleton<ggDynWorld>::Instance();
-    //world->inito();
-    //Engine->HideCursor(true);
+    // world->inito();
+    // Engine->HideCursor(true);
 }
 
 Game::~Game(){
@@ -78,7 +78,7 @@ Game::~Game(){
 void Game::Init(){
     auto sF = Singleton<Factory>::Instance();
 
-    //Singleton<ScreenConsole>::Instance()->InitHUD();
+    // Singleton<ScreenConsole>::Instance()->InitHUD();
     // BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
 
@@ -88,9 +88,15 @@ void Game::Init(){
 
     uint16_t h = sF->createHero(glm::vec3(0,5,50),1);
 
-    sF->createSoldier(glm::vec3(5,5,50),1000);
+    // --------------------------------------
+    NatureGenerator nat;
+    nat.init(glm::vec3(5,0,50));
+    // --------------------------------------
 
 
+
+
+    // sF->createSoldier(glm::vec3(5,5,50),1000);
     // sF->createRusher(glm::vec3(-10,5,50), 10);
 
     Director->init();
@@ -103,7 +109,7 @@ void Game::Init(){
     //
     // Engine->setPosition(cam, glm::vec3(2,10,10));
 
-    //static_cast<TCamara*>(cam->getEntidad())->setTarget(glm::vec3(0,0,0));
+    // static_cast<TCamara*>(cam->getEntidad())->setTarget(glm::vec3(0,0,0));
 
     Accumulator = 0;
     // Material yelo("assets/Models/CIUDAD/Presentacion1/NAVMESH.png");
@@ -113,12 +119,12 @@ void Game::Init(){
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     Singleton<Pathfinding>::Instance()->SetDebug(false);
-    world->setDebug(true);
+    world->setDebug(false);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
 
-    //Engine2D->prueba();
+    // Engine2D->prueba();
     // std::cout << "\n -- INIT -- " << '\n';
 }
 
@@ -164,6 +170,7 @@ void Game::Update(){
     pos.y += 7;
     Engine->setPosition(luz, pos);
     // std::cout << " - BEGIN DRAW" << '\n';
+
     Engine->BeginDraw();
 
     // std::cout << "  - UPDATE ALL" << '\n';
@@ -182,7 +189,7 @@ void Game::Update(){
     // Consola por pantalla
     // Singleton<ScreenConsole>::Instance()->DisplayDebug();
     // Singleton<ScreenConsole>::Instance()->DisplayHUD();
-    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';

@@ -10,6 +10,9 @@ uniform mat4 M;
 uniform vec3 LightPosition_worldspace;
 uniform vec3 CameraPos;
 
+uniform float   GS_POSITIONS[2048];
+uniform uint    GS_SIZE;
+
 in vec2 UV[];
 out vec2 UVFromGeom;
 
@@ -27,7 +30,7 @@ out vec3 VertexPosTFromGeom;
 
 
 #define _INDEX 0
-#define TAM 0.2
+#define TAM 0.05
 
 void main() {
     UVFromGeom = UV[_INDEX];
@@ -38,19 +41,59 @@ void main() {
 
     vec4 position;
 
-    position = gl_in[0].gl_Position;
-    gl_Position = (position + vec4(-TAM/2.f, -TAM/2.f, 0.0, 0.0))*MVP;    // 1:bottom-left
-    EmitVertex();
-    gl_Position = position + vec4( TAM/2.f, -TAM/2.f, 0.0, 0.0);    // 2:bottom-right
-    EmitVertex();
-    gl_Position = position + vec4(-TAM/2.f,  TAM/2.f, 0.0, 0.0);    // 3:top-left
-    EmitVertex();
-    gl_Position = position + vec4( TAM/2.f,  TAM/2.f, 0.0, 0.0);    // 4:top-right
-    EmitVertex();
-    gl_Position = position + vec4( 0.0,  TAM, 0.0, 0.0);    // 5:top
-    EmitVertex();
+    for(int i=0 ; i<GS_SIZE ; i+=6){
+        // position = gl_in[0].gl_Position;
+        // gl_Position = position + vec4(GS_POSITIONS[i]*TAM, GS_POSITIONS[i+1]*TAM, GS_POSITIONS[i+2]*TAM, 0.0);
+        // EmitVertex();
 
+        position = gl_in[0].gl_Position;
+        gl_Position = position + vec4(-TAM/2.f, -TAM/2.f, 0.0, 0.0);    // 1:bottom-left
+        EmitVertex();
+        gl_Position = position + vec4( TAM/2.f, -TAM/2.f, 0.0, 0.0);    // 2:bottom-right
+        EmitVertex();
+        gl_Position = position + vec4(-TAM/2.f,  TAM/2.f, 0.0, 0.0);    // 3:top-left
+        EmitVertex();
+        gl_Position = position + vec4( TAM/2.f,  TAM/2.f, 0.0, 0.0);    // 4:top-right
+        EmitVertex();
+        gl_Position = position + vec4( 0.0,  TAM, 0.0, 0.0);    // 5:top
+        EmitVertex();
+    }
     EndPrimitive();
+
+
+
+
+
+
+
+
+
+
+
+    // for(int i = 0; i < gl_in.length(); i++)
+    // {
+    //     position = gl_in[i].gl_Position;
+    //     gl_Position = position + vec4(-TAM/2.f, -TAM/2.f, 0.0, 0.0);
+    //     EmitVertex();
+    //     gl_Position = position + vec4(TAM/2.f, -TAM/2.f, 0.0, 0.0);
+    //     EmitVertex();
+    // }
+    // EndPrimitive();
+
+
+    // position = gl_in[0].gl_Position;
+    // gl_Position = position + vec4(-TAM/2.f, -TAM/2.f, 0.0, 0.0);    // 1:bottom-left
+    // EmitVertex();
+    // gl_Position = position + vec4( TAM/2.f, -TAM/2.f, 0.0, 0.0);    // 2:bottom-right
+    // EmitVertex();
+    // gl_Position = position + vec4(-TAM/2.f,  TAM/2.f, 0.0, 0.0);    // 3:top-left
+    // EmitVertex();
+    // gl_Position = position + vec4( TAM/2.f,  TAM/2.f, 0.0, 0.0);    // 4:top-right
+    // EmitVertex();
+    // gl_Position = position + vec4( 0.0,  TAM, 0.0, 0.0);    // 5:top
+    // EmitVertex();
+    //
+    // EndPrimitive();
 
     // for(int i=0; i<gl_in.length(); i++){
     //     position = gl_in[i].gl_Position;
@@ -65,19 +108,5 @@ void main() {
     //     gl_Position = position + vec4( 0.0,  TAM, 0.0, 0.0);    // 5:top
     //     EmitVertex();
     // }
-    // EndPrimitive();
-
-
-    // gl_Position = gl_in[0].gl_Position + vec4(-TAM/2.f, -TAM/2.f, 0.0, 0.0);    // 1:bottom-left
-    // EmitVertex();
-    // gl_Position = gl_in[0].gl_Position + vec4( TAM/2.f, -TAM/2.f, 0.0, 0.0);    // 2:bottom-right
-    // EmitVertex();
-    // gl_Position = gl_in[0].gl_Position + vec4(-TAM/2.f,  TAM/2.f, 0.0, 0.0);    // 3:top-left
-    // EmitVertex();
-    // gl_Position = gl_in[0].gl_Position + vec4( TAM/2.f,  TAM/2.f, 0.0, 0.0);    // 4:top-right
-    // EmitVertex();
-    // gl_Position = gl_in[0].gl_Position + vec4( 0.0,  TAM, 0.0, 0.0);    // 5:top
-    // EmitVertex();
-    //
     // EndPrimitive();
 }

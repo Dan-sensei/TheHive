@@ -31,6 +31,8 @@ class Factory{
         //CRigidBody* createSingleSwarm( const glm::vec3 &Position);
         uint16_t createSwarm( const glm::vec3 &Position,const float &health);
 
+        uint16_t createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::vec3 &Rotation);
+
 
         // uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
         // uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
