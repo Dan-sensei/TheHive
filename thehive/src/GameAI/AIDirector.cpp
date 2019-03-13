@@ -71,7 +71,7 @@ void AIDirector::init(){
     canWander=true;
     canHorde=true;
     //Creacion de nodos
-    Njugador= createNode(glm::vec3(5,3,0),5);
+    Njugador= createNode(glm::vec3(0,20,15),5);
     Njugador->setonRange(true);
     //uint16_t h = sF->createHero(glm::vec3(10,3,65),false);
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
@@ -84,6 +84,7 @@ estres(1),numEnemigos(0),activado(true),canWander(true),canHorde(true),
 Pjugador(nullptr),Njugador(nullptr){
     Manager = Singleton<ObjectManager>::Instance();
     fac = Singleton<Factory>::Instance();
+    enemigos.reserve(50);
     //Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
     //Njugador= createNode(glm::vec3(5,3,65),5);
 
@@ -142,8 +143,8 @@ void AIDirector::clipingEnemigos(){
     // glm::vec3 cTF_ROT    = camera->getCameraRotation();
     // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
     glm::vec3 dir = Pjugador->getPosition() - cTF_POS;
+    dir=glm::normalize(dir);
     dir.y = 0;
-
     auto it=enemigos.begin();
     while(it!=enemigos.end()){
         glm::vec3 pTF        = (*it)->getPosition();//enemigo

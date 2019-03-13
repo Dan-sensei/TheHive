@@ -51,7 +51,7 @@ private:
     AINode* Njugador;
     CTransform* Pjugador;
     std::vector<AINode* > nodos;
-    std::list<CTransform*> enemigos;
+    std::vector<CTransform*> enemigos;
 
     //std::chrono::high_resolution_clock::time_point nTimeStamp;
     ObjectManager* Manager;

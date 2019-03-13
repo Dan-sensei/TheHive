@@ -16,7 +16,7 @@
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Singleton.hpp>
 
-
+class Motor2D;
 class CVida : public IComponent {
     friend class Factory;
     public:
@@ -38,7 +38,7 @@ class CVida : public IComponent {
     private:
         CVida(const CVida &orig) = delete;
         ObjectManager   *Manager;
-        //Motor2D   *hud;
+        Motor2D   *hud;
         CTriggerSystem  *triggerSystem;
 
         float vida;
