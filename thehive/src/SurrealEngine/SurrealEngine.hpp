@@ -52,8 +52,11 @@ class SurrealEngine {
         glm::vec3 vectorUp();
         glm::vec3 vectorRigth();
         glm::mat4  getMVP();
+        glm::mat4  getVP();
+        glm::mat4  getV();
         glm::mat4  getM();
 
+        TCamara* getCam();
         void PollEvents();
 
         void PointAt(TNodo *_node, const glm::vec3& _offpos);

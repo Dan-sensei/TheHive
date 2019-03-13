@@ -24,6 +24,7 @@
 #include <GameEngine/Motor2D.hpp>
 
 
+
 #define MOVEMENT_SPEED 1.f
 
 #define FRAMERATE 60.f
@@ -68,6 +69,7 @@ Game::Game()
     Manager = Singleton<ObjectManager>::Instance();
 
     world = Singleton<ggDynWorld>::Instance();
+    sky = new SkyBox();
     //world->inito();
     //Engine->HideCursor(true);
 }
@@ -82,7 +84,7 @@ void Game::Init(){
     BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     auto sF = Singleton<Factory>::Instance();
-    Engine->crearCamara(90,0.1f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
+    Engine->crearCamara(90,0.1f,1000.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
     Engine->print();
     // Pos init del heroe normal
@@ -113,6 +115,8 @@ void Game::Init(){
     world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
+
+    sky->init();
     //Engine2D->prueba();
     // std::cout << "\n -- INIT -- " << '\n';
 }
@@ -167,7 +171,16 @@ void Game::Update(){
 
     // std::cout << "  - DRAW" << '\n';
     Engine->draw();
+
     Engine->DisplayFPS();
+
+
+
+    sky->Draw();
+
+
+    //Engine->DisplayFPS();
+
     Engine2D->DisplayHUD();
     //Engine2D->draw();
     // Consola por pantalla

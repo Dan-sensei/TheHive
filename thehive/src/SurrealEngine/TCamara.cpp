@@ -54,3 +54,7 @@ void TCamara::beginDraw(const uint8_t &T_ID){
     }
 }
 void TCamara::endDraw(const uint8_t &T_ID){}
+
+// glm::mat4 GetViewMatrix( ){
+//         return glm::lookAt( this->position, this->position + this->front, this->up );
+// }

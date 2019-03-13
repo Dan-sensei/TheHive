@@ -13,7 +13,7 @@ class AIDirector;
 #include <SurrealEngine/Clock.hpp>
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
-
+#include <SurrealEngine/SkyBox.hpp>
 
 class Motor2D;
 class Game : public State{
@@ -55,6 +55,7 @@ private:
     gg::Color col;
     TNodo* luz;
     CTransform* playerpos;
+    SkyBox* sky;
 };
 
 

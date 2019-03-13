@@ -41,7 +41,7 @@ void Imagen2D::setSesgado(float res){
         sesgado=aux;
     }
     float vertices[] = {
-    //  Position      Color             Texcoords
+    //  Position              Texcoords
         _x-sesgado,  _y,  0.0f, 0.0f, // Top-left
         _w-sni,  _y,  1.0f, 0.0f, // Top-right
         _w+sni,  _h,  1.0f, 1.0f, // Bottom-right

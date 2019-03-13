@@ -23,6 +23,8 @@ class TCamara : public TEntidad {
         virtual void beginDraw(const uint8_t&);
         virtual void endDraw(const uint8_t&);
 
+        //glm::mat4 GetViewMatrix();
+
     private:
         float cercano, lejano, fov;
         glm::vec3 target;
