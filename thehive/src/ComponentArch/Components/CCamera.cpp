@@ -6,7 +6,7 @@
 #define DEGREES_TO_RADIANS  PI/180.f
 #define CAMERA_ATENUATION   7.f
 #define HEIGHT              0.4
-#define RADIUS              2.5
+#define RADIUS              2.0
 
 CCamera::CCamera(int8_t _b)
 :Target(nullptr), Engine(nullptr), cam(nullptr),
@@ -54,9 +54,9 @@ void CCamera::CameraUpdate(){
 
     glm::vec3 _target = Target->getPosition();
 
-    CurrentPosition.x = _target.x + 5 * sin(t)*cos(p);
-    CurrentPosition.y = _target.y + 5 * sin(p);
-    CurrentPosition.z = _target.z + 5 * cos(t)*cos(p);
+    CurrentPosition.x = _target.x + RADIUS * sin(t)*cos(p);
+    CurrentPosition.y = _target.y + RADIUS * sin(p);
+    CurrentPosition.z = _target.z + RADIUS * cos(t)*cos(p);
 
     Engine->setPosition(cam, CurrentPosition);
     static_cast<TCamara*>(cam->getEntidad())->setTarget(_target);

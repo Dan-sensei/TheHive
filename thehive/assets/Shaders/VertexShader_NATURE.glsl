@@ -13,6 +13,9 @@ uniform mat4 M;
 uniform vec3 LightPosition_worldspace;
 uniform vec3 CameraPos;
 
+uniform int  GS_SIZE;
+uniform vec3 GS_POSITIONS[48];
+
 out vec2 UV;
 out vec3 Position_worldspace;
 

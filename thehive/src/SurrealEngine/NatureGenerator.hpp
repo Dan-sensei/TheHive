@@ -19,12 +19,13 @@ class NatureGenerator {
         ~NatureGenerator();
 
         void init(const glm::vec3 &Pos);
-
+        void update();
     private:
         AssetManager *Manager;
         Factory *fabrik;
 
-
+        // float *tmp_positions;
+        int GS_SIZE;
 };
 
 #endif

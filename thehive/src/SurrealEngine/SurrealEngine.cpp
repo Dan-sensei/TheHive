@@ -228,7 +228,7 @@ bool SurrealEngine::Initialize(){
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    glClearColor(0.0f, 0.0f, 0.1f, 0.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
     Half_Window_Width = ancho/2;
     Half_Window_Height = alto/2;

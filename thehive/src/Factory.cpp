@@ -422,7 +422,8 @@ uint16_t Factory::createDebugBullet(const glm::vec3 &_pos){
 
 uint16_t Factory::createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::vec3 &Rotation){
     uint16_t Mesh = Manager->createEntity();
-    ZMaterial* gsShader = AssetManager::getMaterial("Morado");
+    ZMaterial* gsShader = AssetManager::getMaterial("MoradoButForNature");
+    // ZMaterial* gsShader = AssetManager::getMaterial("Morado");
 
     CTransform* Transform               = new CTransform(Position,Rotation);
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Mesh);

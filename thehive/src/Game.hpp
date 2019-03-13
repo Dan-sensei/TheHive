@@ -57,6 +57,7 @@ private:
     TNodo* luz;
     CTransform* playerpos;
 
+    NatureGenerator nat;
 };
 
 

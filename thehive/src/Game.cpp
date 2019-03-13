@@ -89,7 +89,7 @@ void Game::Init(){
     uint16_t h = sF->createHero(glm::vec3(0,5,50),1);
 
     // --------------------------------------
-    NatureGenerator nat;
+    // NatureGenerator nat;
     nat.init(glm::vec3(5,0,50));
     // --------------------------------------
 
@@ -169,8 +169,9 @@ void Game::Update(){
     glm::vec3 pos = playerpos->getPosition();
     pos.y += 7;
     Engine->setPosition(luz, pos);
-    // std::cout << " - BEGIN DRAW" << '\n';
 
+    // std::cout << " - BEGIN DRAW" << '\n';
+    nat.update();
     Engine->BeginDraw();
 
     // std::cout << "  - UPDATE ALL" << '\n';

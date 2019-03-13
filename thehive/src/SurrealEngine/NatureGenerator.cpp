@@ -7,9 +7,10 @@ NatureGenerator::NatureGenerator(){
 }
 
 NatureGenerator::~NatureGenerator(){
-
+    // delete tmp_positions;
 }
 
+/*
 void NatureGenerator::init(const glm::vec3 &Pos){
     std::vector< float > PositionsNormals;
     std::vector< float > UV_Coords;
@@ -57,19 +58,20 @@ void NatureGenerator::init(const glm::vec3 &Pos){
     }
 
 }
+*/
 
-/*
-void NatureGenerator::init( const std::string &Path, const glm::vec3 &Pos){
+void NatureGenerator::init(const glm::vec3 &Pos){
     // Necesito mandar como yuniform:
     //      UV
     //      NORMALES
     //      TANGENTES
     //      BITANGENTES
-    PositionsNormals;
+    std::vector< float > PositionsNormals;
     std::vector< float > UV_Coords;
     std::vector< float > TangentsBitangents;
     std::vector< unsigned short > Indexes;
 
+    std::string Path = "assets/BinaryFiles/BinaryModels/nature_test1.modelgg";
     std::string natureModelPath = "assets/BinaryFiles/BinaryModels/Hero.modelgg";
 
     bool loaded = BinaryParser::ImportMesh(natureModelPath, PositionsNormals, UV_Coords, TangentsBitangents, Indexes);
@@ -109,17 +111,55 @@ void NatureGenerator::init( const std::string &Path, const glm::vec3 &Pos){
     // }
     // std::cout << '\n';
 
+    // Hero.obj
+    /*
+        - PositionNormals       : 144
+        - UV_Coords             : 48
+        - TangentsBitangents    : 144
+        - Indexes               : 36
+    */
+
+    // tmp_positions = new float[PositionsNormals.size()];
+    float tmp_positions[PositionsNormals.size()];
+    for (size_t i = 0; i < PositionsNormals.size(); i++) {
+        tmp_positions[i] = PositionsNormals[i];
+    }
+
+    // for (size_t i = 0; i < PositionsNormals.size(); i+=6) {
+    //     std::cout << "(" << tmp_positions[i] << "\t," << tmp_positions[i+1] << "\t," << tmp_positions[i+2] << ")" << '\n';
+    // }
+
+    // Lo divido entre 3 ya que el shader tiene un array de vec3
+    GS_SIZE = PositionsNormals.size()/3;
+    // GS_SIZE = -1;
+
     Shader *sh = Manager->getShader("Nature");
+    sh->Bind();
+
+    GLuint SIZE_LOC = sh->getUniformLocation("GS_SIZE");
+    if(SIZE_LOC == 0xFFFFFFFF)  std::cout << "Cacho mierda, no ha cogido la ubicacion de GS_SIZE" << '\n';
+    else                        glUniform1i(SIZE_LOC,GS_SIZE);
+
+    GLuint POS_LOC = sh->getUniformLocation("GS_POSITIONS");
+    if(POS_LOC == 0xFFFFFFFF)   std::cout << "Cacho mierda, no ha cogido la ubicacion de GS_POSITIONS" << '\n';
+    else                        glUniform1fv(POS_LOC,GS_SIZE,&tmp_positions[0]);
+
+    fabrik->createNatureMesh(Path,Pos,glm::vec3());
+
+    std::cout << " - GS_SIZE:" << GS_SIZE << '\n';
+}
+
+void NatureGenerator::update(){
+    // std::cout << "UPDATE NATURE" << '\n';
+    Shader *sh = Manager->getShader("Nature");
+    sh->Bind();
     GLuint UL;
 
-    // NORMALES
-    tmp_positions = new float[PositionsNormals.size()];
-    UL = sh->getUniformLocation("GS_POSITIONS");
-    glUniform1fv(UL,1,&tmp_positions[0]);
+    // UL = sh->getUniformLocation("GS_POSITIONS");
+    // if(UL == 0xFFFFFFFF) std::cout << "Cacho mierda, no ha cogido la ubicacion de GS_POSITIONS" << '\n';
+    // glUniform1fv(UL,GS_SIZE,&tmp_positions[0]);
 
     UL = sh->getUniformLocation("GS_SIZE");
-    glUniform1i(UL,PositionsNormals.size());
-
-    fabrik->createNatureMesh(Path,Pos);
+    if(UL == 0xFFFFFFFF) std::cout << "Cacho mierda, no ha cogido la ubicacion de GS_SIZE" << '\n';
+    glUniform1i(UL,GS_SIZE);
 }
-*/
