@@ -241,6 +241,7 @@ void CAgent::STAY_func_kTrig_ExpansiveForce  (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Gunfire){
         float   dmg, cdc, relDT, rng;
+        std::string sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia;
         int     tb;
         CGun *gun = static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID));
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
@@ -255,10 +256,10 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
+                getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
 
                 // Le anyado la nueva
-                CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
+                CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
                 cpc->setSecondWeapon(Gun);
             }
             else{
@@ -267,13 +268,13 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
+                getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
 
                 // Elimino el arma que tiene la entidad
                 oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
 
                 // Le anyado la nueva
-                CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
+                CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
                 oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
 
                 // glm::vec3 pos(
@@ -300,10 +301,10 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
         }
         else{
             // NO TIENE ARMA
-            getWeaponInformation(dmg,cdc,relDT,rng,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)));
+            getWeaponInformation(dmg,cdc,relDT,rng,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
 
             // Creo y anyado un arma a la entidad
-            CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)));
+            CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
             oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
 
             // Destruyo el arma del suelo y su evento
@@ -521,7 +522,7 @@ gg::EMessageStatus CAgent::MHandler_SETPTRS(){
 //     //CAgent(cTransform->getPosition);
 // }
 
-void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
+void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type, std::string &sonido_disparo, std::string &sonido_recarga, std::string &sonido_desenfundado, std::string &sonido_vacia){
     switch (_type){
         case 0:
             // Rifle
@@ -530,6 +531,12 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             tb  = 30;
             relDT = 1;
             rng = 0.7;
+
+            sonido_disparo = "event:/SFX/Armas/Rifle/RifleDisparo";
+            sonido_recarga = "event:/SFX/Armas/Rifle/RifleRecarga";
+            sonido_desenfundado ="event:/SFX/Armas/Rifle/RifleDesenfundado";
+            sonido_vacia ="event:/SFX/Armas/Rifle/RifleVacio";
+
             break;
         case 1:
             // Escopeta
@@ -538,6 +545,12 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             tb  = 10;
             relDT = 3;
             rng = 0.4;
+
+            sonido_disparo = "event:/SFX/Armas/Escopeta/EscopetaDisparo";
+            sonido_recarga = "event:/SFX/Armas/Escopeta/EscopetaRecarga";
+            sonido_desenfundado ="event:/SFX/Armas/Escopeta/EscopetaDesenfundado";
+            sonido_vacia ="event:/SFX/Armas/Escopeta/EscopetaVacia";
+
             break;
         case 2:
             // Ametralladora
@@ -546,6 +559,12 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             tb  = 100;
             relDT = 6;
             rng = 0.7;
+
+            sonido_disparo = "event:/SFX/Armas/Ametralladora/AmetralladoraDisparo";
+            sonido_recarga = "event:/SFX/Armas/Ametralladora/AmetralladoraRecarga";
+            sonido_desenfundado ="event:/SFX/Armas/Ametralladora/AmetralladoraDesenfundado";
+            sonido_vacia ="event:/SFX/Armas/Ametralladora/AmetralladoraVacia";
+
             break;
         case 3:
             // Pistola
@@ -554,6 +573,12 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             tb  = 15;
             relDT = 0.5;
             rng = 0.5;
+
+            sonido_disparo = "event:/SFX/Armas/Pistola/PistolaDisparo";
+            sonido_recarga = "event:/SFX/Armas/Pistola/PistolaRecarga";
+            sonido_desenfundado ="event:/SFX/Armas/Pistola/PistolaDesenfundado";
+            sonido_vacia ="event:/SFX/Armas/Pistola/PistolaVacia";
+
             break;
         case 4:
             // Katana
@@ -562,6 +587,7 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
             tb  = -1;
             relDT = -1;
             rng = 0.1;
+
             break;
     }
 

@@ -28,7 +28,18 @@ void SoundEvent::setVolume(float vol){
 	ERRCHECK(soundInstance->setVolume(vol));
 }
 
-void SoundEvent::setPosition(glm::vec3 pos){
+void SoundEvent::setPosition(glm::vec3 _pos){
+
+	FMOD_3D_ATTRIBUTES *att;
+	soundInstance->get3DAttributes(att);
+
+	FMOD_VECTOR vec;
+	vec.x = _pos.x;
+	vec.y = _pos.y;
+	vec.z = _pos.z;
+
+	att->position = vec;
+	soundInstance->set3DAttributes(att);
 
 }
 

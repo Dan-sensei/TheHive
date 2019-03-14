@@ -113,6 +113,8 @@ void Game::Init(){
     world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
+
+    soundSys = Singleton<SoundSystem>::Instance();
     //Engine2D->prueba();
     // std::cout << "\n -- INIT -- " << '\n';
 }
@@ -178,11 +180,13 @@ void Game::Update(){
 
     // std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();
+    soundSys->update();
 }
 
 void Game::Resume(){
     Engine->HideCursor(true);
     Engine2D->InitHUD();
+    soundSys->CLIN();
 
 
     //Engine->HideCursor(true);

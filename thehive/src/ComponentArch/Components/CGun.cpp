@@ -3,10 +3,11 @@
 #include <Bullet/ggDynWorld.hpp>
 #include "CAIEnem.hpp"
 
+
 #define FORCE_FACTOR        1000.f
 #define DIST_OFFSET         2.f
 
-CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType)
+CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType, std::string sonido_disparo, std::string sonido_recarga, std::string sonido_desenfundado, std::string sonido_vacio)
 :Manager(nullptr), cTransform(nullptr),
 damage(_dmg), cadence(_cadence), total_bullets(_total_bullets),
 reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
@@ -14,9 +15,39 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
     ktotal_bullets = total_bullets;
     canShoot = true;
     reloading = false;
+
+    SS = Singleton<SoundSystem>::Instance();
+
+    s_disparo = new SonidoNormal();
+    SS->createSound(sonido_disparo, s_disparo, NORMAL);
+    s_desenfundado = new SonidoNormal();
+    SS->createSound(sonido_desenfundado, s_desenfundado, NORMAL);
+    s_vacio = new SonidoNormal();
+    SS->createSound(sonido_vacio, s_vacio, NORMAL);
+
+    if(_wType != 1){
+        s_recarga = new SonidoNormal();
+        SS->createSound(sonido_recarga, s_recarga, NORMAL);
+    }
+    else{
+        s_recarga_esc = new SonidoEscopeta();
+        SS->createSound(sonido_recarga, s_recarga, NORMAL);
+    }
+
 }
 
 CGun::~CGun() {
+
+    delete s_disparo;
+    delete s_desenfundado;
+    delete s_vacio;
+
+    if(_wType != 1){
+        delete s_recarga;
+    }
+    else{
+        delete s_recarga_esc;
+    }
 
 }
 
@@ -30,11 +61,13 @@ void CGun::shoot(glm::vec3 to){
         // Comprobar balas
         if(!total_bullets){
             //gg::cout("Click!");
+            s_vacio->play();
             //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
             return;
         }
 
+        s_disparo->play();
         // Comprobar si no es la katana
         if(total_bullets!=-1){
             total_bullets--;
@@ -93,6 +126,8 @@ void CGun::reload(){
     //gg::cout(" -- RELOAD -- ");
     reloading = true;
     dtReload = std::chrono::high_resolution_clock::now();
+    if(WEAPON_TYPE!=1)
+        s_recarga->play();
 }
 
 bool CGun::isReloading(){
@@ -163,4 +198,8 @@ void CGun::FixedUpdate(){
         }
     }
     Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
+}
+
+void CGun::desenfundado(){
+    s_desenfundado->play();
 }

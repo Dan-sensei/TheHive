@@ -13,6 +13,8 @@ class AIDirector;
 #include <SurrealEngine/Clock.hpp>
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
+#include <FMOD/SoundSystem.hpp>
+
 
 
 class Motor2D;
@@ -46,6 +48,7 @@ private:
     ggDynWorld* world;
     CCamera* MainCamera;
     AIDirector* Director;
+    SoundSystem* soundSys;
 
     gg::Clock MasterClock;
     double DeltaTime;

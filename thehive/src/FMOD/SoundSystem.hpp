@@ -1,10 +1,3 @@
-//
-//  SoundSystem.h
-//  vdrift
-//
-//  Created by Pierre on 20171022.
-//
-
 #ifndef SOUND_SYSTEM_H
 #define SOUND_SYSTEM_H
 
@@ -28,11 +21,11 @@ class SoundSystem {
 
 		SoundEvent* createSound(const std::string&, SoundEvent*, TiposSonido tipo);
 
-		SoundEvent* devuelve_escopeta(const std::string&);
-		SoundEvent* devuelve_impacto(const std::string&);
-		SoundEvent* devuelve_normal(const std::string&);
-		SoundEvent* devuelve_salud(const std::string&);
-		SoundEvent* devuelve_superficie(const std::string&);
+		// SoundEvent* devuelve_escopeta(const std::string&);
+		// SoundEvent* devuelve_impacto(const std::string&);
+		// SoundEvent* devuelve_normal(const std::string&);
+		// SoundEvent* devuelve_salud(const std::string&);
+		// SoundEvent* devuelve_superficie(const std::string&);
 
 		void setVolume(float,const std::string&);
 		void setListenerPosition(glm::vec3);
@@ -51,7 +44,7 @@ class SoundSystem {
 
 	    std::map<std::string, FMOD::Studio::EventDescription*> eventDescriptions;
 		std::map<std::string, SoundEvent*> soundEvents;
-		
+
 		// using pFunc = SoundEvent*(SoundSystem::*)(const std::string &);
         // pFunc VectorTipos[NUM_TIPOS];
 };
