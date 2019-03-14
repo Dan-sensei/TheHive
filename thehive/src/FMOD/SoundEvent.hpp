@@ -7,12 +7,20 @@
 class SoundEvent {
     friend class SoundSystem;
     public:
-        virtual ~SoundEvent();
-        void play();
+        SoundEvent();
+        virtual ~SoundEvent()=0;
+        virtual void play();
         void stop();
+        void stop_fadeout();
+        void pause(bool);
+        void setPitch(float);
+        void setVolume(float);
+        void setPosition(glm::vec3);
+        SoundEvent* getEvent();
+        bool isPlaying();
 
     protected:
         FMOD::Studio::EventInstance* soundInstance;
-        SoundEvent();
+        virtual void newSoundEvent(FMOD::Studio::EventInstance*) = 0;
 };
 #endif

@@ -11,3 +11,33 @@ void SoundEvent::play(){
 void SoundEvent::stop(){
 	ERRCHECK(soundInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE));
 }
+
+void SoundEvent::stop_fadeout(){
+	ERRCHECK(soundInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT));
+}
+
+void SoundEvent::pause(bool pause){
+	ERRCHECK(soundInstance->setPaused(pause));
+}
+
+void SoundEvent::setPitch(float pitch){
+	ERRCHECK(soundInstance->setPitch(pitch));
+}
+
+void SoundEvent::setVolume(float vol){
+	ERRCHECK(soundInstance->setVolume(vol));
+}
+
+void SoundEvent::setPosition(glm::vec3 pos){
+
+}
+
+SoundEvent* SoundEvent::getEvent(){
+	return this;
+}
+
+bool SoundEvent::isPlaying(){
+	bool *ret;
+	ERRCHECK(soundInstance->getPaused(ret));
+	return &ret;
+}
