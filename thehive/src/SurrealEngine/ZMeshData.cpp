@@ -74,7 +74,6 @@ bool ZMeshData::load(const std::string& path){
         glBindVertexBuffer(1, VBOs[1], 0, 8);
         glBindVertexBuffer(2, VBOs[2], 0, 24);
 
-        unsigned int IndexBuffer;
         glGenBuffers(1, &IndexBuffer);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indexes.size()*sizeof(unsigned short), &(Indexes[0]), GL_STATIC_DRAW);

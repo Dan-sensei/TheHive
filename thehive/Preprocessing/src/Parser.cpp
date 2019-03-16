@@ -17,6 +17,12 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_Model("../assets/Objects/TuboRoto.obj",                   "TuboRoto.modelgg");
 
     ModelParser::generateBinaryGG_Model("../assets/NavMeshes/TEST.obj",                        "TEST.modelgg");
+    ModelParser::generateBinaryGG_Model("../assets/Animations/SoldierMov/SoldierMov0.obj",                        "SoldierMov0.modelgg");
+    ModelParser::generateBinaryGG_Model("../assets/Animations/SoldierMov/SoldierMov1.obj",                        "SoldierMov1.modelgg");
+    ModelParser::generateBinaryGG_Model("../assets/Animations/SoldierMov/SoldierMov2.obj",                        "SoldierMov2.modelgg");
+    ModelParser::generateBinaryGG_Model("../assets/Animations/SoldierMov/SoldierMov3.obj",                        "SoldierMov3.modelgg");
+    ModelParser::generateBinaryGG_Model("../assets/Animations/SoldierMov/SoldierMov4.obj",                        "SoldierMov4.modelgg");
+    ModelParser::generateBinaryGG_Model("../assets/Animations/SoldierMov/SoldierMov5.obj",                        "SoldierMov5.modelgg");
 
     for(uint16_t i = 1; i < 144; ++i)
         ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i)+".modelgg");

@@ -3,22 +3,30 @@
 
 #include "TEntidad.hpp"
 #include "ZStaticMesh.hpp"
-#include <array>
+#include <Singleton.hpp>
+#include "AssetManager.hpp"
+#include <vector>
 #include <cstdint>
 
 class TAnimacion: public TEntidad {
 
     public:
         TAnimacion();
-        TAnimacion(std::array<ZStaticMesh, 5> &poses_);
+        TAnimacion(std::vector<ZMeshData> &poses_);
         virtual ~TAnimacion ();
 
+        void Interpolate();
 
         virtual void beginDraw(const uint8_t&);
         virtual void endDraw(const uint8_t&);
 
     private:
-        std::array<ZStaticMesh, 5> poses;
+        std::vector<ZMeshData> poses;
+        Shader* shader;
+        ZMaterial* zmat;
+        int         it;
+        unsigned int size;
+        unsigned int VAO;
 
 };
 
