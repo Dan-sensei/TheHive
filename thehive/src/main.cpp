@@ -30,8 +30,10 @@
 
 #include <SurrealEngine/SurrealEngine.hpp>
 #include <vector>
+#include "BinaryParser.hpp"
 
 int main(int argc, char const *argv[]) {
+    // alias upd="rm -f EVENTOS.data && cp ~/Documentos/THE_HIVE_LevelEditor\ \(1\)/BinaryFiles/EVENTOS.data ."
 
 
     SurrealEngine *Engine = Singleton<SurrealEngine>::Instance();
@@ -66,6 +68,12 @@ int main(int argc, char const *argv[]) {
     world->clean();
     EventSystem->clin();
     mainstates->clin();
+
+
+
+
+
+
 
     // PRUEBA DE LA FUNCION DIOS Y DE TRANSFORMACIONES VARIAS
     //

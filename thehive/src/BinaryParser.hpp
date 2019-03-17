@@ -3,6 +3,8 @@
 
 #include <string>
 #include <GameAI/NavmeshStructs.hpp>
+#include "Factory.hpp"
+#include "Singleton.hpp"
 
 class BinaryParser{
     public:
@@ -22,6 +24,8 @@ class BinaryParser{
             std::vector<float> &TangentsBitangents,
             std::vector<unsigned short> &index
         );
+
+        static void ReadEventsData(const std::string &BinaryFile);
 
         static void LoadLevelData(const std::string &DARTA);
 

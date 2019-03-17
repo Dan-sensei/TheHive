@@ -89,6 +89,58 @@ uint16_t gg::genIntRandom(uint16_t min, uint16_t max){
     return distribution(gen);
 }
 
+void gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
+    switch (_type){
+        case 0:
+            // Rifle
+            dmg = 0.7;
+            cdc = 7;
+            tb  = 30;
+            relDT = 1;
+            rng = 0.7;
+            break;
+        case 1:
+            // Escopeta
+            dmg = 0.8;
+            cdc = 1;
+            tb  = 10;
+            relDT = 3;
+            rng = 0.4;
+            break;
+        case 2:
+            // Ametralladora
+            dmg = 0.3;
+            cdc = 9;
+            tb  = 100;
+            relDT = 6;
+            rng = 0.7;
+            break;
+        case 3:
+            // Pistola
+            dmg = 0.4;
+            cdc = 5;
+            tb  = 15;
+            relDT = 0.5;
+            rng = 0.5;
+            break;
+        case 4:
+            // Katana
+            dmg = 1;
+            cdc = 0.5;
+            tb  = -1;
+            relDT = -1;
+            rng = 0.1;
+            break;
+    }
+
+    // std::cout << " --- GUN      ------------ "  << '\n';
+    // std::cout << "   - DMG      : " << dmg    << '\n';
+    // std::cout << "   - CADENCE  : " << cdc    << '\n';
+    // std::cout << "   - BULLETS  : " << tb     << '\n';
+    // std::cout << "   - DT       : " << relDT  << '\n';
+    // std::cout << "   - RANGE    : " << rng    << '\n';
+    // std::cout << " ------------------------- "  << '\n';
+}
 
 // std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1){
 //     os << "(" << v1.x<< "," << v1.y << "," << v1.z << ")";

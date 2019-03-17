@@ -34,6 +34,8 @@ class SurrealEngine {
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
         TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3());
 
+        void deleteLeafNode(TNodo *node);
+
         bool bindMaterialToMesh(TNodo*,ZMaterial*);
 
         void DisplayFPS();

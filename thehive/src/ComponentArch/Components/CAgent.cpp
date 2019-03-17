@@ -255,7 +255,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
+                gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
 
                 // Le anyado la nueva
                 CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
@@ -267,7 +267,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
+                gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor);
 
                 // Elimino el arma que tiene la entidad
                 oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
@@ -300,7 +300,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
         }
         else{
             // NO TIENE ARMA
-            getWeaponInformation(dmg,cdc,relDT,rng,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)));
+            gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)));
 
             // Creo y anyado un arma a la entidad
             CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)));
@@ -521,7 +521,8 @@ gg::EMessageStatus CAgent::MHandler_SETPTRS(){
 //     //CAgent(cTransform->getPosition);
 // }
 
-void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
+/*
+void CAgent::gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
     switch (_type){
         case 0:
             // Rifle
@@ -573,3 +574,4 @@ void CAgent::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &r
     //gg::cout(" - - RANGE= "     + std::to_string(rng));
     //gg::cout(" ------------------ ");
 }
+*/

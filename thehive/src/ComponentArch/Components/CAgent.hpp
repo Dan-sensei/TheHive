@@ -67,7 +67,7 @@ class CAgent : public IComponent {
         CTransform      *cTransform;
         ObjectManager   *oManager;
 
-        void getWeaponInformation(float&, float&, float&, float&, int&, int);
+        // void getWeaponInformation(float&, float&, float&, float&, int&, int);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerEnter;
         void ENTER_func_kTrig_none          (TriggerRecordStruct*);

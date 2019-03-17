@@ -272,3 +272,8 @@ bool SurrealEngine::Initialize(){
 
 	return true;
 }
+
+void SurrealEngine::deleteLeafNode(TNodo *node){
+    TNodo *tmp = node->getPadre()->getPadre();
+    ESCENA->remHijo(tmp);
+}

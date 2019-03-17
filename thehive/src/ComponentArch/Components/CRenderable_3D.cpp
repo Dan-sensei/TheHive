@@ -14,8 +14,10 @@ CRenderable_3D::CRenderable_3D(const CRenderable_3D &orig){
     _3DModel = orig._3DModel;
 }
 
-CRenderable_3D::~CRenderable_3D() {}
-//
+CRenderable_3D::~CRenderable_3D() {
+    Surreal->deleteLeafNode(_3DModel);
+}
+
 
 
 void CRenderable_3D::Init(){
