@@ -377,6 +377,11 @@ uint16_t Factory::createTouchableObject(const glm::vec3 &_position, const uint16
     uint16_t t_obj = Manager->createEntity();
     ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
 
+    // t_obj    : Objeto que va a disparar el evento
+    //   _id    : "Puerta" que se va a abrir
+    //   vel    : Vector movimiento del evento
+    //  _dur    : Duracion de la animacion
+    // _item    : Objeto en concreto para disparar el evento
 
     CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, t_obj);

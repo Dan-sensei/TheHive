@@ -73,7 +73,7 @@ namespace gg{
 
     //    int16_t X, Y;
     //};
-    
+
     //  ---
     //  This is just used for checking distances between points. It doesn't compute
     //  the sqrt, but:
@@ -107,6 +107,8 @@ namespace gg{
 
         float vX,vY,vZ;
     };
+
+    void getWeaponInformation(float&, float&, float&, float&, int&, int);
 };
 
 //std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1);

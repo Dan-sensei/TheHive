@@ -207,3 +207,109 @@ bool BinaryParser::ImportMesh(
 
     return true;
 }
+
+void BinaryParser::ReadEventsData(const std::string &BinaryFile){
+    std::ifstream inStream(BinaryFile, std::ios::binary);
+    Factory *fac = Singleton<Factory>::Instance();
+
+    uint8_t TOTAL = 0;
+    uint8_t EVENT;
+    GG_Read(inStream,TOTAL);
+
+    std::cout << " --- TOTAL EVENTOS : " << static_cast<int>(TOTAL) << " --- " << '\n';
+
+    for (size_t i=0 ; i<TOTAL; ++i) {
+        EVENT = 0;
+        GG_Read(inStream,EVENT);
+
+        if(EVENT == 0){
+            // Armas
+            uint8_t arma;
+            GG_Read(inStream,arma);
+
+            float x,y,z;
+            GG_Read(inStream,x);
+            GG_Read(inStream,y);
+            GG_Read(inStream,z);
+            glm::vec3 position(x,y,z);
+
+            std::cout << " - Arma     : " << static_cast<int>(arma) << '\n';
+            std::cout << "   |  - POS : " << "(" << x << "," << y << "," << z << ")" << '\n';
+            std::cout << '\n';
+
+            fac->createCollectableWeapon(position, arma);
+        }
+        else{
+            // Touchables y pickables
+            // NOTA INFORMATIVA: NUNCA ningun pickable va solo
+
+            uint8_t obj;
+            GG_Read(inStream,obj);
+
+            float x,y,z;
+            GG_Read(inStream,x);
+            GG_Read(inStream,y);
+            GG_Read(inStream,z);
+
+            float rx,ry,rz,rw;
+            GG_Read(inStream,rx);
+            GG_Read(inStream,ry);
+            GG_Read(inStream,rz);
+            GG_Read(inStream,rw);
+
+            std::cout << " - Touchable: " << static_cast<int>(obj) << '\n';
+            std::cout << "   |  - POS : " << "(" << x << "," << y << "," << z << ")" << '\n';
+            std::cout << "   |  - ROT : " << "(" << rx << "," << ry << "," << rz << "[" << rw << "])" << '\n';
+
+            uint8_t hasCollider;
+            GG_Read(inStream,hasCollider);
+            if(hasCollider){
+                float cx,cy,cz;
+                GG_Read(inStream,cx);
+                GG_Read(inStream,cy);
+                GG_Read(inStream,cz);
+
+                float crx,cry,crz;
+                GG_Read(inStream,crx);
+                GG_Read(inStream,cry);
+                GG_Read(inStream,crz);
+
+                float csx,csy,csz;
+                GG_Read(inStream,csx);
+                GG_Read(inStream,csy);
+                GG_Read(inStream,csz);
+
+                std::cout << "   |  Has collider on : " << '\n';
+                std::cout << "      |  - POS        : " << "(" << cx << "," << cy << "," << cz << ")" << '\n';
+                std::cout << "      |  - ROT        : " << "(" << crx << "," << cry << "," << crz << ")" << '\n';
+                std::cout << "      |  - SIZE       : " << "(" << csx << "," << csy << "," << csz << ")" << '\n';
+            }
+            else{
+                std::cout << "   |  No collider" << '\n';
+            }
+
+            uint8_t hasPickable;
+            GG_Read(inStream,hasPickable);
+            if(hasPickable){
+                float px,py,pz;
+                GG_Read(inStream,px);
+                GG_Read(inStream,py);
+                GG_Read(inStream,pz);
+
+                std::cout << "   |  Has pickable on : " << '\n';
+                std::cout << "      |  - POS        : " << "(" << px << "," << py << "," << pz << ")" << '\n';
+            }
+            else{
+                std::cout << "   |  No Pickable" << '\n';
+            }
+
+
+            std::cout << '\n';
+        }
+    }
+
+
+
+
+
+}

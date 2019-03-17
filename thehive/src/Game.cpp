@@ -79,6 +79,7 @@ Game::~Game(){
 }
 
 void Game::Init(){
+    BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
