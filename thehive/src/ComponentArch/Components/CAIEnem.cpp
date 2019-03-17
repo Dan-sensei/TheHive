@@ -257,9 +257,9 @@ void CAIEnem::enableVisualDebug(){
     glm::vec3 fin2   = dir1*Vrange+cTransform->getPosition();
     glm::vec3 fin3   = dir2*Vrange+cTransform->getPosition();
 
-    Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
-    Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
-    Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
+    // Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
+    // Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
+    // Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
 
     glm::vec3 diren  = PlayerTransform->getPosition()-cTransform->getPosition();
     diren.y             = 0;

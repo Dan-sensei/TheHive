@@ -81,6 +81,10 @@ void Game::Init(){
     BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/PASEO.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/PARQUE.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/TAMESIS.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/END.data");
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.1f,1000.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
@@ -102,14 +106,14 @@ void Game::Init(){
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
 
     // uint16_t n = Manager->createEntity();
-    // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/TEST.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,5,0), glm::vec3());
+    // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/NavmeshCITY.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,3,0), glm::vec3());
     // Manager->addComponentToEntity(m,gg::STATICMODEL,n);
 
 
     Accumulator = 0;
 
     //Singleton<Pathfinding>::Instance()->SetDebug(true);
-    world->setDebug(true);
+    //world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
@@ -173,14 +177,11 @@ void Game::Update(){
 
 
     sky->Draw();
-
-
-    //Engine->DisplayFPS();
-
     Engine2D->DisplayHUD();
+
     //Engine2D->draw();
     // Consola por pantalla
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';

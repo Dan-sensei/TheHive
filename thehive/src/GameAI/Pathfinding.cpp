@@ -211,7 +211,7 @@ uint16_t Pathfinding::FindClosestNodeOfFace(const glm::vec3 &Position, uint16_t 
 void Pathfinding::DroNodes(){
     if(!Debug) return;
     gg::Color color;
-    uint8_t i = GRAPH.size();
+    uint16_t i = GRAPH.size();
     uint8_t length = 0;
     SurrealEngine* Engine = Singleton<SurrealEngine>::Instance();
 
@@ -249,16 +249,16 @@ void Pathfinding::DroNodes(){
         }
     }
 
-    //  Connections
-    // color.Alpha = 1;
-    // color.R = 0;
-    // color.G = 153;
-    // color.B = 153;
-    // for(uint16_t i = 0; i < GConnections.size(); ++i){
-    //     for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-    //         Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 40, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 40, 0), color, 2);
-    //     }
-    // }
+    // Connections
+    color.Alpha = 1;
+    color.R = 0;
+    color.G = 153;
+    color.B = 153;
+    for(uint16_t i = 0; i < GConnections.size(); ++i){
+        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
+            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 40, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 40, 0), color);
+        }
+    }
 
 
     //  255,20,147
@@ -267,8 +267,8 @@ void Pathfinding::DroNodes(){
     // color.G = 20;
     // color.B = 147;
     // for(uint16_t i = 0; i < FACES.size(); ++i){
-    //     Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + glm::vec3(0, 100, 0), color, 2);
-    //     Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + glm::vec3(0, 100, 0), color, 2);
+    //     Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + glm::vec3(0, 100, 0), gg::Color(255, 20, 147, 1));
+    //     Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + glm::vec3(0, 100, 0), gg::Color(255, 20, 147, 1));
     // }
 }
 

@@ -125,7 +125,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
             if (!found) Edges.push_back(NewEdge);
         }
     }
-    // std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
+    //std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
     Connections.resize(ID_Counter);
     for(uint16_t i = 0; i < FACES.size(); ++i) {
         for(uint16_t j = 0; j < FACES[i].size(); ++j) {
