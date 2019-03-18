@@ -40,7 +40,7 @@ private:
     ggDynWorld      *dynWorld;
 
     glm::vec3 pos_on_collision;
-
+    glm::vec3 CameraTarget;
     glm::vec3 CurrentPosition;
 
     float screenW;

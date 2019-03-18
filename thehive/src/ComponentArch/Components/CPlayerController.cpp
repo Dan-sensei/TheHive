@@ -200,7 +200,7 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_M)){
         //hab->ToggleSkill(2);
         //devuelve ide de un objeto
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition(),1000);
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), cTransform->getPosition(),1000);
         int id=world->getIDFromRaycast();
         //std::cout << "id:" <<id<< '\n';
         if(id!=-1){

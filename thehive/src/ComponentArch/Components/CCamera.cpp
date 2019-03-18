@@ -8,6 +8,13 @@
 #define HEIGHT              0.4
 #define RADIUS              2.5
 
+
+#define VERTICAL_ANGLE_LIMIT 25
+
+#define VERT_ANG_LIM_RAD VERTICAL_ANGLE_LIMIT*DEGREES_TO_RADIANS
+#define Y_OFF sin(-VERT_ANG_LIM_RAD)
+#define X_OFF cos(-VERT_ANG_LIM_RAD)
+
 CCamera::CCamera(int8_t _b)
 :Target(nullptr), Engine(nullptr), cam(nullptr),
 InvertCamera(_b)
@@ -41,7 +48,7 @@ void CCamera::CameraUpdate(){
     double x, y;
     Engine->getCursorPosition(x, y);
     t += (prevX - x) * 0.005f;
-    p += (y - prevY) * 0.005f * InvertCamera;
+    p += (y - prevY) * 0.005f * -InvertCamera;
 
     prevX = x;
     prevY = y;
@@ -50,16 +57,28 @@ void CCamera::CameraUpdate(){
     else if(t > 2*PI) t = 0;
 
     if(p < -PI/2+0.2) p = -PI/2+0.2;
-    else if(p > PI/2-0.2) p = PI/2-0.2;
+    else if(p > 0.204999) p = 0.204999;
 
-    glm::vec3 _target = Target->getPosition();
+    CameraTarget = Target->getPosition();
 
-    CurrentPosition.x = _target.x + 5 * sin(t)*cos(p);
-    CurrentPosition.y = _target.y + 5 * sin(p);
-    CurrentPosition.z = _target.z + 5 * cos(t)*cos(p);
+    float cos_ = X_OFF;
+    float sin_ = Y_OFF;
+    if(p > -VERT_ANG_LIM_RAD){
+        cos_ = cos(p);
+        sin_ = sin(p);
+    }
+
+    CurrentPosition.x = CameraTarget.x + 1 * sin(t)*cos_;
+    CurrentPosition.y = CameraTarget.y + 1 + sin_;
+    CurrentPosition.z = CameraTarget.z + 1 * cos(t)*cos_;
+
+    CameraTarget.x += cos(t)*0.75;
+    CameraTarget.z -= sin(t)*0.75;
+    CameraTarget.y -= sin(p)*1.5;
+
 
     Engine->setPosition(cam, CurrentPosition);
-    static_cast<TCamara*>(cam->getEntidad())->setTarget(_target);
+    static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
 }
 
 
@@ -74,7 +93,7 @@ void CCamera::fixCameraPositionOnCollision(glm::vec3 &nextPosition){
 }
 
 void CCamera::getDirectionVector(glm::vec3 &Output){
-    Output = CurrentPosition - Target->getPosition();
+    Output = CurrentPosition - CameraTarget;
     Output.y = 0;
 }
 

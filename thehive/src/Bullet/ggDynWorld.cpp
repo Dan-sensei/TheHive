@@ -183,8 +183,6 @@ glm::vec3 ggDynWorld::handleRayCast(glm::vec3 from, glm::vec3 Target,float _weap
     if(_weaponRange == -1)  _weaponRange  = FAR_RANGE_FACTOR;
     else                    _weaponRange *= FAR_RANGE_FACTOR;
 
-
-    Target.y += 1;
     glm::vec3 aux = Target - from;
 
     glm::vec3 to =aux*FAR_RANGE_FACTOR+from;

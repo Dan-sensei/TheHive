@@ -15,7 +15,7 @@ Factory::Factory() {
 uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 
 
-    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
+    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Hero");
 
     uint16_t hero = Manager->createEntity();
     CTransform* Transform               = new CTransform(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0));
@@ -36,7 +36,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/BinaryFiles/BinaryModels/Hero.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, hero);
 
-    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Hero.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 50, 0,0,0);
+    CRigidBody* RigidBody               = new CRigidBody(false, false,"", Position.x, Position.y, Position.z, 0.581/2,1.89/2, 0.314/2, 50, 0,0,0);
     Manager->addComponentToEntity(RigidBody,        gg::RIGID_BODY, hero);
 
     CPlayerController* PlayerController = new CPlayerController();
