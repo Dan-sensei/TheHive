@@ -42,8 +42,8 @@ class SurrealEngine {
 
         void move(TNodo*,const glm::vec3&);
         void rotate(TNodo*,const float&,const glm::vec3&);
-        void setPosition(TNodo* _node, const glm::vec3& _offpos);
-        void setRotation(TNodo* _node,const glm::vec3& _offrot);
+        void setPosition(TNodo* _node, const glm::vec3&);
+        void setRotation(TNodo* _node,const glm::vec3&);
 
         void BeginDraw();
         void draw();

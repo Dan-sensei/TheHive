@@ -21,7 +21,7 @@ CRigidBody::CRigidBody(
     //unsigned int Group,
     //unsigned int Mask
 )
-:cTransform(nullptr), world(nullptr)
+:cTransform(nullptr), cStaticModel(nullptr),world(nullptr)
 {
     // Puntero al mundo de fisicas
     world = Singleton<ggDynWorld>::Instance();
@@ -120,7 +120,7 @@ CRigidBody::CRigidBody(
     bool kinematic,
     float x,float y,float z,
     float sX,float sY,float sZ)
-:cTransform(nullptr), world(nullptr)
+:cTransform(nullptr), cStaticModel(nullptr),world(nullptr)
 {
     // Puntero al mundo de fisicas
     world = Singleton<ggDynWorld>::Instance();
@@ -162,10 +162,47 @@ CRigidBody::CRigidBody(
     SavePreviousStatus();
 }
 
+CRigidBody::CRigidBody(
+    float x, float y, float z,
+    float rx, float ry, float rz, float rw,
+    float sX, float sY, float sZ
+)
+:cTransform(nullptr), cStaticModel(nullptr),world(nullptr)
+{
+    world = Singleton<ggDynWorld>::Instance();
+    fileLoader = nullptr;
+
+    shape = new btBoxShape(btVector3(btScalar(sX), btScalar(sY), btScalar(sZ)));
+
+    transform.setIdentity();
+    transform.setOrigin(btVector3(x,y,z));
+    transform.setRotation(btQuaternion(rx, ry, rz, rw));
+    myMotionState = new btDefaultMotionState(transform);
+
+    world->addShape(shape);
+
+    btScalar mass(10);
+    bool isDynamic = (mass != 0.f);
+    btVector3 localInertia;
+
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
+    body = new btRigidBody(rbInfo);
+    //body->setCenterOfMassTransform(transform);
+
+    body->setCollisionFlags(2);
+
+    body->setFriction(btScalar(0.2));
+
+    world->addRigidBody(body);
+    // body->setAngularFactor(btVector3(0,0,0));
+    SaveCurrentStatus();
+    SavePreviousStatus();
+}
+
 CRigidBody::~CRigidBody() {
-    delete myMotionState;
+    if(myMotionState)   delete myMotionState;
     world->removeRigidBody(body);
-    delete body;
+    if(body)            delete body;
 
     // --------------------
     // Delete de todo lo que he creado con el loadfile
@@ -177,7 +214,7 @@ CRigidBody::~CRigidBody() {
     else{
         // Cuando no carga desde fichero
         // Borrar la boxshape que se ha creado
-        delete shape;
+        if(shape)       delete shape;
     }
 }
 
@@ -237,6 +274,7 @@ void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
 gg::EMessageStatus CRigidBody::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    cStaticModel = static_cast<CStaticModel*>(Singleton<ObjectManager>::Instance()->getComponent(gg::STATICMODEL, getEntityID()));
 
     return gg::ST_TRUE;
 }
@@ -389,6 +427,7 @@ void CRigidBody::Upd_MoverObjeto(){
     ObjectManager *manager = Singleton<ObjectManager>::Instance();
     CClock *clock = static_cast<CClock*>(manager->getComponent(gg::CLOCK,getEntityID()));
 
+
     if(clock){
         if(clock->hasEnded()){
             //gg::cout(" -- CLOCK END");
@@ -407,6 +446,16 @@ void CRigidBody::Upd_MoverObjeto(){
 
                 glm::vec3 offset(data->getRbData().vX,data->getRbData().vY,data->getRbData().vZ);
                 setOffsetBodyPosition(offset);
+
+                if(cTransform){
+                    // std::cout << "cetransform" << '\n';
+
+                }
+                else if(cStaticModel){
+                    // std::cout << "cestaticmodel" << '\n';
+                    cStaticModel->setPosition(getBodyPosition());
+                }
+
             }
         }
     }

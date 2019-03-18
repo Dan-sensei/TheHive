@@ -47,6 +47,8 @@ ObjectManager::ObjectManager() {
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::GRANADE);
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::CLOCK);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::CLOCK);
+
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::FLOCK);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::FLOCK);
@@ -54,9 +56,6 @@ ObjectManager::ObjectManager() {
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AIENEM);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::AIENEM);
     MessageToListeningComponents[gg::UPDATE].push_back(gg::AIENEM);
-
-
-
 
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AGENT);
 

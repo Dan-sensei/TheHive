@@ -13,6 +13,10 @@ class CSimpleStaticRigidBody : public IComponent {
             float rx, float ry, float rz, float rw,
             float sX, float sY, float sZ
         );
+
+        void setToKinematic();
+        void setToStatic();
+
         CSimpleStaticRigidBody(const CSimpleStaticRigidBody &orig) = delete;
         ~CSimpleStaticRigidBody();
 

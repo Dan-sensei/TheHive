@@ -78,6 +78,7 @@ Game::~Game(){
 
 void Game::Init(){
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
+    
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
@@ -95,7 +96,7 @@ void Game::Init(){
     Engine->HideCursor(true);
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,20,10),1);
+    uint16_t h = sF->createHero(glm::vec3(0,30,10),1);
     //for (size_t i = 0; i < 50; i++) {
     //    sF->createRusher(glm::vec3(0,20,10), 10);
     //}
@@ -114,7 +115,7 @@ void Game::Init(){
     Accumulator = 0;
 
     //Singleton<Pathfinding>::Instance()->SetDebug(true);
-    //world->setDebug(true);
+    world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
@@ -182,7 +183,7 @@ void Game::Update(){
 
     //Engine2D->draw();
     // Consola por pantalla
-    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     // std::cout << " - END DRAW" << '\n';
