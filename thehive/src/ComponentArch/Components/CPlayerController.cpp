@@ -11,7 +11,7 @@
 // #include <GameEngine/Motor2D.hpp>
 
 #define VEL_FACTOR          2000.f
-#define MAX_HERO_SPEED      6
+#define MAX_HERO_SPEED      4
 
 #define ROTATE_KEY          gg::GG_LCONTROL
 #define DASH_KEY            gg::GG_ALT
@@ -154,49 +154,49 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_3)){
         hab->ToggleSkill(2);
     }
-    if(Engine->key(gg::GG_T)){
-        if(pulsacion_soldier==false){
-            pulsacion_soldier=true;
-            if(maxsoldier>currentsoldier){
-                currentsoldier++;
-                auto sF = Singleton<Factory>::Instance();
-                sF->createSoldier(glm::vec3(-10,3, -50),200);
-
-            }
-
-        }
-    }
-    else{
-        pulsacion_soldier= false;
-    }
-    if(Engine->key(gg::GG_Y)){
-        if(pulsacion_tank==false){
-            pulsacion_tank=true;
-            if(maxtank>currenttank){
-                currenttank++;
-
-                auto sF = Singleton<Factory>::Instance();
-                sF->createTank(glm::vec3(5,3,65),200);
-            }
-        }
-    }
-    else{
-        pulsacion_tank= false;
-    }
-    if(Engine->key(gg::GG_U)){
-        if(pulsacion_rusher==false){
-            pulsacion_rusher=true;
-            if(maxrusher>currentrusher){
-                currentrusher++;
-
-                auto sF = Singleton<Factory>::Instance();
-                sF->createRusher(glm::vec3(-45,3,-23),200);
-            }
-        }
-    }
-    else{
-        pulsacion_rusher= false;
-    }
+    // if(Engine->key(gg::GG_T)){
+    //     if(pulsacion_soldier==false){
+    //         pulsacion_soldier=true;
+    //         if(maxsoldier>currentsoldier){
+    //             currentsoldier++;
+    //             auto sF = Singleton<Factory>::Instance();
+    //             sF->createSoldier(glm::vec3(-10,3, -50),200);
+    //
+    //         }
+    //
+    //     }
+    // }
+    // else{
+    //     pulsacion_soldier= false;
+    // }
+    // if(Engine->key(gg::GG_Y)){
+    //     if(pulsacion_tank==false){
+    //         pulsacion_tank=true;
+    //         if(maxtank>currenttank){
+    //             currenttank++;
+    //
+    //             auto sF = Singleton<Factory>::Instance();
+    //             sF->createTank(glm::vec3(5,3,65),200);
+    //         }
+    //     }
+    // }
+    // else{
+    //     pulsacion_tank= false;
+    // }
+    // if(Engine->key(gg::GG_U)){
+    //     if(pulsacion_rusher==false){
+    //         pulsacion_rusher=true;
+    //         if(maxrusher>currentrusher){
+    //             currentrusher++;
+    //
+    //             auto sF = Singleton<Factory>::Instance();
+    //             sF->createRusher(glm::vec3(-45,3,-23),200);
+    //         }
+    //     }
+    // }
+    // else{
+    //     pulsacion_rusher= false;
+    // }
     if(Engine->key(gg::GG_M)){
         //hab->ToggleSkill(2);
         //devuelve ide de un objeto

@@ -15,9 +15,10 @@ class CStaticModel : public IComponent {
         virtual ~CStaticModel();
 
         void setVisibility(bool flag);
-        
+        void setPosition(const glm::vec3 &Position);
 
     private:
+        SurrealEngine* Surreal;
         TNodo* _3DModel;
 
 };

@@ -25,6 +25,7 @@ class ggDynWorld;
 
 //  Forward declaration de otras componentes que incluyas
 class CTransform;
+class CStaticModel;
 class CClock;
 
 class CRigidBody : public IComponent {
@@ -48,6 +49,13 @@ class CRigidBody : public IComponent {
             float,float,float,
             float,float,float
         );
+
+        CRigidBody(
+            float x, float y, float z,
+            float rx, float ry, float rz, float rw,
+            float sX, float sY, float sZ
+        );
+
         CRigidBody(const CRigidBody &orig) = delete;
         virtual ~CRigidBody();
 
@@ -110,6 +118,7 @@ class CRigidBody : public IComponent {
 
         //  Punteros a otras componentes
         CTransform* cTransform;
+        CStaticModel* cStaticModel;
 
         //  Variables de esta componente
         btDefaultMotionState*       myMotionState;

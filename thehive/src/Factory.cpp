@@ -338,10 +338,10 @@ uint16_t Factory::createCollectableWeapon(const glm::vec3 &_position, int _weapo
     CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, weapon);
 
-    CRenderable_3D *renderable = new CRenderable_3D("assets/BinaryFiles/BinaryModels/Cube.modelgg", Blue);
+    CRenderable_3D *renderable = new CRenderable_3D("assets/BinaryFiles/BinaryModels/escopeta.modelgg", Blue);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, weapon);
 
-    CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
+    CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
     Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, weapon);
 
     TData mes;
@@ -373,21 +373,21 @@ uint16_t Factory::createPickableItem(const glm::vec3 &_position){
     return item;
 }
 
-uint16_t Factory::createTouchableObject(const glm::vec3 &_position, const uint16_t &_id, const glm::vec3 &vel, const float &_dur, uint16_t _item){
+uint16_t Factory::createTouchableObject(const std::string &_path, const glm::vec3 &_position, const glm::vec3 &_rotation, const uint16_t &_id, const glm::vec3 &vel, const int &_dur, uint16_t _item){
     uint16_t t_obj = Manager->createEntity();
     ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
 
     // t_obj    : Objeto que va a disparar el evento
+    // _position: Posicion del interruptor
     //   _id    : "Puerta" que se va a abrir
     //   vel    : Vector movimiento del evento
     //  _dur    : Duracion de la animacion
     // _item    : Objeto en concreto para disparar el evento
 
-    CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
+    CTransform *transform = new CTransform(_position, _rotation);
     Manager->addComponentToEntity(transform, gg::TRANSFORM, t_obj);
 
-    CRenderable_3D *renderable = new CRenderable_3D("assets/BinaryFiles/BinaryModels/Cube.modelgg", moradoDeLos80);
-    // CRenderable_3D *renderable = new CRenderable_3D("assets/Models/cuboGrande.obj", w_mat);
+    CRenderable_3D *renderable = new CRenderable_3D(_path, moradoDeLos80);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, t_obj);
 
     // CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);

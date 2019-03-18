@@ -317,6 +317,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
 void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
     if((_pRec->eTriggerType & kTrig_Touchable) && Engine->key(gg::GG_E)){
         uint16_t item = _pRec->data.find(kDat_PickableItemId);
+
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
         if(item && !cpc->hasItem(item)){
             // El heroe no ha cogido el item en concreto para realizar la accion
@@ -330,7 +331,7 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
         if(!isDone){
             uint16_t eIdObj     = _pRec->data.find(kDat_EntId);
             int actionId        = _pRec->data.find(kDat_Action);
-            //gg::cout("ID: "+std::to_string(eIdObj)+" || ACTION: "+std::to_string(actionId));
+            // std::cout << "ID: " << eIdObj << " || ACTION: " << actionId << '\n';
 
             // Esta done la accion del jugador
             _pRec->data.clearData(kDat_Done);

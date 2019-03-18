@@ -36,3 +36,10 @@ CSimpleStaticRigidBody::~CSimpleStaticRigidBody(){
     delete body;
     delete shape;
 }
+
+void CSimpleStaticRigidBody::setToKinematic(){
+    body->setCollisionFlags(2);
+}
+void CSimpleStaticRigidBody::setToStatic(){
+    body->setCollisionFlags(1);
+}
