@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "inc/fmod_extra.hpp"
+#include <FMOD/fmod_extra.hpp>
 #include <Util.hpp>
 
 #include "SoundEvent.hpp"
@@ -20,12 +20,6 @@ class SoundSystem {
 		~SoundSystem();
 
 		SoundEvent* createSound(const std::string&, SoundEvent*, TiposSonido tipo);
-
-		// SoundEvent* devuelve_escopeta(const std::string&);
-		// SoundEvent* devuelve_impacto(const std::string&);
-		// SoundEvent* devuelve_normal(const std::string&);
-		// SoundEvent* devuelve_salud(const std::string&);
-		// SoundEvent* devuelve_superficie(const std::string&);
 
 		void setVolume(float,const std::string&);
 		void setListenerPosition(glm::vec3);

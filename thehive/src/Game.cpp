@@ -68,6 +68,8 @@ Game::Game()
     Manager = Singleton<ObjectManager>::Instance();
 
     world = Singleton<ggDynWorld>::Instance();
+
+    soundSys = Singleton<SoundSystem>::Instance();
     //world->inito();
     //Engine->HideCursor(true);
 }
@@ -78,9 +80,9 @@ Game::~Game(){
 
 void Game::Init(){
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
-    BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
-    BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
-    BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.1f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
@@ -91,10 +93,10 @@ void Game::Init(){
 
 
     uint16_t h = sF->createHero(glm::vec3(0,20,10),1);
-    for (size_t i = 0; i < 50; i++) {
-        sF->createRusher(glm::vec3(0,20,10), 10);
-
-    }
+    // for (size_t i = 0; i < 50; i++) {
+    //     sF->createRusher(glm::vec3(0,20,10), 10);
+    //
+    // }
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
     Director->init();
@@ -114,7 +116,7 @@ void Game::Init(){
     MasterClock.Restart();
     Engine2D->InitHUD();
 
-    soundSys = Singleton<SoundSystem>::Instance();
+
     //Engine2D->prueba();
     // std::cout << "\n -- INIT -- " << '\n';
 }
@@ -149,6 +151,8 @@ void Game::Update(){
 
     // std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
+
+    soundSys->update();
     //Director->update(DeltaTime);
     //Director->clipingEnemigos();
     //  Interpolation tick!
@@ -180,14 +184,12 @@ void Game::Update(){
 
     // std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();
-    soundSys->update();
+
 }
 
 void Game::Resume(){
     Engine->HideCursor(true);
     Engine2D->InitHUD();
-    soundSys->CLIN();
-
 
     //Engine->HideCursor(true);
 }
@@ -196,6 +198,7 @@ void Game::CLIN(){
     //Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     world->clear();
+
     //Engine2D->CLINNormal();
     //EventSystem->clin();
 

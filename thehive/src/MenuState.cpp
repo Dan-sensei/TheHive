@@ -60,11 +60,14 @@ void MenuState::Init(){
     //Singleton<Motor2D>::Instance()->prueba();
     Engine->HideCursor(false);
 
+    //musica_menu->play();
+
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
 void MenuState::Resume() {
-    Init();
-    //Engine->HideCursor(false);
+    Singleton<Motor2D>::Instance()->InitMenu();
+    //Singleton<Motor2D>::Instance()->prueba();
+    Engine->HideCursor(false);
 
 }
 //void MenuState::submenu(){
