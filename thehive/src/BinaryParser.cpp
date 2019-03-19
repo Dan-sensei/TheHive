@@ -92,7 +92,7 @@ void BinaryParser::ReadNavmeshData(
 }
 
 
-void BinaryParser::LoadLevelData(const std::string &DATA){
+void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
 
     std::ifstream inStream(DATA, std::ios::binary);
     uint8_t NUMBER_OF_OBJECTS = 0;
@@ -127,7 +127,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA){
         bool HasCollider;
         GG_Read(inStream, HasCollider);
         ZMaterial* Dark = AssetManager::getMaterial("Default");
-        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation);
+        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation, map_zone);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
 
         //std::cout << "Collider? = " << HasCollider << '\n';
@@ -407,6 +407,32 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
 
 
 
+
+
+}
+
+void BinaryParser::ReadLoadZonesData(const std::string &BinaryFile){
+    std::ifstream inStream(BinaryFile, std::ios::binary);
+    CTriggerSystem* TS = Singleton<CTriggerSystem>::Instance();
+
+    uint8_t TOTAL;
+    GG_Read(inStream,TOTAL);
+    std::cout << "TOTAL LOADERS: " << static_cast<int>(TOTAL) << '\n';
+
+    for(int i=0 ; i<TOTAL ; ++i){
+        uint8_t ZONE;
+        GG_Read(inStream,ZONE);
+
+        float x,y,z;
+        GG_Read(inStream,x);
+        GG_Read(inStream,y);
+        GG_Read(inStream,z);
+        glm::vec3 Position(x,y,z);
+
+        TData mes;
+        mes.add(kDat_LoadThatZone,ZONE);
+        TS->RegisterTriger(kTrig_LoadZone,1,0,Position, 5, 0, false, mes);
+    }
 
 
 }

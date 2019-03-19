@@ -20,7 +20,7 @@ SurrealEngine::SurrealEngine()
     for(uint16_t i = 0; i < 349; ++i)
         SurrealEngine::KEYS[i] = false;
 
-
+    sceneMap.insert(std::make_pair(-1,ESCENA));
 }
 
 SurrealEngine::~SurrealEngine(){
@@ -105,23 +105,30 @@ TNodo* SurrealEngine::crearLuz(gg::Color &_color, const glm::vec3& pos, const gl
     return Luz;
 }
 
-TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot){
+TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone){
     ZStaticMesh* M = new ZStaticMesh();
     M->load(_path);
 
-    TNodo* Malla = new TNodo(bindTransform(pos,rot),M);
+    TNodo* Malla = new TNodo(bindTransform(pos,rot,map_zone),M);
 
     return Malla;
 }
 
-TNodo* SurrealEngine::bindTransform(const glm::vec3& pos, const glm::vec3& rot){
+TNodo* SurrealEngine::bindTransform(const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone){
     TTransform* Rotate = new TTransform();
     TTransform* Translate = new TTransform();
 
     Rotate->setRotation(rot);
     Translate->setPosition(pos);
 
-    TNodo* NodoRot = new TNodo(ESCENA,Rotate);
+    auto PADRE = sceneMap.find(map_zone);
+    if(PADRE == sceneMap.end()){
+        TNodo* tmp = new TNodo(ESCENA,nullptr,map_zone);
+        sceneMap.insert(std::make_pair(map_zone,tmp));
+        PADRE = sceneMap.find(map_zone);
+    }
+
+    TNodo* NodoRot = new TNodo(PADRE->second,Rotate);
     TNodo* NodoTrans = new TNodo(NodoRot,Translate);
 
     return NodoTrans;

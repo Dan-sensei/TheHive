@@ -55,20 +55,21 @@ class CTriggerSystem{
 public:
     ~CTriggerSystem();
     void PulsoTrigger(
-        EnumTriggerType _eTriggerType,
-        unsigned long _idSource,
-        const glm::vec3& _vPos,
-        float _fRadius,
-        TData _data);
+                EnumTriggerType     _eTriggerType,
+                unsigned long       _idSource,
+        const   glm::vec3&          _vPos,
+                float               _fRadius,
+                TData               _data);
+
     unsigned long RegisterTriger(
-        EnumTriggerType _eTriggerType,
-        unsigned long _nPriority,
-        unsigned long _idSource,
-        const glm::vec3& _vPos,
-        float _fRadius,
-        float _fDuration,
-        bool _bDynamicSourcePos,
-        TData _data);
+                EnumTriggerType     _eTriggerType,
+                unsigned long       _nPriority,
+                unsigned long       _idSource,
+        const   glm::vec3&          _vPos,
+                float               _fRadius,
+                float               _fDuration,
+                bool                _bDynamicSourcePos,
+                TData               _data);
 
     void clin();
 

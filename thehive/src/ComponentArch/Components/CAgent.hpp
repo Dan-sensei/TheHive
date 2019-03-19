@@ -17,6 +17,7 @@
 #include <SurrealEngine/SurrealEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <Singleton.hpp>
+#include <BinaryParser.hpp>
 
 
 class CTransform;
@@ -68,6 +69,10 @@ class CAgent : public IComponent {
         ObjectManager   *oManager;
 
         // void getWeaponInformation(float&, float&, float&, float&, int&, int);
+        std::map<uint8_t,std::string> zonesMap;
+
+        // ---------------------------
+        // Lo chido
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerEnter;
         void ENTER_func_kTrig_none          (TriggerRecordStruct*);
@@ -80,8 +85,9 @@ class CAgent : public IComponent {
         void ENTER_func_kTrig_Pickable      (TriggerRecordStruct*);
         void ENTER_func_kTrig_DeadAlien     (TriggerRecordStruct*);
         void ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct*);
-        void ENTER_func_kTrig_ExpansiveForce (TriggerRecordStruct*);
+        void ENTER_func_kTrig_ExpansiveForce(TriggerRecordStruct*);
         void ENTER_func_kTrig_EnemyNear     (TriggerRecordStruct*);
+        void ENTER_func_kTrig_LoadZone      (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerStay;
         void STAY_func_kTrig_none           (TriggerRecordStruct*);
@@ -94,8 +100,9 @@ class CAgent : public IComponent {
         void STAY_func_kTrig_Pickable       (TriggerRecordStruct*);
         void STAY_func_kTrig_DeadAlien      (TriggerRecordStruct*);
         void STAY_func_kTrig_ExpansiveWave  (TriggerRecordStruct*);
-        void STAY_func_kTrig_ExpansiveForce  (TriggerRecordStruct*);
+        void STAY_func_kTrig_ExpansiveForce (TriggerRecordStruct*);
         void STAY_func_kTrig_EnemyNear      (TriggerRecordStruct*);
+        void STAY_func_kTrig_LoadZone       (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerExit;
         void EXIT_func_kTrig_none           (TriggerRecordStruct*);
@@ -108,8 +115,9 @@ class CAgent : public IComponent {
         void EXIT_func_kTrig_Pickable       (TriggerRecordStruct*);
         void EXIT_func_kTrig_DeadAlien      (TriggerRecordStruct*);
         void EXIT_func_kTrig_ExpansiveWave  (TriggerRecordStruct*);
-        void EXIT_func_kTrig_ExpansiveForce  (TriggerRecordStruct*);
+        void EXIT_func_kTrig_ExpansiveForce (TriggerRecordStruct*);
         void EXIT_func_kTrig_EnemyNear      (TriggerRecordStruct*);
+        void EXIT_func_kTrig_LoadZone       (TriggerRecordStruct*);
 
 };
 
