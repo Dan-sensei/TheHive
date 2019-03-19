@@ -78,6 +78,7 @@ Game::~Game(){
 
 void Game::Init(){
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
+    BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data",0);
 

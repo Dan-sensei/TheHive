@@ -77,6 +77,9 @@ class SurrealEngine {
         inline bool key(gg::KEYCODES keyCode){ return KEYS[keyCode];};
         void print();
         bool Initialize();
+
+        void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
+
     private:
         SurrealEngine();
 

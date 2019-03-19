@@ -11,7 +11,7 @@
 // #include <GameEngine/Motor2D.hpp>
 
 #define VEL_FACTOR          2000.f
-#define MAX_HERO_SPEED      4
+#define MAX_HERO_SPEED      2
 
 #define ROTATE_KEY          gg::GG_LCONTROL
 #define DASH_KEY            gg::GG_ALT

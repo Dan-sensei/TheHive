@@ -123,9 +123,10 @@ TNodo* SurrealEngine::bindTransform(const glm::vec3& pos, const glm::vec3& rot, 
 
     auto PADRE = sceneMap.find(map_zone);
     if(PADRE == sceneMap.end()){
-        TNodo* tmp = new TNodo(ESCENA,nullptr,map_zone);
+        TNodo* tmp = new TNodo(ESCENA,nullptr);
         sceneMap.insert(std::make_pair(map_zone,tmp));
         PADRE = sceneMap.find(map_zone);
+        // std::cout << "CREATING SUPERNODE :" << static_cast<int>(map_zone) << '\n';
     }
 
     TNodo* NodoRot = new TNodo(PADRE->second,Rotate);
@@ -283,4 +284,11 @@ bool SurrealEngine::Initialize(){
 void SurrealEngine::deleteLeafNode(TNodo *node){
     TNodo *tmp = node->getPadre()->getPadre();
     ESCENA->remHijo(tmp);
+}
+
+void SurrealEngine::SetMapZoneVisibility(const int8_t &zone,const bool &flag){
+    auto it = sceneMap.find(zone);
+    if(it != sceneMap.end()){
+        (it->second)->setVisibility(flag);
+    }
 }

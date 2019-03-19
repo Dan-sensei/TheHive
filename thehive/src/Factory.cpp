@@ -45,7 +45,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CGun *gun = new CGun(0.4,5,15,0.5,0.5,3);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
-    CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone);
+    CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
     Manager->setHeroID(hero);
@@ -363,8 +363,10 @@ uint16_t Factory::createPickableItem(const glm::vec3 &_position){
     CRenderable_3D *renderable = new CRenderable_3D("assets/BinaryFiles/BinaryModels/Cube.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, item);
 
-    CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
-    Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, item);
+    // CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
+    // Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, item);
+    CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(_position.x, _position.y, _position.z, 0,0,0,1, 2, 2, 2);
+    Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, item);
 
     TData mes;
     mes.add(kDat_PickableItemId,item);

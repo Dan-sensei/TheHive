@@ -431,8 +431,32 @@ void BinaryParser::ReadLoadZonesData(const std::string &BinaryFile){
 
         TData mes;
         mes.add(kDat_LoadThatZone,ZONE);
-        TS->RegisterTriger(kTrig_LoadZone,1,0,Position, 5, 0, false, mes);
+        TS->RegisterTriger(kTrig_LoadZone,1,0,Position, 8, 0, false, mes);
+        std::cout << " - LOAD ZONE " << static_cast<int>(ZONE) << " ON " << glm::to_string(Position) << '\n';
     }
+}
 
+void BinaryParser::ReadUnLoadZonesData(const std::string &BinaryFile){
+    std::ifstream inStream(BinaryFile, std::ios::binary);
+    CTriggerSystem* TS = Singleton<CTriggerSystem>::Instance();
 
+    uint8_t TOTAL;
+    GG_Read(inStream,TOTAL);
+    std::cout << "TOTAL UNLOADERS: " << static_cast<int>(TOTAL) << '\n';
+
+    for(int i=0 ; i<TOTAL ; ++i){
+        uint8_t ZONE;
+        GG_Read(inStream,ZONE);
+
+        float x,y,z;
+        GG_Read(inStream,x);
+        GG_Read(inStream,y);
+        GG_Read(inStream,z);
+        glm::vec3 Position(x,y,z);
+
+        TData mes;
+        mes.add(kDat_LoadThatZone,ZONE);
+        TS->RegisterTriger(kTrig_UnLoadZone,1,0,Position, 8, 0, false, mes);
+        std::cout << " - UNLOAD ZONE " << static_cast<int>(ZONE) << " ON " << glm::to_string(Position) << '\n';
+    }
 }

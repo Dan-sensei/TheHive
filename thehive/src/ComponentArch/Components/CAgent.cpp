@@ -56,6 +56,7 @@ void CAgent::Init(){
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_ExpansiveWave,&CAgent::ENTER_func_kTrig_ExpansiveWave));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_ExpansiveForce,&CAgent::ENTER_func_kTrig_ExpansiveForce));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_LoadZone,     &CAgent::ENTER_func_kTrig_LoadZone));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_UnLoadZone,   &CAgent::ENTER_func_kTrig_UnLoadZone));
     // mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Plantilla,    &CAgent::ENTER_func_kTrig_Plantilla));
 
     // Mapa a funcion de los trigger ON STAY
@@ -72,6 +73,7 @@ void CAgent::Init(){
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_ExpansiveWave, &CAgent::STAY_func_kTrig_ExpansiveWave));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_ExpansiveForce,&CAgent::STAY_func_kTrig_ExpansiveForce));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_LoadZone,      &CAgent::STAY_func_kTrig_LoadZone));
+    mapFuncOnTriggerStay.insert(std::make_pair(kTrig_UnLoadZone,    &CAgent::STAY_func_kTrig_UnLoadZone));
     // mapFuncOnTriggerStay.insert(std::make_pair(kTrig_Plantilla,    &CAgent::STAY_func_kTrig_Plantilla));
 
     // Mapa a funcion de los trigger ON STAY
@@ -88,6 +90,7 @@ void CAgent::Init(){
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_ExpansiveWave, &CAgent::EXIT_func_kTrig_ExpansiveWave));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_ExpansiveForce,&CAgent::EXIT_func_kTrig_ExpansiveForce));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_LoadZone,      &CAgent::EXIT_func_kTrig_LoadZone));
+    mapFuncOnTriggerExit.insert(std::make_pair(kTrig_UnLoadZone,    &CAgent::EXIT_func_kTrig_UnLoadZone));
     // mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Plantilla,    &CAgent::EXIT_func_kTrig_Plantilla));
 
 
@@ -160,7 +163,16 @@ void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     std::string name = zonesMap[id];
     BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+".data",id);
 
-    // std::cout << "["+std::to_string(id)+"] LOADING ZONE: " << name << '\n';
+    // std::cout << " -["+std::to_string(id)+"]- LOADING ZONE: " << name << '\n';
+}
+
+void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
+    int8_t id = _pRec->data.find(kDat_LoadThatZone);
+    // std::string name = zonesMap[id];
+
+    Engine->SetMapZoneVisibility(id,false);
+
+    // std::cout << " -["+std::to_string(id)+"]- UNLOADING ZONE: " << name << '\n';
 }
 
 void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){
@@ -261,6 +273,7 @@ void CAgent::STAY_func_kTrig_DeadAlien      (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_ExpansiveWave  (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_ExpansiveForce  (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_LoadZone   (TriggerRecordStruct *_pRec){}
+void CAgent::STAY_func_kTrig_UnLoadZone   (TriggerRecordStruct *_pRec){}
 
 void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Gunfire){
@@ -408,6 +421,7 @@ void CAgent::EXIT_func_kTrig_Explosion   (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_ExpansiveForce (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_LoadZone (TriggerRecordStruct *_pRec){}
+void CAgent::EXIT_func_kTrig_UnLoadZone (TriggerRecordStruct *_pRec){}
 
 void CAgent::EXIT_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_DeadAlien){

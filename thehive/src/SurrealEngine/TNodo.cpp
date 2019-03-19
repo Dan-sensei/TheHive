@@ -2,16 +2,16 @@
 #include <cstdint>
 
 //Constructor para el nodo raiz
-TNodo::TNodo(int8_t _tipo)
-:Visibility(true),map_node(_tipo)
+TNodo::TNodo()
+:Visibility(true)
 {
     padre = nullptr;
     entidad = nullptr;
 }
 
 //Constructor para el resto de nodos
-TNodo::TNodo(TNodo *P,TEntidad *_ent, int8_t _tipo)
-:Visibility(true),map_node(_tipo)
+TNodo::TNodo(TNodo *P,TEntidad *_ent)
+:Visibility(true)
 {
     !P ? padre = nullptr : padre = P;
     !_ent?  entidad = nullptr : entidad = _ent;
@@ -73,11 +73,16 @@ TNodo* TNodo::getPadre(){
 }
 
 void TNodo::draw(const uint8_t &T_ID){
-    entidad->beginDraw(T_ID);
+    if(entidad){
+        entidad->beginDraw(T_ID);
 
-    drawRoot(T_ID);
+        drawRoot(T_ID);
 
-    entidad->endDraw(T_ID);
+        entidad->endDraw(T_ID);
+    }
+    else{
+        drawRoot(T_ID);
+    }
 }
 
 void TNodo::setVisibility(bool Flag){

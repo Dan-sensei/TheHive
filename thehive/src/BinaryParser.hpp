@@ -28,7 +28,9 @@ class BinaryParser{
         );
 
         static void ReadEventsData(const std::string &BinaryFile);
+
         static void ReadLoadZonesData(const std::string &BinaryFile);
+        static void ReadUnLoadZonesData(const std::string &BinaryFile);
 
         static void LoadLevelData(const std::string &DARTA,int8_t map_zone = -1);
 
