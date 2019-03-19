@@ -45,6 +45,7 @@ int main(int argc, char const *argv[]) {
     ggDynWorld *world = Singleton<ggDynWorld>::Instance();
     world->inito();
 
+    Singleton<AssetManager>::Instance()->loadInit();
 
     //singleton StateMachine
     //new GameState();

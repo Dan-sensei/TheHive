@@ -2,12 +2,6 @@
 #include <iostream>
 #include <SOIL2/SOIL2.h>
 
-
-std::unordered_map<std::string, ZMeshData> AssetManager::MeshDataMap;
-std::unordered_map<std::string, ZMaterial> AssetManager::MaterialMap;
-std::unordered_map<std::string, Shader> AssetManager::ShaderMap;
-std::unordered_map<std::string, unsigned int> AssetManager::TextureMap;
-
 AssetManager::AssetManager(){
     ShaderMap["Default"].loadFiles("assets/Shaders/VertexShader.glsl", nullptr, "assets/Shaders/FragmentShader.glsl");
     ShaderMap["Lines"].loadFiles("assets/Shaders/Line_VS.glsl", nullptr, "assets/Shaders/Line_FS.glsl");
@@ -16,35 +10,36 @@ AssetManager::AssetManager(){
     ShaderMap["Blend2D"].loadFiles("assets/Shaders/VertexShader2D.glsl", nullptr, "assets/Shaders/FragmentShader2DBlend.glsl");
     ShaderMap["Plano"].loadFiles("assets/Shaders/VertexShader2DPlano.glsl", nullptr, "assets/Shaders/FragmentShader2DPlano.glsl");
     ShaderMap["skyboxShader"].loadFiles("assets/Shaders/SkyBox.vs", nullptr, "assets/Shaders/SkyBox.frag");
-    ShaderMap["AnimationShader"].loadFiles("assets/Shaders/VertexShader.glsl", nullptr, "assets/Shaders/Animation.frag");
+    ShaderMap["AnimationShader"].loadFiles("assets/Shaders/Animation.vs", nullptr, "assets/Shaders/FragmentShader.glsl");
+}
 
+void AssetManager::loadInit(){
+        Shader* Def = getShader("Default");
+        ZMaterial* 		MAT = getMaterial("Morado");
+        MAT->attachShader(Def);
+        MAT->addTexture("DiffuseMap",      "assets/Textures/prueba1.png",       		GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        MAT->addTexture("NormalMap",       "assets/Textures/COMOUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        MAT->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
-    Shader* Def = getShader("Default");
-    ZMaterial* 		MAT = getMaterial("Morado");
-    MAT->attachShader(Def);
-    MAT->addTexture("DiffuseMap",      "assets/Textures/prueba1.png",       		GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    MAT->addTexture("NormalMap",       "assets/Textures/COMOUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    MAT->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        ZMaterial* 		Blue = getMaterial("Blue");
+        Blue->attachShader(Def);
+        Blue->addTexture("DiffuseMap",      "assets/Textures/Blue.png",       		    GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        Blue->addTexture("NormalMap",       "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        Blue->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",     GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
-    ZMaterial* 		Blue = getMaterial("Blue");
-    Blue->attachShader(Def);
-    Blue->addTexture("DiffuseMap",      "assets/Textures/Blue.png",       		     GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Blue->addTexture("NormalMap",       "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Blue->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-
-    ZMaterial* 		Nav = getMaterial("Nav");
-    Nav->attachShader(Def);
-    Nav->addTexture("DiffuseMap",      "assets/Textures/TEST.png",       		     GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Nav->addTexture("NormalMap",       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Nav->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-
+        ZMaterial* 		Nav = getMaterial("Nav");
+        Nav->attachShader(Def);
+        Nav->addTexture("DiffuseMap",      "assets/Textures/TEST.png",                  GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        Nav->addTexture("NormalMap",       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        Nav->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 }
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {
 
     auto it = MaterialMap.find(Name);
-    if(it != MaterialMap.end())
+    if(it != MaterialMap.end()){
         return &it->second;
+    }
     else {
         ZMaterial* newMat = &MaterialMap[Name];
         newMat->attachShader(&ShaderMap["Default"]);

@@ -10,7 +10,7 @@ ZStaticMesh::ZStaticMesh()
 
 bool ZStaticMesh::load(const std::string& Name){
 
-    mesh = AssetManager::getMeshData(Name);
+    mesh = Singleton<AssetManager>::Instance()->getMeshData(Name);
 
     return true;
 }

@@ -83,14 +83,14 @@ void Game::Init(){
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.1f,1000.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
-    luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
+    luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
     Engine->print();
     // Pos init del heroe normal
     // 360, 0, 350
     Engine->HideCursor(true);
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,20,10),1);
+    uint16_t h = sF->createHero(glm::vec3(0,20,10),-1);
     //for (size_t i = 0; i < 50; i++) {
     //    sF->createRusher(glm::vec3(0,20,10), 10);
     //}

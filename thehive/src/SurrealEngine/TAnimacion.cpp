@@ -12,37 +12,37 @@ TAnimacion::TAnimacion(std::vector<ZMeshData> &poses_){
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glEnableVertexAttribArray(3);
-    glEnableVertexAttribArray(4);
-    glEnableVertexAttribArray(5);
-    glEnableVertexAttribArray(6);
-    glEnableVertexAttribArray(7);
-    glEnableVertexAttribArray(8);
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(3);
+        glEnableVertexAttribArray(4);
+        glEnableVertexAttribArray(5);
+        glEnableVertexAttribArray(6);
+        glEnableVertexAttribArray(7);
+        glEnableVertexAttribArray(8);
 
-    glVertexAttribFormat(0, 3, GL_FLOAT, false, 0);
-    glVertexAttribFormat(1, 3, GL_FLOAT, false, 12);
-    glVertexAttribFormat(2, 2, GL_FLOAT, false, 0);
-    glVertexAttribFormat(3, 3, GL_FLOAT, false, 0);
-    glVertexAttribFormat(4, 3, GL_FLOAT, false, 12);
-    glVertexAttribFormat(5, 3, GL_FLOAT, false, 0);
-    glVertexAttribFormat(6, 3, GL_FLOAT, false, 12);
-    glVertexAttribFormat(7, 3, GL_FLOAT, false, 0);
-    glVertexAttribFormat(8, 3, GL_FLOAT, false, 12);
+        glVertexAttribFormat(0, 3, GL_FLOAT, false, 0);
+        glVertexAttribFormat(1, 3, GL_FLOAT, false, 12);
+        glVertexAttribFormat(2, 2, GL_FLOAT, false, 0);
+        glVertexAttribFormat(3, 3, GL_FLOAT, false, 0);
+        glVertexAttribFormat(4, 3, GL_FLOAT, false, 12);
+        glVertexAttribFormat(5, 3, GL_FLOAT, false, 0);
+        glVertexAttribFormat(6, 3, GL_FLOAT, false, 12);
+        glVertexAttribFormat(7, 3, GL_FLOAT, false, 0);
+        glVertexAttribFormat(8, 3, GL_FLOAT, false, 12);
 
-    glVertexAttribBinding(0, 0);
-    glVertexAttribBinding(1, 0);
-    glVertexAttribBinding(2, 1);
-    glVertexAttribBinding(3, 2);
-    glVertexAttribBinding(4, 2);
-    glVertexAttribBinding(5, 3);
-    glVertexAttribBinding(6, 3);
-    glVertexAttribBinding(7, 4);
-    glVertexAttribBinding(8, 4);
+        glVertexAttribBinding(0, 0);
+        glVertexAttribBinding(1, 0);
+        glVertexAttribBinding(2, 1);
+        glVertexAttribBinding(3, 2);
+        glVertexAttribBinding(4, 2);
+        glVertexAttribBinding(5, 3);
+        glVertexAttribBinding(6, 3);
+        glVertexAttribBinding(7, 4);
+        glVertexAttribBinding(8, 4);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,  poses[0].IndexBuffer);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,  poses[0].IndexBuffer);
     glBindVertexArray(0);
 
     size = poses[0].IndexSize;
@@ -79,5 +79,5 @@ void TAnimacion::beginDraw(const uint8_t &T_ID){
     }
 }
 void TAnimacion::endDraw(const uint8_t &T_ID){
-    
+
 }

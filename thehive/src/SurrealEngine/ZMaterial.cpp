@@ -25,7 +25,7 @@ void ZMaterial::attachShader(Shader *s){
 }
 
 void ZMaterial::addTexture(const std::string &ShaderTarget, const std::string &path, unsigned int mode, unsigned int flags){
-    unsigned int TextureID = AssetManager::getTexture(path, mode, flags);
+    unsigned int TextureID = Singleton<AssetManager>::Instance()->getTexture(path, mode, flags);
     Textures[shader->getUniformLocation(ShaderTarget)] = TextureID;
     //std::cout << "TexureID " << TextureID << '\n';
 }

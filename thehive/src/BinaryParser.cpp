@@ -126,7 +126,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA){
 
         bool HasCollider;
         GG_Read(inStream, HasCollider);
-        ZMaterial* Dark = AssetManager::getMaterial("Default");
+        ZMaterial* Dark = Singleton<AssetManager>::Instance()->getMaterial("Default");
         CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
 
