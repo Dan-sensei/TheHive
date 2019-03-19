@@ -52,6 +52,7 @@ class Motor2D{
         int InitPause();
         int InitAIDebug(int id);
         void prueba();
+        void changeWeapon();
 
         //int InitPause2();
         //int InitPause3();

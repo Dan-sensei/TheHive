@@ -412,6 +412,7 @@ void CPlayerController::showDebug(){
 void CPlayerController::changeWeaponIfPossible(CGun *gun){
     Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
     pulsacion_q = true;
+    Singleton<Motor2D>::Instance()->changeWeapon();
     if(isPrincipal){
         isPrincipal = false;
 

@@ -153,6 +153,16 @@ VolEffect=_vol;
 void Motor2D::setVolMusic(int _vol){
 VolMusic=_vol;
 }
+void Motor2D::changeWeapon(){
+    int aux;
+    aux=balaP;
+    balaP=balaS;
+    balaS=aux;
+
+    aux=balaP_TOT;
+    balaP_TOT=balaS_TOT;
+    balaS_TOT=aux;
+}
 void Motor2D::setbullet(int tipo,int b_act, int b_tot){
     if(tipo==0){
         balaP       = b_act;
@@ -421,16 +431,16 @@ void Motor2D::InitHUD(){
     y=85;
     w=20;
     h=15;
-    _x= x+w*0.5;
-    _y= y+h*0.5;
-    AddImage("0arma","assets/HUD/cf_hud_d.jpg",75,85,20,15);
+    _x= x+w*0.7;
+    _y= y+h*0.7;
+    AddImage("0arma","assets/HUD/cf_hud_d.jpg",75,85,20,15);//secundaria
     addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
     x=70;
     y=80;
     w=20;
     h=15;
-    _x= x+w*0.5;
-    _y= y+h*0.5;
+    _x= x+w*0.7;
+    _y= y+h*0.7;
     AddImage("1arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
     addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 
@@ -461,7 +471,7 @@ void Motor2D::InitHUD(){
     mapHudFunctions.insert(std::make_pair("hab2",&Motor2D::HUD_hability2));
     mapHudFunctions.insert(std::make_pair("hab3",&Motor2D::HUD_hability3));
     mapHudFunctions.insert(std::make_pair("vida",&Motor2D::HUD_vida));
-    mapHudFunctions.insert(std::make_pair("0arma",&Motor2D::HUD_arma0));
+    mapHudFunctions.insert(std::make_pair("0arma",&Motor2D::HUD_arma0));//secundaria
     mapHudFunctions.insert(std::make_pair("1arma",&Motor2D::HUD_arma1));
 
     perc        =   0;
@@ -546,7 +556,21 @@ void Motor2D::DisplayHUD(){
     if(true){
         auto it = IMAGENES.begin();
         float X,Y,H,W,T_W,T_H;
+        Imagen2D* armaP;
+        Imagen2D* armaS;
         while(it!=IMAGENES.end()){
+
+            if(it->first=="0arma"||it->first=="1arma"){
+                if(it->first=="0arma"){
+                    armaS=it->second;
+                }
+                else{
+                    armaP=it->second;
+                }
+                it++;
+                continue;
+
+            }
             auto img =it->second;
             img->Draw();
             if(mapHudFunctions.find(it->first) != mapHudFunctions.end())
@@ -554,6 +578,11 @@ void Motor2D::DisplayHUD(){
 
             it++;
         }
+        //mostramos una u otra
+        armaP->Draw();
+        (this->*mapHudFunctions["1arma"])(armaP);
+        armaS->Draw();
+        (this->*mapHudFunctions["0arma"])(armaS);
         RECTANGULOS[4]->Draw();
         RECTANGULOS[5]->Draw();
 
@@ -614,6 +643,7 @@ void Motor2D::HUD_vida(Imagen2D *it){
 void Motor2D::HUD_arma0(Imagen2D *it){
 
     std::string hola=std::to_string(balaS)+"/"+std::to_string(balaS_TOT);
+    std::cout <<hola << '\n';
     TEXT[0]->setText(hola);
     TEXT[0]->Draw();
 }

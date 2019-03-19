@@ -285,6 +285,9 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
         if(!cpc->canPickWeapon()){
             return;
         }
+        //recogemos arma
+        //Singleton<Motor2D>::Instance()->changeWeapon();
+        //Singleton<Motor2D>::Instance()->setbullet(0,gun->getBullets(),gun->getTotalBullets());
 
         if(gun){
             if(!cpc->heroHasSecondWeapon()){
@@ -297,8 +300,10 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 // Le anyado la nueva
                 CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor);
                 cpc->setSecondWeapon(Gun);
+                Singleton<Motor2D>::Instance()->setbullet(1,Gun->getBullets(),Gun->getTotalBullets());
             }
             else{
+                //cambiamos la principal
                 // Puedo recoger el arma del suelo
                 int _wtype_actual = gun->getType();
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
@@ -328,6 +333,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 glm::vec3 to = Singleton<ggDynWorld>::Instance()->getRaycastVector();
                 glm::vec3 vec = (to-from)*30.f;
                 static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,weapon))->applyCentralForce(vec);
+                Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
             }
 
             // Destruyo el arma del suelo y su evento
@@ -342,6 +348,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
             // Creo y anyado un arma a la entidad
             CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)));
             oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
+            Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
 
             // Destruyo el arma del suelo y su evento
             int id = _pRec->data.find(kDat_EntId);
