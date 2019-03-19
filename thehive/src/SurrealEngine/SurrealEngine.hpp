@@ -75,7 +75,6 @@ class SurrealEngine {
         void Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c);
 
         inline bool key(gg::KEYCODES keyCode){ return KEYS[keyCode];};
-        void print();
         bool Initialize();
     private:
         SurrealEngine();

@@ -78,7 +78,7 @@ Game::~Game(){
 
 void Game::Init(){
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
-    
+
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
@@ -88,9 +88,8 @@ void Game::Init(){
     BinaryParser::LoadLevelData("assets/BinaryFiles/TAMESIS.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/END.data");
     auto sF = Singleton<Factory>::Instance();
-    Engine->crearCamara(90,0.1f,1000.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
+    Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
-    Engine->print();
     // Pos init del heroe normal
     // 360, 0, 350
     Engine->HideCursor(true);
