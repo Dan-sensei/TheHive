@@ -643,7 +643,6 @@ void Motor2D::HUD_vida(Imagen2D *it){
 void Motor2D::HUD_arma0(Imagen2D *it){
 
     std::string hola=std::to_string(balaS)+"/"+std::to_string(balaS_TOT);
-    std::cout <<hola << '\n';
     TEXT[0]->setText(hola);
     TEXT[0]->Draw();
 }

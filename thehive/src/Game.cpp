@@ -82,8 +82,8 @@ void Game::Init(){
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data",0);
 
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
+    BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/PASEO.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/PARQUE.data");
@@ -98,7 +98,9 @@ void Game::Init(){
     Engine->HideCursor(true);
 
 
-    uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
+    //uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
+    uint16_t h = sF->createHero(glm::vec3(451,17,54),-1);
+
     //for (size_t i = 0; i < 50; i++) {
     //    sF->createRusher(glm::vec3(0,20,10), 10);
     //}

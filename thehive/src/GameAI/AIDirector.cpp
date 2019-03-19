@@ -10,6 +10,16 @@ poner mas nodos
 poner y usar medidor de estres:
 -Special atacking(Maximun)
 depende del estres invocar unas cosas u otras
+
+
+1.       510,5,102
+2.      642,5,102
+3.      584,5,157
+4.      584,5,76
+5.     554,5,54
+player:      451,17,54
+
+
 */
 #define MIN_WAN 7.f
 #define MAX_WAN 15.f
@@ -58,12 +68,12 @@ void AIDirector::init(){
     estres=1;
 
 
-    TimeBusqueda=1;
-    TimeHorda=300;
+    TimeBusqueda=200;
+    TimeHorda=50;//300
     TimePico=10;
 
     AcumulatorBusqueda=0;
-    AcumulatorBusqueda=200;
+    //AcumulatorBusqueda=200;
     AcumulatorHorda=0;
     AcumulatorPico=11;
 
@@ -71,8 +81,45 @@ void AIDirector::init(){
     canWander=true;
     canHorde=true;
     //Creacion de nodos
-    Njugador= createNode(glm::vec3(0,20,15),5);
-    Njugador->setonRange(true);
+
+    //1.       510,5,102
+    //2.      642,5,102
+    //3.      584,5,157
+    //4.      584,5,76
+    //5.     554,5,54
+
+    auto n1= createNode(glm::vec3(510,5,102),5);
+    auto n2= createNode(glm::vec3(642,5,102),5);
+    auto n3= createNode(glm::vec3(584,5,157),5);
+    auto n4= createNode(glm::vec3(584,5,76),5);
+    auto n5= createNode(glm::vec3(554,5,54),5);
+    n1->addNode(n2);
+    n1->addNode(n3);
+    n1->addNode(n4);
+    n1->addNode(n5);
+
+    n2->addNode(n1);
+    n2->addNode(n3);
+    n2->addNode(n4);
+    n2->addNode(n5);
+
+    n3->addNode(n1);
+    n3->addNode(n2);
+    n3->addNode(n4);
+    n3->addNode(n5);
+
+    n4->addNode(n1);
+    n4->addNode(n2);
+    n4->addNode(n3);
+    n4->addNode(n5);
+
+    n5->addNode(n1);
+    n5->addNode(n2);
+    n5->addNode(n3);
+    n5->addNode(n4);
+
+    //Njugador= createNode(glm::vec3(0,20,15),5);
+    //Njugador->setonRange(true);
     //uint16_t h = sF->createHero(glm::vec3(10,3,65),false);
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
 
@@ -92,9 +139,9 @@ Pjugador(nullptr),Njugador(nullptr){
 
 }
 AIDirector::~AIDirector (){
-    for (size_t i = 0; i < nodos.size(); i++) {
-        delete nodos[i];
-    }
+    //for (size_t i = 0; i < nodos.size(); i++) {
+    //    delete nodos[i];
+    //}
     //liberamos toda la memoria de los nodos
 
 }
@@ -115,18 +162,20 @@ void AIDirector::update (float delta){
     if(!activado)return;
     AcumulatorBusqueda+=delta;
     //Acumulator+=(delta*(estres/10));
-    TimeBusqueda=200;
+    //std::cout <<"S"<< AcumulatorBusqueda << '\n';
     if(AcumulatorBusqueda>TimeBusqueda){
+        //creamos wandering si es necesario
         AcumulatorBusqueda=0;
         //busquedaCerca();
-        invocacion(Njugador);
     }
     if(canHorde){
+        //std::cout <<"A"<< AcumulatorHorda << '\n';
         AcumulatorHorda+=delta;
-        if(AcumulatorHorda>AcumulatorHorda){
+        if(AcumulatorHorda>TimeHorda){
+            //invocamos horda
             AcumulatorHorda=0;
             //invocacion(Njugador);
-            //invocar();
+            invocar();
         }
     }
     if(AcumulatorPico<TimePico){
@@ -246,9 +295,13 @@ void AIDirector::changeNode(AINode* nodo){
     Njugador=nodo;
 }
 void AIDirector::invocar(){
-    int tam =Njugador->nodosProximos.size()-1;
+    //int tam =Njugador->nodosProximos.size()-1;
+    //int enemigosint = gg::genIntRandom(0, tam);
+    //auto nodo=Njugador->nodosProximos[enemigosint];
+    //invocacion(nodo);
+    int tam =nodos.size()-1;
     int enemigosint = gg::genIntRandom(0, tam);
-    auto nodo=Njugador->nodosProximos[enemigosint];
+    auto nodo=nodos[enemigosint];
     invocacion(nodo);
 }
 void AIDirector::invocacion(AINode* nodo){
