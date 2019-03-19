@@ -6,7 +6,7 @@
 #include <string>
 
 class ZMeshData{
-friend class TAnimacion;
+friend class ZAnimationData;
     public:
         ZMeshData();
         ZMeshData(const ZMeshData &orig);
