@@ -5,6 +5,8 @@
 #include <GameAI/NavmeshStructs.hpp>
 #include "Factory.hpp"
 #include "Singleton.hpp"
+#include "EventSystem/CTriggerSystem.hpp"
+#include "EventSystem/TData.hpp"
 
 class BinaryParser{
     public:
@@ -26,8 +28,9 @@ class BinaryParser{
         );
 
         static void ReadEventsData(const std::string &BinaryFile);
+        static void ReadLoadZonesData(const std::string &BinaryFile);
 
-        static void LoadLevelData(const std::string &DARTA);
+        static void LoadLevelData(const std::string &DARTA,int8_t map_zone = -1);
 
     private:
         BinaryParser() = delete;

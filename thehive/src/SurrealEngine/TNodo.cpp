@@ -2,21 +2,22 @@
 #include <cstdint>
 
 //Constructor para el nodo raiz
-TNodo::TNodo()
-:Visibility(true)
+TNodo::TNodo(int8_t _tipo)
+:Visibility(true),map_node(_tipo)
 {
     padre = nullptr;
     entidad = nullptr;
 }
 
 //Constructor para el resto de nodos
-TNodo::TNodo(TNodo *P,TEntidad *_ent)
-:Visibility(true)
+TNodo::TNodo(TNodo *P,TEntidad *_ent, int8_t _tipo)
+:Visibility(true),map_node(_tipo)
 {
     !P ? padre = nullptr : padre = P;
     !_ent?  entidad = nullptr : entidad = _ent;
 
     P->addHijo(this);
+
 }
 
 TNodo::~TNodo(){

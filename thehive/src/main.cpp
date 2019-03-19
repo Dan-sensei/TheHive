@@ -34,7 +34,7 @@
 
 int main(int argc, char const *argv[]) {
     // alias upd="rm -f EVENTOS.data && cp ~/Documentos/THE_HIVE_LevelEditor\ \(1\)/BinaryFiles/EVENTOS.data ."
-    // BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
+    // BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
 
 
     SurrealEngine *Engine = Singleton<SurrealEngine>::Instance();

@@ -13,6 +13,7 @@ enum EnumTriggerType{
     kTrig_Pickable          =1<<7,  // 128
     kTrig_DeadAlien         =1<<8,  // 256
     kTrig_ExpansiveWave     =1<<9,
-    kTrig_ExpansiveForce    =1<<10
+    kTrig_ExpansiveForce    =1<<10,
+    kTrig_LoadZone          =1<<11
 };
 #endif

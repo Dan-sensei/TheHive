@@ -45,7 +45,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CGun *gun = new CGun(0.4,5,15,0.5,0.5,3);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
-    CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave);
+    CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
     Manager->setHeroID(hero);
