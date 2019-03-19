@@ -85,19 +85,6 @@ TNodo* SurrealEngine::crearCamara(const float& _fov, const float& _near, const f
     return Cam;
 }
 
-void SurrealEngine::print(){
-
-    glm::vec3 scale;
-    glm::quat rotation;
-    glm::vec3 translation;
-    glm::vec3 skew;
-    glm::vec4 perspective;
-
-    auto mat = main_camera->getPadre()->getEntidad()->modelMatrix;
-
-    glm::decompose(static_cast<TTransform*>(main_camera->getPadre()->getEntidad())->modelMatrix, scale, rotation, translation, skew, perspective);
-}
-
 TNodo* SurrealEngine::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec3& rot, Shader* sh){
     TLuz* L = new TLuz(_color,sh);
     TNodo* Luz = new TNodo(bindTransform(pos,rot),L);
