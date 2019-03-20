@@ -1,8 +1,6 @@
 #include "AIDirector.hpp"
 //#include "Enum.hpp"
-#include <ComponentArch/ObjectManager.hpp>
-#include <Singleton.hpp>
-#include <Factory.hpp>
+
 
 /*
 RECORDATORIO
@@ -88,42 +86,12 @@ void AIDirector::init(){
     //4.      584,5,76
     //5.     554,5,54
 
-    auto n1= createNode(glm::vec3(510,5,102),5);
-    auto n2= createNode(glm::vec3(642,5,102),5);
-    auto n3= createNode(glm::vec3(584,5,157),5);
-    auto n4= createNode(glm::vec3(584,5,76),5);
-    auto n5= createNode(glm::vec3(554,5,54),5);
-    n1->addNode(n2);
-    n1->addNode(n3);
-    n1->addNode(n4);
-    n1->addNode(n5);
-
-    n2->addNode(n1);
-    n2->addNode(n3);
-    n2->addNode(n4);
-    n2->addNode(n5);
-
-    n3->addNode(n1);
-    n3->addNode(n2);
-    n3->addNode(n4);
-    n3->addNode(n5);
-
-    n4->addNode(n1);
-    n4->addNode(n2);
-    n4->addNode(n3);
-    n4->addNode(n5);
-
-    n5->addNode(n1);
-    n5->addNode(n2);
-    n5->addNode(n3);
-    n5->addNode(n4);
-
     //Njugador= createNode(glm::vec3(0,20,15),5);
     //Njugador->setonRange(true);
     //uint16_t h = sF->createHero(glm::vec3(10,3,65),false);
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
 
-
+    camera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, Manager->getHeroID()));
 }
 
 AIDirector::AIDirector ():AcumulatorBusqueda(0),AcumulatorHorda(0),AcumulatorPico(11),TimeBusqueda(1),TimeHorda(300),TimePico(10),
@@ -138,6 +106,7 @@ Pjugador(nullptr),Njugador(nullptr){
 
 
 }
+
 AIDirector::~AIDirector (){
     //for (size_t i = 0; i < nodos.size(); i++) {
     //    delete nodos[i];
@@ -154,8 +123,8 @@ AIDirector::~AIDirector (){
 
 }
 
-AIDirector::AIDirector (const AIDirector &orig){
-}
+AIDirector::AIDirector (const AIDirector &orig){}
+
 //tiempo
 /*
 TimeBusqueda=1;
@@ -166,20 +135,22 @@ AcumulatorBusqueda=0;
 AcumulatorHorda=0;
 AcumulatorPico=0;
 */
+
 void AIDirector::update (float delta){
-    if(!activado)return;
-    AcumulatorBusqueda+=delta;
+    if(!activado) return;
+
+    AcumulatorBusqueda += delta;
     //Acumulator+=(delta*(estres/10));
     //std::cout <<"S"<< AcumulatorBusqueda << '\n';
-    if(AcumulatorBusqueda>TimeBusqueda){
+    if(AcumulatorBusqueda > TimeBusqueda){
         //creamos wandering si es necesario
         AcumulatorBusqueda=0;
         //busquedaCerca();
     }
     if(canHorde){
         //std::cout <<"A"<< AcumulatorHorda << '\n';
-        AcumulatorHorda+=delta;
-        if(AcumulatorHorda>TimeHorda){
+        AcumulatorHorda += delta;
+        if(AcumulatorHorda > TimeHorda){
             //invocamos horda
             AcumulatorHorda=0;
             //invocacion(Njugador);
@@ -193,49 +164,66 @@ void AIDirector::update (float delta){
     }
     //std::cout << "estres" <<estres<< '\n';
 }
+
 void AIDirector::clipingEnemigos(){
-    CCamera* camera  = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, Manager->getHeroID()));
+    CRenderable_3D* render;
     glm::vec3 cTF_POS    = camera->getCameraPosition();//camara
-    cTF_POS.y =0;
+    cTF_POS.y = 0;
     // glm::vec3 cTF_ROT    = camera->getCameraRotation();
     // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
-    glm::vec3 dir = Pjugador->getPosition() - cTF_POS;
-    dir=glm::normalize(dir);
+
+    glm::vec3 pTF;
+    glm::vec3 diren;
+
+    glm::vec3 dir   = Pjugador->getPosition() - cTF_POS;
+    dir = glm::normalize(dir);
     dir.y = 0;
-    auto it=enemigos.begin();
+
+    float sol;
+
+    auto it = enemigos.begin();
     while(it!=enemigos.end()){
-        glm::vec3 pTF        = (*it)->getPosition();//enemigo
-        pTF.y =0;
+        pTF         = (*it)->getPosition(); //Enemigo
+        pTF.y       = 0;
+
         //float dist = gg::DIST(pTF,cTF_POS);
-        glm::vec3 diren      = pTF-cTF_POS;
+        diren       = pTF-cTF_POS;
         diren       = glm::normalize(diren);
-        float sol   = glm::dot(diren,dir);
-        CRenderable_3D* render  = static_cast<CRenderable_3D*>(Manager->getComponent(gg::RENDERABLE_3D, (*it)->getEntityID()));
-        //if(render){
+        sol         = glm::dot(diren,dir);
+        render  = static_cast<CRenderable_3D*>(Manager->getComponent(gg::RENDERABLE_3D, (*it)->getEntityID()));
+
         if(GRADOVISION<sol){
             render->setVisibility(true);
-        }else{
+        }
+        else{
             render->setVisibility(false);
         }
-        //}
         it++;
     }
 }
+
 void AIDirector::comprobar(){
-    if(!activado)return;
-    auto it= enemigos.begin();
-    int viendome=0;
-    float estresantes=0;
-    glm::vec3 pos= Pjugador->getPosition();
+    if(!activado) return;
+
+    int viendome = 0;
+    float estresantes = 0, dist;
+    glm::vec3 pos = Pjugador->getPosition();
+
+    CTransform* Tenemy;
+    CAIEnem* cAIEnem;
+
+    auto it = enemigos.begin();
     while(it!=enemigos.end()){
         //comprobar si me esta atacando
-        CTransform* Tenemy=*it;
-        CAIEnem* cAIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, Tenemy->getEntityID()));
-        if(cAIEnem&&cAIEnem->getPlayerSeeing()){
+        Tenemy      = *it;
+        cAIEnem     = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, Tenemy->getEntityID()));
+
+        if(cAIEnem && cAIEnem->getPlayerSeeing()){
+
             viendome++;
-            float dist=gg::FastDIST(pos, Tenemy->getPosition());
+            dist = gg::FastDIST(pos, Tenemy->getPosition());
             if(DIST_MIEDO>dist){
-                estresantes=estresantes+1-(dist/DIST_MIEDO);
+                estresantes = estresantes+1-(dist/DIST_MIEDO);
             }
         }
         it++;
@@ -243,28 +231,34 @@ void AIDirector::comprobar(){
     if(!(estresantes==0||viendome==0)){
         //std::cout << "estresantes" <<estresantes<< '\n';
         //std::cout << "viendome" <<viendome<< '\n';
-        estresantes=(estresantes/(viendome+20));//enemigos.size();
+        estresantes = (estresantes/(viendome+20));//enemigos.size();
         //std::cout << "suma" <<estresantes<< '\n';
-        estres =estres+estresantes;
+        estres = estres + estresantes;
     }
-    if(canHorde){
-        estres =estres-SUBIDARESTA;
-    }
-    else{
-        estres =estres-BAJADARESTA;
-    }
-    if(estres<1){
-        estres =1;
-    }
+
+    canHorde? estres = estres-SUBIDARESTA : estres = estres-BAJADARESTA;
+    // if(canHorde){
+    //     estres =estres-SUBIDARESTA;
+    // }
+    // else{
+    //     estres =estres-BAJADARESTA;
+    // }
+
+    if(estres < 1) estres = 1;
+
 }
 
-
-
 void AIDirector::busquedaCerca(){
-    float dist =gg::FastDIST(Njugador->getPos(),Pjugador->getPosition());
-    auto it =Njugador->nodosProximos.begin();
-    while(it!=Njugador->nodosProximos.end()){
-        float dist2 =gg::FastDIST((*it)->getPos(),Pjugador->getPosition());
+    float dist  = gg::FastDIST(Njugador->getPos(),Pjugador->getPosition());
+    float dist2;
+
+    glm::vec3 posJugador = Pjugador->getPosition();
+
+    auto nodosP = Njugador->nodosProximos;
+
+    auto it = nodosP.begin();
+    while(it!=nodosP.end()){
+        dist2 =gg::FastDIST((*it)->getPos(),posJugador);
         if(dist<dist2){
             changeNode(*it);
         }
@@ -275,23 +269,24 @@ void AIDirector::busquedaCerca(){
 
 void AIDirector::changeNode(AINode* nodo){
     //std::cout << "cambiamos" << '\n';
-    auto it =Njugador->nodosProximos.begin();
-    while(it!=Njugador->nodosProximos.end()){
-        auto it2 =nodo->nodosProximos.begin();
-        while(it2!=Njugador->nodosProximos.end()){
-            if(*it==*it2){
-                break;
-            }
+    auto nodosP     = Njugador->nodosProximos;
+    auto nodosTMP   = nodo->nodosProximos;
+
+    auto it         = nodosP.begin();
+    auto it2        = nodosTMP.begin();
+
+    while(it != nodosP.end()){
+        while(it2 != nodosP.end()){
+            if(*it==*it2)       break;
             it2++;
         }
-        if(it2!=Njugador->nodosProximos.end()){
-            removePos(*it);
-        }
+
+        if(it2!=nodosP.end())   removePos(*it);
         it++;
 
     }
-    auto it2 =nodo->nodosProximos.begin();
-    while(it2!=Njugador->nodosProximos.end()){
+
+    while(it2!=nodosP.end()){
         if(!(*it2)->getonRange()){
             if(canWander){
                 createWandering(*it2);
@@ -300,45 +295,52 @@ void AIDirector::changeNode(AINode* nodo){
         }
         it2++;
     }
-    Njugador=nodo;
+    Njugador = nodo;
 }
+
 void AIDirector::invocar(){
     //int tam =Njugador->nodosProximos.size()-1;
     //int enemigosint = gg::genIntRandom(0, tam);
     //auto nodo=Njugador->nodosProximos[enemigosint];
     //invocacion(nodo);
-    int tam =nodos.size()-1;
+    int tam         = nodos.size()-1;
     int enemigosint = gg::genIntRandom(0, tam);
-    auto nodo=nodos[enemigosint];
+    auto nodo       = nodos[enemigosint];
     invocacion(nodo);
 }
+
 void AIDirector::invocacion(AINode* nodo){
      createHorda(nodo);
 }
+
 void AIDirector::setActive(bool dato){
     activado=dato;
 }
-void AIDirector::subida(){
 
-}
-void AIDirector::pico(){
+void AIDirector::subida(){}
+void AIDirector::pico(){}
+void AIDirector::bajada(){}
 
-}
-void AIDirector::bajada(){
-
-}
 void AIDirector::createWandering(AINode* nodo){
-    float rango=nodo->getRange();
-    int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
-    for (int i = 0; i < enemigosint; i++) {
-        glm::vec3 deltapos(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
+    CTransform* enemypos;
+    glm::vec3 deltapos;
 
-        int id=fac->createSoldierWandering(nodo->getPos()+deltapos, 2000);
-        CTransform* enemypos=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
-        enemigos.push_back(enemypos);
+    float rango = nodo->getRange();
+
+    int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+    int id;
+
+    for (int i = 0; i < enemigosint; i++) {
+        deltapos = glm::vec3(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
+
+        id = fac->createSoldierWandering(nodo->getPos()+deltapos, 2000);
+
+        enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
+        enemigos.emplace_back(enemypos);
         numEnemigos++;
     }
 }
+
 void AIDirector::createHorda(AINode* nodo){
 
     //glm::vec3 dest1=Pjugador->getPosition();
@@ -371,26 +373,36 @@ void AIDirector::createHorda(AINode* nodo){
     // return;
     // ----------------------------
 
-    float rango=nodo->getRange();
-    glm::vec3 dest=Pjugador->getPosition();
+    CTransform* enemypos;
+    glm::vec3 dest = Pjugador->getPosition();
+    float rango = nodo->getRange();
     int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+
+    int id;
+
+    glm::vec3 deltapos;
+    glm::vec3 posibuena = nodo->getPos();
+
     for (int i = 0; i < enemigosint; i++) {
-        glm::vec3 deltapos(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
-        glm::vec3 posibuena=nodo->getPos();
-        posibuena=posibuena+deltapos;
-        int id=fac->createSoldierHorda(nodo->getPos()+deltapos, 10, dest);
-        CTransform* enemypos=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
+        deltapos = glm::vec3(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
+
+        posibuena = posibuena+deltapos;
+
+        id = fac->createSoldierHorda(nodo->getPos()+deltapos, 10, dest);
+        enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
         //enemypos->getPosition()
         enemigos.push_back(enemypos);
         numEnemigos++;
     }
 
 }
+
 AINode* AIDirector::createNode(glm::vec3 _pos,float _range){
-    auto puntero=new AINode(_pos,_range);
+    auto puntero = new AINode(_pos,_range);
     nodos.push_back(puntero);
     return puntero;
 }
+
 void AIDirector::removeEnemy(CTransform* nodo){
     //enemigos
     auto it=enemigos.begin();
@@ -402,13 +414,19 @@ void AIDirector::removeEnemy(CTransform* nodo){
         it++;
     }
 }
+
 void AIDirector::removePos(AINode* nodo){
-    glm::vec3 posicion=nodo->getPos();
-    auto it= enemigos.begin();
+    glm::vec3 posicion = nodo->getPos();
+    glm::vec3 pos;
+
+    float rango = nodo->getRange();
+
+    auto it = enemigos.begin();
     while(it!=enemigos.end()){
-        glm::vec3 pos = (*it)->getPosition();
-        pos-=posicion;
-        if(abs(pos.x)<=nodo->getRange()&&abs(pos.z)<=nodo->getRange()){
+        pos  = (*it)->getPosition();
+        pos -= posicion;
+
+        if( abs(pos.x) <= rango && abs(pos.z) <= rango ){
             enemigos.erase(it);
             numEnemigos--;
             Manager->removeEntity((*it)->getEntityID());

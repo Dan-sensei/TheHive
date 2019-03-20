@@ -7,6 +7,7 @@
 #include "Singleton.hpp"
 #include "EventSystem/CTriggerSystem.hpp"
 #include "EventSystem/TData.hpp"
+#include "GameAI/AIDirector.hpp"
 
 class BinaryParser{
     public:
@@ -31,6 +32,7 @@ class BinaryParser{
 
         static void ReadLoadZonesData(const std::string &BinaryFile);
         static void ReadUnLoadZonesData(const std::string &BinaryFile);
+        static uint16_t ReadRespawnNodesData(const std::string &BinaryFile);
 
         static void LoadLevelData(const std::string &DARTA,int8_t map_zone = -1);
 

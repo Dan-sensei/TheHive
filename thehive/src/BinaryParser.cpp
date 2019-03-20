@@ -460,3 +460,50 @@ void BinaryParser::ReadUnLoadZonesData(const std::string &BinaryFile){
         std::cout << " - UNLOAD ZONE " << static_cast<int>(ZONE) << " ON " << glm::to_string(Position) << '\n';
     }
 }
+
+uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
+    std::ifstream inStream(BinaryFile, std::ios::binary);
+    Factory *fac = Singleton<Factory>::Instance();
+    AIDirector *Director = Singleton<AIDirector>::Instance();
+
+    uint8_t TOTAL;
+    GG_Read(inStream,TOTAL);
+
+    std::cout << "TOTAL NODES: " << static_cast<int>(TOTAL) << '\n';
+
+    float x,y,z;
+    GG_Read(inStream,x);
+    GG_Read(inStream,y);
+    GG_Read(inStream,z);
+    glm::vec3 Position(x,y,z);
+
+    uint16_t HERO = fac->createHero(Position,-1);
+
+    std::vector<AINode*> nodes;
+    nodes.reserve(TOTAL);
+
+    for(int i=0 ; i<TOTAL ; ++i){
+        GG_Read(inStream,x);
+        GG_Read(inStream,y);
+        GG_Read(inStream,z);
+        Position = glm::vec3(x,y,z);
+
+        nodes.emplace_back(Director->createNode(Position,5));
+    }
+
+    auto it = nodes.begin();
+    while(it != nodes.end()){
+        auto it2 = nodes.begin();
+
+        while(it2 != nodes.end()){
+            if(it != it2)   (*it2)->addNode(*it);
+            ++it2;
+        }
+        ++it;
+    }
+
+    Director->init();
+    nodes.clear();
+
+    return HERO;
+}
