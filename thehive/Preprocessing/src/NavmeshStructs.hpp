@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <string>
-#include <iostream>
+//#include <iostream>
 #include <vector>
 #include "Util.hpp"
 
@@ -58,6 +58,5 @@ struct Waypoint{
     uint16_t ID;
 };
 
-std::ostream& operator<<(std::ostream& os, const Node &N);
 
 #endif

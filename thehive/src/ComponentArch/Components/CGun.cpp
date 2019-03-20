@@ -54,7 +54,7 @@ void CGun::shoot(glm::vec3 to){
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
         //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
-        // // std::cout << "PIM!!! -> " << total_bullets << '\n';
+        // // //std::cout << "PIM!!! -> " << total_bullets << '\n';
         glm::vec3 from = cTransform->getPosition();
 
         glm::vec3 vel=glm::normalize(to-from);

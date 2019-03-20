@@ -133,13 +133,13 @@ void gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, 
             break;
     }
 
-    // std::cout << " --- GUN      ------------ "  << '\n';
-    // std::cout << "   - DMG      : " << dmg    << '\n';
-    // std::cout << "   - CADENCE  : " << cdc    << '\n';
-    // std::cout << "   - BULLETS  : " << tb     << '\n';
-    // std::cout << "   - DT       : " << relDT  << '\n';
-    // std::cout << "   - RANGE    : " << rng    << '\n';
-    // std::cout << " ------------------------- "  << '\n';
+    // //std::cout << " --- GUN      ------------ "  << '\n';
+    // //std::cout << "   - DMG      : " << dmg    << '\n';
+    // //std::cout << "   - CADENCE  : " << cdc    << '\n';
+    // //std::cout << "   - BULLETS  : " << tb     << '\n';
+    // //std::cout << "   - DT       : " << relDT  << '\n';
+    // //std::cout << "   - RANGE    : " << rng    << '\n';
+    // //std::cout << " ------------------------- "  << '\n';
 }
 
 // std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1){

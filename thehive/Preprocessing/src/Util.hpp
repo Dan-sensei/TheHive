@@ -2,7 +2,7 @@
 #define _UTIL_H
 
 #include <cstdint>
-#include <iostream>
+//#include <iostream>
 #include <glm/glm.hpp>
 
 
@@ -34,7 +34,6 @@ namespace gg{
     };
 };
 
-std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1);
 //template <typename T>
 //T gg::T::operator+ (T v1);
 

@@ -1,6 +1,6 @@
 #include "EventListener.hpp"
 #include <cstdint>
-#include <iostream>
+//#include <iostream>
 
 EventListener::EventListener(){
     IdButon=-1;
@@ -24,8 +24,8 @@ bool EventListener::OnEvent(const irr::SEvent& event) {
             wheel = event.MouseInput.Wheel;
             //  1 ARRIBA
             // -1 ABAJO
-        //    std::cout << "entra" << '\n';
-        //    std::cout << wheel << '\n';
+        //    //std::cout << "entra" << '\n';
+        //    //std::cout << wheel << '\n';
         }
         //else{
 

@@ -1,5 +1,5 @@
 #include "Selector.hpp"
-#include <iostream>
+//#include <iostream>
 
 void Selector::onInitialize() {
   m_CurrentChild=m_Children.begin();

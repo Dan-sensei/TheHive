@@ -157,7 +157,7 @@ void Action::leader(){
     else{
         s=BH_SUCCESS;
     }
-//std::cout << s << '\n';
+////std::cout << s << '\n';
 }
 void Action::onrange(){
     checkbool(yo->playerOnRange);
@@ -406,11 +406,11 @@ void Action::look_around(){
 
 }
 void Action::hit(){
-    //std::cout << yo->playerOnRange << '\n';
+    ////std::cout << yo->playerOnRange << '\n';
     //if(yo->playerOnRange){
-    //    std::cout << "estoy a rango" << '\n';
+    //    //std::cout << "estoy a rango" << '\n';
     //}else{
-    //    std::cout << "no lo estoy" << '\n';
+    //    //std::cout << "no lo estoy" << '\n';
     //}
     glm::vec3 mio            = cTransform->getPosition();
     glm::vec3 dest           = yo->playerPos;
@@ -522,7 +522,7 @@ void Action::move_to(){
 
 void Action::move_senyuelo(){
     if(s!=BH_RUNNING){
-        //std::cout << "last final" << '\n';
+        ////std::cout << "last final" << '\n';
         //gg::cout("move senyuelo");
         s=BH_RUNNING;
         CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
@@ -538,7 +538,7 @@ void Action::move_senyuelo(){
 ///
 void Action::move_leader(){
     //10-25
-    //std::cout << "se hace" << '\n';
+    ////std::cout << "se hace" << '\n';
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
         //gg::cout("move player");
@@ -581,24 +581,24 @@ void Action::move_player(){
         if(nvAgent){
             nvAgent->ResetDestination();
         }
-        //std::cout << "move player inicio" << '\n';
+        ////std::cout << "move player inicio" << '\n';
         //gg::cout("move player");
 
         // //gg::cout(" --- MOVE TO PLAYER --- ");
-        // std::cout << "empieza" << '\n';
+        // //std::cout << "empieza" << '\n';
     }
 
     CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
     yo->destino = cTransform2->getPosition();
 
-    //std::cout << "move player" << '\n';
+    ////std::cout << "move player" << '\n';
     move_too(5);
     if(s!=BH_RUNNING){
-        //std::cout << "move player final" << '\n';
+        ////std::cout << "move player final" << '\n';
         //gg::cout("move player");
 
         // //gg::cout(" --- MOVE TO PLAYER --- ");
-        // std::cout << "acaba" << '\n';
+        // //std::cout << "acaba" << '\n';
     }
     //if(s==BH_SUCCESS){
     //    yo->playerSeen=false;
@@ -622,8 +622,8 @@ void Action::move_last(){
             glm::vec3 dest           = cTransform->getPosition();    // A donde voy
             glm::vec3 mio            = yo->destino;                  // Donde estaba
 
-            //std::cout << "dest" <<dest<< '\n';
-            //std::cout << "mio" <<mio<< '\n';
+            ////std::cout << "dest" <<dest<< '\n';
+            ////std::cout << "mio" <<mio<< '\n';
 
             glm::vec3 V_AI_DEST      = dest-mio;
             if(!(dest==mio)){
@@ -666,8 +666,8 @@ void Action::move_around(){
             glm::vec3 dest           = cTransform->getPosition();    // A donde voy
             glm::vec3 mio            = yo->destino;                  // Donde estaba
 
-            //std::cout << "dest" <<dest<< '\n';
-            //std::cout << "mio" <<mio<< '\n';
+            ////std::cout << "dest" <<dest<< '\n';
+            ////std::cout << "mio" <<mio<< '\n';
 
             glm::vec3 V_AI_DEST      = dest-mio;
             if(!(dest==mio)){
@@ -727,7 +727,7 @@ void Action::move_too(int min){
         direccion       = glm::normalize(direccion);
         //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
         cRigidBody->applyConstantVelocityNormal(direccion,yo->getVelocity());
-        //std::cout << yo->getVelocity() << '\n';
+        ////std::cout << yo->getVelocity() << '\n';
         //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
 }
 

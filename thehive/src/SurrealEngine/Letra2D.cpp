@@ -1,7 +1,7 @@
 #include "Letra2D.hpp"
 #include "ZMeshData.hpp"
 #include "AssetManager.hpp"
-#include <iostream>
+//#include <iostream>
 #include <SOIL2/SOIL2.h>
 
 #define HEIGTH 64.0f

@@ -2,7 +2,7 @@
 #define CONDITION_HPP
 
 #include "Behavior.hpp"
-#include <iostream>
+//#include <iostream>
 
 class Condition : public Behavior {
     public:

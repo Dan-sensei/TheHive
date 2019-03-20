@@ -1,6 +1,6 @@
 #include "PauseState.hpp"
 
-#include <iostream>
+//#include <iostream>
 #include <cstdint>
 #include <string>
 #include <stack>
@@ -52,7 +52,7 @@ void PauseState::Update(){
     Engine->PollEvents();
 
     Engine->BeginDraw();
-    //Engine->draw();
+    Engine->draw();
     cont.update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());

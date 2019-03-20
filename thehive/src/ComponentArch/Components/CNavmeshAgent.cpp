@@ -54,8 +54,8 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
 
 void CNavmeshAgent::Update(){
     //  Debug!
-    Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(moveVector*100.f)+glm::vec3(0, 5, 0), gg::Color(255,0,0,1));
-    Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(glm::normalize(cRigidBody->getVelocity())*100.f)+glm::vec3(0, 5, 0), gg::Color(255,255,0,1));
+    //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(moveVector*100.f)+glm::vec3(0, 5, 0), gg::Color(255,0,0,1));
+    //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(glm::normalize(cRigidBody->getVelocity())*100.f)+glm::vec3(0, 5, 0), gg::Color(255,255,0,1));
 
     if(Singleton<Pathfinding>::Instance()->isDebugging() && !Waypoints.empty()){
 
@@ -67,7 +67,7 @@ void CNavmeshAgent::Update(){
         color.B = 200;
         color.Alpha = 1;
 
-        Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), debug.top().Position + glm::vec3(0, 10, 0), color);
+        //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), debug.top().Position + glm::vec3(0, 10, 0), color);
         while(!debug.empty()){
             Waypoint first = debug.top();
             debug.pop();
@@ -75,7 +75,7 @@ void CNavmeshAgent::Update(){
             break;
 
             Waypoint second = debug.top();
-            Engine->Draw3DLine(first.Position + glm::vec3(0, 10, 0), second.Position + glm::vec3(0, 10, 0), color);
+            //Engine->Draw3DLine(first.Position + glm::vec3(0, 10, 0), second.Position + glm::vec3(0, 10, 0), color);
         }
     }
 
@@ -167,7 +167,7 @@ void CNavmeshAgent::SetDestination(const glm::vec3 &Target){
     Waypoints = std::stack<Waypoint>();
     Singleton<Pathfinding>::Instance()->FindPath(cTransform->getPosition(), Target, Waypoints);
     if(Waypoints.empty()){
-        //std::cout << "EMPTY!" << '\n';
+        ////std::cout << "EMPTY!" << '\n';
         currentlyMovingTowardsTarget = false;
         cRigidBody->setLinearVelocity(glm::vec3(0.5));
         return;

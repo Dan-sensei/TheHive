@@ -27,7 +27,7 @@ SurrealEngine::~SurrealEngine(){
 }
 
 void SurrealEngine::clean(){
-    std::cout << "DeleTAG..." << '\n';
+    //std::cout << "DeleTAG..." << '\n';
     delete SurrealEngine::KEYS;
     delete ESCENA;
     glfwTerminate();
@@ -113,7 +113,7 @@ TNodo* SurrealEngine::bindTransform(const glm::vec3& pos, const glm::vec3& rot, 
         TNodo* tmp = new TNodo(ESCENA,nullptr);
         sceneMap.insert(std::make_pair(map_zone,tmp));
         PADRE = sceneMap.find(map_zone);
-        // std::cout << "CREATING SUPERNODE :" << static_cast<int>(map_zone) << '\n';
+        // //std::cout << "CREATING SUPERNODE :" << static_cast<int>(map_zone) << '\n';
     }
 
     TNodo* NodoRot = new TNodo(PADRE->second,Rotate);
@@ -136,7 +136,7 @@ void SurrealEngine::BeginDraw(){
 
 void SurrealEngine::draw(){
     ++FPS;
-    ESCENA->drawRoot();
+    ESCENA->drawRoot_M();
 }
 
 void SurrealEngine::EndDraw(){

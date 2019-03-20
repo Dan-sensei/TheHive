@@ -141,7 +141,7 @@ void CAIEnem::Update(){
 }
 
 void CAIEnem::FixedUpdate(){
-    //std::cout << "entrando" << '\n';
+    ////std::cout << "entrando" << '\n';
 
     if(isPlayerAttacking){
         CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
@@ -215,13 +215,13 @@ void CAIEnem::FixedUpdate(){
     //    playerPos       = PlayerTransform->getPosition();
 
     //}
-    //std::cout << "mi pos?" <<playerPos<< '\n';
-    //std::cout << "atacando" <<imAttacking<< '\n';
+    ////std::cout << "mi pos?" <<playerPos<< '\n';
+    ////std::cout << "atacando" <<imAttacking<< '\n';
     arbol->update();
 }
 
 void CAIEnem::MHandler_ATURD(){
-    // std::cout << "aturd" << '\n';
+    // //std::cout << "aturd" << '\n';
     ultrasonido     = true;
     ultrasonido_cont= 0;
     resetMyOwnTree();
@@ -235,7 +235,7 @@ void CAIEnem::MHandler_SENYUELO(TriggerRecordStruct* cdata){
 
 void CAIEnem::MHandler_SENYUELO_END(){
     senyuelo    = false;
-    // std::cout << "sen out" << '\n';
+    // //std::cout << "sen out" << '\n';
     resetMyOwnTree();
 }
 
@@ -257,9 +257,9 @@ void CAIEnem::enableVisualDebug(){
     glm::vec3 fin2   = dir1*Vrange+cTransform->getPosition();
     glm::vec3 fin3   = dir2*Vrange+cTransform->getPosition();
 
-    // Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
-    // Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
-    // Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
+    // //Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
+    // //Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
+    // //Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
 
     glm::vec3 diren  = PlayerTransform->getPosition()-cTransform->getPosition();
     diren.y             = 0;

@@ -13,8 +13,8 @@ class TLuzDirigida : public TLuz {
         void setDireccion(glm::vec3&);
         glm::vec3 getDireccion();
 
-        virtual void beginDraw(const uint8_t&);
-        virtual void endDraw(const uint8_t&);
+        virtual void beginDraw();
+        virtual void endDraw();
 
     private:
         glm::vec3 direccion;

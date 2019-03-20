@@ -1,5 +1,5 @@
 #include "NavmeshParser.hpp"
-#include <iostream>
+//#include <iostream>
 #include <fstream>
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
@@ -30,11 +30,11 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
 
 
     if( !scene){
-        std::cout << "Couldn't open file" << '\n';
+        //std::cout << "Couldn't open file" << '\n';
         return;
     }
 
-    std::cout << "Loading model '" << FileInput << "'" << '\n';
+    //std::cout << "Loading model '" << FileInput << "'" << '\n';
 
     aiMesh **meshes = scene->mMeshes;
     aiVector3D* vertices;
@@ -47,7 +47,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
         vertex.emplace_back(vertices[j].x, vertices[j].y, vertices[j].z);
     }
 
-    // std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
+    // //std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
 
     uint16_t ID_Counter = 0;
 
@@ -100,7 +100,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
             auto it = Edges.begin();
             bool found = false;
             while(it != Edges.end()) {
-                //// std::cout << "FOUND!" << '\n';
+                //// //std::cout << "FOUND!" << '\n';
 
                 if(
                     (vertex[NewEdge.vertex1] == vertex [(*it).vertex1]    &&
@@ -125,7 +125,7 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
             if (!found) Edges.push_back(NewEdge);
         }
     }
-    //std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
+    ////std::cout << "CONNECTIONS SIZE " << ID_Counter << '\n';
     Connections.resize(ID_Counter);
     for(uint16_t i = 0; i < FACES.size(); ++i) {
         for(uint16_t j = 0; j < FACES[i].size(); ++j) {

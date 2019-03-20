@@ -1,7 +1,7 @@
 #ifndef _SKYBOX
 #define _SKYBOX
 
-#include <iostream>
+//#include <iostream>
 #include "AssetManager.hpp"
 #include <SOIL2/SOIL2.h>
 #include <SOIL2/stb_image.h>
@@ -30,7 +30,6 @@ class SkyBox{
         unsigned int cubemapTexture;
         unsigned int skyboxVBO;
         unsigned int skyboxVAO;
-        unsigned int EVO;
 		unsigned int view;
 		unsigned int text;
 

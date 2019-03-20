@@ -1,0 +1,162 @@
+   Using /home/abp/abp/GammaGames/20190320/RELISV2/oprofile_data/samples/ for samples directory.
+
+WARNING: Lost samples detected! See /home/abp/abp/GammaGames/20190320/RELISV2/oprofile_data/samples/operf.log for details.
+CPU: Intel Silvermont microarchitecture, speed 2080 MHz (estimated)
+Counted CPU_CLK_UNHALTED events (Clock cycles when not halted) with a unit mask of 0x00 (No unit mask) count 2080000
+samples  %        symbol name
+2168     29.3568  ObjectManager::ObjectManager() [clone .cold.192]
+662       8.9641  btTriangleInfoMap::serialize(void*, btSerializer*) const
+605       8.1923  SurrealEngine::getVP()
+362       4.9018  btDefaultSerializer::getUniquePointer(void*)
+291       3.9404  Game::Init() [clone .cold.105]
+228       3.0873  SurrealEngine::PointAt(TNodo*, glm::vec<3, float, (glm::qualifier)0> const&)
+205       2.7759  SurrealEngine::Initialize()
+201       2.7217  ZMeshData::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+176       2.3832  CRigidBody::setOffsetBodyPosition(glm::vec<3, float, (glm::qualifier)0>&)
+168       2.2749  BinaryParser::LoadLevelData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, signed char) [clone .cold.257]
+151       2.0447  SurrealEngine::SurrealEngine()
+149       2.0176  ZMeshData::addVertexBuffer(std::vector<float, std::allocator<float> >&, unsigned int) [clone .constprop.144]
+147       1.9905  btIDebugDraw::drawCapsule(float, float, int, btTransform const&, btVector3 const&)
+103       1.3947  SurrealEngine::getMVP()
+82        1.1104  CAgent::ENTER_func_kTrig_LoadZone(TriggerRecordStruct*)
+68        0.9208  Motor2D::InitPause() [clone .cold.256]
+66        0.8937  TData::add(EnumDataType, float)
+60        0.8125  IAState::Update() [clone .cold.106]
+59        0.7989  CGun::shoot(glm::vec<3, float, (glm::qualifier)0>)
+56        0.7583  Factory::createHero(glm::vec<3, float, (glm::qualifier)0> const&, signed char)
+54        0.7312  ZMeshData::~ZMeshData()
+53        0.7177  Motor2D::InitMenu6()
+51        0.6906  CTriggerSystem::Update() [clone .cold.161]
+49        0.6635  TriggerRecordStruct::TriggerRecordStruct(TriggerRecordStruct const&) [clone .cold.163]
+47        0.6364  irr::core::CMatrix4<float>::CMatrix4(irr::core::CMatrix4<float> const&, irr::core::CMatrix4<float>::eConstructor)
+43        0.5823  Motor2D::InitAIDebug(int)
+42        0.5687  SurrealEngine::getM()
+41        0.5552  BinaryParser::ReadEventsData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [clone .cold.258]
+41        0.5552  CRigidBody::setBodyPosition(glm::vec<3, float, (glm:'':qualifier)0>&)
+39        0.5281  TData::find(EnumDataType)
+38        0.5146  SurrealEngine::SetMapZoneVisibility(signed char const&, bool const&)
+38        0.5146  Treecontroller::arbolswarm()
+38        0.5146  ggDynWorld::ggDynWorld()
+31        0.4198  Waypoint& std::deque<Waypoint, std::allocator<Waypoint> >::emplace_back<glm::vec<3, float, (glm::qualifier)0>&, unsigned short&, float&>(glm::vec<3, float, (glm::qualifier)0>&, unsigned short&, float&)
+31        0.4198  std::_Rb_tree<char, std::pair<char const, void (Letra2D::*)()>, std::_Select1st<std::pair<char const, void (Letra2D::*)()> >, std::less<char>, std::allocator<std::pair<char const, void (Letra2D::*)()> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<char const, void (Letra2D::*)()> >, char const&)
+30        0.4062  Factory::createHero(glm::vec<3, float, (glm::qualifier)0> const&, signed char) [clone .cold.109]
+30        0.4062  Motor2D::prueba()
+27        0.3656  Factory::Factory()
+25        0.3385  SurrealEngine::deleteLeafNode(TNodo*)
+25        0.3385  SurrealEngine::getV()
+22        0.2979  ZMeshData::ZMeshData()
+22        0.2979  btIDebugDraw::drawCylinder(float, float, int, btTransform const&, btVector3 const&)
+21        0.2844  SurrealEngine::HideCursor(bool)
+20        0.2708  Treecontroller::arbolsoldado()
+19        0.2573  irr::scene::ISceneNode::getRelativeTransformation() const
+18        0.2437  Factory::createHolyBomb(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&)
+17        0.2302  Letra2DManager::Letra2DManager()
+17        0.2302  std::_Rb_tree_node<std::pair<EnumDataType const, float> >* std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_M_copy<std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_Reuse_or_alloc_node>(std::_Rb_tree_node<std::pair<EnumDataType const, float> > const*, std::_Rb_tree_node_base*, std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_Reuse_or_alloc_node&)
+16        0.2167  SurrealEngine::crearMalla(char const*, glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, signed char)
+16        0.2167  TCamara::beginDraw()
+15        0.2031  ZStaticMesh::beginDraw()
+13        0.1760  CGun::getBullets()
+13        0.1760  Treecontroller::arbolswarm() [clone .cold.133]
+12        0.1625  CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct*)
+11        0.1490  Camera::updateAbsolutePosition()
+11        0.1490  TData::TData(TData const&)
+11        0.1490  TData::clin()
+11        0.1490  stbi__create_png_image_raw.isra.40
+10        0.1354  GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&, btVector3 const&) [clone .cold.9]
+10        0.1354  IAState::IAState(int) [clone .cold.107]
+10        0.1354  Motor2D::addButton(float, float, float, float, EnumButtonType, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, glm::vec<4, float, (glm::qualifier)0>)
+10        0.1354  SurrealEngine::Draw3DLine(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, gg::Color const&)
+10        0.1354  ggDynWorld::addShape(btCollisionShape*)
+9         0.1219  Factory::createSoldier(glm::vec<3, float, (glm::qualifier)0> const&, float const&) [clone .cold.110]
+8         0.1083  AIDirector::busquedaCerca()
+8         0.1083  Motor2D::InitMenu()
+8         0.1083  RandomSelector::onInitialize()
+8         0.1083  ggDynWorld::~ggDynWorld()
+8         0.1083  irr::scene::ISceneNode::updateAbsolutePosition()
+8         0.1083  stbi__hdr_load.isra.44
+7         0.0948  AIDirector::init()
+7         0.0948  Factory::createSingleSwarm(glm::vec<3, float, (glm::qualifier)0> const&, float const&)
+7         0.0948  _GLOBAL__sub_I__ZN10PauseStateC2Ev
+7         0.0948  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+6         0.0812  CAgent::STAY_func_kTrig_Gunfire(TriggerRecordStruct*)
+6         0.0812  Composite::~Composite()
+6         0.0812  Factory::createHolyBomb(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&) [clone .cold.120]
+6         0.0812  btIDebugDraw::drawSpherePatch(btVector3 const&, btVector3 const&, btVector3 const&, float, float, float, float, float, btVector3 const&, float, bool)
+6         0.0812  stbi__load_main
+5         0.0677  IAState::Init() [clone .cold.105]
+5         0.0677  Pathfinding::clear()
+5         0.0677  SurrealEngine::getCam()
+5         0.0677  btIDebugDraw::drawCone(float, float, int, btTransform const&, btVector3 const&)
+4         0.0542  BinaryParser::ReadLoadZonesData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+4         0.0542  Factory::createPathFindingActor(glm::vec<3, float, (glm::qualifier)0> const&)
+4         0.0542  GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&)
+4         0.0542  GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&) [clone .constprop.6]
+4         0.0542  Material::Material(Material const&)
+4         0.0542  Motor2D::DisplayHUD()
+4         0.0542  _GLOBAL__sub_I__ZN4CGunC2Effiffi
+4         0.0542  _GLOBAL__sub_I__ZN9Hability2C2Ei
+4         0.0542  ggDynWorld::~ggDynWorld()
+4         0.0542  main
+4         0.0542  std::pair<std::_Rb_tree_iterator<std::pair<char const, void (Letra2D::*)()> >, bool> std::_Rb_tree<char, std::pair<char const, void (Letra2D::*)()>, std::_Select1st<std::pair<char const, void (Letra2D::*)()> >, std::less<char>, std::allocator<std::pair<char const, void (Letra2D::*)()> > >::_M_emplace_unique<std::pair<char, void (Letra2D::*)()> >(std::pair<char, void (Letra2D::*)()>&&)
+3         0.0406  CGranade0::explosion()
+3         0.0406  Game::Update()
+3         0.0406  TData::TData()
+3         0.0406  _GLOBAL__sub_I__ZN7CCameraC2Ea
+3         0.0406  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::compare(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const
+2         0.0271  AIDirector::AIDirector() [clone .cold.158]
+2         0.0271  Arena::Arena(unsigned long)
+2         0.0271  Arena::allocate(unsigned long)
+2         0.0271  CAIEnem::Init()
+2         0.0271  Composite::Composite()
+2         0.0271  Factory::createMatriuska(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&)
+2         0.0271  Factory::createMatriuska(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&) [clone .cold.119]
+2         0.0271  Factory::createSenyuelo(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&)
+2         0.0271  Factory::createSoldierWandering(glm::vec<3, float, (glm::qualifier)0> const&, float const&) [clone .cold.111]
+2         0.0271  Factory::createTouchableObject(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, unsigned short const&, glm::vec<3, float, (glm::qualifier)0> const&, int const&, unsigned short)
+2         0.0271  Hability::terminar(float, bool&)
+2         0.0271  Hability::update()
+2         0.0271  ObjectManager::sendMessageToEntity(unsigned short, Message const&)
+2         0.0271  Treecontroller::arboltank()
+2         0.0271  _GLOBAL__sub_I__ZN6Action15aliensAttackingE
+2         0.0271  _GLOBAL__sub_I__ZN9Hability1C2Ei
+2         0.0271  irr::scene::ISceneNode::deserializeAttributes(irr::io::IAttributes*, irr::io::SAttributeReadWriteOptions*)
+2         0.0271  std::_Rb_tree_node<std::pair<unsigned short const, IComponent*> >* std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_M_copy<std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_Reuse_or_alloc_node>(std::_Rb_tree_node<std::pair<unsigned short const, IComponent*> > const*, std::_Rb_tree_node_base*, std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_Reuse_or_alloc_node&)
+2         0.0271  void std::vector<Behavior*, std::allocator<Behavior*> >::_M_realloc_insert<Behavior*>(__gnu_cxx::__normal_iterator<Behavior**, std::vector<Behavior*, std::allocator<Behavior*> > >, Behavior*&&)
+1         0.0135  AINode::getPos()
+1         0.0135  AINode::getonRange()
+1         0.0135  CAgent::processMessage(Message const&)
+1         0.0135  CClock::Init()
+1         0.0135  CFlock::Muerte()
+1         0.0135  CGranade0::CGranade0()
+1         0.0135  CGun::getTotalBullets()
+1         0.0135  CGun::getType()
+1         0.0135  CGun::reload()
+1         0.0135  CRigidBody::CRigidBody(bool, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, float, float, float, float, float, float, float, float, float, float, float)
+1         0.0135  CRigidBody::CRigidBody(bool, float, float, float, float, float, float)
+1         0.0135  CRigidBody::MHandler_SETPTRS()
+1         0.0135  Factory::createPickableItem(glm::vec<3, float, (glm::qualifier)0> const&)
+1         0.0135  Factory::createPickableItem(glm::vec<3, float, (glm::qualifier)0> const&) [clone .cold.122]
+1         0.0135  Factory::createSoldierWandering(glm::vec<3, float, (glm::qualifier)0> const&, float const&)
+1         0.0135  GLDebugDrawer::GLDebugDrawer()
+1         0.0135  GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&) [clone .cold.12]
+1         0.0135  Game::Init()
+1         0.0135  Hability::Hability(int, float, int)
+1         0.0135  Hability::init()
+1         0.0135  Motor2D::HUD_arma0(Imagen2D*)
+1         0.0135  ObjectManager::~ObjectManager()
+1         0.0135  Pathfinding::Pathfinding()
+1         0.0135  Shader::loadShader(char const*, unsigned int) [clone .constprop.87]
+1         0.0135  Treecontroller::arboltracker() [clone .cold.132]
+1         0.0135  Treecontroller::createInverso(Behavior*) [clone .cold.128]
+1         0.0135  _GLOBAL__sub_I__ZN17CPlayerControllerC2Ev
+1         0.0135  btIDebugDraw::drawSphere(float, btTransform const&, btVector3 const&)
+1         0.0135  ggDynWorld::removeRigidBody(btRigidBody*)
+1         0.0135  jo_processDU
+1         0.0135  stbi__decode_jpeg_header
+1         0.0135  stbi__jpeg_test
+1         0.0135  stbi__mad3sizes_valid
+1         0.0135  stbiw(wchar_t, char *, long double, char)
+1         0.0135  std::pair<std::_Rb_tree_iterator<std::pair<int const, void (CPlayerController::*)()> >, bool> std::_Rb_tree<int, std::pair<int const, void (CPlayerController::*)()>, std::_Select1st<std::pair<int const, void (CPlayerController::*)()> >, std::less<int>, std::allocator<std::pair<int const, void (CPlayerController::*)()> > >::_M_emplace_unique<std::pair<int, void (CPlayerController::*)()> >(std::pair<int, void (CPlayerController::*)()>&&)
+1         0.0135  std::pair<std::_Rb_tree_iterator<std::pair<unsigned char const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, bool> std::_Rb_tree<unsigned char, std::pair<unsigned char const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::_Select1st<std::pair<unsigned char const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::less<unsigned char>, std::allocator<std::pair<unsigned char const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >::_M_emplace_unique<std::pair<int, char const*> >(std::pair<int, char const*>&&)
+1         0.0135  virtual thunk to irr::scene::ISceneNode::deserializeAttributes(irr::io::IAttributes*, irr::io::SAttributeReadWriteOptions*)
+1         0.0135  void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) [clone .constprop.49]

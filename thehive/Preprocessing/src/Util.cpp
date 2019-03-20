@@ -64,9 +64,3 @@ uint16_t gg::genIntRandom(uint16_t min, uint16_t max){
 
     return distribution(gen);
 }
-
-
-std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1){
-    os << "(" << v1.x<< "," << v1.y << "," << v1.z << ")";
-    return os;
-}

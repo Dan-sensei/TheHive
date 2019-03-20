@@ -159,10 +159,10 @@ void AIDirector::update (float delta){
     }
     if(AcumulatorPico<TimePico){
         AcumulatorPico+=delta;
-        //std::cout << "estoy en pico" << '\n';
+        ////std::cout << "estoy en pico" << '\n';
         //invocar especial no se muy bien que hacer
     }
-    //std::cout << "estres" <<estres<< '\n';
+    ////std::cout << "estres" <<estres<< '\n';
 }
 
 void AIDirector::clipingEnemigos(){

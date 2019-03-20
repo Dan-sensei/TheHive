@@ -1,7 +1,7 @@
 #ifndef PARALLEL_HPP
 #define PARALLEL_HPP
 
-#include <iostream>
+//#include <iostream>
 #include "Composite.hpp"
 
 enum Policy{

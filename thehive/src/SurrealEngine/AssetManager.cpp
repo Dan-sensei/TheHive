@@ -1,5 +1,5 @@
 #include "AssetManager.hpp"
-#include <iostream>
+//#include <iostream>
 #include <SOIL2/SOIL2.h>
 
 
@@ -78,7 +78,7 @@ Shader* AssetManager::getShader(const std::string &Name) {
     if(it != ShaderMap.end())
         return &it->second;
     else{
-        std::cout << "  --No existe ningún Shader llamado '" << Name <<"', devolviendo 'Default'..." << '\n';
+        //std::cout << "  --No existe ningún Shader llamado '" << Name <<"', devolviendo 'Default'..." << '\n';
         return &ShaderMap["Default"];
     }
 
@@ -87,8 +87,6 @@ Shader* AssetManager::getShader(const std::string &Name) {
 Shader* AssetManager::createShader(std::string Name) {
     if(ShaderMap.find(Name) == ShaderMap.end())
         ShaderMap[Name];
-    else
-        std::cout << "  --Ya hay un shader con ese nombre" << '\n';
 
     return &ShaderMap[Name];
 }
@@ -105,7 +103,7 @@ unsigned int AssetManager::getTexture(const std::string &Name, unsigned int mode
 }
 
 AssetManager::~AssetManager(){
-    std::cout << "Deleting textures..." << '\n';
+    //std::cout << "Deleting textures..." << '\n';
     auto iterator = TextureMap.begin();
     while(iterator != TextureMap.end()){
         glDeleteTextures(1, &iterator->second);

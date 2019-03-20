@@ -1,13 +1,13 @@
 /*
 #include "Game.hpp"
-#include <iostream>
+//#include <iostream>
 #include <string>
 #include <Singleton.hpp>
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/NavmeshStructs.hpp"
 */
 
-#include <iostream>
+//#include <iostream>
 #include <cstdint>
 #include <string>
 #include <stack>
@@ -101,12 +101,12 @@ int main(int argc, char const *argv[]) {
     //
     // glm::decompose(transformation, scale, rotation, translation, skew, perspective);
     //
-    // std::cout << "TRANFORMATION - " << glm::to_string(transformation) << std::endl;
-    // std::cout << "SCALE         - " << glm::to_string(scale) << std::endl;
-    // std::cout << "ROTATION      - " << glm::to_string(rotation) << std::endl;
-    // std::cout << "TRANSLATION   - " << glm::to_string(translation) << std::endl;
-    // std::cout << "SKEW          - " << glm::to_string(skew) << std::endl;
-    // std::cout << "PERSPECTIVE   - " << glm::to_string(perspective) << std::endl;
+    // //std::cout << "TRANFORMATION - " << glm::to_string(transformation) << std::endl;
+    // //std::cout << "SCALE         - " << glm::to_string(scale) << std::endl;
+    // //std::cout << "ROTATION      - " << glm::to_string(rotation) << std::endl;
+    // //std::cout << "TRANSLATION   - " << glm::to_string(translation) << std::endl;
+    // //std::cout << "SKEW          - " << glm::to_string(skew) << std::endl;
+    // //std::cout << "PERSPECTIVE   - " << glm::to_string(perspective) << std::endl;
     //
 
     return 0;

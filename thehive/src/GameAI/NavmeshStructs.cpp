@@ -61,8 +61,3 @@ Waypoint::Waypoint(const Waypoint &orig){
     ID = orig.ID;
     Radius = orig.Radius;
 }
-
-std::ostream& operator<<(std::ostream& os, const Node &N){
-    os << "ID: " << N.ID <<  "   - Face: " << N.NODE_1 << " | " << N.NODE_2 << "    --> (" << N.Position.x<< "," << N.Position.y << "," << N.Position.z << ")";
-    return os;
-}

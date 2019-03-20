@@ -1,11 +1,11 @@
-#include <iostream>
+//#include <iostream>
 #include "UntilFail.hpp"
 
 Status UntilFail::update(){
-      //std::cout << "estoy aqui :D" << '\n';
+      ////std::cout << "estoy aqui :D" << '\n';
 
      Status s= m_pChild->tick();
-     //std::cout << "estatus " <<s<< '\n';
+     ////std::cout << "estatus " <<s<< '\n';
 
      if(s==BH_FAILURE){
       return BH_SUCCESS;

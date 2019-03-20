@@ -19,28 +19,28 @@ void ZStaticMesh::assignMaterial(ZMaterial* material_){
     zmat = material_;
 }
 
-void ZStaticMesh::beginDraw(const uint8_t &T_ID){
-    if(T_ID == 2){
-        Shader* sh = zmat->getShader();
+void ZStaticMesh::beginDraw(){
 
-        // MODELO
-        GLuint M = sh->getUniformLocation("M");
-        glUniformMatrix4fv(M,1,GL_FALSE,&modelMatrix[0][0]);
+    Shader* sh = zmat->getShader();
 
-        // MODELO*VISTA*PERSPECTIVA
-        glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
-        GLuint MVP = sh->getUniformLocation("MVP");
-        glUniformMatrix4fv(MVP,1,GL_FALSE,&MVP_L[0][0]);
+    // MODELO
+    GLuint M = sh->getUniformLocation("M");
+    glUniformMatrix4fv(M,1,GL_FALSE,&modelMatrix[0][0]);
 
-        // LA FINALE
-        zmat->Bind();
-        mesh->draw();
-    }
+    // MODELO*VISTA*PERSPECTIVA
+    glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
+    GLuint MVP = sh->getUniformLocation("MVP");
+    glUniformMatrix4fv(MVP,1,GL_FALSE,&MVP_L[0][0]);
+
+    // LA FINALE
+    zmat->Bind();
+    mesh->draw();
+
 }
 
-void ZStaticMesh::endDraw(const uint8_t &T_ID){}
+void ZStaticMesh::endDraw(){}
 
 ZStaticMesh::~ZStaticMesh(){
-    //std::cout << "Deleting mesh..." << '\n';
+    ////std::cout << "Deleting mesh..." << '\n';
 
 }

@@ -1,5 +1,5 @@
 #include "Behavior.hpp"
-#include <iostream>
+//#include <iostream>
 
 void Behavior::SetStatus(Status _m_eStatus){
     m_eStatus=_m_eStatus;

@@ -3,7 +3,7 @@
 
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
-#include <iostream>
+//#include <iostream>
 #include <GameEngine/Motor2D.hpp>
 #include <Singleton.hpp>
 #include <GameAI/AIDirector.hpp>

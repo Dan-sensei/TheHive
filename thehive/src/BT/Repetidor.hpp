@@ -1,7 +1,7 @@
 #ifndef REPETIDOR_H
 #define REPETIDOR_H
 
-#include <iostream>
+//#include <iostream>
 #include "Decorator.hpp"
 
 class Repetidor : public Decorator{

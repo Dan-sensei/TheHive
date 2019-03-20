@@ -14,14 +14,14 @@
 #include <glm/gtx/transform.hpp>
 #include <cstdint>
 
-#include <iostream>
+//#include <iostream>
 
 class TEntidad {
     friend class SurrealEngine;
     public:
         virtual ~TEntidad()         = 0;
-        virtual void beginDraw(const uint8_t&)    = 0;
-        virtual void endDraw(const uint8_t&)      = 0;
+        virtual void beginDraw()    = 0;
+        virtual void endDraw()      = 0;
 
     protected:
         static std::stack<glm::mat4> matrixStack;

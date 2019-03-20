@@ -41,6 +41,8 @@ SkyBox::SkyBox()
 
 
 SkyBox::~SkyBox(){
+    glDeleteVertexArrays(1, &skyboxVAO);
+    glDeleteBuffers(1, &skyboxVBO);
 }
 
             //otro forma de cargar el cubemap
@@ -64,7 +66,7 @@ SkyBox::~SkyBox(){
 //         }
 //         else
 //         {
-//             std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
+//             //std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
 //             stbi_image_free(data);
 //         }
 //     }
@@ -186,20 +188,19 @@ void SkyBox::init(){
 }
 
 void SkyBox::Draw(){
+    auto viewt = engine->getVP();
+    glDepthMask(GL_FALSE);
+    glDepthFunc( GL_LEQUAL );
+    inicio->Bind();
+    //view = glm::mat4( glm::mat3( engine->getCam()->GetViewMatrix() ) );
+    glUniformMatrix4fv(view, 1, GL_FALSE, &(viewt)[0][0]);
+    //glUniformMatrix4fv( glGetUniformLocation( inicio.Program, "view" ), 1, GL_FALSE, glm::value_ptr( viewt ) );
+    glBindVertexArray( skyboxVAO );
+    glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture );
+    glDrawArrays( GL_TRIANGLES, 0, 36 );
+    glBindVertexArray( 0 );
+    glDepthFunc( GL_LESS );
+    glDepthMask(GL_TRUE);
 
-        auto viewt = engine->getVP();
-        glDepthMask(GL_FALSE);
-        glDepthFunc( GL_LEQUAL );
-        inicio->Bind();
-        //view = glm::mat4( glm::mat3( engine->getCam()->GetViewMatrix() ) );
-        glUniformMatrix4fv(view, 1, GL_FALSE, &(viewt)[0][0]);
-        //glUniformMatrix4fv( glGetUniformLocation( inicio.Program, "view" ), 1, GL_FALSE, glm::value_ptr( viewt ) );
-        glBindVertexArray( skyboxVAO );
-        glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture );
-        glDrawArrays( GL_TRIANGLES, 0, 36 );
-        glBindVertexArray( 0 );
-        glDepthFunc( GL_LESS );
-        glDepthMask(GL_TRUE);
-
-        fin->Bind();
+    fin->Bind();
 }

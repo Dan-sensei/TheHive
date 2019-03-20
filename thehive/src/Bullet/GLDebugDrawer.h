@@ -2,7 +2,7 @@
 #define GL_DEBUG_DRAWER_H
 
 #include <stdio.h>
-#include <iostream>
+//#include <iostream>
 #include <LinearMath/btIDebugDraw.h>
 
 #include <Singleton.hpp>

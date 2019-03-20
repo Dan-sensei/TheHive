@@ -1,5 +1,5 @@
 #include "Composite.hpp"
-#include <iostream>
+//#include <iostream>
 
 
 void Composite::addChild(Behavior* hijo){

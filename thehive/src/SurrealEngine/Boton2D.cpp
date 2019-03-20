@@ -1,7 +1,7 @@
 #include "Boton2D.hpp"
 #include "ZMeshData.hpp"
 #include "AssetManager.hpp"
-#include <iostream>
+//#include <iostream>
 #include <SOIL2/SOIL2.h>
 
 Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std::string &imgP,const std::string &imgS,const std::string &texto,bool focus,glm::vec4 color,float tam)

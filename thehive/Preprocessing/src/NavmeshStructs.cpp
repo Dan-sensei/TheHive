@@ -35,7 +35,7 @@ Node::Node(uint16_t _ID, uint16_t _NODE_1, uint16_t _NODE_2, const glm::vec3 &_P
 {}
 
 Node::Node(const Node &orig){
-    //// std::cout << "Copiando Nodo..." << '\n';
+    //// //std::cout << "Copiando Nodo..." << '\n';
 
     Bitconnect      =   orig.Bitconnect;
     RealCost        =   orig.RealCost;
@@ -61,9 +61,4 @@ Waypoint::Waypoint(const Waypoint &orig){
     Position = orig.Position;
     ID = orig.ID;
     Radius = orig.Radius;
-}
-
-std::ostream& operator<<(std::ostream& os, const Node &N){
-    os << "ID: " << N.ID <<  "   - Face: " << N.NODE_1 << " | " << N.NODE_2 << "    --> (" << N.Position.x<< "," << N.Position.y << "," << N.Position.z << ")";
-    return os;
 }

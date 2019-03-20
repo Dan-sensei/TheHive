@@ -15,8 +15,8 @@ class ZStaticMesh : public TEntidad {
 
         bool load(const std::string& Name);
         void assignMaterial(ZMaterial* material_);
-        virtual void beginDraw(const uint8_t&);
-        virtual void endDraw(const uint8_t&);
+        virtual void beginDraw();
+        virtual void endDraw();
 
     private:
 

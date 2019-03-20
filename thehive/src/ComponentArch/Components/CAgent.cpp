@@ -163,7 +163,7 @@ void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     std::string name = zonesMap[id];
     BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+".data",id);
 
-    // std::cout << " -["+std::to_string(id)+"]- LOADING ZONE: " << name << '\n';
+    // //std::cout << " -["+std::to_string(id)+"]- LOADING ZONE: " << name << '\n';
 }
 
 void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
@@ -172,7 +172,7 @@ void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
 
     Engine->SetMapZoneVisibility(id,false);
 
-    // std::cout << " -["+std::to_string(id)+"]- UNLOADING ZONE: " << name << '\n';
+    // //std::cout << " -["+std::to_string(id)+"]- UNLOADING ZONE: " << name << '\n';
 }
 
 void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){
@@ -375,7 +375,7 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
         if(!isDone){
             uint16_t eIdObj     = _pRec->data.find(kDat_EntId);
             int actionId        = _pRec->data.find(kDat_Action);
-            // std::cout << "ID: " << eIdObj << " || ACTION: " << actionId << '\n';
+            // //std::cout << "ID: " << eIdObj << " || ACTION: " << actionId << '\n';
 
             // Esta done la accion del jugador
             _pRec->data.clearData(kDat_Done);
@@ -443,9 +443,9 @@ void CAgent::EXIT_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){
 void CAgent::EXIT_func_kTrig_Senyuelo    (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Senyuelo){
         if(oManager->getComponent(gg::AIENEM,nCAgentID)){
-            //// std::cout << "core si" << '\n';
+            //// //std::cout << "core si" << '\n';
             static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID))->MHandler_SENYUELO_END();
-            //// std::cout << "core no" << '\n';
+            //// //std::cout << "core no" << '\n';
         }
     }
 }

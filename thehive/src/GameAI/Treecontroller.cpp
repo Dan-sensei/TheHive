@@ -8,7 +8,7 @@
 #include <BT/Parallel.hpp>
 #include <BT/UntilFail.hpp>
 #include <BT/RandomSelector.hpp>
-#include <iostream>
+//#include <iostream>
 
 Treecontroller::Treecontroller(){}
 //hacer herencia para cada tipo de enemigo ?
@@ -57,13 +57,13 @@ Treecontroller::~Treecontroller(){
 
 void Treecontroller::reset(){
     for (size_t i = 0; i < m_Children.size(); i++) {
-        //// std::cout << "borra" << i<<'\n';
+        //// //std::cout << "borra" << i<<'\n';
         m_Children[i]->abort();
     }
 }
 int Treecontroller::taskactual(){
     for (size_t i = 0; i < m_Children.size(); i++) {
-        //// std::cout << "borra" << i<<'\n';
+        //// //std::cout << "borra" << i<<'\n';
         if(m_Children[i]->getStatus()==BH_RUNNING){
             //CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
 

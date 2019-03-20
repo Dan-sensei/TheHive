@@ -9,7 +9,7 @@ class ggDynWorld;
 
 class AIDirector;
 
-#include <iostream>
+//#include <iostream>
 #include <SurrealEngine/Clock.hpp>
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
@@ -55,7 +55,7 @@ private:
     gg::Color col;
     TNodo* luz;
     CTransform* playerpos;
-    SkyBox* sky;
+    SkyBox sky;
 };
 
 

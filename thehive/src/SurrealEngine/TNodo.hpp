@@ -19,9 +19,9 @@ class TNodo {
         bool setPadre(TNodo*);
         TNodo* getPadre();
 
-        void draw(const uint8_t&);
+        void draw();
+        void drawRoot_M();
         void drawRoot();
-        void drawRoot(const uint8_t&);
 
         void setVisibility(bool Flag);
 

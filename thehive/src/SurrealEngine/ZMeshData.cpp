@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include "BinaryParser.hpp"
 #include "OpenGEnum.hpp"
-#include <iostream>
+//#include <iostream>
 
 ZMeshData::ZMeshData()
 :VAO(0), IndexSize(0)
@@ -39,7 +39,7 @@ bool ZMeshData::load(const std::string& path){
     VBOs.reserve(3);
 
     if(!loaded){
-        std::cout << "   --No se pudo abrir " << path << '\n';
+        //std::cout << "   --No se pudo abrir " << path << '\n';
         return false;
     }
 
