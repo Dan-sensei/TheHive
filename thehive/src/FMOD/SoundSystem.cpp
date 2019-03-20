@@ -90,42 +90,36 @@ void SoundSystem::update(){
 void SoundSystem::CLIN(){
 	// A clinear!
 
-	auto it2 = eventDescriptions.begin();
-	while(it2!=eventDescriptions.end()){
-		(it2->second)->releaseAllInstances();
-		delete it2->second;
-		it2++;
-	}
+	// auto it2 = eventDescriptions.begin();
+	// while(it2!=eventDescriptions.end()){
+	// 	(it2->second)->releaseAllInstances();
+	// 	delete it2->second;
+	// 	it2++;
+	// }
 	eventDescriptions.clear();
 
-	// auto it = soundEvents.begin();
-	// while(it!=soundEvents.end()){
-	// 	delete (it->second);
-	// 	it++;
-	// }
-	// soundEvents.clear();
+	auto it = soundEvents.begin();
+	while(it!=soundEvents.end()){
+		delete (it->second);
+		it++;
+	}
+	soundEvents.clear();
 
 	masterBank->unload();
-	delete masterBank;
 
 	stringsBank->unload();
-	delete stringsBank;
 
 	sfxBank->unload();
-	delete sfxBank;
 
 	ambienteBank->unload();
-	delete ambienteBank;
 
 	musicaBank->unload();
-	delete musicaBank;
 
 	vocesBank->unload();
-	delete vocesBank;
+
 	system->release();
-	delete system;
 
 	lowLevelSystem->release();
-	delete lowLevelSystem;
+
 
 }

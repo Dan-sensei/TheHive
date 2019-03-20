@@ -37,10 +37,10 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
 
 CGun::~CGun() {
 
-    delete s_disparo;
-    delete s_desenfundado;
-    delete s_vacio;
-    delete s_recarga;
+    // delete s_disparo;
+    // delete s_desenfundado;
+    // delete s_vacio;
+    // delete s_recarga;
 
 }
 
