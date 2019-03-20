@@ -1,7 +1,7 @@
 #ifndef UNTILFAIL_H
 #define UNTILFAIL_H
 
-#include <iostream>
+//#include <iostream>
 #include "Decorator.hpp"
 
 class UntilFail : public Decorator{

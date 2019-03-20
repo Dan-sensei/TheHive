@@ -8,7 +8,7 @@
 #include <fstream>
 
 #include <vector>
-#include <iostream>
+//#include <iostream>
 
 #include "FILE_DIRECTORIES.hpp"
 
@@ -35,13 +35,13 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
 
     // If the import failed, report it
     if( !scene){
-        std::cout << "La importación de " << FileInput << " ha fallado" << '\n';
+        //std::cout << "La importación de " << FileInput << " ha fallado" << '\n';
         return;
     }
 
 
-    std::cout << "Hacking " << FileInput << " --> " << FileOutput << '\n';
-    //std::cout << "Cargando modelo '" << pFile << "'" << '\n';
+    //std::cout << "Hacking " << FileInput << " --> " << FileOutput << '\n';
+    ////std::cout << "Cargando modelo '" << pFile << "'" << '\n';
 
     aiMesh **meshes = scene->mMeshes;
     aiVector3D* vertices;
@@ -60,9 +60,9 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
            bitangents   =   meshes[i]->mBitangents;
                 faces   =   meshes[i]->mFaces;
 
-            //std::cout << "VERTEX " << meshes[i]->mNumVertices << '\n';
+            ////std::cout << "VERTEX " << meshes[i]->mNumVertices << '\n';
 
-            //std::cout << "Positions&Normals " << meshes[i]->mNumVertices*6 << '\n';
+            ////std::cout << "Positions&Normals " << meshes[i]->mNumVertices*6 << '\n';
 
             PositionsNormals.reserve(meshes[i]->mNumVertices*6);
             uv.reserve(meshes[i]->mNumVertices*2);

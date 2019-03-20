@@ -19,8 +19,8 @@ class TLuz : public TEntidad {
         virtual void setIntensidad(gg::Color&);
         virtual gg::Color getIntensidad();
 
-        virtual void beginDraw(const uint8_t&);
-        virtual void endDraw(const uint8_t&);
+        virtual void beginDraw();
+        virtual void endDraw();
 
     private:
         gg::Color intensidad;

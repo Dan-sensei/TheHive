@@ -1,5 +1,5 @@
 #include "Pathfinding.hpp"
-#include <iostream>
+//#include <iostream>
 #include <BinaryParser.hpp>
 #include "Singleton.hpp"
 #include <SurrealEngine/SurrealEngine.hpp>
@@ -17,7 +17,7 @@ Pathfinding::Pathfinding()
 
     //bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
     BinaryParser::ReadNavmeshData("assets/BinaryFiles/NavmeshCITY.gg", GRAPH, GConnections, FACES);
-    //// std::cout << "GRAPH CREATED!" << '\n';
+    //// //std::cout << "GRAPH CREATED!" << '\n';
 }
 
 Pathfinding::~Pathfinding(){
@@ -58,7 +58,7 @@ bool Pathfinding::isDebugging(){
 }
 
 void Pathfinding::resetGraph(){
-    //// std::cout << "Reseting" << '\n';
+    //// //std::cout << "Reseting" << '\n';
     uint16_t i = GRAPH.size();
     while(i--){
         GRAPH[i].Status = Type::UNVISITED;
@@ -125,7 +125,7 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
 
     if(CurrentNode->ID != GOAL) {
         ////gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
-        std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
+        //std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
         while(CurrentNode->ID != START) {
@@ -171,7 +171,7 @@ void Pathfinding::FindPath(const glm::vec3 &START, const glm::vec3 &GOAL, std::s
         // //gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
         return;
     }
-    // std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
+    // //std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
 
     Goal = GOAL;
     if(StartFN == GoalFN){
@@ -237,7 +237,7 @@ void Pathfinding::DroNodes(){
             color.B = 204;
         }
 
-        Engine->Draw3DLine(GRAPH[i].Position, glm::vec3(GRAPH[i].Position.x, GRAPH[i].Position.y + length, GRAPH[i].Position.z), color);
+        //Engine->Draw3DLine(GRAPH[i].Position, glm::vec3(GRAPH[i].Position.x, GRAPH[i].Position.y + length, GRAPH[i].Position.z), color);
 
         if(Goal.x && Goal.y && Goal.z){
             length = 100;
@@ -245,7 +245,7 @@ void Pathfinding::DroNodes(){
             color.R = 212;
             color.G = 175;
             color.B = 55;
-            Engine->Draw3DLine(Goal, Goal + glm::vec3(0,length,0), color);
+            //Engine->Draw3DLine(Goal, Goal + glm::vec3(0,length,0), color);
         }
     }
 
@@ -256,7 +256,7 @@ void Pathfinding::DroNodes(){
     color.B = 153;
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 40, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 40, 0), color);
+            //Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 40, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 40, 0), color);
         }
     }
 
@@ -267,8 +267,8 @@ void Pathfinding::DroNodes(){
     // color.G = 20;
     // color.B = 147;
     // for(uint16_t i = 0; i < FACES.size(); ++i){
-    //     Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + glm::vec3(0, 100, 0), gg::Color(255, 20, 147, 1));
-    //     Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + glm::vec3(0, 100, 0), gg::Color(255, 20, 147, 1));
+    //     //Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + glm::vec3(0, 100, 0), gg::Color(255, 20, 147, 1));
+    //     //Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + glm::vec3(0, 100, 0), gg::Color(255, 20, 147, 1));
     // }
 }
 

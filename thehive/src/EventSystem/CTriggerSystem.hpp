@@ -2,7 +2,7 @@
 #define _CTRIGGERSYSTEM_H
 
 #include <map>
-#include <iostream>
+//#include <iostream>
 #include <math.h>
 //#include <cstdlib>
 //#include <iomanip>

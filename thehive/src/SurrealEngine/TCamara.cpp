@@ -1,5 +1,5 @@
 #include "TCamara.hpp"
-#include <iostream>
+//#include <iostream>
 #include <cstdint>
 
 
@@ -34,26 +34,24 @@ void TCamara::setTarget(glm::vec3 &t_pos){
     target      = t_pos;
 }
 
-void TCamara::beginDraw(const uint8_t &T_ID){
+void TCamara::beginDraw(){
     // Matriz VISTA
     // -------------------
     // Mirar la funcion Dios glm::decompose si la posicion de la camara no funciona
 
-
-    if(T_ID == 1){
-        if(hasTarget){
-            viewMatrix = glm::lookAt(
-                glm::vec3(modelMatrix[3]),
-                target,
-                glm::vec3(0,1,0)
-            );
-        }
-        else{
-            viewMatrix = glm::inverse(modelMatrix);
-        }
+    if(hasTarget){
+        viewMatrix = glm::lookAt(
+            glm::vec3(modelMatrix[3]),
+            target,
+            glm::vec3(0,1,0)
+        );
     }
+    else{
+        viewMatrix = glm::inverse(modelMatrix);
+    }
+
 }
-void TCamara::endDraw(const uint8_t &T_ID){}
+void TCamara::endDraw(){}
 
 // glm::mat4 GetViewMatrix( ){
 //         return glm::lookAt( this->position, this->position + this->front, this->up );

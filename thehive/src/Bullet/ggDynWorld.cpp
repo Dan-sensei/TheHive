@@ -16,7 +16,7 @@ void ggDynWorld::addRigidBody(btRigidBody* body){
 //void ggDynWorld::addRigidBody(btRigidBody* body,unsigned int Group,unsigned int Mask){
     //dynamicsWorld->addRigidBody(body,Group,Mask);
     dynamicsWorld->addRigidBody(body);
-    //std::cout << body->getFlags() << '\n';
+    ////std::cout << body->getFlags() << '\n';
 }
 
 void ggDynWorld::removeRigidBody(btRigidBody *body){

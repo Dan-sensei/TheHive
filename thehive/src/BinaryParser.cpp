@@ -98,7 +98,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
     uint8_t NUMBER_OF_OBJECTS = 0;
     GG_Read(inStream, NUMBER_OF_OBJECTS);
 
-    //std::cout << "NUM " << (uint16_t)NUMBER_OF_OBJECTS << '\n';
+    ////std::cout << "NUM " << (uint16_t)NUMBER_OF_OBJECTS << '\n';
 
     for(uint16_t i = 0; i < NUMBER_OF_OBJECTS; ++i){
         uint8_t MODEL = 0;
@@ -109,20 +109,20 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         auto Manager = Singleton<ObjectManager>::Instance();
         uint16_t NewEntity = Manager->createEntity();
 
-        //std::cout << "Model->  " << str << '\n';
+        ////std::cout << "Model->  " << str << '\n';
         float x,y,z;
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
         glm::vec3 Position(x,y,z);
-        //std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
-        //if(MODEL == 45) std::cout << "Position " << Position.x << ", " << Position.y << ", " << Position.z << '\n';
+        ////std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
+        //if(MODEL == 45) //std::cout << "Position " << Position.x << ", " << Position.y << ", " << Position.z << '\n';
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
         glm::vec3 Rotation(x,y,z);
-        //if(MODEL == 37) std::cout << "Rotation " << Rotation.x << ", " << Rotation.y << ", " << Rotation.z << '\n';
-        //std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
+        //if(MODEL == 37) //std::cout << "Rotation " << Rotation.x << ", " << Rotation.y << ", " << Rotation.z << '\n';
+        ////std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
 
         bool HasCollider;
         GG_Read(inStream, HasCollider);
@@ -130,7 +130,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation, map_zone);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
 
-        //std::cout << "Collider? = " << HasCollider << '\n';
+        ////std::cout << "Collider? = " << HasCollider << '\n';
         if(HasCollider){
             GG_Read(inStream, x);
             GG_Read(inStream, y);
@@ -141,19 +141,19 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             GG_Read(inStream, ry);
             GG_Read(inStream, rz);
             GG_Read(inStream, rw);
-            //if(MODEL == 45) std::cout << "R " << rx << ", " << ry << ", " << rz << '\n';
-            //std::cout << "      -Center: " << x << ", " << y << ", " << z << '\n';
+            //if(MODEL == 45) //std::cout << "R " << rx << ", " << ry << ", " << rz << '\n';
+            ////std::cout << "      -Center: " << x << ", " << y << ", " << z << '\n';
             float sx,sz,sy;
             GG_Read(inStream, sx);
             GG_Read(inStream, sy);
             GG_Read(inStream, sz);
-            //if(MODEL == 45) std::cout << "Size " << sx << ", " << sy << ", " << sz << '\n';
-            //std::cout << "      -Size: " << x << ", " << y << ", " << z << '\n';
+            //if(MODEL == 45) //std::cout << "Size " << sx << ", " << sy << ", " << sz << '\n';
+            ////std::cout << "      -Size: " << x << ", " << y << ", " << z << '\n';
             CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
             Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewEntity);
         }
 
-        //if(MODEL == 45) std::cout << '\n';
+        //if(MODEL == 45) //std::cout << '\n';
 
     }
 }
@@ -216,7 +216,7 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
     uint8_t EVENT;
     GG_Read(inStream,TOTAL);
 
-    // std::cout << "EVENT TOTAL : " << static_cast<int>(TOTAL) << " --- " << '\n';
+    // //std::cout << "EVENT TOTAL : " << static_cast<int>(TOTAL) << " --- " << '\n';
 
     for (size_t i=0 ; i<TOTAL; ++i) {
         EVENT = 0;
@@ -233,9 +233,9 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
             GG_Read(inStream,z);
             glm::vec3 position(x,y,z);
 
-            // std::cout << " - Arma     : " << static_cast<int>(arma) << '\n';
-            // std::cout << "   |  - POS : " << "(" << x << "," << y << "," << z << ")" << '\n';
-            // std::cout << '\n';
+            // //std::cout << " - Arma     : " << static_cast<int>(arma) << '\n';
+            // //std::cout << "   |  - POS : " << "(" << x << "," << y << "," << z << ")" << '\n';
+            // //std::cout << '\n';
 
             fac->createCollectableWeapon(position, arma);
         }
@@ -275,9 +275,9 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
             GG_Read(inStream,ry);
             GG_Read(inStream,rz);
 
-            // std::cout << " - Touchable: " << static_cast<int>(obj) << '\n';
-            // std::cout << "   |  - POS : " << "(" << x << "," << y << "," << z << ")" << '\n';
-            // std::cout << "   |  - ROT : " << "(" << rx << "," << ry << "," << rz << ")" << '\n';
+            // //std::cout << " - Touchable: " << static_cast<int>(obj) << '\n';
+            // //std::cout << "   |  - POS : " << "(" << x << "," << y << "," << z << ")" << '\n';
+            // //std::cout << "   |  - ROT : " << "(" << rx << "," << ry << "," << rz << ")" << '\n';
 
             uint8_t hasCollider;
             GG_Read(inStream,hasCollider);
@@ -295,13 +295,13 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
                 GG_Read(inStream,csy);
                 GG_Read(inStream,csz);
 
-                // std::cout << "   |  Has collider    : " << '\n';
-                // std::cout << "      |  - POS        : " << "(" << cx << "," << cy << "," << cz << ")" << '\n';
-                // std::cout << "      |  - ROT        : " << "(" << crx << "," << cry << "," << crz << "[" << crw << "])" << '\n';
-                // std::cout << "      |  - SIZE       : " << "(" << csx << "," << csy << "," << csz << ")" << '\n';
+                // //std::cout << "   |  Has collider    : " << '\n';
+                // //std::cout << "      |  - POS        : " << "(" << cx << "," << cy << "," << cz << ")" << '\n';
+                // //std::cout << "      |  - ROT        : " << "(" << crx << "," << cry << "," << crz << "[" << crw << "])" << '\n';
+                // //std::cout << "      |  - SIZE       : " << "(" << csx << "," << csy << "," << csz << ")" << '\n';
             }
             else{
-                // std::cout << "   |  No collider" << '\n';
+                // //std::cout << "   |  No collider" << '\n';
             }
 
             // Toggle
@@ -317,10 +317,10 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
             GG_Read(inStream,tory);
             GG_Read(inStream,trz);
 
-            // std::cout << "   |  Has toggle      : " << '\n';
-            // std::cout << "      |  - OBJ        : " << static_cast<int>(toggleObj) << '\n';
-            // std::cout << "      |  - POS        : " << "(" << tx << "," << ty << "," << tz << ")" << '\n';
-            // std::cout << "      |  - ROT        : " << "(" << trx << "," << tory << "," << trz << ")" << '\n';
+            // //std::cout << "   |  Has toggle      : " << '\n';
+            // //std::cout << "      |  - OBJ        : " << static_cast<int>(toggleObj) << '\n';
+            // //std::cout << "      |  - POS        : " << "(" << tx << "," << ty << "," << tz << ")" << '\n';
+            // //std::cout << "      |  - ROT        : " << "(" << trx << "," << tory << "," << trz << ")" << '\n';
 
             uint8_t toggleHasCollider;
             GG_Read(inStream,toggleHasCollider);
@@ -338,13 +338,13 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
                 GG_Read(inStream,tcsy);
                 GG_Read(inStream,tcsz);
 
-                // std::cout << "      |  Toggle has collider  : " << '\n';
-                // std::cout << "         |  - POS             : " << "(" << tcx << "," << tcy << "," << tcz << ")" << '\n';
-                // std::cout << "         |  - ROT             : " << "(" << tcrx << "," << tcry << "," << tcrz << "[" << tcrw << "])" << '\n';
-                // std::cout << "         |  - SIZE            : " << "(" << tcsx << "," << tcsy << "," << tcsz << ")" << '\n';
+                // //std::cout << "      |  Toggle has collider  : " << '\n';
+                // //std::cout << "         |  - POS             : " << "(" << tcx << "," << tcy << "," << tcz << ")" << '\n';
+                // //std::cout << "         |  - ROT             : " << "(" << tcrx << "," << tcry << "," << tcrz << "[" << tcrw << "])" << '\n';
+                // //std::cout << "         |  - SIZE            : " << "(" << tcsx << "," << tcsy << "," << tcsz << ")" << '\n';
             }
             else{
-                // std::cout << "      |  Toggle has no collider" << '\n';
+                // //std::cout << "      |  Toggle has no collider" << '\n';
             }
 
             // Pickable?
@@ -355,11 +355,11 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
                 GG_Read(inStream,py);
                 GG_Read(inStream,pz);
 
-                // std::cout << "   |  Has pickable    : " << '\n';
-                // std::cout << "      |  - POS        : " << "(" << px << "," << py << "," << pz << ")" << '\n';
+                // //std::cout << "   |  Has pickable    : " << '\n';
+                // //std::cout << "      |  - POS        : " << "(" << px << "," << py << "," << pz << ")" << '\n';
             }
             else{
-                // std::cout << "   |  No Pickable" << '\n';
+                // //std::cout << "   |  No Pickable" << '\n';
             }
 
             auto Manager = Singleton<ObjectManager>::Instance();
@@ -401,7 +401,7 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
 
 
 
-            std::cout << '\n';
+            //std::cout << '\n';
         }
     }
 
@@ -417,7 +417,7 @@ void BinaryParser::ReadLoadZonesData(const std::string &BinaryFile){
 
     uint8_t TOTAL;
     GG_Read(inStream,TOTAL);
-    std::cout << "TOTAL LOADERS: " << static_cast<int>(TOTAL) << '\n';
+    //std::cout << "TOTAL LOADERS: " << static_cast<int>(TOTAL) << '\n';
 
     for(int i=0 ; i<TOTAL ; ++i){
         uint8_t ZONE;
@@ -432,7 +432,7 @@ void BinaryParser::ReadLoadZonesData(const std::string &BinaryFile){
         TData mes;
         mes.add(kDat_LoadThatZone,ZONE);
         TS->RegisterTriger(kTrig_LoadZone,1,0,Position, 8, 0, false, mes);
-        std::cout << " - LOAD ZONE " << static_cast<int>(ZONE) << " ON " << glm::to_string(Position) << '\n';
+        //std::cout << " - LOAD ZONE " << static_cast<int>(ZONE) << " ON " << glm::to_string(Position) << '\n';
     }
 }
 
@@ -442,7 +442,7 @@ void BinaryParser::ReadUnLoadZonesData(const std::string &BinaryFile){
 
     uint8_t TOTAL;
     GG_Read(inStream,TOTAL);
-    std::cout << "TOTAL UNLOADERS: " << static_cast<int>(TOTAL) << '\n';
+    //std::cout << "TOTAL UNLOADERS: " << static_cast<int>(TOTAL) << '\n';
 
     for(int i=0 ; i<TOTAL ; ++i){
         uint8_t ZONE;
@@ -457,6 +457,6 @@ void BinaryParser::ReadUnLoadZonesData(const std::string &BinaryFile){
         TData mes;
         mes.add(kDat_LoadThatZone,ZONE);
         TS->RegisterTriger(kTrig_UnLoadZone,1,0,Position, 8, 0, false, mes);
-        std::cout << " - UNLOAD ZONE " << static_cast<int>(ZONE) << " ON " << glm::to_string(Position) << '\n';
+        //std::cout << " - UNLOAD ZONE " << static_cast<int>(ZONE) << " ON " << glm::to_string(Position) << '\n';
     }
 }

@@ -2,7 +2,7 @@
 //#include "Enum.hpp"
 #include <GameAI/Pathfinding.hpp>
 #include <Singleton.hpp>
-#include <iostream>
+//#include <iostream>
 #include "Bullet/ggDynWorld.hpp"
 
                      //  2^16
@@ -89,21 +89,21 @@ void ObjectManager::clin(){
 int ObjectManager::returnIDFromRigid(btRigidBody* esto){
     //compr esto
     //const gg::EComponentType &cType
-    //std::cout << "hecho" << '\n';
+    ////std::cout << "hecho" << '\n';
     std::map<uint16_t, IComponent*>::iterator found = TypeToComponentMap[gg::RIGID_BODY].begin();
     while(found!=TypeToComponentMap[gg::RIGID_BODY].end()){
-        //std::cout << "entra" << '\n';
+        ////std::cout << "entra" << '\n';
         CRigidBody* cRigidBody = static_cast<CRigidBody*>(found->second);
         if(esto!=nullptr&&cRigidBody->getBody()!=nullptr&&cRigidBody->getBody()==esto){
-            //std::cout << "si joder" << '\n';
-            //std::cout << found->first << '\n';
+            ////std::cout << "si joder" << '\n';
+            ////std::cout << found->first << '\n';
             return found->first;
         }
         found++;
-        //std::cout << "sale" << '\n';
+        ////std::cout << "sale" << '\n';
         //found->second;
     }
-    //std::cout << "sale fin" << '\n';
+    ////std::cout << "sale fin" << '\n';
 return 0;
     //  If exists
     //if(found != TypeToComponentMap[cType].end())
@@ -166,7 +166,7 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
 
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
-    //std::cout << "FLOCKING SIZE " << TypeToComponentMap[gg::FLOCK].size() << '\n';
+    ////std::cout << "FLOCKING SIZE " << TypeToComponentMap[gg::FLOCK].size() << '\n';
     if(Erase) return;
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);

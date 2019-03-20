@@ -1,7 +1,7 @@
 #include "Texto2D.hpp"
 #include "ZMeshData.hpp"
 #include "AssetManager.hpp"
-#include <iostream>
+//#include <iostream>
 #include <SOIL2/SOIL2.h>
 #include "Singleton.hpp"
 #include "Letra2DManager.hpp"
@@ -27,7 +27,7 @@ void Texto2D::setText(std::string pal){
 }
 float Texto2D::ChangeChar(float x,float y,char cha){
 
-    //std::cout << "cha:" <<cha<< '\n';
+    ////std::cout << "cha:" <<cha<< '\n';
 
     float _x,_y,_w,_h;
     float T_x,T_y,T_w,T_h;
@@ -165,7 +165,7 @@ Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,flo
 
             //textura
 
-            //std::cout <<"textura"<< HUDtext << '\n';
+            ////std::cout <<"textura"<< HUDtext << '\n';
             //newMat->addTexture("DiffuseMap", "assets/Textures/DefaultDiffuse.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
 

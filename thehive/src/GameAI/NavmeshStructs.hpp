@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <string>
-#include <iostream>
+//#include <iostream>
 #include <Util.hpp>
 #include <vector>
 
@@ -57,7 +57,5 @@ struct Waypoint{
     float Radius;
     uint16_t ID;
 };
-
-std::ostream& operator<<(std::ostream& os, const Node &N);
 
 #endif

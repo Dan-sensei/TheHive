@@ -1,18 +1,18 @@
 #include "Shader.hpp"
 #include <sstream>
 #include <fstream>
-#include <iostream>
+//#include <iostream>
 
 Shader::Shader(){
 }
 
 Shader::Shader(const Shader& orig){
-    // std::cout << "Copiando Shader" << '\n';
+    // //std::cout << "Copiando Shader" << '\n';
     ShaderID = orig.ShaderID;
 }
 
 Shader::~Shader(){
-    std::cout << "Deleting Shader..." << '\n';
+    //std::cout << "Deleting Shader..." << '\n';
     glDeleteProgram(ShaderID);
 }
 
@@ -49,12 +49,14 @@ bool Shader::loadFiles(const char* VertexShader, const char* GeometryShader, con
     unsigned int VertexShaderID, GeometryShaderID, FragmentShaderID;
 
     if(VertexShader != nullptr)        VertexShaderID   = loadShader(VertexShader, GL_VERTEX_SHADER);
-    else  { std::cout << "  -Error: Null VertexShader" << '\n'; return false;    }
+    else  { //std::cout << "  -Error: Null VertexShader" << '\n'; return false;
+    }
 
     if(GeometryShader != nullptr)      GeometryShaderID = loadShader(GeometryShader, GL_GEOMETRY_SHADER);
 
     if(FragmentShader != nullptr)      FragmentShaderID = loadShader(FragmentShader, GL_FRAGMENT_SHADER);
-    else  { std::cout << "  -Error: Null FragmentShader" << '\n'; return false;    }
+    else  { //std::cout << "  -Error: Null FragmentShader" << '\n'; return false;
+    }
 
     ShaderID = glCreateProgram();
 
@@ -78,7 +80,7 @@ bool Shader::loadFiles(const char* VertexShader, const char* GeometryShader, con
 	if ( info > 0 ){
 		std::vector<char> ProgramErrorMessage(info+1);
 		glGetProgramInfoLog(ShaderID, info, NULL, &ProgramErrorMessage[0]);
-		std::cout << &ProgramErrorMessage[0] << std::endl;
+		//std::cout << &ProgramErrorMessage[0] << std::endl;
         glDeleteProgram(ShaderID);
 	}
 
@@ -107,7 +109,7 @@ unsigned int Shader::loadShader(const char *path, unsigned int type){
     std::string shaderSource;
     std::ifstream shaderStream(path, std::ios::in);
     if(!shaderStream.is_open()){
-        std::cout << "No se pudo abrir el archivo: '" << path << "'" << std::endl;
+        //std::cout << "No se pudo abrir el archivo: '" << path << "'" << std::endl;
         return -1;
     }
 
@@ -119,7 +121,7 @@ unsigned int Shader::loadShader(const char *path, unsigned int type){
     unsigned int ID = glCreateShader(type);
 
     //Compilando Shader
-    std::cout << "Comprobando shader: " << path << std::endl;
+    //std::cout << "Comprobando shader: " << path << std::endl;
 	char const * src = shaderSource.c_str();
 	glShaderSource(ID, 1, &src , NULL);
 	glCompileShader(ID);
@@ -128,13 +130,13 @@ unsigned int Shader::loadShader(const char *path, unsigned int type){
     glGetShaderiv(ID, GL_COMPILE_STATUS, &info);
 
     if(info == GL_FALSE){
-        std::cout << "Fallo en la compilación del shader" << std::endl;
+        //std::cout << "Fallo en la compilación del shader" << std::endl;
 
         GLint infoLink;
         glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &infoLink);
         std::vector<char> shaderError(infoLink+1);
 		glGetShaderInfoLog(ID, infoLink, NULL, &shaderError[0]);
-		std::cout << &shaderError[0] << std::endl;
+		//std::cout << &shaderError[0] << std::endl;
 
         glDeleteShader(ID);
         ID = -1;

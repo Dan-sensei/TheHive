@@ -1,5 +1,5 @@
 #include "Motor2D.hpp"
-#include <iostream>
+//#include <iostream>
 //#include <SMaterial>
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
@@ -36,7 +36,7 @@ void Motor2D::draw(){
     //lo mas sencillo
     //Imagen2D img (0,0,1,1,"assets/HUD/Botonsolo.png");
     //img.Draw();
-    //std::cout << "dibujando" << '\n';
+    ////std::cout << "dibujando" << '\n';
     //Texto2D nuevo( 0, 0,"Name",glm::vec4(1,0,0,1),30);
     //nuevo.Draw();
     //Texto2D nuevo(0,0.05,"Menu principal",glm::vec4(1,0,0,1),30);
@@ -49,11 +49,11 @@ Cuadrado2D* Motor2D::addRect(float x, float y,float w, float h){
     return nuevo;
 }
 void Motor2D::prueba(){
-    //std::cout << "prueba" << '\n';
+    ////std::cout << "prueba" << '\n';
     //addText(30,30,"GERMAN GAY",glm::vec4(1,1,0,1),20);
     //AddImage("vida","assets/HUD/Botonsolo.png",0,0,30,30);
     addButton(0,0,30,30,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/mongol.jpg","GeMAN",false);
-    //std::cout << "end prueba" << '\n';
+    ////std::cout << "end prueba" << '\n';
 
 
 }
@@ -83,7 +83,7 @@ void Motor2D::aplyhover(){
     while(it!=BOTONES.end()){
         auto but=*it;
         if(but->checkOn(x, y)){
-            //std::cout << "encima" << '\n';
+            ////std::cout << "encima" << '\n';
             //setImage
             but->hover(true);
         }
@@ -105,7 +105,7 @@ void Motor2D::AddImage(std::string palabra,std::string source,float _posx,float 
     auto nuevo = new Imagen2D(x,y,w,h,source);
     //auto nuevo = new Imagen2D (0,0,0.5,0.5,"assets/HUD/Botonsolo.png");
 
-    //std::cout << "nuevo " << nuevo << '\n';
+    ////std::cout << "nuevo " << nuevo << '\n';
     IMAGENES.push_back(std::make_pair(palabra,nuevo));
     //
 }
@@ -141,7 +141,7 @@ void Motor2D::setprogress(int hab,float prog){
 }
 
 void Motor2D::setvida(float _vida){
-    // std::cout << "hacemos algo" << '\n';
+    // //std::cout << "hacemos algo" << '\n';
     vida=_vida;
 }
 void Motor2D::setVolDialogo(int _vol){
@@ -196,7 +196,7 @@ std::string  Motor2D::BoolToString(bool b)
 int Motor2D::InitAIDebug(int id){
     CLINMenu();
     ObjectManager* Manager = Singleton<ObjectManager>::Instance();
-    // std::cout << "id:" <<id<< '\n';
+    // //std::cout << "id:" <<id<< '\n';
     CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
     CVida* Vida = static_cast<CVida*>(Manager->getComponent(gg::VIDA,id));
 
@@ -376,7 +376,7 @@ int Motor2D::InitMenu6(){
     //AddStaticTextToBuffer(porc_ancho(40),porc_alto(51),std::to_string(VolDialogo),gg::Color(0,0,0,1));
     addButton(50,50,2,5,MOREDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","M");
     addButton(53,50,2,5,LESSDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","m");
-    std::cout << VolMusic << '\n';
+    //std::cout << VolMusic << '\n';
     addText(30,57,"Music"  );
     addText(40,57,""+VolMusic);
     //AddStaticTextToBuffer(porc_ancho(30),porc_alto(57),std::string("Music"),gg::Color(0,0,0,1));

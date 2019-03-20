@@ -1,7 +1,7 @@
 #include "Cuadrado2D.hpp"
 #include "ZMeshData.hpp"
 #include "AssetManager.hpp"
-#include <iostream>
+//#include <iostream>
 
 
 
@@ -109,7 +109,7 @@ void Cuadrado2D::Draw(){
 }
 
 Cuadrado2D::~Cuadrado2D(){
-    //std::cout << "DELETE CUADRADO" << '\n';
+    ////std::cout << "DELETE CUADRADO" << '\n';
 
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);

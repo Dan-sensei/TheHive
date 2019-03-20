@@ -1,6 +1,6 @@
 #include "Game.hpp"
 
-#include <iostream>
+//#include <iostream>
 #include <cstdint>
 #include <string>
 #include <stack>
@@ -126,25 +126,25 @@ void Game::Init(){
 
     sky->init();
     //Engine2D->prueba();
-    // std::cout << "\n -- INIT -- " << '\n';
+    // //std::cout << "\n -- INIT -- " << '\n';
 }
 
 void Game::Update(){
     //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
-    //std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
+    ////std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
 
     DeltaTime = MasterClock.Restart().Seconds();
 
-    // std::cout << " - POLL EVENTS" << '\n';
+    // //std::cout << " - POLL EVENTS" << '\n';
     Engine->PollEvents();
 
 
     if(DeltaTime > 0.25) DeltaTime = 0.25;
 
-    // std::cout << " - WHILE" << '\n';
+    // //std::cout << " - WHILE" << '\n';
     Accumulator += DeltaTime;
 
-    // std::cout << "  - Delta time1 : " << DeltaTime << '\n';
+    // //std::cout << "  - Delta time1 : " << DeltaTime << '\n';
     // if(DeltaTime > 10000) throw std::exception();
     while(Accumulator >= 1/UPDATE_STEP){
         // FIXED UPDATE//
@@ -157,7 +157,7 @@ void Game::Update(){
         Accumulator -= 1/UPDATE_STEP;
     }
 
-    // std::cout << " - EVENTSYSTEM UPDATE" << '\n';
+    // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
     Director->update(DeltaTime);
     //  Interpolation tick!
@@ -166,22 +166,20 @@ void Game::Update(){
     glm::vec3 pos = playerpos->getPosition();
     pos.y += 7;
     Engine->setPosition(luz, pos);
-    // std::cout << " - BEGIN DRAW" << '\n';
+    // //std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();
 
-    // std::cout << "  - UPDATE ALL" << '\n';
+    // //std::cout << "  - UPDATE ALL" << '\n';
     Manager->UpdateAll();
 
-    //std::cout << "Update" << '\n';
+    ////std::cout << "Update" << '\n';
     MainCamera->CameraUpdate();
     //Engine->print();
 
-    // std::cout << "  - DRAW" << '\n';
+    // //std::cout << "  - DRAW" << '\n';
     Engine->draw();
 
     Engine->DisplayFPS();
-
-
 
     sky->Draw();
     Engine2D->DisplayHUD();
@@ -191,7 +189,7 @@ void Game::Update(){
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
-    // std::cout << " - END DRAW" << '\n';
+    // //std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();
 }
 
@@ -210,8 +208,8 @@ void Game::CLIN(){
     //Engine2D->CLINNormal();
     //EventSystem->clin();
 
-    // std::cout << "1/60 = " << 1/60.F << '\n';
-    // std::cout << "UPDTES " << UPDATE  << '\n';
-    // std::cout << "DRO " << DRO  << '\n';
+    // //std::cout << "1/60 = " << 1/60.F << '\n';
+    // //std::cout << "UPDTES " << UPDATE  << '\n';
+    // //std::cout << "DRO " << DRO  << '\n';
 
 }

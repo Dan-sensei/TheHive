@@ -1,6 +1,6 @@
 #include "NavmeshParser.hpp"
 #include "ModelParser.hpp"
-#include <iostream>
+//#include <iostream>
 
 int main(int argc, char const *argv[]) {
 

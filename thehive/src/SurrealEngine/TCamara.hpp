@@ -9,7 +9,7 @@
 
 #include <Util.hpp>
 #include "TEntidad.hpp"
-#include <iostream>
+//#include <iostream>
 
 class TCamara : public TEntidad {
     public:
@@ -20,8 +20,8 @@ class TCamara : public TEntidad {
         void setPerspectiva(float);
         void setTarget(glm::vec3 &t_pos);
 
-        virtual void beginDraw(const uint8_t&);
-        virtual void endDraw(const uint8_t&);
+        virtual void beginDraw();
+        virtual void endDraw();
 
         //glm::mat4 GetViewMatrix();
 

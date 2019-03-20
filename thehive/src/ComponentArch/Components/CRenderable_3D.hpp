@@ -6,7 +6,7 @@
 #include <SurrealEngine/ZStaticMesh.hpp>
 #include <SurrealEngine/ZMaterial.hpp>
 #include <map>
-#include <iostream>
+//#include <iostream>
 #include <Singleton.hpp>
 #include <SurrealEngine/SurrealEngine.hpp>
 

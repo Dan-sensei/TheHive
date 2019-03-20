@@ -448,11 +448,11 @@ void CRigidBody::Upd_MoverObjeto(){
                 setOffsetBodyPosition(offset);
 
                 if(cTransform){
-                    // std::cout << "cetransform" << '\n';
+                    // //std::cout << "cetransform" << '\n';
 
                 }
                 else if(cStaticModel){
-                    // std::cout << "cestaticmodel" << '\n';
+                    // //std::cout << "cestaticmodel" << '\n';
                     cStaticModel->setPosition(getBodyPosition());
                 }
 

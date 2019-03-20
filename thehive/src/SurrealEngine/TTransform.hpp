@@ -28,8 +28,8 @@ class TTransform : public TEntidad {
         void transpose();
         void inverse();
 
-        virtual void beginDraw(const uint8_t&);
-        virtual void endDraw(const uint8_t&);
+        virtual void beginDraw();
+        virtual void endDraw();
 
         void setPosition(glm::vec3 _vec);
         void setRotation(glm::vec3 _vec);

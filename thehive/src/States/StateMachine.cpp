@@ -1,5 +1,5 @@
 #include "StateMachine.hpp"
-#include <iostream>
+//#include <iostream>
 StateMachine::StateMachine():cantidad(0) { }
 StateMachine::~StateMachine() {
 

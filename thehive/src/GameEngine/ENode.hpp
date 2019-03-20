@@ -2,7 +2,7 @@
 #define ENODE_H
 
 #include <string>
-#include <iostream>
+//#include <iostream>
 #include <irrlicht/irrlicht.h>
 // #include <irrlicht/ISceneNode.h>
 

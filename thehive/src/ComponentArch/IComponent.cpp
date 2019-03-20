@@ -1,5 +1,5 @@
 #include "IComponent.hpp"
-#include <iostream>
+//#include <iostream>
 
 IComponent::IComponent()
 :EntityID(0)

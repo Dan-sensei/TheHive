@@ -1,4 +1,4 @@
-#include <iostream>
+//#include <iostream>
 #include "Inverso.hpp"
 
 Inverso::Inverso(Behavior* _m_pChild):Decorator(_m_pChild){}

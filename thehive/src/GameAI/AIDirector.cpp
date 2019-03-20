@@ -170,14 +170,14 @@ void AIDirector::update (float delta){
     if(!activado)return;
     AcumulatorBusqueda+=delta;
     //Acumulator+=(delta*(estres/10));
-    //std::cout <<"S"<< AcumulatorBusqueda << '\n';
+    ////std::cout <<"S"<< AcumulatorBusqueda << '\n';
     if(AcumulatorBusqueda>TimeBusqueda){
         //creamos wandering si es necesario
         AcumulatorBusqueda=0;
         //busquedaCerca();
     }
     if(canHorde){
-        //std::cout <<"A"<< AcumulatorHorda << '\n';
+        ////std::cout <<"A"<< AcumulatorHorda << '\n';
         AcumulatorHorda+=delta;
         if(AcumulatorHorda>TimeHorda){
             //invocamos horda
@@ -188,10 +188,10 @@ void AIDirector::update (float delta){
     }
     if(AcumulatorPico<TimePico){
         AcumulatorPico+=delta;
-        //std::cout << "estoy en pico" << '\n';
+        ////std::cout << "estoy en pico" << '\n';
         //invocar especial no se muy bien que hacer
     }
-    //std::cout << "estres" <<estres<< '\n';
+    ////std::cout << "estres" <<estres<< '\n';
 }
 void AIDirector::clipingEnemigos(){
     CCamera* camera  = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, Manager->getHeroID()));
@@ -241,10 +241,10 @@ void AIDirector::comprobar(){
         it++;
     }
     if(!(estresantes==0||viendome==0)){
-        //std::cout << "estresantes" <<estresantes<< '\n';
-        //std::cout << "viendome" <<viendome<< '\n';
+        ////std::cout << "estresantes" <<estresantes<< '\n';
+        ////std::cout << "viendome" <<viendome<< '\n';
         estresantes=(estresantes/(viendome+20));//enemigos.size();
-        //std::cout << "suma" <<estresantes<< '\n';
+        ////std::cout << "suma" <<estresantes<< '\n';
         estres =estres+estresantes;
     }
     if(canHorde){
@@ -274,7 +274,7 @@ void AIDirector::busquedaCerca(){
 }
 
 void AIDirector::changeNode(AINode* nodo){
-    //std::cout << "cambiamos" << '\n';
+    ////std::cout << "cambiamos" << '\n';
     auto it =Njugador->nodosProximos.begin();
     while(it!=Njugador->nodosProximos.end()){
         auto it2 =nodo->nodosProximos.begin();

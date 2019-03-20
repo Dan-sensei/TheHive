@@ -4,7 +4,7 @@ Parallel::Parallel(){}
 Parallel::~Parallel(){}
 
 void Parallel::onInitialize() {
-    //std::cout << "init paraller" << '\n';
+    ////std::cout << "init paraller" << '\n';
     auto it=m_Children.begin();
     while(it!=m_Children.end()){
         Behavior* b=*it;
@@ -14,7 +14,7 @@ void Parallel::onInitialize() {
 }//m_CurrentChild=m_Children.begin();
 
 void Parallel::onTerminate(Status state){
-    //std::cout << "finish paraller" << '\n';
+    ////std::cout << "finish paraller" << '\n';
     auto it=m_Children.begin();
     while(it!=m_Children.end()){
         Behavior* b=*it;
@@ -26,11 +26,11 @@ void Parallel::onTerminate(Status state){
 Status Parallel::update() {
     size_t iSuccessCount = 0,iFailureCount=0;
     auto it=m_Children.begin();
-    //std::cout << "parallel" << '\n';
+    ////std::cout << "parallel" << '\n';
     while(it!=m_Children.end()){
-    //    std::cout << "hijo" << '\n';
+    //    //std::cout << "hijo" << '\n';
       Behavior* b=*it;
-      //std::cout << "estatus" <<b->getStatus()<< '\n';
+      ////std::cout << "estatus" <<b->getStatus()<< '\n';
       if(!b->isTerminate()) b->tick();
       if(b->getStatus()==BH_SUCCESS){
         iSuccessCount++;

@@ -2,7 +2,7 @@
 #define BEHAVIORTREE_HPP
 
 #include "Behavior.hpp"
-#include <iostream>
+//#include <iostream>
 
 class BehaviorTree {
     protected:

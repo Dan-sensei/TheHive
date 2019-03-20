@@ -1,7 +1,7 @@
 #ifndef SUCCEEDER_H
 #define SUCCEEDER_H
 
-#include <iostream>
+//#include <iostream>
 #include "Decorator.hpp"
 
 class Succeeder : public Decorator{

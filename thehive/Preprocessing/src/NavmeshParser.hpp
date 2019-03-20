@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <cstdint>
-#include <iostream>
+//#include <iostream>
 
 template <typename T>
 class Singleton;

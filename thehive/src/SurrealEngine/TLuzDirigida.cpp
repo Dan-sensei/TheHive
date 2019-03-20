@@ -1,5 +1,5 @@
 #include "TLuzDirigida.hpp"
-#include <iostream>
+//#include <iostream>
 
 TLuzDirigida::TLuzDirigida(){}
 TLuzDirigida::~TLuzDirigida(){}
@@ -18,7 +18,7 @@ glm::vec3 TLuzDirigida::getDireccion(){
 
 
 // Se quedan vacios
-void TLuzDirigida::beginDraw(const uint8_t &T_ID){
-    std::cout << "Luz Dirigida" << '\n';
+void TLuzDirigida::beginDraw(){
+    //std::cout << "Luz Dirigida" << '\n';
 }
-void TLuzDirigida::endDraw(const uint8_t &T_ID){}
+void TLuzDirigida::endDraw(){}

@@ -1,5 +1,5 @@
 #include "GUIController.hpp"
-#include <iostream>
+//#include <iostream>
 #include <Game.hpp>
 #include <OptionState.hpp>
 #include <GameEngine/Motor2D.hpp>
@@ -97,8 +97,8 @@ void GUIController::update(){
     /////////
     int id =Engine2D->checkbuton();
      if(id!=-1){
-         //std::cout << "id" <<id<< '\n';
-         //std::cout << "entramos" << '\n';
+         ////std::cout << "id" <<id<< '\n';
+         ////std::cout << "entramos" << '\n';
          if(VectorAcciones[id] != nullptr)
              (this->*VectorAcciones[id])();
      }

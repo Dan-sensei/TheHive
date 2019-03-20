@@ -1,7 +1,7 @@
 #ifndef SEQUENCE_HPP
 #define SEQUENCE_HPP
 
-#include <iostream>
+//#include <iostream>
 #include "Composite.hpp"
 
 class Sequence : public Composite{

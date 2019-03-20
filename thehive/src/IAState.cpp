@@ -1,6 +1,6 @@
 #include "IAState.hpp"
 
-#include <iostream>
+//#include <iostream>
 #include <cstdint>
 #include <string>
 #include <stack>
@@ -24,7 +24,7 @@
 //====================================================================================      |
 /*
 void printHexVal(uint16_t val) {
-   // std::cout << std::hex << std::setw(2) << std::setfill('0') << val;
+   // //std::cout << std::hex << std::setw(2) << std::setfill('0') << val;
 }
 
 //====================================================================================
@@ -32,13 +32,13 @@ void printHexVal(uint16_t val) {
 //====================================================================================
 void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
    for(uint16_t l=0; l < lines; ++l) {
-      // std::cout << reinterpret_cast<uint16_t*>(p) << " ";
+      // //std::cout << reinterpret_cast<uint16_t*>(p) << " ";
       for(uint16_t u=0; u < linebytes; ++u) {
          printHexVal(*p);
          ++p;
-         // std::cout << " ";
+         // //std::cout << " ";
       }
-      // std::cout << "\n";
+      // //std::cout << "\n";
    }
 }
 */
@@ -76,7 +76,7 @@ void IAState::Update(){
     Engine->PollEvents();
 
     Engine->BeginDraw();
-    //Engine->draw();
+    Engine->draw();
     cont.update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());

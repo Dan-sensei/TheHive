@@ -1,5 +1,5 @@
 #include "TLuzPuntual.hpp"
-#include <iostream>
+//#include <iostream>
 
 TLuzPuntual::TLuzPuntual(){}
 TLuzPuntual::~TLuzPuntual(){}
@@ -18,7 +18,7 @@ glm::vec3 TLuzPuntual::getPosicion(){
 
 
 // Se quedan vacios
-void TLuzPuntual::beginDraw(const uint8_t &T_ID){
-    std::cout << "Luz Puntual" << '\n';
+void TLuzPuntual::beginDraw(){
+    //std::cout << "Luz Puntual" << '\n';
 }
-void TLuzPuntual::endDraw(const uint8_t &T_ID){}
+void TLuzPuntual::endDraw(){}

@@ -1,7 +1,7 @@
 #include "BillboardBueno.hpp"
 #include "ZMeshData.hpp"
 #include "AssetManager.hpp"
-#include <iostream>
+//#include <iostream>
 #include <SOIL2/SOIL2.h>
 #include <Singleton.hpp>
 #include <SurrealEngine/SurrealEngine.hpp>
@@ -16,9 +16,9 @@ BillboardBueno::BillboardBueno(float x,float y,float z,const std::string &Name)
     auto sh=Singleton<AssetManager>::Instance();
     inicio=sh->getShader("Bill");
     fin=sh->getShader("Default");
-    //std::cout << "centro:"  <<"("<<centro.x<<","<<centro.y<<","<<centro.z<<")"<< '\n';
-    //std::cout << "up:"      <<"("<<up    .x<<","<<up    .y<<","<<up    .z<<")"<< '\n';
-    //std::cout << "rigth:"   <<"("<<rigth .x<<","<<rigth .y<<","<<rigth .z<<")"<< '\n';
+    ////std::cout << "centro:"  <<"("<<centro.x<<","<<centro.y<<","<<centro.z<<")"<< '\n';
+    ////std::cout << "up:"      <<"("<<up    .x<<","<<up    .y<<","<<up    .z<<")"<< '\n';
+    ////std::cout << "rigth:"   <<"("<<rigth .x<<","<<rigth .y<<","<<rigth .z<<")"<< '\n';
     //auto MVP2=engine
 
     MVP                      = inicio->getUniformLocation("MVP");
@@ -119,9 +119,9 @@ void BillboardBueno::Draw(){
     up*=2;
 
     inicio->Bind();
-    //std::cout << "centro:"  <<"("<<centro.x<<","<<centro.y<<","<<centro.z<<")"<< '\n';
-    //std::cout << "up:"      <<"("<<up    .x<<","<<up    .y<<","<<up    .z<<")"<< '\n';
-    //std::cout << "rigth:"   <<"("<<rigth .x<<","<<rigth .y<<","<<rigth .z<<")"<< '\n';
+    ////std::cout << "centro:"  <<"("<<centro.x<<","<<centro.y<<","<<centro.z<<")"<< '\n';
+    ////std::cout << "up:"      <<"("<<up    .x<<","<<up    .y<<","<<up    .z<<")"<< '\n';
+    ////std::cout << "rigth:"   <<"("<<rigth .x<<","<<rigth .y<<","<<rigth .z<<")"<< '\n';
     //auto MVP2=engine
 
     glUniformMatrix4fv(MVP, 1, GL_FALSE, &(MVP2)[0][0]);

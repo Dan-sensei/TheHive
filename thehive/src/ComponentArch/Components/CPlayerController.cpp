@@ -100,7 +100,7 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
     cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()));
-    // std::cout << "llega" << '\n';
+    // //std::cout << "llega" << '\n';
     hab = static_cast<CHabilityController*>(Manager->getComponent(gg::HAB, getEntityID()));
     //hab = static_cast<CHabilityController*>(Manager->getComponent(gg::HABILITY, getEntityID()));
 
@@ -118,7 +118,7 @@ void CPlayerController::Update(){
     }
 
     if(clocker.ElapsedTime().Seconds() < 0.1){
-        Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 0.5, 0), Target, gg::Color(255, 0, 0));
+        //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 0.5, 0), Target, gg::Color(255, 0, 0));
     }
 
 }
@@ -204,12 +204,12 @@ void CPlayerController::FixedUpdate(){
         //devuelve ide de un objeto
         glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), cTransform->getPosition(),1000);
         int id=world->getIDFromRaycast();
-        //std::cout << "id:" <<id<< '\n';
+        ////std::cout << "id:" <<id<< '\n';
         if(id!=-1){
 
             CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
             if(AIEnem){
-                //std::cout << "no hay enemigo" << '\n';
+                ////std::cout << "no hay enemigo" << '\n';
                 Singleton<StateMachine>::Instance()->AddState(new IAState(id),false);
 
 
@@ -280,7 +280,7 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_G)){
         // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
         glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
-        //std::cout << actualGrenadeState << '\n';
+        ////std::cout << actualGrenadeState << '\n';
         if(pulsacion_granada==false)
             (this->*mapFuncGrenades[actualGrenadeState])();
     }

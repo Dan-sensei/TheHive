@@ -1,6 +1,6 @@
 #include "Debug.hpp"
 /*
-#include <iostream>
+//#include <iostream>
 
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
@@ -58,7 +58,7 @@ Debug::~Debug(){
 
 void Debug::DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color &c, const glm::mat4 &MVP){
     glBindVertexArray(LineVAO);
-    //std::cout << "LINEVAO " << LineVAO << '\n';
+    ////std::cout << "LINEVAO " << LineVAO << '\n';
 
     Line[0] = Init.x;
     Line[1] = Init.y;

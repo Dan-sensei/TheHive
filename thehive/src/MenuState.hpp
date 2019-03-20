@@ -7,7 +7,7 @@ class CTriggerSystem;
 class ObjectManager;
 class ggDynWorld;
 
-#include <iostream>
+//#include <iostream>
 #include "States/State.hpp"
 #include "GameEngine/GUIController.hpp"
 
