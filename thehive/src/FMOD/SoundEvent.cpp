@@ -8,6 +8,10 @@ void SoundEvent::play(){
 	ERRCHECK(soundInstance->setVolume(1));
 }
 
+void SoundEvent::setParameter(const std::string& parameter, float valor){
+    soundInstance->setParameterValue(parameter.c_str(), valor);
+}
+
 void SoundEvent::stop(){
 	ERRCHECK(soundInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE));
 }

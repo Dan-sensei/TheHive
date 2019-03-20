@@ -9,7 +9,8 @@ class SoundEvent {
     public:
         SoundEvent();
         virtual ~SoundEvent()=0;
-        virtual void play();
+        void play();
+        void setParameter(const std::string&, float);
         void stop();
         void stop_fadeout();
         void pause(bool);

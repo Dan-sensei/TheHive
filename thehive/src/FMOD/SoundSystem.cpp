@@ -33,7 +33,7 @@ SoundSystem::~SoundSystem(){
 	CLIN();
 }
 
-SoundEvent* SoundSystem::createSounds(const std::string &_str, SoundEvent* ret){
+SoundEvent* SoundSystem::createSound(const std::string &_str, SoundEvent* ret){
 
 	if(soundEvents.find(_str) == soundEvents.end()){
 

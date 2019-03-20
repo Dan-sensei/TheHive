@@ -7,7 +7,6 @@
 class SonidoEscopeta : public SoundEvent {
     public:
         SonidoEscopeta();
-        void setCargador(float);
         void newSoundEvent(FMOD::Studio::EventInstance*);
         ~SonidoEscopeta();
 };

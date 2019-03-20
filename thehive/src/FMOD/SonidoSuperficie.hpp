@@ -6,7 +6,6 @@
 class SonidoSuperficie : public SoundEvent {
     public:
         SonidoSuperficie();
-        void setSuperficie(float);
         void newSoundEvent(FMOD::Studio::EventInstance*);
         ~SonidoSuperficie();
 };

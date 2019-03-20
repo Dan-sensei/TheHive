@@ -18,29 +18,29 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
 
     SS = Singleton<SoundSystem>::Instance();
 
-     s_disparo = new SonidoNormal();
-     SS->createSounds(sonido_disparo, s_disparo);
-    // s_desenfundado = new SonidoNormal();
-    // SS->createSound(sonido_desenfundado, s_desenfundado, NORMAL);
-    // s_vacio = new SonidoNormal();
-    // SS->createSound(sonido_vacio, s_vacio, NORMAL);
-    //
-    // if(_wType != 1){
-    //     s_recarga = new SonidoNormal();
-    // }
-    // else{
-    //     s_recarga = new SonidoEscopeta();
-    // }
-    // SS->createSound(sonido_recarga, s_recarga, NORMAL);
+    s_disparo = new SonidoNormal();
+    SS->createSound(sonido_disparo, s_disparo);
+    s_desenfundado = new SonidoNormal();
+    SS->createSound(sonido_desenfundado, s_desenfundado);
+    s_vacio = new SonidoNormal();
+    SS->createSound(sonido_vacio, s_vacio);
+
+    if(_wType != 1){
+        s_recarga = new SonidoNormal();
+    }
+    else{
+        s_recarga = new SonidoEscopeta();
+    }
+    SS->createSound(sonido_recarga, s_recarga);
 
 }
 
 CGun::~CGun() {
 
     delete s_disparo;
-    // delete s_desenfundado;
-    // delete s_vacio;
-    // delete s_recarga;
+    delete s_desenfundado;
+    delete s_vacio;
+    delete s_recarga;
 
 }
 
@@ -54,16 +54,18 @@ void CGun::shoot(glm::vec3 to){
         // Comprobar balas
         if(!total_bullets){
             //gg::cout("Click!");
-            //s_vacio->play();
+            s_vacio->play();
             //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
             return;
         }
 
-    //    s_disparo->play();
+        s_disparo->play();
         // Comprobar si no es la katana
         if(total_bullets!=-1){
             total_bullets--;
+            if(WEAPON_TYPE == 1)
+                s_recarga->setParameter("Lleno",0);
         }
 
         Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
@@ -119,8 +121,21 @@ void CGun::reload(){
     //gg::cout(" -- RELOAD -- ");
     reloading = true;
     dtReload = std::chrono::high_resolution_clock::now();
-    //if(WEAPON_TYPE!=1)
-        //s_recarga->play();
+
+    if(WEAPON_TYPE!=1)
+        s_recarga->play();
+    else
+        recarga_escopeta();
+}
+
+void CGun::recarga_escopeta(){
+    if(total_bullets != ktotal_bullets-1){
+        s_recarga->play();
+    }
+    else{
+        s_recarga->setParameter("Lleno",1);
+        s_recarga->play();
+    }
 }
 
 bool CGun::isReloading(){
@@ -137,6 +152,11 @@ int CGun::getTotalBullets(){
 
 int CGun::getType(){
     return WEAPON_TYPE;
+}
+
+bool CGun::canReload(){
+    if(ktotal_bullets > total_bullets)    return true;
+    else                                return false;
 }
 
 void CGun::Init(){
@@ -177,7 +197,12 @@ void CGun::FixedUpdate(){
         if(ms > reloadDT*1000){
             //gg::cout(" -- RELOADED" , gg::Color(255, 0, 0, 1));
             reloading = false;
-            total_bullets = ktotal_bullets;
+            if(WEAPON_TYPE == 1){
+                total_bullets++;
+            }
+            else{
+                total_bullets = ktotal_bullets;
+            }
         }
     }
     else if(!canShoot){
@@ -194,5 +219,5 @@ void CGun::FixedUpdate(){
 }
 
 void CGun::desenfundado(){
-    //s_desenfundado->play();
+    s_desenfundado->play();
 }

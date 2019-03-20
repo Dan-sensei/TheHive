@@ -32,10 +32,15 @@ class CGun : public IComponent {
 
         // Funciones propias de CGun
         void shoot(glm::vec3);
+
         void reload();
+        void recarga_escopeta();
         bool isReloading();
+
         int getBullets();
+        bool canReload();
         int getTotalBullets();
+
         int getType();
         void desenfundado();
 

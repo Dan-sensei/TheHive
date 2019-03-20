@@ -249,7 +249,7 @@ void CPlayerController::FixedUpdate(){
 
     if(Engine->key(RELOAD_KEY)){
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        if(gun && !gun->getBullets() && !gun->isReloading()){
+        if(gun && gun->canReload() && !gun->isReloading()){
             Manager->returnIDFromRigid(nullptr);
             gun->reload();
         }
