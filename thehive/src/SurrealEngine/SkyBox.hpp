@@ -30,7 +30,6 @@ class SkyBox{
         unsigned int cubemapTexture;
         unsigned int skyboxVBO;
         unsigned int skyboxVAO;
-        unsigned int EVO;
 		unsigned int view;
 		unsigned int text;
 

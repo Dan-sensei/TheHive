@@ -67,7 +67,6 @@ Game::Game()
     Manager = Singleton<ObjectManager>::Instance();
 
     world = Singleton<ggDynWorld>::Instance();
-    sky = new SkyBox();
     //world->inito();
     //Engine->HideCursor(true);
 }
@@ -124,7 +123,7 @@ void Game::Init(){
     MasterClock.Restart();
     Engine2D->InitHUD();
 
-    sky->init();
+    sky.init();
     //Engine2D->prueba();
     // //std::cout << "\n -- INIT -- " << '\n';
 }
@@ -181,7 +180,7 @@ void Game::Update(){
 
     Engine->DisplayFPS();
 
-    sky->Draw();
+    sky.Draw();
     Engine2D->DisplayHUD();
 
     //Engine2D->draw();
