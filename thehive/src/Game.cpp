@@ -82,8 +82,8 @@ void Game::Init(){
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data",0);
 
-    BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
-    BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
+    // BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
+    // BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/PASEO.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/PARQUE.data");
@@ -98,15 +98,16 @@ void Game::Init(){
     Engine->HideCursor(true);
 
 
-    //uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
-    uint16_t h = sF->createHero(glm::vec3(451,17,54),-1);
+    uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
+    // uint16_t h = sF->createHero(glm::vec3(451,17,54),-1);
 
     //for (size_t i = 0; i < 50; i++) {
     //    sF->createRusher(glm::vec3(0,20,10), 10);
     //}
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
-    Director->init();
+
+    Director->init();   // IADIRECTOR
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));

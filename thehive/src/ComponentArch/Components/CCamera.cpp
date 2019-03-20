@@ -105,3 +105,7 @@ void CCamera::moveCameraPosition(glm::vec3 _offPos){
     CurrentPosition += _offPos;
     Engine->setPosition(cam, CurrentPosition);
 }
+
+glm::vec3 CCamera::getTargetPosition(){
+    return CameraTarget;
+}

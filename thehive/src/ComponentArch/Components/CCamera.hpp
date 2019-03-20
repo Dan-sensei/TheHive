@@ -23,6 +23,7 @@ public:
     // Functions of IComponent
     virtual void Init();
 
+    glm::vec3 getTargetPosition();
     void setTarget(CTransform* T);
     void CameraUpdate();
 

@@ -257,9 +257,9 @@ void CPlayerController::FixedUpdate(){
 
     // DISPARO
     if(Engine->isLClickPressed()){
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
+        // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
+        Target = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        Target = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
         clocker.Restart();
         if(gun) gun->shoot(Target);
     }
