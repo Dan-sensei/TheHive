@@ -10,7 +10,9 @@
 
 // #include <GameEngine/Motor2D.hpp>
 
-#define VEL_FACTOR          2000.f
+#define GRENADE_VEL_FACTOR      500.f
+#define GRENADE_THROW_Y_OFFSET  3.f
+
 #define MAX_HERO_SPEED      2
 
 #define ROTATE_KEY          gg::GG_LCONTROL
@@ -276,7 +278,8 @@ void CPlayerController::FixedUpdate(){
 
     // Graná
     if(Engine->key(gg::GG_G)){
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
+        // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
         //std::cout << actualGrenadeState << '\n';
         if(pulsacion_granada==false)
             (this->*mapFuncGrenades[actualGrenadeState])();
@@ -306,9 +309,9 @@ void CPlayerController::playerThrowHolyBomb(){
     glm::vec3 vel    = to-from;
 
     vel  = glm::normalize(vel);
-    vel *= VEL_FACTOR/2;
+    vel *= GRENADE_VEL_FACTOR/2;
 
-    factory->createHolyBomb(glm::vec3(gPos.x,gPos.y+5,gPos.z),vel);
+    factory->createHolyBomb(glm::vec3(gPos.x,gPos.y+GRENADE_THROW_Y_OFFSET,gPos.z),vel);
 }
 
 void CPlayerController::playerThrowMatrioska(){
@@ -320,9 +323,9 @@ void CPlayerController::playerThrowMatrioska(){
     glm::vec3 vel    = to-from;
 
     vel  = glm::normalize(vel);
-    vel *= VEL_FACTOR/2;
+    vel *= GRENADE_VEL_FACTOR/2;
 
-    factory->createMatriuska(glm::vec3(gPos.x,gPos.y+5,gPos.z),vel);
+    factory->createMatriuska(glm::vec3(gPos.x,gPos.y+GRENADE_THROW_Y_OFFSET,gPos.z),vel);
 }
 
 void CPlayerController::playerThrowDopple(){
@@ -334,9 +337,9 @@ void CPlayerController::playerThrowDopple(){
     glm::vec3 vel    = to-from;
 
     vel  = glm::normalize(vel);
-    vel *= VEL_FACTOR;
+    vel *= GRENADE_VEL_FACTOR/2;
 
-    factory->createSenyuelo(glm::vec3(gPos.x,gPos.y+5,gPos.z),vel);
+    factory->createSenyuelo(glm::vec3(gPos.x,gPos.y+GRENADE_THROW_Y_OFFSET,gPos.z),vel);
 }
 
 void CPlayerController::W_IsPressed(glm::vec3 &force, bool &pressed){

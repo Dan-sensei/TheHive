@@ -144,6 +144,14 @@ AIDirector::~AIDirector (){
     //}
     //liberamos toda la memoria de los nodos
 
+    delete Njugador;
+
+    auto it = nodos.begin();
+    for(int i=0 ; i<nodos.size() ; ++i){
+        delete (*it);
+        ++it;
+    }
+
 }
 
 AIDirector::AIDirector (const AIDirector &orig){
@@ -370,7 +378,7 @@ void AIDirector::createHorda(AINode* nodo){
         glm::vec3 deltapos(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
         glm::vec3 posibuena=nodo->getPos();
         posibuena=posibuena+deltapos;
-        int id=fac->createSoldierHorda(nodo->getPos()+deltapos, 2000, dest);
+        int id=fac->createSoldierHorda(nodo->getPos()+deltapos, 10, dest);
         CTransform* enemypos=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
         //enemypos->getPosition()
         enemigos.push_back(enemypos);

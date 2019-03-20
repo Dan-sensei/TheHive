@@ -88,7 +88,7 @@ uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/BinaryFiles/BinaryModels/SOLDIER.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
 
-    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
+    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Hero.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
@@ -365,7 +365,7 @@ uint16_t Factory::createPickableItem(const glm::vec3 &_position){
 
     // CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
     // Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, item);
-    CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(_position.x, _position.y, _position.z, 0,0,0,1, 2, 2, 2);
+    CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(_position.x, _position.y, _position.z, 0,0,0,1, 0.5, 0.5, 0.5);
     Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, item);
 
     TData mes;

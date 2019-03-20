@@ -216,7 +216,7 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
     uint8_t EVENT;
     GG_Read(inStream,TOTAL);
 
-    // std::cout << " --- EVENT TOTAL : " << static_cast<int>(TOTAL) << " --- " << '\n';
+    // std::cout << "EVENT TOTAL : " << static_cast<int>(TOTAL) << " --- " << '\n';
 
     for (size_t i=0 ; i<TOTAL; ++i) {
         EVENT = 0;
