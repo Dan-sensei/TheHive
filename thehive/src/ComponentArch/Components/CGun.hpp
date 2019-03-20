@@ -12,10 +12,13 @@
 #include "CTransform.hpp"
 //#include <Factory.hpp>
 #include <Util.hpp>
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
+#include <FMOD/SonidoEscopeta.hpp>
 
 class CGun : public IComponent {
     public:
-        CGun(float, float, int, float, float, int);                //  No queremos que alguien lo construya fuera (Limón)
+        CGun(float, float, int, float, float, int, std::string, std::string, std::string, std::string);                //  No queremos que alguien lo construya fuera (Limón)
         CGun(const CGun &orig) = delete;
         virtual ~CGun();
 
@@ -29,11 +32,17 @@ class CGun : public IComponent {
 
         // Funciones propias de CGun
         void shoot(glm::vec3);
+
         void reload();
+        void recarga_escopeta();
         bool isReloading();
+
         int getBullets();
+        bool canReload();
         int getTotalBullets();
+
         int getType();
+        void desenfundado();
 
 
     private:
@@ -49,6 +58,13 @@ class CGun : public IComponent {
         int     total_bullets;
         float   reloadDT;
         float   range;
+
+        SoundSystem* SS;
+
+        SoundEvent* s_disparo;
+        SoundEvent* s_recarga;
+        SoundEvent* s_desenfundado;
+        SoundEvent* s_vacio;
 
         int     WEAPON_TYPE;
         bool    canShoot;

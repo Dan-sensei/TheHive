@@ -89,7 +89,7 @@ uint16_t gg::genIntRandom(uint16_t min, uint16_t max){
     return distribution(gen);
 }
 
-void gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, int &tb, int _type){
+void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, int& tb, int _type, std::string& sonido_disparo,std::string& sonido_recarga,std::string& sonido_desenfundado, std::string& sonido_vacia){
     switch (_type){
         case 0:
             // Rifle
@@ -98,6 +98,12 @@ void gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, 
             tb  = 30;
             relDT = 1;
             rng = 0.7;
+
+            sonido_disparo = "event:/SFX/Armas/Rifle/RifleDisparo";
+            sonido_recarga = "event:/SFX/Armas/Rifle/RifleRecarga";
+            sonido_desenfundado ="event:/SFX/Armas/Rifle/RifleDesenfundado";
+            sonido_vacia ="event:/SFX/Armas/Rifle/RifleVacio";
+
             break;
         case 1:
             // Escopeta
@@ -106,6 +112,12 @@ void gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, 
             tb  = 10;
             relDT = 3;
             rng = 0.4;
+
+            sonido_disparo = "event:/SFX/Armas/Escopeta/EscopetaDisparo";
+            sonido_recarga = "event:/SFX/Armas/Escopeta/EscopetaRecarga";
+            sonido_desenfundado ="event:/SFX/Armas/Escopeta/EscopetaDesenfundado";
+            sonido_vacia ="event:/SFX/Armas/Escopeta/EscopetaVacia";
+
             break;
         case 2:
             // Ametralladora
@@ -114,6 +126,12 @@ void gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, 
             tb  = 100;
             relDT = 6;
             rng = 0.7;
+
+            sonido_disparo = "event:/SFX/Armas/Ametralladora/AmetralladoraDisparo";
+            sonido_recarga = "event:/SFX/Armas/Ametralladora/AmetralladoraRecarga";
+            sonido_desenfundado ="event:/SFX/Armas/Ametralladora/AmetralladoraDesenfundado";
+            sonido_vacia ="event:/SFX/Armas/Ametralladora/AmetralladoraVacia";
+
             break;
         case 3:
             // Pistola
@@ -122,6 +140,12 @@ void gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, 
             tb  = 15;
             relDT = 0.5;
             rng = 0.5;
+
+            sonido_disparo = "event:/SFX/Armas/Pistola/PistolaDisparo";
+            sonido_recarga = "event:/SFX/Armas/Pistola/PistolaRecarga";
+            sonido_desenfundado ="event:/SFX/Armas/Pistola/PistolaDesenfundado";
+            sonido_vacia ="event:/SFX/Armas/Pistola/PistolaVacia";
+
             break;
         case 4:
             // Katana
@@ -130,16 +154,18 @@ void gg::getWeaponInformation(float &dmg, float &cdc, float &relDT, float &rng, 
             tb  = -1;
             relDT = -1;
             rng = 0.1;
+
             break;
     }
 
-    // //std::cout << " --- GUN      ------------ "  << '\n';
-    // //std::cout << "   - DMG      : " << dmg    << '\n';
-    // //std::cout << "   - CADENCE  : " << cdc    << '\n';
-    // //std::cout << "   - BULLETS  : " << tb     << '\n';
-    // //std::cout << "   - DT       : " << relDT  << '\n';
-    // //std::cout << "   - RANGE    : " << rng    << '\n';
-    // //std::cout << " ------------------------- "  << '\n';
+    //gg::cout(" --- GUN PICKED --- ");
+    //gg::cout(" - - DMG= "       + std::to_string(dmg));
+    //gg::cout(" - - CADENCE= "   + std::to_string(cdc));
+    //gg::cout(" - - BULLETS= "   + std::to_string(tb));
+    //gg::cout(" - - DT= "        + std::to_string(relDT));
+    //gg::cout(" - - RANGE= "     + std::to_string(rng));
+    //gg::cout(" ------------------ ");
+
 }
 
 // std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1){

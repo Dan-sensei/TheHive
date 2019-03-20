@@ -27,7 +27,7 @@
 #include "States/StateMachine.hpp"
 #include "Game.hpp"
 #include "MenuState.hpp"
-
+#include <FMOD/SoundSystem.hpp>
 #include <SurrealEngine/SurrealEngine.hpp>
 #include <vector>
 #include "BinaryParser.hpp"
@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
 
     SurrealEngine *Engine = Singleton<SurrealEngine>::Instance();
     CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
-
+    SoundSystem *Sound = Singleton<SoundSystem>::Instance();
     //Engine->Starto();
     //Engine->HideCursor(false);
 
@@ -69,6 +69,7 @@ int main(int argc, char const *argv[]) {
     world->clean();
     EventSystem->clin();
     mainstates->clin();
+    Sound->CLIN();
 
 
 
