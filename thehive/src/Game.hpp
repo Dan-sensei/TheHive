@@ -14,6 +14,7 @@ class AIDirector;
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
 #include <SurrealEngine/SkyBox.hpp>
+#include <FMOD/SoundSystem.hpp>
 
 class Motor2D;
 class Game : public State{
@@ -46,6 +47,7 @@ private:
     ggDynWorld* world;
     CCamera* MainCamera;
     AIDirector* Director;
+    SoundSystem* soundSys;
 
     gg::Clock MasterClock;
     double DeltaTime;

@@ -67,6 +67,8 @@ Game::Game()
     Manager = Singleton<ObjectManager>::Instance();
 
     world = Singleton<ggDynWorld>::Instance();
+
+    soundSys = Singleton<SoundSystem>::Instance();
     //world->inito();
     //Engine->HideCursor(true);
 }
@@ -106,7 +108,7 @@ void Game::Init(){
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
 
-    
+
     // Director->init();   // IADIRECTOR
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
@@ -159,7 +161,14 @@ void Game::Update(){
 
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
+
     Director->update(DeltaTime);
+
+
+    soundSys->update();
+    //Director->update(DeltaTime);
+    //Director->clipingEnemigos();
+
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
@@ -191,12 +200,12 @@ void Game::Update(){
 
     // //std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();
+
 }
 
 void Game::Resume(){
     Engine->HideCursor(true);
     Engine2D->InitHUD();
-
 
     //Engine->HideCursor(true);
 }
@@ -205,6 +214,7 @@ void Game::CLIN(){
     //Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     world->clear();
+
     //Engine2D->CLINNormal();
     //EventSystem->clin();
 

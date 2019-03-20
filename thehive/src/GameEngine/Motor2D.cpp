@@ -86,6 +86,7 @@ void Motor2D::aplyhover(){
             ////std::cout << "encima" << '\n';
             //setImage
             but->hover(true);
+            //s_seleccionar->play();
         }
         else{
 

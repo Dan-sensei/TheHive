@@ -3,6 +3,7 @@
 
 #include <cstdint>
 //#include <iostream>
+#include <string>
 #include <glm/glm.hpp>
 
 
@@ -42,7 +43,7 @@ namespace gg{
         float vX,vY,vZ;
     };
 
-    void getWeaponInformation(float&, float&, float&, float&, int&, int);
+    void getWeaponInformation(float&, float&, float&, float&, int&, int, std::string&,std::string&,std::string&, std::string&);
 };
 
 //std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1);

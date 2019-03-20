@@ -42,7 +42,12 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CPlayerController* PlayerController = new CPlayerController();
     Manager->addComponentToEntity(PlayerController, gg::PLAYERCONTROLLER, hero);
 
-    CGun *gun = new CGun(0.4,5,15,0.5,0.5,3);
+    std::string Disparo_pistola = "event:/SFX/Armas/Pistola/PistolaDisparo";
+    std::string Recarga_pistola = "event:/SFX/Armas/Pistola/PistolaRecarga";
+    std::string Desen_pistola = "event:/SFX/Armas/Pistola/PistolaDesenfundado";
+    std::string Vacia_pistola = "event:/SFX/Armas/Pistola/PistolaVacia";
+
+    CGun *gun = new CGun(0.4,5,15,0.5,0.5,3, Disparo_pistola, Recarga_pistola, Desen_pistola, Vacia_pistola );
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
     CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
