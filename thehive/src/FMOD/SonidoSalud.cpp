@@ -9,8 +9,10 @@ void SonidoSalud::setVida(float vida){
 }
 
 void SonidoSalud::newSoundEvent(FMOD::Studio::EventInstance *_instance){
-    SoundEvent::soundInstance = _instance;
+    soundInstance = _instance;
 }
 
 
-SonidoSalud::~SonidoSalud(){}
+SonidoSalud::~SonidoSalud(){
+    soundInstance->release();
+}

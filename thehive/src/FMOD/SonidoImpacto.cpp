@@ -9,8 +9,10 @@ void SonidoImpacto::setImpacto(float impacto){
 }
 
 void SonidoImpacto::newSoundEvent(FMOD::Studio::EventInstance *_instance){
-    SoundEvent::soundInstance = _instance;
+    soundInstance = _instance;
 }
 
 
-SonidoImpacto::~SonidoImpacto(){}
+SonidoImpacto::~SonidoImpacto(){
+    soundInstance->release();
+}

@@ -54,12 +54,12 @@ class CGun : public IComponent {
         float   reloadDT;
         float   range;
 
-        // SoundSystem* SS;
-        //
-        // SoundEvent* s_disparo;
-        // SoundEvent* s_recarga;
-        // SoundEvent* s_desenfundado;
-        // SoundEvent* s_vacio;
+        SoundSystem* SS;
+
+        SoundEvent* s_disparo;
+        SoundEvent* s_recarga;
+        SoundEvent* s_desenfundado;
+        SoundEvent* s_vacio;
 
         int     WEAPON_TYPE;
         bool    canShoot;

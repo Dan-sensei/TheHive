@@ -16,10 +16,10 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
     canShoot = true;
     reloading = false;
 
-    // SS = Singleton<SoundSystem>::Instance();
-    //
-    // s_disparo = new SonidoNormal();
-    // SS->createSound(sonido_disparo, s_disparo, NORMAL);
+    SS = Singleton<SoundSystem>::Instance();
+
+     s_disparo = new SonidoNormal();
+     SS->createSounds(sonido_disparo, s_disparo);
     // s_desenfundado = new SonidoNormal();
     // SS->createSound(sonido_desenfundado, s_desenfundado, NORMAL);
     // s_vacio = new SonidoNormal();
@@ -37,11 +37,10 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
 
 CGun::~CGun() {
 
-    // delete s_disparo;
+    delete s_disparo;
     // delete s_desenfundado;
     // delete s_vacio;
     // delete s_recarga;
-
 
 }
 

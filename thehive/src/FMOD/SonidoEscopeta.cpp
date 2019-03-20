@@ -9,7 +9,9 @@ void SonidoEscopeta::setCargador(float lleno){
 }
 
 void SonidoEscopeta::newSoundEvent(FMOD::Studio::EventInstance *_instance){
-    SoundEvent::soundInstance = _instance;
+    soundInstance = _instance;
 }
 
-SonidoEscopeta::~SonidoEscopeta(){}
+SonidoEscopeta::~SonidoEscopeta(){
+    soundInstance->release();
+}

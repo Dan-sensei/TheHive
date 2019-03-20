@@ -3,8 +3,10 @@
 SonidoNormal::SonidoNormal(){}
 
 void SonidoNormal::newSoundEvent(FMOD::Studio::EventInstance *_instance){
-    SoundEvent::soundInstance = _instance;
+    soundInstance = _instance;
 }
 
 
-SonidoNormal::~SonidoNormal(){}
+SonidoNormal::~SonidoNormal(){
+    ERRCHECK(soundInstance->release());
+}

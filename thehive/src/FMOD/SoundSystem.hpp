@@ -19,7 +19,7 @@ class SoundSystem {
 		SoundSystem();
 		~SoundSystem();
 
-		SoundEvent* createSound(const std::string&, SoundEvent*, TiposSonido tipo);
+		SoundEvent* createSounds(const std::string&, SoundEvent*);
 
 		void setVolume(float,const std::string&);
 		void setListenerPosition(glm::vec3);

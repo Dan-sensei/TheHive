@@ -25,26 +25,29 @@ SoundSystem::SoundSystem(){
 	 vocesBank	= nullptr;
 	 system->loadBankFile("assets/FMOD/Voces.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&vocesBank);
 
-	 // FMOD_3D_ATTRIBUTES *attr;
-	 // system->setListenerAttributes(0, attr);
+	  FMOD_3D_ATTRIBUTES *attr;
+	  system->setListenerAttributes(0, attr);
 }
 
 SoundSystem::~SoundSystem(){
 	CLIN();
 }
 
-SoundEvent* SoundSystem::createSound(const std::string &_str, SoundEvent* ret, TiposSonido tipo){
+SoundEvent* SoundSystem::createSounds(const std::string &_str, SoundEvent* ret){
 
 	if(soundEvents.find(_str) == soundEvents.end()){
 
 		FMOD::Studio::EventDescription 	*event 	= nullptr;
-		ERRCHECK(system->getEvent(_str.c_str(), &event));
+		system->getEvent(_str.c_str(), &event);
 
 		FMOD::Studio::EventInstance 	*instance = nullptr;
-		ERRCHECK(event->createInstance(&instance));
+
+		event->createInstance(&instance);
 
 		ret->newSoundEvent(instance);
 
+
+		eventDescriptions.insert(std::make_pair(_str,event));
 		soundEvents.insert(std::make_pair(_str,ret));
 
 		return ret;
@@ -56,13 +59,14 @@ SoundEvent* SoundSystem::createSound(const std::string &_str, SoundEvent* ret, T
 	}
 }
 
-//
-// void SoundSystem::setVolume(float vol, const std::string& busPath){
-// 	FMOD::Studio::Bus bus;
-// 	system->getBus(busPath.c_str(), &bus);
-//
-// 	bus->setVolume(vol);
-// }
+
+void SoundSystem::setVolume(float vol, const std::string& busPath){
+
+	FMOD::Studio::Bus *bus;
+	system->getBus(busPath.c_str(), &bus);
+
+	bus->setVolume(vol);
+}
 
 void SoundSystem::setListenerPosition(glm::vec3 _pos){
 	FMOD_3D_ATTRIBUTES *att;
@@ -78,34 +82,50 @@ void SoundSystem::setListenerPosition(glm::vec3 _pos){
 }
 
 void SoundSystem::update(){
-	// if(system){
-	// 	system->update();
-	// }
+	if(system){
+		system->update();
+	}
 }
 
 void SoundSystem::CLIN(){
 	// A clinear!
-	std::map<std::string,SoundEvent*>::iterator it = soundEvents.begin();
-	while(it!=soundEvents.end()){
-		delete it->second;
-		it++;
-	}
-	soundEvents.clear();
 
-	std::map<std::string,FMOD::Studio::EventDescription*>::iterator it2 = eventDescriptions.begin();
+	auto it2 = eventDescriptions.begin();
 	while(it2!=eventDescriptions.end()){
+		(it2->second)->releaseAllInstances();
 		delete it2->second;
 		it2++;
 	}
 	eventDescriptions.clear();
 
+	// auto it = soundEvents.begin();
+	// while(it!=soundEvents.end()){
+	// 	delete (it->second);
+	// 	it++;
+	// }
+	// soundEvents.clear();
+
 	masterBank->unload();
+	delete masterBank;
+
 	stringsBank->unload();
+	delete stringsBank;
+
 	sfxBank->unload();
+	delete sfxBank;
+
 	ambienteBank->unload();
+	delete ambienteBank;
+
 	musicaBank->unload();
+	delete musicaBank;
+
 	vocesBank->unload();
-	lowLevelSystem->release();
+	delete vocesBank;
 	system->release();
+	delete system;
+
+	lowLevelSystem->release();
+	delete lowLevelSystem;
 
 }

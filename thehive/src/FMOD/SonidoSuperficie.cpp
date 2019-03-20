@@ -9,7 +9,9 @@ void SonidoSuperficie::setSuperficie(float superficie){
 }
 
 void SonidoSuperficie::newSoundEvent(FMOD::Studio::EventInstance *_instance){
-    SoundEvent::soundInstance = _instance;
+    soundInstance = _instance;
 }
 
-SonidoSuperficie::~SonidoSuperficie(){}
+SonidoSuperficie::~SonidoSuperficie(){
+    soundInstance->release();
+}
