@@ -13,6 +13,7 @@
 #include "TCamara.hpp"
 #include "Shader.hpp"
 #include "ZStaticMesh.hpp"
+#include "ZDynamicMesh.hpp"
 #include "ZMaterial.hpp"
 #include "AssetManager.hpp"
 #include <SurrealEngine/KEYCODES.hpp>
@@ -33,8 +34,10 @@ class SurrealEngine {
         TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
         TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3());
+        TNodo* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::vec3& Rotation = glm::vec3());
 
         bool bindMaterialToMesh(TNodo*,ZMaterial*);
+        bool bindMaterialToDynamicMesh(TNodo*,ZMaterial*);
 
         void DisplayFPS();
 

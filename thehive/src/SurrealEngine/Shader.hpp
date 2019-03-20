@@ -6,7 +6,7 @@
 
 #include <vector>
 #include <map>
-#include <unordered_map>
+#include <map>
 #include <string>
 
 class Shader{
@@ -18,7 +18,7 @@ class Shader{
         bool loadFiles(const char* VertexShader, const char* GeometryShader, const char* FragmentShader);
         int getUniformLocation(std::string target);
         int getAttribLocation(std::string target);
-        
+
         void Bind() const;
         void Unbind() const;
         void freeBuffer();
@@ -28,8 +28,8 @@ class Shader{
     private:
         unsigned int ShaderID;
         unsigned int loadShader(const char *path, unsigned int type);
-        std::unordered_map<std::string, unsigned int> UniformLocations;
-        std::unordered_map<std::string, unsigned int> AtribLocations;
+        std::map<std::string, unsigned int> UniformLocations;
+        std::map<std::string, unsigned int> AtribLocations;
 };
 
 #endif

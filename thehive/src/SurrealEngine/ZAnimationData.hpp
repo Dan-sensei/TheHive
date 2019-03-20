@@ -13,7 +13,7 @@ class ZAnimationData {
 
         void addKeyframe(const std::string &PathToKeyframeModel);
         void setAnimationTime(float _Time);
-        void draw(float Deltatime);
+        void draw(float Deltatime, unsigned int TimeID);
 
     private:
         std::vector<ZMeshData*> Keyframes;

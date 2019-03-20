@@ -18,11 +18,12 @@ class AssetManager {
 
         ~AssetManager();
         void loadInit();
-        
-        ZMeshData*   getMeshData(const std::string &Name);
-        ZMaterial*   getMaterial(const std::string &Name);
-        unsigned int getTexture(const std::string &Name, unsigned int mode = 0, unsigned int flags = 0);
-        Shader*      getShader(const std::string& Name);
+
+        ZMeshData*      getMeshData(const std::string &Name);
+        ZAnimationData* getAnimation(const std::string &Name);
+        ZMaterial*      getMaterial(const std::string &Name);
+        unsigned int    getTexture(const std::string &Name, unsigned int mode = 0, unsigned int flags = 0);
+        Shader*         getShader(const std::string& Name);
 
         Shader*     createShader(std::string Name);
 

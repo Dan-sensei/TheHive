@@ -92,11 +92,11 @@ void Game::Init(){
 
     uint16_t h = sF->createHero(glm::vec3(0,20,10),-1);
     //for (size_t i = 0; i < 50; i++) {
-    //    sF->createRusher(glm::vec3(0,20,10), 10);
+       sF->createSoldier(glm::vec3(0,20,10), 10);
     //}
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
-    Director->init();
+    //Director->init();
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
@@ -140,15 +140,15 @@ void Game::Update(){
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
-        Director->comprobar();
-        Director->clipingEnemigos();
+        //Director->comprobar();
+        //Director->clipingEnemigos();
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
     }
 
     // std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
-    Director->update(DeltaTime);
+    //Director->update(DeltaTime);
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));

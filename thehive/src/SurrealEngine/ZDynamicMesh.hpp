@@ -1,18 +1,19 @@
-#ifndef ZANIMATOR_H
-#define ZANIMATOR_H
+#ifndef ZDYNAMICMESH_H
+#define ZDYNAMICMESH_H
 
 #include "ZMaterial.hpp"
 #include "ZAnimationData.hpp"
 #include "TEntidad.hpp"
 
-class ZAnimator : public TEntidad {
+class ZDynamicMesh : public TEntidad {
     public:
-        ZAnimator();
-        ZAnimator(const ZAnimator &orig);
-        virtual ~ZAnimator();
+        ZDynamicMesh();
+        ZDynamicMesh(const ZDynamicMesh &orig);
+        virtual ~ZDynamicMesh();
 
         void assignMaterial(ZMaterial* material_);
-        void SwitchAnimation(uint8_t Animation);
+        void SwitchAnimation(uint8_t Animation, float TimeToComplete);
+        void AddAnimation(ZAnimationData* Anim);
 
         virtual void beginDraw(const uint8_t&);
         virtual void endDraw(const uint8_t&);

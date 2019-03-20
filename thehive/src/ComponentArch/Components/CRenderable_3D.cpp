@@ -15,8 +15,6 @@ CRenderable_3D::CRenderable_3D(const CRenderable_3D &orig){
 }
 
 CRenderable_3D::~CRenderable_3D() {}
-//
-
 
 void CRenderable_3D::Init(){
 

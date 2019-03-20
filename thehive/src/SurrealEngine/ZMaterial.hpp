@@ -18,7 +18,7 @@ class ZMaterial{
         void setUniformData(const std::string &ShaderTarget, float Data_);
         void Bind();
 
-        Shader* getShader(){return shader;}
+        inline Shader* getShader(){ return shader; };
 
     private:
         std::unordered_map<int, unsigned int> Textures;

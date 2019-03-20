@@ -79,14 +79,16 @@ uint16_t Factory::createSoldierHorda(const glm::vec3 &Position,const float &heal
 }
 uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Morado");
+    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Soldier");
 
 
     CTransform* Transform               = new CTransform(Position, glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
 
-    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/BinaryFiles/BinaryModels/SOLDIER.modelgg", moradoDeLos80);
-    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
+    CDynamicModel* DynamicModel       = new CDynamicModel(moradoDeLos80);
+    Manager->addComponentToEntity(DynamicModel, gg::RENDERABLE_3D, Enemy);
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Running"));
+    DynamicModel->ToggleAnimation(0, 30);
 
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
@@ -98,9 +100,9 @@ uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     CVida* Vida                         = new CVida(health);
     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
 
-
     return Enemy;
 }
+
 uint16_t Factory::createRusher(const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
     ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Morado");

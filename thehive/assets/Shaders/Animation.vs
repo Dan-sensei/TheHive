@@ -12,7 +12,7 @@ layout(location = 6) in vec3 vertexNormal_modelspace1;
 layout(location = 7) in vec3 vertexTangent_modelspace1;
 layout(location = 8) in vec3 vertexBitangent_modelspace1;
 
-uniform float TweenFactor = 0.35;
+uniform float TweenFactor;
 
 
 //out vec3 fragmentColor;
@@ -31,7 +31,7 @@ out vec3 VertexPosT;
 
 void main() {
 
-    vec3 mixPos = mix(vertexPosition_modelspace, vertexPosition_modelspace, TweenFactor);
+    vec3 mixPos = mix(vertexPosition_modelspace, vertexPosition_modelspace1, TweenFactor);
     gl_Position = MVP*vec4(mixPos, 1);
     vec4 PosInWorldV4 = M * vec4(mixPos,1);
     Position_worldspace = PosInWorldV4.xyz;

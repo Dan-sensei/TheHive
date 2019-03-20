@@ -15,6 +15,13 @@ AssetManager::AssetManager(){
 
 void AssetManager::loadInit(){
         Shader* Def = getShader("Default");
+
+        ZMaterial*  Default = getMaterial("Default");
+        Default->attachShader(Def);
+        Default->addTexture("DiffuseMap", "assets/Textures/DefaultDiffuse.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        Default->addTexture("NormalMap", "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        Default->addTexture("SpecularMap", "assets/Textures/DefaultSpecular.jpeg",   GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
         ZMaterial* 		MAT = getMaterial("Morado");
         MAT->attachShader(Def);
         MAT->addTexture("DiffuseMap",      "assets/Textures/prueba1.png",       		GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
@@ -34,10 +41,27 @@ void AssetManager::loadInit(){
         Nav->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
         ZMaterial* 		Hero = getMaterial("Hero");
-        Hero->attachShader(getShader("AnimationShader"));
+        Hero->attachShader(Def);
         Hero->addTexture("DiffuseMap",      "assets/Textures/DefaultDiffuse.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
         Hero->addTexture("NormalMap",       "assets/Textures/HERO_NORMALS2.png",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
         Hero->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+        ZMaterial* 		Sold = getMaterial("Soldier");
+        Shader* anim = getShader("AnimationShader");
+        std::cout << "ANIME SHADER " << anim << '\n';
+        Sold->attachShader(anim);
+        Sold->addTexture("DiffuseMap",      "assets/Textures/DefaultDiffuse.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        Sold->addTexture("NormalMap",       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        Sold->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+
+        ZAnimationData* Soldier = getAnimation("Soldier_Running");
+        Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov0.modelgg");
+        Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov1.modelgg");
+        Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov2.modelgg");
+        Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov3.modelgg");
+        Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov4.modelgg");
+        Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov5.modelgg");
 }
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {
@@ -47,13 +71,7 @@ ZMaterial* AssetManager::getMaterial(const std::string &Name) {
         return &it->second;
     }
     else {
-        ZMaterial* newMat = &MaterialMap[Name];
-        newMat->attachShader(&ShaderMap["Default"]);
-        newMat->addTexture("DiffuseMap", "assets/Textures/DefaultDiffuse.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-        newMat->addTexture("NormalMap", "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-        newMat->addTexture("SpecularMap", "assets/Textures/DefaultSpecular.jpeg",   GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-
-        return newMat;
+        return &MaterialMap[Name];
     }
 }
 
@@ -78,7 +96,17 @@ Shader* AssetManager::getShader(const std::string &Name) {
         std::cout << "  --No existe ningún Shader llamado '" << Name <<"', devolviendo 'Default'..." << '\n';
         return &ShaderMap["Default"];
     }
+}
 
+ZAnimationData* AssetManager::getAnimation(const std::string &Name){
+
+    auto it = AnimationMap.find(Name);
+    if(it != AnimationMap.end()){
+        return &it->second;
+    }
+    else {
+        return &AnimationMap[Name];
+    }
 }
 
 Shader* AssetManager::createShader(std::string Name) {

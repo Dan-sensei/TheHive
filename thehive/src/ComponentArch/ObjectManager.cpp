@@ -29,6 +29,9 @@ ObjectManager::ObjectManager() {
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RENDERABLE_3D);
     MessageToListeningComponents[gg::UPDATE].push_back(gg::RENDERABLE_3D);
 
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::DYNAMICMODEL);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::DYNAMICMODEL);
+
     MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::PLAYERCONTROLLER);
     MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::PLAYERCONTROLLER);
     MessageToListeningComponents[gg::UPDATE].push_back(gg::PLAYERCONTROLLER);
