@@ -118,7 +118,7 @@ void GUIController::gotoOptions(){
 }
 //but3
 void GUIController::Close(){
-    //Singleton<GameEngine>::Instance()->Close();
+    Engine->close();
 }
 //but4
 void GUIController::gotoVideo(){
@@ -158,8 +158,6 @@ void GUIController::dif2(){
 void GUIController::dif3(){
     dif=3;
 }
-//    VectorAcciones[CONTINUE] = &GUIController::dif3;
-//    VectorAcciones[RETURNMENU] = &GUIController::dif3;
 //but12
 void GUIController::Continue(){
     Singleton<StateMachine>::Instance()->RemoveState();

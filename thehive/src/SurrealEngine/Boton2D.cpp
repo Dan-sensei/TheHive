@@ -17,8 +17,8 @@ Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std:
     X=x*ancho;
     W=w*ancho;
 
-    Y=y*alto;
-    H=h*alto;
+    Y=y*alto-0.0377604*alto;
+    H=h*alto-0.0377604*alto;
 
     if(texto==""){
         hasText=false;
@@ -39,17 +39,19 @@ void Boton2D::hover(bool dato){
         //sec
         hov=dato;
         Imagen.setImage(imgHover_Selected);
-        setColor(glm::vec4(0,111/250.0,0,1));
+        //setColor(glm::vec4(0,111/250.0,0,1));
+        setColor(glm::vec4(0.1,0.1,0.1,1));
     }else if(dato!=hov){
         //princ
-        setColor(glm::vec4(0,75/250.0,0,1));
+        setColor(glm::vec4(0,0,0,1));
+        //setColor(glm::vec4(0,75/250.0,0,1));
         hov=dato;
         Imagen.setImage(imgPrincipal);
 
     }
 }
 bool Boton2D::checkOn(float x,float y){
-if(x>X  &&  x<W &&  y>Y &&  y<H){
+if(X<x  &&  x<W &&  Y<y &&  y<H){
     return true;
 }else{
     return false;

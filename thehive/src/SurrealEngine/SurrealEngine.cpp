@@ -212,7 +212,9 @@ void SurrealEngine::HideCursor(bool t){
         glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
-
+void SurrealEngine::close(){
+    glfwSetWindowShouldClose(window, GL_TRUE);
+}
 bool SurrealEngine::Initialize(){
 	//INICIALIZAMOS GLFW
 	if( !glfwInit() ){

@@ -113,7 +113,7 @@ AIDirector::~AIDirector (){
     //}
     //liberamos toda la memoria de los nodos
 
-    delete Njugador;
+    //delete Njugador;
 
     auto it = nodos.begin();
     for(int i=0 ; i<nodos.size() ; ++i){

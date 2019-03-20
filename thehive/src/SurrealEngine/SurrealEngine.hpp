@@ -50,6 +50,7 @@ class SurrealEngine {
         void EndDraw();
 
         bool isLClicked();
+        void close();
         void resetClicked();
         glm::vec3 vectorUp();
         glm::vec3 vectorRigth();

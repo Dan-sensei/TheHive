@@ -289,16 +289,15 @@ int Motor2D::InitPause(){
 int Motor2D::InitMenu(){
     CLINMenu();
     AddImage("fondo","assets/HUD/menu.png",0,0,100,100);
-    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Menu principal"),gg::Color(0,0,0,1));
-    addText(45,10,"Menu principal");
+    //addText(45,10,"Menu principal");
 
-    auto but1=addButton(39,57,7,12,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","J");
+    auto but1=addButton(39,57,9,12,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Play");
     but1->setSesgo(-0.015);
-    but1=addButton(37,70,8,14,GOCREDITS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","C");
+    but1=addButton(37,70,10,14,GOCREDITS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Credits");
     but1->setSesgo(-0.02);
-    but1=addButton(54,57,7,12,GOOPTIONS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","O");
+    but1=addButton(54,57,9,12,GOOPTIONS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Options");
     but1->setSesgo(0.015);
-    but1=addButton(55,70,8,14,CLOSE,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","S");
+    but1=addButton(55,70,10,14,CLOSE,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Exit");
     but1->setSesgo(0.02);
     return 4;
 }
@@ -307,8 +306,7 @@ int Motor2D::InitMenu2(){
     CLINMenu();
     AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
 
-    addText(45,10,"Play");
-    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Play"),gg::Color(0,0,0,1));
+    //addText(45,10,"Play");
     addButton(40,21,20,10,DIFF1,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Larva",true);
     addButton(40,33,20,10,DIFF2,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Alien");
     addButton(40,45,20,10,DIFF3,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","The hive");
@@ -322,10 +320,7 @@ int Motor2D::InitMenu3(){
     CLINMenu();
     AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
 
-    addText(45,10,"Credits");
-
-    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Credits"),gg::Color(0,0,0,1));
-
+    //addText(45,10,"Credits");
     addButton(20,20,5,9,GOMAIN,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
 
     return 1;
@@ -335,10 +330,7 @@ int Motor2D::InitMenu4(){
     CLINMenu();
     AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
 
-    addText(45,10,"Options");
-
-    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Options"),gg::Color(0,0,0,1));
-
+    //addText(45,10,"Options");
     addButton(40,31,20,10,GOVIDEO,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Graphics");
     addButton(40,43,20,10,GOMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Audio");
     addButton(40,55,20,10,GOCONTROLLS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Controlls");
@@ -352,8 +344,7 @@ int Motor2D::InitMenu5(){
     CLINMenu();
     AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
 
-    addText(45,10,"Video");
-    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Video"),gg::Color(0,0,0,1));
+    //addText(45,10,"Video");
     addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
 
     return 1;
@@ -367,28 +358,20 @@ int Motor2D::InitMenu6(){
 
 
 
-    addText(45,10,"Audio"    );
+    //addText(45,10,"Audio"    );
     addText(30,51,"Dialogues"    );
-    addText(40,51,""+VolDialogo );
+    addText(40,51, std::to_string(VolDialogo));
 
-    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Audio"),gg::Color(0,0,0,1));
-    //AddStaticTextToBuffer(porc_ancho(30),porc_alto(51),std::string("Dialogues"),gg::Color(0,0,0,1));
-    //AddStaticTextToBuffer(porc_ancho(40),porc_alto(51),std::to_string(VolDialogo),gg::Color(0,0,0,1));
-    addButton(50,50,2,5,MOREDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","M");
-    addButton(53,50,2,5,LESSDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","m");
-    //std::cout << VolMusic << '\n';
+    addButton(50,50,2,5,MOREDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
+    addButton(53,50,2,5,LESSDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
     addText(30,57,"Music"  );
-    addText(40,57,""+VolMusic);
-    //AddStaticTextToBuffer(porc_ancho(30),porc_alto(57),std::string("Music"),gg::Color(0,0,0,1));
-    //AddStaticTextToBuffer(porc_ancho(40),porc_alto(57),std::to_string(VolMusic),gg::Color(0,0,0,1));
-    addButton(50,56,2,5,MOREMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","M");
-    addButton(53,56,2,5,LESSMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","m");
+    addText(40,57,std::to_string(VolMusic));
+    addButton(50,56,2,5,MOREMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
+    addButton(53,56,2,5,LESSMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
     addText(30,63,"Effects"    );
-    addText(40,63,""+VolEffect  );
-    //AddStaticTextToBuffer(porc_ancho(30),porc_alto(63),std::string("Effects"),gg::Color(0,0,0,1));
-    //AddStaticTextToBuffer(porc_ancho(40),porc_alto(63),std::to_string(VolEffect),gg::Color(0,0,0,1));
-    addButton(50,62,2,5,MOREEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","M");
-    addButton(53,62,2,5,LESSEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","m");
+    addText(40,63, std::to_string(VolEffect) );
+    addButton(50,62,2,5,MOREEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
+    addButton(53,62,2,5,LESSEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
 
     addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
 
@@ -399,8 +382,7 @@ int Motor2D::InitMenu7(){
     CLINMenu();
     AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
 
-    //AddStaticTextToBuffer(porc_ancho(45),porc_alto(10),std::string("Controlls"),gg::Color(0,0,0,1));
-    addText(45,10,"Controlls");
+    //addText(45,10,"Controlls");
 
     addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
 
@@ -445,9 +427,11 @@ void Motor2D::InitHUD(){
     addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 
 
-    AddImage("vida","assets/HUD/Vida.png",  60,2,35,7);
+    AddImage("vida1","assets/HUD/Vida.png",  60,2,35,7);
     boton=addRect(                          60,2,35,7);
     boton->setColor(glm::vec4(0,1,0,0.6));
+    boton=addRect(                          0.6,0.02,0.95,0.09);
+    boton->setColor(glm::vec4(1,1,1,1));
 
     //cruceta
     float anchura,longitud,c;
@@ -456,11 +440,14 @@ void Motor2D::InitHUD(){
     c=0.5;
     boton=addRect(c-longitud,c-anchura,c+longitud,c+anchura);
     boton->setColor(glm::vec4(0,0,0,1));
-    //ratio d epantalla para tenerlo exacto
+    //ratio d epantalla para tenerlo exacto :D
     anchura=0.001;
     longitud=0.033;
     boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
     boton->setColor(glm::vec4(0,0,0,1));
+
+
+
 
     //AddImage("G1","assets/HUD/Botonsolo.png",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
     //AddImage("G2","assets/HUD/Botonsolo.png",porc_ancho(13),porc_alto(2),porc_alto(10),porc_alto(10));
@@ -470,7 +457,7 @@ void Motor2D::InitHUD(){
     mapHudFunctions.insert(std::make_pair("hab1",&Motor2D::HUD_hability1));
     mapHudFunctions.insert(std::make_pair("hab2",&Motor2D::HUD_hability2));
     mapHudFunctions.insert(std::make_pair("hab3",&Motor2D::HUD_hability3));
-    mapHudFunctions.insert(std::make_pair("vida",&Motor2D::HUD_vida));
+    mapHudFunctions.insert(std::make_pair("vida1",&Motor2D::HUD_vida));
     mapHudFunctions.insert(std::make_pair("0arma",&Motor2D::HUD_arma0));//secundaria
     mapHudFunctions.insert(std::make_pair("1arma",&Motor2D::HUD_arma1));
 
@@ -558,6 +545,7 @@ void Motor2D::DisplayHUD(){
         float X,Y,H,W,T_W,T_H;
         Imagen2D* armaP;
         Imagen2D* armaS;
+        Imagen2D* vidaimg;
         while(it!=IMAGENES.end()){
 
             if(it->first=="0arma"||it->first=="1arma"){
@@ -571,6 +559,11 @@ void Motor2D::DisplayHUD(){
                 continue;
 
             }
+            if(it->first=="vida1"){
+                vidaimg=it->second;
+                it++;
+                continue;
+            }
             auto img =it->second;
             img->Draw();
             if(mapHudFunctions.find(it->first) != mapHudFunctions.end())
@@ -583,8 +576,10 @@ void Motor2D::DisplayHUD(){
         (this->*mapHudFunctions["1arma"])(armaP);
         armaS->Draw();
         (this->*mapHudFunctions["0arma"])(armaS);
-        RECTANGULOS[4]->Draw();
         RECTANGULOS[5]->Draw();
+        RECTANGULOS[6]->Draw();
+        //vidaimg->Draw();
+        (this->*mapHudFunctions["vida1"])(vidaimg);
 
 
 
@@ -638,6 +633,7 @@ void Motor2D::HUD_vida(Imagen2D *it){
     //Cuadrado2D boton(0 ,0  ,1  ,1);
     RECTANGULOS[3]->setPos(x, y, x+(w-x)*vida , h);
     RECTANGULOS[3]->Draw();
+    RECTANGULOS[4]->Draw();
 }
 //necesitamos escribir por pantalla
 void Motor2D::HUD_arma0(Imagen2D *it){
