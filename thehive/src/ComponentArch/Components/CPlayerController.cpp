@@ -436,8 +436,8 @@ void CPlayerController::changeWeaponIfPossible(CGun *gun){
         Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
         Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
 
+        //secondWeapon->get
         secondWeapon->desenfundado();
-
         //gg::cout("| -- SECONDARY TO PRINCIPAL -- ");
         //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
         secondWeapon = gun;
@@ -458,6 +458,7 @@ int CPlayerController::setSecondWeapon(CGun *_weapon){
     else{
         ret = -1;
     }
+
     secondWeapon = _weapon;
     return ret;
 }

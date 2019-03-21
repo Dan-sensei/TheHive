@@ -52,7 +52,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     std::string sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia;
     float dmg,cdc,relDT,rng;
     int tb;
-    int _type = 1;
+    int _type = 0;
     gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_type,sonido_disparo,sonido_recarga,sonido_desenfundado, sonido_vacia);
 
     CGun *gun = new CGun(dmg,cdc,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia );
