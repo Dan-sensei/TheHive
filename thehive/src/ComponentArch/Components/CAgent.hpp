@@ -20,6 +20,8 @@
 #include <BinaryParser.hpp>
 
 
+
+
 class CTransform;
 class CVida;
 
@@ -67,6 +69,8 @@ class CAgent : public IComponent {
         SurrealEngine      *Engine;
         CTransform      *cTransform;
         ObjectManager   *oManager;
+
+
 
         // void getWeaponInformation(float&, float&, float&, float&, int&, int);
         std::map<uint8_t,std::string> zonesMap;

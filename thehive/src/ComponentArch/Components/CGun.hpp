@@ -43,6 +43,7 @@ class CGun : public IComponent {
 
         int getType();
         void desenfundado();
+        void cogida();
 
 
     private:
@@ -65,6 +66,7 @@ class CGun : public IComponent {
         SoundEvent* s_recarga;
         SoundEvent* s_desenfundado;
         SoundEvent* s_vacio;
+        SoundEvent* s_cogida;
 
         int     WEAPON_TYPE;
         bool    canShoot;

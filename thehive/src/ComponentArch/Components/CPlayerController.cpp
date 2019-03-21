@@ -16,7 +16,7 @@
 #define MAX_HERO_SPEED      2
 
 #define ROTATE_KEY          gg::GG_LCONTROL
-#define DASH_KEY            gg::GG_ALT
+#define DASH_KEY            gg::GG_H
 #define RUN_KEY             gg::GG_LSHIFT
 #define JUMP_KEY            gg::GG_SPACEBAR
 #define RELOAD_KEY          gg::GG_R
@@ -38,6 +38,7 @@ CPlayerController::CPlayerController()
 
 CPlayerController::~CPlayerController() {
     if(secondWeapon) delete secondWeapon;
+    delete s_dash;
 }
 
 void CPlayerController::Init(){
@@ -83,6 +84,11 @@ void CPlayerController::Init(){
     mapFuncGrenades.insert(std::make_pair(2,&CPlayerController::playerThrowMatrioska));
     mapFuncGrenades.insert(std::make_pair(3,&CPlayerController::playerThrowDopple));
     items.fill(0);
+
+    SS = Singleton<SoundSystem>::Instance();
+
+    s_dash = new SonidoNormal();
+    SS->createSound("event:/SFX/Jugador/Habilidades/Dash", s_dash);
 }
 
 
@@ -388,6 +394,8 @@ void CPlayerController::ApplyDash(glm::vec3 &force,float &MULT_FACTOR){
     force.z *= DASH_FORCE_FACTOR;
 
     pulsacion_dash = true;
+
+    s_dash->play();
 }
 
 void CPlayerController::showDebug(){

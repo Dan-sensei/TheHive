@@ -18,6 +18,8 @@
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
 #include <SurrealEngine/Clock.hpp>
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
 
 #define NUMBER_OF_ITEMS     3
 
@@ -81,6 +83,9 @@ class CPlayerController : public IComponent {
         CCamera* camera;
         CHabilityController* hab;
         bool GranadeCreate;
+
+        SoundSystem* SS;
+        SoundEvent* s_dash;
 
         bool pulsacion_granada;
         bool pulsacion_soldier;

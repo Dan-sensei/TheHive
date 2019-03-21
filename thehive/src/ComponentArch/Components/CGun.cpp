@@ -33,6 +33,9 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
     }
     SS->createSound(sonido_recarga, s_recarga);
 
+    s_cogida = new SonidoNormal();
+    SS->createSound("event:/SFX/Objetos/Arma", s_cogida);
+
 }
 
 CGun::~CGun() {
@@ -41,6 +44,7 @@ CGun::~CGun() {
     delete s_desenfundado;
     delete s_vacio;
     delete s_recarga;
+    delete s_cogida;
 
 }
 
@@ -220,4 +224,7 @@ void CGun::FixedUpdate(){
 
 void CGun::desenfundado(){
     s_desenfundado->play();
+}
+void CGun::cogida(){
+    s_cogida->play();
 }
