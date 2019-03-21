@@ -15,7 +15,15 @@
 
 ModelParser::ModelParser(){}
 
-void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std::string& FileOutput){
+void ModelParser::generateBinaryGG_StaticModel(const std::string &FileInput, const std::string& FileOutput){
+    parser(FileInput, FileOutput, 0);
+}
+
+void ModelParser::generateBinaryGG_DynamicModel(const std::string &FileInput, const std::string& FileOutput){
+    parser(FileInput, FileOutput, 1);
+}
+
+void ModelParser::parser(const std::string &FileInput, const std::string& FileOutput, unsigned int dyn){
     std::vector<float> PositionsNormals;
     std::vector<float> uv;
     std::vector<float> TangentsBitangents;
@@ -23,14 +31,27 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
 
     Assimp::Importer importer;
 
-    const aiScene* scene = importer.ReadFile(
-        FileInput,
-        aiProcess_CalcTangentSpace       |
-        aiProcess_Triangulate            |
-        aiProcess_JoinIdenticalVertices  |
-        aiProcess_FlipUVs                |
-        aiProcess_SortByPType
-    );
+    const aiScene* scene;
+
+    if(dyn){
+        scene = importer.ReadFile(
+            FileInput,
+            aiProcess_CalcTangentSpace       |
+            aiProcess_Triangulate            |
+            aiProcess_FlipUVs                |
+            aiProcess_SortByPType
+        );
+    }
+    else{
+        scene = importer.ReadFile(
+            FileInput,
+            aiProcess_CalcTangentSpace       |
+            aiProcess_Triangulate            |
+            aiProcess_JoinIdenticalVertices  |
+            aiProcess_FlipUVs                |
+            aiProcess_SortByPType
+        );
+    }
 
 
     // If the import failed, report it

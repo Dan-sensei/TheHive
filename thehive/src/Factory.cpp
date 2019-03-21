@@ -88,7 +88,7 @@ uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     CDynamicModel* DynamicModel       = new CDynamicModel(moradoDeLos80);
     Manager->addComponentToEntity(DynamicModel, gg::RENDERABLE_3D, Enemy);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Running"));
-    DynamicModel->ToggleAnimation(0, 30);
+    DynamicModel->ToggleAnimation(0, 1);
 
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
