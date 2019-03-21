@@ -90,7 +90,8 @@ void Game::Init(){
 
     // --------------------------------------
     // NatureGenerator nat;
-    nat.init(glm::vec3(5,0,50));
+    // nat.init(glm::vec3(5,0,50));
+    nat.init(glm::vec3(5,-0.3,50));
     // --------------------------------------
 
 
@@ -119,7 +120,7 @@ void Game::Init(){
     // Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Navmesh);
 
     Singleton<Pathfinding>::Instance()->SetDebug(false);
-    world->setDebug(false);
+    world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
