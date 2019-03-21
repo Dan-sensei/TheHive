@@ -35,12 +35,12 @@ SoundSystem::~SoundSystem(){
 
 SoundEvent* SoundSystem::createSound(const std::string &_str, SoundEvent* ret){
 
+	FMOD::Studio::EventInstance 	*instance = nullptr;
 	if(soundEvents.find(_str) == soundEvents.end()){
 
 		FMOD::Studio::EventDescription 	*event 	= nullptr;
 		system->getEvent(_str.c_str(), &event);
 
-		FMOD::Studio::EventInstance 	*instance = nullptr;
 
 		event->createInstance(&instance);
 
@@ -54,8 +54,9 @@ SoundEvent* SoundSystem::createSound(const std::string &_str, SoundEvent* ret){
 	}
 
 	else {
-
-		return soundEvents[_str]->getEvent();
+		eventDescriptions.find(_str)->second->createInstance(&instance);
+		ret->newSoundEvent(instance);
+		return ret;
 	}
 }
 

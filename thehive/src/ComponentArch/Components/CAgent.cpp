@@ -18,6 +18,7 @@ CAgent::CAgent(const unsigned long &_flags)
     dwTriggerFlags = _flags;
     nDeltaTime=0;
     oManager = Singleton<ObjectManager>::Instance();
+    
 }
 
 CAgent::~CAgent() {
@@ -33,6 +34,8 @@ CAgent::~CAgent() {
         }
         it2++;
     }
+
+
 }
 
 
@@ -106,6 +109,8 @@ void CAgent::Init(){
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
+
+
 }
 
 //std::list  <TriggerRecordStruct*>  AgentList;
@@ -177,13 +182,14 @@ void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
 
 void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_ExpansiveWave){
-        //gg::cout(" --- HACE PUM --- ");
+
     }
 }
 
 void CAgent::ENTER_func_kTrig_ExpansiveForce (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_ExpansiveForce){
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
+
             static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
         }
     }
@@ -301,6 +307,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 // Le anyado la nueva
                 CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
                 cpc->setSecondWeapon(Gun);
+                Gun->cogida();
                 Singleton<Motor2D>::Instance()->setbullet(1,Gun->getBullets(),Gun->getTotalBullets());
             }
             else{
@@ -318,6 +325,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 // Le anyado la nueva
                 CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
                 oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
+                Gun->cogida();
 
                 // glm::vec3 pos(
                 //     static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().x,
