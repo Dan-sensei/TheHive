@@ -108,9 +108,9 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
         case 1:
             // Escopeta
             dmg = 0.8;
-            cdc = 1;
+            cdc = 0.8;
             tb  = 10;
-            relDT = 3;
+            relDT = 0.3;
             rng = 0.4;
 
             sonido_disparo = "event:/SFX/Armas/Escopeta/EscopetaDisparo";
@@ -136,9 +136,9 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
         case 3:
             // Pistola
             dmg = 0.4;
-            cdc = 5;
+            cdc = 2.5;
             tb  = 15;
-            relDT = 0.5;
+            relDT = 1.8;
             rng = 0.5;
 
             sonido_disparo = "event:/SFX/Armas/Pistola/PistolaDisparo";

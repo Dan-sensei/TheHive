@@ -42,12 +42,18 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CPlayerController* PlayerController = new CPlayerController();
     Manager->addComponentToEntity(PlayerController, gg::PLAYERCONTROLLER, hero);
 
-    std::string Disparo_pistola = "event:/SFX/Armas/Pistola/PistolaDisparo";
-    std::string Recarga_pistola = "event:/SFX/Armas/Pistola/PistolaRecarga";
-    std::string Desen_pistola = "event:/SFX/Armas/Pistola/PistolaDesenfundado";
-    std::string Vacia_pistola = "event:/SFX/Armas/Pistola/PistolaVacia";
+    // std::string Disparo_pistola = "event:/SFX/Armas/Pistola/PistolaDisparo";
+    // std::string Recarga_pistola = "event:/SFX/Armas/Pistola/PistolaRecarga";
+    // std::string Desen_pistola = "event:/SFX/Armas/Pistola/PistolaDesenfundado";
+    // std::string Vacia_pistola = "event:/SFX/Armas/Pistola/PistolaVacia";
 
-    CGun *gun = new CGun(0.4,5,15,0.5,0.5,3, Disparo_pistola, Recarga_pistola, Desen_pistola, Vacia_pistola );
+    std::string sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia;
+    float dmg,cdc,relDT,rng;
+    int tb;
+    int _type = 1;
+    gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_type,sonido_disparo,sonido_recarga,sonido_desenfundado, sonido_vacia);
+
+    CGun *gun = new CGun(dmg,cdc,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia );
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
     CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
