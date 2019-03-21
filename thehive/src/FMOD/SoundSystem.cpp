@@ -98,11 +98,11 @@ void SoundSystem::CLIN(){
 	// }
 	eventDescriptions.clear();
 
-	auto it = soundEvents.begin();
-	while(it!=soundEvents.end()){
-		delete (it->second);
-		it++;
-	}
+	// auto it = soundEvents.begin();
+	// while(it!=soundEvents.end()){
+	// 	delete (it->second);
+	// 	it++;
+	// }
 	soundEvents.clear();
 
 	masterBank->unload();
