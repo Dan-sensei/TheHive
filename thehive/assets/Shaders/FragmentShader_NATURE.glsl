@@ -6,12 +6,12 @@ uniform sampler2D DiffuseMap;
 uniform sampler2D NormalMap;
 uniform sampler2D SpecularMap;
 
-in vec2 UVFromGeom;
-in vec3 Position_worldspaceFromGeom;
+in vec2 UV;
+in vec3 Position_worldspace;
 
-in vec3 LightPosTFromGeom;
-in vec3 EyePosTFromGeom;
-in vec3 VertexPosTFromGeom;
+in vec3 LightPosT;
+in vec3 EyePosT;
+in vec3 VertexPosT;
 
 uniform vec3 LightPosition_worldspace;
 
@@ -26,17 +26,22 @@ void main() {
   LightColor = normalize(LightColor);
   float LightPower = 150.0f;
 
-  // Material properties
-  vec3 MaterialDiffuseColor = texture( DiffuseMap, UVFromGeom).rgb;
-  vec3 MaterialAmbientColor = vec3(BASE_FACTOR) * MaterialDiffuseColor;
-  vec3 MaterialSpecularColor = texture( SpecularMap, UVFromGeom ).rgb * 0.3;
-  vec3 TextureNormal_tangentspace = normalize(texture2D( NormalMap, vec2(UVFromGeom.x,-UVFromGeom.y)).rgb*2.0 - 1.0);
+  vec4 color = texture(DiffuseMap,UV);
+  if(color.a<0.6){
+      discard;
+  }
 
-  float dist = length( LightPosition_worldspace - Position_worldspaceFromGeom );
+  // Material properties
+  vec3 MaterialDiffuseColor = texture( DiffuseMap, UV).rgb;
+  vec3 MaterialAmbientColor = vec3(BASE_FACTOR) * MaterialDiffuseColor;
+  vec3 MaterialSpecularColor = texture( SpecularMap, UV ).rgb * 0.3;
+  vec3 TextureNormal_tangentspace = normalize(texture2D( NormalMap, vec2(UV.x,-UV.y)).rgb*2.0 - 1.0);
+
+  float dist = length( LightPosition_worldspace - Position_worldspace );
   vec3 n = TextureNormal_tangentspace;
-  vec3 l = normalize( LightPosTFromGeom - VertexPosTFromGeom );
+  vec3 l = normalize( LightPosT - VertexPosT );
   float cosTheta = clamp( dot( n,l ), 0,1 );
-  vec3 E = normalize(EyePosTFromGeom - VertexPosTFromGeom);
+  vec3 E = normalize(EyePosT - VertexPosT);
   vec3 R = reflect(-l,n);
   float cosAlpha = clamp( dot( E,R ), 0,1 );
 
