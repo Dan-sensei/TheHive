@@ -34,7 +34,7 @@ class BinaryParser{
         static void ReadUnLoadZonesData(const std::string &BinaryFile);
         static uint16_t ReadRespawnNodesData(const std::string &BinaryFile);
 
-        static void LoadLevelData(const std::string &DARTA,int8_t map_zone = -1);
+        static void LoadLevelData(const std::string &DARTA, int8_t map_zone = 0);
 
     private:
         BinaryParser() = delete;

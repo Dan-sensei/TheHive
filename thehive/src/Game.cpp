@@ -78,10 +78,13 @@ Game::~Game(){
 }
 
 void Game::Init(){
+
+    Engine->createZones(8);
+
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
-    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data",0);
+    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
     // BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");

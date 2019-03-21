@@ -161,7 +161,7 @@ void CAgent::ENTER_func_kTrig_Gunfire       (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     std::string name = zonesMap[id];
-    BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+".data",id);
+    BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+".data", id+1);
 
     // //std::cout << " -["+std::to_string(id)+"]- LOADING ZONE: " << name << '\n';
 }
@@ -170,7 +170,7 @@ void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     // std::string name = zonesMap[id];
 
-    Engine->SetMapZoneVisibility(id,false);
+    Engine->SetMapZoneVisibility(id+1,false);
 
     // //std::cout << " -["+std::to_string(id)+"]- UNLOADING ZONE: " << name << '\n';
 }

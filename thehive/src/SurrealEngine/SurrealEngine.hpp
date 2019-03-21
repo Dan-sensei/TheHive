@@ -32,7 +32,10 @@ class SurrealEngine {
 
         TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
-        TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3(), int8_t map_zone = -1);
+        TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3(), int8_t map_zone = 0);
+
+        // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
+        void createZones(uint8_t NumberOfZones);
 
         void deleteLeafNode(TNodo *node);
 
@@ -95,9 +98,10 @@ class SurrealEngine {
 
         uint16_t FPS;
 
-        std::map<int8_t,TNodo*> sceneMap;
 
-        TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone = -1);
+        std::vector<TNodo*> ZONES;
+
+        TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone = 0);
 
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);

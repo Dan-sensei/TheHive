@@ -19,15 +19,23 @@ SurrealEngine::SurrealEngine()
 
     for(uint16_t i = 0; i < 349; ++i)
         SurrealEngine::KEYS[i] = false;
-
-    sceneMap.insert(std::make_pair(-1,ESCENA));
 }
 
 SurrealEngine::~SurrealEngine(){
 }
 
+void SurrealEngine::createZones(uint8_t NumberOfZones){
+    NumberOfZones += 1;
+    ZONES.reserve(NumberOfZones);
+    ZONES.resize(NumberOfZones);
+    for(uint8_t i = 0; i < NumberOfZones; ++i)
+        ZONES[i] = new TNodo(ESCENA,nullptr);
+
+}
+
 void SurrealEngine::clean(){
     //std::cout << "DeleTAG..." << '\n';
+    ZONES.clear();
     delete SurrealEngine::KEYS;
     delete ESCENA;
     glfwTerminate();
@@ -108,15 +116,9 @@ TNodo* SurrealEngine::bindTransform(const glm::vec3& pos, const glm::vec3& rot, 
     Rotate->setRotation(rot);
     Translate->setPosition(pos);
 
-    auto PADRE = sceneMap.find(map_zone);
-    if(PADRE == sceneMap.end()){
-        TNodo* tmp = new TNodo(ESCENA,nullptr);
-        sceneMap.insert(std::make_pair(map_zone,tmp));
-        PADRE = sceneMap.find(map_zone);
-        // //std::cout << "CREATING SUPERNODE :" << static_cast<int>(map_zone) << '\n';
-    }
+    TNodo* PADRE = ZONES[map_zone];
 
-    TNodo* NodoRot = new TNodo(PADRE->second,Rotate);
+    TNodo* NodoRot = new TNodo(PADRE,Rotate);
     TNodo* NodoTrans = new TNodo(NodoRot,Translate);
 
     return NodoTrans;
@@ -272,12 +274,10 @@ bool SurrealEngine::Initialize(){
 
 void SurrealEngine::deleteLeafNode(TNodo *node){
     TNodo *tmp = node->getPadre()->getPadre();
-    ESCENA->remHijo(tmp);
+    TNodo *FATHER = tmp->getPadre();
+    FATHER->remHijo(tmp);
 }
 
 void SurrealEngine::SetMapZoneVisibility(const int8_t &zone,const bool &flag){
-    auto it = sceneMap.find(zone);
-    if(it != sceneMap.end()){
-        (it->second)->setVisibility(flag);
-    }
+    ZONES[zone]->setVisibility(flag);
 }
