@@ -7,6 +7,7 @@
 
 
 class CTransform : public IComponent {
+    friend class Factory;
     public:
         CTransform(const glm::vec3 &Position, const glm::vec3 &Rotation);
         CTransform(const CTransform &orig);

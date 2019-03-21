@@ -104,33 +104,29 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         uint8_t MODEL = 0;
         GG_Read(inStream, MODEL);
         std::string str = std::to_string(MODEL);
-        str+=".modelgg";
-
+        std::string lod = str + "_LOD1.modelgg";
+        str += ".modelgg";
         auto Manager = Singleton<ObjectManager>::Instance();
         uint16_t NewEntity = Manager->createEntity();
 
-        ////std::cout << "Model->  " << str << '\n';
         float x,y,z;
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
         glm::vec3 Position(x,y,z);
-        ////std::cout << "   -Position: " << x << ", " << y << ", " << z << '\n';
-        //if(MODEL == 45) //std::cout << "Position " << Position.x << ", " << Position.y << ", " << Position.z << '\n';
+
         GG_Read(inStream, x);
         GG_Read(inStream, y);
         GG_Read(inStream, z);
         glm::vec3 Rotation(x,y,z);
-        //if(MODEL == 37) //std::cout << "Rotation " << Rotation.x << ", " << Rotation.y << ", " << Rotation.z << '\n';
-        ////std::cout << "   -Rotation: " << x << ", " << y << ", " << z << '\n';
 
         bool HasCollider;
         GG_Read(inStream, HasCollider);
         ZMaterial* Dark = AssetManager::getMaterial("Default");
         CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation, map_zone);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
+        Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
 
-        ////std::cout << "Collider? = " << HasCollider << '\n';
         if(HasCollider){
             GG_Read(inStream, x);
             GG_Read(inStream, y);
@@ -141,19 +137,15 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             GG_Read(inStream, ry);
             GG_Read(inStream, rz);
             GG_Read(inStream, rw);
-            //if(MODEL == 45) //std::cout << "R " << rx << ", " << ry << ", " << rz << '\n';
-            ////std::cout << "      -Center: " << x << ", " << y << ", " << z << '\n';
+
             float sx,sz,sy;
             GG_Read(inStream, sx);
             GG_Read(inStream, sy);
             GG_Read(inStream, sz);
-            //if(MODEL == 45) //std::cout << "Size " << sx << ", " << sy << ", " << sz << '\n';
-            ////std::cout << "      -Size: " << x << ", " << y << ", " << z << '\n';
+
             CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
             Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewEntity);
         }
-
-        //if(MODEL == 45) //std::cout << '\n';
 
     }
 }
@@ -173,6 +165,7 @@ bool BinaryParser::ImportMesh(
     index.clear();
 
     std::ifstream Model(BinaryFile, std::ios::binary);
+    if (!Model.is_open()) return false;
 
     uint16_t i = 0;
     float FloatV;
@@ -399,16 +392,9 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
                 Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewToggle);
             }
 
-
-
             //std::cout << '\n';
         }
     }
-
-
-
-
-
 }
 
 void BinaryParser::ReadLoadZonesData(const std::string &BinaryFile){

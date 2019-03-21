@@ -10,10 +10,9 @@ ZMeshData::ZMeshData()
     glGenVertexArrays(1, &VAO);
 }
 
-ZMeshData::ZMeshData(const ZMeshData &orig){
-    VAO = orig.VAO;
-    IndexSize = orig.IndexSize;
-
+ZMeshData::ZMeshData(const ZMeshData &orig)
+:VAO(orig.VAO), IndexSize(orig.IndexSize)
+{
     VBOs.resize(orig.VBOs.size());
     for(uint16_t i = 0; i < VBOs.size(); ++i){
         VBOs[i] = orig.VBOs[i];
@@ -36,13 +35,12 @@ bool ZMeshData::load(const std::string& path){
 
     bool loaded = BinaryParser::ImportMesh(path, PositionsNormals, UV_Coords, TangentsBitangents, Indexes);
 
-    VBOs.reserve(3);
-
     if(!loaded){
         //std::cout << "   --No se pudo abrir " << path << '\n';
         return false;
     }
 
+    VBOs.reserve(3);
     IndexSize = Indexes.size();
 
 

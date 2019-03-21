@@ -16,6 +16,7 @@ class CStaticModel : public IComponent {
 
         void setVisibility(bool flag);
         void setPosition(const glm::vec3 &Position);
+        void addLOD(std::string LOD);
 
     private:
         SurrealEngine* Surreal;

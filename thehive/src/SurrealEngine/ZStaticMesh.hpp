@@ -6,6 +6,7 @@
 #include "ZMaterial.hpp"
 #include "ZMeshData.hpp"
 #include "TNodo.hpp"
+#include <glm/glm.hpp>
 
 class ZStaticMesh : public TEntidad {
     public:
@@ -18,9 +19,15 @@ class ZStaticMesh : public TEntidad {
         virtual void beginDraw();
         virtual void endDraw();
 
+        void addLOD(std::string Name);
+
+        static void setPlayerPtr(glm::vec3* _PlayerPosition);
+
     private:
 
-        ZMeshData* mesh;
+        static glm::vec3* PlayerPosition;
+        std::vector<ZMeshData*> MeshLODs;
+
         ZMaterial* zmat;
 };
 

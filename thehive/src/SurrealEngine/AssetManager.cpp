@@ -66,8 +66,9 @@ ZMeshData* AssetManager::getMeshData(const std::string &Name){
     if(it != MeshDataMap.end())
         return &it->second;
     else{
-        MeshDataMap[Name].load(Name);
-        return &MeshDataMap[Name];
+        ZMeshData* ret = &MeshDataMap[Name];
+        ret->load(Name);
+        return ret;
     }
 
 }

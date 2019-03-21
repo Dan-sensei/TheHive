@@ -5,6 +5,7 @@
 #include <ComponentArch/Components/CGranade2.hpp>
 #include <SurrealEngine/ZMaterial.hpp>
 #include <SurrealEngine/AssetManager.hpp>
+#include <SurrealEngine/ZStaticMesh.hpp>
 
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
@@ -21,6 +22,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CTransform* Transform               = new CTransform(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
 
+    ZStaticMesh::setPlayerPtr(&(Transform->Position));
     CAIEnem::PlayerTransform=Transform;
 
     CCamera* Camera                     = new CCamera(_b);
@@ -169,6 +171,7 @@ uint16_t Factory::createTank(const glm::vec3 &Position,const float &health){
 
     return Enemy;
 }
+
 uint16_t Factory::createSingleSwarm(const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
     ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");

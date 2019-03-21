@@ -22,6 +22,8 @@ ZMaterial::~ZMaterial(){
 
 void ZMaterial::attachShader(Shader *s){
     shader = s;
+    Textures.clear();
+    Data.clear();
 }
 
 void ZMaterial::addTexture(const std::string &ShaderTarget, const std::string &path, unsigned int mode, unsigned int flags){

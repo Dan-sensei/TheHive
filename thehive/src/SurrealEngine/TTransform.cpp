@@ -68,6 +68,7 @@ void TTransform::setPosition(glm::vec3 _vec){
     datos=glm::vec3(0,0,0);
     translate( _vec);
 }
+
 void TTransform::setRotation(glm::vec3 _vec){
     identity();
     datos=glm::vec3(0,0,0);
