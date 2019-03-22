@@ -17,6 +17,7 @@ class ZMaterial{
         void addTexture(const std::string &ShaderTarget, const std::string &path, unsigned int mode = 0, unsigned int flags = 0);
         void setUniformData(const std::string &ShaderTarget, float Data_);
         void Bind();
+        void clear();
 
         Shader* getShader(){ return shader; }
 

@@ -78,7 +78,6 @@ Game::~Game(){
 }
 
 void Game::Init(){
-
     Engine->createZones(8);
 
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
@@ -99,7 +98,7 @@ void Game::Init(){
     // Pos init del heroe normal
     // 360, 0, 350
     Engine->HideCursor(true);
-
+    // nat.init(glm::vec3(5,-0.3,50));
 
     uint16_t h = BinaryParser::ReadRespawnNodesData("assets/BinaryFiles/RESPAWN.data");
     // uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);

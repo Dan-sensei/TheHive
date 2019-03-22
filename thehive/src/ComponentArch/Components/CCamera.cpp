@@ -6,7 +6,7 @@
 #define DEGREES_TO_RADIANS  PI/180.f
 #define CAMERA_ATENUATION   7.f
 #define HEIGHT              0.4
-#define RADIUS              2.5
+#define RADIUS              2.0
 
 
 #define VERTICAL_ANGLE_LIMIT 25

@@ -15,6 +15,7 @@ class AIDirector;
 #include <ComponentArch/Components/CCamera.hpp>
 #include <SurrealEngine/SkyBox.hpp>
 #include <FMOD/SoundSystem.hpp>
+#include <SurrealEngine/NatureGenerator.hpp>
 
 class Motor2D;
 class Game : public State{
@@ -57,7 +58,9 @@ private:
     gg::Color col;
     TNodo* luz;
     CTransform* playerpos;
+    
     SkyBox sky;
+    NatureGenerator nat;
 };
 
 

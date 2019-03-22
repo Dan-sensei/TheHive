@@ -92,13 +92,13 @@ uint16_t Factory::createSoldierHorda(const glm::vec3 &Position,const float &heal
 }
 uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Morado");
+    ZMaterial* gsShader = AssetManager::getMaterial("Morado");
 
 
     CTransform* Transform               = new CTransform(Position, glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
 
-    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/BinaryFiles/BinaryModels/SOLDIER.modelgg", moradoDeLos80);
+    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/BinaryFiles/BinaryModels/SOLDIER.modelgg", gsShader);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
 
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Hero.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
@@ -439,4 +439,22 @@ uint16_t Factory::createDebugBullet(const glm::vec3 &_pos){
     Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, debug);
 
     return debug;
+}
+
+uint16_t Factory::createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::vec3 &Rotation){
+    uint16_t Mesh = Manager->createEntity();
+    ZMaterial* gsShader = AssetManager::getMaterial("MoradoButForNature");
+    // ZMaterial* gsShader = AssetManager::getMaterial("Morado");
+
+    CTransform* Transform               = new CTransform(Position,Rotation);
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Mesh);
+
+    CRenderable_3D* Renderable_3D       = new CRenderable_3D(Path, gsShader);
+    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Mesh);
+
+    // Por ahora se deja para debugear por si no se ve en pantalla
+    // CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
+    // Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Mesh);
+
+    return Mesh;
 }

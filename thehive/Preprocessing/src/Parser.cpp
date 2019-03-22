@@ -17,6 +17,9 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_Model("../assets/Models/SOLDIER.obj",                     "SOLDIER.modelgg");
 
     NavmeshParser::generateBinaryGG_Navmesh("../assets/NavMeshes/THE_HIVE.obj",             "NavmeshCITY.gg");
+    ModelParser::generateBinaryGG_Model("../assets/Models/nature_test1.obj",                "nature_test1.modelgg");
+    ModelParser::generateBinaryGG_Model("../assets/Models/flor.obj",                        "flor.modelgg");
+    ModelParser::generateBinaryGG_Model("../assets/Models/nature1.obj",                     "nature1.modelgg");
 
     return 0;
 }

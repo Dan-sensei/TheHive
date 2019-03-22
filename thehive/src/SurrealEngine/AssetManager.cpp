@@ -9,6 +9,7 @@ std::unordered_map<std::string, Shader> AssetManager::ShaderMap;
 std::unordered_map<std::string, unsigned int> AssetManager::TextureMap;
 
 AssetManager::AssetManager(){
+    ShaderMap["Nature"].loadFiles("assets/Shaders/VertexShader.glsl", nullptr, "assets/Shaders/FragmentShader_NATURE.glsl");
     ShaderMap["Default"].loadFiles("assets/Shaders/VertexShader.glsl", nullptr, "assets/Shaders/FragmentShader.glsl");
     ShaderMap["Lines"].loadFiles("assets/Shaders/Line_VS.glsl", nullptr, "assets/Shaders/Line_FS.glsl");
     ShaderMap["2D"].loadFiles("assets/Shaders/VertexShader2D.glsl", nullptr, "assets/Shaders/FragmentShader2D.glsl");
@@ -41,6 +42,13 @@ AssetManager::AssetManager(){
     Hero->addTexture("DiffuseMap",      "assets/Textures/DefaultDiffuse.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Hero->addTexture("NormalMap",       "assets/Textures/HERO_NORMALS2.png",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Hero->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+    Shader* Nat = getShader("Nature");
+    ZMaterial* 		MAT2 = getMaterial("MoradoButForNature");
+    MAT2->attachShader(Nat);
+    MAT2->addTexture("DiffuseMap",      "assets/Textures/Nature/plant.png",       		GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    MAT2->addTexture("NormalMap",       "assets/Textures/COMOUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    MAT2->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
 }
 
