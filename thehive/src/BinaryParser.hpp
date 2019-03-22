@@ -8,6 +8,7 @@
 #include "EventSystem/CTriggerSystem.hpp"
 #include "EventSystem/TData.hpp"
 #include "GameAI/AIDirector.hpp"
+#include "SurrealEngine/NatureGenerator.hpp"
 
 class BinaryParser{
     public:
@@ -29,6 +30,7 @@ class BinaryParser{
         );
 
         static void ReadEventsData(const std::string &BinaryFile);
+        static void ReadNatureData(const std::string &BinaryFile);
 
         static void ReadLoadZonesData(const std::string &BinaryFile);
         static void ReadUnLoadZonesData(const std::string &BinaryFile);

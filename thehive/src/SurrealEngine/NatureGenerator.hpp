@@ -12,13 +12,14 @@
 #include "BinaryParser.hpp"
 #include "AssetManager.hpp"
 #include "Shader.hpp"
+#include "ZMaterial.hpp"
 
 class NatureGenerator {
     public:
         NatureGenerator();
         ~NatureGenerator();
 
-        void init(const glm::vec3 &Pos);
+        void init(const uint8_t &map_zone,const glm::vec3 &Pos);
         void update();
     private:
         AssetManager *Manager;

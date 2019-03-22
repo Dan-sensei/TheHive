@@ -441,20 +441,18 @@ uint16_t Factory::createDebugBullet(const glm::vec3 &_pos){
     return debug;
 }
 
-uint16_t Factory::createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::vec3 &Rotation){
-    uint16_t Mesh = Manager->createEntity();
-    ZMaterial* gsShader = AssetManager::getMaterial("MoradoButForNature");
-    // ZMaterial* gsShader = AssetManager::getMaterial("Morado");
+uint16_t Factory::createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::vec3 &Rotation, ZMaterial *Material, const uint8_t &map_zone){
+    uint16_t Nature = Manager->createEntity();
 
-    CTransform* Transform               = new CTransform(Position,Rotation);
-    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Mesh);
+    // CTransform* Transform               = new CTransform(Position,Rotation);
+    // Manager->addComponentToEntity(Transform, gg::TRANSFORM, Nature);
 
-    CRenderable_3D* Renderable_3D       = new CRenderable_3D(Path, gsShader);
-    Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Mesh);
+    CStaticModel* Transform = new CStaticModel(Path, Material, Position, Rotation, map_zone);
+    Manager->addComponentToEntity(Transform, gg::STATICMODEL, Nature);
 
     // Por ahora se deja para debugear por si no se ve en pantalla
     // CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
-    // Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Mesh);
+    // Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Nature);
 
-    return Mesh;
+    return Nature;
 }
