@@ -80,7 +80,8 @@ Game::~Game(){
 void Game::Init(){
     Engine->createZones(8);
 
-    // BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
+    BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
+    
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");

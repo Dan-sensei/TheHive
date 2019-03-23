@@ -501,15 +501,15 @@ void BinaryParser::ReadNatureData(const std::string &BinaryFile){
 
     uint8_t TOTAL,TOTAL_ZONES,ZONE_NUMBER;
     GG_Read(inStream,TOTAL_ZONES);
-    std::cout << "TOTAL_ZONES: " << static_cast<int>(TOTAL_ZONES) << '\n';
+    // std::cout << "TOTAL_ZONES: " << static_cast<int>(TOTAL_ZONES) << '\n';
 
     float x,y,z;
     glm::vec3 Position;
     for(int i=0 ; i<TOTAL_ZONES ; ++i){
         GG_Read(inStream,ZONE_NUMBER);
         GG_Read(inStream,TOTAL);
-        std::cout << " | ZONE_NUMBER: " << static_cast<int>(ZONE_NUMBER) << '\n';
-        std::cout << "   | TOTAL_SPAWNS: " << static_cast<int>(TOTAL) << '\n';
+        // std::cout << " | ZONE_NUMBER: " << static_cast<int>(ZONE_NUMBER) << '\n';
+        // std::cout << "   | TOTAL_SPAWNS: " << static_cast<int>(TOTAL) << '\n';
 
         for(int j=0 ; j<TOTAL ; ++j){
 
@@ -519,7 +519,7 @@ void BinaryParser::ReadNatureData(const std::string &BinaryFile){
 
             Position = glm::vec3(x,y,z);
             nat.init(ZONE_NUMBER,Position);
-            std::cout << "     | POSITION: " << glm::to_string(Position) << '\n';
+            // std::cout << "     | POSITION: " << glm::to_string(Position) << '\n';
 
         }
     }

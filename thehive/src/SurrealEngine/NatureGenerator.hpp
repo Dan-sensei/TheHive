@@ -24,9 +24,7 @@ class NatureGenerator {
     private:
         AssetManager *Manager;
         Factory *fabrik;
-
-        // float *tmp_positions;
-        int GS_SIZE;
+        std::default_random_engine gen;
 };
 
 #endif
