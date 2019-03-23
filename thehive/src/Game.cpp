@@ -81,7 +81,7 @@ void Game::Init(){
     Engine->createZones(8);
 
     BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
-    
+
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
@@ -101,8 +101,8 @@ void Game::Init(){
     // 360, 0, 350
     Engine->HideCursor(true);
 
-    uint16_t h = BinaryParser::ReadRespawnNodesData("assets/BinaryFiles/RESPAWN.data");
-    // uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
+    // uint16_t h = BinaryParser::ReadRespawnNodesData("assets/BinaryFiles/RESPAWN.data");
+     uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
     // uint16_t h = sF->createHero(glm::vec3(451,17,54),-1);
 
     //for (size_t i = 0; i < 50; i++) {
@@ -156,8 +156,8 @@ void Game::Update(){
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
-        Director->comprobar();
-        Director->clipingEnemigos();
+        // Director->comprobar();
+        // Director->clipingEnemigos();
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
     }
@@ -165,7 +165,7 @@ void Game::Update(){
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
 
-    Director->update(DeltaTime);
+    // Director->update(DeltaTime);
 
 
     soundSys->update();
