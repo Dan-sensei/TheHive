@@ -40,8 +40,9 @@ void TCamara::beginDraw(){
     // Mirar la funcion Dios glm::decompose si la posicion de la camara no funciona
 
     if(hasTarget){
+        position = modelMatrix[3];
         viewMatrix = glm::lookAt(
-            glm::vec3(modelMatrix[3]),
+            glm::vec3(position),
             target,
             glm::vec3(0,1,0)
         );
@@ -51,6 +52,7 @@ void TCamara::beginDraw(){
     }
 
 }
+
 void TCamara::endDraw(){}
 
 // glm::mat4 GetViewMatrix( ){

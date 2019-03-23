@@ -20,11 +20,13 @@ class TLuz : public TEntidad {
         virtual gg::Color getIntensidad();
 
         virtual void beginDraw();
+        virtual void JustRender();
         virtual void endDraw();
 
     private:
+        glm::vec3 Pos;
         gg::Color intensidad;
-        Shader* light_shader;
+        GLuint UL;
 
 };
 

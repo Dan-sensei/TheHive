@@ -188,7 +188,7 @@ void Game::Update(){
     //Engine->print();
 
     // //std::cout << "  - DRAW" << '\n';
-    Engine->draw();
+    Engine->drawScene();
 
     Engine->DisplayFPS();
 

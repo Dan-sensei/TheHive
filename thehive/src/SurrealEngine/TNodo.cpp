@@ -76,13 +76,20 @@ void TNodo::draw(){
     if(entidad){
         entidad->beginDraw();
 
-        drawRoot();
+        drawRoot(&TNodo::draw);
 
         entidad->endDraw();
     }
     else{
-        drawRoot();
+        drawRoot(&TNodo::draw);
     }
+}
+
+void TNodo::JustRender(){
+    if(entidad){
+        entidad->JustRender();
+    }
+    drawRoot(&TNodo::JustRender);
 }
 
 void TNodo::setVisibility(bool Flag){
@@ -90,22 +97,21 @@ void TNodo::setVisibility(bool Flag){
 }
 
 // Este es llamado desde el main (PURE ROOT)
-void TNodo::drawRoot_M(){
-
+void TNodo::drawRoot_M(void (TNodo::*Target)()){
     auto it = hijos.begin();
     while(it != hijos.end()){
-        (*it)->draw();
+        ((*it)->*Target)();
         ++it;
     }
 
 }
 
 // Este para los demas
-void TNodo::drawRoot(){
+void TNodo::drawRoot(void (TNodo::*Target)()){
     if(!Visibility) return;
     auto it = hijos.begin();
     while(it != hijos.end()){
-        (*it)->draw();
+        ((*it)->*Target)();
         ++it;
     }
 }

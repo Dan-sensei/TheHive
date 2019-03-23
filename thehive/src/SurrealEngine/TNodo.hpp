@@ -20,8 +20,9 @@ class TNodo {
         TNodo* getPadre();
 
         void draw();
-        void drawRoot_M();
-        void drawRoot();
+        void JustRender();
+        void drawRoot_M(void (TNodo::*Target)());
+        void drawRoot(void (TNodo::*Target)());
 
         void setVisibility(bool Flag);
 

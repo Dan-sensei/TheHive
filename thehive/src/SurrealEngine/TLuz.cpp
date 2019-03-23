@@ -1,21 +1,21 @@
 #include "TLuz.hpp"
-//#include <iostream>
+#include <iostream>
 
-TLuz::TLuz():light_shader(nullptr),intensidad(0,0,0){}
+TLuz::TLuz():intensidad(0,0,0),UL(0){}
 TLuz::~TLuz(){}
 
-TLuz::TLuz(gg::Color &_color):light_shader(nullptr){
+TLuz::TLuz(gg::Color &_color):UL(0){
     intensidad = _color;
 }
 
 TLuz::TLuz(gg::Color &_color,Shader *_shader){
     intensidad = _color;
-    light_shader = _shader;
+    UL = _shader->getUniformLocation("LightPosition_worldspace");
 }
 
 TLuz::TLuz(Shader *_shader){
     intensidad = gg::Color();
-    light_shader = _shader;
+    UL = _shader->getUniformLocation("LightPosition_worldspace");
 }
 
 void TLuz::setIntensidad(gg::Color &_color){
@@ -26,13 +26,15 @@ gg::Color TLuz::getIntensidad(){
     return intensidad;
 }
 
-// Se quedan vacios
+
 void TLuz::beginDraw(){
+    Pos = modelMatrix[3];
+    JustRender();
+}
+
+// Se quedan vacios
+void TLuz::JustRender(){
     // Mandar como uniform
-    if(light_shader){
-        GLuint UL = light_shader->getUniformLocation("LightPosition_worldspace");
-        glm::vec3 pos = glm::vec3(modelMatrix[3]);
-        glUniform3f(UL,pos.x,pos.y,pos.z);
-    }
+    glUniform3f(UL,Pos.x,Pos.y,Pos.z);
 }
 void TLuz::endDraw(){}

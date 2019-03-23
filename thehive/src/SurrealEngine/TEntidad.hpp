@@ -22,7 +22,9 @@ class TEntidad {
         virtual ~TEntidad()         = 0;
         virtual void beginDraw()    = 0;
         virtual void endDraw()      = 0;
+        virtual void JustRender();
 
+        static uint16_t DRAWN;
     protected:
         static std::stack<glm::mat4> matrixStack;
         static glm::mat4 modelMatrix;

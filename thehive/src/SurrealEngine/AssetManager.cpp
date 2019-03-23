@@ -17,6 +17,7 @@ AssetManager::AssetManager(){
     ShaderMap["Blend2D"].loadFiles("assets/Shaders/VertexShader2D.glsl", nullptr, "assets/Shaders/FragmentShader2DBlend.glsl");
     ShaderMap["Plano"].loadFiles("assets/Shaders/VertexShader2DPlano.glsl", nullptr, "assets/Shaders/FragmentShader2DPlano.glsl");
     ShaderMap["skyboxShader"].loadFiles("assets/Shaders/SkyBox.vs", nullptr, "assets/Shaders/SkyBox.frag");
+    ShaderMap["Z-Prepass"].loadFiles("assets/Shaders/ZPrepassVS.glsl", nullptr, nullptr);
 
     Shader* Def = getShader("Default");
     ZMaterial* 		MAT = getMaterial("Morado");

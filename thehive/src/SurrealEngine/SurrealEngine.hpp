@@ -16,7 +16,6 @@
 #include "ZMaterial.hpp"
 #include "AssetManager.hpp"
 #include <SurrealEngine/KEYCODES.hpp>
-#include "TCamara.hpp"
 #include "Debug.hpp"
 #include "Clock.hpp"
 
@@ -83,10 +82,14 @@ class SurrealEngine {
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
+        void drawScene();
+        void enableRasterCulling(bool flag);
+
     private:
         SurrealEngine();
 
         gg::Clock FPS_Clock;
+        std::vector<TNodo*> ZONES;
 
         TNodo* ESCENA;
         GLFWwindow* window;
@@ -96,17 +99,18 @@ class SurrealEngine {
         TNodo* main_camera;
         TCamara* cam_;
 
-        uint16_t FPS;
 
 
-        std::vector<TNodo*> ZONES;
 
         TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone = 0);
+        void RasterCullingDraw();
 
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
         static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
+        uint16_t FPS;
+        uint16_t TOTALOBJECTS;
         static bool* KEYS;
         static bool LCLICK;
         static bool clicked;
@@ -115,6 +119,9 @@ class SurrealEngine {
 
         static int Half_Window_Width;
         static int Half_Window_Height;
+
+        using pFunc = void (SurrealEngine::*)();
+        pFunc CurrentDraw;
 
 };
 

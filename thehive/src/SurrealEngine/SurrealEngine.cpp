@@ -1,5 +1,6 @@
 #include "SurrealEngine.hpp"
 #include <glm/gtx/matrix_decompose.hpp>
+#include <iostream>
 
 bool* SurrealEngine::KEYS = new bool[349];
 bool SurrealEngine::LCLICK = false;
@@ -11,7 +12,7 @@ int SurrealEngine::Half_Window_Width;
 int SurrealEngine::Half_Window_Height;
 
 SurrealEngine::SurrealEngine()
-:main_camera(nullptr), FPS(0)
+:main_camera(nullptr), FPS(0), TOTALOBJECTS(0)
 {
     ESCENA = new TNodo();
     Initialize();
@@ -19,6 +20,8 @@ SurrealEngine::SurrealEngine()
 
     for(uint16_t i = 0; i < 349; ++i)
         SurrealEngine::KEYS[i] = false;
+
+    CurrentDraw = &SurrealEngine::RasterCullingDraw;
 }
 
 SurrealEngine::~SurrealEngine(){
@@ -43,7 +46,7 @@ void SurrealEngine::clean(){
 
 void SurrealEngine::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
-        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS);
+        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS) + "  - ObjectsDrawn: " + std::to_string(TEntidad::DRAWN) + " / " + std::to_string(TOTALOBJECTS) ;
         glfwSetWindowTitle(window, TEXT.c_str());
         FPS = 0;
         FPS_Clock.Restart();
@@ -84,6 +87,7 @@ void SurrealEngine::getCursorPosition(double &posX, double &posY) {  glfwGetCurs
 
 TNodo* SurrealEngine::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::vec3& rot, const float& _ppv){
     TCamara* C = new TCamara(_fov,_near,_far);
+    ZStaticMesh::setMainCamera(C);
     C->setPerspectiva(_ppv);
 
     TNodo* Cam = new TNodo(bindTransform(pos,rot),C);
@@ -105,7 +109,7 @@ TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const 
     M->load(_path);
 
     TNodo* Malla = new TNodo(bindTransform(pos,rot,map_zone),M);
-
+    ++TOTALOBJECTS;
     return Malla;
 }
 
@@ -136,10 +140,48 @@ void SurrealEngine::BeginDraw(){
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
+void SurrealEngine::enableRasterCulling(bool flag){
+    CurrentDraw = flag ? &SurrealEngine::RasterCullingDraw : &SurrealEngine::draw;
+}
+
+void SurrealEngine::drawScene(){
+    (this->*CurrentDraw)();
+}
+
+
 void SurrealEngine::draw(){
     ++FPS;
-    ESCENA->drawRoot_M();
+    TEntidad::DRAWN = 0;
+
+    glDepthFunc(GL_LESS);
+    ESCENA->drawRoot_M(&TNodo::draw);
 }
+
+void SurrealEngine::RasterCullingDraw(){
+    ++FPS;
+
+    TEntidad::DRAWN = 0;
+
+    glDepthMask(GL_TRUE);
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+    //glColorMask(0,0,0,0);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+
+    AssetManager::getShader("Z-Prepass")->Bind();
+    ESCENA->drawRoot_M(&TNodo::draw);
+
+    TEntidad::DRAWN = 0;
+    glDepthMask(GL_FALSE);
+    glColorMask(1,1,1,1);
+    glDepthFunc(GL_LEQUAL);
+
+    ESCENA->drawRoot_M(&TNodo::JustRender);
+
+}
+
+
 
 void SurrealEngine::EndDraw(){
     glfwSwapBuffers(window);
@@ -251,6 +293,8 @@ bool SurrealEngine::Initialize(){
 	    return false;
 	}
 
+    glfwSwapInterval(1);
+
 	glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
@@ -258,8 +302,6 @@ bool SurrealEngine::Initialize(){
     glEnable(GL_CULL_FACE);
     glCullFace (GL_BACK);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable( GL_BLEND );
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);

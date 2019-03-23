@@ -27,8 +27,6 @@ SkyBox::SkyBox()
 
 
     //-----------------METODO VIDEO-----------------
-
-
     std::vector<const GLchar*> faces;
     faces.push_back( "assets/skybox/skyboxRT.png" );
     faces.push_back( "assets/skybox/skyboxLF.png" );
@@ -189,7 +187,6 @@ void SkyBox::init(){
 
 void SkyBox::Draw(){
     auto viewt = engine->getVP();
-    glDepthMask(GL_FALSE);
     glDepthFunc( GL_LEQUAL );
     inicio->Bind();
     //view = glm::mat4( glm::mat3( engine->getCam()->GetViewMatrix() ) );
@@ -199,8 +196,6 @@ void SkyBox::Draw(){
     glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture );
     glDrawArrays( GL_TRIANGLES, 0, 36 );
     glBindVertexArray( 0 );
-    glDepthFunc( GL_LESS );
-    glDepthMask(GL_TRUE);
 
     fin->Bind();
 }
