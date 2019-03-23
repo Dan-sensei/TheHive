@@ -1,7 +1,7 @@
 #ifndef _SKYBOX
 #define _SKYBOX
 
-//#include <iostream>
+#include <iostream>
 #include "AssetManager.hpp"
 #include <SOIL2/SOIL2.h>
 #include <SOIL2/stb_image.h>
@@ -27,11 +27,12 @@ class SkyBox{
 		Shader* inicio;
 		Shader* fin;
 		SurrealEngine* engine;
-        unsigned int cubemapTexture;
+        unsigned int cubemapTexture[3];
         unsigned int skyboxVBO;
         unsigned int skyboxVAO;
 		unsigned int view;
 		unsigned int text;
+		int skyboxtype;
 
 };
 

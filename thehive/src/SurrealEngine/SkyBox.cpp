@@ -11,6 +11,8 @@ SkyBox::SkyBox()
     view=inicio->getUniformLocation("view");
     text=inicio->getUniformLocation("skybox");
 
+    skyboxtype = 0;
+
      //otro forma de cargar el cubemap
     // std::vector<std::string> auxfaces // Cargamos las imagenes que forman la skybox
     // {
@@ -26,17 +28,47 @@ SkyBox::SkyBox()
 
 
 
-    //-----------------METODO VIDEO-----------------
 
+    // //
+    // std::vector<const GLchar*> faces;
+    // faces.reserve(6);
+    // faces.resize(6);
+    // faces[0] = ( "assets/skybox/skybox2RT.png" );
+    // faces[1] = ( "assets/skybox/skybox2LF.png" );
+    // faces[2] = ( "assets/skybox/skybox2UP.png" );
+    // faces[3] = ( "assets/skybox/skybox2DN.png" );
+    // faces[4] = ( "assets/skybox/skybox2FT.png" );
+    // faces[5] = ( "assets/skybox/skybox2BK.png" );
+    // cubemapTexture = loadCubemap(faces);
 
     std::vector<const GLchar*> faces;
-    faces.push_back( "assets/skybox/skyboxRT.png" );
-    faces.push_back( "assets/skybox/skyboxLF.png" );
-    faces.push_back( "assets/skybox/skyboxUP.png" );
-    faces.push_back( "assets/skybox/skyboxDN.png" );
-    faces.push_back( "assets/skybox/skyboxFT.png" );
-    faces.push_back( "assets/skybox/skyboxBK.png" );
-    cubemapTexture = this->loadCubemap(faces);
+    faces.reserve(6);
+    faces.resize(6);
+
+    faces[0] = ( "assets/skybox/skyboxRT.png" );
+    faces[1] = ( "assets/skybox/skyboxLF.png" );
+    faces[2] = ( "assets/skybox/skyboxUP.png" );
+    faces[3] = ( "assets/skybox/skyboxDN.png" );
+    faces[4] = ( "assets/skybox/skyboxFT.png" );
+    faces[5] = ( "assets/skybox/skyboxBK.png" );
+    cubemapTexture[0] = loadCubemap(faces);
+
+    faces[0] = ( "assets/skybox/skybox2RT.png" );
+    faces[1] = ( "assets/skybox/skybox2LF.png" );
+    faces[2] = ( "assets/skybox/skybox2UP.png" );
+    faces[3] = ( "assets/skybox/skybox2DN.png" );
+    faces[4] = ( "assets/skybox/skybox2FT.png" );
+    faces[5] = ( "assets/skybox/skybox2BK.png" );
+
+    std::cout << cubemapTexture[1] << '\n';
+    faces[0] = ( "assets/skybox/skybox3RT.png" );
+    faces[1] = ( "assets/skybox/skybox3LF.png" );
+    faces[2] = ( "assets/skybox/skybox3UP.png" );
+    faces[3] = ( "assets/skybox/skybox3DN.png" );
+    faces[4] = ( "assets/skybox/skybox3FT.png" );
+    faces[5] = ( "assets/skybox/skybox3BK.png" );
+    cubemapTexture[2] = loadCubemap(faces);
+
 }
 
 
@@ -162,8 +194,6 @@ void SkyBox::init(){
     };
 
 
-    //videito
-    //GLuint skyboxVAO, skyboxVBO;
     glGenVertexArrays(1, &skyboxVAO );
     glGenBuffers(1, &skyboxVBO );
     glBindVertexArray( skyboxVAO );
@@ -173,21 +203,31 @@ void SkyBox::init(){
     //glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, 0, 0);
     glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, 3 * sizeof( GLfloat ), (GLvoid *) 0);
     glBindVertexArray(0);
+
     //tutotutorially
     //glDepthMask(GL_FALSE);
 
-    // ... set view and projection matrix
     //glBindVertexArray(skyboxVAO);
     //glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
     //glDrawArrays(GL_TRIANGLES, 0, 36);
     //glDepthMask(GL_TRUE);
-    //// ... draw rest of the scene
+
 
     //glm::mat4 view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
 
 }
 
 void SkyBox::Draw(){
+    if(engine->key(gg::GG_5) && skyboxtype !=0){
+        skyboxtype = 0;
+    }
+    if(engine->key(gg::GG_6) && skyboxtype !=1){
+        skyboxtype = 1;
+    }
+    if(engine->key(gg::GG_7) && skyboxtype !=2){
+        skyboxtype = 2;
+    }
+
     auto viewt = engine->getVP();
     glDepthMask(GL_FALSE);
     glDepthFunc( GL_LEQUAL );
@@ -196,7 +236,10 @@ void SkyBox::Draw(){
     glUniformMatrix4fv(view, 1, GL_FALSE, &(viewt)[0][0]);
     //glUniformMatrix4fv( glGetUniformLocation( inicio.Program, "view" ), 1, GL_FALSE, glm::value_ptr( viewt ) );
     glBindVertexArray( skyboxVAO );
-    glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture );
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture[skyboxtype] );
+
+    glUniform1i(text, 0);
     glDrawArrays( GL_TRIANGLES, 0, 36 );
     glBindVertexArray( 0 );
     glDepthFunc( GL_LESS );
