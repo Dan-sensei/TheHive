@@ -13,7 +13,7 @@ class Imagen2D {
 
         Imagen2D(const Imagen2D &orig) = delete;
         ~Imagen2D();
-
+        void setZindex(float res);
         void Draw();
         //void init();
         void setPos(float x,float y,float w,float h);

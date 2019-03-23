@@ -15,12 +15,15 @@ class Cuadrado2D {
         ~Cuadrado2D();
 
         void Draw();
+        void setZindex(float res);
+        
         void setPos(float x,float y,float w,float h);
 
         void setColor(glm::vec4 _color);
 
 
     private:
+        unsigned long Zindex;
         unsigned long inputColour;
         Shader* inicio;
         Shader* fin;

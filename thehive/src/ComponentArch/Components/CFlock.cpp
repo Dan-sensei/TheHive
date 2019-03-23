@@ -6,9 +6,11 @@ CFlock::CFlock(bool lider,uint16_t id):Manager(nullptr),leader(lider)
 {
     Manager= Singleton<ObjectManager>::Instance();
     //leader=false;
-    mindist=0.8;//minima distancia para aplica separacion 0.8 buena
-    fuerzasep=20;//fuerza separacion
+    mindist=4;//minima distancia para aplica separacion 0.8 buena
+    //mindist=0.8;//minima distancia para aplica separacion 0.8 buena
+    fuerzasep=10;//fuerza separacion
     fuerzacoh=10;//fuerza cohesion
+    fuerzaalign=0.1;//fuerza cohesion
     if(lider){
         addFlocked(id);
         leader_id=id;
@@ -160,66 +162,21 @@ void CFlock::debugtotal(){
 
 }
 void CFlock::FixedUpdate(){
-////std::cout << "fixed" << '\n';
     if(leader){
         if(Flocked.size()<=1){
             ////std::cout << "eliminamos todo" << '\n';
             Manager->removeComponentFromEntity(gg::FLOCK,getEntityID() );
         }
         else{
-
-            //debugeando
-            //debugtotal();
-
             //Separation
             FastSeparation();
             //El resto
             FastAlignementAndCohesion();
-            //esto es codigo de swarm, basicamente para que a parte del flocking tengan todos un mismo destino
-            //ForceCenter();
-            //ChangeCenter();
-            //Muerte();
         }
-        //debugeando
-        //debugtotal();
-
-        //Separation
-        FastSeparation();
-        //El resto
-        FastAlignementAndCohesion();
-        //esto es codigo de swarm, basicamente para que a parte del flocking tengan todos un mismo destino
-        //ForceCenter();
-        //ChangeCenter();
-        //Muerte();
     }
-    ////std::cout << "fixed final" << '\n';
 
 }
-void CFlock::ChangeCenter(){
-    //glm::vec3 res;
-    //res.x=gg::genFloatRandom(-0.5,0.5);
-    //res.y=gg::genFloatRandom(-0.5,0.5);
-    //pos+=res;
 
-}
-void CFlock::ForceCenter(){
-    /*
-    auto it=Flocked.begin();
-    while (it!=Flocked.end()){
-        ////std::cout << "entidad"<<i << '\n';
-        CRigidBody* body=*it;
-
-
-        glm::vec3 dir=glm::normalize(pos-body->getBodyPosition());
-        dir=dir*20;
-        ////std::cout << "dir=" <<dir<< '\n';
-        body->applyCentralForce(dir);
-
-
-        it++;
-    }
-*/
-}
 void CFlock::addNewFlocked(uint16_t me){
     CFlock* cFlock = new CFlock(false);
     Manager->addComponentToEntity(cFlock, gg::FLOCK, me);
@@ -240,10 +197,8 @@ int CFlock::getLeaderID(){
 void CFlock::FastSeparation(){
     mediapos=glm::vec3();
     mediavel=glm::vec3();
-    //int i=0;
     auto it=Flocked.begin();
     while (it!=Flocked.end()){
-        ////std::cout << "entidad"<<i << '\n';
         CRigidBody* body=*it;
         //calculamos las dos medias
         mediavel+=body->getVelocity();
@@ -256,15 +211,15 @@ void CFlock::FastSeparation(){
                 //mindist
                 float dist=gg::FastDIST(body->getBodyPosition(), body2->getBodyPosition());
                 if(dist<mindist){
-                    ////std::cout << "aplicamos" << '\n';
-                    ////std::cout << "dist="<<dist << '\n';
-                    ////std::cout << "mindist="<<mindist << '\n';
                     //aplicamos la separation
-                    glm::vec3 dir=glm::normalize(body->getBodyPosition()-body2->getBodyPosition());
-                    float escala=1-sqrt(dist/mindist);
-                    dir=dir*escala*fuerzasep;
-                    ////std::cout << "dir=" <<dir<< '\n';
-                    body->applyCentralForce(dir);
+                    glm::vec3 dir  = body->getBodyPosition()-body2->getBodyPosition();
+                    if(!(dir.x==0 &&dir.z==0)){
+                        dir=glm::normalize(dir);
+                        float escala=1-sqrt(dist/mindist);
+                        dir=dir*escala*fuerzasep;
+                        body->applyCentralForce(dir);
+
+                    }
                 }
             }
 
@@ -272,7 +227,6 @@ void CFlock::FastSeparation(){
         }
 
         it++;
-        //i++;
     }
 
 }
@@ -280,18 +234,18 @@ void CFlock::FastAlignementAndCohesion(){
     auto it=Flocked.begin();
     while (it!=Flocked.end()){
         CRigidBody* body=*it;
-        //alignement aun no implementado
+        //alignement
         float size = (Flocked.size()-1);
-        glm::vec3 mediavel_real=(mediavel-body->getVelocity()/size);
-        ////std::cout << mediavel_real << '\n';
-        //utilizar la media de las velicidades para alinearlo
+        glm::vec3 mediavel_real=((mediavel-body->getVelocity())/size);
+        body->applyCentralForce(mediavel_real);
         //cohesion
         glm::vec3 mediapos_real=((mediapos-body->getBodyPosition())/size);
-        ////std::cout << "media real" << '\n';
-        ////std::cout << mediapos_real << '\n';
-        glm::vec3 dir=glm::normalize(mediapos_real-body->getBodyPosition());
-        dir=dir*fuerzacoh;
-        body->applyCentralForce(dir);
+        glm::vec3 dir  = mediapos_real-body->getBodyPosition();
+        if(!(dir.x==0 &&dir.z==0)){
+            dir=glm::normalize(mediapos_real-body->getBodyPosition());
+            dir=dir*fuerzacoh;
+            body->applyCentralForce(dir);
+        }
         it++;
     }
 

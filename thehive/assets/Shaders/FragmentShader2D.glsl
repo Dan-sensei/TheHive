@@ -9,7 +9,7 @@ out vec4 frag_colour;
 
 void main() {
     vec4 color = texture(DiffuseMap, Texcoord)*inputColour;
-    if(color.a<0.1){
+    if(color.a<0.9){
         discard;
     }
     frag_colour = color;

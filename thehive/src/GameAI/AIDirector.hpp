@@ -27,8 +27,11 @@ class AIDirector {
         void pico();
         void bajada();
 
-        void invocacion(AINode*);
         void invocar();
+        void invocarrusher(AINode* nodo);
+        void invocartank(AINode* nodo);
+        void invocarswarm(AINode* nodo);
+
 
 
         void createWandering(AINode* nodo);

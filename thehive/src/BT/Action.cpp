@@ -548,12 +548,40 @@ void Action::move_leader(){
     CFlock* cF = static_cast<CFlock*>(manager->getComponent(gg::FLOCK,yo->getEntityID()));
     if(cF){
         CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,cF->getLeaderID()));
-        if(cTransform2){
-            yo->destino = cTransform2->getPosition();
-            move_too(3);
-
+        CRigidBody* body = static_cast<CRigidBody*>(manager->getComponent(gg::RIGID_BODY,cF->getLeaderID()));
+        glm::vec3 mio        = cTransform->getPosition();
+        glm::vec3 suyo        = cTransform2->getPosition();
+        float dist = glm::distance(mio,suyo);
+        if(dist<4){
+            s=BH_SUCCESS;
         }
+        else if(dist>10){
+            //s = BH_RUNNING;
+            glm::vec3 direccion  = suyo-mio;
+            if(direccion.x==0 &&direccion.z==0){
+                std::cout << "nulo" << '\n';
+            }else{
+                direccion       = glm::normalize(direccion);
+                cRigidBody->applyConstantVelocityNormal(direccion,yo->getVelocity());
 
+                direccion.y     = 0;
+                direccion       = glm::normalize(direccion);
+                direccion       = gg::Direccion2D_to_rot(direccion);
+                cTransform->setRotation(direccion);
+            }
+
+
+
+        }else{
+            glm::vec3 vel=body->getVelocity();
+            if(vel.x==0 && vel.z==0){
+                std::cout << "nulo" << '\n';
+            }else{
+                vel.y=0;
+                cRigidBody->applyConstantVelocityNormal(glm::normalize(vel),yo->getVelocity());
+
+            }
+        }
     }
     else{
         s=BH_FAILURE;

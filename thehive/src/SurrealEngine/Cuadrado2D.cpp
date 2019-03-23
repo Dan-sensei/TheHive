@@ -9,11 +9,12 @@
 #define HEIGTH         720.0f
 
 Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),index(0),inicio(nullptr),fin(nullptr)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1),index(-1),inicio(nullptr),fin(nullptr)
 {
     auto sh=Singleton<AssetManager>::Instance();
     inicio=sh->getShader("Plano");
     fin=sh->getShader("Default");
+    Zindex = inicio->getUniformLocation("Zindex");
     inputColour = inicio->getUniformLocation("inputColour");
 
 
@@ -93,16 +94,20 @@ void Cuadrado2D::setPos(float x,float y,float w,float h){
 void Cuadrado2D::setColor(glm::vec4 _color){
     color=_color;
 }
+void Cuadrado2D::setZindex(float res){
+    index=res;
+}
 
 
 void Cuadrado2D::Draw(){
     inicio->Bind();
     //metemos el color
     glUniform4fv(inputColour,1,&color[0]);
+    glUniform1f(Zindex,index);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+    glBindVertexArray(0);glUniform1f(Zindex,index);
 
     fin->Bind();
 

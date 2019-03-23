@@ -5,7 +5,6 @@
 #include <list>
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <Util.hpp>
-//#include <ComponentArch/Components/CRigidBody.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include "CRigidBody.hpp"
 
 
@@ -36,16 +35,11 @@ class CFlock : public IComponent {
         bool getLeader();
         int getLeaderID();
 
-        //eliminar
-        void ForceCenter();
-        void ChangeCenter();
 
         std::list  <CRigidBody*> getFlocked();
         void copyFlocked(int id);
         void Muerte();
         //variables propias
-        //vector
-        //std::list  <CRigidBody*>* Flocked;
         std::list  <CRigidBody*> Flocked;
 
     private:
@@ -54,11 +48,10 @@ class CFlock : public IComponent {
         float mindist;//minima distancia para aplica separacion
         float fuerzasep;//fuerza separacion
         float fuerzacoh;//fuerza cohesion
+        float fuerzaalign;//fuerza cohesion
         //media de posicion y velocidad, (sirven para hacer los calculos mas rapidos)
         glm::vec3 mediapos;
         glm::vec3 mediavel;
-        //Esto el del swarm. posicion donde se dirigen
-        //glm::vec3 pos;
 
         ObjectManager* Manager;
 

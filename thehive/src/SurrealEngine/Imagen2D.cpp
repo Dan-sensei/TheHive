@@ -163,7 +163,9 @@ void Imagen2D::setImage(const std::string &Name){
     auto Manager = Singleton<AssetManager>::Instance();
     textureID=Manager->getTexture(Name,   GN::RGBA,0);
 }
-
+void Imagen2D::setZindex(float res){
+    index=res;
+}
 void Imagen2D::Draw(){
 
     inicio->Bind();

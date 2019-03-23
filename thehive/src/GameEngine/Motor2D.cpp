@@ -414,7 +414,7 @@ void Motor2D::InitHUD(){
     y=85;
     w=20;
     h=15;
-    _x= x+w*0.7;
+    _x= x+w*0.65;
     _y= y+h*0.7;
     AddImage("0arma","assets/HUD/cf_hud_d.jpg",75,85,20,15);//secundaria
     addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
@@ -422,18 +422,19 @@ void Motor2D::InitHUD(){
     y=80;
     w=20;
     h=15;
-    _x= x+w*0.7;
+    _x= x+w*0.65;
     _y= y+h*0.7;
     AddImage("1arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
     addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 
 
-    AddImage("vida1","assets/HUD/Vida.png",  60,2,35,7);
+    AddImage("vida1","assets/HUD/Vida.png",  60,3.77,35,7);
     boton=addRect(                          60,2,35,7);
-    boton->setColor(glm::vec4(0,1,0,0.6));
-    boton=addRect(                          0.6,0.02,0.95,0.09);
-    boton->setColor(glm::vec4(1,1,1,1));
-
+    boton->setColor(glm::vec4(0,0.5,0,1));
+    boton->setZindex(-0.9998);
+    boton=addRect(                          0.665,0.0377,0.95,0.1047);
+    boton->setColor(glm::vec4(0.4,0.4,0.4,1));
+    boton->setZindex(-0.9997);
     //cruceta
     float anchura,longitud,c;
     anchura=0.001;
@@ -446,8 +447,6 @@ void Motor2D::InitHUD(){
     longitud=0.033;
     boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
     boton->setColor(glm::vec4(0,0,0,1));
-
-
 
 
     //AddImage("G1","assets/HUD/Botonsolo.png",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
@@ -546,7 +545,6 @@ void Motor2D::DisplayHUD(){
         float X,Y,H,W,T_W,T_H;
         Imagen2D* armaP;
         Imagen2D* armaS;
-        Imagen2D* vidaimg;
         while(it!=IMAGENES.end()){
 
             if(it->first=="0arma"||it->first=="1arma"){
@@ -559,11 +557,6 @@ void Motor2D::DisplayHUD(){
                 it++;
                 continue;
 
-            }
-            if(it->first=="vida1"){
-                vidaimg=it->second;
-                it++;
-                continue;
             }
             auto img =it->second;
             img->Draw();
@@ -579,8 +572,6 @@ void Motor2D::DisplayHUD(){
         (this->*mapHudFunctions["0arma"])(armaS);
         RECTANGULOS[5]->Draw();
         RECTANGULOS[6]->Draw();
-        //vidaimg->Draw();
-        (this->*mapHudFunctions["vida1"])(vidaimg);
 
 
 
@@ -625,16 +616,16 @@ void Motor2D::HUD_hability3(Imagen2D *it){
 
 void Motor2D::HUD_vida(Imagen2D *it){
     float x,y,w,h;
-    x=it->getX();
+    x=it->getX()+0.065;
     y=it->getY();
     w=it->getW();
-    h=it->getH();
+    h=it->getH()-0.003;
 
 
     //Cuadrado2D boton(0 ,0  ,1  ,1);
+    RECTANGULOS[4]->Draw();
     RECTANGULOS[3]->setPos(x, y, x+(w-x)*vida , h);
     RECTANGULOS[3]->Draw();
-    RECTANGULOS[4]->Draw();
 }
 //necesitamos escribir por pantalla
 void Motor2D::HUD_arma0(Imagen2D *it){

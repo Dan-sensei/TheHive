@@ -208,11 +208,10 @@ uint16_t Factory::createSwarm( const glm::vec3 &Position,const float &health) {
 
 
     CFlock* cFlock = new CFlock(true,holyBomb);
+    float rango=15;
     for (size_t i = 0; i < 15; i++) {
-        //uint16_t id_malo=createSingleSwarm(Position,health);
-        //CFlock* cFlock = new CFlock(true,holyBomb);
-        //cFlock->addFlocked(id_malo);//3
-        cFlock->addNewFlocked(createSingleSwarm(Position,health));//4
+        auto deltapos = glm::vec3(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
+        cFlock->addNewFlocked(createSingleSwarm(Position+deltapos,health));//4
     }
         Manager->addComponentToEntity(cFlock, gg::FLOCK, holyBomb);
 

@@ -9,15 +9,6 @@ poner y usar medidor de estres:
 -Special atacking(Maximun)
 depende del estres invocar unas cosas u otras
 
-
-1.       510,5,102
-2.      642,5,102
-3.      584,5,157
-4.      584,5,76
-5.     554,5,54
-player:      451,17,54
-
-
 */
 #define MIN_WAN 7.f
 #define MAX_WAN 15.f
@@ -44,13 +35,6 @@ AIDirector::AIDirector (int _id,float _duracion,int _cooldown)
 {
     Manager = Singleton<ObjectManager>::Instance();
     fac = Singleton<Factory>::Instance();
-    Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
-    /*
-    cargar los puntos de  spawn del mapa
-    AINode* AIDirector::createNode(glm::vec3 _pos,float _range){
-    //rellenar node con proximidad y rango
-
-    */
 }
 
 void AIDirector::clean(){
@@ -78,19 +62,15 @@ void AIDirector::init(){
 
     canWander=true;
     canHorde=true;
-    //Creacion de nodos
 
-    //1.       510,5,102
-    //2.      642,5,102
-    //3.      584,5,157
-    //4.      584,5,76
-    //5.     554,5,54
+    //Njugador=createNode(glm::vec3(10,3.04,-30.9067),5);
+    //std::cout << nodos.size() << '\n';
+    //for (size_t i = 0; i < 15; i++) {
+    //    auto pos=nodos[i]->getPos();
+    //    std::cout << "pos: " <<i<<"(" <<pos.x<<","<<pos.y<<","<<pos.z<<")" <<'\n';
+    //}
 
-    //Njugador= createNode(glm::vec3(0,20,15),5);
-    //Njugador->setonRange(true);
-    //uint16_t h = sF->createHero(glm::vec3(10,3,65),false);
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
-
     camera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, Manager->getHeroID()));
 }
 
@@ -100,21 +80,9 @@ Pjugador(nullptr),Njugador(nullptr){
     Manager = Singleton<ObjectManager>::Instance();
     fac = Singleton<Factory>::Instance();
     enemigos.reserve(50);
-    //Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
-    //Njugador= createNode(glm::vec3(5,3,65),5);
-
-
-
 }
 
 AIDirector::~AIDirector (){
-    //for (size_t i = 0; i < nodos.size(); i++) {
-    //    delete nodos[i];
-    //}
-    //liberamos toda la memoria de los nodos
-
-    //delete Njugador;
-
     auto it = nodos.begin();
     for(int i=0 ; i<nodos.size() ; ++i){
         delete (*it);
@@ -124,24 +92,11 @@ AIDirector::~AIDirector (){
 }
 
 AIDirector::AIDirector (const AIDirector &orig){}
-
-//tiempo
-/*
-TimeBusqueda=1;
-TimeHorda=300;
-TimePico=10;
-
-AcumulatorBusqueda=0;
-AcumulatorHorda=0;
-AcumulatorPico=0;
-*/
-
 void AIDirector::update (float delta){
     if(!activado) return;
 
     AcumulatorBusqueda += delta;
     //Acumulator+=(delta*(estres/10));
-    //std::cout <<"S"<< AcumulatorBusqueda << '\n';
     if(AcumulatorBusqueda > TimeBusqueda){
         //creamos wandering si es necesario
         AcumulatorBusqueda=0;
@@ -153,16 +108,13 @@ void AIDirector::update (float delta){
         if(AcumulatorHorda > TimeHorda){
             //invocamos horda
             AcumulatorHorda=0;
-            //invocacion(Njugador);
             invocar();
         }
     }
     if(AcumulatorPico<TimePico){
         AcumulatorPico+=delta;
-        ////std::cout << "estoy en pico" << '\n';
         //invocar especial no se muy bien que hacer
     }
-    ////std::cout << "estres" <<estres<< '\n';
 }
 
 void AIDirector::clipingEnemigos(){
@@ -175,7 +127,7 @@ void AIDirector::clipingEnemigos(){
     glm::vec3 pTF;
     glm::vec3 diren;
 
-    glm::vec3 dir   = Pjugador->getPosition() - cTF_POS;
+    glm::vec3 dir   = Pjugador->getPosition() - cTF_POS;//esto ya no me vale
     dir = glm::normalize(dir);
     dir.y = 0;
 
@@ -208,7 +160,6 @@ void AIDirector::comprobar(){
     int viendome = 0;
     float estresantes = 0, dist;
     glm::vec3 pos = Pjugador->getPosition();
-
     CTransform* Tenemy;
     CAIEnem* cAIEnem;
 
@@ -229,21 +180,11 @@ void AIDirector::comprobar(){
         it++;
     }
     if(!(estresantes==0||viendome==0)){
-        //std::cout << "estresantes" <<estresantes<< '\n';
-        //std::cout << "viendome" <<viendome<< '\n';
         estresantes = (estresantes/(viendome+20));//enemigos.size();
-        //std::cout << "suma" <<estresantes<< '\n';
         estres = estres + estresantes;
     }
 
     canHorde? estres = estres-SUBIDARESTA : estres = estres-BAJADARESTA;
-    // if(canHorde){
-    //     estres =estres-SUBIDARESTA;
-    // }
-    // else{
-    //     estres =estres-BAJADARESTA;
-    // }
-
     if(estres < 1) estres = 1;
 
 }
@@ -268,7 +209,6 @@ void AIDirector::busquedaCerca(){
 }
 
 void AIDirector::changeNode(AINode* nodo){
-    //std::cout << "cambiamos" << '\n';
     auto nodosP     = Njugador->nodosProximos;
     auto nodosTMP   = nodo->nodosProximos;
 
@@ -302,15 +242,13 @@ void AIDirector::invocar(){
     //int tam =Njugador->nodosProximos.size()-1;
     //int enemigosint = gg::genIntRandom(0, tam);
     //auto nodo=Njugador->nodosProximos[enemigosint];
-    //invocacion(nodo);
+    //createHorda(Njugador);
+
+    //esto funciona para todos los nodos
     int tam         = nodos.size()-1;
     int enemigosint = gg::genIntRandom(0, tam);
     auto nodo       = nodos[enemigosint];
-    invocacion(nodo);
-}
-
-void AIDirector::invocacion(AINode* nodo){
-     createHorda(nodo);
+    createHorda(nodo);
 }
 
 void AIDirector::setActive(bool dato){
@@ -343,35 +281,6 @@ void AIDirector::createWandering(AINode* nodo){
 
 void AIDirector::createHorda(AINode* nodo){
 
-    //glm::vec3 dest1=Pjugador->getPosition();
-    //int id2=fac->createSoldierHorda(nodo->getPos(), 2000,dest1);
-    //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    //enemigos.push_back(enemypos1);
-
-    //int id2=fac->createRusher(nodo->getPos(), 2000);
-    //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    //enemigos.push_back(enemypos1);
-
-    //int id2=fac->createTank(nodo->getPos(), 2000);
-    //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    //enemigos.push_back(enemypos1);
-
-    // Pruebas olareto del swarm
-    // ----------------------------
-    // int id2=fac->createSwarm(nodo->getPos(), 2000);
-    // //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    // //enemigos.push_back(enemypos1);//anayadir todo el flock
-    // CFlock* enemyflock=static_cast<CFlock*>(Manager->getComponent(gg::FLOCK, id2));
-    // auto arr=enemyflock->getFlocked();
-    // auto it=arr.begin();
-    // while(it!=arr.end()){
-    //     int id3=(*it)->getEntityID();
-    //     CTransform* enemypos12=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id3));
-    //     enemigos.push_back(enemypos12);//anayadir todo el flock
-    //     it++;
-    // }
-    // return;
-    // ----------------------------
 
     CTransform* enemypos;
     glm::vec3 dest = Pjugador->getPosition();
@@ -390,7 +299,6 @@ void AIDirector::createHorda(AINode* nodo){
 
         id = fac->createSoldierHorda(nodo->getPos()+deltapos, 10, dest);
         enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
-        //enemypos->getPosition()
         enemigos.push_back(enemypos);
         numEnemigos++;
     }
@@ -436,9 +344,37 @@ void AIDirector::removePos(AINode* nodo){
     nodo->setonRange(false);
 
 }
-/*
-jefe dejamos de invocar
-*/
+void AIDirector::invocarswarm(AINode* nodo){
+    //std::cout << "nodo" <<nodo->getPos().x<<";"<<nodo->getPos().y<<";"<<nodo->getPos().z<< '\n';
+
+     int id2=fac->createSwarm(nodo->getPos(), 2000);
+     //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
+     CFlock* enemyflock=static_cast<CFlock*>(Manager->getComponent(gg::FLOCK, id2));
+     auto arr=enemyflock->getFlocked();
+     auto it=arr.begin();
+     while(it!=arr.end()){
+         int id3=(*it)->getEntityID();
+         CTransform* enemypos12=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id3));
+         enemigos.push_back(enemypos12);//anayadir todo el flock
+         it++;
+     }
+
+}
+void AIDirector::invocartank(AINode* nodo){
+
+    int id2=fac->createTank(nodo->getPos(), 2000);
+    CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
+    enemigos.push_back(enemypos1);
+
+}
+void AIDirector::invocarrusher(AINode* nodo){
+    int id2=fac->createRusher(nodo->getPos(), 2000);
+    CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
+    enemigos.push_back(enemypos1);
+
+
+}
+
 
 //codigo de nodo
 AINode::AINode(){}
