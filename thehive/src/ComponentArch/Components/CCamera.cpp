@@ -77,7 +77,7 @@ void CCamera::FollowTarget(){
     double x, y;
     Engine->getCursorPosition(x, y);
     t += (prevX - x) * 0.005f;
-    p += (y - prevY) * 0.005f * InvertCamera;
+    p += (y - prevY) * 0.005f * -InvertCamera;
 
     prevX = x;
     prevY = y;
