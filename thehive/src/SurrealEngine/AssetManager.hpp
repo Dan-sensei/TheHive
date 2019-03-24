@@ -7,6 +7,7 @@
 #include "ZMaterial.hpp"
 #include "OpenGEnum.hpp"
 #include "Singleton.hpp"
+#include "BoundingBox.hpp"
 
 template <typename T>
 class Singleton;

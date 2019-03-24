@@ -100,9 +100,9 @@ TNodo* SurrealEngine::crearLuz(gg::Color &_color, const glm::vec3& pos, const gl
     return Luz;
 }
 
-TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone){
+TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone, const char* BoundingBoxPath){
     ZStaticMesh* M = new ZStaticMesh();
-    M->load(_path);
+    M->load(_path, BoundingBoxPath);
 
     TNodo* Malla = new TNodo(bindTransform(pos,rot,map_zone),M);
 

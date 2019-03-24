@@ -1,8 +1,8 @@
 #include "CStaticModel.hpp"
 
-CStaticModel::CStaticModel(const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::vec3 &Rotation, int8_t map_zone){
+CStaticModel::CStaticModel(const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::vec3 &Rotation, int8_t map_zone, const char* BoundingBoxPath){
     Surreal = Singleton<SurrealEngine>::Instance();
-    _3DModel = Surreal->crearMalla(pathToModel.c_str(), Position, Rotation, map_zone);
+    _3DModel = Surreal->crearMalla(pathToModel.c_str(), Position, Rotation, map_zone, BoundingBoxPath);
     Surreal->bindMaterialToMesh(_3DModel, material);
 }
 

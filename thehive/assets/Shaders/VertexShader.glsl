@@ -1,4 +1,4 @@
-#version 400
+#version 450 core
 
 layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec3 vertexNormal_modelspace;
@@ -8,10 +8,10 @@ layout(location = 4) in vec3 vertexBitangent_modelspace;
 
 //out vec3 fragmentColor;
 
-uniform mat4 MVP;
-uniform mat4 M;
-uniform vec3 LightPosition_worldspace;
-uniform vec3 CameraPos;
+layout(location = 10) uniform mat4 M;
+layout(location = 11) uniform mat4 MVP;
+layout(location = 12) uniform vec3 LightPosition_worldspace;
+layout(location = 13) uniform vec3 CameraPos;
 
 out vec2 UV;
 out vec3 Position_worldspace;

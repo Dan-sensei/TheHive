@@ -8,7 +8,7 @@
 #include <fstream>
 
 #include <vector>
-//#include <iostream>
+#include <iostream>
 
 #include "FILE_DIRECTORIES.hpp"
 
@@ -35,13 +35,14 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
 
     // If the import failed, report it
     if( !scene){
-        //std::cout << "La importación de " << FileInput << " ha fallado" << '\n';
+        std::cout << "La importación de " << FileInput << " ha fallado" << '\n';
         return;
     }
 
+    float minX, minY, minZ, maxX, maxY, maxZ;
+    minX = minY = minZ = maxX = maxY = maxZ = 0;
 
-    //std::cout << "Hacking " << FileInput << " --> " << FileOutput << '\n';
-    ////std::cout << "Cargando modelo '" << pFile << "'" << '\n';
+    std::cout << "Hacking " << FileInput << " --> " << FileOutput << '\n';
 
     aiMesh **meshes = scene->mMeshes;
     aiVector3D* vertices;
@@ -60,15 +61,28 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
            bitangents   =   meshes[i]->mBitangents;
                 faces   =   meshes[i]->mFaces;
 
-            ////std::cout << "VERTEX " << meshes[i]->mNumVertices << '\n';
-
-            ////std::cout << "Positions&Normals " << meshes[i]->mNumVertices*6 << '\n';
-
             PositionsNormals.reserve(meshes[i]->mNumVertices*6);
             uv.reserve(meshes[i]->mNumVertices*2);
             TangentsBitangents.reserve(meshes[i]->mNumVertices*6);
 
+
+        if(meshes[i]->mNumVertices > 0){
+            minX = maxX = vertices[0].x;
+            minY = maxY = vertices[0].y;
+            minZ = maxZ = vertices[0].z;
+        }
+
         for(uint16_t j = 0; j < meshes[i]->mNumVertices; ++j){
+
+            if(vertices[j].x < minX) minX = vertices[j].x;
+            if(vertices[j].x > maxX) maxX = vertices[j].x;
+
+            if(vertices[j].y < minY) minY = vertices[j].y;
+            if(vertices[j].y > maxY) maxY = vertices[j].y;
+
+            if(vertices[j].z < minZ) minZ = vertices[j].z;
+            if(vertices[j].z > maxZ) maxZ = vertices[j].z;
+
             PositionsNormals.emplace_back(vertices[j].x);
             PositionsNormals.emplace_back(vertices[j].y);
             PositionsNormals.emplace_back(vertices[j].z);
@@ -99,7 +113,7 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
         }
     }
 
-    std::ofstream MODEL(MODELS_BINARYFILES_OUTPUT_DIR+FileOutput, std::ios::binary);
+    std::ofstream MODEL(MODELS_BINARYFILES_OUTPUT_DIR+FileOutput+".modelgg", std::ios::binary);
 
     uint16_t POSITIONS_AND_NORMALS_SIZE = PositionsNormals.size();
     GG_Write(MODEL, POSITIONS_AND_NORMALS_SIZE);
@@ -126,4 +140,46 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
     }
 
 
+    std::ofstream BB(BB_BINARYFILES_OUTPUT_DIR+FileOutput+".bb", std::ios::binary);
+
+    // MIN
+    GG_Write(BB, minX);
+    GG_Write(BB, minY);
+    GG_Write(BB, minZ);      // .
+
+    //Derecha
+    GG_Write(BB, maxX);
+    GG_Write(BB, minY);
+    GG_Write(BB, minZ);      // . _____
+
+    //Arriba
+    GG_Write(BB, maxX);      //       .
+    GG_Write(BB, maxY);      //       |
+    GG_Write(BB, minZ);      // ._____|
+
+    //Izquierda
+    GG_Write(BB, minX);      // ._____.
+    GG_Write(BB, maxY);      //       |
+    GG_Write(BB, minZ);      // ._____|
+
+    //-----------------------
+    //Al fondo
+    GG_Write(BB, minX);      // ./_____.
+    GG_Write(BB, maxY);      //       |
+    GG_Write(BB, maxZ);      // ._____|
+
+    //Derecha
+    GG_Write(BB, maxX);      //./====:
+    GG_Write(BB, maxY);      //      |
+    GG_Write(BB, maxZ);      //._____|
+
+    //Abajo
+    GG_Write(BB, maxX);
+    GG_Write(BB, minY);
+    GG_Write(BB, maxZ);
+
+    //Izquierda
+    GG_Write(BB, minX);
+    GG_Write(BB, minY);
+    GG_Write(BB, maxZ);
 }

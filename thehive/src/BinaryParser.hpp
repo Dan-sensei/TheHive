@@ -9,6 +9,7 @@
 #include "EventSystem/TData.hpp"
 #include "GameAI/AIDirector.hpp"
 #include "SurrealEngine/NatureGenerator.hpp"
+#include <SurrealEngine/BoundingBox.hpp>
 
 class BinaryParser{
     public:
@@ -28,6 +29,8 @@ class BinaryParser{
             std::vector<float> &TangentsBitangents,
             std::vector<unsigned short> &index
         );
+
+        static bool ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX);
 
         static void ReadEventsData(const std::string &BinaryFile);
         static void ReadNatureData(const std::string &BinaryFile);

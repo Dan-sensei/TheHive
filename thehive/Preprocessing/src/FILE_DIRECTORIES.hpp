@@ -3,5 +3,6 @@
 
 #define NAVMESH_BINARYFILES_OUTPUT_DIR "../assets/BinaryFiles/"
 #define MODELS_BINARYFILES_OUTPUT_DIR "../assets/BinaryFiles/BinaryModels/"
+#define BB_BINARYFILES_OUTPUT_DIR "../assets/BinaryFiles/BoundingBoxes/"
 
 #endif

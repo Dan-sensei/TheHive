@@ -1,10 +1,12 @@
-#version 400
+#version 450 core
 
 out vec4 frag_colour;
 
-uniform sampler2D DiffuseMap;
-uniform sampler2D NormalMap;
-uniform sampler2D SpecularMap;
+layout(location = 12) uniform vec3 LightPosition_worldspace;
+
+layout(location = 14) uniform sampler2D DiffuseMap;
+layout(location = 15) uniform sampler2D NormalMap;
+layout(location = 16) uniform sampler2D SpecularMap;
 
 in vec2 UV;
 in vec3 Position_worldspace;
@@ -13,7 +15,6 @@ in vec3 LightPosT;
 in vec3 EyePosT;
 in vec3 VertexPosT;
 
-uniform vec3 LightPosition_worldspace;
 
 #define BASE_FACTOR 0.2
 

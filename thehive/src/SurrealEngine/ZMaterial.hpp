@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <string>
 #include "Shader.hpp"
+#include "OpenGEnum.hpp"
 
 class ZMaterial{
 
@@ -14,7 +15,7 @@ class ZMaterial{
         ~ZMaterial();
 
         void attachShader(Shader* s);
-        void addTexture(const std::string &ShaderTarget, const std::string &path, unsigned int mode = 0, unsigned int flags = 0);
+        void addTexture(GN::ShadersIDs ID, const std::string &path, unsigned int mode = 0, unsigned int flags = 0);
         void setUniformData(const std::string &ShaderTarget, float Data_);
         void Bind();
         void clear();
@@ -22,7 +23,7 @@ class ZMaterial{
         Shader* getShader(){ return shader; }
 
     private:
-        std::unordered_map<int, unsigned int> Textures;
+        std::vector<std::pair<int, unsigned int>> Textures;
         std::unordered_map<int, float> Data;
         Shader* shader;
 };

@@ -4,6 +4,7 @@
 #include <glm/gtx/norm.hpp>
 #include <iostream>
 #include <sys/stat.h>
+#include <BinaryParser.hpp>
 
 #define LOD1 10000
 #define KILL 22500
@@ -16,9 +17,13 @@ ZStaticMesh::ZStaticMesh()
 
 }
 
-bool ZStaticMesh::load(const std::string& Name){
+bool ZStaticMesh::load(const std::string& Name, const char* BoundingBoxPath){
     MeshLODs.reserve(2);
     MeshLODs.push_back(AssetManager::getMeshData(Name));
+
+    if(BoundingBoxPath != nullptr)
+        BinaryParser::ReadBoundingBox(BoundingBoxPath, &VOX);
+
     return true;
 }
 

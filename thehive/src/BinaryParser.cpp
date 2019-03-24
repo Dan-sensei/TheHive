@@ -105,7 +105,6 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         GG_Read(inStream, MODEL);
         std::string str = std::to_string(MODEL);
         std::string lod = str + "_LOD1.modelgg";
-        str += ".modelgg";
         auto Manager = Singleton<ObjectManager>::Instance();
         uint16_t NewEntity = Manager->createEntity();
 
@@ -123,7 +122,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         bool HasCollider;
         GG_Read(inStream, HasCollider);
         ZMaterial* Dark = AssetManager::getMaterial("Default");
-        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation, map_zone);
+        std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
+        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Dark, Position, Rotation, map_zone, B.c_str());
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
         Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
 
@@ -200,6 +200,23 @@ bool BinaryParser::ImportMesh(
 
     return true;
 }
+
+bool BinaryParser::ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX){
+    std::ifstream Model(BinaryFile, std::ios::binary);
+    if (!Model.is_open()) return false;
+
+    GG_Read(Model, THE_BOX->BLF.x); GG_Read(Model, THE_BOX->BLF.y); GG_Read(Model, THE_BOX->BLF.z);
+    GG_Read(Model, THE_BOX->BRF.x); GG_Read(Model, THE_BOX->BRF.y); GG_Read(Model, THE_BOX->BRF.z);
+    GG_Read(Model, THE_BOX->URF.x); GG_Read(Model, THE_BOX->URF.y); GG_Read(Model, THE_BOX->URF.z);
+    GG_Read(Model, THE_BOX->ULF.x); GG_Read(Model, THE_BOX->ULF.y); GG_Read(Model, THE_BOX->ULF.z);
+    GG_Read(Model, THE_BOX->ULB.x); GG_Read(Model, THE_BOX->ULB.y); GG_Read(Model, THE_BOX->ULB.z);
+    GG_Read(Model, THE_BOX->URB.x); GG_Read(Model, THE_BOX->URB.y); GG_Read(Model, THE_BOX->URB.z);
+    GG_Read(Model, THE_BOX->BRB.x); GG_Read(Model, THE_BOX->BRB.y); GG_Read(Model, THE_BOX->BRB.z);
+    GG_Read(Model, THE_BOX->BLB.x); GG_Read(Model, THE_BOX->BLB.y); GG_Read(Model, THE_BOX->BLB.z);
+
+    return true;
+}
+
 
 void BinaryParser::ReadEventsData(const std::string &BinaryFile){
     std::ifstream inStream(BinaryFile, std::ios::binary);

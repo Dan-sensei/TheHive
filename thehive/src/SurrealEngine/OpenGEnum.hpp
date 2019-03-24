@@ -25,6 +25,13 @@ namespace GN{
         SPECULAR = 2,
     };
 
+    // SHADERS
+    enum ShadersIDs{
+        DIFFUSE_MAP = 14,
+        NORMAL_MAP = 15,
+        SPECULAR_MAP = 16,
+    };
+
 }
 
 

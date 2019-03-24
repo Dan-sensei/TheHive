@@ -30,9 +30,8 @@ gg::Color TLuz::getIntensidad(){
 void TLuz::beginDraw(){
     // Mandar como uniform
     if(light_shader){
-        GLuint UL = light_shader->getUniformLocation("LightPosition_worldspace");
         glm::vec3 pos = glm::vec3(modelMatrix[3]);
-        glUniform3f(UL,pos.x,pos.y,pos.z);
+        glUniform3f(12,pos.x,pos.y,pos.z);
     }
 }
 void TLuz::endDraw(){}

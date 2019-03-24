@@ -7,12 +7,16 @@ ZMaterial::ZMaterial()
 {
 }
 
-ZMaterial::ZMaterial(const ZMaterial& orig){
-    //std::cout << "Copiando ZMaterial" << '\n';
-    auto iterator = orig.Textures.begin();
-    while(iterator != orig.Textures.end()){
-        Textures[iterator->first] = iterator->second;
-        ++iterator;
+ZMaterial::ZMaterial(const ZMaterial& orig)
+{
+    Textures.reserve(orig.Textures.size());
+    for(uint8_t i = 0; i < orig.Textures.size(); ++i)
+        Textures[i] = orig.Textures[i];
+
+    auto it = orig.Data.begin();
+    while(it != orig.Data.end()){
+        Data[it->first] = it->second;
+        ++it;
     }
 }
 
@@ -26,9 +30,9 @@ void ZMaterial::attachShader(Shader *s){
     Data.clear();
 }
 
-void ZMaterial::addTexture(const std::string &ShaderTarget, const std::string &path, unsigned int mode, unsigned int flags){
+void ZMaterial::addTexture(GN::ShadersIDs ID, const std::string &path, unsigned int mode, unsigned int flags){
     unsigned int TextureID = AssetManager::getTexture(path, mode, flags);
-    Textures[shader->getUniformLocation(ShaderTarget)] = TextureID;
+    Textures.emplace_back(std::make_pair(ID, TextureID));
     ////std::cout << "TexureID " << TextureID << '\n';
 }
 
@@ -38,14 +42,11 @@ void ZMaterial::setUniformData(const std::string &ShaderTarget, float Data_){
 
 void ZMaterial::Bind(){
     shader->Bind();
-    uint8_t i = 0;
-    auto iterator = Textures.begin();
-    while(iterator != Textures.end()){
+
+    for(uint8_t i = 0; i < Textures.size(); ++i){
         glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, iterator->second);
-        glUniform1i(iterator->first, i);
-        ++iterator;
-        ++i;
+        glBindTexture(GL_TEXTURE_2D, Textures[i].second);
+        glUniform1i(Textures[i].first, i);
     }
 
     if(Data.size() == 0) return;
