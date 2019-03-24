@@ -123,6 +123,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         GG_Read(inStream, HasCollider);
         ZMaterial* Dark;
 
+
         switch(MODEL){
             case 1: Dark = AssetManager::getMaterial("Metal");
                     break;
@@ -144,6 +145,12 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
                     break;
             case 122: Dark = AssetManager::getMaterial("Tree");
                     break;
+
+        // if(MODEL==2){
+        //     Dark = AssetManager::getMaterial("building");
+        // }else{
+        //     Dark = AssetManager::getMaterial("Default");
+
         }
         //Dark = AssetManager::getMaterial("Default");
         std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
