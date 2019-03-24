@@ -100,7 +100,7 @@ TNodo* SurrealEngine::crearLuz(gg::Color &_color, const glm::vec3& pos, const gl
     return Luz;
 }
 
-TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone, const char* BoundingBoxPath){
+TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone, const std::string& BoundingBoxPath){
     ZStaticMesh* M = new ZStaticMesh();
     M->load(_path, BoundingBoxPath);
 
@@ -170,6 +170,7 @@ glm::vec3 SurrealEngine::vectorRigth(){
     auto v=ESCENA->getEntidad()->viewMatrix;
     return glm::vec3(v[0][0], v[1][0], v[2][0]);
 }
+
 glm::mat4  SurrealEngine::getMVP(){
     return  ESCENA->getEntidad()->projMatrix * ESCENA->getEntidad()->viewMatrix * ESCENA->getEntidad()->modelMatrix;
 }

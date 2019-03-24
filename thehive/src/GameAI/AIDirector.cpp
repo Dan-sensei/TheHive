@@ -45,6 +45,17 @@ void AIDirector::clean(){
 }
 
 void AIDirector::init(){
+
+    glm::vec3 uno(0.0721286,0,0.997395);
+    glm::vec3 dos(0.36043,-0,0.932786);
+    uno=glm::normalize(uno);
+    dos=glm::normalize(dos);
+    float res=glm::dot(uno,dos);
+    std::cout << "res:" <<res<< '\n';
+
+
+
+
     activado=true;
     numEnemigos=0;
     estres=1;

@@ -8,8 +8,12 @@
 
 #define LOD1 10000
 #define KILL 22500
+//#define GRADOVISION cos(30*3.14159265359/180.f)
+#define GRADOVISION 0
+
 
 glm::vec3* ZStaticMesh::PlayerPosition;
+glm::vec3* ZStaticMesh::CameraPosition;
 
 ZStaticMesh::ZStaticMesh()
 :zmat(nullptr)
@@ -17,11 +21,10 @@ ZStaticMesh::ZStaticMesh()
 
 }
 
-bool ZStaticMesh::load(const std::string& Name, const char* BoundingBoxPath){
+bool ZStaticMesh::load(const std::string& Name, const std::string& BoundingBoxPath){
     MeshLODs.reserve(2);
     MeshLODs.push_back(AssetManager::getMeshData(Name));
-
-    if(BoundingBoxPath != nullptr)
+    if(!BoundingBoxPath.empty())
         BinaryParser::ReadBoundingBox(BoundingBoxPath, &VOX);
 
     return true;
@@ -44,6 +47,10 @@ void ZStaticMesh::setPlayerPtr(glm::vec3* _PlayerPosition){
     PlayerPosition = _PlayerPosition;
 }
 
+void ZStaticMesh::setCameraPtr(glm::vec3* _PlayerPosition){
+    CameraPosition = _PlayerPosition;
+}
+
 
 void ZStaticMesh::beginDraw(){
 
@@ -53,12 +60,72 @@ void ZStaticMesh::beginDraw(){
     float distance = glm::length2(ObjectPos-(*PlayerPosition));
     if(distance > KILL) return;
     else if(distance > LOD1 && MeshLODs.size() > 1) LOD = 1;
+    glm::vec3 vectores[]{
+        VOX.BLB,
+        VOX.BLF,
+        VOX.BRB,
+        VOX.BRF
+    };
+    //frustrum
+    glm::vec3 dircam(viewMatrix[0][2], viewMatrix[1][2], viewMatrix[2][2]);
+    dircam.y=0;
+    dircam       *=-1;
+    dircam       = glm::normalize(dircam);
+
+    glm::vec3 dirobj;
+    glm::vec3 obj1;
+    glm::vec3 campos=*CameraPosition;
+
+
+    bool  dib=false;
+    int i=0;
+    for (; i < 4; i++) {
+        if(vectores[i]==glm::vec3()){
+            dib=true;
+            break;
+        }
+        dirobj=ObjectPos-campos+vectores[i];
+        dirobj.y=0;
+        dirobj       = glm::normalize(dirobj);
+        float sol         = glm::dot(dirobj,dircam);
+        if(GRADOVISION<sol){
+            dib=true;
+            break;
+        }
+    }
+
+    if(!dib){
+        return;
+    }
+    //terminar frustrum
 
     Shader* sh = zmat->getShader();
+    zmat->Bind();
 
     // MODELO
-    GLuint M = sh->getUniformLocation("M");
-    glUniformMatrix4fv(M,1,GL_FALSE,&modelMatrix[0][0]);
+    //GLuint M = sh->getUniformLocation("M");
+    glUniformMatrix4fv(10,1,GL_FALSE,&modelMatrix[0][0]);
+
+    // MODELO*VISTA*PERSPECTIVA
+    glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
+    //GLuint MVP = sh->getUniformLocation("MVP");
+    glUniformMatrix4fv(11,1,GL_FALSE,&MVP_L[0][0]);
+
+    // LA FINALE
+    MeshLODs[LOD]->draw();
+}
+void ZStaticMesh::beginDrawwithoutligt(){
+
+    uint8_t LOD = 0;
+
+    glm::vec3 ObjectPos(modelMatrix[3][0], modelMatrix[3][1], modelMatrix[3][2]);
+    float distance = glm::length2(ObjectPos-(*PlayerPosition));
+    if(distance > KILL) return;
+    else if(distance > LOD1 && MeshLODs.size() > 1) LOD = 1;
+
+    Shader* sh = zmat->getShader();
+    zmat->Bind();
+
 
     // MODELO*VISTA*PERSPECTIVA
     glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
@@ -66,7 +133,6 @@ void ZStaticMesh::beginDraw(){
     glUniformMatrix4fv(MVP,1,GL_FALSE,&MVP_L[0][0]);
 
     // LA FINALE
-    zmat->Bind();
     MeshLODs[LOD]->draw();
 }
 

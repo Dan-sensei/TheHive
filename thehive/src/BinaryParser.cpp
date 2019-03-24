@@ -121,9 +121,15 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
 
         bool HasCollider;
         GG_Read(inStream, HasCollider);
-        ZMaterial* Dark = AssetManager::getMaterial("Default");
+        ZMaterial* Dark;
+        //if(MODEL==2){
+        //     Dark = AssetManager::getMaterial("building");
+        //}else{
+        //     Dark = AssetManager::getMaterial("Default");
+        //}
+        Dark = AssetManager::getMaterial("Default");
         std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
-        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Dark, Position, Rotation, map_zone, B.c_str());
+        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Dark, Position, Rotation, map_zone, B);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
         Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
 
@@ -157,7 +163,7 @@ bool BinaryParser::ImportMesh(
     std::vector<float> &uv,
     std::vector<float> &TangentsBitangents,
     std::vector<unsigned short> &index
-){
+    ){
 
     PositionsNormals.clear();
     uv.clear();

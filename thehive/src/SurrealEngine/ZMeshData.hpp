@@ -13,6 +13,7 @@ class ZMeshData{
         ~ZMeshData();
 
         bool load(const std::string& path);
+        bool load2(const std::string& path);
         void draw();
 
         unsigned int VAO;

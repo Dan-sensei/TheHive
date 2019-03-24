@@ -15,20 +15,24 @@ class ZStaticMesh : public TEntidad {
         ZStaticMesh(const ZStaticMesh &orig) = delete;
         ~ZStaticMesh();
 
-        bool load(const std::string& Name, const char* BoundingBoxPath);
+        bool load(const std::string& Name, const std::string& BoundingBoxPath);
         void assignMaterial(ZMaterial* material_);
+        void beginDrawwithoutligt();
+
         virtual void beginDraw();
         virtual void endDraw();
 
         void addLOD(std::string Name);
 
         static void setPlayerPtr(glm::vec3* _PlayerPosition);
+        static void setCameraPtr(glm::vec3* _PlayerPosition);
 
     private:
 
         BoundingBox VOX;
 
         static glm::vec3* PlayerPosition;
+        static glm::vec3* CameraPosition;
         std::vector<ZMeshData*> MeshLODs;
 
         ZMaterial* zmat;

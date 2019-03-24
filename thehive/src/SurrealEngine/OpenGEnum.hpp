@@ -30,6 +30,8 @@ namespace GN{
         DIFFUSE_MAP = 14,
         NORMAL_MAP = 15,
         SPECULAR_MAP = 16,
+        BLEND1 = 19,
+        BLEND2 = 20,
     };
 
 }

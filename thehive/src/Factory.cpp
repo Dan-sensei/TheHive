@@ -28,6 +28,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CCamera* Camera                     = new CCamera(_b);
     Camera->setTarget(Transform);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
+    ZStaticMesh::setCameraPtr(&(Camera->CurrentPosition));
 
     CVida* Vida                         = new CVida(1000);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
