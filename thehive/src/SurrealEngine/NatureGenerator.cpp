@@ -7,7 +7,7 @@ NatureGenerator::NatureGenerator(){
 
 NatureGenerator::~NatureGenerator(){}
 
-void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
+void NatureGenerator::init(const uint8_t &map_zone, glm::vec3 &Pos){
     std::vector< float > PositionsNormals;
     std::vector< float > UV_Coords;
     std::vector< float > TangentsBitangents;
@@ -22,6 +22,9 @@ void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
         return;
     }
 
+
+    Pos.y += 0.1;
+
     glm::vec3 tmp_pos, tmp_rot;
     std::uniform_int_distribution<int> dist1(0,360);
     std::uniform_int_distribution<int> dist2(0,10);
@@ -34,9 +37,9 @@ void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
     Material->addTexture("NormalMap",       "assets/Textures/COMOUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Material->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
-    // ZMaterial* Material = Manager->getMaterial("Blue");
+    ZMaterial* Blue = Manager->getMaterial("Blue");
 
-    // fabrik->createNatureMesh(Path2,Pos,glm::vec3(),Material,map_zone);
+    fabrik->createNatureMesh(Path,Pos,glm::vec3(),Blue,0);
 
     for (size_t i = 0; i < PositionsNormals.size(); i+=6) {
         if(dist2(gen)>8){
@@ -54,7 +57,7 @@ void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
 }
 
 
-void NatureGenerator::update(){
+void NatureGenerator::draw(){
     // std::cout << "UPDATE NATURE" << '\n';
     // Shader *sh = Manager->getShader("Nature");
     // sh->Bind();

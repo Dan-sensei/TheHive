@@ -59,6 +59,7 @@ void CPlayerController::Init(){
     pulsacion_q = false;
     pulsacion_dash = false;
     pulsacion_f = false;
+    pulsacion_click = false;
     debug1 = false;
     debug2 = false;
     MULT_BASE=1;
@@ -153,77 +154,35 @@ void CPlayerController::FixedUpdate(){
     bool            pressed = false;
     float           MULT_FACTOR = 1;
 
-    if(Engine->key(gg::GG_1)){
-        hab->ToggleSkill(0);
-    }
-    if(Engine->key(gg::GG_2)){
-        hab->ToggleSkill(1);
-    }
-    if(Engine->key(gg::GG_3)){
-        hab->ToggleSkill(2);
-    }
-    // if(Engine->key(gg::GG_T)){
-    //     if(pulsacion_soldier==false){
-    //         pulsacion_soldier=true;
-    //         if(maxsoldier>currentsoldier){
-    //             currentsoldier++;
-    //             auto sF = Singleton<Factory>::Instance();
-    //             sF->createSoldier(glm::vec3(-10,3, -50),200);
+    // if(Engine->key(gg::GG_1)){
+    //     hab->ToggleSkill(0);
+    // }
+    // if(Engine->key(gg::GG_2)){
+    //     hab->ToggleSkill(1);
+    // }
+    // if(Engine->key(gg::GG_3)){
+    //     hab->ToggleSkill(2);
+    // }
+
+    // if(Engine->key(gg::GG_M)){
+    //     //hab->ToggleSkill(2);
+    //     //devuelve ide de un objeto
+    //     glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), cTransform->getPosition(),1000);
+    //     int id=world->getIDFromRaycast();
+    //     ////std::cout << "id:" <<id<< '\n';
+    //     if(id!=-1){
+    //
+    //         CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+    //         if(AIEnem){
+    //             ////std::cout << "no hay enemigo" << '\n';
+    //             Singleton<StateMachine>::Instance()->AddState(new IAState(id),false);
+    //
     //
     //         }
-    //
     //     }
-    // }
-    // else{
-    //     pulsacion_soldier= false;
-    // }
-    // if(Engine->key(gg::GG_Y)){
-    //     if(pulsacion_tank==false){
-    //         pulsacion_tank=true;
-    //         if(maxtank>currenttank){
-    //             currenttank++;
     //
-    //             auto sF = Singleton<Factory>::Instance();
-    //             sF->createTank(glm::vec3(5,3,65),200);
-    //         }
-    //     }
+    //     //gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
     // }
-    // else{
-    //     pulsacion_tank= false;
-    // }
-    // if(Engine->key(gg::GG_U)){
-    //     if(pulsacion_rusher==false){
-    //         pulsacion_rusher=true;
-    //         if(maxrusher>currentrusher){
-    //             currentrusher++;
-    //
-    //             auto sF = Singleton<Factory>::Instance();
-    //             sF->createRusher(glm::vec3(-45,3,-23),200);
-    //         }
-    //     }
-    // }
-    // else{
-    //     pulsacion_rusher= false;
-    // }
-    if(Engine->key(gg::GG_M)){
-        //hab->ToggleSkill(2);
-        //devuelve ide de un objeto
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), cTransform->getPosition(),1000);
-        int id=world->getIDFromRaycast();
-        ////std::cout << "id:" <<id<< '\n';
-        if(id!=-1){
-
-            CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
-            if(AIEnem){
-                ////std::cout << "no hay enemigo" << '\n';
-                Singleton<StateMachine>::Instance()->AddState(new IAState(id),false);
-
-
-            }
-        }
-
-        //gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
-    }
 
     if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
     if(Engine->key(gg::GG_A))   A_IsPressed(force,pressed);
@@ -255,44 +214,50 @@ void CPlayerController::FixedUpdate(){
     // -----------------------------------
     // DISPARO
 
-    if(Engine->key(RELOAD_KEY)){
-        CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        if(gun && gun->canReload() && !gun->isReloading()){
-            Manager->returnIDFromRigid(nullptr);
-            gun->reload();
-        }
-    }
+    // if(Engine->key(RELOAD_KEY)){
+    //     CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
+    //     if(gun && gun->canReload() && !gun->isReloading()){
+    //         Manager->returnIDFromRigid(nullptr);
+    //         gun->reload();
+    //     }
+    // }
 
     // DISPARO
     if(Engine->isLClickPressed()){
-        // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
-        Target = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
-        CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        clocker.Restart();
-        if(gun) gun->shoot(Target);
-    }
-
-    if(Engine->key(WEAPON_KEY) && secondWeapon){
-        CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
-        if(!pulsacion_q && !aux->isReloading()){
-            changeWeaponIfPossible(aux);
+        if(!pulsacion_click){
+            pulsacion_click = true;
+            Target = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
+            if(Target != glm::vec3(-1,-1,-1)){
+                NatureGenerator nat;
+                nat.init(0,Target);
+            }
         }
     }
     else{
-        pulsacion_q = false;
+        pulsacion_click = false;
     }
 
+    // if(Engine->key(WEAPON_KEY) && secondWeapon){
+    //     CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
+    //     if(!pulsacion_q && !aux->isReloading()){
+    //         changeWeaponIfPossible(aux);
+    //     }
+    // }
+    // else{
+    //     pulsacion_q = false;
+    // }
+
     // Graná
-    if(Engine->key(gg::GG_G)){
-        // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
-        ////std::cout << actualGrenadeState << '\n';
-        if(pulsacion_granada==false)
-            (this->*mapFuncGrenades[actualGrenadeState])();
-    }
-    else{
-        pulsacion_granada=false;
-    }
+    // if(Engine->key(gg::GG_G)){
+    //     // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
+    //     glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
+    //     ////std::cout << actualGrenadeState << '\n';
+    //     if(pulsacion_granada==false)
+    //         (this->*mapFuncGrenades[actualGrenadeState])();
+    // }
+    // else{
+    //     pulsacion_granada=false;
+    // }
 
     // <DEBUG>
     showDebug();

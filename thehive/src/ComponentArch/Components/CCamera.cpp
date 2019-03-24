@@ -27,6 +27,7 @@ CCamera::~CCamera(){
 void CCamera::Init(){
     Engine = Singleton<SurrealEngine>::Instance();
     dynWorld = Singleton<ggDynWorld>::Instance();
+    oManager = Singleton<ObjectManager>::Instance();
     cam = Engine->getCamera();
 
     collision = false;

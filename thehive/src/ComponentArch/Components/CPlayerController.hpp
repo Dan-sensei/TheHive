@@ -9,6 +9,7 @@
 
 #include <Singleton.hpp>
 #include <SurrealEngine/SurrealEngine.hpp>
+#include <SurrealEngine/NatureGenerator.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Bullet/ggDynWorld.hpp>
@@ -96,6 +97,7 @@ class CPlayerController : public IComponent {
         bool pulsacion_q;
         bool pulsacion_dash;
         bool pulsacion_f;
+        bool pulsacion_click;
 
         bool debug1;
         bool debug2;

@@ -19,6 +19,9 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     ZMaterial* moradoDeLos80 = AssetManager::getMaterial("Hero");
 
     uint16_t hero = Manager->createEntity();
+
+    // CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/Hero.modelgg", moradoDeLos80, Position, glm::vec3(), -1);
+    // Manager->addComponentToEntity(Transform, gg::STATICMODEL, hero);
     CTransform* Transform               = new CTransform(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
 
@@ -35,8 +38,11 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CHabilityController* Hab                         = new CHabilityController();
     Manager->addComponentToEntity(Hab,             gg::HAB, hero);
 
+
     CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/BinaryFiles/BinaryModels/Hero.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, hero);
+    Renderable_3D->setVisibility(false);
+
 
     CRigidBody* RigidBody               = new CRigidBody(false, false,"", Position.x, Position.y, Position.z, 0.581/2,1.89/2, 0.314/2, 50, 0,0,0);
     Manager->addComponentToEntity(RigidBody,        gg::RIGID_BODY, hero);

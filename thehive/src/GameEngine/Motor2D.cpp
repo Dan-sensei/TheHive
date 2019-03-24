@@ -541,6 +541,9 @@ void Motor2D::CLINNormal(){
 }
 
 void Motor2D::DisplayHUD(){
+    RECTANGULOS[5]->Draw();
+    RECTANGULOS[6]->Draw();
+    /*
     if(true){
         auto it = IMAGENES.begin();
         float X,Y,H,W,T_W,T_H;
@@ -577,14 +580,13 @@ void Motor2D::DisplayHUD(){
         (this->*mapHudFunctions["1arma"])(armaP);
         armaS->Draw();
         (this->*mapHudFunctions["0arma"])(armaS);
-        RECTANGULOS[5]->Draw();
-        RECTANGULOS[6]->Draw();
         //vidaimg->Draw();
         (this->*mapHudFunctions["vida1"])(vidaimg);
 
 
 
     }
+    */
 }
 float getX();
 float getW();

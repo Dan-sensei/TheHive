@@ -35,6 +35,7 @@ public:
     void getDirectionVector(glm::vec3 &Output);
 
 private:
+    ObjectManager   *oManager;
     SurrealEngine       *Engine;
     TNodo           *cam;
     CTransform      *Target;

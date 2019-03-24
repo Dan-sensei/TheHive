@@ -7,20 +7,25 @@
 #include <cstdint>
 #include <random>
 
-#include "Factory.hpp"
+// #include "Factory.hpp"
 #include "Singleton.hpp"
 #include "BinaryParser.hpp"
 #include "AssetManager.hpp"
 #include "Shader.hpp"
 #include "ZMaterial.hpp"
 
+#include "SurrealEngine/ZMeshData.hpp"
+#include "SurrealEngine/ZStaticMesh.hpp"
+
+class Factory;
+
 class NatureGenerator {
     public:
         NatureGenerator();
         ~NatureGenerator();
 
-        void init(const uint8_t &map_zone,const glm::vec3 &Pos);
-        void update();
+        void init(const uint8_t &map_zone,glm::vec3 &Pos);
+        void draw();
     private:
         AssetManager *Manager;
         Factory *fabrik;
