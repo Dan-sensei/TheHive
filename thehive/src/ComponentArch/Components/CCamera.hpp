@@ -27,12 +27,19 @@ public:
     void setTarget(CTransform* T);
     void CameraUpdate();
 
+    void FollowTarget();
+    void FreeCamera();
+
+    void ToogleFreeCamera();
+
     glm::vec3 getCameraPosition();
     glm::vec3 getOffsetPositionVector();
 
     void moveCameraPosition(glm::vec3);
+    void ToggleCameraLock();
 
     void getDirectionVector(glm::vec3 &Output);
+    int8_t InvertCamera;
 
 private:
     SurrealEngine       *Engine;
@@ -47,8 +54,9 @@ private:
     float screenW;
     float screenH;
 
-    int8_t InvertCamera;
     bool collision;
+
+    bool LockCamera;
 
     void fixCameraPositionOnCollision   (glm::vec3&);
     void setPerpendicularOffsetVector   (glm::vec3&);
@@ -56,6 +64,8 @@ private:
     double prevX, prevY;
     float t, p;
 
+    using FunctionPTR = void (CCamera::*)();
+    FunctionPTR CurrentUpdate;
 };
 
 

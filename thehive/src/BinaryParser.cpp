@@ -104,7 +104,6 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         uint8_t MODEL = 0;
         GG_Read(inStream, MODEL);
         std::string str = std::to_string(MODEL);
-        std::string lod = str + "_LOD1.modelgg";
         auto Manager = Singleton<ObjectManager>::Instance();
         uint16_t NewEntity = Manager->createEntity();
 
@@ -125,7 +124,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
         CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Dark, Position, Rotation, map_zone, B.c_str());
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
-        Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
+        Transform->addLOD("assets/BinaryFiles/BinaryModels/"+str+"_LOD1.modelgg");
+        Transform->addLOD("assets/BinaryFiles/BinaryModels/"+str+"_LOD2.modelgg");
 
         if(HasCollider){
             GG_Read(inStream, x);

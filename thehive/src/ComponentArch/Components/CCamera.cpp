@@ -17,8 +17,10 @@
 
 CCamera::CCamera(int8_t _b)
 :Target(nullptr), Engine(nullptr), cam(nullptr),
-InvertCamera(_b)
-{}
+InvertCamera(_b), LockCamera(false)
+{
+    CurrentUpdate = &CCamera::FollowTarget;
+}
 
 
 CCamera::~CCamera(){
@@ -45,10 +47,37 @@ void CCamera::setTarget(CTransform *T) {
 }
 
 void CCamera::CameraUpdate(){
+    (this->*CurrentUpdate)();
+}
+
+void CCamera::ToggleCameraLock(){
+    LockCamera = !LockCamera;
+}
+
+void CCamera::ToogleFreeCamera(){
+    if(CurrentUpdate == &CCamera::FollowTarget){
+        CurrentUpdate = &CCamera::FreeCamera;
+        CurrentPosition = glm::vec3(0, 15, 0);
+        Engine->setPosition(cam, CurrentPosition);
+        t = 0;
+        p = 0;
+        Engine->FREECAMERA = true;
+        Engine->CONTROLPLAYER = false;
+    }
+    else{
+        CurrentUpdate = &CCamera::FollowTarget;
+        t = 0;
+        p = 0;
+        Engine->FREECAMERA = false;
+        Engine->CONTROLPLAYER = true;
+    }
+}
+
+void CCamera::FollowTarget(){
     double x, y;
     Engine->getCursorPosition(x, y);
     t += (prevX - x) * 0.005f;
-    p += (y - prevY) * 0.005f * -InvertCamera;
+    p += (y - prevY) * 0.005f * InvertCamera;
 
     prevX = x;
     prevY = y;
@@ -82,6 +111,51 @@ void CCamera::CameraUpdate(){
 }
 
 
+void CCamera::FreeCamera(){
+    if(LockCamera) return;
+    double x, y;
+    Engine->getCursorPosition(x, y);
+    t += (prevX - x) * 0.005f;
+    p += (y - prevY) * 0.005f * InvertCamera;
+
+    prevX = x;
+    prevY = y;
+
+    if(t < 0) t = 2*PI;
+    else if(t > 2*PI) t = 0;
+
+    if(p < -PI/2+0.2) p = -PI/2+0.2;
+    else if(p > PI/2 - 0.2) p = PI/2 - 0.2;
+
+    #define SPEED 0.5
+    if(Engine->key(gg::GG_W)){
+        glm::vec3 dir = glm::normalize(CameraTarget - CurrentPosition);
+        CurrentPosition += glm::vec3(dir.x * SPEED, dir.y * SPEED, dir.z * SPEED);
+    }
+    else if(Engine->key(gg::GG_S)){
+        glm::vec3 dir = glm::normalize(CameraTarget - CurrentPosition);
+        CurrentPosition -= glm::vec3(dir.x * SPEED, dir.y * SPEED, dir.z * SPEED);
+    }
+    if(Engine->key(gg::GG_A)){
+        glm::vec3 dir = CameraTarget - CurrentPosition;
+        glm::vec3 ppV = glm::normalize(glm::vec3(-dir.z,0,dir.x));
+        CurrentPosition -= glm::vec3(ppV.x * SPEED, 0, ppV.z * SPEED);
+    }
+    else if(Engine->key(gg::GG_D)){
+        glm::vec3 dir = CameraTarget - CurrentPosition;
+        glm::vec3 ppV = glm::normalize(glm::vec3(-dir.z,0,dir.x));
+        CurrentPosition += glm::vec3(ppV.x * SPEED, 0, ppV.z * SPEED);
+    }
+
+    CameraTarget.x = CurrentPosition.x + 1 * sin(t)*cos(p);
+    CameraTarget.y = CurrentPosition.y + 1 * sin(p);
+    CameraTarget.z = CurrentPosition.z + 1 * cos(t)*cos(p);
+
+    Engine->setPosition(cam, CurrentPosition);
+    static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
+
+}
+
 void CCamera::fixCameraPositionOnCollision(glm::vec3 &nextPosition){
     glm::vec3 camPosition = CurrentPosition;
     // Las dos mejores lineas que he escrito en mi vida
@@ -93,6 +167,14 @@ void CCamera::fixCameraPositionOnCollision(glm::vec3 &nextPosition){
 }
 
 void CCamera::getDirectionVector(glm::vec3 &Output){
+
+    if(CurrentUpdate == &CCamera::FreeCamera){
+        Output.x = 0;
+        Output.y = 0;
+        Output.z = 1;
+        return;
+    }
+
     Output = CurrentPosition - CameraTarget;
     Output.y = 0;
 }

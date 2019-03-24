@@ -17,7 +17,6 @@ class AIDirector;
 #include <FMOD/SoundSystem.hpp>
 #include <SurrealEngine/NatureGenerator.hpp>
 
-class Motor2D;
 class Game : public State{
 public:
     Game();
@@ -42,7 +41,6 @@ public:
 
 private:
     SurrealEngine* Engine;
-    Motor2D* Engine2D;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
@@ -58,7 +56,7 @@ private:
     gg::Color col;
     TNodo* luz;
     CTransform* playerpos;
-    
+
     SkyBox sky;
     NatureGenerator nat;
 };

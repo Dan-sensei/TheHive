@@ -83,6 +83,8 @@ class SurrealEngine {
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
+        bool FREECAMERA;
+        bool CONTROLPLAYER;
     private:
         SurrealEngine();
 

@@ -13,6 +13,13 @@ int main(int argc, char const *argv[]) {
     for(uint16_t i = 1; i < 146; ++i)
         ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i));
 
+    ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/2_LOD1.obj",              "2_LOD1");
+    ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/2_LOD2.obj",              "2_LOD2");
+    ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/13_LOD1.obj",            "13_LOD1");
+    ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/13_LOD2.obj",            "13_LOD2");
+    ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/14_LOD1.obj",            "14_LOD1");
+    ModelParser::generateBinaryGG_Model("../assets/Models/INT8_T/14_LOD2.obj",            "14_LOD2");
+
     ModelParser::generateBinaryGG_Model("../assets/Models/HEROE/HERO_LOWLOWPOLY_FINAL.obj",                         "Hero");
     ModelParser::generateBinaryGG_Model("../assets/Models/SOLDIER.obj",                     "SOLDIER");
 

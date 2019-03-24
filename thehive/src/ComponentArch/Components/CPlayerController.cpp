@@ -32,6 +32,7 @@
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
+, toogleCamera(true), FreeCamera(false), PlayerMovement(true), pulsacion_q(false), pulsacion_i(false)
 {
   GranadeCreate=false;
 }
@@ -56,7 +57,6 @@ void CPlayerController::Init(){
     pulsacion_rusher= false;
     pulsacion_granada = false;
     pulsacion_espacio = false;
-    pulsacion_q = false;
     pulsacion_dash = false;
     pulsacion_f = false;
     debug1 = false;
@@ -140,6 +140,45 @@ void CPlayerController::FixedUpdate(){
 
     //  If exists, we get its position
 
+
+    if(Engine->key(gg::GG_E) && toogleCamera){
+        toogleCamera = false;
+        camera->ToogleFreeCamera();
+
+        if(!FreeCamera){
+            PlayerMovement = false;
+            FreeCamera = true;
+        }
+        else{
+            PlayerMovement = true;
+            FreeCamera = false;
+        }
+    }
+    else{
+        toogleCamera = true;
+    }
+
+    if(FreeCamera && Engine->key(gg::GG_Q) && !pulsacion_q){
+        pulsacion_q = true;
+        camera->ToggleCameraLock();
+        Engine->CONTROLPLAYER = PlayerMovement = !PlayerMovement;
+    }
+    else{
+        pulsacion_q = false;
+    }
+
+
+    if(Engine->key(gg::GG_I) && !pulsacion_i){
+        pulsacion_i = true;
+        camera->InvertCamera *= -1;
+    }
+    else{
+        pulsacion_i = false;
+    }
+
+    if(!PlayerMovement) return;
+
+
     bool heroRotation = true;
 
     camera->getDirectionVector(cV);
@@ -205,25 +244,7 @@ void CPlayerController::FixedUpdate(){
     // else{
     //     pulsacion_rusher= false;
     // }
-    if(Engine->key(gg::GG_M)){
-        //hab->ToggleSkill(2);
-        //devuelve ide de un objeto
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), cTransform->getPosition(),1000);
-        int id=world->getIDFromRaycast();
-        ////std::cout << "id:" <<id<< '\n';
-        if(id!=-1){
 
-            CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
-            if(AIEnem){
-                ////std::cout << "no hay enemigo" << '\n';
-                Singleton<StateMachine>::Instance()->AddState(new IAState(id),false);
-
-
-            }
-        }
-
-        //gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
-    }
 
     if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
     if(Engine->key(gg::GG_A))   A_IsPressed(force,pressed);
@@ -272,27 +293,10 @@ void CPlayerController::FixedUpdate(){
         if(gun) gun->shoot(Target);
     }
 
-    if(Engine->key(WEAPON_KEY) && secondWeapon){
-        CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
-        if(!pulsacion_q && !aux->isReloading()){
-            changeWeaponIfPossible(aux);
-        }
-    }
-    else{
-        pulsacion_q = false;
-    }
 
-    // Graná
-    if(Engine->key(gg::GG_G)){
-        // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
-        ////std::cout << actualGrenadeState << '\n';
-        if(pulsacion_granada==false)
-            (this->*mapFuncGrenades[actualGrenadeState])();
-    }
-    else{
-        pulsacion_granada=false;
-    }
+
+
+
 
     // <DEBUG>
     showDebug();
@@ -422,7 +426,7 @@ void CPlayerController::showDebug(){
 
 void CPlayerController::changeWeaponIfPossible(CGun *gun){
     Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
-    pulsacion_q = true;
+
     Singleton<Motor2D>::Instance()->changeWeapon();
     if(isPrincipal){
         isPrincipal = false;

@@ -93,9 +93,14 @@ class CPlayerController : public IComponent {
         bool pulsacion_rusher;
         //bool pulsacion_enemigos;
         bool pulsacion_espacio;
-        bool pulsacion_q;
         bool pulsacion_dash;
         bool pulsacion_f;
+
+        bool toogleCamera;
+        bool FreeCamera;
+        bool PlayerMovement;
+        bool pulsacion_q;
+        bool pulsacion_i;
 
         bool debug1;
         bool debug2;

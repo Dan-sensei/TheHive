@@ -11,7 +11,7 @@ int SurrealEngine::Half_Window_Width;
 int SurrealEngine::Half_Window_Height;
 
 SurrealEngine::SurrealEngine()
-:main_camera(nullptr), FPS(0)
+:main_camera(nullptr), FPS(0), FREECAMERA(false), CONTROLPLAYER(true)
 {
     ESCENA = new TNodo();
     Initialize();
@@ -43,7 +43,9 @@ void SurrealEngine::clean(){
 
 void SurrealEngine::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
-        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS);
+        std::string CAM = FREECAMERA ? "ON" : "OFF";
+        std::string TARGET = CONTROLPLAYER ? "PLAYER" : "CAMERA";
+        std::string TEXT = "The Hive - FreeCamera: " + CAM + "  | Controlling: " + TARGET;
         glfwSetWindowTitle(window, TEXT.c_str());
         FPS = 0;
         FPS_Clock.Restart();
