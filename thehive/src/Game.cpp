@@ -81,7 +81,7 @@ void Game::Init(){
     Engine->createZones(8);
 
     BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
-    
+
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
@@ -209,6 +209,7 @@ void Game::Update(){
 void Game::Resume(){
     Engine->HideCursor(true);
     Engine2D->InitHUD();
+    MainCamera->resetMouse();
 
     //Engine->HideCursor(true);
 }

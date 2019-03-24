@@ -24,6 +24,7 @@ public:
     virtual void Init();
 
     glm::vec3 getTargetPosition();
+    void resetMouse();
     void setTarget(CTransform* T);
     void CameraUpdate();
 

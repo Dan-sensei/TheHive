@@ -39,9 +39,16 @@ void CCamera::Init(){
     t = 0;
     p = 0;
 }
-
+//
 void CCamera::setTarget(CTransform *T) {
     Target = T;
+}
+void CCamera::resetMouse() {
+    double x, y;
+    Engine->getCursorPosition(x, y);
+
+    prevX = x;
+    prevY = y;
 }
 
 void CCamera::CameraUpdate(){

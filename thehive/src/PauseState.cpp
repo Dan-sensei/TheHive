@@ -26,6 +26,7 @@ PauseState::PauseState():cont(){
     Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     Engine->HideCursor(false);
+    sky.init();
 }
 
 PauseState::~PauseState(){
@@ -34,6 +35,8 @@ PauseState::~PauseState(){
 }
 
 void PauseState::Init(){
+
+
 
     Engine->HideCursor(false);
     Singleton<Motor2D>::Instance()->InitPause();
@@ -56,12 +59,12 @@ void PauseState::Update(){
     cont.update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
+    sky.Draw();
     Singleton<Motor2D>::Instance()->draw();
     Singleton<Motor2D>::Instance()->checkbuton();
     Singleton<Motor2D>::Instance()->aplyhover();
     //Engine2D->draw();
     //Engine2D->checkbuton();
-
     Engine->EndDraw();
     Engine->resetClicked();
 

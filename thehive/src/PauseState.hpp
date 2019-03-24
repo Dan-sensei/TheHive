@@ -9,6 +9,7 @@ class ggDynWorld;
 
 //#include <iostream>
 #include "States/State.hpp"
+#include <SurrealEngine/SkyBox.hpp>
 #include "GameEngine/GUIController.hpp"
 
 class PauseState : public State{
@@ -39,6 +40,8 @@ private:
     ObjectManager* Manager;
     ggDynWorld* world;
     GUIController cont;
+    SkyBox sky;
+
 
 };
 
