@@ -19,8 +19,9 @@ void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
 
     std::string Path = "assets/BinaryFiles/BinaryModels/nature_test1.modelgg";
     std::string Path2 = "assets/BinaryFiles/BinaryModels/nature1.modelgg";
-
-    bool loaded = BinaryParser::ImportMesh(Path, PositionsNormals, UV_Coords, TangentsBitangents, Indexes);
+    std::array<float, 24> BoudingBoxVertices;
+    std::array<unsigned short, 36> BoundingBox_IBO;
+    bool loaded = BinaryParser::ImportMesh(Path, PositionsNormals, UV_Coords, TangentsBitangents, Indexes, BoudingBoxVertices, BoundingBox_IBO);
     if(!loaded){
         std::cout << "No se ha podido cargar la malla de vegetacion - " << Path << '\n';
         return;

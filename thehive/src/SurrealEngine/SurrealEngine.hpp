@@ -83,7 +83,7 @@ class SurrealEngine {
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
         void drawScene();
-        void enableRasterCulling(bool flag);
+        void SwitchRasterCulling();
 
     private:
         SurrealEngine();

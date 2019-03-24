@@ -294,6 +294,8 @@ void CPlayerController::FixedUpdate(){
         pulsacion_granada=false;
     }
 
+    if(Engine->key(gg::GG_E))   Engine->SwitchRasterCulling();
+
     // <DEBUG>
     showDebug();
     // </DEBUG>

@@ -21,7 +21,8 @@ class TNodo {
 
         void draw();
         void JustRender();
-        void drawRoot_M(void (TNodo::*Target)());
+
+        void SwitchRasterCulling();
         void drawRoot(void (TNodo::*Target)());
 
         void setVisibility(bool Flag);

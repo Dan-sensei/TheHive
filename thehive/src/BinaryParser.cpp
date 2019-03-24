@@ -86,9 +86,7 @@ void BinaryParser::ReadNavmeshData(
             GG_Read(Navmesh, PortalID);
             SQUARE_FACES.back().Portals.push_back(PortalID);
         }
-
     }
-
 }
 
 
@@ -122,7 +120,9 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
 
         bool HasCollider;
         GG_Read(inStream, HasCollider);
-        ZMaterial* Dark = AssetManager::getMaterial("Default");
+
+        ZMaterial* Dark = AssetManager::getMaterial("GROUND");
+
         CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str, Dark, Position, Rotation, map_zone);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
         Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
@@ -156,7 +156,9 @@ bool BinaryParser::ImportMesh(
     std::vector<float> &PositionsNormals,
     std::vector<float> &uv,
     std::vector<float> &TangentsBitangents,
-    std::vector<unsigned short> &index
+    std::vector<unsigned short> &index,
+    std::array<float, 24>& BoudingBoxVertices,
+    std::array<unsigned short, 36>& BoundingBox_IBO
 ){
 
     PositionsNormals.clear();
@@ -192,10 +194,20 @@ bool BinaryParser::ImportMesh(
 
     GG_Read(Model, i);  // INDEX_SIZE
     index.reserve(i);
-    unsigned short UnsignedShortV = 0;
+    uint16_t UnsignedShortV = 0;
     while(i--){
         GG_Read(Model, UnsignedShortV);
         index.emplace_back(UnsignedShortV);
+    }
+
+    for(uint8_t i = 0; i < 24; ++i){
+        GG_Read(Model, FloatV);
+        BoudingBoxVertices[i] = FloatV;
+    }
+
+    for(uint8_t i = 0; i < 36; ++i){
+        GG_Read(Model, UnsignedShortV);
+        BoundingBox_IBO[i] = UnsignedShortV;
     }
 
     return true;

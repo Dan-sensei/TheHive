@@ -14,8 +14,11 @@ class ZMeshData{
 
         bool load(const std::string& path);
         void draw();
+        void draw_Bouding();
 
         unsigned int VAO;
+
+        unsigned int VAO_Bounding;
     private:
         unsigned int IndexSize;
         std::vector<unsigned int> VBOs;

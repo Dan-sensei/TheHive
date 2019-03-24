@@ -26,7 +26,9 @@ class BinaryParser{
             std::vector<float> &PositionsNormals,
             std::vector<float> &uv,
             std::vector<float> &TangentsBitangents,
-            std::vector<unsigned short> &index
+            std::vector<unsigned short> &index,
+            std::array<float, 24>& BoudingBoxVertices,
+            std::array<unsigned short, 36>& BoundingBox_IBO
         );
 
         static void ReadEventsData(const std::string &BinaryFile);

@@ -8,3 +8,4 @@ uint16_t TEntidad::DRAWN = 0;
 
 TEntidad::~TEntidad(){}
 void TEntidad::JustRender(){}
+void TEntidad::SwitchRasterCulling(){}

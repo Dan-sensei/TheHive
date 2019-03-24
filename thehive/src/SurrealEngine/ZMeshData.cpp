@@ -2,16 +2,17 @@
 #include <GL/glew.h>
 #include "BinaryParser.hpp"
 #include "OpenGEnum.hpp"
-//#include <iostream>
+#include <iostream>
 
 ZMeshData::ZMeshData()
 :VAO(0), IndexSize(0)
 {
     glGenVertexArrays(1, &VAO);
+    glGenVertexArrays(1, &VAO_Bounding);
 }
 
 ZMeshData::ZMeshData(const ZMeshData &orig)
-:VAO(orig.VAO), IndexSize(orig.IndexSize)
+:VAO(orig.VAO), VAO_Bounding(orig.VAO_Bounding), IndexSize(orig.IndexSize)
 {
     VBOs.resize(orig.VBOs.size());
     for(uint16_t i = 0; i < VBOs.size(); ++i){
@@ -24,6 +25,7 @@ ZMeshData::~ZMeshData(){
     while(i--)  glDeleteBuffers(1, &VBOs[i]);
 
     glDeleteVertexArrays(1, &VAO);
+    glDeleteVertexArrays(1, &VAO_Bounding);
 }
 
 bool ZMeshData::load(const std::string& path){
@@ -33,7 +35,10 @@ bool ZMeshData::load(const std::string& path){
     std::vector< float > TangentsBitangents;
     std::vector< unsigned short > Indexes;
 
-    bool loaded = BinaryParser::ImportMesh(path, PositionsNormals, UV_Coords, TangentsBitangents, Indexes);
+    std::array<float, 24> BoudingBoxVertices;
+    std::array<unsigned short, 36> BoundingBox_IBO;
+
+    bool loaded = BinaryParser::ImportMesh(path, PositionsNormals, UV_Coords, TangentsBitangents, Indexes, BoudingBoxVertices, BoundingBox_IBO);
 
     if(!loaded){
         //std::cout << "   --No se pudo abrir " << path << '\n';
@@ -80,6 +85,22 @@ bool ZMeshData::load(const std::string& path){
 
     glBindVertexArray(0);
 
+    glBindVertexArray(VAO_Bounding);
+    //    VBOs.push_back(0);
+        glEnableVertexAttribArray(0);
+
+        // glGenBuffers(1, &VBOs.back());
+        // glBindBuffer(GL_ARRAY_BUFFER, VBOs.back());
+        // glBufferData(GL_ARRAY_BUFFER, 24*sizeof(float), &BoudingBoxVertices[0], GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
+
+
+        glVertexAttribFormat(0, 3, GL_FLOAT, false, 0);
+        glVertexAttribBinding(0, 0);
+        glBindVertexBuffer(0, VBOs[0], 0, 24);
+    glBindVertexArray(0);
+
     return true;
 }
 
@@ -94,5 +115,10 @@ void ZMeshData::addVertexBuffer(std::vector<float> &data, unsigned int DataLengt
 
 void ZMeshData::draw(){
     glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
+}
+
+void ZMeshData::draw_Bouding(){
+    glBindVertexArray(VAO_Bounding);
     glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
 }

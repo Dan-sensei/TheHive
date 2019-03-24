@@ -96,17 +96,15 @@ void TNodo::setVisibility(bool Flag){
     Visibility = Flag;
 }
 
-// Este es llamado desde el main (PURE ROOT)
-void TNodo::drawRoot_M(void (TNodo::*Target)()){
-    auto it = hijos.begin();
-    while(it != hijos.end()){
-        ((*it)->*Target)();
-        ++it;
-    }
 
+void TNodo::SwitchRasterCulling(){
+    if(entidad){
+        entidad->SwitchRasterCulling();
+    }
+    drawRoot(&TNodo::SwitchRasterCulling);
 }
 
-// Este para los demas
+// Este es llamado desde el main (PURE ROOT)
 void TNodo::drawRoot(void (TNodo::*Target)()){
     if(!Visibility) return;
     auto it = hijos.begin();

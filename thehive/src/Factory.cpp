@@ -92,7 +92,7 @@ uint16_t Factory::createSoldierHorda(const glm::vec3 &Position,const float &heal
 }
 uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    ZMaterial* gsShader = AssetManager::getMaterial("Morado");
+    ZMaterial* gsShader = AssetManager::getMaterial("GROUND");
 
 
     CTransform* Transform               = new CTransform(Position, glm::vec3(0, 0, 0));
@@ -103,9 +103,6 @@ uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
 
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Hero.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
-
-    CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
-    Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
 
     CVida* Vida                         = new CVida(health);

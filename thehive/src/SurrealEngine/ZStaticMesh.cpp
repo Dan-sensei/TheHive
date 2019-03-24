@@ -18,7 +18,7 @@ TCamara* ZStaticMesh::camera = nullptr;
 ZStaticMesh::ZStaticMesh()
 :zmat(nullptr), MVP(0), M(0), MVP_Z(0)
 {
-    toDo = &ZStaticMesh::Dro;
+    toDo = &ZStaticMesh::DrawNormal;
 
     MVP_Z = AssetManager::getShader("Z-Prepass")->getUniformLocation("MVP");
 
@@ -39,7 +39,11 @@ void ZStaticMesh::addLOD(std::string Name){
 }
 
 void ZStaticMesh::enableFrustumCulling(bool flag) {
-    toDo = flag ? &ZStaticMesh::FrustumCullingTest : &ZStaticMesh::Dro;
+    toDo = flag ? &ZStaticMesh::FrustumCullingTest : &ZStaticMesh::DrawNormal;
+}
+
+void ZStaticMesh::SwitchRasterCulling(){
+    toDo = toDo == &ZStaticMesh::Prepass ? &ZStaticMesh::DrawNormal : &ZStaticMesh::Prepass;
 }
 
 void ZStaticMesh::assignMaterial(ZMaterial* material_){
@@ -72,26 +76,37 @@ void ZStaticMesh::FrustumCullingTest(){
     JustRender();
 }
 
-void ZStaticMesh::Dro(){
+void ZStaticMesh::Prepass(){
+    UpdateMatrices();
+    DrawPrepass();
+}
+
+void ZStaticMesh::DrawNormal(){
+    UpdateMatrices();
+    JustRender();
+}
+
+void ZStaticMesh::DrawPrepass(){
 
     uint8_t LOD = 0;
-    localModelMatrix = modelMatrix;
-    localMVP = projMatrix * viewMatrix * modelMatrix;
-
     // glm::vec3 ObjectPos = localModelMatrix[3];
     // float distance = glm::length2(ObjectPos-(*PlayerPosition));
     // if(distance > KILL) return;
     // else if(distance > LOD1 && MeshLODs.size() > 1) LOD = 1;
 
-
     // MODELO*VISTA*PERSPECTIVA
     glUniformMatrix4fv(MVP_Z,1,GL_FALSE,&localMVP[0][0]);
 
     // LA FINALE
-    MeshLODs[LOD]->draw();
+    MeshLODs[LOD]->draw_Bouding();
     DRAWN++;
+}
 
 
+
+void ZStaticMesh::UpdateMatrices(){
+    localModelMatrix = modelMatrix;
+    localMVP = projMatrix * viewMatrix * modelMatrix;
 }
 
 void ZStaticMesh::JustRender(){

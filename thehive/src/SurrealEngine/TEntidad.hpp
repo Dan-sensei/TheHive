@@ -23,6 +23,7 @@ class TEntidad {
         virtual void beginDraw()    = 0;
         virtual void endDraw()      = 0;
         virtual void JustRender();
+        virtual void SwitchRasterCulling();
 
         static uint16_t DRAWN;
     protected:

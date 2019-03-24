@@ -21,7 +21,7 @@ SurrealEngine::SurrealEngine()
     for(uint16_t i = 0; i < 349; ++i)
         SurrealEngine::KEYS[i] = false;
 
-    CurrentDraw = &SurrealEngine::RasterCullingDraw;
+    CurrentDraw = &SurrealEngine::draw;
 }
 
 SurrealEngine::~SurrealEngine(){
@@ -46,7 +46,8 @@ void SurrealEngine::clean(){
 
 void SurrealEngine::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
-        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS) + "  - ObjectsDrawn: " + std::to_string(TEntidad::DRAWN) + " / " + std::to_string(TOTALOBJECTS) ;
+        std::string RasterCulling = CurrentDraw == &SurrealEngine::RasterCullingDraw ? "On" : "Off";
+        std::string TEXT = "RasterCulling: " + RasterCulling + " | FPS: " + std::to_string(FPS) + "  - ObjectsDrawn: " + std::to_string(TEntidad::DRAWN) + " / " + std::to_string(TOTALOBJECTS) ;
         glfwSetWindowTitle(window, TEXT.c_str());
         FPS = 0;
         FPS_Clock.Restart();
@@ -140,8 +141,17 @@ void SurrealEngine::BeginDraw(){
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
-void SurrealEngine::enableRasterCulling(bool flag){
-    CurrentDraw = flag ? &SurrealEngine::RasterCullingDraw : &SurrealEngine::draw;
+void SurrealEngine::SwitchRasterCulling(){
+    ESCENA->drawRoot(&TNodo::SwitchRasterCulling);
+
+    if(CurrentDraw == &SurrealEngine::RasterCullingDraw){
+        CurrentDraw = &SurrealEngine::draw;
+        glDepthMask(GL_TRUE);
+        glDepthFunc(GL_LESS);
+    }
+    else{
+        CurrentDraw = &SurrealEngine::RasterCullingDraw;
+    }
 }
 
 void SurrealEngine::drawScene(){
@@ -150,11 +160,13 @@ void SurrealEngine::drawScene(){
 
 
 void SurrealEngine::draw(){
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
     ++FPS;
     TEntidad::DRAWN = 0;
 
     glDepthFunc(GL_LESS);
-    ESCENA->drawRoot_M(&TNodo::draw);
+    ESCENA->drawRoot(&TNodo::draw);
 }
 
 void SurrealEngine::RasterCullingDraw(){
@@ -164,20 +176,20 @@ void SurrealEngine::RasterCullingDraw(){
 
     glDepthMask(GL_TRUE);
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
     //glColorMask(0,0,0,0);
     glDepthFunc(GL_LESS);
     glEnable(GL_DEPTH_TEST);
 
     AssetManager::getShader("Z-Prepass")->Bind();
-    ESCENA->drawRoot_M(&TNodo::draw);
+    ESCENA->drawRoot(&TNodo::draw);
 
+    AssetManager::getShader("Default")->Bind();
     TEntidad::DRAWN = 0;
     glDepthMask(GL_FALSE);
     glColorMask(1,1,1,1);
-    glDepthFunc(GL_LEQUAL);
+    glDepthFunc(GL_EQUAL);
 
-    ESCENA->drawRoot_M(&TNodo::JustRender);
+    ESCENA->drawRoot(&TNodo::JustRender);
 
 }
 
@@ -248,7 +260,6 @@ void SurrealEngine::PointAt(TNodo *_node, const glm::vec3& _offpos){
 
 }
 
-
 void SurrealEngine::HideCursor(bool t){
     if(t){
         glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -298,9 +309,9 @@ bool SurrealEngine::Initialize(){
 	glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    glFrontFace(GL_CCW);
-    glEnable(GL_CULL_FACE);
-    glCullFace (GL_BACK);
+    // glFrontFace(GL_CCW);
+    // glEnable(GL_CULL_FACE);
+    // glCullFace (GL_BACK);
 
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);

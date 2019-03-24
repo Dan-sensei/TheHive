@@ -29,7 +29,8 @@ gg::Color TLuz::getIntensidad(){
 
 void TLuz::beginDraw(){
     Pos = modelMatrix[3];
-    JustRender();
+    glUniform3f(UL,Pos.x,Pos.y,Pos.z);
+    
 }
 
 // Se quedan vacios

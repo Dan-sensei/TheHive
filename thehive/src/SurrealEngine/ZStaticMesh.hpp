@@ -21,9 +21,13 @@ class ZStaticMesh : public TEntidad {
         void enableFrustumCulling(bool flag);
 
         virtual void beginDraw();
-        virtual void Dro();
         virtual void JustRender();
+        void Prepass();
+        void DrawPrepass();
+        void DrawNormal();
+        void UpdateMatrices();
         virtual void endDraw();
+        virtual void SwitchRasterCulling();
 
         void addLOD(std::string Name);
 

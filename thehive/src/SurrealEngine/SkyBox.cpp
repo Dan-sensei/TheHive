@@ -1,4 +1,5 @@
 #include "SkyBox.hpp"
+#include <iostream>
 
 SkyBox::SkyBox()
 :engine(nullptr)
@@ -28,13 +29,31 @@ SkyBox::SkyBox()
 
     //-----------------METODO VIDEO-----------------
     std::vector<const GLchar*> faces;
-    faces.push_back( "assets/skybox/skyboxRT.png" );
-    faces.push_back( "assets/skybox/skyboxLF.png" );
-    faces.push_back( "assets/skybox/skyboxUP.png" );
-    faces.push_back( "assets/skybox/skyboxDN.png" );
-    faces.push_back( "assets/skybox/skyboxFT.png" );
-    faces.push_back( "assets/skybox/skyboxBK.png" );
-    cubemapTexture = this->loadCubemap(faces);
+    faces.reserve(6);
+    faces.resize(6);
+    faces[0] = "assets/skybox/skyboxRT.png";
+    faces[1] = "assets/skybox/skyboxLF.png";
+    faces[2] = "assets/skybox/skyboxUP.png";
+    faces[3] = "assets/skybox/skyboxDN.png";
+    faces[4] = "assets/skybox/skyboxFT.png";
+    faces[5] = "assets/skybox/skyboxBK.png";
+    cubemapTexture[0] = loadCubemap(faces);
+
+    faces[0] = "assets/skybox/skybox2RT.png";
+    faces[1] = "assets/skybox/skybox2LF.png";
+    faces[2] = "assets/skybox/skybox2UP.png";
+    faces[3] = "assets/skybox/skybox2DN.png";
+    faces[4] = "assets/skybox/skybox2FT.png";
+    faces[5] = "assets/skybox/skybox2BK.png";
+    cubemapTexture[1] = loadCubemap(faces);
+
+    faces[0] = "assets/skybox/skybox3RT.png";
+    faces[1] = "assets/skybox/skybox3LF.png";
+    faces[2] = "assets/skybox/skybox3UP.png";
+    faces[3] = "assets/skybox/skybox3DN.png";
+    faces[4] = "assets/skybox/skybox3FT.png";
+    faces[5] = "assets/skybox/skybox3BK.png";
+    cubemapTexture[2] = loadCubemap(faces);
 }
 
 
@@ -193,7 +212,11 @@ void SkyBox::Draw(){
     glUniformMatrix4fv(view, 1, GL_FALSE, &(viewt)[0][0]);
     //glUniformMatrix4fv( glGetUniformLocation( inicio.Program, "view" ), 1, GL_FALSE, glm::value_ptr( viewt ) );
     glBindVertexArray( skyboxVAO );
-    glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture );
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture[2] );
+    glUniform1i(text, 0);
+
     glDrawArrays( GL_TRIANGLES, 0, 36 );
     glBindVertexArray( 0 );
 

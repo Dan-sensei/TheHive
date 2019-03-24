@@ -44,6 +44,11 @@ AssetManager::AssetManager(){
     Hero->addTexture("NormalMap",       "assets/Textures/HERO_NORMALS2.png",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Hero->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
+    ZMaterial* 		GroundMat = getMaterial("GROUND");
+    GroundMat->addTexture("DiffuseMap",   "assets/Textures/Metalic/MetalPanelRectangular001_REFL_1K_SPECULAR.jpg",  GN::RGBA,   GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    GroundMat->addTexture("NormalMap",    "assets/Textures/Metalic/MetalPanelRectangular001_NRM_1K_SPECULAR.jpg",    GN::RGBA,   GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    GroundMat->addTexture("SpecularMap",  "assets/Textures/Metalic/MetalPanelRectangular001_AO_1K_SPECULAR.jpg",   GN::RGBA,   GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
 }
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {

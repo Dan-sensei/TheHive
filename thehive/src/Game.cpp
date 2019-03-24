@@ -69,6 +69,7 @@ Game::Game()
     world = Singleton<ggDynWorld>::Instance();
 
     soundSys = Singleton<SoundSystem>::Instance();
+    Singleton<AssetManager>::Instance();
     //world->inito();
     //Engine->HideCursor(true);
 }
@@ -80,18 +81,7 @@ Game::~Game(){
 void Game::Init(){
     Engine->createZones(8);
 
-    // BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
-    BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
-    BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
-    BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/PASEO.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/PARQUE.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/TAMESIS.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/END.data");
 
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
@@ -100,13 +90,15 @@ void Game::Init(){
     // 360, 0, 350
     Engine->HideCursor(true);
 
-    uint16_t h = BinaryParser::ReadRespawnNodesData("assets/BinaryFiles/RESPAWN.data");
-    // uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
+    uint16_t h = sF->createHero(glm::vec3(-50,10,-210),-1);
     // uint16_t h = sF->createHero(glm::vec3(451,17,54),-1);
 
-    //for (size_t i = 0; i < 50; i++) {
-    //    sF->createRusher(glm::vec3(0,20,10), 10);
-    //}
+    for (uint16_t i = 0; i < 15; ++i)
+        for (uint16_t j = 0; j < 20; ++j)
+           sF->createSoldier(glm::vec3(-40 + j*2, 10, -205 + i *2), 10);
+
+
+
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
 
@@ -120,6 +112,9 @@ void Game::Init(){
     // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/NavmeshCITY.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,3,0), glm::vec3());
     // Manager->addComponentToEntity(m,gg::STATICMODEL,n);
 
+    glm::vec3 pos = glm::vec3(-50,70,-124);
+
+    Engine->setPosition(luz, pos);
 
     Accumulator = 0;
 
@@ -129,6 +124,7 @@ void Game::Init(){
     Engine2D->InitHUD();
 
     sky.init();
+    Engine->SwitchRasterCulling();
     //Engine2D->prueba();
     // //std::cout << "\n -- INIT -- " << '\n';
 }
@@ -155,17 +151,14 @@ void Game::Update(){
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
-        Director->comprobar();
-        Director->clipingEnemigos();
+        //Director->comprobar();
+        //Director->clipingEnemigos();
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
     }
 
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
-
-    Director->update(DeltaTime);
-
 
     soundSys->update();
     //Director->update(DeltaTime);
@@ -174,11 +167,10 @@ void Game::Update(){
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
-    glm::vec3 pos = playerpos->getPosition();
-    pos.y += 7;
-    Engine->setPosition(luz, pos);
+
+
     // //std::cout << " - BEGIN DRAW" << '\n';
-    Engine->BeginDraw();
+    //Engine->BeginDraw();
 
     // //std::cout << "  - UPDATE ALL" << '\n';
     Manager->UpdateAll();
