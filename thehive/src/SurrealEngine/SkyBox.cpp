@@ -59,8 +59,8 @@ SkyBox::SkyBox()
     faces[3] = ( "assets/skybox/skybox2DN.png" );
     faces[4] = ( "assets/skybox/skybox2FT.png" );
     faces[5] = ( "assets/skybox/skybox2BK.png" );
+    cubemapTexture[1] = loadCubemap(faces);
 
-    std::cout << cubemapTexture[1] << '\n';
     faces[0] = ( "assets/skybox/skybox3RT.png" );
     faces[1] = ( "assets/skybox/skybox3LF.png" );
     faces[2] = ( "assets/skybox/skybox3UP.png" );
