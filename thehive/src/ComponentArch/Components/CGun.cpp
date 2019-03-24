@@ -137,6 +137,7 @@ void CGun::recarga_escopeta(){
         s_recarga->play();
     }
     else{
+        std::cout << "ultima" << '\n';
         s_recarga->setParameter("Lleno",1);
         s_recarga->play();
     }

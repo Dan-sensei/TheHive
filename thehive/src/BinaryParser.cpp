@@ -122,12 +122,30 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         bool HasCollider;
         GG_Read(inStream, HasCollider);
         ZMaterial* Dark;
-        //if(MODEL==2){
-        //     Dark = AssetManager::getMaterial("building");
-        //}else{
-        //     Dark = AssetManager::getMaterial("Default");
-        //}
-        Dark = AssetManager::getMaterial("Default");
+
+        switch(MODEL){
+            case 1: Dark = AssetManager::getMaterial("Metal");
+                    break;
+            case 3: Dark = AssetManager::getMaterial("Metal");
+                    break;
+            case 4: Dark = AssetManager::getMaterial("Grey");
+                    break;
+            case 5: Dark = AssetManager::getMaterial("Grey");
+                    break;
+            case 6: Dark = AssetManager::getMaterial("White");
+                    break;
+            case 7: Dark = AssetManager::getMaterial("Grey");
+                    break;
+            case 8: Dark = AssetManager::getMaterial("Grey");
+                    break;
+            case 13: Dark = AssetManager::getMaterial("Red");
+                    break;
+            case 37: Dark = AssetManager::getMaterial("Grey");
+                    break;
+            case 122: Dark = AssetManager::getMaterial("Tree");
+                    break;
+        }
+        //Dark = AssetManager::getMaterial("Default");
         std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
         CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Dark, Position, Rotation, map_zone, B);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
