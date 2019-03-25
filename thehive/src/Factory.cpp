@@ -19,7 +19,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Hero");
 
     uint16_t hero = Manager->createEntity();
-    CTransform* Transform               = new CTransform(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0));
+    CTransform* Transform               = new CTransform(glm::vec3(Position.x, Position.y, Position.z), glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
 
     ZStaticMesh::setPlayerPtr(&(Transform->Position));
@@ -102,7 +102,7 @@ uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     CDynamicModel* DynamicModel       = new CDynamicModel(moradoDeLos80);
     Manager->addComponentToEntity(DynamicModel, gg::RENDERABLE_3D, Enemy);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Running"));
-    DynamicModel->ToggleAnimation(0, 30);
+    DynamicModel->ToggleAnimation(0, 2);
 
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Hero.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);

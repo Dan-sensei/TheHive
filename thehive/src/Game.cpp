@@ -116,7 +116,7 @@ void Game::Init(){
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
 
-    //sF->createSoldier(playerpos->getPosition(), 10);
+    sF->createSoldier(playerpos->getPosition(), 10);
 
     // uint16_t n = Manager->createEntity();
     // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/NavmeshCITY.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,3,0), glm::vec3());
@@ -177,7 +177,7 @@ void Game::Update(){
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
     glm::vec3 pos = playerpos->getPosition();
-    pos.y += 7;
+    pos.y = 100;
     Engine->setPosition(luz, pos);
     // //std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();
