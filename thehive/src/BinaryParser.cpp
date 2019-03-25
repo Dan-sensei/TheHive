@@ -145,14 +145,11 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
                     break;
             case 122: Dark = _AssetManager->getMaterial("Tree");
                     break;
-
-        // if(MODEL==2){
-        //     Dark = AssetManager::getMaterial("building");
-        // }else{
-        //     Dark = AssetManager::getMaterial("Default");
-
+            default: Dark = _AssetManager->getMaterial("Default");
+                    break;
         }
         //Dark = AssetManager::getMaterial("Default");
+        
         std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
         CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Dark, Position, Rotation, map_zone, B);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
