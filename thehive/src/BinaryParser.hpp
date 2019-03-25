@@ -10,6 +10,7 @@
 #include "GameAI/AIDirector.hpp"
 #include "SurrealEngine/NatureGenerator.hpp"
 #include <SurrealEngine/BoundingBox.hpp>
+#include "Util.hpp"
 
 class BinaryParser{
     public:

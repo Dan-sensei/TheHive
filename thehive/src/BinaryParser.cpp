@@ -131,7 +131,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
                     break;
             case 4: Dark = _AssetManager->getMaterial("Grey");
                     break;
-            case 5: Dark = _AssetManager->getMaterial("Grey");
+            case 5: Dark = _AssetManager->getMaterial("Farola");
                     break;
             case 6: Dark = _AssetManager->getMaterial("White");
                     break;
@@ -139,17 +139,26 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
                     break;
             case 8: Dark = _AssetManager->getMaterial("Grey");
                     break;
-            case 13: Dark = _AssetManager->getMaterial("Red");
+            case 13: int rand;
+                    rand = gg::genIntRandom(0,2);
+                    if(rand == 0)
+                    Dark = _AssetManager->getMaterial("CarRed");
+                    if(rand == 1)
+                    Dark = _AssetManager->getMaterial("CarGreen");
+                    if(rand == 2)
+                    Dark = _AssetManager->getMaterial("CarYellow");
                     break;
             case 37: Dark = _AssetManager->getMaterial("Grey");
                     break;
             case 122: Dark = _AssetManager->getMaterial("Tree");
                     break;
+            case 144: Dark = _AssetManager->getMaterial("Ground");
+                    break;
             default: Dark = _AssetManager->getMaterial("Default");
                     break;
         }
         //Dark = AssetManager::getMaterial("Default");
-        
+
         std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
         CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Dark, Position, Rotation, map_zone, B);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
