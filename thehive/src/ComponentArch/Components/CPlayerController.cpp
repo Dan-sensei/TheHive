@@ -132,6 +132,8 @@ void CPlayerController::Update(){
 void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !cRigidBody)  return;
+    auto pos=cTransform->getPosition();
+    //std::cout << "Pos jugador: (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
     //hab.update();
     // -----------------------------------------------------------------------------
     // Echarle un vistazo!
@@ -208,7 +210,7 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_M)){
         //hab->ToggleSkill(2);
         //devuelve ide de un objeto
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), cTransform->getPosition(),1000);
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), camera->getTargetPosition(),1000);
         int id=world->getIDFromRaycast();
         ////std::cout << "id:" <<id<< '\n';
         if(id!=-1){
@@ -287,8 +289,8 @@ void CPlayerController::FixedUpdate(){
         // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
         glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
         ////std::cout << actualGrenadeState << '\n';
-        if(pulsacion_granada==false)
-            (this->*mapFuncGrenades[actualGrenadeState])();
+        //if(pulsacion_granada==false)
+        //    (this->*mapFuncGrenades[actualGrenadeState])();
     }
     else{
         pulsacion_granada=false;

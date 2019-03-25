@@ -220,26 +220,35 @@ int Motor2D::InitAIDebug(int id){
         case gg::TRACKER:
             break;
     }
-    addText(45, 10,"Debug Enemigo");
+    //addText(45, 10,"Debug Enemigo");
 
-    addText(10, 10,"Tipo de enemigo:"  +tipo , glm::vec4(1,0,0,1));
+    addText(10, 10,"Tipo de enemigo "  +tipo , glm::vec4(1,0,0,1));
 
-    addText(10,15,"Vida:"                              +std::to_string(Vida->getVida()                      ),glm::vec4(1,0,0,1));
+    addText(10,15,"Vida "                              +std::to_string(Vida->getVida()                      ),glm::vec4(1,0,0,1));
 
-    addText(10,20,"Estoy viendo al jugador:"           +BoolToString(AIEnem->playerSeeing                   ),glm::vec4(1,0,0,1));
-    addText(10,25,"He visto al jugador:"               +BoolToString(AIEnem->playerSeen                     ),glm::vec4(1,0,0,1));
-    addText(10,30,"Estoy afectado por ultrasonido:"    +BoolToString(AIEnem->ultrasonido                    ),glm::vec4(1,0,0,1));
-    addText(10,35,"Estoy afectado por senyuelo:"       +BoolToString(AIEnem->senyuelo                       ),glm::vec4(1,0,0,1));
-    addText(10,40,"Jugador a rango:"                   +BoolToString(AIEnem->playerOnRange                  ),glm::vec4(1,0,0,1));
-    addText(10,45,"Puedo atacar:"                      +BoolToString(AIEnem->getImAttacking()               ),glm::vec4(1,0,0,1));
-    addText(10,50,"Acaba de morir un aliado cercano:"  +BoolToString(AIEnem->getCloserAllyIsDead()          ),glm::vec4(1,0,0,1));
-    addText(10,55,"Me esta atacando el jugador:"       +BoolToString(AIEnem->getPlayerIsAttacking()         ),glm::vec4(1,0,0,1));
+    addText(10,20,"Estoy viendo al jugador "           +BoolToString(AIEnem->playerSeeing                   ),glm::vec4(1,0,0,1));
+    addText(10,25,"He visto al jugador "               +BoolToString(AIEnem->playerSeen                     ),glm::vec4(1,0,0,1));
+    addText(10,30,"Estoy afectado por ultrasonido "    +BoolToString(AIEnem->ultrasonido                    ),glm::vec4(1,0,0,1));
+    addText(10,35,"Estoy afectado por senyuelo "       +BoolToString(AIEnem->senyuelo                       ),glm::vec4(1,0,0,1));
+    addText(10,40,"Jugador a rango "                   +BoolToString(AIEnem->playerOnRange                  ),glm::vec4(1,0,0,1));
+    addText(10,45,"Puedo atacar "                      +BoolToString(AIEnem->getImAttacking()               ),glm::vec4(1,0,0,1));
+    addText(10,50,"Acaba de morir un aliado cercano "  +BoolToString(AIEnem->getCloserAllyIsDead()          ),glm::vec4(1,0,0,1));
+    //addText(10,55,"Me esta atacando el jugador "       +BoolToString(AIEnem->getPlayerIsAttacking()         ),glm::vec4(1,0,0,1));
 
-    addText(10,60,"Rango de vision:"                   +std::to_string(AIEnem->Vrange                       ),glm::vec4(1,0,0,1));
-    addText(10,65,"Rango de ataque:"                   +std::to_string(AIEnem->Arange                       ),glm::vec4(1,0,0,1));
-    addText(10,70,"Enfado:"                            +std::to_string(AIEnem->getRage()                    ),glm::vec4(1,0,0,1));
 
-    addText(10,75,"Tarea actual:"                      +std::to_string(AIEnem->arbol->taskactual()          ),glm::vec4(1,0,0,1));
+
+    addButton(60,20,20,10,VISTO,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Player visto");
+    addButton(60,30,20,10,NOVISTO,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Player no visto");
+    addButton(60,40,20,10,VIENDO,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Player viendo");
+    addButton(60,50,20,10,ULTRASI,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Ultrasound on");
+    addButton(60,60,20,10,ULTRANO,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Ultrasound off");
+
+
+    addText(10,60,"Rango de vision "                   +std::to_string(AIEnem->Vrange                       ),glm::vec4(1,0,0,1));
+    addText(10,65,"Rango de ataque "                   +std::to_string(AIEnem->Arange                       ),glm::vec4(1,0,0,1));
+    addText(10,70,"Enfado "                            +std::to_string(AIEnem->getRage()                    ),glm::vec4(1,0,0,1));
+
+    //addText(10,75,"Tarea actual:"                      +std::to_string(AIEnem->arbol->taskactual()          ),glm::vec4(1,0,0,1));
 
 
 

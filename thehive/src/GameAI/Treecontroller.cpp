@@ -81,6 +81,7 @@ void Treecontroller::arboltracker(){
     BT= new BehaviorTree(addAction(GIRAR));
 }
 void Treecontroller::arbolswarm(){
+    /*
     Sequence* sec6= createSequence();//cargar dash random+
     sec6->addChild(addAction(ON_RANGE));
     sec6->addChild(addAction(KAMIKACE));
@@ -125,10 +126,12 @@ void Treecontroller::arbolswarm(){
     sel2->addChild(sec1);
     sel2->addChild(addAction(FOLLOWLEADER));
 
-
-
-
     BT= new BehaviorTree(sel2);
+*/
+
+
+
+    BT= new BehaviorTree(addAction(IAMLEADER));
 }
 
 void Treecontroller::arbolrusher(){

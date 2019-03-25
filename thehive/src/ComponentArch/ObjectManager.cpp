@@ -100,6 +100,7 @@ int ObjectManager::returnIDFromRigid(btRigidBody* esto){
         if(esto!=nullptr&&cRigidBody->getBody()!=nullptr&&cRigidBody->getBody()==esto){
             ////std::cout << "si joder" << '\n';
             ////std::cout << found->first << '\n';
+            //std::cout << "encontrado" << '\n';
             return found->first;
         }
         found++;

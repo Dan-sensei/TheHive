@@ -24,6 +24,11 @@ enum EnumButtonType{
     LESSMUSIC,
     MOREEFFECT,
     LESSEFFECT,
+    VISTO,
+    NOVISTO,
+    VIENDO,
+    ULTRASI,
+    ULTRANO,
     Butn
 };
 

@@ -173,6 +173,7 @@ void CAIEnem::FixedUpdate(){
             //CRigidBody* body = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
             //glm::vec3 posmala        = PlayerBody->getBodyPosition();
 
+            //glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), camera->getTargetPosition(),1000);
 
             glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTF_POS,PlayerBody->getBodyPosition(),1000);
             int id=world->getIDFromRaycast();

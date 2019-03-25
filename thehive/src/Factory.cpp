@@ -190,8 +190,8 @@ uint16_t Factory::createSingleSwarm(const glm::vec3 &Position,const float &healt
     CRigidBody* RigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/bullet.bullet",  Position.x,Position.y,Position.z, 1,1,1, 5, 0,0,0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
-    CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
-    Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
+    //CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
+    //Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SWARM,30,Position,false);
     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
@@ -205,14 +205,14 @@ uint16_t Factory::createSingleSwarm(const glm::vec3 &Position,const float &healt
     //    return RigidBody;
     return Enemy;
 }
-uint16_t Factory::createSwarm( const glm::vec3 &Position,const float &health) {
+uint16_t Factory::createSwarm( const glm::vec3 &Position,const float &health,float mindist,float fuerzasep,float fuerzacoh,float fuerzaalign,float numsawrm) {
     uint16_t holyBomb = createSingleSwarm(Position,health);
 
 
 
-    CFlock* cFlock = new CFlock(true,holyBomb);
-    float rango=15;
-    for (size_t i = 0; i < 15; i++) {
+    CFlock* cFlock = new CFlock(true,mindist,fuerzasep,fuerzacoh,fuerzaalign,holyBomb);
+    float rango=5;
+    for (size_t i = 0; i < numsawrm; i++) {
         auto deltapos = glm::vec3(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
         cFlock->addNewFlocked(createSingleSwarm(Position+deltapos,health));//4
     }

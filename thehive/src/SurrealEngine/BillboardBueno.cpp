@@ -73,8 +73,8 @@ BillboardBueno::BillboardBueno(float x,float y,float z,const std::string &Name)
         textureID = Manager->getTexture(Name,   GN::RGBA,0);
 
         //activamos transparencias
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable( GL_BLEND );
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glEnable( GL_BLEND );
 
     	//habilitamos in
 

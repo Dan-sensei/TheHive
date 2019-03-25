@@ -66,38 +66,7 @@ void ZStaticMesh::beginDraw(){
         VOX.BRB,
         VOX.BRF
     };
-    //frustrum
-    glm::vec3 dircam(viewMatrix[0][2], viewMatrix[1][2], viewMatrix[2][2]);
-    dircam.y=0;
-    dircam       *=-1;
-    dircam       = glm::normalize(dircam);
 
-    glm::vec3 dirobj;
-    glm::vec3 obj1;
-    glm::vec3 campos=*CameraPosition;
-
-
-    bool  dib=false;
-    int i=0;
-    for (; i < 4; i++) {
-        if(vectores[i]==glm::vec3()){
-            dib=true;
-            break;
-        }
-        dirobj=ObjectPos-campos+vectores[i];
-        dirobj.y=0;
-        dirobj       = glm::normalize(dirobj);
-        float sol         = glm::dot(dirobj,dircam);
-        if(GRADOVISION<sol){
-            dib=true;
-            break;
-        }
-    }
-
-    if(!dib){
-        return;
-    }
-    //terminar frustrum
 
     Shader* sh = zmat->getShader();
     zmat->Bind();

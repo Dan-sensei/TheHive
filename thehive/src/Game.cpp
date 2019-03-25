@@ -22,6 +22,8 @@
 
 #include <GameEngine/Motor2D.hpp>
 
+#include <SurrealEngine/BillboardBueno.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
+
 
 
 #define MOVEMENT_SPEED 1.f
@@ -101,8 +103,54 @@ void Game::Init(){
     // 360, 0, 350
     Engine->HideCursor(true);
 
-    uint16_t h = BinaryParser::ReadRespawnNodesData("assets/BinaryFiles/RESPAWN.data");
-    // uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
+    float fuerzaalign=0.1;//no se usa
+    float mindist,fuerzasep,fuerzacoh,numsawrm;//15
+    //uint16_t h = BinaryParser::ReadRespawnNodesData("assets/BinaryFiles/RESPAWN.data");
+    uint16_t h = sF->createHero(glm::vec3(107.694,3.885,-40.4267),-1);
+    //mindist=5;//minima distancia para aplica separacion 0.8 buena
+    //fuerzasep=20;//10
+    //fuerzacoh=10;//10
+    //numsawrm=15;//15
+    sF->createSwarm(glm::vec3(108.141,3.885,-62.4015),100,mindist, fuerzasep, fuerzacoh, fuerzaalign,numsawrm);
+    sF->createSoldier(glm::vec3(108.141,3.885,-62.4015),100);
+    //CFlock* cFlock = new CFlock(false,mindist, fuerzasep, fuerzacoh, fuerzaalign);
+    //Manager->addComponentToEntity(cFlock, gg::FLOCK, me);
+
+
+    //mindist=20;//minima distancia para aplica separacion 0.8 buena
+    //fuerzasep=20;//10
+    //fuerzacoh=10;//10
+    //sF->createSwarm(glm::vec3(106.698,3.885,-30.4306),100,mindist, fuerzasep, fuerzacoh, fuerzaalign,numsawrm);
+    //mindist=20;//minima distancia para aplica separacion 0.8 buena
+    //fuerzasep=10;//10
+    //fuerzacoh=20;//10
+    //sF->createSwarm(glm::vec3(116.484,3.885,-24.2306),100,mindist, fuerzasep, fuerzacoh, fuerzaalign,numsawrm);
+    //mindist=5;//minima distancia para aplica separacion 0.8 buena
+    //fuerzasep=20;//10
+    //fuerzacoh=10;//10
+    //numsawrm=5;//15
+    //sF->createSwarm(glm::vec3(120.253,3.885,-49.034),100,mindist, fuerzasep, fuerzacoh, fuerzaalign,numsawrm);
+    //mindist=20;//minima distancia para aplica separacion 0.8 buena
+    //fuerzasep=20;//10
+    //fuerzacoh=10;//10
+    //sF->createSwarm(glm::vec3(120.499,3.885,-39.8585),100,mindist, fuerzasep, fuerzacoh, fuerzaalign,numsawrm);
+    //mindist=20;//minima distancia para aplica separacion 0.8 buena
+    //fuerzasep=10;//10
+    //fuerzacoh=20;//10
+    //sF->createSwarm(glm::vec3(124.812,3.885,-56.4019),100,mindist, fuerzasep, fuerzacoh, fuerzaalign,numsawrm);
+
+//1--(108.141,3.885,-62.4015)
+//2--(106.698,3.885,-30.4306)
+//3--(116.484,3.885,-24.2306)
+//4--(127.983,3.885,-37.4344)
+//5-- (120.499,3.885,-39.8585)
+//6--(124.812,3.885,-56.4019)
+
+
+    //(108.041,3.885,-54.3579)
+    //uint16_t Factory::createSwarm( const glm::vec3 &Position,const float &health) {
+
+
     // uint16_t h = sF->createHero(glm::vec3(451,17,54),-1);
 
     //for (size_t i = 0; i < 50; i++) {
@@ -166,7 +214,8 @@ void Game::Update(){
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
 
-    Director->update(DeltaTime);
+    //Director->update(DeltaTime);
+
 
 
     soundSys->update();
@@ -193,7 +242,8 @@ void Game::Update(){
     Engine->draw();
 
     Engine->DisplayFPS();
-
+    BillboardBueno bill(107.694,3.885,-40.4267,"assets/HUD/ojetecalor.png");
+    bill.Draw();
     sky.Draw();
     Engine2D->DisplayHUD();
 

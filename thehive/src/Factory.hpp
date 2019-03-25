@@ -29,7 +29,7 @@ class Factory{
         //uint16_t createSingleSwarm(const glm::vec3 &Position,const float &health)
 
         //CRigidBody* createSingleSwarm( const glm::vec3 &Position);
-        uint16_t createSwarm( const glm::vec3 &Position,const float &health);
+        uint16_t createSwarm( const glm::vec3 &Position,const float &health,float _mindist,float _fuerzasep,float _fuerzacoh,float _fuerzaalign,float numsawrm);
 
         uint16_t createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::vec3 &Rotation, ZMaterial *Material, const uint8_t &map_zone);
 

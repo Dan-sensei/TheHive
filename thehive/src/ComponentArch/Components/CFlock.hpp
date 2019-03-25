@@ -6,12 +6,14 @@
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <Util.hpp>
 #include "CRigidBody.hpp"
+#include <SurrealEngine/BillboardBueno.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
 
 class CFlock : public IComponent {
     public:
         CFlock();
-        CFlock(bool lider,uint16_t id=-1);
+
+        CFlock(bool lider,float _mindist,float _fuerzasep,float _fuerzacoh,float _fuerzaalign,uint16_t id=-1);
         CFlock(const CFlock &orig) = delete;
         virtual ~CFlock();
 
@@ -43,6 +45,7 @@ class CFlock : public IComponent {
         std::list  <CRigidBody*> Flocked;
 
     private:
+        BillboardBueno bill;
         int leader_id;
         bool leader;//si es el lider
         float mindist;//minima distancia para aplica separacion

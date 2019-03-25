@@ -44,7 +44,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 */
 //============================================================================================
 
-IAState::IAState(int _id):cont(),id(_id){
+IAState::IAState(int _id):cont(_id),id(_id){
     Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     //Engine->Starto();
@@ -53,6 +53,8 @@ IAState::IAState(int _id):cont(),id(_id){
     world = Singleton<ggDynWorld>::Instance();
     //world->inito();
     //Engine->HideCursor(false);
+    Engine->HideCursor(false);
+    
 }
 
 IAState::~IAState(){

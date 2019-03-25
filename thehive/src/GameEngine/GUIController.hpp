@@ -16,6 +16,7 @@ class Motor2D;
 
 class GUIController{
     public:
+        GUIController(int _id);
         GUIController();
         void update();
         void setposmax(int p);
@@ -62,6 +63,13 @@ void moreEffect();
 void lessEffect();
 void initOptions();
 
+void visto();
+void novisto();
+void viendo();
+void ultrasi();
+void ultrano();
+
+        int id;
 
         SurrealEngine* Engine;
         Motor2D* Engine2D;

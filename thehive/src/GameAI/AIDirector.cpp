@@ -46,12 +46,6 @@ void AIDirector::clean(){
 
 void AIDirector::init(){
 
-    glm::vec3 uno(0.0721286,0,0.997395);
-    glm::vec3 dos(0.36043,-0,0.932786);
-    uno=glm::normalize(uno);
-    dos=glm::normalize(dos);
-    float res=glm::dot(uno,dos);
-    std::cout << "res:" <<res<< '\n';
 
 
 
@@ -356,19 +350,7 @@ void AIDirector::removePos(AINode* nodo){
 
 }
 void AIDirector::invocarswarm(AINode* nodo){
-    //std::cout << "nodo" <<nodo->getPos().x<<";"<<nodo->getPos().y<<";"<<nodo->getPos().z<< '\n';
 
-     int id2=fac->createSwarm(nodo->getPos(), 2000);
-     //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-     CFlock* enemyflock=static_cast<CFlock*>(Manager->getComponent(gg::FLOCK, id2));
-     auto arr=enemyflock->getFlocked();
-     auto it=arr.begin();
-     while(it!=arr.end()){
-         int id3=(*it)->getEntityID();
-         CTransform* enemypos12=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id3));
-         enemigos.push_back(enemypos12);//anayadir todo el flock
-         it++;
-     }
 
 }
 void AIDirector::invocartank(AINode* nodo){

@@ -2,22 +2,20 @@
 //#include "CRigidBody.hpp"
 //#include <iostream>
 
-CFlock::CFlock(bool lider,uint16_t id):Manager(nullptr),leader(lider)
+CFlock::CFlock(bool lider,float _mindist,float _fuerzasep,float _fuerzacoh,float _fuerzaalign,uint16_t id)
+:Manager(nullptr),leader(lider), mindist(_mindist), fuerzasep(_fuerzasep), fuerzacoh(_fuerzacoh), fuerzaalign(_fuerzaalign),bill(0,0,0,"assets/HUD/Botonsolo.png")
 {
     Manager= Singleton<ObjectManager>::Instance();
     //leader=false;
-    mindist=4;//minima distancia para aplica separacion 0.8 buena
-    //mindist=0.8;//minima distancia para aplica separacion 0.8 buena
-    fuerzasep=10;//fuerza separacion
-    fuerzacoh=10;//fuerza cohesion
-    fuerzaalign=0.1;//fuerza cohesion
+    //BillboardBueno::BillboardBueno(0,0,0,"assets/HUD/Botonsolo.png");
+
     if(lider){
         addFlocked(id);
         leader_id=id;
     }
 
 }
-CFlock::CFlock()
+CFlock::CFlock():bill(0,0,0,"assets/HUD/Botonsolo.png")
 {
 }
 
@@ -168,6 +166,11 @@ void CFlock::FixedUpdate(){
             Manager->removeComponentFromEntity(gg::FLOCK,getEntityID() );
         }
         else{
+            //CRigidBody* body = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,leader_id));
+            //auto pos=body->getBodyPosition();
+            //std::cout << "Pos lider: (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
+            //bill.setPos(pos.x,pos.y+10,pos.z);
+            //bill.Draw();
             //Separation
             FastSeparation();
             //El resto
@@ -178,7 +181,7 @@ void CFlock::FixedUpdate(){
 }
 
 void CFlock::addNewFlocked(uint16_t me){
-    CFlock* cFlock = new CFlock(false);
+    CFlock* cFlock = new CFlock(false,mindist, fuerzasep, fuerzacoh, fuerzaalign);
     Manager->addComponentToEntity(cFlock, gg::FLOCK, me);
     cFlock->setLeader(leader_id);
     //setlista
@@ -237,7 +240,7 @@ void CFlock::FastAlignementAndCohesion(){
         //alignement
         float size = (Flocked.size()-1);
         glm::vec3 mediavel_real=((mediavel-body->getVelocity())/size);
-        body->applyCentralForce(mediavel_real);
+        //body->applyCentralForce(mediavel_real);
         //cohesion
         glm::vec3 mediapos_real=((mediapos-body->getBodyPosition())/size);
         glm::vec3 dir  = mediapos_real-body->getBodyPosition();

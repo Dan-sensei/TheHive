@@ -4,8 +4,11 @@
 #include <OptionState.hpp>
 #include <GameEngine/Motor2D.hpp>
 //#include <SMaterial>
-GUIController::GUIController()
-:Engine(nullptr)
+GUIController::GUIController(int _id):id(_id),Engine(nullptr)
+{
+  Init();
+}
+GUIController::GUIController():Engine(nullptr)
 {
   Init();
 }
@@ -52,6 +55,12 @@ void GUIController::Init(){
     VectorAcciones[MOREEFFECT] = &GUIController::moreEffect;
     VectorAcciones[LESSEFFECT] = &GUIController::lessEffect;
     VectorAcciones[GOINITOPTIONS] = &GUIController::initOptions;
+
+    VectorAcciones[VISTO] = &GUIController::visto;
+    VectorAcciones[NOVISTO] = &GUIController::novisto;
+    VectorAcciones[VIENDO] = &GUIController::viendo;
+    VectorAcciones[ULTRASI] = &GUIController::ultrasi;
+    VectorAcciones[ULTRANO] = &GUIController::ultrano;
 
 
 }
@@ -104,6 +113,57 @@ void GUIController::update(){
      }
 }
 //but0
+void GUIController::visto(){
+    auto M = Singleton<ObjectManager>::Instance();
+    auto enem=static_cast<CAIEnem*>(M->getComponent(gg::AIENEM, id));
+    auto hero=static_cast<CTransform*>(M->getComponent(gg::TRANSFORM, M->getHeroID()));
+
+
+    enem->playerPos=hero->getPosition();
+    enem->playerSeen=true;
+    enem->resetMyOwnTree();
+
+}
+void GUIController::novisto(){
+    auto M = Singleton<ObjectManager>::Instance();
+
+    auto enem=static_cast<CAIEnem*>(M->getComponent(gg::AIENEM, id));
+
+    enem->playerSeen=false;
+    enem->resetMyOwnTree();
+
+}
+void GUIController::viendo(){
+    auto M = Singleton<ObjectManager>::Instance();
+
+    auto enem=static_cast<CAIEnem*>(M->getComponent(gg::AIENEM, id));
+    auto hero=static_cast<CTransform*>(M->getComponent(gg::TRANSFORM, M->getHeroID()));
+
+    enem->playerPos=hero->getPosition();
+    enem->playerSeen=true;
+    enem->playerSeeing=true;
+    enem->resetMyOwnTree();
+
+}
+void GUIController::ultrasi(){
+    auto M = Singleton<ObjectManager>::Instance();
+
+    auto enem=static_cast<CAIEnem*>(M->getComponent(gg::AIENEM, id));
+
+
+    enem->ultrasonido=true;
+    enem->resetMyOwnTree();
+}
+void GUIController::ultrano(){
+    auto M = Singleton<ObjectManager>::Instance();
+
+    auto enem=static_cast<CAIEnem*>(M->getComponent(gg::AIENEM, id));
+
+    enem->ultrasonido=false;
+    enem->resetMyOwnTree();
+
+}
+
 void GUIController::gotoPlay(){
     dif=1;
     Engine2D->InitMenu2();
