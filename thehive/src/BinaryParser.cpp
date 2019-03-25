@@ -1,4 +1,4 @@
-#include "BinaryParser.hpp"
+ #include "BinaryParser.hpp"
 #include <fstream>
 #include <experimental/filesystem>
 #include <ComponentArch/Components/ComponentHeaders.hpp>
@@ -123,27 +123,27 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         GG_Read(inStream, HasCollider);
         ZMaterial* Dark;
 
-
+        AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
         switch(MODEL){
-            case 1: Dark = AssetManager::getMaterial("Metal");
+            case 1: Dark = _AssetManager->getMaterial("Metal");
                     break;
-            case 3: Dark = AssetManager::getMaterial("Metal");
+            case 3: Dark = _AssetManager->getMaterial("Metal");
                     break;
-            case 4: Dark = AssetManager::getMaterial("Grey");
+            case 4: Dark = _AssetManager->getMaterial("Grey");
                     break;
-            case 5: Dark = AssetManager::getMaterial("Grey");
+            case 5: Dark = _AssetManager->getMaterial("Grey");
                     break;
-            case 6: Dark = AssetManager::getMaterial("White");
+            case 6: Dark = _AssetManager->getMaterial("White");
                     break;
-            case 7: Dark = AssetManager::getMaterial("Grey");
+            case 7: Dark = _AssetManager->getMaterial("Grey");
                     break;
-            case 8: Dark = AssetManager::getMaterial("Grey");
+            case 8: Dark = _AssetManager->getMaterial("Grey");
                     break;
-            case 13: Dark = AssetManager::getMaterial("Red");
+            case 13: Dark = _AssetManager->getMaterial("Red");
                     break;
-            case 37: Dark = AssetManager::getMaterial("Grey");
+            case 37: Dark = _AssetManager->getMaterial("Grey");
                     break;
-            case 122: Dark = AssetManager::getMaterial("Tree");
+            case 122: Dark = _AssetManager->getMaterial("Tree");
                     break;
 
         // if(MODEL==2){
@@ -404,7 +404,7 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
             }
 
             auto Manager = Singleton<ObjectManager>::Instance();
-            ZMaterial* Dark = AssetManager::getMaterial("Morado");
+            ZMaterial* Dark = Singleton<AssetManager>::Instance()->getMaterial("Morado");
             uint16_t NewEntity = Manager->createEntity();
 
             std::string str = "assets/BinaryFiles/BinaryModels/"+std::to_string(obj)+".modelgg";

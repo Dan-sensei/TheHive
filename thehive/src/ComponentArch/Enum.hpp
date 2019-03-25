@@ -20,6 +20,7 @@ namespace gg{
         AGENT,
         TRANSFORM,
         STATICMODEL,
+        DYNAMICMODEL,
         SIMPLESTATICRIGIDBODY,
         //HEALTH,
         //RESPECT,

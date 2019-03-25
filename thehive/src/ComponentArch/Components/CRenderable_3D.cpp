@@ -18,8 +18,6 @@ CRenderable_3D::~CRenderable_3D() {
     Surreal->deleteLeafNode(_3DModel);
 }
 
-
-
 void CRenderable_3D::Init(){
 
     MHandler_SETPTRS();

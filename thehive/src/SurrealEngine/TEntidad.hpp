@@ -19,7 +19,7 @@
 class TEntidad {
     friend class SurrealEngine;
     public:
-        virtual ~TEntidad()         = 0;
+        virtual ~TEntidad();
         virtual void beginDraw()    = 0;
         virtual void endDraw()      = 0;
 

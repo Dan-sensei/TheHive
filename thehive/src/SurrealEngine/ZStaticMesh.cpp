@@ -23,7 +23,7 @@ ZStaticMesh::ZStaticMesh()
 
 bool ZStaticMesh::load(const std::string& Name, const std::string& BoundingBoxPath){
     MeshLODs.reserve(2);
-    MeshLODs.push_back(AssetManager::getMeshData(Name));
+    MeshLODs.push_back(Singleton<AssetManager>::Instance()->getMeshData(Name));
     if(!BoundingBoxPath.empty())
         BinaryParser::ReadBoundingBox(BoundingBoxPath, &VOX);
 
@@ -34,7 +34,7 @@ void ZStaticMesh::addLOD(std::string Name){
     //Check if file exists
     struct stat buffer;
     if(stat (Name.c_str(), &buffer) == 0) {
-        MeshLODs.push_back(AssetManager::getMeshData(Name));
+        MeshLODs.push_back(Singleton<AssetManager>::Instance()->getMeshData(Name));
     }
 }
 

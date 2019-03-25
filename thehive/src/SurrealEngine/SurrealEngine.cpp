@@ -109,6 +109,14 @@ TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const 
     return Malla;
 }
 
+TNodo* SurrealEngine::CreateDynamicMesh(const glm::vec3& Position, const glm::vec3& Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+    ZDynamicMesh* M = new ZDynamicMesh();
+
+    TNodo* Malla = new TNodo(bindTransform(Position, Rotation, map_zone), M);
+
+    return Malla;
+}
+
 TNodo* SurrealEngine::bindTransform(const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone){
     TTransform* Rotate = new TTransform();
     TTransform* Translate = new TTransform();
@@ -127,6 +135,13 @@ TNodo* SurrealEngine::bindTransform(const glm::vec3& pos, const glm::vec3& rot, 
 
 bool SurrealEngine::bindMaterialToMesh(TNodo *_mesh, ZMaterial* Material){
     ZStaticMesh*    O   = static_cast<ZStaticMesh*>(_mesh->getEntidad());
+	O->assignMaterial(Material);
+
+    return true;
+}
+
+bool SurrealEngine::bindMaterialToDynamicMesh(TNodo *_mesh, ZMaterial* Material){
+    ZDynamicMesh*    O   = static_cast<ZDynamicMesh*>(_mesh->getEntidad());
 	O->assignMaterial(Material);
 
     return true;

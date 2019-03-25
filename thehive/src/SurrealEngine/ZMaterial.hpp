@@ -20,7 +20,7 @@ class ZMaterial{
         void Bind();
         void clear();
 
-        Shader* getShader(){ return shader; }
+        inline Shader* getShader(){ return shader; };
 
     private:
         std::vector<std::pair<int, unsigned int>> Textures;

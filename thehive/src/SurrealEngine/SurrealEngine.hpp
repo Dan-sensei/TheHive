@@ -13,6 +13,7 @@
 #include "TCamara.hpp"
 #include "Shader.hpp"
 #include "ZStaticMesh.hpp"
+#include "ZDynamicMesh.hpp"
 #include "ZMaterial.hpp"
 #include "AssetManager.hpp"
 #include <SurrealEngine/KEYCODES.hpp>
@@ -33,6 +34,7 @@ class SurrealEngine {
         TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
         TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        TNodo* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::vec3& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
 
         // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
         void createZones(uint8_t NumberOfZones);
@@ -40,6 +42,7 @@ class SurrealEngine {
         void deleteLeafNode(TNodo *node);
 
         bool bindMaterialToMesh(TNodo*,ZMaterial*);
+        bool bindMaterialToDynamicMesh(TNodo*,ZMaterial*);
 
         void DisplayFPS();
 

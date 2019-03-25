@@ -6,7 +6,7 @@
 #include <string>
 
 class ZMeshData{
-
+friend class ZAnimationData;
     public:
         ZMeshData();
         ZMeshData(const ZMeshData &orig);
@@ -19,7 +19,9 @@ class ZMeshData{
         unsigned int VAO;
     private:
         unsigned int IndexSize;
+        unsigned int IndexBuffer;
         std::vector<unsigned int> VBOs;
+
 
         void addVertexBuffer(std::vector<float>& data, unsigned int DataLength);
 };

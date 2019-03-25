@@ -96,7 +96,7 @@ void Game::Init(){
 
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
-    luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
+    luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
     // Pos init del heroe normal
     // 360, 0, 350
     Engine->HideCursor(true);
@@ -106,7 +106,6 @@ void Game::Init(){
     // uint16_t h = sF->createHero(glm::vec3(451,17,54),-1);
 
     //for (size_t i = 0; i < 50; i++) {
-    //    sF->createRusher(glm::vec3(0,20,10), 10);
     //}
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
@@ -116,6 +115,8 @@ void Game::Init(){
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
+
+    //sF->createSoldier(playerpos->getPosition(), 10);
 
     // uint16_t n = Manager->createEntity();
     // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/NavmeshCITY.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,3,0), glm::vec3());
@@ -156,8 +157,8 @@ void Game::Update(){
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
-        Director->comprobar();
-        Director->clipingEnemigos();
+        //Director->comprobar();
+        //Director->clipingEnemigos();
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
     }

@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 Debug::Debug(){
-    LineShader = AssetManager::getShader("Lines");
+    LineShader = Singleton<AssetManager>::Instance()->getShader("Lines");
     LineShader->Bind();
     ColorID = LineShader->getUniformLocation("Color");
     MVP_ID = LineShader->getUniformLocation("MVP");
@@ -46,7 +46,7 @@ Debug::Debug(){
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glBindVertexArray(0);
 
-    AssetManager::getShader("Default")->Bind();
+    Singleton<AssetManager>::Instance()->getShader("Default")->Bind();
 }
 
 
@@ -78,7 +78,7 @@ void Debug::DroLine(const glm::vec3 &Init, const glm::vec3 &End, const gg::Color
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    AssetManager::getShader("Default")->Bind();
+    Singleton<AssetManager>::Instance()->getShader("Default")->Bind();
 
 }
 //reiniciar el log
