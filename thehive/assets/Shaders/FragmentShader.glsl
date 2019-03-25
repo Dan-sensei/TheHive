@@ -21,10 +21,6 @@ in vec3 VertexPosT;
 void main() {
 
     vec4 color = texture(DiffuseMap,UV);
-    if(color.a<0.6){
-        discard;
-    }
-
     // Light emission properties
     // You probably want to put them as uniforms
     vec3 LightColor = vec3(255,255,255);
@@ -52,6 +48,6 @@ void main() {
         // Diffuse : "color" of the object
         MaterialDiffuseColor * LightColor * LightPower * cosTheta / (dist*2) +
         // Specular : reflective highlight, like a mirror
-        MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (dist*dist),1);
+        MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (dist*dist), color.a);
 
 };

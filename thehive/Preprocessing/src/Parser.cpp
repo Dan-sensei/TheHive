@@ -28,5 +28,8 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_Model("../assets/Models/flor.obj",                        "flor");
     ModelParser::generateBinaryGG_Model("../assets/Models/nature1.obj",                     "nature1");
 
+    ModelParser::generateBinaryGG_Model("../assets/Models/NearPlane.obj",                    "NearPlane");
+    ModelParser::generateBinaryGG_Model("../assets/Models/FarPlane.obj",                     "FarPlane");
+
     return 0;
 }

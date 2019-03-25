@@ -8,9 +8,11 @@
 #include <SurrealEngine/SurrealEngine.hpp>
 #include <SurrealEngine/TNodo.hpp>
 #include <Singleton.hpp>
+#include <ComponentArch/ObjectManager.hpp>
 
 #include "CTransform.hpp"
 #include <ComponentArch/ObjectManager.hpp>
+#include "CRenderable_3D.hpp"
 
 class ggDynWorld;
 class CCamera : public IComponent {
@@ -46,6 +48,12 @@ private:
     TNodo           *cam;
     CTransform      *Target;
     ggDynWorld      *dynWorld;
+    ObjectManager *Manager;
+
+    CTransform* Near;
+    CRenderable_3D* Near_m;
+    CTransform* Far;
+    CRenderable_3D* Far_m;
 
     glm::vec3 pos_on_collision;
     glm::vec3 CameraTarget;

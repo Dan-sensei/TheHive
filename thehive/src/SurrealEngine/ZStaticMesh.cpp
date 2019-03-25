@@ -21,9 +21,11 @@ ZStaticMesh::ZStaticMesh()
 bool ZStaticMesh::load(const std::string& Name, const char* BoundingBoxPath){
     MeshLODs.reserve(2);
     MeshLODs.push_back(AssetManager::getMeshData(Name));
+    
+    if(BoundingBoxPath != nullptr){
 
-    if(BoundingBoxPath != nullptr)
         BinaryParser::ReadBoundingBox(BoundingBoxPath, &VOX);
+    }
 
     return true;
 }

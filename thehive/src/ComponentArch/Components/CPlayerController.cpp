@@ -176,6 +176,19 @@ void CPlayerController::FixedUpdate(){
         pulsacion_i = false;
     }
 
+    if(Engine->key(gg::GG_U)){
+        Engine->C->cercano += 1;
+    }
+    if(Engine->key(gg::GG_J)){
+        Engine->C->cercano -= 1;
+    }
+    if(Engine->key(gg::GG_I)){
+        Engine->C->lejano += 1;
+    }
+    if(Engine->key(gg::GG_K)){
+        Engine->C->lejano -= 1;
+    }
+    Engine->setCamNearFarPlanes();
     if(!PlayerMovement) return;
 
 

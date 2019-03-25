@@ -29,6 +29,7 @@ CCamera::~CCamera(){
 void CCamera::Init(){
     Engine = Singleton<SurrealEngine>::Instance();
     dynWorld = Singleton<ggDynWorld>::Instance();
+    Manager = Singleton<ObjectManager>::Instance();
     cam = Engine->getCamera();
 
     collision = false;
@@ -40,6 +41,18 @@ void CCamera::Init(){
     Engine->getCursorPosition(prevX, prevY);
     t = 0;
     p = 0;
+
+    uint16_t n = Manager->createEntity();
+    Near = new CTransform(glm::vec3(0, 5, 20), glm::vec3(0, 0, 0));
+    Manager->addComponentToEntity(Near,        gg::TRANSFORM, n);
+    Near_m = new CRenderable_3D("assets/BinaryFiles/BinaryModels/NearPlane.modelgg", AssetManager::getMaterial("Default"));
+    Manager->addComponentToEntity(Near_m,gg::RENDERABLE_3D,n);
+
+    uint16_t n2 = Manager->createEntity();
+    Far = new CTransform(glm::vec3(0, 5, 20), glm::vec3(0, 0, 0));
+    Manager->addComponentToEntity(Far,        gg::TRANSFORM, n2);
+    Far_m = new CRenderable_3D("assets/BinaryFiles/BinaryModels/FarPlane.modelgg", AssetManager::getMaterial("Alpha_Blue"));
+    Manager->addComponentToEntity(Far_m,gg::RENDERABLE_3D,n2);
 }
 
 void CCamera::setTarget(CTransform *T) {
@@ -101,6 +114,7 @@ void CCamera::FollowTarget(){
     CurrentPosition.y = CameraTarget.y + 1 + sin_;
     CurrentPosition.z = CameraTarget.z + 1 * cos(t)*cos_;
 
+
     CameraTarget.x += cos(t)*0.75;
     CameraTarget.z -= sin(t)*0.75;
     CameraTarget.y -= sin(p)*1.5;
@@ -108,6 +122,16 @@ void CCamera::FollowTarget(){
 
     Engine->setPosition(cam, CurrentPosition);
     static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
+
+    glm::vec3 normal = glm::normalize(glm::vec3((sin(glm::radians(Far->getRotation().y)), 0, cos(glm::radians(Far->getRotation().y)))));
+
+    glm::vec3 aux = glm::vec3(CameraTarget - CurrentPosition);
+    glm::vec3 cameradir = glm::normalize(glm::vec3(aux.x, 0, aux.z));
+
+    float angle = glm::acos(glm::dot(normal, cameradir));
+
+    //Far->setRotation(glm::vec3(0, angle * 180/PI, 0));
+    Far->setPosition(CurrentPosition + glm::vec3(cameradir.x * 5, 0, CurrentPosition.z + cameradir.z * 5));
 }
 
 

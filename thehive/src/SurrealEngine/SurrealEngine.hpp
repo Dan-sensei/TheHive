@@ -82,7 +82,8 @@ class SurrealEngine {
         bool Initialize();
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
-
+        void setCamNearFarPlanes();
+        TCamara* C;
         bool FREECAMERA;
         bool CONTROLPLAYER;
     private:

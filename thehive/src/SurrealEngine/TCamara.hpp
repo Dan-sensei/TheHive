@@ -25,8 +25,8 @@ class TCamara : public TEntidad {
 
         //glm::mat4 GetViewMatrix();
 
-    private:
         float cercano, lejano, fov;
+    private:
         glm::vec3 target;
 
         bool inverted;

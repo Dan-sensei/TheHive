@@ -45,7 +45,7 @@ void SurrealEngine::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
         std::string CAM = FREECAMERA ? "ON" : "OFF";
         std::string TARGET = CONTROLPLAYER ? "PLAYER" : "CAMERA";
-        std::string TEXT = "The Hive - FreeCamera: " + CAM + "  | Controlling: " + TARGET;
+        std::string TEXT = "The Hive - FPS: " + std::to_string(FPS) + " - FreeCamera: " + CAM + "  | Controlling: " + TARGET;
         glfwSetWindowTitle(window, TEXT.c_str());
         FPS = 0;
         FPS_Clock.Restart();
@@ -80,12 +80,16 @@ void SurrealEngine::scroll_callback(GLFWwindow* window, double xoffset, double y
     wheel = yoffset;
 }
 
+void SurrealEngine::setCamNearFarPlanes(){
+    C->setPerspectiva(16.f/9.f);
+}
+
 void SurrealEngine::PollEvents()     {   glfwPollEvents();  }
 
 void SurrealEngine::getCursorPosition(double &posX, double &posY) {  glfwGetCursorPos(window, &posX, &posY); }
 
 TNodo* SurrealEngine::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::vec3& rot, const float& _ppv){
-    TCamara* C = new TCamara(_fov,_near,_far);
+    C = new TCamara(_fov,_near,_far);
     C->setPerspectiva(_ppv);
 
     TNodo* Cam = new TNodo(bindTransform(pos,rot),C);
@@ -256,12 +260,12 @@ bool SurrealEngine::Initialize(){
 	glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    glFrontFace(GL_CCW);
-    glEnable(GL_CULL_FACE);
-    glCullFace (GL_BACK);
+    // glFrontFace(GL_CCW);
+    // glEnable(GL_CULL_FACE);
+    // glCullFace (GL_BACK);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable( GL_BLEND );
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
