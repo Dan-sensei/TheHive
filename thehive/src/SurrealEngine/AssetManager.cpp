@@ -100,9 +100,6 @@ void AssetManager::loadInit(){
     Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov3.modelgg");
     Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov4.modelgg");
     Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov5.modelgg");
-
-    std::cout << "END OF CREATION" << '\n';
-
 }
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {
@@ -112,7 +109,6 @@ ZMaterial* AssetManager::getMaterial(const std::string &Name) {
         return &it->second;
     }
     else {
-        std::cout << "Creating new material " << Name << '\n';
         return &MaterialMap[Name];
     }
 }
