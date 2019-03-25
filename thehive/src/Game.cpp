@@ -111,8 +111,8 @@ void Game::Init(){
     //fuerzasep=20;//10
     //fuerzacoh=10;//10
     //numsawrm=15;//15
-    sF->createSwarm(glm::vec3(108.141,3.885,-62.4015),100,mindist, fuerzasep, fuerzacoh, fuerzaalign,numsawrm);
-    sF->createSoldier(glm::vec3(108.141,3.885,-62.4015),100);
+    //sF->createSwarm(glm::vec3(108.141,3.885,-62.4015),100,mindist, fuerzasep, fuerzacoh, fuerzaalign,numsawrm);
+    sF->createSoldierWandering(glm::vec3(108.141,3.885,-62.4015),100);
     //CFlock* cFlock = new CFlock(false,mindist, fuerzasep, fuerzacoh, fuerzaalign);
     //Manager->addComponentToEntity(cFlock, gg::FLOCK, me);
 

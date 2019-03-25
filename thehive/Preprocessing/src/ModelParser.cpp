@@ -15,7 +15,15 @@
 
 ModelParser::ModelParser(){}
 
-void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std::string& FileOutput){
+void ModelParser::generateBinaryGG_StaticModel(const std::string &FileInput, const std::string& FileOutput, bool generateBoundingBox){
+    parser(FileInput, FileOutput, 0, generateBoundingBox);
+}
+
+void ModelParser::generateBinaryGG_DynamicModel(const std::string &FileInput, const std::string& FileOutput, bool generateBoundingBox){
+    parser(FileInput, FileOutput, 1, generateBoundingBox);
+}
+
+void ModelParser::parser(const std::string &FileInput, const std::string& FileOutput, unsigned int dyn, bool generateBoundingBox){
     std::vector<float> PositionsNormals;
     std::vector<float> uv;
     std::vector<float> TangentsBitangents;
@@ -23,14 +31,27 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
 
     Assimp::Importer importer;
 
-    const aiScene* scene = importer.ReadFile(
-        FileInput,
-        aiProcess_CalcTangentSpace       |
-        aiProcess_Triangulate            |
-        aiProcess_JoinIdenticalVertices  |
-        aiProcess_FlipUVs                |
-        aiProcess_SortByPType
-    );
+    const aiScene* scene;
+
+    if(dyn){
+        scene = importer.ReadFile(
+            FileInput,
+            aiProcess_CalcTangentSpace       |
+            aiProcess_Triangulate            |
+            aiProcess_FlipUVs                |
+            aiProcess_SortByPType
+        );
+    }
+    else{
+        scene = importer.ReadFile(
+            FileInput,
+            aiProcess_CalcTangentSpace       |
+            aiProcess_Triangulate            |
+            aiProcess_JoinIdenticalVertices  |
+            aiProcess_FlipUVs                |
+            aiProcess_SortByPType
+        );
+    }
 
 
     // If the import failed, report it
@@ -52,6 +73,14 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
     aiVector3D* bitangents;
     aiFace* faces;
 
+    if(scene->mNumMeshes > 0 && meshes[0]->mNumVertices > 0){
+        vertices   =   meshes[0]->mVertices;
+
+        minX = maxX = vertices[0].x;
+        minY = maxY = vertices[0].y;
+        minZ = maxZ = vertices[0].z;
+    }
+
     for(uint16_t i = 0; i < scene->mNumMeshes; ++i){
 
              vertices   =   meshes[i]->mVertices;
@@ -65,12 +94,6 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
             uv.reserve(meshes[i]->mNumVertices*2);
             TangentsBitangents.reserve(meshes[i]->mNumVertices*6);
 
-
-        if(meshes[i]->mNumVertices > 0){
-            minX = maxX = vertices[0].x;
-            minY = maxY = vertices[0].y;
-            minZ = maxZ = vertices[0].z;
-        }
 
         for(uint16_t j = 0; j < meshes[i]->mNumVertices; ++j){
 
@@ -139,6 +162,7 @@ void ModelParser::generateBinaryGG_Model(const std::string &FileInput, const std
         GG_Write(MODEL, index[i]);
     }
 
+    if(!generateBoundingBox) return;
 
     std::ofstream BB(BB_BINARYFILES_OUTPUT_DIR+FileOutput+".bb", std::ios::binary);
 
