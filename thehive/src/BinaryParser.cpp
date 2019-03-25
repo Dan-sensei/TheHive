@@ -125,6 +125,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
 
         AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
         switch(MODEL){
+            //nave
             case 1: Dark = _AssetManager->getMaterial("Metal");
                     break;
             case 3: Dark = _AssetManager->getMaterial("Metal");
@@ -139,19 +140,22 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
                     break;
             case 8: Dark = _AssetManager->getMaterial("Grey");
                     break;
+            //coche
             case 13: int rand;
                     rand = gg::genIntRandom(0,2);
                     if(rand == 0)
-                    Dark = _AssetManager->getMaterial("CarRed");
+                    Dark = _AssetManager->getMaterial("Car1");
                     if(rand == 1)
-                    Dark = _AssetManager->getMaterial("CarGreen");
+                    Dark = _AssetManager->getMaterial("Car2");
                     if(rand == 2)
-                    Dark = _AssetManager->getMaterial("CarYellow");
+                    Dark = _AssetManager->getMaterial("Car3");
                     break;
             case 37: Dark = _AssetManager->getMaterial("Grey");
                     break;
+            //arbol
             case 122: Dark = _AssetManager->getMaterial("Tree");
                     break;
+            //suelo inicio
             case 144: Dark = _AssetManager->getMaterial("Ground");
                     break;
             default: Dark = _AssetManager->getMaterial("Default");
