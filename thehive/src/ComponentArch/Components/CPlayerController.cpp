@@ -227,7 +227,7 @@ void CPlayerController::FixedUpdate(){
         if(!pulsacion_click){
             pulsacion_click = true;
             Target = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
-            if(Target != glm::vec3(-1,-1,-1)){
+            if(Target != glm::vec3(-1,-1,-1) && Target.y < 1){
                 NatureGenerator nat;
                 nat.init(0,Target);
             }
