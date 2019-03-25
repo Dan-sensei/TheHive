@@ -15,7 +15,8 @@ class ZStaticMesh : public TEntidad {
         ZStaticMesh(const ZStaticMesh &orig) = delete;
         ~ZStaticMesh();
 
-        bool load(const std::string& Name, const std::string& BoundingBoxPath);
+        bool load(const std::string& Name);
+        void loadBoundingBox(const std::string& BoundingBoxPath);
         void assignMaterial(ZMaterial* material_);
         void beginDrawwithoutligt();
 
