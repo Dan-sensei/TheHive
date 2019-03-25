@@ -10,13 +10,14 @@
 
 class CStaticModel : public IComponent {
     public:
-        CStaticModel(const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::vec3 &Rotation, int8_t map_zone = 0, const char* BoundingBoxPath = nullptr);
+        CStaticModel(const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position = glm::vec3(), const glm::vec3 &Rotation = glm::vec3(), int8_t map_zone = 0, const char* BoundingBoxPath = nullptr);
         CStaticModel(const CStaticModel &orig);
         virtual ~CStaticModel();
 
         void setVisibility(bool flag);
         void setPosition(const glm::vec3 &Position);
         void addLOD(std::string LOD);
+        void setMatrix(glm::mat4 m);
 
     private:
         SurrealEngine* Surreal;

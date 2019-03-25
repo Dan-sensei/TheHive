@@ -45,7 +45,7 @@ void SurrealEngine::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
         std::string CAM = FREECAMERA ? "ON" : "OFF";
         std::string TARGET = CONTROLPLAYER ? "PLAYER" : "CAMERA";
-        std::string TEXT = "The Hive - FPS: " + std::to_string(FPS) + " - FreeCamera: " + CAM + "  | Controlling: " + TARGET;
+        std::string TEXT = "The Hive - FPS: " + std::to_string(FPS) + " - FreeCamera: " + CAM + "  | Controlling: " + TARGET + "  || PLANES: Near: " + std::to_string(C->cercano) + " - Far: " + std::to_string(C->lejano);
         glfwSetWindowTitle(window, TEXT.c_str());
         FPS = 0;
         FPS_Clock.Restart();
@@ -264,8 +264,8 @@ bool SurrealEngine::Initialize(){
     // glEnable(GL_CULL_FACE);
     // glCullFace (GL_BACK);
 
-    // glEnable(GL_BLEND);
-    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);

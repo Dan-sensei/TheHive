@@ -86,6 +86,7 @@ class SurrealEngine {
         TCamara* C;
         bool FREECAMERA;
         bool CONTROLPLAYER;
+
     private:
         SurrealEngine();
 

@@ -17,7 +17,7 @@
 
 CCamera::CCamera(int8_t _b)
 :Target(nullptr), Engine(nullptr), cam(nullptr),
-InvertCamera(_b), LockCamera(false)
+InvertCamera(_b), LockCamera(false), key_toggle(true), visibility(false), key_toggle2(true), visibility2(false)
 {
     CurrentUpdate = &CCamera::FollowTarget;
 }
@@ -45,14 +45,18 @@ void CCamera::Init(){
     uint16_t n = Manager->createEntity();
     Near = new CTransform(glm::vec3(0, 5, 20), glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Near,        gg::TRANSFORM, n);
-    Near_m = new CRenderable_3D("assets/BinaryFiles/BinaryModels/NearPlane.modelgg", AssetManager::getMaterial("Default"));
+    Near_m = new CStaticModel("assets/BinaryFiles/BinaryModels/NearPlane.modelgg", AssetManager::getMaterial("Alpha_Orange"));
     Manager->addComponentToEntity(Near_m,gg::RENDERABLE_3D,n);
 
     uint16_t n2 = Manager->createEntity();
     Far = new CTransform(glm::vec3(0, 5, 20), glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Far,        gg::TRANSFORM, n2);
-    Far_m = new CRenderable_3D("assets/BinaryFiles/BinaryModels/FarPlane.modelgg", AssetManager::getMaterial("Alpha_Blue"));
+    Far_m = new CStaticModel("assets/BinaryFiles/BinaryModels/FarPlane.modelgg", AssetManager::getMaterial("Alpha_Blue"));
     Manager->addComponentToEntity(Far_m,gg::RENDERABLE_3D,n2);
+
+    Far_m->setVisibility(visibility);
+    Near_m->setVisibility(visibility);
+    FollowTarget();
 }
 
 void CCamera::setTarget(CTransform *T) {
@@ -60,6 +64,34 @@ void CCamera::setTarget(CTransform *T) {
 }
 
 void CCamera::CameraUpdate(){
+    if(key_toggle && Engine->key(gg::GG_N)){
+        key_toggle = false;
+        visibility = !visibility;
+        Near_m->setVisibility(visibility);
+    }
+    else if(!Engine->key(gg::GG_N))
+        key_toggle = true;
+
+    if(key_toggle2 && Engine->key(gg::GG_F)){
+        key_toggle2 = false;
+        visibility2 = !visibility2;
+        Far_m->setVisibility(visibility2);
+    }
+    else if(!Engine->key(gg::GG_F))
+        key_toggle2 = true;
+
+    Engine->Draw3DLine(PlanePosNear, PlanePosFar, gg::Color(0,255, 0, 1));
+
+    float f = Engine->C->lejano-0.5;
+    float n = Engine->C->cercano+0.5;
+    PlanePosFar = auxPos + glm::vec3(cameradir.x * f, cameradir.y * f, cameradir.z * f);
+    PlanePosNear = auxPos + glm::vec3(cameradir.x * n, cameradir.y * n, cameradir.z * n);
+    glm::mat4 m = glm::inverse(glm::lookAt(PlanePosFar, auxPos, glm::vec3(0,1,0)));
+    Far_m->setMatrix(m);
+
+    m = glm::inverse(glm::lookAt(PlanePosNear, auxPos, glm::vec3(0,1,0)));
+    Near_m->setMatrix(m);
+
     (this->*CurrentUpdate)();
 }
 
@@ -114,7 +146,7 @@ void CCamera::FollowTarget(){
     CurrentPosition.y = CameraTarget.y + 1 + sin_;
     CurrentPosition.z = CameraTarget.z + 1 * cos(t)*cos_;
 
-
+    auxPos = CurrentPosition;
     CameraTarget.x += cos(t)*0.75;
     CameraTarget.z -= sin(t)*0.75;
     CameraTarget.y -= sin(p)*1.5;
@@ -123,15 +155,10 @@ void CCamera::FollowTarget(){
     Engine->setPosition(cam, CurrentPosition);
     static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
 
-    glm::vec3 normal = glm::normalize(glm::vec3((sin(glm::radians(Far->getRotation().y)), 0, cos(glm::radians(Far->getRotation().y)))));
-
     glm::vec3 aux = glm::vec3(CameraTarget - CurrentPosition);
-    glm::vec3 cameradir = glm::normalize(glm::vec3(aux.x, 0, aux.z));
+    cameradir = glm::normalize(aux);
 
-    float angle = glm::acos(glm::dot(normal, cameradir));
 
-    //Far->setRotation(glm::vec3(0, angle * 180/PI, 0));
-    Far->setPosition(CurrentPosition + glm::vec3(cameradir.x * 5, 0, CurrentPosition.z + cameradir.z * 5));
 }
 
 

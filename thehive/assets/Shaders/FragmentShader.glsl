@@ -20,7 +20,8 @@ in vec3 VertexPosT;
 
 void main() {
 
-    vec4 color = texture(DiffuseMap,UV);
+    vec4 tex = texture(DiffuseMap,UV);
+    float color = tex.a;
     // Light emission properties
     // You probably want to put them as uniforms
     vec3 LightColor = vec3(255,255,255);
@@ -29,7 +30,7 @@ void main() {
 
 
     // Material properties
-    vec3 MaterialDiffuseColor = texture( DiffuseMap, UV).rgb;
+    vec3 MaterialDiffuseColor = tex.rgb;
     vec3 MaterialAmbientColor = vec3(BASE_FACTOR) * MaterialDiffuseColor;
     vec3 MaterialSpecularColor = texture( SpecularMap, UV ).rgb * 0.3;
     vec3 TextureNormal_tangentspace = normalize(texture2D( NormalMap, vec2(UV.x,-UV.y)).rgb*2.0 - 1.0);
@@ -48,6 +49,6 @@ void main() {
         // Diffuse : "color" of the object
         MaterialDiffuseColor * LightColor * LightPower * cosTheta / (dist*2) +
         // Specular : reflective highlight, like a mirror
-        MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (dist*dist), color.a);
+        MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (dist*dist), color);
 
 };

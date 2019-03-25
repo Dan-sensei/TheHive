@@ -1,4 +1,5 @@
 #include "CStaticModel.hpp"
+#include <iostream>
 
 CStaticModel::CStaticModel(const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::vec3 &Rotation, int8_t map_zone, const char* BoundingBoxPath){
     Surreal = Singleton<SurrealEngine>::Instance();
@@ -16,6 +17,10 @@ void CStaticModel::setVisibility(bool flag){
 
 void CStaticModel::setPosition(const glm::vec3 &Position){
     Surreal->setPosition(_3DModel,Position);
+}
+
+void CStaticModel::setMatrix(glm::mat4 m){
+    static_cast<TTransform*>(_3DModel->getPadre()->getPadre()->getEntidad())->matrix = m;
 }
 
 void CStaticModel::addLOD(std::string LOD){

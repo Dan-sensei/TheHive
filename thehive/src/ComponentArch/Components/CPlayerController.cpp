@@ -141,7 +141,7 @@ void CPlayerController::FixedUpdate(){
     //  If exists, we get its position
 
 
-    if(Engine->key(gg::GG_E) && toogleCamera){
+    if(toogleCamera && Engine->key(gg::GG_E)){
         toogleCamera = false;
         camera->ToogleFreeCamera();
 
@@ -154,17 +154,8 @@ void CPlayerController::FixedUpdate(){
             FreeCamera = false;
         }
     }
-    else{
+    else if (!Engine->key(gg::GG_E) ){
         toogleCamera = true;
-    }
-
-    if(FreeCamera && Engine->key(gg::GG_Q) && !pulsacion_q){
-        pulsacion_q = true;
-        camera->ToggleCameraLock();
-        Engine->CONTROLPLAYER = PlayerMovement = !PlayerMovement;
-    }
-    else{
-        pulsacion_q = false;
     }
 
 

@@ -12,7 +12,7 @@
 
 #include "CTransform.hpp"
 #include <ComponentArch/ObjectManager.hpp>
-#include "CRenderable_3D.hpp"
+#include "CStaticModel.hpp"
 
 class ggDynWorld;
 class CCamera : public IComponent {
@@ -51,13 +51,22 @@ private:
     ObjectManager *Manager;
 
     CTransform* Near;
-    CRenderable_3D* Near_m;
+    CStaticModel* Near_m;
     CTransform* Far;
-    CRenderable_3D* Far_m;
+    CStaticModel* Far_m;
 
     glm::vec3 pos_on_collision;
     glm::vec3 CameraTarget;
     glm::vec3 CurrentPosition;
+
+    glm::vec3 PlanePosFar;
+    glm::vec3 PlanePosNear;
+    glm::vec3 cameradir;
+    glm::vec3 auxPos;
+    bool key_toggle;
+    bool key_toggle2;
+    bool visibility;
+    bool visibility2;
 
     float screenW;
     float screenH;

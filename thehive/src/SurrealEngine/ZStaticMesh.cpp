@@ -21,7 +21,7 @@ ZStaticMesh::ZStaticMesh()
 bool ZStaticMesh::load(const std::string& Name, const char* BoundingBoxPath){
     MeshLODs.reserve(2);
     MeshLODs.push_back(AssetManager::getMeshData(Name));
-    
+
     if(BoundingBoxPath != nullptr){
 
         BinaryParser::ReadBoundingBox(BoundingBoxPath, &VOX);
@@ -54,10 +54,7 @@ void ZStaticMesh::beginDraw(){
 
     glm::vec3 ObjectPos(modelMatrix[3][0], modelMatrix[3][1], modelMatrix[3][2]);
     float distance = glm::length2(ObjectPos-(*PlayerPosition));
-    //if(distance > KILL) return;
-    if(distance > LOD2 && MeshLODs.size() > 1) LOD = 2;
-    else if(distance > LOD1 && MeshLODs.size() > 1) LOD = 1;
-
+    
     Shader* sh = zmat->getShader();
 
     // MODELO

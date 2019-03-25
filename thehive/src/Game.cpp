@@ -79,7 +79,7 @@ void Game::Init(){
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
 
     auto sF = Singleton<Factory>::Instance();
-    Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
+    Engine->crearCamara(90,0.15f,150.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), AssetManager::getShader("Default"));
     // Pos init del heroe normal
     // 360, 0, 350
@@ -103,7 +103,7 @@ void Game::Init(){
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
 
-    
+
 
     // uint16_t n = Manager->createEntity();
     // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/NavmeshCITY.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,3,0), glm::vec3());

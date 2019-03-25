@@ -45,13 +45,13 @@ AssetManager::AssetManager(){
 
     MAT = getMaterial("Alpha_Orange");
     MAT->attachShader(Def);
-    MAT->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Alpha_Orange.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    MAT->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/ALPHA_ORANGE.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/DeffaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     MAT->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
     MAT = getMaterial("Alpha_Blue");
     MAT->attachShader(Def);
-    MAT->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Alpha_Blue.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    MAT->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/ALPHA_BLUE.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/DeffaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     MAT->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 

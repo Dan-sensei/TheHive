@@ -24,6 +24,7 @@ class CRenderable_3D : public IComponent {
         virtual void Init();
         virtual void Update();
 
+
         //  Handler
         gg::EMessageStatus MHandler_SETPTRS();
         void setVisibility(bool flag);
