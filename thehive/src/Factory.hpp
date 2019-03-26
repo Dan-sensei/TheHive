@@ -43,8 +43,7 @@ class Factory{
         uint16_t createSenyuelo(const glm::vec3 &Position, const glm::vec3 &Impulse);
         uint16_t createCollectableWeapon(const glm::vec3&, int);
         uint16_t createPickableItem(const glm::vec3&);
-        uint16_t createTouchableObject(const std::string&, const glm::vec3&, const glm::vec3&, const uint16_t&, const glm::vec3&, const int&, uint16_t=0);
-
+        uint16_t createTouchableObject(const std::string&, const glm::vec3&, const glm::vec3&, const uint16_t&, const glm::vec3&, const int&, int, uint16_t=0);
         uint16_t createDebugBullet(const glm::vec3&);
     private:
 

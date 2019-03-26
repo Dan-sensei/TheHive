@@ -213,7 +213,8 @@ void Motor2D::changeWeapon(){
         it++;
     }
     auto str =armaP->getImage();
-    armaP->setImage(armaS->getImage());
+    auto str2 =armaS->getImage();
+    armaP->setImage(str2);
     armaS->setImage(str);
 
 
