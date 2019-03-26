@@ -89,7 +89,7 @@ void MenuState::Update(){
     //Engine2D->checkbuton();
 
     Engine->EndDraw();
-    Engine->resetClicked();
+    Engine->resetClickVariable();
 }
 
 void MenuState::CLIN(){

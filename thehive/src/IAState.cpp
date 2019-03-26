@@ -87,7 +87,7 @@ void IAState::Update(){
     //Engine2D->checkbuton();
 
     Engine->EndDraw();
-    Engine->resetClicked();
+    Engine->resetClickVariable();
 }
 
 void IAState::CLIN(){

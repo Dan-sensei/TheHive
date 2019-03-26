@@ -3,7 +3,6 @@
 
 bool* SurrealEngine::KEYS = new bool[349];
 bool SurrealEngine::LCLICK = false;
-bool SurrealEngine::clicked = false;
 int SurrealEngine::wheel;
 int SurrealEngine::IdButon;
 
@@ -71,7 +70,6 @@ void SurrealEngine::resetClickVariable(){
 
 void SurrealEngine::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-        clicked=true;
         LCLICK = true;
     }
     else if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){

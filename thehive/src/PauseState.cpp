@@ -63,7 +63,7 @@ void PauseState::Update(){
     //Engine2D->draw();
     //Engine2D->checkbuton();
     Engine->EndDraw();
-    Engine->resetClicked();
+    Engine->resetClickVariable();
 
 }
 
