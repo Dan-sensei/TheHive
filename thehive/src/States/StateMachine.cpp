@@ -23,9 +23,7 @@ void StateMachine::RemoveState(int _cantidad)
 	cantidad=_cantidad;
 	isRemoving = true;
 }
-//revisar
-void StateMachine::prueba(){
-}
+
 void StateMachine::ProcessStateChanges()
 {
 	if (isRemoving && !states.empty())

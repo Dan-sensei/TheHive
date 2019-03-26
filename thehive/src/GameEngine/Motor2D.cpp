@@ -58,7 +58,7 @@ void Motor2D::prueba(){
 
 }
 int Motor2D::checkbuton(){
-    if(motor->isLClicked()==false){
+    if(motor->isLClickPressed()==false){
         return -1;
     }
     double x,y;
