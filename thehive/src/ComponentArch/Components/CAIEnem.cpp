@@ -174,7 +174,7 @@ void CAIEnem::FixedUpdate(){
             //glm::vec3 posmala        = PlayerBody->getBodyPosition();
 
 
-            glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTF_POS,PlayerBody->getBodyPosition(),1000);
+            glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTransform->getPosition(),PlayerBody->getBodyPosition(),Vrange);
             int id=world->getIDFromRaycast();
             if(id==Manager->getHeroID()){
                 //lo veo
@@ -257,9 +257,9 @@ void CAIEnem::enableVisualDebug(){
     glm::vec3 fin2   = dir1*Vrange+cTransform->getPosition();
     glm::vec3 fin3   = dir2*Vrange+cTransform->getPosition();
 
-    // //Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
-    // //Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
-    // //Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
+    Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
+    Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
+    Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
 
     glm::vec3 diren  = PlayerTransform->getPosition()-cTransform->getPosition();
     diren.y             = 0;

@@ -14,7 +14,9 @@ CDynamicModel::CDynamicModel(const CDynamicModel &orig){
     DynamicModel = orig.DynamicModel;
 }
 
-CDynamicModel::~CDynamicModel() {}
+CDynamicModel::~CDynamicModel() {
+    Surreal->deleteLeafNode(DynamicModel);
+}
 
 void CDynamicModel::Init(){
     MHandler_SETPTRS();

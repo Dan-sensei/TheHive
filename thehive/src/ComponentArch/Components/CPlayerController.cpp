@@ -113,7 +113,36 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
 
     return gg::ST_TRUE;
 }
+void CPlayerController::invocasionhorda(){
 
+    auto hola=glm::vec3(651.342,0.684987,-14.1424);
+    factory->createTank(hola, 200);
+
+
+}
+void CPlayerController::invocasionwander(){
+
+glm::vec3 hola[]={
+    glm::vec3(463.316,0.684987,-23.9962),
+    glm::vec3(496.804,0.684987,-21.1747),
+    glm::vec3(443.705,0.684986,-26.6188),
+    glm::vec3(454.321,0.684986,-18.0602),
+    glm::vec3(514.321,0.684986,-20.0602),
+    glm::vec3(520.321,0.684986,-25.0602),
+    glm::vec3(603.705,0.684986,-20.6188),
+    glm::vec3(553.705,0.684986,-18.6188)
+};
+
+
+//wandering
+    ///
+
+
+    for (int i = 0; i < 8; i++) {
+        factory->createSoldierWandering(hola[i], 200);
+    }
+    ///
+}
 void CPlayerController::Update(){
     int wheelState = Engine->getWheelState();
     if(wheelState!=0){
@@ -139,6 +168,7 @@ void CPlayerController::FixedUpdate(){
     // -----------------------------------------------------------------------------
 
     //  If exists, we get its position
+auto pos=cTransform->getPosition();
 
     bool heroRotation = true;
 
@@ -161,6 +191,12 @@ void CPlayerController::FixedUpdate(){
     }
     if(Engine->key(gg::GG_3)){
         hab->ToggleSkill(2);
+    }
+    if(Engine->key(gg::GG_I)){
+        invocasionwander();
+    }
+    if(Engine->key(gg::GG_U)){
+        invocasionhorda();
     }
     // if(Engine->key(gg::GG_T)){
     //     if(pulsacion_soldier==false){
@@ -208,7 +244,7 @@ void CPlayerController::FixedUpdate(){
     if(Engine->key(gg::GG_M)){
         //hab->ToggleSkill(2);
         //devuelve ide de un objeto
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(), cTransform->getPosition(),1000);
+        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition(),200);
         int id=world->getIDFromRaycast();
         ////std::cout << "id:" <<id<< '\n';
         if(id!=-1){
