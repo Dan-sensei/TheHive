@@ -11,6 +11,7 @@ class ggDynWorld;
 #include "States/State.hpp"
 #include <SurrealEngine/SkyBox.hpp>
 #include "GameEngine/GUIController.hpp"
+#include <FMOD/SoundSystem.hpp>
 
 class PauseState : public State{
 public:
@@ -41,6 +42,8 @@ private:
     ggDynWorld* world;
     GUIController cont;
     SkyBox sky;
+
+    SoundSystem* SS;
 
 
 };

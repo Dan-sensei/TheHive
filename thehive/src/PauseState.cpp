@@ -25,6 +25,7 @@
 PauseState::PauseState():cont(){
     Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
+    SS = Singleton<SoundSystem>::Instance();
     sky.init();
 }
 
@@ -64,6 +65,8 @@ void PauseState::Update(){
     //Engine2D->checkbuton();
     Engine->EndDraw();
     Engine->resetClickVariable();
+
+    SS->update();
 
 }
 

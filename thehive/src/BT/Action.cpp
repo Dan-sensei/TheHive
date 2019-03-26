@@ -437,6 +437,8 @@ void Action::hit(){
         ht->quitarvida(0.5+(yo->getRage()/2));
 
         s = BH_RUNNING;
+
+        yo->playAttack();
     }
 
     cont_hit++;
@@ -638,11 +640,16 @@ void Action::move_last(){
     CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
     if(nvAgent){
         if(s!=BH_RUNNING){
+            nvAgent->ResetDestination();
+            std::cout << "empieza" << '\n';
             s=BH_RUNNING;
             // Obligatorio
             //glm::vec3 dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
             yo->destino = cTransform->getPosition();
             nvAgent->SetDestination(yo->playerPos);
+            if(!nvAgent->HasDestination()){
+                std::cout << "falla esto" << '\n';
+            }
             return;
         }
         if(s==BH_RUNNING){
@@ -667,6 +674,8 @@ void Action::move_last(){
             }
 
             if(!nvAgent->HasDestination()){
+                std::cout << "acaba1" << '\n';
+
                 nvAgent->ResetDestination();
                 s = BH_SUCCESS;
                 yo->playerSeen=false;
@@ -674,6 +683,8 @@ void Action::move_last(){
         }
     }
     else{
+        std::cout << "acaba2" << '\n';
+
         yo->playerSeen=false;
         s = BH_SUCCESS;
     }
@@ -682,6 +693,7 @@ void Action::move_around(){
     CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
     if(nvAgent){
         if(s!=BH_RUNNING){
+            nvAgent->ResetDestination();
             s=BH_RUNNING;
             // Obligatorio
             glm::vec3 dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();

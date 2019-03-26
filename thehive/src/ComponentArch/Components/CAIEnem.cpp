@@ -24,19 +24,36 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr), world(nullptr),
  type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen)
 {
+
+    SS = Singleton<SoundSystem>::Instance();
+
     switch (_type) {
         case gg::SOLDIER:
             velocity=2;
+            s_caminar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Soldier/SoldierMovimiento", s_caminar);
+
+            s_atacar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Soldier/SoldierAtaque", s_atacar);
             break;
         case gg::TANK:
-        velocity=2;
-        //velocity=1.75;
+            velocity=2;
+            s_caminar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Tank/TankMovimiento", s_caminar);
+
+            s_atacar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Tank/TankAtaque_Golpe", s_atacar);
+
+            s_atacar2 = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Tank/TankAtaque_Acido", s_atacar2);
             break;
         case gg::RUSHER:
-        velocity=8;
+            velocity=8;
+
             break;
         case gg::SWARM:
-        velocity=1;
+
+            velocity=1;
             break;
         case gg::TRACKER:
         velocity=2;
@@ -174,7 +191,7 @@ void CAIEnem::FixedUpdate(){
             //glm::vec3 posmala        = PlayerBody->getBodyPosition();
 
 
-            glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTF_POS,PlayerBody->getBodyPosition(),1000);
+            glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTransform->getPosition(),PlayerBody->getBodyPosition(),Vrange);
             int id=world->getIDFromRaycast();
             if(id==Manager->getHeroID()){
                 //lo veo
@@ -257,9 +274,9 @@ void CAIEnem::enableVisualDebug(){
     glm::vec3 fin2   = dir1*Vrange+cTransform->getPosition();
     glm::vec3 fin3   = dir2*Vrange+cTransform->getPosition();
 
-    // //Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
-    // //Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
-    // //Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
+    Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
+    Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
+    Engine->Draw3DLine(inicio, fin3, gg::Color(255,0,0,1));
 
     glm::vec3 diren  = PlayerTransform->getPosition()-cTransform->getPosition();
     diren.y             = 0;
@@ -339,4 +356,15 @@ void CAIEnem::upgradeMaxAliensAttackingAtOnce(){
 }
 int CAIEnem::getMaxAliensAttackingAtOnce(){
     return maxAliensAttacking;
+}
+
+void CAIEnem::playMovement(){
+    s_caminar->play();
+}
+void CAIEnem::playAttack(){
+    s_atacar->setParameter("Impacto", 1);
+    s_atacar->play();
+}
+void CAIEnem::playAttack2(){
+    s_atacar2->play();
 }

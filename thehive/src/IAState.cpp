@@ -60,7 +60,8 @@ IAState::~IAState(){
 }
 
 void IAState::Init(){
-
+    Engine->HideCursor(false);
+    
     Singleton<Motor2D>::Instance()->InitAIDebug(id);
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }

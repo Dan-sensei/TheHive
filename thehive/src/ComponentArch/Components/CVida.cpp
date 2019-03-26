@@ -107,7 +107,7 @@ void CVida::FixedUpdate() {
                 triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 20, 5000, false, TData());
             }
             AIDirector* dir=Singleton<AIDirector>::Instance();
-            dir->removeEnemy(t);
+            //dir->removeEnemy(t);
             CFlock* flock_lider = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,getEntityID()));
             if(flock_lider){
                 flock_lider->Muerte();

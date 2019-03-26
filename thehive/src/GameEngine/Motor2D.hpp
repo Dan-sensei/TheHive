@@ -12,6 +12,9 @@
 #include "Singleton.hpp"
 #include "Util.hpp"
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
+
 
 #include "SurrealEngine/SurrealEngine.hpp"
 
@@ -71,6 +74,11 @@ class Motor2D{
         int checkbuton();
         void aplyhover();
     private:
+
+        SoundSystem* SS;
+
+        SoundEvent* s_hover;
+        SoundEvent* s_seleccionar;
         //nuevo
         std::vector<Cuadrado2D*> RECTANGULOS;
         SurrealEngine* motor;
@@ -94,6 +102,8 @@ class Motor2D{
         float perc3;
         float ancho;
         float alto;
+
+
 
         Motor2D();
 

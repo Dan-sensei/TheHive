@@ -70,6 +70,10 @@ void Boton2D::setImage(const std::string &Name){
 
 }
 
+bool Boton2D::getHov(){
+    return hov;
+}
+
 
 void Boton2D::Draw(){
     text.Draw();
