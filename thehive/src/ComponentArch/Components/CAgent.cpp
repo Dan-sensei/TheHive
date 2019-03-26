@@ -8,7 +8,7 @@
 #include "CRigidBody.hpp"
 #include "CTransform.hpp"
 #include "CAIEnem.hpp"
-
+#include "SurrealEngine/ZMaterial.hpp"
 
 std::list <CAgent*>  CAgent::AgentList;
 
@@ -18,6 +18,7 @@ CAgent::CAgent(const unsigned long &_flags)
     dwTriggerFlags = _flags;
     nDeltaTime=0;
     oManager = Singleton<ObjectManager>::Instance();
+    _AssetManager = Singleton<AssetManager>::Instance();
 
 }
 
@@ -377,6 +378,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
 void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
     if((_pRec->eTriggerType & kTrig_Touchable) && Engine->key(gg::GG_E)){
         uint16_t item = _pRec->data.find(kDat_PickableItemId);
+        uint16_t boton = _pRec->data.find(kDat_PickableItemId);
 
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
         if(item && !cpc->hasItem(item)){
@@ -384,7 +386,12 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
             //gg::cout("You shall not PASS!!!");
             return;
         }
-        // Usa y destruye el item
+        //CAMBIO COLOR
+        if (item){
+            ZMaterial* Dark = _AssetManager->getMaterial("Red");
+            //static_cast<CRenderable_3D*>(oManager->getComponent(gg::RENDERABLE_3D, item))->changeMaterial(Dark);
+        }
+        // // Usa y destruye el item
         cpc->useItem(item);
 
         bool isDone = _pRec->data.find(kDat_Done);
