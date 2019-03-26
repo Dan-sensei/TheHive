@@ -119,7 +119,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         GG_Read(inStream, z);
         glm::vec3 Rotation(x,y,z);
 
-        bool HasCollider;
+        uint8_t HasCollider;
         GG_Read(inStream, HasCollider);
         ZMaterial* Dark;
 
@@ -165,6 +165,15 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
 
         if(HasCollider){
+            // std::cout << str << " | HasCollider: " << static_cast<int>(HasCollider) << '\n';
+            if(HasCollider == 2){
+                CRigidBody* RIGID = new CRigidBody(false,true,"assets/BulletBoundingBoxes/"+str+".bullet",
+                                                    Position.x,Position.y,Position.z,
+                                                    0,0,0, 0, 0,0,0);
+                Manager->addComponentToEntity(RIGID, gg::RIGID_BODY, NewEntity);
+
+                continue;
+            }
             GG_Read(inStream, x);
             GG_Read(inStream, y);
             GG_Read(inStream, z);
@@ -183,6 +192,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
             Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewEntity);
         }
+
 
     }
 }
