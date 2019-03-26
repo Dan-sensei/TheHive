@@ -11,6 +11,7 @@
 #include <SurrealEngine/SurrealEngine.hpp>
 
 #include <SurrealEngine/ZAnimationData.hpp>
+#include <AnimationLUT.hpp>
 
 class CTransform;
 
@@ -27,7 +28,9 @@ class CDynamicModel : public IComponent {
 
         void AddAnimation(ZAnimationData* Anim);
         void ToggleAnimation(uint8_t Anim, float Time);
-        
+
+        inline uint8_t getCurrentAnimation(){ return CurrentAnimation; };
+
         //  Handler
         gg::EMessageStatus MHandler_SETPTRS();
         void setVisibility(bool flag);
@@ -38,6 +41,8 @@ class CDynamicModel : public IComponent {
         SurrealEngine* Surreal;
 
         CTransform* cTransform;
+        uint8_t CurrentAnimation;
+
 };
 
 #endif

@@ -26,6 +26,7 @@
 class CCamera;
 class CTransform;
 class CRigidBody;
+class CDynamicModel;
 class CGun;
 class CHabilityController;
 
@@ -81,6 +82,7 @@ class CPlayerController : public IComponent {
         CTransform* cTransform;
         CRigidBody* cRigidBody;
         CCamera* camera;
+        CDynamicModel* cDynamicModel;
         CHabilityController* hab;
         bool GranadeCreate;
 

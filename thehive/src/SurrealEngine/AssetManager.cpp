@@ -40,11 +40,7 @@ void AssetManager::loadInit(){
     Nav->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Nav->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
-    ZMaterial* 		Hero = getMaterial("Hero");
-    Hero->attachShader(shader);
-    Hero->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/DefaultDiffuse.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Hero->addTexture(GN::NORMAL_MAP,       "assets/Textures/HERO_NORMALS2.png",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Hero->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
 
     ZMaterial* 		Metal = getMaterial("Metal");
     Metal->attachShader(shader);
@@ -144,6 +140,7 @@ void AssetManager::loadInit(){
 
 
 
+
     shader = getShader("Blend");
 
     ZMaterial* 		Build = getMaterial("building");
@@ -158,14 +155,31 @@ void AssetManager::loadInit(){
     Sold->addTexture(GN::NORMAL_MAP,       "assets/Textures/ALIEN.png",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Sold->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
+    ZMaterial* 		Hero = getMaterial("Hero");
+    Hero->attachShader(shader);
+    Hero->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/DefaultDiffuse.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Hero->addTexture(GN::NORMAL_MAP,       "assets/Textures/HERO_NORMALS3.png",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Hero->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
-    ZAnimationData* Soldier = getAnimation("Soldier_Running");
-    Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov0.modelgg");
-    Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov1.modelgg");
-    Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov2.modelgg");
-    Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov3.modelgg");
-    Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov4.modelgg");
-    Soldier->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov5.modelgg");
+
+    ZAnimationData* AnimationData = getAnimation("Soldier_Running");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov5.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov4.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov1.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov0.modelgg");
+
+    AnimationData = getAnimation("Hero_Standing");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing1.modelgg");
+
+    AnimationData = getAnimation("Hero_Walking");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking4.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking1.modelgg");
 }
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {

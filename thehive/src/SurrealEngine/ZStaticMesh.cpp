@@ -6,6 +6,8 @@
 #include <sys/stat.h>
 #include <BinaryParser.hpp>
 
+#include <ShaderUniformMapping.hpp>
+
 #define LOD1 10000
 #define KILL 22500
 //#define GRADOVISION cos(30*3.14159265359/180.f)
@@ -61,8 +63,7 @@ void ZStaticMesh::beginDraw(){
 
     glm::vec3 ObjectPos(modelMatrix[3][0], modelMatrix[3][1], modelMatrix[3][2]);
     float distance = glm::length2(ObjectPos-(*PlayerPosition));
-    if(distance > KILL) return;
-    else if(distance > LOD1 && MeshLODs.size() > 1) LOD = 1;
+    if(distance > LOD1 && MeshLODs.size() > 1) LOD = 1;
     glm::vec3 vectores[]{
         VOX.BLB,
         VOX.BLF,
@@ -107,12 +108,12 @@ void ZStaticMesh::beginDraw(){
 
     // MODELO
     //GLuint M = sh->getUniformLocation("M");
-    glUniformMatrix4fv(10,1,GL_FALSE,&modelMatrix[0][0]);
+    glUniformMatrix4fv(_U_MODEL,1,GL_FALSE,&modelMatrix[0][0]);
 
     // MODELO*VISTA*PERSPECTIVA
     glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
     //GLuint MVP = sh->getUniformLocation("MVP");
-    glUniformMatrix4fv(11,1,GL_FALSE,&MVP_L[0][0]);
+    glUniformMatrix4fv(_U_MVP,1,GL_FALSE,&MVP_L[0][0]);
 
     // LA FINALE
     MeshLODs[LOD]->draw();

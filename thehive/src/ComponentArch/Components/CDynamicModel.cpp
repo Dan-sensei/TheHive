@@ -3,7 +3,7 @@
 #include "CTransform.hpp"
 
 CDynamicModel::CDynamicModel(ZMaterial* material)
-:DynamicModel(nullptr), cTransform(nullptr)
+:DynamicModel(nullptr), cTransform(nullptr), CurrentAnimation(0)
 {
     Surreal = Singleton<SurrealEngine>::Instance();
     DynamicModel = Surreal->CreateDynamicMesh();
@@ -29,6 +29,7 @@ void CDynamicModel::AddAnimation(ZAnimationData* Anim){
 }
 
 void CDynamicModel::ToggleAnimation(uint8_t Anim, float Time){
+    CurrentAnimation = Anim;
     static_cast<ZDynamicMesh*>(DynamicModel->getEntidad())->SwitchAnimation(Anim, Time);
 }
 

@@ -36,8 +36,11 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CHabilityController* Hab                         = new CHabilityController();
     Manager->addComponentToEntity(Hab,             gg::HAB, hero);
 
-    CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/BinaryFiles/BinaryModels/Hero.modelgg", moradoDeLos80);
-    Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, hero);
+    CDynamicModel* DynamicModel       = new CDynamicModel(moradoDeLos80);
+    Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, hero);
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Standing"));
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Walking"));
+    DynamicModel->ToggleAnimation(0, 2);
 
     CRigidBody* RigidBody               = new CRigidBody(false, false,"", Position.x, Position.y, Position.z, 0.581/2,1.89/2, 0.314/2, 50, 0,0,0);
     Manager->addComponentToEntity(RigidBody,        gg::RIGID_BODY, hero);
@@ -107,7 +110,7 @@ uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
 
     CDynamicModel* DynamicModel       = new CDynamicModel(moradoDeLos80);
-    Manager->addComponentToEntity(DynamicModel, gg::RENDERABLE_3D, Enemy);
+    Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, Enemy);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Running"));
     DynamicModel->ToggleAnimation(0, 2);
 

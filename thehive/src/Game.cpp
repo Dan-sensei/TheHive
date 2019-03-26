@@ -94,7 +94,7 @@ void Game::Init(){
     // BinaryParser::LoadLevelData("assets/BinaryFiles/TAMESIS.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/END.data");
     Engine2D->InitHUD();
-    
+
 
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
@@ -118,7 +118,7 @@ void Game::Init(){
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
 
-    //sF->createSoldier(playerpos->getPosition(), 10);
+    sF->createSoldier(playerpos->getPosition(), 10);
 
     // uint16_t n = Manager->createEntity();
     // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/NavmeshCITY.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,3,0), glm::vec3());
@@ -168,7 +168,7 @@ void Game::Update(){
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
 
-    Director->update(DeltaTime);
+    //Director->update(DeltaTime);
 
 
     soundSys->update();
@@ -201,7 +201,7 @@ void Game::Update(){
 
     //Engine2D->draw();
     // Consola por pantalla
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     // //std::cout << " - END DRAW" << '\n';

@@ -1,7 +1,9 @@
 #include "ZDynamicMesh.hpp"
+#include <ShaderUniformMapping.hpp>
+#include <iostream>
 
 ZDynamicMesh::ZDynamicMesh()
-:CurrentAnimation(0), shader(nullptr), zmat(nullptr)
+:CurrentAnimation(0), shader(nullptr), zmat(nullptr), CurrentFrame(0), NextFrame(0), NFrames(0)
 {
     Animations.reserve(5);
 }
@@ -17,10 +19,13 @@ void ZDynamicMesh::assignMaterial(ZMaterial* material_){
     shader = zmat->getShader();
 }
 
-void ZDynamicMesh::SwitchAnimation(uint8_t Animation, float TimeToComplete){
+void ZDynamicMesh::SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes){
     CurrentAnimation = Animation;
     DeltaTime.Restart();
-    Animations[Animation]->setAnimationTime(TimeToComplete);
+    TimeBetweenAnimations = TimeBetweenKeyframes;
+    Timer = 0;
+    CurrentFrame = 0;
+    NFrames = Animations[Animation]->Keyframes.size() - 1;
 }
 
 void ZDynamicMesh::AddAnimation(ZAnimationData* Anim){
@@ -32,16 +37,22 @@ void ZDynamicMesh::beginDraw(){
     zmat->Bind();
 
     // MODELO
-    GLuint M = shader->getUniformLocation("M");
-    glUniformMatrix4fv(M,1,GL_FALSE,&modelMatrix[0][0]);
+    glUniformMatrix4fv(_U_MODEL,1,GL_FALSE,&modelMatrix[0][0]);
 
     // MODELO*VISTA*PERSPECTIVA
     glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
-    GLuint MVP = shader->getUniformLocation("MVP");
-    glUniformMatrix4fv(MVP,1,GL_FALSE,&MVP_L[0][0]);
+    glUniformMatrix4fv(_U_MVP,1,GL_FALSE,&MVP_L[0][0]);
 
-    unsigned int TIME = shader->getUniformLocation("TweenFactor");
-    Animations[CurrentAnimation]->draw(DeltaTime.Restart().Seconds(), TIME);
+    Timer += DeltaTime.Restart().Seconds();
+    if(Timer > TimeBetweenAnimations){
+        CurrentFrame = (CurrentFrame + 1) % NFrames;
+        NextFrame = (CurrentFrame + 1) % NFrames;
+        Timer -= TimeBetweenAnimations;
+    }
+
+    glUniform1f(_U_BLEND_FACTOR, Timer/TimeBetweenAnimations);
+
+    Animations[CurrentAnimation]->draw(CurrentFrame, NextFrame);
 }
 
 void ZDynamicMesh::endDraw(){}

@@ -1,5 +1,7 @@
 #include "SurrealEngine.hpp"
 #include <glm/gtx/matrix_decompose.hpp>
+#include <iostream>
+
 
 bool* SurrealEngine::KEYS = new bool[349];
 bool SurrealEngine::LCLICK = false;
