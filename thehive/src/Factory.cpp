@@ -391,9 +391,15 @@ uint16_t Factory::createPickableItem(const glm::vec3 &_position){
     return item;
 }
 
-uint16_t Factory::createTouchableObject(const std::string &_path, const glm::vec3 &_position, const glm::vec3 &_rotation, const uint16_t &_id, const glm::vec3 &vel, const int &_dur, uint16_t _item){
+uint16_t Factory::createTouchableObject(const std::string &_path, const glm::vec3 &_position, const glm::vec3 &_rotation, const uint16_t &_id, const glm::vec3 &vel, const int &_dur, int type, uint16_t _item){
     uint16_t t_obj = Manager->createEntity();
-    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Morado");
+    ZMaterial* moradoDeLos80=Singleton<AssetManager>::Instance()->getMaterial("Grey");
+
+    if (type==1)
+    moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Grey");
+
+    else
+    moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Red");
 
     // t_obj    : Objeto que va a disparar el evento
     // _position: Posicion del interruptor
