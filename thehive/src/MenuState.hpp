@@ -10,6 +10,7 @@ class ggDynWorld;
 //#include <iostream>
 #include "States/State.hpp"
 #include "GameEngine/GUIController.hpp"
+#include <FMOD/SoundSystem.hpp>
 
 class MenuState : public State{
 public:
@@ -39,6 +40,8 @@ private:
     ObjectManager* Manager;
     ggDynWorld* world;
     GUIController cont;
+
+    SoundSystem* SS;
 
 };
 

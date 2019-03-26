@@ -16,12 +16,16 @@
     //}
     Hability1::Hability1 (int _id):Hability(_id,0,4000)
     {
+        SS = Singleton<SoundSystem>::Instance();
 
+        s_hab = new SonidoNormal();
+        SS->createSound("event:/SFX/Jugador/Habilidades/Ultrasonido", s_hab);
     }
     Hability1::Hability1 (){
 
     }
     Hability1::~Hability1 (){
+        delete s_hab;
     }
 
     Hability1::Hability1 (const Hability1 &orig){
@@ -49,5 +53,7 @@
         CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, id));
         float id=cTransform->getEntityID();
         EventSystem->PulsoTrigger(kTrig_Aturd,0,cTransform->getPosition(),500,mes);
+
+        s_hab->play();
 
     }

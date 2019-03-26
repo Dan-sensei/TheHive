@@ -86,13 +86,13 @@ void Game::Init(){
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
     BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/PASEO.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/PARQUE.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/TAMESIS.data");
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/END.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/PASEO.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/PARQUE.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/TAMESIS.data");
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/END.data");
     Engine2D->InitHUD();
 
 
@@ -105,7 +105,7 @@ void Game::Init(){
 
     uint16_t h = BinaryParser::ReadRespawnNodesData("assets/BinaryFiles/RESPAWN.data");
     // uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
-    // uint16_t h = sF->createHero(glm::vec3(451,17,54),-1);
+    // uint16_t h = sF->createHero(glm::vec3(436.704,4.06207,-36.0146),-1);
 
     //for (size_t i = 0; i < 50; i++) {
     //}
@@ -117,8 +117,8 @@ void Game::Init(){
 
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
+    //sF->createSoldierWandering(playerpos->getPosition(), 1000);
 
-    sF->createSoldier(playerpos->getPosition(), 10);
 
     // uint16_t n = Manager->createEntity();
     // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/NavmeshCITY.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,3,0), glm::vec3());

@@ -329,6 +329,9 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
                 Gun->cogida();
 
+                //Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
+                //Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+
                 // glm::vec3 pos(
                 //     static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().x,
                 //     static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID))->getPosition().y+5,

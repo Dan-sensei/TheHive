@@ -9,7 +9,7 @@ SoundSystem::SoundSystem(){
 	lowLevelSystem->setSoftwareFormat	(0,FMOD_SPEAKERMODE_5POINT1,0);
 	lowLevelSystem->setOutput			(FMOD_OUTPUTTYPE_AUTODETECT);
 
-	system->initialize	(512, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_NORMAL, 0);
+	system->initialize	(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0);
 
 	masterBank 	= nullptr;
 	system->loadBankFile("assets/FMOD/Master_Bank.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&masterBank);

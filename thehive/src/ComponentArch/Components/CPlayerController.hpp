@@ -50,6 +50,9 @@ class CPlayerController : public IComponent {
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
         bool canPickWeapon();
+        void invocasionhorda();
+        void invocasionwander();
+
 
         bool hasItem(const uint16_t&);
         bool pickItem(const uint16_t&);

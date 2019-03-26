@@ -21,6 +21,9 @@
 #include <SurrealEngine/SurrealEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <GameAI/Treecontroller.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
+
 class Treecontroller;
 class ObjectManager;
 
@@ -80,6 +83,10 @@ class CAIEnem : public IComponent {
 
         int getEnemyType();
         float getVelocity();
+
+        void playMovement();
+        void playAttack();
+        void playAttack2();
         // /////////////////////////////////////////////// //
         // JAVI CAMBIA LO DE LAS VARIABLES PUBLICAS !      //
         // /////////////////////////////////////////////// //
@@ -131,6 +138,12 @@ class CAIEnem : public IComponent {
         bool            imAttacking;
         bool            isPlayerAttacking;
         bool            closerAllyIsDead;
+
+        SoundSystem* SS;
+
+        SoundEvent* s_caminar;
+        SoundEvent* s_atacar;
+        SoundEvent* s_atacar2;
         //bool            CanIReset;
 
         void enableVisualDebug();
