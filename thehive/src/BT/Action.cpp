@@ -437,6 +437,8 @@ void Action::hit(){
         ht->quitarvida(0.5+(yo->getRage()/2));
 
         s = BH_RUNNING;
+
+        yo->playAttack();
     }
 
     cont_hit++;

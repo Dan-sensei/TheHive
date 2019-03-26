@@ -7,7 +7,28 @@
 #include "SurrealEngine/Boton2D.hpp"
 #include "SurrealEngine/Cuadrado2D.hpp"
 #include "SurrealEngine/Texto2D.hpp"
+
+Motor2D::Motor2D(){
+    motor = Singleton<SurrealEngine>::Instance();
+
+    //font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
+    //irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
+
+    //ancho=(driver->getScreenSize().Width/2);
+    //alto=(driver->getScreenSize().Height/2);
+
+    SS = Singleton<SoundSystem>::Instance();
+
+    s_hover = new SonidoNormal();
+    SS->createSound("event:/SFX/Menu/Seleccionar",s_hover);
+
+    s_seleccionar = new SonidoNormal();
+    SS->createSound("event:/SFX/Menu/Aceptar",s_seleccionar);
+}
+
+
 Motor2D::~Motor2D(){
+    //delete s_hover;
     CLINMenu();
 }
 void Motor2D::draw(){
@@ -68,10 +89,14 @@ int Motor2D::checkbuton(){
     while(it!=BOTONES.end()){
         auto but=*it;
         if(but->checkOn(x, y)){
+            s_seleccionar->play();
             return but->getType();
         }
         it++;
     }
+
+
+
     return -1;
 
 
@@ -85,8 +110,13 @@ void Motor2D::aplyhover(){
         if(but->checkOn(x, y)){
             ////std::cout << "encima" << '\n';
             //setImage
+            if(!but->getHov()){
+                s_hover->play();
+            }
+
             but->hover(true);
-            //s_seleccionar->play();
+
+
         }
         else{
 
@@ -223,15 +253,7 @@ void Motor2D::setWeaponImg(int tipo,std::string img){
 }
 
 
-Motor2D::Motor2D(){
-    motor = Singleton<SurrealEngine>::Instance();
 
-    //font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
-    //irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
-
-    //ancho=(driver->getScreenSize().Width/2);
-    //alto=(driver->getScreenSize().Height/2);
-}
 std::string  Motor2D::BoolToString(bool b)
 {
   if(b){
@@ -541,6 +563,7 @@ void Motor2D::CLINMenu(){
     //std::vector<Cuadrado2D*> RECTANGULOS;
     //std::vector<Boton2D*> BOTONES;
     //std::vector<Boton2D*> TEXT;
+
     auto it = IMAGENES.begin();
     while(it!=IMAGENES.end()){
         delete it->second;

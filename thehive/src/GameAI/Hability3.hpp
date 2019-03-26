@@ -5,6 +5,8 @@
 #include <chrono>
 #include <GameEngine/Motor2D.hpp>
 #include "Hability.hpp"
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
 //#include <string>
 
 class CTriggerSystem;
@@ -20,6 +22,9 @@ public:
 
 private:
 
+    SoundSystem* SS;
+
+    SoundEvent* s_hab;
 
 
 };

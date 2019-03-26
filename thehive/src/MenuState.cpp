@@ -46,12 +46,12 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 MenuState::MenuState():cont(){
     Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
+    SS = Singleton<SoundSystem>::Instance();
     Engine->HideCursor(false);
 }
 
 MenuState::~MenuState(){
     CLIN();
-
 }
 
 void MenuState::Init(){
@@ -80,6 +80,7 @@ void MenuState::Update(){
     Engine->BeginDraw();
     Engine->draw();
     cont.update();
+    SS->update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
     Singleton<Motor2D>::Instance()->draw();

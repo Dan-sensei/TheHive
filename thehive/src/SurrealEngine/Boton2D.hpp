@@ -29,6 +29,7 @@ class Boton2D {
         bool checkOn(float x,float y);
         void hover(bool dato);
         int getType();
+        bool getHov();
 
 
 

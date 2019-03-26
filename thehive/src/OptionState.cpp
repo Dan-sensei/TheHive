@@ -54,6 +54,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 OptionState::OptionState():cont(){
     Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
+    SS = Singleton<SoundSystem>::Instance();
     Engine->HideCursor(false);
 }
 
@@ -90,6 +91,8 @@ void OptionState::Update(){
 
     Engine->EndDraw();
     Engine->resetClickVariable();
+
+    SS->update();
 
 }
 
