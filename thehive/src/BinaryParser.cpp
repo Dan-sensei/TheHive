@@ -1,9 +1,10 @@
- #include "BinaryParser.hpp"
+#include "BinaryParser.hpp"
 #include <fstream>
 #include <experimental/filesystem>
 #include <ComponentArch/Components/ComponentHeaders.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 
+bool aux_separator = false;
 
 template<typename T>
 std::istream & GG_Read(std::istream& _istream, T& value){
@@ -124,34 +125,58 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         ZMaterial* Dark;
 
         AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
+        int rand;
+
         switch(MODEL){
-            case 1: Dark = _AssetManager->getMaterial("Metal");
+            //nave
+            case 1: Dark = _AssetManager->getMaterial("White");
+                    break;
+            //casa inglesa
+            case 2: rand = gg::genIntRandom(0,1);
+                    if(rand == 0)
+                    Dark = _AssetManager->getMaterial("House");
+                    if(rand == 1)
+                    Dark = _AssetManager->getMaterial("House2");
                     break;
             case 3: Dark = _AssetManager->getMaterial("Metal");
                     break;
-            case 4: Dark = _AssetManager->getMaterial("Grey");
+            //container
+            case 4: Dark = _AssetManager->getMaterial("Container");
                     break;
+            //farola
             case 5: Dark = _AssetManager->getMaterial("Farola");
                     break;
-            case 6: Dark = _AssetManager->getMaterial("White");
+            //Separador
+            case 6: rand = gg::genIntRandom(0,1);
+                    if(rand == 0)
+                    Dark = _AssetManager->getMaterial("Red");
+                    if(rand == 1)
+                    Dark = _AssetManager->getMaterial("White");
                     break;
             case 7: Dark = _AssetManager->getMaterial("Grey");
                     break;
             case 8: Dark = _AssetManager->getMaterial("Grey");
                     break;
-            case 13: int rand;
-                    rand = gg::genIntRandom(0,2);
+            //basura1
+            case 11: Dark = _AssetManager->getMaterial("Trash");
+                    break;
+            //coche
+            case 13:rand = gg::genIntRandom(0,2);
                     if(rand == 0)
-                    Dark = _AssetManager->getMaterial("CarRed");
+                    Dark = _AssetManager->getMaterial("Car1");
                     if(rand == 1)
-                    Dark = _AssetManager->getMaterial("CarGreen");
+                    Dark = _AssetManager->getMaterial("Car2");
                     if(rand == 2)
-                    Dark = _AssetManager->getMaterial("CarYellow");
+                    Dark = _AssetManager->getMaterial("Car3");
+                    break;
+            case 29: Dark = _AssetManager->getMaterial("Door");
                     break;
             case 37: Dark = _AssetManager->getMaterial("Grey");
                     break;
+            //arbol
             case 122: Dark = _AssetManager->getMaterial("Tree");
                     break;
+            //suelo inicio
             case 144: Dark = _AssetManager->getMaterial("Ground");
                     break;
             default: Dark = _AssetManager->getMaterial("Default");
@@ -420,7 +445,7 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
             }
 
             auto Manager = Singleton<ObjectManager>::Instance();
-            ZMaterial* Dark = Singleton<AssetManager>::Instance()->getMaterial("Morado");
+            ZMaterial* Dark = Singleton<AssetManager>::Instance()->getMaterial("Door");
             uint16_t NewEntity = Manager->createEntity();
 
             std::string str = "assets/BinaryFiles/BinaryModels/"+std::to_string(obj)+".modelgg";
@@ -448,8 +473,14 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
             Rotation = glm::vec3(trx,tory,trz);
             glm::vec3 Vel(0.0,0.1,0.0);
 
+            uint16_t NewToggle;
             // INTERRUPTOR
-            uint16_t NewToggle = fac->createTouchableObject(str,Position,Rotation,NewEntity,Vel,3200,key);
+            if(hasPickable){
+                NewToggle = fac->createTouchableObject(str,Position,Rotation,NewEntity,Vel,3200,1 ,key);
+            }
+            else{
+                NewToggle = fac->createTouchableObject(str,Position,Rotation,NewEntity,Vel,3200,2,key);
+            }
 
             if(toggleHasCollider){
                 CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(tcx, tcy, tcz, tcrx,tcry,tcrz,tcrw, tcsx/2, tcsy/2, tcsz/2);

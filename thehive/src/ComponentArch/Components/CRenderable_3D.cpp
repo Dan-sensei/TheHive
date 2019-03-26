@@ -23,6 +23,10 @@ void CRenderable_3D::Init(){
     MHandler_SETPTRS();
 }
 
+void CRenderable_3D::changeMaterial(ZMaterial* material){
+    Surreal->bindMaterialToMesh(_3DModel, material);
+}
+
 void CRenderable_3D::setVisibility(bool flag){
     _3DModel->getPadre()->getPadre()->setVisibility(flag);
 }

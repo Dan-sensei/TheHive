@@ -47,6 +47,7 @@ class BinaryParser{
         BinaryParser(const BinaryParser &orig) = delete;
 
 
+
 };
 
 #endif

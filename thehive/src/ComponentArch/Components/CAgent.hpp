@@ -16,6 +16,7 @@
 #include <ComponentArch/Components/CAIEnem.hpp>
 #include <SurrealEngine/SurrealEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
+#include <SurrealEngine/AssetManager.hpp>
 #include <Singleton.hpp>
 #include <BinaryParser.hpp>
 
@@ -69,6 +70,7 @@ class CAgent : public IComponent {
         SurrealEngine      *Engine;
         CTransform      *cTransform;
         ObjectManager   *oManager;
+        AssetManager    *_AssetManager;
 
 
 
