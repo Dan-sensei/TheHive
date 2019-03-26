@@ -58,12 +58,17 @@ void SurrealEngine::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const
 
 void SurrealEngine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {  KEYS[key] = action; }
 
-void SurrealEngine::resetClicked(){
-    clicked=false;
+// void SurrealEngine::resetClicked(){
+//     clicked=false;
+// }
+// bool SurrealEngine::isLClicked(){
+//     return clicked;
+// }
+
+void SurrealEngine::resetClickVariable(){
+    LCLICK = false;
 }
-bool SurrealEngine::isLClicked(){
-    return clicked;
-}
+
 void SurrealEngine::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
         clicked=true;

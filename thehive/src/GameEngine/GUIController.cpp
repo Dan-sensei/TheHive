@@ -139,7 +139,6 @@ void GUIController::gotoControlls(){
 //but7
 void GUIController::StartGame(){
     Engine2D->CLINMenu();
-
     Singleton<StateMachine>::Instance()->AddState(new Game(),false);
 }
 //but8
@@ -160,6 +159,7 @@ void GUIController::dif3(){
 }
 //but12
 void GUIController::Continue(){
+    Engine->resetClickVariable();
     Singleton<StateMachine>::Instance()->RemoveState();
 }
 //but13

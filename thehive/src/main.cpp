@@ -60,7 +60,6 @@ int main(int argc, char const *argv[]) {
 
     while(Engine->isWindowOpen()) {
         mainstates->ProcessStateChanges();
-        mainstates->prueba();
         mainstates->GetActiveState()->Update();
     }
 

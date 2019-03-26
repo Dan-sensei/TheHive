@@ -55,9 +55,9 @@ class SurrealEngine {
         void draw();
         void EndDraw();
 
-        bool isLClicked();
+        //bool isLClicked();
         void close();
-        void resetClicked();
+        //void resetClicked();
         glm::vec3 vectorUp();
         glm::vec3 vectorRigth();
         glm::mat4  getMVP();
@@ -86,6 +86,8 @@ class SurrealEngine {
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
+        void resetClickVariable();
+
     private:
         SurrealEngine();
 
@@ -112,7 +114,7 @@ class SurrealEngine {
 
         static bool* KEYS;
         static bool LCLICK;
-        static bool clicked;
+        //static bool clicked;
         static int wheel;
         static int IdButon;
 

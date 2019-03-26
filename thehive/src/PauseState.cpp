@@ -1,6 +1,6 @@
 #include "PauseState.hpp"
 
-//#include <iostream>
+#include <iostream>
 #include <cstdint>
 #include <string>
 #include <stack>
@@ -25,7 +25,6 @@
 PauseState::PauseState():cont(){
     Engine = Singleton<SurrealEngine>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
-    Engine->HideCursor(false);
     sky.init();
 }
 
@@ -35,8 +34,6 @@ PauseState::~PauseState(){
 }
 
 void PauseState::Init(){
-
-
 
     Engine->HideCursor(false);
     Singleton<Motor2D>::Instance()->InitPause();

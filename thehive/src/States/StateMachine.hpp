@@ -16,8 +16,6 @@ class StateMachine{
 		void RemoveState(int cantidad=1);
 		// Run at start of each loop in Game.cpp
 		void ProcessStateChanges();
-		void prueba();
-
 		State* GetActiveState();
 		void clin();
 	private:

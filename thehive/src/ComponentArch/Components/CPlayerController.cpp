@@ -300,6 +300,7 @@ void CPlayerController::FixedUpdate(){
 
     if(Engine->key(gg::GG_P)) {
         //Engine->Close();
+
         Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
 
     }
