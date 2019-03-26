@@ -97,7 +97,7 @@ void Motor2D::aplyhover(){
 
 
 }
-void Motor2D::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){
+Imagen2D* Motor2D::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){
     float x,y,w,h;
     x=_posx/100.0;
     y=_posy/100.0;
@@ -108,6 +108,7 @@ void Motor2D::AddImage(std::string palabra,std::string source,float _posx,float 
 
     ////std::cout << "nuevo " << nuevo << '\n';
     IMAGENES.push_back(std::make_pair(palabra,nuevo));
+    return nuevo;
     //
 }
 Boton2D* Motor2D::addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus,glm::vec4 _color){
@@ -155,6 +156,7 @@ void Motor2D::setVolMusic(int _vol){
 VolMusic=_vol;
 }
 void Motor2D::changeWeapon(){
+    //cambiamos las balas
     int aux;
     aux=balaP;
     balaP=balaS;
@@ -163,6 +165,28 @@ void Motor2D::changeWeapon(){
     aux=balaP_TOT;
     balaP_TOT=balaS_TOT;
     balaS_TOT=aux;
+
+
+    Imagen2D* armaP;
+    Imagen2D* armaS;
+    // hab3
+    auto it=IMAGENES.begin();
+    while(it!=IMAGENES.end()){
+    if(it->first=="1arma"||it->first=="0arma"){
+            if(it->first=="1arma"){
+                armaS=it->second;
+            }
+            else{
+                armaP=it->second;
+            }
+        }
+        it++;
+    }
+    auto str =armaP->getImage();
+    armaP->setImage(armaS->getImage());
+    armaS->setImage(str);
+
+
 }
 void Motor2D::setbullet(int tipo,int b_act, int b_tot){
     if(tipo==0){
@@ -172,6 +196,29 @@ void Motor2D::setbullet(int tipo,int b_act, int b_tot){
     }else {
         balaS       = b_act;
         balaS_TOT   = b_tot;
+    }
+}
+void Motor2D::setWeaponImg(int tipo,std::string img){
+    Imagen2D* armaP;
+    Imagen2D* armaS;
+    // hab3
+    auto it=IMAGENES.begin();
+    while(it!=IMAGENES.end()){
+    if(it->first=="1arma"||it->first=="0arma"){
+            if(it->first=="1arma"){
+                armaS=it->second;
+            }
+            else{
+                armaP=it->second;
+            }
+        }
+        it++;
+    }
+
+    if(tipo==0){//P
+            armaP->setImage(img);
+    }else {//S
+        armaS->setImage(img);
     }
 }
 
@@ -405,6 +452,7 @@ void Motor2D::InitHUD(){
 
 
     AddImage("hab3","assets/HUD/hab3.png",  22,90,7,10);
+    //AddImage("hab3","assets/HUD/AMETRALLADORA_HUD.png",  22,90,7,10);
     boton=addRect(                          22,90,7,10);
     boton->setColor(glm::vec4(1,1,1,0.25));
 
@@ -416,7 +464,8 @@ void Motor2D::InitHUD(){
     h=15;
     _x= x+w*0.65;
     _y= y+h*0.7;
-    AddImage("0arma","assets/HUD/cf_hud_d.jpg",75,85,20,15);//secundaria
+    auto yep=AddImage("1arma","assets/HUD/cf_hud_b.jpg",75,85,20,15);//secundaria
+    yep->setZindex(-0.9997);
     addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
     x=70;
     y=80;
@@ -424,7 +473,9 @@ void Motor2D::InitHUD(){
     h=15;
     _x= x+w*0.65;
     _y= y+h*0.7;
-    AddImage("1arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
+    //AddImage("1arma","assets/HUD/AMETRALLADORA_HUD.png",70,80,20,15); // Principal
+    yep=AddImage("0arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
+    yep->setZindex(-0.9998);
     addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 
 
@@ -458,8 +509,8 @@ void Motor2D::InitHUD(){
     mapHudFunctions.insert(std::make_pair("hab2",&Motor2D::HUD_hability2));
     mapHudFunctions.insert(std::make_pair("hab3",&Motor2D::HUD_hability3));
     mapHudFunctions.insert(std::make_pair("vida1",&Motor2D::HUD_vida));
-    mapHudFunctions.insert(std::make_pair("0arma",&Motor2D::HUD_arma0));//secundaria
-    mapHudFunctions.insert(std::make_pair("1arma",&Motor2D::HUD_arma1));
+    mapHudFunctions.insert(std::make_pair("1arma",&Motor2D::HUD_arma0));//secundaria
+    mapHudFunctions.insert(std::make_pair("0arma",&Motor2D::HUD_arma1));
 
     perc        =   0;
     perc2       =   0;
@@ -543,21 +594,8 @@ void Motor2D::DisplayHUD(){
     if(true){
         auto it = IMAGENES.begin();
         float X,Y,H,W,T_W,T_H;
-        Imagen2D* armaP;
-        Imagen2D* armaS;
         while(it!=IMAGENES.end()){
 
-            if(it->first=="0arma"||it->first=="1arma"){
-                if(it->first=="0arma"){
-                    armaS=it->second;
-                }
-                else{
-                    armaP=it->second;
-                }
-                it++;
-                continue;
-
-            }
             auto img =it->second;
             img->Draw();
             if(mapHudFunctions.find(it->first) != mapHudFunctions.end())
@@ -565,11 +603,7 @@ void Motor2D::DisplayHUD(){
 
             it++;
         }
-        //mostramos una u otra
-        armaP->Draw();
-        (this->*mapHudFunctions["1arma"])(armaP);
-        armaS->Draw();
-        (this->*mapHudFunctions["0arma"])(armaS);
+
         RECTANGULOS[5]->Draw();
         RECTANGULOS[6]->Draw();
 

@@ -93,6 +93,8 @@ void Game::Init(){
     // BinaryParser::LoadLevelData("assets/BinaryFiles/PARQUE.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/TAMESIS.data");
     // BinaryParser::LoadLevelData("assets/BinaryFiles/END.data");
+    Engine2D->InitHUD();
+    
 
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);

@@ -53,6 +53,7 @@ class Motor2D{
         int InitAIDebug(int id);
         void prueba();
         void changeWeapon();
+        void setWeaponImg(int tipo,std::string);
 
         //int InitPause2();
         //int InitPause3();
@@ -63,7 +64,7 @@ class Motor2D{
 
         //void AddTextToBuffer(const std::string &Text, const gg::Color &color);
         //void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
-        void AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
+        Imagen2D* AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
         Boton2D* addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus=false,glm::vec4 _color=glm::vec4(0,0.0,0,1));
         void addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(0,0,0,1),float tam=20);
         Cuadrado2D* addRect(float x, float y,float w, float h);

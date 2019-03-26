@@ -50,14 +50,21 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     // std::string Desen_pistola = "event:/SFX/Armas/Pistola/PistolaDesenfundado";
     // std::string Vacia_pistola = "event:/SFX/Armas/Pistola/PistolaVacia";
 
-    std::string sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia;
+    std::string sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img;
     float dmg,cdc,relDT,rng;
     int tb;
     int _type = 0;
-    gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_type,sonido_disparo,sonido_recarga,sonido_desenfundado, sonido_vacia);
+    gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_type,sonido_disparo,sonido_recarga,sonido_desenfundado, sonido_vacia,img);
+
+
+
+
 
     CGun *gun = new CGun(dmg,cdc,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia );
     Manager->addComponentToEntity(gun, gg::GUN, hero);
+
+    Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+    Singleton<Motor2D>::Instance()->setbullet(0,gun->getBullets(),gun->getTotalBullets());
 
     CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);

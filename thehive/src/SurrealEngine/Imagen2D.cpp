@@ -55,7 +55,7 @@ void Imagen2D::setSesgado(float res){
 }
 
 Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(-0.9999),inicio(nullptr),fin(nullptr)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(-0.9999),inicio(nullptr),fin(nullptr),texturaURL(Name)
 {
     auto sh=Singleton<AssetManager>::Instance();
     inicio=sh->getShader("2D");
@@ -160,8 +160,12 @@ void Imagen2D::setColor(glm::vec4 _color){
 }
 
 void Imagen2D::setImage(const std::string &Name){
+    texturaURL=Name;
     auto Manager = Singleton<AssetManager>::Instance();
     textureID=Manager->getTexture(Name,   GN::RGBA,0);
+}
+std::string Imagen2D::getImage(){
+    return texturaURL;
 }
 void Imagen2D::setZindex(float res){
     index=res;

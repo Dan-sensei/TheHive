@@ -18,7 +18,7 @@ CAgent::CAgent(const unsigned long &_flags)
     dwTriggerFlags = _flags;
     nDeltaTime=0;
     oManager = Singleton<ObjectManager>::Instance();
-    
+
 }
 
 CAgent::~CAgent() {
@@ -284,7 +284,7 @@ void CAgent::STAY_func_kTrig_UnLoadZone   (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Gunfire){
         float   dmg, cdc, relDT, rng;
-        std::string sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia;
+        std::string sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia,img;
         int     tb;
         CGun *gun = static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID));
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
@@ -302,13 +302,14 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
+                gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
 
                 // Le anyado la nueva
                 CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
                 cpc->setSecondWeapon(Gun);
                 Gun->cogida();
                 Singleton<Motor2D>::Instance()->setbullet(1,Gun->getBullets(),Gun->getTotalBullets());
+                Singleton<Motor2D>::Instance()->setWeaponImg(1,img);
             }
             else{
                 //cambiamos la principal
@@ -317,7 +318,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
+                gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
 
                 // Elimino el arma que tiene la entidad
                 oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
@@ -343,6 +344,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 glm::vec3 vec = (to-from)*30.f;
                 static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,weapon))->applyCentralForce(vec);
                 Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
+                Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
             }
 
             // Destruyo el arma del suelo y su evento
@@ -352,12 +354,14 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
         }
         else{
             // NO TIENE ARMA
-            gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
+            gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
 
             // Creo y anyado un arma a la entidad
             CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
             oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
             Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
+            Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+
 
             // Destruyo el arma del suelo y su evento
             int id = _pRec->data.find(kDat_EntId);

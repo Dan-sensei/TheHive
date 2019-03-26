@@ -89,7 +89,7 @@ uint16_t gg::genIntRandom(uint16_t min, uint16_t max){
     return distribution(gen);
 }
 
-void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, int& tb, int _type, std::string& sonido_disparo,std::string& sonido_recarga,std::string& sonido_desenfundado, std::string& sonido_vacia){
+void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, int& tb, int _type, std::string& sonido_disparo,std::string& sonido_recarga,std::string& sonido_desenfundado, std::string& sonido_vacia,std::string& imagen){
     switch (_type){
         case 0:
             // Rifle
@@ -98,7 +98,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             tb  = 30;
             relDT = 1;
             rng = 0.7;
-
+            imagen="assets/HUD/AMETRALLADORA_HUD.png";//ametralladora y rifle
             sonido_disparo = "event:/SFX/Armas/Rifle/RifleDisparo";
             sonido_recarga = "event:/SFX/Armas/Rifle/RifleRecarga";
             sonido_desenfundado ="event:/SFX/Armas/Rifle/RifleDesenfundado";
@@ -113,6 +113,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             relDT = 0.3;
             rng = 0.4;
 
+            imagen="assets/HUD/ESCOPETA_HUD.png";
             sonido_disparo = "event:/SFX/Armas/Escopeta/EscopetaDisparo";
             sonido_recarga = "event:/SFX/Armas/Escopeta/EscopetaRecarga";
             sonido_desenfundado ="event:/SFX/Armas/Escopeta/EscopetaDesenfundado";
@@ -127,6 +128,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             relDT = 6;
             rng = 0.7;
 
+            imagen="assets/HUD/AMETRALLADORA_HUD.png";//ametralladora y rifle
             sonido_disparo = "event:/SFX/Armas/Ametralladora/AmetralladoraDisparo";
             sonido_recarga = "event:/SFX/Armas/Ametralladora/AmetralladoraRecarga";
             sonido_desenfundado ="event:/SFX/Armas/Ametralladora/AmetralladoraDesenfundado";
@@ -141,6 +143,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             relDT = 1.8;
             rng = 0.5;
 
+            imagen="assets/HUD/PISTOLA_HUD.png";
             sonido_disparo = "event:/SFX/Armas/Pistola/PistolaDisparo";
             sonido_recarga = "event:/SFX/Armas/Pistola/PistolaRecarga";
             sonido_desenfundado ="event:/SFX/Armas/Pistola/PistolaDesenfundado";
@@ -154,6 +157,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             tb  = -1;
             relDT = -1;
             rng = 0.1;
+            imagen="assets/HUD/assets/HUD/cf_hud_b.jpg";
 
             break;
     }

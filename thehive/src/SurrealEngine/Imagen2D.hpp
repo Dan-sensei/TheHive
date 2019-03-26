@@ -18,6 +18,7 @@ class Imagen2D {
         //void init();
         void setPos(float x,float y,float w,float h);
         void setImage(const std::string &Name);
+        std::string getImage();
 
         void setColor(glm::vec4 _color);
         float getX();
@@ -28,6 +29,7 @@ class Imagen2D {
     private:
         unsigned long Zindex;
         unsigned long textura;
+        std::string texturaURL;
         unsigned long inputColour;
         Shader* inicio;
         Shader* fin;
