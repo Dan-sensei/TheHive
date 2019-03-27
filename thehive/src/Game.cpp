@@ -168,7 +168,7 @@ void Game::Update(){
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
 
-    Director->update(DeltaTime);
+    //Director->update(DeltaTime);
 
 
     soundSys->update();
@@ -201,7 +201,7 @@ void Game::Update(){
 
     //Engine2D->draw();
     // Consola por pantalla
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     // //std::cout << " - END DRAW" << '\n';

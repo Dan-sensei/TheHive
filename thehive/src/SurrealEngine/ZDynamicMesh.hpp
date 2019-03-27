@@ -12,7 +12,7 @@ class ZDynamicMesh : public TEntidad {
         virtual ~ZDynamicMesh();
 
         void assignMaterial(ZMaterial* material_);
-        void SwitchAnimation(uint8_t Animation, float TimeToComplete);
+        void SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes);
         void AddAnimation(ZAnimationData* Anim);
 
         virtual void beginDraw();
@@ -20,10 +20,20 @@ class ZDynamicMesh : public TEntidad {
 
     private:
         gg::Clock DeltaTime;
+        
         std::vector<ZAnimationData*> Animations;
         Shader* shader;
         ZMaterial* zmat;
+
+        double Timer;
+        float TimeBetweenAnimations;
+
         uint8_t CurrentAnimation;
+        uint8_t CurrentFrame;
+        uint8_t NextFrame;
+        uint8_t NFrames;
+
+
 };
 
 #endif

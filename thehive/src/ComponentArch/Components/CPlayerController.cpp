@@ -3,7 +3,8 @@
 #include <States/StateMachine.hpp>
 #include <PauseState.hpp>
 #include <IAState.hpp>
-
+#include "CDynamicModel.hpp"
+#include <AnimationLUT.hpp>
 
 //#include <GameAI/Hability.hpp>
 //#include <GameAI/Enumhabs.hpp>
@@ -106,6 +107,7 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
     cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()));
+    cDynamicModel = static_cast<CDynamicModel*>(Manager->getComponent(gg::DYNAMICMODEL, getEntityID()));
     // //std::cout << "llega" << '\n';
     hab = static_cast<CHabilityController*>(Manager->getComponent(gg::HAB, getEntityID()));
     //hab = static_cast<CHabilityController*>(Manager->getComponent(gg::HABILITY, getEntityID()));
@@ -283,6 +285,16 @@ auto pos=cTransform->getPosition();
         pulsacion_espacio = false;
     }
 
+    if(glm::length(force) < 0.1 ){
+        if(cDynamicModel->getCurrentAnimation() != A_HERO::STANDING){
+            cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);
+        }
+    }
+    else{
+        if(cDynamicModel->getCurrentAnimation() != A_HERO::WALKING){
+            cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.3);
+        }
+    }
     // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
     cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
 

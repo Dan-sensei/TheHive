@@ -2,8 +2,10 @@
 #include "AssetManager.hpp"
 #include <iostream>
 
+#include <ShaderUniformMapping.hpp>
+
 ZAnimationData::ZAnimationData()
-:IndexSize(0), NFrames(0), CurrentFrame(0), NextFrame(1), Timer(0)
+:IndexSize(0)
 {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -43,8 +45,7 @@ ZAnimationData::ZAnimationData()
 }
 
 ZAnimationData::ZAnimationData(const ZAnimationData &orig)
-:Keyframes(orig.Keyframes), IndexSize(orig.IndexSize), NFrames(orig.NFrames),
-CurrentFrame(orig.CurrentFrame), NextFrame(orig.NextFrame), Timer(orig.Timer){}
+:Keyframes(orig.Keyframes), IndexSize(orig.IndexSize){}
 
 ZAnimationData::~ZAnimationData(){}
 
@@ -57,25 +58,9 @@ void ZAnimationData::addKeyframe(const std::string &PathToKeyframeModel){
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,  Keyframes.back()->IndexBuffer);
         glBindVertexArray(0);
     }
-    NFrames = Keyframes.size();
 }
 
-void ZAnimationData::setAnimationTime(float _Time){
-    TimeBetweenAnimations = _Time/NFrames;
-    Timer = 0;
-    CurrentFrame = 0;
-}
-
-void ZAnimationData::draw(float DeltaTime, unsigned int TimeID){
-
-    Timer += DeltaTime;
-    if(Timer > TimeBetweenAnimations){
-        CurrentFrame = (CurrentFrame + 1) % NFrames;
-        NextFrame = (CurrentFrame + 1) % NFrames;
-        Timer -= TimeBetweenAnimations;
-    }
-
-    glUniform1f(TimeID, Timer/TimeBetweenAnimations);
+void ZAnimationData::draw(uint8_t CurrentFrame, uint8_t NextFrame){
     glBindVertexArray(VAO);
         glBindVertexBuffer(0, Keyframes[CurrentFrame]->VBOs[0], 0, 24);
         glBindVertexBuffer(1, Keyframes[CurrentFrame]->VBOs[1], 0, 8);
@@ -85,9 +70,4 @@ void ZAnimationData::draw(float DeltaTime, unsigned int TimeID){
 
         glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
     glBindVertexArray(0);
-
-
-
-
-
 }
