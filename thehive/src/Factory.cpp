@@ -63,7 +63,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 
 
 
-    CGun *gun = new CGun(dmg,cdc,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia );
+    CGun *gun = new CGun(dmg,cdc,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
     Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
@@ -386,7 +386,7 @@ uint16_t Factory::createPickableItem(const glm::vec3 &_position){
     CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, item);
 
-    CRenderable_3D *renderable = new CRenderable_3D("assets/BinaryFiles/BinaryModels/Cube.modelgg", moradoDeLos80);
+    CRenderable_3D *renderable = new CRenderable_3D("assets/BinaryFiles/BinaryModels/fusible.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, item);
 
     // CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
