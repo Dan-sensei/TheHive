@@ -26,6 +26,7 @@ CAgent::CAgent(const unsigned long &_flags)
 CAgent::~CAgent() {
 
     delete s_puerta;
+    delete s_fusible;
     std::list <CAgent*>::iterator it2 ;
     it2=CAgent::AgentList.begin();
     CAgent* pAgent=NULL;
@@ -48,6 +49,9 @@ void CAgent::Init(){
 
     s_puerta = new SonidoNormal();
     SS->createSound("event:/SFX/Entorno/PuertaEstacion", s_puerta);
+
+    s_fusible = new SonidoNormal();
+    SS->createSound("event:/Voces/Companyera/FrasePuerta", s_fusible);
 
     nCAgentID=getEntityID();
     addAgent(this);
@@ -388,6 +392,8 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
 
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
         if(item && !cpc->hasItem(item)){
+
+            s_fusible->play();
             // El heroe no ha cogido el item en concreto para realizar la accion
             //gg::cout("You shall not PASS!!!");
             return;

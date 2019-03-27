@@ -40,6 +40,7 @@ CPlayerController::CPlayerController()
 CPlayerController::~CPlayerController() {
     if(secondWeapon) delete secondWeapon;
     delete s_dash;
+    //delete s_pasos;
 }
 
 void CPlayerController::Init(){
@@ -90,6 +91,9 @@ void CPlayerController::Init(){
 
     s_dash = new SonidoNormal();
     SS->createSound("event:/SFX/Jugador/Habilidades/Dash", s_dash);
+
+    // s_pasos = new SonidoSuperficie();
+    // SS->createSound("event:/SFX/Jugador/Pasos", s_pasos);
 }
 
 
@@ -352,6 +356,13 @@ auto pos=cTransform->getPosition();
         Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
 
     }
+
+    // if(pressed){
+    //     if(s_pasos->isPlaying()){
+    //         s_pasos->setParameter("Superficie", 0);
+    //         s_pasos->play();
+    //    }
+    // }
 
 }
 

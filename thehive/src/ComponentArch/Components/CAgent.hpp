@@ -78,6 +78,7 @@ class CAgent : public IComponent {
         SoundSystem* SS;
 
         SoundEvent* s_puerta;
+        SoundEvent* s_fusible;
 
 
 

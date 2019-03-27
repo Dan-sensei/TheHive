@@ -20,6 +20,7 @@
 #include <SurrealEngine/Clock.hpp>
 #include <FMOD/SoundSystem.hpp>
 #include <FMOD/SonidoNormal.hpp>
+#include <FMOD/SonidoSuperficie.hpp>
 
 #define NUMBER_OF_ITEMS     3
 
@@ -105,6 +106,9 @@ class CPlayerController : public IComponent {
         bool debug1;
         bool debug2;
         float MULT_BASE;
+
+
+        //SoundEvent* s_pasos;
 
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
         CGun *secondWeapon;
