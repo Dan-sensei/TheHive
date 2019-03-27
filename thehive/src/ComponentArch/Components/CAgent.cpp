@@ -19,10 +19,13 @@ CAgent::CAgent(const unsigned long &_flags)
     nDeltaTime=0;
     oManager = Singleton<ObjectManager>::Instance();
     _AssetManager = Singleton<AssetManager>::Instance();
+    SS = Singleton<SoundSystem>::Instance();
 
 }
 
 CAgent::~CAgent() {
+
+    delete s_puerta;
     std::list <CAgent*>::iterator it2 ;
     it2=CAgent::AgentList.begin();
     CAgent* pAgent=NULL;
@@ -42,6 +45,9 @@ CAgent::~CAgent() {
 
 void CAgent::Init(){
     Engine = Singleton<SurrealEngine>::Instance();
+
+    s_puerta = new SonidoNormal();
+    SS->createSound("event:/SFX/Entorno/PuertaEstacion", s_puerta);
 
     nCAgentID=getEntityID();
     addAgent(this);
@@ -391,6 +397,8 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
             ZMaterial* Dark = _AssetManager->getMaterial("Red");
             //static_cast<CRenderable_3D*>(oManager->getComponent(gg::RENDERABLE_3D, item))->changeMaterial(Dark);
         }
+
+        s_puerta->play();
         // // Usa y destruye el item
         cpc->useItem(item);
 

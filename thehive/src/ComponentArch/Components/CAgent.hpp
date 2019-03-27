@@ -20,6 +20,9 @@
 #include <Singleton.hpp>
 #include <BinaryParser.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
+
 
 
 
@@ -71,6 +74,10 @@ class CAgent : public IComponent {
         CTransform      *cTransform;
         ObjectManager   *oManager;
         AssetManager    *_AssetManager;
+
+        SoundSystem* SS;
+
+        SoundEvent* s_puerta;
 
 
 

@@ -476,10 +476,10 @@ void BinaryParser::ReadEventsData(const std::string &BinaryFile){
             uint16_t NewToggle;
             // INTERRUPTOR
             if(hasPickable){
-                NewToggle = fac->createTouchableObject(str,Position,Rotation,NewEntity,Vel,3200,1 ,key);
+                NewToggle = fac->createTouchableObject(str,Position,Rotation,NewEntity,Vel,6000,1 ,key);
             }
             else{
-                NewToggle = fac->createTouchableObject(str,Position,Rotation,NewEntity,Vel,3200,2,key);
+                NewToggle = fac->createTouchableObject(str,Position,Rotation,NewEntity,Vel,6000,2,key);
             }
 
             if(toggleHasCollider){
