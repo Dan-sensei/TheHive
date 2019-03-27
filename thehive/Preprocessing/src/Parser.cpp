@@ -5,12 +5,13 @@
 int main(int argc, char const *argv[]) {
 
 
-    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/Aux2_Exported_NavMeshFlipped.obj", "NavmeshCITY");
-    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/TEST.obj",                        "TEST");
-    ModelParser::generateBinaryGG_StaticModel("../assets/Models/WEAPONS/pistola.obj",             "pistola");
-    ModelParser::generateBinaryGG_StaticModel("../assets/Models/WEAPONS/escopeta.obj",             "escopeta");
+    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/Aux2_Exported_NavMeshFlipped.obj",   "NavmeshCITY");
+    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/TEST.obj",                           "TEST");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/WEAPONS/pistola.obj",                   "pistola");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/WEAPONS/escopeta.obj",                  "escopeta");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/fusible.obj",                           "fusible");
 
-    for(uint16_t i = 1; i < 146; ++i){
+    for(uint16_t i = 1; i < 147; ++i){
         if(i == 144)
             ModelParser::generateBinaryGG_StaticModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i), false);
         else
@@ -18,7 +19,7 @@ int main(int argc, char const *argv[]) {
     }
 
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/HEROE/HERO_LOWLOWPOLY_FINAL.obj",                         "Hero");
-    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/TEST.obj",                        "TEST.modelgg");
+    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/TEST.obj",                           "TEST.modelgg");
 
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SoldierMov/SoldierMov0.obj",                        "SoldierMov0");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SoldierMov/SoldierMov1.obj",                        "SoldierMov1");
