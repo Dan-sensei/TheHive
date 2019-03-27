@@ -27,11 +27,13 @@ class SkyBox{
 		Shader* inicio;
 		Shader* fin;
 		SurrealEngine* engine;
-        unsigned int cubemapTexture;
+        unsigned int cubemapTexture[4];
         unsigned int skyboxVBO;
         unsigned int skyboxVAO;
 		unsigned int view;
 		unsigned int text;
+
+		int skyboxtype;
 
 };
 
