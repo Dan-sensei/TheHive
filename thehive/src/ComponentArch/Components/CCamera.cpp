@@ -18,7 +18,10 @@
 CCamera::CCamera(int8_t _b)
 :Target(nullptr), Engine(nullptr), cam(nullptr),
 InvertCamera(_b)
-{}
+{
+    CurrentUpdate = &CCamera::FollowTarget;
+    LastFreeCameraPosition = glm::vec3(150, 30, -60);
+}
 
 
 CCamera::~CCamera(){
@@ -52,6 +55,10 @@ void CCamera::resetMouse() {
 }
 
 void CCamera::CameraUpdate(){
+    (this->*CurrentUpdate)();
+}
+
+void CCamera::FollowTarget(){
     double x, y;
     Engine->getCursorPosition(x, y);
     t += (prevX - x) * 0.005f;
@@ -116,3 +123,61 @@ void CCamera::moveCameraPosition(glm::vec3 _offPos){
 glm::vec3 CCamera::getTargetPosition(){
     return CameraTarget;
 }
+
+void CCamera::ToogleFreeCamera(){
+    if(CurrentUpdate == &CCamera::FollowTarget){
+        CurrentUpdate = &CCamera::FreeCamera;
+        Engine->setPosition(cam, LastFreeCameraPosition);
+        t = 0;
+        p = 0;
+    }
+    else{
+        CurrentUpdate = &CCamera::FollowTarget;
+        t = 0;
+        p = 0;
+    }
+}
+
+void CCamera::FreeCamera(){
+    double x, y;
+    Engine->getCursorPosition(x, y);
+    t += (prevX - x) * 0.005f;
+    p += (y - prevY) * 0.005f * InvertCamera;
+
+    prevX = x;
+    prevY = y;
+
+    if(t < 0) t = 2*PI;
+    else if(t > 2*PI) t = 0;
+
+    if(p < -PI/2+0.2) p = -PI/2+0.2;
+    else if(p > PI/2 - 0.2) p = PI/2 - 0.2;
+
+    #define SPEED 0.5
+    if(Engine->key(gg::GG_W)){
+        glm::vec3 dir = glm::normalize(CameraTarget - LastFreeCameraPosition);
+        LastFreeCameraPosition += glm::vec3(dir.x * SPEED, dir.y * SPEED, dir.z * SPEED);
+    }
+    else if(Engine->key(gg::GG_S)){
+        glm::vec3 dir = glm::normalize(CameraTarget - LastFreeCameraPosition);
+        LastFreeCameraPosition -= glm::vec3(dir.x * SPEED, dir.y * SPEED, dir.z * SPEED);
+    }
+    if(Engine->key(gg::GG_A)){
+        glm::vec3 dir = CameraTarget - LastFreeCameraPosition;
+        glm::vec3 ppV = glm::normalize(glm::vec3(-dir.z,0,dir.x));
+        LastFreeCameraPosition -= glm::vec3(ppV.x * SPEED, 0, ppV.z * SPEED);
+    }
+    else if(Engine->key(gg::GG_D)){
+        glm::vec3 dir = CameraTarget - LastFreeCameraPosition;
+        glm::vec3 ppV = glm::normalize(glm::vec3(-dir.z,0,dir.x));
+        LastFreeCameraPosition += glm::vec3(ppV.x * SPEED, 0, ppV.z * SPEED);
+    }
+
+    CameraTarget.x = LastFreeCameraPosition.x + 1 * sin(t)*cos(p);
+    CameraTarget.y = LastFreeCameraPosition.y + 1 * sin(p);
+    CameraTarget.z = LastFreeCameraPosition.z + 1 * cos(t)*cos(p);
+
+    Engine->setPosition(cam, LastFreeCameraPosition);
+    static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
+}
+

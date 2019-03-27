@@ -103,6 +103,10 @@ class CPlayerController : public IComponent {
         bool pulsacion_dash;
         bool pulsacion_f;
 
+        bool FreeCamera;
+        bool ToggleFreeCameraKey;
+        bool PlayerMovement;
+
         bool debug1;
         bool debug2;
         float MULT_BASE;

@@ -35,6 +35,10 @@ public:
 
     void getDirectionVector(glm::vec3 &Output);
 
+    void ToogleFreeCamera();
+    void FollowTarget();
+    void FreeCamera();
+
 private:
     SurrealEngine       *Engine;
     TNodo           *cam;
@@ -44,6 +48,7 @@ private:
     glm::vec3 pos_on_collision;
     glm::vec3 CameraTarget;
     glm::vec3 CurrentPosition;
+    glm::vec3 LastFreeCameraPosition;
 
     float screenW;
     float screenH;
@@ -57,6 +62,8 @@ private:
     double prevX, prevY;
     float t, p;
 
+    using FunctionPTR = void (CCamera::*)();
+    FunctionPTR CurrentUpdate;
 };
 
 

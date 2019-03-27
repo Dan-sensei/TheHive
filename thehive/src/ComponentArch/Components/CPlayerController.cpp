@@ -33,6 +33,7 @@
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
+,ToggleFreeCameraKey(true), FreeCamera(false), PlayerMovement(true)
 {
   GranadeCreate=false;
 }
@@ -172,6 +173,24 @@ void CPlayerController::FixedUpdate(){
     // Echarle un vistazo!
     // CommonWindowInterface* window = m_guiHelper->getAppInterface()->m_window;
     // -----------------------------------------------------------------------------
+    if(ToggleFreeCameraKey && Engine->key(gg::GG_4)){
+        ToggleFreeCameraKey = false;
+        camera->ToogleFreeCamera();
+
+        if(!FreeCamera){
+            PlayerMovement = false;
+            FreeCamera = true;
+        }
+        else{
+            PlayerMovement = true;
+            FreeCamera = false;
+        }
+    }
+    else if (!Engine->key(gg::GG_4) ){
+        ToggleFreeCameraKey = true;
+    }
+
+    if(!PlayerMovement) return;
 
     //  If exists, we get its position
 auto pos=cTransform->getPosition();
@@ -289,7 +308,7 @@ auto pos=cTransform->getPosition();
         pulsacion_espacio = false;
     }
 
-    if(glm::length(force) < 0.1 ){
+    if( !pressed ){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::STANDING){
             cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);
         }
