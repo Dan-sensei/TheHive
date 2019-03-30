@@ -6,12 +6,12 @@
 #include <SOIL2/SOIL2.h>
 #include <SOIL2/stb_image.h>
 #include <Singleton.hpp>
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 //#include "GameEngine/Camera.hpp"
 #include "Shader.hpp"
 #include <vector>
 #include <string>
-class SurrealEngine;
+class Omicron;
 
 class SkyBox{
 	public:
@@ -26,7 +26,7 @@ class SkyBox{
     private:
 		Shader* inicio;
 		Shader* fin;
-		SurrealEngine* engine;
+		Omicron* engine;
         unsigned int cubemapTexture[4];
         unsigned int skyboxVBO;
         unsigned int skyboxVAO;

@@ -1,5 +1,5 @@
 #include "NatureGenerator.hpp"
-#include <SurrealEngine/BoundingBox.hpp>
+#include <Omicron/BoundingBox.hpp>
 #include "OpenGEnum.hpp"
 
 NatureGenerator::NatureGenerator(){

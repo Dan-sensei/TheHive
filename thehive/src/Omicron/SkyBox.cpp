@@ -3,7 +3,7 @@
 SkyBox::SkyBox()
 :engine(nullptr)
 {
-    engine=Singleton<SurrealEngine>::Instance();
+    engine=Singleton<Omicron>::Instance();
     auto manager =Singleton<AssetManager>::Instance();
     inicio=manager->getShader("skyboxShader");
     fin=manager->getShader("Default");

@@ -5,7 +5,7 @@
 CDynamicModel::CDynamicModel(ZMaterial* material)
 :DynamicModel(nullptr), cTransform(nullptr), CurrentAnimation(0)
 {
-    Surreal = Singleton<SurrealEngine>::Instance();
+    Surreal = Singleton<Omicron>::Instance();
     DynamicModel = Surreal->CreateDynamicMesh();
     Surreal->bindMaterialToDynamicMesh(DynamicModel, material);
 }

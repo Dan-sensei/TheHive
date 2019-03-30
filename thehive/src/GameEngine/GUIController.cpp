@@ -28,7 +28,7 @@ void GUIController::Init(){
     enter_pulsado=false;
     back_pulsado=false;
     esc_pulsado=false;
-    Engine = Singleton<SurrealEngine>::Instance();
+    Engine = Singleton<Omicron>::Instance();
     Engine2D = Singleton<Motor2D>::Instance();
     VectorAcciones[GOPLAY] =    &GUIController::gotoPlay;
     VectorAcciones[GOCREDITS] = &GUIController::gotoCredits;

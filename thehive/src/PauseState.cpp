@@ -11,10 +11,7 @@
 #include "GameEngine/Motor2D.hpp"
 
 #include "Factory.hpp"
-#include <ComponentArch/Components/CNavmeshAgent.hpp>
-#include <EventSystem/Blackboard.hpp>
 #include <States/StateMachine.hpp>
-#include "GameEngine/Motor2D.hpp"
 
 
 
@@ -22,16 +19,16 @@
 
 
 
-PauseState::PauseState():cont(){
-    Engine = Singleton<SurrealEngine>::Instance();
-    EventSystem = Singleton<CTriggerSystem>::Instance();
+PauseState::PauseState()
+:_GUIController()
+{
+    Engine = Singleton<Omicron>::Instance();
     SS = Singleton<SoundSystem>::Instance();
     sky.init();
 }
 
 PauseState::~PauseState(){
     CLIN();
-
 }
 
 void PauseState::Init(){
@@ -54,7 +51,7 @@ void PauseState::Update(){
 
     Engine->BeginDraw();
     Engine->draw();
-    cont.update();
+    _GUIController.update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
     sky.Draw();
@@ -76,5 +73,4 @@ void PauseState::CLIN(){
     //Blackboard::ClearGlobalBlackboard();
     //Manager->clin();
     //world->clear();
-    //EventSystem->clin();
 }

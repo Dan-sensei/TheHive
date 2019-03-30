@@ -5,8 +5,8 @@
 #include <cstdint>
 #include "ZMaterial.hpp"
 #include "TNodo.hpp"
-#include "SurrealEngine/Imagen2D.hpp"
-#include "SurrealEngine/Texto2D.hpp"
+#include "Omicron/Imagen2D.hpp"
+#include "Omicron/Texto2D.hpp"
 #include <GameEngine/EnumButtonType.hpp>
 
 

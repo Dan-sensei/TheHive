@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <SurrealEngine/Shader.hpp>
+#include <Omicron/Shader.hpp>
 #include <stack>
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -17,7 +17,7 @@
 //#include <iostream>
 
 class TEntidad {
-    friend class SurrealEngine;
+    friend class Omicron;
     public:
         virtual ~TEntidad();
         virtual void beginDraw()    = 0;

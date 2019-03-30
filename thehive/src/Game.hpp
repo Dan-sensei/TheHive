@@ -1,7 +1,7 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-class SurrealEngine;
+class Omicron;
 class CTriggerSystem;
 
 class ObjectManager;
@@ -10,12 +10,12 @@ class ggDynWorld;
 class AIDirector;
 
 //#include <iostream>
-#include <SurrealEngine/Clock.hpp>
+#include <Omicron/Clock.hpp>
 #include "States/State.hpp"
 #include <ComponentArch/Components/CCamera.hpp>
-#include <SurrealEngine/SkyBox.hpp>
+#include <Omicron/SkyBox.hpp>
 #include <FMOD/SoundSystem.hpp>
-#include <SurrealEngine/NatureGenerator.hpp>
+#include <Omicron/NatureGenerator.hpp>
 
 class Motor2D;
 class Game : public State{
@@ -41,7 +41,7 @@ public:
     */
 
 private:
-    SurrealEngine* Engine;
+    Omicron* Engine;
     Motor2D* Engine2D;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;

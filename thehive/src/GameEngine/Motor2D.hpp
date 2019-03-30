@@ -15,13 +15,9 @@
 #include <FMOD/SoundSystem.hpp>
 #include <FMOD/SonidoNormal.hpp>
 
-
-#include "SurrealEngine/SurrealEngine.hpp"
-
-
 #include <GameEngine/EnumButtonType.hpp>
 
-
+class Omicron;
 class Boton2D;
 class Imagen2D;
 class Cuadrado2D;
@@ -54,7 +50,6 @@ class Motor2D{
         int InitMenu7();
         int InitPause();
         int InitAIDebug(int id);
-        void prueba();
         void changeWeapon();
         void setWeaponImg(int tipo,std::string);
 
@@ -81,7 +76,7 @@ class Motor2D{
         SoundEvent* s_seleccionar;
         //nuevo
         std::vector<Cuadrado2D*> RECTANGULOS;
-        SurrealEngine* motor;
+        Omicron* motor;
         std::vector<Boton2D*> BOTONES;
         std::vector<Texto2D*> TEXT;
         //std::vector<Imagen2D*> IMAGENES;
@@ -111,10 +106,6 @@ class Motor2D{
 
 
 
-
-
-
-
         void HUD_hability1(Imagen2D*);
         void HUD_hability2(Imagen2D*);
         void HUD_hability3(Imagen2D*);
@@ -123,10 +114,6 @@ class Motor2D{
         void HUD_arma1(Imagen2D*);      // Principal
         std::string  BoolToString(bool b);
 
-};
-namespace gg{
-    void cout (const std::string &Text, const gg::Color &color = Color());
-    void cout (const glm::vec3 &Vector, const gg::Color &color = Color());
 };
 
 #endif

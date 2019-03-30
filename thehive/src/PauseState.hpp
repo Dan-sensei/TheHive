@@ -1,7 +1,7 @@
 #ifndef _PAUSESTATE_H
 #define _PAUSESTATE_H
 
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 class CTriggerSystem;
 
 class ObjectManager;
@@ -9,7 +9,7 @@ class ggDynWorld;
 
 //#include <iostream>
 #include "States/State.hpp"
-#include <SurrealEngine/SkyBox.hpp>
+#include <Omicron/SkyBox.hpp>
 #include "GameEngine/GUIController.hpp"
 #include <FMOD/SoundSystem.hpp>
 
@@ -36,11 +36,11 @@ public:
     */
 
 private:
-    SurrealEngine* Engine;
+    Omicron* Engine;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
-    GUIController cont;
+    GUIController _GUIController;
     SkyBox sky;
 
     SoundSystem* SS;

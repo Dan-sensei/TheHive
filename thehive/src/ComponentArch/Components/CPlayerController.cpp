@@ -46,7 +46,7 @@ CPlayerController::~CPlayerController() {
 
 void CPlayerController::Init(){
     //  We check if this entity has the TRANSFORM component
-    Engine  = Singleton<SurrealEngine>::Instance();
+    Engine  = Singleton<Omicron>::Instance();
     world   = Singleton<ggDynWorld>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
     factory = Singleton<Factory>::Instance();

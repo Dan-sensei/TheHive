@@ -3,14 +3,14 @@
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
-#include <SurrealEngine/ZStaticMesh.hpp>
-#include <SurrealEngine/ZMaterial.hpp>
+#include <Omicron/ZStaticMesh.hpp>
+#include <Omicron/ZMaterial.hpp>
 #include <map>
 #include <iostream>
 #include <Singleton.hpp>
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 
-#include <SurrealEngine/ZAnimationData.hpp>
+#include <Omicron/ZAnimationData.hpp>
 #include <AnimationLUT.hpp>
 
 class CTransform;
@@ -38,7 +38,7 @@ class CDynamicModel : public IComponent {
 
     private:
         TNodo* DynamicModel;
-        SurrealEngine* Surreal;
+        Omicron* Surreal;
 
         CTransform* cTransform;
         uint8_t CurrentAnimation;

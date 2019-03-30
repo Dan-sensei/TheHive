@@ -4,8 +4,8 @@
 #include <Singleton.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables punteros a otras componentes
-#include <SurrealEngine/SurrealEngine.hpp>
-#include <SurrealEngine/ZMaterial.hpp>
+#include <Omicron/Omicron.hpp>
+#include <Omicron/ZMaterial.hpp>
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
 class CStaticModel : public IComponent {
@@ -19,7 +19,7 @@ class CStaticModel : public IComponent {
         void addLOD(std::string LOD);
 
     private:
-        SurrealEngine* Surreal;
+        Omicron* Surreal;
         TNodo* _3DModel;
 
 };

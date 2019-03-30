@@ -7,7 +7,7 @@
 #include <random>
 #include "NavmeshStructs.hpp"
 #include <Util.hpp>
-#include <SurrealEngine/BillboardBueno.hpp>
+#include <Omicron/BillboardBueno.hpp>
 
 template <typename T>
 class Singleton;

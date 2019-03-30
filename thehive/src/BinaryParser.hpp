@@ -8,8 +8,8 @@
 #include "EventSystem/CTriggerSystem.hpp"
 #include "EventSystem/TData.hpp"
 #include "GameAI/AIDirector.hpp"
-#include "SurrealEngine/NatureGenerator.hpp"
-#include <SurrealEngine/BoundingBox.hpp>
+#include "Omicron/NatureGenerator.hpp"
+#include <Omicron/BoundingBox.hpp>
 #include "Util.hpp"
 
 class BinaryParser{

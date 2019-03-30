@@ -18,7 +18,7 @@
 
 #include <ComponentArch/Components/CClock.hpp>
 
-#include <SurrealEngine/SurrealEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+#include <Omicron/Omicron.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <GameAI/Treecontroller.hpp>
 
 #include <FMOD/SoundSystem.hpp>
@@ -120,7 +120,7 @@ class CAIEnem : public IComponent {
         bool            CanIReset;
 
     private:
-        SurrealEngine      *Engine;
+        Omicron      *Engine;
         ObjectManager   *Manager;
         CTriggerSystem  *EventSystem;
         CTransform      *cTransform;

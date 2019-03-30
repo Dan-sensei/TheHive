@@ -1,5 +1,5 @@
 #include "ggDynWorld.hpp"
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 
 #define FAR_RANGE_FACTOR    90.f
 #define CLOSE_RANGE_FACTOR  1.f
@@ -52,7 +52,7 @@ void ggDynWorld::debugRaycast(){
     color.R = 212;
     color.G = 175;
     color.B = 55;
-    Singleton<SurrealEngine>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color);
+    Singleton<Omicron>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color);
 }
 
 void ggDynWorld::printObjects(int _end){

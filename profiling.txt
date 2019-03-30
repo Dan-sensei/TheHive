@@ -6,18 +6,18 @@ Counted CPU_CLK_UNHALTED events (Clock cycles when not halted) with a unit mask 
 samples  %        symbol name
 2168     29.3568  ObjectManager::ObjectManager() [clone .cold.192]
 662       8.9641  btTriangleInfoMap::serialize(void*, btSerializer*) const
-605       8.1923  SurrealEngine::getVP()
+605       8.1923  Omicron::getVP()
 362       4.9018  btDefaultSerializer::getUniquePointer(void*)
 291       3.9404  Game::Init() [clone .cold.105]
-228       3.0873  SurrealEngine::PointAt(TNodo*, glm::vec<3, float, (glm::qualifier)0> const&)
-205       2.7759  SurrealEngine::Initialize()
+228       3.0873  Omicron::PointAt(TNodo*, glm::vec<3, float, (glm::qualifier)0> const&)
+205       2.7759  Omicron::Initialize()
 201       2.7217  ZMeshData::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
 176       2.3832  CRigidBody::setOffsetBodyPosition(glm::vec<3, float, (glm::qualifier)0>&)
 168       2.2749  BinaryParser::LoadLevelData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, signed char) [clone .cold.257]
-151       2.0447  SurrealEngine::SurrealEngine()
+151       2.0447  Omicron::Omicron()
 149       2.0176  ZMeshData::addVertexBuffer(std::vector<float, std::allocator<float> >&, unsigned int) [clone .constprop.144]
 147       1.9905  btIDebugDraw::drawCapsule(float, float, int, btTransform const&, btVector3 const&)
-103       1.3947  SurrealEngine::getMVP()
+103       1.3947  Omicron::getMVP()
 82        1.1104  CAgent::ENTER_func_kTrig_LoadZone(TriggerRecordStruct*)
 68        0.9208  Motor2D::InitPause() [clone .cold.256]
 66        0.8937  TData::add(EnumDataType, float)
@@ -30,11 +30,11 @@ samples  %        symbol name
 49        0.6635  TriggerRecordStruct::TriggerRecordStruct(TriggerRecordStruct const&) [clone .cold.163]
 47        0.6364  irr::core::CMatrix4<float>::CMatrix4(irr::core::CMatrix4<float> const&, irr::core::CMatrix4<float>::eConstructor)
 43        0.5823  Motor2D::InitAIDebug(int)
-42        0.5687  SurrealEngine::getM()
+42        0.5687  Omicron::getM()
 41        0.5552  BinaryParser::ReadEventsData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [clone .cold.258]
 41        0.5552  CRigidBody::setBodyPosition(glm::vec<3, float, (glm:'':qualifier)0>&)
 39        0.5281  TData::find(EnumDataType)
-38        0.5146  SurrealEngine::SetMapZoneVisibility(signed char const&, bool const&)
+38        0.5146  Omicron::SetMapZoneVisibility(signed char const&, bool const&)
 38        0.5146  Treecontroller::arbolswarm()
 38        0.5146  ggDynWorld::ggDynWorld()
 31        0.4198  Waypoint& std::deque<Waypoint, std::allocator<Waypoint> >::emplace_back<glm::vec<3, float, (glm::qualifier)0>&, unsigned short&, float&>(glm::vec<3, float, (glm::qualifier)0>&, unsigned short&, float&)
@@ -42,17 +42,17 @@ samples  %        symbol name
 30        0.4062  Factory::createHero(glm::vec<3, float, (glm::qualifier)0> const&, signed char) [clone .cold.109]
 30        0.4062  Motor2D::prueba()
 27        0.3656  Factory::Factory()
-25        0.3385  SurrealEngine::deleteLeafNode(TNodo*)
-25        0.3385  SurrealEngine::getV()
+25        0.3385  Omicron::deleteLeafNode(TNodo*)
+25        0.3385  Omicron::getV()
 22        0.2979  ZMeshData::ZMeshData()
 22        0.2979  btIDebugDraw::drawCylinder(float, float, int, btTransform const&, btVector3 const&)
-21        0.2844  SurrealEngine::HideCursor(bool)
+21        0.2844  Omicron::HideCursor(bool)
 20        0.2708  Treecontroller::arbolsoldado()
 19        0.2573  irr::scene::ISceneNode::getRelativeTransformation() const
 18        0.2437  Factory::createHolyBomb(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&)
 17        0.2302  Letra2DManager::Letra2DManager()
 17        0.2302  std::_Rb_tree_node<std::pair<EnumDataType const, float> >* std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_M_copy<std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_Reuse_or_alloc_node>(std::_Rb_tree_node<std::pair<EnumDataType const, float> > const*, std::_Rb_tree_node_base*, std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_Reuse_or_alloc_node&)
-16        0.2167  SurrealEngine::crearMalla(char const*, glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, signed char)
+16        0.2167  Omicron::crearMalla(char const*, glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, signed char)
 16        0.2167  TCamara::beginDraw()
 15        0.2031  ZStaticMesh::beginDraw()
 13        0.1760  CGun::getBullets()
@@ -65,7 +65,7 @@ samples  %        symbol name
 10        0.1354  GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&, btVector3 const&) [clone .cold.9]
 10        0.1354  IAState::IAState(int) [clone .cold.107]
 10        0.1354  Motor2D::addButton(float, float, float, float, EnumButtonType, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, glm::vec<4, float, (glm::qualifier)0>)
-10        0.1354  SurrealEngine::Draw3DLine(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, gg::Color const&)
+10        0.1354  Omicron::Draw3DLine(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, gg::Color const&)
 10        0.1354  ggDynWorld::addShape(btCollisionShape*)
 9         0.1219  Factory::createSoldier(glm::vec<3, float, (glm::qualifier)0> const&, float const&) [clone .cold.110]
 8         0.1083  AIDirector::busquedaCerca()
@@ -85,7 +85,7 @@ samples  %        symbol name
 6         0.0812  stbi__load_main
 5         0.0677  IAState::Init() [clone .cold.105]
 5         0.0677  Pathfinding::clear()
-5         0.0677  SurrealEngine::getCam()
+5         0.0677  Omicron::getCam()
 5         0.0677  btIDebugDraw::drawCone(float, float, int, btTransform const&, btVector3 const&)
 4         0.0542  BinaryParser::ReadLoadZonesData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
 4         0.0542  Factory::createPathFindingActor(glm::vec<3, float, (glm::qualifier)0> const&)

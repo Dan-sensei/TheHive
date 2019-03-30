@@ -28,7 +28,7 @@
 #include "Game.hpp"
 #include "MenuState.hpp"
 #include <FMOD/SoundSystem.hpp>
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 #include <vector>
 #include "BinaryParser.hpp"
 
@@ -37,7 +37,7 @@ int main(int argc, char const *argv[]) {
     // BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
 
 
-    SurrealEngine *Engine = Singleton<SurrealEngine>::Instance();
+    Omicron *Engine = Singleton<Omicron>::Instance();
     CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
     SoundSystem *Sound = Singleton<SoundSystem>::Instance();
     //Engine->Starto();
@@ -119,24 +119,24 @@ int main(int argc, char const *argv[]) {
 //
 // #include <Util.hpp>
 //
-// #include <SurrealEngine/TNodo.hpp>
-// #include <SurrealEngine/TEntidad.hpp>
-// #include <SurrealEngine/TLuz.hpp>
-// #include <SurrealEngine/TCamara.hpp>
-// #include <SurrealEngine/TTransform.hpp>
-// #include <SurrealEngine/ZStaticMesh.hpp>
-// #include <SurrealEngine/ZMaterial.hpp>
-// #include <SurrealEngine/Shader.hpp>
-// #include <SurrealEngine/OpenGEnum.hpp>
-// #include <SurrealEngine/AssetManager.hpp>
-// #include <SurrealEngine/SurrealEngine.hpp>
+// #include <Omicron/TNodo.hpp>
+// #include <Omicron/TEntidad.hpp>
+// #include <Omicron/TLuz.hpp>
+// #include <Omicron/TCamara.hpp>
+// #include <Omicron/TTransform.hpp>
+// #include <Omicron/ZStaticMesh.hpp>
+// #include <Omicron/ZMaterial.hpp>
+// #include <Omicron/Shader.hpp>
+// #include <Omicron/OpenGEnum.hpp>
+// #include <Omicron/AssetManager.hpp>
+// #include <Omicron/Omicron.hpp>
 //
 // #include "BinaryParser.hpp"
 //
 //
 // int main(int argc, char const *argv[]) {
 //
-// 	SurrealEngine* ROOT = Singleton<SurrealEngine>::Instance();
+// 	Omicron* ROOT = Singleton<Omicron>::Instance();
 //
 //
 // 	auto window = ROOT->window;

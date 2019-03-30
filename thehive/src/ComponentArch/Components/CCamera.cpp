@@ -28,7 +28,7 @@ CCamera::~CCamera(){
 }
 
 void CCamera::Init(){
-    Engine = Singleton<SurrealEngine>::Instance();
+    Engine = Singleton<Omicron>::Instance();
     dynWorld = Singleton<ggDynWorld>::Instance();
     cam = Engine->getCamera();
 

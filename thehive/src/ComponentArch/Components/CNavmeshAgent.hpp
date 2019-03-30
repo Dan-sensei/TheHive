@@ -7,7 +7,7 @@
 #include <Util.hpp>
 #include <stack>
 
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <Singleton.hpp>
 
@@ -15,7 +15,7 @@
 
 
 
-#include <SurrealEngine/Clock.hpp>
+#include <Omicron/Clock.hpp>
 class CRigidBody;
 class ggDynWorld;
 
@@ -50,7 +50,7 @@ class CNavmeshAgent : public IComponent {
         glm::vec3 RS, LS;
         glm::vec3 moveVector;
 
-        SurrealEngine* Engine;
+        Omicron* Engine;
         ggDynWorld* world;
 
         CTransform* cTransform;

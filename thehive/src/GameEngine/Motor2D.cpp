@@ -3,13 +3,13 @@
 //#include <SMaterial>
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
-#include "SurrealEngine/Imagen2D.hpp"
-#include "SurrealEngine/Boton2D.hpp"
-#include "SurrealEngine/Cuadrado2D.hpp"
-#include "SurrealEngine/Texto2D.hpp"
+#include "Omicron/Imagen2D.hpp"
+#include "Omicron/Boton2D.hpp"
+#include "Omicron/Cuadrado2D.hpp"
+#include "Omicron/Texto2D.hpp"
 
 Motor2D::Motor2D(){
-    motor = Singleton<SurrealEngine>::Instance();
+    motor = Singleton<Omicron>::Instance();
 
     //font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
     //irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
@@ -49,35 +49,14 @@ void Motor2D::draw(){
         img->Draw();
         it2++;
     }
-
-
-    //Cuadrado2D boton(0  ,0  ,1    ,1);
-    //boton.setColor(glm::vec4(1,0,0,1));
-    //boton.Draw();
-    //lo mas sencillo
-    //Imagen2D img (0,0,1,1,"assets/HUD/Botonsolo.png");
-    //img.Draw();
-    ////std::cout << "dibujando" << '\n';
-    //Texto2D nuevo( 0, 0,"Name",glm::vec4(1,0,0,1),30);
-    //nuevo.Draw();
-    //Texto2D nuevo(0,0.05,"Menu principal",glm::vec4(1,0,0,1),30);
-    //nuevo.Draw();
-
 }
+
 Cuadrado2D* Motor2D::addRect(float x, float y,float w, float h){
-    auto nuevo =new Cuadrado2D(x,y,w,h);
+    auto nuevo = new Cuadrado2D(x,y,w,h);
     RECTANGULOS.push_back(nuevo);
     return nuevo;
 }
-void Motor2D::prueba(){
-    ////std::cout << "prueba" << '\n';
-    //addText(30,30,"GERMAN GAY",glm::vec4(1,1,0,1),20);
-    //AddImage("vida","assets/HUD/Botonsolo.png",0,0,30,30);
-    addButton(0,0,30,30,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/mongol.jpg","GeMAN",false);
-    ////std::cout << "end prueba" << '\n';
 
-
-}
 int Motor2D::checkbuton(){
     if(motor->isLClickPressed()==false){
         return -1;
@@ -94,13 +73,9 @@ int Motor2D::checkbuton(){
         }
         it++;
     }
-
-
-
     return -1;
-
-
 }
+
 void Motor2D::aplyhover(){
     double x,y;
     motor->getCursorPosition(x,y);
@@ -115,18 +90,14 @@ void Motor2D::aplyhover(){
             }
 
             but->hover(true);
-
-
         }
         else{
-
             but->hover(false);
         }
         it++;
     }
-
-
 }
+
 Imagen2D* Motor2D::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){
     float x,y,w,h;
     x=_posx/100.0;
@@ -134,13 +105,11 @@ Imagen2D* Motor2D::AddImage(std::string palabra,std::string source,float _posx,f
     w=(_posx+_width)/100.0;
     h=(_posy+_height)/100.0;
     auto nuevo = new Imagen2D(x,y,w,h,source);
-    //auto nuevo = new Imagen2D (0,0,0.5,0.5,"assets/HUD/Botonsolo.png");
 
-    ////std::cout << "nuevo " << nuevo << '\n';
     IMAGENES.push_back(std::make_pair(palabra,nuevo));
     return nuevo;
-    //
 }
+
 Boton2D* Motor2D::addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus,glm::vec4 _color){
     h=(y+h)/100.0;
     w=(x+w)/100.0;
@@ -150,14 +119,15 @@ Boton2D* Motor2D::addButton(float x, float y, float w,float h,EnumButtonType id,
     nuevo->setColor(_color);
     BOTONES.push_back(nuevo);
     return nuevo;
-
 }
+
 void Motor2D::addText(float x, float y,const std::string &Name,glm::vec4 _color,float tam){
     x=x/100.0;
     y=y/100.0;
     auto nuevo=new Texto2D( x, y,Name,_color,tam);
     TEXT.push_back(nuevo);//
 }
+
 void Motor2D::setprogress(int hab,float prog){
     if(hab==0){
         perc=1-prog;
@@ -229,6 +199,7 @@ void Motor2D::setbullet(int tipo,int b_act, int b_tot){
         balaS_TOT   = b_tot;
     }
 }
+
 void Motor2D::setWeaponImg(int tipo,std::string img){
     Imagen2D* armaP;
     Imagen2D* armaS;
@@ -264,6 +235,7 @@ std::string  Motor2D::BoolToString(bool b)
       return std::string("false");
   }
 }
+
 int Motor2D::InitAIDebug(int id){
     CLINMenu();
     ObjectManager* Manager = Singleton<ObjectManager>::Instance();
@@ -592,12 +564,8 @@ void Motor2D::CLINMenu(){
         it4++;
     }
     RECTANGULOS.clear();
-
-
-
-
-
 }
+
 void Motor2D::CLINNormal(){
     //liberar eso
     //std::vector<Cuadrado2D*> RECTANGULOS;
@@ -609,9 +577,6 @@ void Motor2D::CLINNormal(){
         it++;
     }
     IMAGENES.clear();
-
-
-
 }
 
 void Motor2D::DisplayHUD(){
@@ -619,26 +584,17 @@ void Motor2D::DisplayHUD(){
         auto it = IMAGENES.begin();
         float X,Y,H,W,T_W,T_H;
         while(it!=IMAGENES.end()){
-
             auto img =it->second;
             img->Draw();
             if(mapHudFunctions.find(it->first) != mapHudFunctions.end())
                 (this->*mapHudFunctions[it->first])(img);
-
             it++;
         }
-
         RECTANGULOS[5]->Draw();
         RECTANGULOS[6]->Draw();
-
-
-
     }
 }
-float getX();
-float getW();
-float getY();
-float getH();
+
 //////////////////////////////////////////////////////////////////////////////////////
 void Motor2D::HUD_hability1(Imagen2D *it){
     float x,y,w,h;
@@ -697,13 +653,4 @@ void Motor2D::HUD_arma1(Imagen2D *it){
     std::string hola=std::to_string(balaP)+"/"+std::to_string(balaP_TOT);
     TEXT[1]->setText(hola);
     TEXT[1]->Draw();
-}
-
-
-void gg::cout (const std::string &Text, const gg::Color &color){
-    //Singleton<Motor2D>::Instance()->AddTextToBuffer(Text, color);
-}
-void gg::cout (const glm::vec3 &Vector, const gg::Color &color){
-    //std::string VectorString = "(" + std::to_string(Vector.x) + "," + std::to_string(Vector.y) + "," + std::to_string(Vector.z) + ")";
-    //Singleton<Motor2D>::Instance()->AddTextToBuffer(VectorString, color);
 }

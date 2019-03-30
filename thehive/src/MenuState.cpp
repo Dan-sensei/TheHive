@@ -44,7 +44,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 //============================================================================================
 
 MenuState::MenuState():cont(){
-    Engine = Singleton<SurrealEngine>::Instance();
+    Engine = Singleton<Omicron>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     SS = Singleton<SoundSystem>::Instance();
     Engine->HideCursor(false);
@@ -57,7 +57,6 @@ MenuState::~MenuState(){
 void MenuState::Init(){
 
     Singleton<Motor2D>::Instance()->InitMenu();
-    //Singleton<Motor2D>::Instance()->prueba();
     Engine->HideCursor(false);
 
     //musica_menu->play();
@@ -66,7 +65,6 @@ void MenuState::Init(){
 }
 void MenuState::Resume() {
     Singleton<Motor2D>::Instance()->InitMenu();
-    //Singleton<Motor2D>::Instance()->prueba();
     Engine->HideCursor(false);
 
 }

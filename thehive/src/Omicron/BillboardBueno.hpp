@@ -5,7 +5,7 @@
 #include <cstdint>
 #include "ZMaterial.hpp"
 #include "TNodo.hpp"
-class SurrealEngine;
+class Omicron;
 
 class BillboardBueno {
     public:
@@ -35,7 +35,7 @@ class BillboardBueno {
             unsigned long CameraUp_worldspace      ;
             unsigned long inputColour              ;
             unsigned long loc              ;
-            SurrealEngine* engine;
+            Omicron* engine;
             glm::vec3 centro;
             float index;
             glm::vec4 color;

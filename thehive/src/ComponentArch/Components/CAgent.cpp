@@ -8,7 +8,7 @@
 #include "CRigidBody.hpp"
 #include "CTransform.hpp"
 #include "CAIEnem.hpp"
-#include "SurrealEngine/ZMaterial.hpp"
+#include "Omicron/ZMaterial.hpp"
 
 std::list <CAgent*>  CAgent::AgentList;
 
@@ -45,7 +45,7 @@ CAgent::~CAgent() {
 
 
 void CAgent::Init(){
-    Engine = Singleton<SurrealEngine>::Instance();
+    Engine = Singleton<Omicron>::Instance();
 
     s_puerta = new SonidoNormal();
     SS->createSound("event:/SFX/Entorno/PuertaEstacion", s_puerta);

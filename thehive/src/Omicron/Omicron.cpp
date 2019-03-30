@@ -1,48 +1,52 @@
-#include "SurrealEngine.hpp"
+#include "Omicron.hpp"
 #include <glm/gtx/matrix_decompose.hpp>
 #include <iostream>
 
 
-bool* SurrealEngine::KEYS = new bool[349];
-bool SurrealEngine::LCLICK = false;
-int SurrealEngine::wheel;
-int SurrealEngine::IdButon;
+bool* Omicron::KEYS = new bool[349];
+bool Omicron::LCLICK = false;
+int Omicron::wheel;
+int Omicron::IdButon;
 
-int SurrealEngine::Half_Window_Width;
-int SurrealEngine::Half_Window_Height;
+int Omicron::Half_Window_Width;
+int Omicron::Half_Window_Height;
 
-SurrealEngine::SurrealEngine()
+Omicron::Omicron()
 :main_camera(nullptr), FPS(0)
 {
     ESCENA = new TNodo();
     Initialize();
     gestorRecursos = Singleton<AssetManager>::Instance();
 
+    OKAMERAS_LAYER  = new TNodo(ESCENA, nullptr);
+      LIGHTS_LAYER  = new TNodo(ESCENA, nullptr);
+     BUFFERS_LAYER  = new TNodo(ESCENA, nullptr);
+
     for(uint16_t i = 0; i < 349; ++i)
-        SurrealEngine::KEYS[i] = false;
+        Omicron::KEYS[i] = false;
 }
 
-SurrealEngine::~SurrealEngine(){
+Omicron::~Omicron(){
 }
 
-void SurrealEngine::createZones(uint8_t NumberOfZones){
+void Omicron::createZones(uint8_t NumberOfZones){
     NumberOfZones += 1;
     ZONES.reserve(NumberOfZones);
     ZONES.resize(NumberOfZones);
     for(uint8_t i = 0; i < NumberOfZones; ++i)
-        ZONES[i] = new TNodo(ESCENA,nullptr);
+        ZONES[i] = new TNodo(BUFFERS_LAYER, nullptr);
 
 }
 
-void SurrealEngine::clean(){
+void Omicron::clean(){
     //std::cout << "DeleTAG..." << '\n';
     ZONES.clear();
-    delete SurrealEngine::KEYS;
+    delete Omicron::KEYS;
     delete ESCENA;
     glfwTerminate();
 }
 
-void SurrealEngine::DisplayFPS(){
+void Omicron::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
         std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS);
         glfwSetWindowTitle(window, TEXT.c_str());
@@ -51,26 +55,26 @@ void SurrealEngine::DisplayFPS(){
     }
 }
 
-void SurrealEngine::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c){
+void Omicron::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c){
     glm::mat4 MVP = ESCENA->getEntidad()->projMatrix * ESCENA->getEntidad()->viewMatrix;
     Singleton<Debug>::Instance()->DroLine(From, To, c, MVP);
 }
 
 
-void SurrealEngine::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {  KEYS[key] = action; }
+void Omicron::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {  KEYS[key] = action; }
 
-// void SurrealEngine::resetClicked(){
+// void Omicron::resetClicked(){
 //     clicked=false;
 // }
-// bool SurrealEngine::isLClicked(){
+// bool Omicron::isLClicked(){
 //     return clicked;
 // }
 
-void SurrealEngine::resetClickVariable(){
+void Omicron::resetClickVariable(){
     LCLICK = false;
 }
 
-void SurrealEngine::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+void Omicron::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
         LCLICK = true;
     }
@@ -79,135 +83,135 @@ void SurrealEngine::mouse_button_callback(GLFWwindow* window, int button, int ac
     }
 }
 
-void SurrealEngine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+void Omicron::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     wheel = yoffset;
 }
 
-void SurrealEngine::PollEvents()     {   glfwPollEvents();  }
+void Omicron::PollEvents()     {   glfwPollEvents();  }
 
-void SurrealEngine::getCursorPosition(double &posX, double &posY) {  glfwGetCursorPos(window, &posX, &posY); }
+void Omicron::getCursorPosition(double &posX, double &posY) {  glfwGetCursorPos(window, &posX, &posY); }
 
-TNodo* SurrealEngine::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::vec3& rot, const float& _ppv){
+TNodo* Omicron::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::vec3& rot, const float& _ppv){
     TCamara* C = new TCamara(_fov,_near,_far);
     C->setPerspectiva(_ppv);
 
-    TNodo* Cam = new TNodo(bindTransform(pos,rot),C);
+    TNodo* Cam = new TNodo(bindTransform(pos,rot, OKAMERAS_LAYER),C);
 
     main_camera = Cam;
     cam_ = C;
     return Cam;
 }
 
-TNodo* SurrealEngine::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec3& rot, Shader* sh){
+TNodo* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec3& rot, Shader* sh){
     TLuz* L = new TLuz(_color,sh);
-    TNodo* Luz = new TNodo(bindTransform(pos,rot),L);
+    TNodo* Luz = new TNodo(bindTransform(pos,rot, LIGHTS_LAYER),L);
 
     return Luz;
 }
 
-TNodo* SurrealEngine::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone, const std::string& BoundingBoxPath){
+TNodo* Omicron::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone, const std::string& BoundingBoxPath){
     ZStaticMesh* M = new ZStaticMesh();
     M->load(_path);
     M->loadBoundingBox(BoundingBoxPath);
 
-    TNodo* Malla = new TNodo(bindTransform(pos,rot,map_zone),M);
+    TNodo* PADRE = ZONES[map_zone];
+    TNodo* Malla = new TNodo(bindTransform(pos,rot, PADRE),M);
 
     return Malla;
 }
 
-TNodo* SurrealEngine::CreateDynamicMesh(const glm::vec3& Position, const glm::vec3& Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+TNodo* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::vec3& Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
     ZDynamicMesh* M = new ZDynamicMesh();
 
-    TNodo* Malla = new TNodo(bindTransform(Position, Rotation, map_zone), M);
+    TNodo* PADRE = ZONES[map_zone];
+    TNodo* Malla = new TNodo(bindTransform(Position, Rotation, PADRE), M);
 
     return Malla;
 }
 
-TNodo* SurrealEngine::bindTransform(const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone){
+TNodo* Omicron::bindTransform(const glm::vec3& pos, const glm::vec3& rot, TNodo* FATHER){
     TTransform* Rotate = new TTransform();
     TTransform* Translate = new TTransform();
 
     Rotate->setRotation(rot);
     Translate->setPosition(pos);
 
-    TNodo* PADRE = ZONES[map_zone];
-
-    TNodo* NodoRot = new TNodo(PADRE,Rotate);
+    TNodo* NodoRot = new TNodo(FATHER,Rotate);
     TNodo* NodoTrans = new TNodo(NodoRot,Translate);
 
     return NodoTrans;
 }
 
 
-bool SurrealEngine::bindMaterialToMesh(TNodo *_mesh, ZMaterial* Material){
+bool Omicron::bindMaterialToMesh(TNodo *_mesh, ZMaterial* Material){
     ZStaticMesh*    O   = static_cast<ZStaticMesh*>(_mesh->getEntidad());
 	O->assignMaterial(Material);
 
     return true;
 }
 
-bool SurrealEngine::bindMaterialToDynamicMesh(TNodo *_mesh, ZMaterial* Material){
+bool Omicron::bindMaterialToDynamicMesh(TNodo *_mesh, ZMaterial* Material){
     ZDynamicMesh*    O   = static_cast<ZDynamicMesh*>(_mesh->getEntidad());
 	O->assignMaterial(Material);
 
     return true;
 }
 
-void SurrealEngine::BeginDraw(){
+void Omicron::BeginDraw(){
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
-void SurrealEngine::draw(){
+void Omicron::draw(){
     ++FPS;
     ESCENA->drawRoot_M();
 }
 
-void SurrealEngine::EndDraw(){
+void Omicron::EndDraw(){
     glfwSwapBuffers(window);
 }
 
-void SurrealEngine::move(TNodo *_node, const glm::vec3& _offpos){
+void Omicron::move(TNodo *_node, const glm::vec3& _offpos){
     static_cast<TTransform*>(_node->getPadre()->getEntidad())->translate(_offpos);
 }
 
-void SurrealEngine::rotate(TNodo *_node,const float& _angle,const glm::vec3& _offrot){
+void Omicron::rotate(TNodo *_node,const float& _angle,const glm::vec3& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->rotate(_angle,_offrot);
 }
 
 
-void SurrealEngine::setPosition(TNodo* _node, const glm::vec3& _offpos){
+void Omicron::setPosition(TNodo* _node, const glm::vec3& _offpos){
     static_cast<TTransform*>(_node->getPadre()->getEntidad())->setPosition(_offpos);
 }
 
-void SurrealEngine::setRotation(TNodo* _node,const glm::vec3& _offrot){
+void Omicron::setRotation(TNodo* _node,const glm::vec3& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
 }
-glm::vec3 SurrealEngine::vectorUp(){
+glm::vec3 Omicron::vectorUp(){
     auto v=ESCENA->getEntidad()->viewMatrix;
     return glm::vec3(v[0][1], v[1][1], v[2][1]);
 }
 
-glm::vec3 SurrealEngine::vectorRigth(){
+glm::vec3 Omicron::vectorRigth(){
     auto v=ESCENA->getEntidad()->viewMatrix;
     return glm::vec3(v[0][0], v[1][0], v[2][0]);
 }
 
-glm::mat4  SurrealEngine::getMVP(){
+glm::mat4  Omicron::getMVP(){
     return  ESCENA->getEntidad()->projMatrix * ESCENA->getEntidad()->viewMatrix * ESCENA->getEntidad()->modelMatrix;
 }
-glm::mat4  SurrealEngine::getVP(){
+glm::mat4  Omicron::getVP(){
     return  ESCENA->getEntidad()->projMatrix * ESCENA->getEntidad()->viewMatrix;
 }
-glm::mat4  SurrealEngine::getV(){
+glm::mat4  Omicron::getV(){
     return  ESCENA->getEntidad()->viewMatrix;
 }
-glm::mat4  SurrealEngine::getM(){
+glm::mat4  Omicron::getM(){
     return ESCENA->getEntidad()->modelMatrix;
 }
-TCamara* SurrealEngine::getCam(){
+TCamara* Omicron::getCam(){
     return cam_;
 }
-void SurrealEngine::PointAt(TNodo *_node, const glm::vec3& _offpos){
+void Omicron::PointAt(TNodo *_node, const glm::vec3& _offpos){
     auto trans =static_cast<TTransform*>(_node->getPadre()->getEntidad());
     auto dir=glm::normalize(glm::vec3(_offpos.x,_offpos.y,_offpos.z)-trans->getDatos());
 
@@ -229,17 +233,17 @@ void SurrealEngine::PointAt(TNodo *_node, const glm::vec3& _offpos){
 }
 
 
-void SurrealEngine::HideCursor(bool t){
+void Omicron::HideCursor(bool t){
     if(t){
         glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }else{
         glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
-void SurrealEngine::close(){
+void Omicron::close(){
     glfwSetWindowShouldClose(window, GL_TRUE);
 }
-bool SurrealEngine::Initialize(){
+bool Omicron::Initialize(){
 	//INICIALIZAMOS GLFW
 	if( !glfwInit() ){
 	    //fprintf( stderr, "Error al inicializar GLFW\n" );
@@ -294,12 +298,12 @@ bool SurrealEngine::Initialize(){
 	return true;
 }
 
-void SurrealEngine::deleteLeafNode(TNodo *node){
+void Omicron::deleteLeafNode(TNodo *node){
     TNodo *tmp = node->getPadre()->getPadre();
     TNodo *FATHER = tmp->getPadre();
     FATHER->remHijo(tmp);
 }
 
-void SurrealEngine::SetMapZoneVisibility(const int8_t &zone,const bool &flag){
+void Omicron::SetMapZoneVisibility(const int8_t &zone,const bool &flag){
     ZONES[zone]->setVisibility(flag);
 }

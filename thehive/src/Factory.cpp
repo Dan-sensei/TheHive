@@ -3,13 +3,13 @@
 #include <ComponentArch/Components/CGranade0.hpp>
 #include <ComponentArch/Components/CGranade1.hpp>
 #include <ComponentArch/Components/CGranade2.hpp>
-#include <SurrealEngine/ZMaterial.hpp>
-#include <SurrealEngine/AssetManager.hpp>
-#include <SurrealEngine/ZStaticMesh.hpp>
+#include <Omicron/ZMaterial.hpp>
+#include <Omicron/AssetManager.hpp>
+#include <Omicron/ZStaticMesh.hpp>
 
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
-    Engine = Singleton<SurrealEngine>::Instance();
+    Engine = Singleton<Omicron>::Instance();
 
 }
 

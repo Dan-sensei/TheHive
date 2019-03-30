@@ -10,7 +10,7 @@
 #include <GameEngine/EnumButtonType.hpp>
 #include <GameEngine/KEYCODES.hpp>
 #include <States/StateMachine.hpp>
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 
 class Motor2D;
 
@@ -63,7 +63,7 @@ void lessEffect();
 void initOptions();
 
 
-        SurrealEngine* Engine;
+        Omicron* Engine;
         Motor2D* Engine2D;
         using pFunc = void(GUIController::*)();
         pFunc VectorAcciones[Butn];

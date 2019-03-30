@@ -17,7 +17,7 @@
 #include "AssetManager.hpp"
 */
 
-#include <SurrealEngine/AssetManager.hpp>
+#include <Omicron/AssetManager.hpp>
 
 #include <stdio.h>
 Debug::Debug(){

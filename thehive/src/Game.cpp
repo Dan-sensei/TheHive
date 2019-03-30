@@ -18,7 +18,7 @@
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include <EventSystem/Blackboard.hpp>
 #include "BinaryParser.hpp"
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 
 #include <GameEngine/Motor2D.hpp>
 
@@ -56,7 +56,7 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 Game::Game()
 :Accumulator(0)
 {
-    Engine = Singleton<SurrealEngine>::Instance();
+    Engine = Singleton<Omicron>::Instance();
     Engine2D = Singleton<Motor2D>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     Director = Singleton<AIDirector>::Instance();

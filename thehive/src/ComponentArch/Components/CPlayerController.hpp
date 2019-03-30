@@ -8,7 +8,7 @@
 #include <Util.hpp>
 
 #include <Singleton.hpp>
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Bullet/ggDynWorld.hpp>
@@ -17,7 +17,7 @@
 #include <GameEngine/KEYCODES.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
-#include <SurrealEngine/Clock.hpp>
+#include <Omicron/Clock.hpp>
 #include <FMOD/SoundSystem.hpp>
 #include <FMOD/SonidoNormal.hpp>
 #include <FMOD/SonidoSuperficie.hpp>
@@ -81,7 +81,7 @@ class CPlayerController : public IComponent {
 
         ObjectManager* Manager;
         Factory* factory;
-        SurrealEngine* Engine;
+        Omicron* Engine;
         ggDynWorld* world;
         CTransform* cTransform;
         CRigidBody* cRigidBody;

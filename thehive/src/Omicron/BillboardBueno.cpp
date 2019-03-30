@@ -4,7 +4,7 @@
 //#include <iostream>
 #include <SOIL2/SOIL2.h>
 #include <Singleton.hpp>
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 
 
 
@@ -31,7 +31,7 @@ BillboardBueno::BillboardBueno(float x,float y,float z,const std::string &Name)
 
 
 
-    engine=Singleton<SurrealEngine>::Instance();
+    engine=Singleton<Omicron>::Instance();
     float _x,_y,_w,_h;
     _x=-0.5;
     _w=0.5;

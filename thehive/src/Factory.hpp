@@ -2,7 +2,7 @@
 #define FACTORY_H
 
 #include <ComponentArch/ObjectManager.hpp>
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
 
@@ -52,7 +52,7 @@ class Factory{
         void operator=(const Factory &orig) = delete;
 
         ObjectManager* Manager;
-        SurrealEngine* Engine;
+        Omicron* Engine;
 
 };
 

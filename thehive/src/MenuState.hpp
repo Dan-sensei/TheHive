@@ -1,7 +1,7 @@
 #ifndef _MENUSTATE_H
 #define _MENUSTATE_H
 
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 class CTriggerSystem;
 
 class ObjectManager;
@@ -35,7 +35,7 @@ public:
     */
 
 private:
-    SurrealEngine* Engine;
+    Omicron* Engine;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;

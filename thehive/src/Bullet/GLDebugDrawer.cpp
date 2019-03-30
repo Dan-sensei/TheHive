@@ -1,5 +1,5 @@
 #include "GLDebugDrawer.h"
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 
 GLDebugDrawer::GLDebugDrawer()
 :m_debugMode(0)
@@ -16,7 +16,7 @@ void	GLDebugDrawer::drawLine(const btVector3& _from,const btVector3& _to,const b
 
 	gg::Color color(226,45,13);
 
-	Singleton<SurrealEngine>::Instance()->Draw3DLine(from,to,color);
+	Singleton<Omicron>::Instance()->Draw3DLine(from,to,color);
 }
 
 void	GLDebugDrawer::drawLine(const btVector3& _from,const btVector3& _to,const btVector3& _color)

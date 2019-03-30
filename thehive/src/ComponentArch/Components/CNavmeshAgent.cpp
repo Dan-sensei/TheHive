@@ -22,7 +22,7 @@ CNavmeshAgent::~CNavmeshAgent() {
 
 void CNavmeshAgent::Init(){
     //  We check if this entity has the TRANSFORM component
-    Engine = Singleton<SurrealEngine>::Instance();
+    Engine = Singleton<Omicron>::Instance();
     MHandler_SETPTRS();
     ObjectManager* Manager=Singleton<ObjectManager>::Instance();
     CAIEnem* ia=static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, getEntityID()));

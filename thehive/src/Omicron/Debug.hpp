@@ -8,7 +8,7 @@
 #define GL_LOG_FILE "gl.log"
 
 #include <Util.hpp>
-#include <SurrealEngine/Shader.hpp>
+#include <Omicron/Shader.hpp>
 
 template <typename T>
 class Singleton;

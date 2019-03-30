@@ -93,7 +93,7 @@ void CAIEnem::enemyrange(){
 }
 
 void CAIEnem::Init(){
-    Engine          = Singleton<SurrealEngine>::Instance();
+    Engine          = Singleton<Omicron>::Instance();
     Manager         = Singleton<ObjectManager>::Instance();
     EventSystem     = Singleton<CTriggerSystem>::Instance();
     world           = Singleton<ggDynWorld>::Instance();

@@ -1,5 +1,5 @@
-#ifndef SurrealEngine_H
-#define SurrealEngine_H
+#ifndef Omicron_H
+#define Omicron_H
 
 #include <map>
 #include <cstdint>
@@ -16,7 +16,7 @@
 #include "ZDynamicMesh.hpp"
 #include "ZMaterial.hpp"
 #include "AssetManager.hpp"
-#include <SurrealEngine/KEYCODES.hpp>
+#include <Omicron/KEYCODES.hpp>
 #include "TCamara.hpp"
 #include "Debug.hpp"
 #include "Clock.hpp"
@@ -24,11 +24,11 @@
 template <typename T>
 class Singleton;
 
-class SurrealEngine {
-    friend class Singleton<SurrealEngine>;
+class Omicron {
+    friend class Singleton<Omicron>;
     friend class Debug;
     public:
-        ~SurrealEngine();
+        ~Omicron();
         void HideCursor(bool t);
 
         TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
@@ -89,11 +89,15 @@ class SurrealEngine {
         void resetClickVariable();
 
     private:
-        SurrealEngine();
+
+        Omicron();
 
         gg::Clock FPS_Clock;
 
         TNodo* ESCENA;
+        TNodo* OKAMERAS_LAYER;
+        TNodo* LIGHTS_LAYER;
+        TNodo* BUFFERS_LAYER;
         GLFWwindow* window;
         AssetManager* gestorRecursos;
         Debug* Debugger;
@@ -106,7 +110,7 @@ class SurrealEngine {
 
         std::vector<TNodo*> ZONES;
 
-        TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone = 0);
+        TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot, TNodo* FATHER);
 
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);

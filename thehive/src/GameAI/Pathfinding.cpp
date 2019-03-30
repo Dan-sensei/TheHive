@@ -2,7 +2,7 @@
 //#include <iostream>
 #include <BinaryParser.hpp>
 #include "Singleton.hpp"
-#include <SurrealEngine/SurrealEngine.hpp>
+#include <Omicron/Omicron.hpp>
 #include <numeric>
 
 
@@ -213,7 +213,7 @@ void Pathfinding::DroNodes(){
     gg::Color color;
     uint16_t i = GRAPH.size();
     uint8_t length = 0;
-    SurrealEngine* Engine = Singleton<SurrealEngine>::Instance();
+    Omicron* Engine = Singleton<Omicron>::Instance();
 
     while(i--){
         length = 50;

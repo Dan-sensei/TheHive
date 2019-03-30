@@ -5,8 +5,8 @@
 #include <ComponentArch/Message.hpp>
 #include <cstdint>
 #include <cmath>
-#include <SurrealEngine/SurrealEngine.hpp>
-#include <SurrealEngine/TNodo.hpp>
+#include <Omicron/Omicron.hpp>
+#include <Omicron/TNodo.hpp>
 #include <Singleton.hpp>
 
 #include "CTransform.hpp"
@@ -40,7 +40,7 @@ public:
     void FreeCamera();
 
 private:
-    SurrealEngine       *Engine;
+    Omicron       *Engine;
     TNodo           *cam;
     CTransform      *Target;
     ggDynWorld      *dynWorld;
