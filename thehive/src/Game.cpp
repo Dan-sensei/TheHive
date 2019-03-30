@@ -84,15 +84,10 @@ void Game::Init(){
 
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
-    BinaryParser::ReadEventsData("assets/BinaryFiles/EVENTOS.data");
+
+    // Los eventos son propios de cada zona!
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/ESTACION.data");
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/POST_ESTACION.data");
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data");
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/PASEO.data");
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/PARQUE.data");
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/TAMESIS.data");
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/END.data");
+
     Engine2D->InitHUD();
 
 
