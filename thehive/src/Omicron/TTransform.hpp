@@ -8,6 +8,7 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <cstdint>
 
 #include <Util.hpp>
@@ -32,7 +33,7 @@ class TTransform : public TEntidad {
         virtual void endDraw();
 
         void setPosition(glm::vec3 _vec);
-        void setRotation(glm::vec3 _vec);
+        void setRotation(glm::quat _vec);
 
         glm::mat4 matrix;
         glm::vec3 getDatos();

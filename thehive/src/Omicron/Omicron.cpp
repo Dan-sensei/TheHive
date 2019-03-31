@@ -109,18 +109,18 @@ TNodo* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec
     return Luz;
 }
 
-TNodo* Omicron::crearMalla(const char* _path, const glm::vec3& pos, const glm::vec3& rot, int8_t map_zone, const std::string& BoundingBoxPath){
+TNodo* Omicron::crearMalla(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
     ZStaticMesh* M = new ZStaticMesh();
     M->load(_path);
     M->loadBoundingBox(BoundingBoxPath);
 
     TNodo* PADRE = ZONES[map_zone];
-    TNodo* Malla = new TNodo(bindTransform(pos,rot, PADRE),M);
+    TNodo* Malla = new TNodo(bindTransform(pos,Rotation, PADRE),M);
 
     return Malla;
 }
 
-TNodo* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::vec3& Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+TNodo* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::quat& Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
     ZDynamicMesh* M = new ZDynamicMesh();
 
     TNodo* PADRE = ZONES[map_zone];
@@ -129,7 +129,7 @@ TNodo* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::vec3& Ro
     return Malla;
 }
 
-TNodo* Omicron::bindTransform(const glm::vec3& pos, const glm::vec3& rot, TNodo* FATHER){
+TNodo* Omicron::bindTransform(const glm::vec3& pos, const glm::quat& rot, TNodo* FATHER){
     TTransform* Rotate = new TTransform();
     TTransform* Translate = new TTransform();
 
@@ -183,7 +183,7 @@ void Omicron::setPosition(TNodo* _node, const glm::vec3& _offpos){
     static_cast<TTransform*>(_node->getPadre()->getEntidad())->setPosition(_offpos);
 }
 
-void Omicron::setRotation(TNodo* _node,const glm::vec3& _offrot){
+void Omicron::setRotation(TNodo* _node,const glm::quat& _offrot){
     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
 }
 glm::vec3 Omicron::vectorUp(){

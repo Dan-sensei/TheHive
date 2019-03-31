@@ -396,7 +396,8 @@ void Action::look_around(){
         yo->signo=pow(-1,num);
     }
     yo->ultrasonido_cont++;
-    cTransform->setRotation(cTransform->getRotation()+glm::vec3(0,yo->signo,0));
+    // cTransform->setRotation(cTransform->getRotation()+glm::vec3(0,yo->signo,0));
+    cTransform->rotate(glm::radians(static_cast<float>(yo->signo)), glm::vec3(0,1,0));
     if(yo->ultrasonido_cont==30){
         yo->signo=yo->signo*-1;
     }

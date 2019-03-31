@@ -33,8 +33,8 @@ class Omicron {
 
         TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
-        TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::vec3& = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
-        TNodo* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::vec3& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        TNodo* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
 
         // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
         void createZones(uint8_t NumberOfZones);
@@ -49,7 +49,7 @@ class Omicron {
         void move(TNodo*,const glm::vec3&);
         void rotate(TNodo*,const float&,const glm::vec3&);
         void setPosition(TNodo* _node, const glm::vec3&);
-        void setRotation(TNodo* _node,const glm::vec3&);
+        void setRotation(TNodo* _node,const glm::quat&);
 
         void BeginDraw();
         void draw();
@@ -110,7 +110,7 @@ class Omicron {
 
         std::vector<TNodo*> ZONES;
 
-        TNodo* bindTransform(const glm::vec3& pos, const glm::vec3& rot, TNodo* FATHER);
+        TNodo* bindTransform(const glm::vec3& pos, const glm::quat& rot, TNodo* FATHER);
 
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);

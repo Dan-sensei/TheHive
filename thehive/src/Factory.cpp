@@ -401,7 +401,7 @@ uint16_t Factory::createPickableItem(const glm::vec3 &_position){
     return item;
 }
 
-uint16_t Factory::createTouchableObject(const std::string &_path, const glm::vec3 &_position, const glm::vec3 &_rotation, const uint16_t &_id, const glm::vec3 &vel, const int &_dur, int type, uint16_t _item){
+uint16_t Factory::createTouchableObject(const std::string &_path, const glm::vec3 &_position, const glm::quat &_rotation, const uint16_t &_id, const glm::vec3 &vel, const int &_dur, int type, uint16_t _item){
     uint16_t t_obj = Manager->createEntity();
     ZMaterial* moradoDeLos80=Singleton<AssetManager>::Instance()->getMaterial("Grey");
 
@@ -459,7 +459,7 @@ uint16_t Factory::createDebugBullet(const glm::vec3 &_pos){
     return debug;
 }
 
-uint16_t Factory::createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::vec3 &Rotation, ZMaterial *Material, const uint8_t &map_zone){
+uint16_t Factory::createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::quat &Rotation, ZMaterial *Material, const uint8_t &map_zone){
     uint16_t Nature = Manager->createEntity();
 
     // CTransform* Transform               = new CTransform(Position,Rotation);

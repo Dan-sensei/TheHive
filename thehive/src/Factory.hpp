@@ -31,7 +31,7 @@ class Factory{
         //CRigidBody* createSingleSwarm( const glm::vec3 &Position);
         uint16_t createSwarm( const glm::vec3 &Position,const float &health);
 
-        uint16_t createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::vec3 &Rotation, ZMaterial *Material, const uint8_t &map_zone);
+        uint16_t createNatureMesh(const std::string &Path, const glm::vec3 &Position, const glm::quat &Rotation, ZMaterial *Material, const uint8_t &map_zone);
 
 
         // uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
@@ -43,7 +43,7 @@ class Factory{
         uint16_t createSenyuelo(const glm::vec3 &Position, const glm::vec3 &Impulse);
         uint16_t createCollectableWeapon(const glm::vec3&, int);
         uint16_t createPickableItem(const glm::vec3&);
-        uint16_t createTouchableObject(const std::string&, const glm::vec3&, const glm::vec3&, const uint16_t&, const glm::vec3&, const int&, int, uint16_t=0);
+        uint16_t createTouchableObject(const std::string&, const glm::vec3&, const glm::quat &_rotation, const uint16_t&, const glm::vec3&, const int&, int, uint16_t=0);
         uint16_t createDebugBullet(const glm::vec3&);
     private:
 

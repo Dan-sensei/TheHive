@@ -69,12 +69,13 @@ void TTransform::setPosition(glm::vec3 _vec){
     translate( _vec);
 }
 
-void TTransform::setRotation(glm::vec3 _vec){
+void TTransform::setRotation(glm::quat _vec){
     identity();
     datos=glm::vec3(0,0,0);
-    rotate(_vec.y, glm::vec3(0,1,0));
-    rotate(_vec.x, glm::vec3(1,0,0));
-    rotate(_vec.z, glm::vec3(0,0,1));
+    matrix = glm::toMat4(_vec);
+    // rotate(_vec.y, glm::vec3(0,1,0));
+    // rotate(_vec.x, glm::vec3(1,0,0));
+    // rotate(_vec.z, glm::vec3(0,0,1));
 }
 
 void TTransform::endDraw(){

@@ -33,7 +33,6 @@ class BinaryParser{
 
         static bool ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX);
 
-        static void ReadEventsData(const std::string &BinaryFile);
         static void ReadNatureData(const std::string &BinaryFile);
 
         static void ReadLoadZonesData(const std::string &BinaryFile);
