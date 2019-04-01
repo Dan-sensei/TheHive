@@ -61,7 +61,13 @@ void Omicron::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::C
 }
 
 
-void Omicron::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {  KEYS[key] = action; }
+void Omicron::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if(action == GLFW_PRESS)
+        KEYS[key] = true;
+    else if(action == GLFW_RELEASE)
+        KEYS[key] = false;
+
+}
 
 // void Omicron::resetClicked(){
 //     clicked=false;

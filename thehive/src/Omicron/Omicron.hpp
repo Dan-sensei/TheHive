@@ -81,7 +81,15 @@ class Omicron {
 
         void Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c);
 
-        inline bool key(gg::KEYCODE keyCode){ return KEYS[keyCode];};
+        inline bool key(gg::KEYCODE keyCode, bool setToFalse = false){
+            if(setToFalse){
+                bool result = KEYS[keyCode];
+                KEYS[keyCode] = false;
+                return result;
+            }
+            else
+                return KEYS[keyCode];
+        };
         bool Initialize();
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);

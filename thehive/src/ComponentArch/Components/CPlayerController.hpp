@@ -90,24 +90,18 @@ class CPlayerController : public IComponent {
         CCamera* camera;
         CDynamicModel* cDynamicModel;
         CHabilityController* hab;
-        bool GranadeCreate;
+        CGun *secondWeapon;
 
         SoundSystem* SS;
         SoundEvent* s_dash;
 
-        bool pulsacion_granada;
-        bool pulsacion_soldier;
-        bool pulsacion_tank;
-        bool pulsacion_rusher;
-        //bool pulsacion_enemigos;
-        bool pulsacion_espacio;
-        bool pulsacion_q;
-        bool pulsacion_dash;
-        bool pulsacion_f;
-
+        glm::vec3    force;
+        glm::vec3 cV;
+        float           MULT_FACTOR;
         bool FreeCamera;
         bool ToggleFreeCameraKey;
         bool PlayerMovement;
+        bool pulsacion_f;
 
         bool debug1;
         bool debug2;
@@ -117,13 +111,10 @@ class CPlayerController : public IComponent {
         //SoundEvent* s_pasos;
 
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
-        CGun *secondWeapon;
         std::array<uint16_t,NUMBER_OF_ITEMS> items;
 
-        glm::vec3 cV,ppV;
         // std::map<int, void (CPlayerController::*)(glm::vec3&,bool&)> mapPlayerActions;
         void check_WASD(glm::vec3 &force, bool &flag_pressed);
-        void ApplyDash(glm::vec3&,float&);
         void showDebug();
         void changeWeaponIfPossible(CGun*);
 
@@ -133,14 +124,22 @@ class CPlayerController : public IComponent {
             void (CPlayerController::*Target)();
         };
 
-        std::array<Key2Func, 6> KEYMAP;
+        std::array<Key2Func, 14> KEYMAP;
 
         void ToggleSkill1();
         void ToggleSkill2();
         void ToggleSkill3();
+        void ReloadGun();
+        void ThrowGranade();
+        void ChangeWeapon();
+        void Run();
+        void DASH();
+        void JUMP();
+        void TogglePause();
         void invocasionhorda();
         void invocasionwander();
         void ToggleFreeCamera();
+        void EnemyInfo();
 
         glm::quat RotationBetween(glm::vec3 &V1, glm::vec3 &V2);
 
