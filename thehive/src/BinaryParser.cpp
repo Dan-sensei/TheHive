@@ -1,7 +1,10 @@
 #include "BinaryParser.hpp"
 #include <fstream>
 #include <experimental/filesystem>
-#include <ComponentArch/Components/ComponentHeaders.hpp>
+#include <ComponentArch/Components/CRigidBody.hpp>
+#include <ComponentArch/Components/Colliders/CBoxCollider.hpp>
+#include <ComponentArch/Components/Colliders/CMeshCollider.hpp>
+#include <ComponentArch/Components/CStaticModel.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 
 bool aux_separator = false;
@@ -194,10 +197,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         if(HasCollider){
             // std::cout << str << " | HasCollider: " << static_cast<int>(HasCollider) << '\n';
             if(HasCollider == 2){
-                CRigidBody* RIGID = new CRigidBody(false,true,"assets/BulletBoundingBoxes/"+str+".bullet",
-                                                    Position.x,Position.y,Position.z,
-                                                    0,0,0, 0, 0,0,0);
-                Manager->addComponentToEntity(RIGID, gg::RIGID_BODY, NewEntity);
+                CMeshCollider* RIGID = new CMeshCollider("assets/BulletBoundingBoxes/"+str+".bullet", Position.x,Position.y,Position.z);
+                Manager->addComponentToEntity(RIGID, gg::MESHCOLLIDER, NewEntity);
 
                 continue;
             }
@@ -216,8 +217,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             GG_Read(inStream, sy);
             GG_Read(inStream, sz);
 
-            CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
-            Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewEntity);
+            CBoxCollider* RIGID = new CBoxCollider(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
+            Manager->addComponentToEntity(RIGID, gg::BOXCOLLIDER, NewEntity);
         }
 
 
@@ -415,8 +416,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             }
 
             if(toggleHasCollider){
-                CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(tcx, tcy, tcz, tcrx,tcry,tcrz,tcrw, tcsx/2, tcsy/2, tcsz/2);
-                Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, NewToggle);
+                CBoxCollider* RIGID = new CBoxCollider(tcx, tcy, tcz, tcrx,tcry,tcrz,tcrw, tcsx/2, tcsy/2, tcsz/2);
+                Manager->addComponentToEntity(RIGID, gg::BOXCOLLIDER, NewToggle);
             }
 
             //std::cout << '\n';

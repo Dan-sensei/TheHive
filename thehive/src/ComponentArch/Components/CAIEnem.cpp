@@ -16,6 +16,9 @@
 #include "EventSystem/BBool.hpp"
 #include "ComponentArch/Components/CPlayerController.hpp"
 
+#include <ComponentArch/Components/CRigidBody.hpp>
+#include <ComponentArch/Components/CNavmeshAgent.hpp>
+
 bool        CAIEnem::debugvis=true;
 CTransform* CAIEnem::PlayerTransform;
 CRigidBody* CAIEnem::PlayerBody;

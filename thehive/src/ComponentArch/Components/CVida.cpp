@@ -9,6 +9,8 @@
 #include <GameAI/AIDirector.hpp>
 
 #include <BT/Action.hpp>
+#include <ComponentArch/Components/CPlayerController.hpp>
+#include <ComponentArch/Components/CFlock.hpp>
 
 #define K_DMG_VALUE 20.f
 

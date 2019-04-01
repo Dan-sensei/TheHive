@@ -4,6 +4,7 @@
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
 #include "CRigidBody.hpp"
+#include <ComponentArch/Components/CAIEnem.hpp>
 
 //#define MAXSPEED 4.f
 #define FORCE_FACTOR 250.f

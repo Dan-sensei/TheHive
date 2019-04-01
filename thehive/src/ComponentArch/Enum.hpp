@@ -21,7 +21,8 @@ namespace gg{
         TRANSFORM,
         STATICMODEL,
         DYNAMICMODEL,
-        SIMPLESTATICRIGIDBODY,
+        BOXCOLLIDER,
+        MESHCOLLIDER,
         //HEALTH,
         //RESPECT,
         //PABLONDEMADERANOSABEPROGRAMAR

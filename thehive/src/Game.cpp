@@ -10,7 +10,6 @@
 #include "Singleton.hpp"
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/AIDirector.hpp"
-#include "GameAI/NavmeshStructs.hpp"
 
 #include "GameEngine/Motor2D.hpp"
 
@@ -21,6 +20,8 @@
 #include <Omicron/Omicron.hpp>
 
 #include <GameEngine/Motor2D.hpp>
+
+#include <Bullet/ggDynWorld.hpp>
 
 
 

@@ -2,7 +2,7 @@
 #include <GameEngine/Motor2D.hpp>
 #include <Bullet/ggDynWorld.hpp>
 #include "CAIEnem.hpp"
-
+#include <ComponentArch/Components/CVida.hpp>
 
 #define FORCE_FACTOR        1000.f
 #define DIST_OFFSET         2.f

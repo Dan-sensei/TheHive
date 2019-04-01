@@ -10,6 +10,8 @@
 #include <ComponentArch/Components/CTransform.hpp>
 #include <ComponentArch/Components/CRigidBody.hpp>
 #include <ComponentArch/Components/CVida.hpp>
+#include <ComponentArch/Components/CNavmeshAgent.hpp>
+#include <ComponentArch/Components/CFlock.hpp>
 
 #include <GameAI/Pathfinding.hpp>
 

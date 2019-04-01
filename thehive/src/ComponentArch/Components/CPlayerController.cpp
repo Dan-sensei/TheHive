@@ -5,11 +5,12 @@
 #include <IAState.hpp>
 #include "CDynamicModel.hpp"
 #include <AnimationLUT.hpp>
+#include <ComponentArch/Components/CCamera.hpp>
+#include <ComponentArch/Components/CHabilityController.hpp>
+#include <ComponentArch/Components/CRigidBody.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
+#include <ComponentArch/Components/CGun.hpp>
 
-//#include <GameAI/Hability.hpp>
-//#include <GameAI/Enumhabs.hpp>
-
-// #include <GameEngine/Motor2D.hpp>
 
 #define GRENADE_VEL_FACTOR      500.f
 #define GRENADE_THROW_Y_OFFSET  3.f

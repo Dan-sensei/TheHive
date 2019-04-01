@@ -7,6 +7,21 @@
 #include <Omicron/AssetManager.hpp>
 #include <Omicron/ZStaticMesh.hpp>
 
+#include <ComponentArch/Components/CRigidBody.hpp>
+#include <ComponentArch/Components/Colliders/CBoxCollider.hpp>
+#include <ComponentArch/Components/CCamera.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
+#include <ComponentArch/Components/CVida.hpp>
+#include <ComponentArch/Components/CHabilityController.hpp>
+#include <ComponentArch/Components/CDynamicModel.hpp>
+#include <ComponentArch/Components/CPlayerController.hpp>
+#include <ComponentArch/Components/CGun.hpp>
+#include <ComponentArch/Components/CAgent.hpp>
+#include <ComponentArch/Components/CNavmeshAgent.hpp>
+#include <ComponentArch/Components/CRenderable_3D.hpp>
+#include <ComponentArch/Components/CStaticModel.hpp>
+#include <ComponentArch/Components/CFlock.hpp>
+
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
     Engine = Singleton<Omicron>::Instance();
@@ -391,8 +406,8 @@ uint16_t Factory::createPickableItem(const glm::vec3 &_position){
 
     // CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/weapon.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
     // Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, item);
-    CSimpleStaticRigidBody* RIGID = new CSimpleStaticRigidBody(_position.x, _position.y, _position.z, 0,0,0,1, 0.5, 0.5, 0.5);
-    Manager->addComponentToEntity(RIGID, gg::SIMPLESTATICRIGIDBODY, item);
+    CBoxCollider* RIGID = new CBoxCollider(_position.x, _position.y, _position.z, 0,0,0,1, 0.5, 0.5, 0.5);
+    Manager->addComponentToEntity(RIGID, gg::BOXCOLLIDER, item);
 
     TData mes;
     mes.add(kDat_PickableItemId,item);

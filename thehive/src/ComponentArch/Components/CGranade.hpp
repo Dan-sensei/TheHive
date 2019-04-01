@@ -14,6 +14,7 @@
 #include "CTransform.hpp"
 #include "Factory.hpp"
 
+#include "CRigidBody.hpp"
 
 class CGranade: public IComponent {
     public:

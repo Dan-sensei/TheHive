@@ -4,7 +4,7 @@
 #include <Singleton.hpp>
 //#include <iostream>
 #include "Bullet/ggDynWorld.hpp"
-
+#include <ComponentArch/Components/CRigidBody.hpp>
                      //  2^16
 #define MAX_ENTITIES 65536
 

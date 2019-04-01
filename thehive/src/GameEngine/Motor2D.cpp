@@ -7,6 +7,7 @@
 #include "Omicron/Boton2D.hpp"
 #include "Omicron/Cuadrado2D.hpp"
 #include "Omicron/Texto2D.hpp"
+#include <ComponentArch/Components/CVida.hpp>
 
 Motor2D::Motor2D(){
     motor = Singleton<Omicron>::Instance();

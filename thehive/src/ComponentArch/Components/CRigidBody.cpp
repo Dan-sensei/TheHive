@@ -3,6 +3,7 @@
 
 #include "CTransform.hpp"
 #include "CClock.hpp"
+#include <ComponentArch/Components/CStaticModel.hpp>
 
 #define PI 3.14159265359
 #define FORCE_FACTOR    400.f

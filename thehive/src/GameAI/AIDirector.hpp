@@ -9,6 +9,10 @@
 #include <Singleton.hpp>
 #include <Factory.hpp>
 
+#include <ComponentArch/Components/CCamera.hpp>
+#include <ComponentArch/Components/CRenderable_3D.hpp>
+#include <ComponentArch/Components/CAIEnem.hpp>
+
 class ObjectManager;
 class Factory;
 class CTransform;

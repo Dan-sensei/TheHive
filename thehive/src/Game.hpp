@@ -58,7 +58,7 @@ private:
     gg::Color col;
     TNodo* luz;
     CTransform* playerpos;
-    
+
     SkyBox sky;
     NatureGenerator nat;
 };

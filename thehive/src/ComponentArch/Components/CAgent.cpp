@@ -10,6 +10,10 @@
 #include "CAIEnem.hpp"
 #include "Omicron/ZMaterial.hpp"
 
+#include <ComponentArch/Components/CRigidBody.hpp>
+#include <ComponentArch/Components/CVida.hpp>
+#include <ComponentArch/Components/CPlayerController.hpp>
+
 std::list <CAgent*>  CAgent::AgentList;
 
 CAgent::CAgent(const unsigned long &_flags)

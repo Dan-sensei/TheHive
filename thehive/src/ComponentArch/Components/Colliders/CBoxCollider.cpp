@@ -1,6 +1,6 @@
-#include "CSimpleStaticRigidBody.hpp"
+#include "CBoxCollider.hpp"
 
-CSimpleStaticRigidBody::CSimpleStaticRigidBody(
+CBoxCollider::CBoxCollider(
     float x, float y, float z,
     float rx, float ry, float rz, float rw,
     float sX, float sY, float sZ
@@ -30,16 +30,16 @@ CSimpleStaticRigidBody::CSimpleStaticRigidBody(
     body->setAngularFactor(btVector3(0,0,0));
 }
 
-CSimpleStaticRigidBody::~CSimpleStaticRigidBody(){
+CBoxCollider::~CBoxCollider(){
     delete myMotionState;
     world->removeRigidBody(body);
     delete body;
     delete shape;
 }
 
-void CSimpleStaticRigidBody::setToKinematic(){
+void CBoxCollider::setToKinematic(){
     body->setCollisionFlags(2);
 }
-void CSimpleStaticRigidBody::setToStatic(){
+void CBoxCollider::setToStatic(){
     body->setCollisionFlags(1);
 }

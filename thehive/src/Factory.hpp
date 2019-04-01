@@ -6,8 +6,6 @@
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
 
-#include <ComponentArch/Components/ComponentHeaders.hpp>
-
 #include <EventSystem/Blackboard.hpp>
 #include <EventSystem/BRbData.hpp>
 #include <EventSystem/BFloat.hpp>
