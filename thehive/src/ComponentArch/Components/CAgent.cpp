@@ -390,7 +390,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
 }
 
 void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
-    if((_pRec->eTriggerType & kTrig_Touchable) && Engine->key(gg::GG_E)){
+    if((_pRec->eTriggerType & kTrig_Touchable) && Engine->key(gg::E)){
         uint16_t item = _pRec->data.find(kDat_PickableItemId);
         uint16_t boton = _pRec->data.find(kDat_PickableItemId);
 
@@ -430,7 +430,7 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
 }
 
 void CAgent::STAY_func_kTrig_Pickable    (TriggerRecordStruct *_pRec){
-    if((_pRec->eTriggerType & kTrig_Pickable) /*&& Engine->key(gg::GG_E)*/){
+    if((_pRec->eTriggerType & kTrig_Pickable) /*&& Engine->key(gg::E)*/){
         int id = _pRec->data.find(kDat_PickableItemId);
 
         bool result = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER, nCAgentID))->pickItem(id);

@@ -1,7 +1,6 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include <GL/glew.h>
 #include <unordered_map>
 #include <string>
 #include "Shader.hpp"

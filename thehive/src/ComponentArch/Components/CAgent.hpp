@@ -5,7 +5,6 @@
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
 #include <cstdint>
 #include <list>
-//#include <irrlicht>
 
 #include <Util.hpp>
 #include <EventSystem/EnumTriggerType.hpp>

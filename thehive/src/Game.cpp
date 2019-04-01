@@ -6,7 +6,6 @@
 #include <stack>
 
 #include "ComponentArch/ObjectManager.hpp"
-#include "GameEngine/Camera.hpp"
 #include "Singleton.hpp"
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/AIDirector.hpp"

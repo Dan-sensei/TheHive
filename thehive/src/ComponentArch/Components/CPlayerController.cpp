@@ -17,12 +17,12 @@
 
 #define MAX_HERO_SPEED      2
 
-#define ROTATE_KEY          gg::GG_LCONTROL
-#define DASH_KEY            gg::GG_H
-#define RUN_KEY             gg::GG_LSHIFT
-#define JUMP_KEY            gg::GG_SPACEBAR
-#define RELOAD_KEY          gg::GG_R
-#define WEAPON_KEY          gg::GG_Q
+#define ROTATE_KEY          gg::LCONTROL
+#define DASH_KEY            gg::H
+#define RUN_KEY             gg::LSHIFT
+#define JUMP_KEY            gg::SPACEBAR
+#define RELOAD_KEY          gg::R
+#define WEAPON_KEY          gg::Q
 
 #define FORCE_FACTOR        500.f
 #define JUMP_FORCE_FACTOR   FORCE_FACTOR*6.2f
@@ -96,6 +96,13 @@ void CPlayerController::Init(){
 
     // s_pasos = new SonidoSuperficie();
     // SS->createSound("event:/SFX/Jugador/Pasos", s_pasos);
+
+    KEYMAP[0] = {gg::_1, &CPlayerController::ToggleSkill1};
+    KEYMAP[1] = {gg::_2, &CPlayerController::ToggleSkill2};
+    KEYMAP[2] = {gg::_3, &CPlayerController::ToggleSkill3};
+    KEYMAP[3] = {gg::I, &CPlayerController::invocasionwander};
+    KEYMAP[4] = {gg::U, &CPlayerController::invocasionhorda};
+    KEYMAP[5] = {gg::_4, &CPlayerController::ToggleFreeCamera};
 }
 
 
@@ -121,36 +128,8 @@ gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
 
     return gg::ST_TRUE;
 }
-void CPlayerController::invocasionhorda(){
-
-    auto hola=glm::vec3(651.342,0.684987,-14.1424);
-    factory->createTank(hola, 200);
 
 
-}
-void CPlayerController::invocasionwander(){
-
-glm::vec3 hola[]={
-    glm::vec3(463.316,0.684987,-23.9962),
-    glm::vec3(496.804,0.684987,-21.1747),
-    glm::vec3(443.705,0.684986,-26.6188),
-    glm::vec3(454.321,0.684986,-18.0602),
-    glm::vec3(514.321,0.684986,-20.0602),
-    glm::vec3(520.321,0.684986,-25.0602),
-    glm::vec3(603.705,0.684986,-20.6188),
-    glm::vec3(553.705,0.684986,-18.6188)
-};
-
-
-//wandering
-    ///
-
-
-    for (int i = 0; i < 8; i++) {
-        factory->createSoldierWandering(hola[i], 200);
-    }
-    ///
-}
 void CPlayerController::Update(){
     int wheelState = Engine->getWheelState();
     if(wheelState!=0){
@@ -174,57 +153,31 @@ void CPlayerController::FixedUpdate(){
     // Echarle un vistazo!
     // CommonWindowInterface* window = m_guiHelper->getAppInterface()->m_window;
     // -----------------------------------------------------------------------------
-    if(ToggleFreeCameraKey && Engine->key(gg::GG_4)){
-        ToggleFreeCameraKey = false;
-        camera->ToogleFreeCamera();
 
-        if(!FreeCamera){
-            PlayerMovement = false;
-            FreeCamera = true;
-        }
-        else{
-            PlayerMovement = true;
-            FreeCamera = false;
-        }
-    }
-    else if (!Engine->key(gg::GG_4) ){
-        ToggleFreeCameraKey = true;
+
+    for(uint8_t i = 0; i < KEYMAP.size(); ++i){
+        if(Engine->key(KEYMAP[i].KEY))  (this->*KEYMAP[i].Target)();
     }
 
     if(!PlayerMovement) return;
 
     //  If exists, we get its position
-auto pos=cTransform->getPosition();
+    auto pos=cTransform->getPosition();
 
     bool heroRotation = true;
 
-    camera->getDirectionVector(cV);
-    cV  = glm::normalize(cV);
-
-    // Vector perpendicular al vector direccion
-    ppV = glm::vec3(-cV.z,0,cV.x);
-
     // Vector que tendrá el impulso para aplicar al body
-    glm::vec3    force;
-    bool            pressed = false;
+    glm::vec3    force(0,0,0);
+    bool pressed = false;
+    check_WASD(force, pressed);
+
+
     float           MULT_FACTOR = 1;
 
-    if(Engine->key(gg::GG_1)){
-        hab->ToggleSkill(0);
-    }
-    if(Engine->key(gg::GG_2)){
-        hab->ToggleSkill(1);
-    }
-    if(Engine->key(gg::GG_3)){
-        hab->ToggleSkill(2);
-    }
-    if(Engine->key(gg::GG_I)){
-        invocasionwander();
-    }
-    if(Engine->key(gg::GG_U)){
-        invocasionhorda();
-    }
-    // if(Engine->key(gg::GG_T)){
+
+
+
+    // if(Engine->key(gg::T)){
     //     if(pulsacion_soldier==false){
     //         pulsacion_soldier=true;
     //         if(maxsoldier>currentsoldier){
@@ -239,7 +192,7 @@ auto pos=cTransform->getPosition();
     // else{
     //     pulsacion_soldier= false;
     // }
-    // if(Engine->key(gg::GG_Y)){
+    // if(Engine->key(gg::Y)){
     //     if(pulsacion_tank==false){
     //         pulsacion_tank=true;
     //         if(maxtank>currenttank){
@@ -253,7 +206,7 @@ auto pos=cTransform->getPosition();
     // else{
     //     pulsacion_tank= false;
     // }
-    // if(Engine->key(gg::GG_U)){
+    // if(Engine->key(gg::U)){
     //     if(pulsacion_rusher==false){
     //         pulsacion_rusher=true;
     //         if(maxrusher>currentrusher){
@@ -267,7 +220,7 @@ auto pos=cTransform->getPosition();
     // else{
     //     pulsacion_rusher= false;
     // }
-    if(Engine->key(gg::GG_M)){
+    if(Engine->key(gg::M)){
         //hab->ToggleSkill(2);
         //devuelve ide de un objeto
         glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition(),200);
@@ -287,10 +240,7 @@ auto pos=cTransform->getPosition();
         //gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
     }
 
-    if(Engine->key(gg::GG_W))   W_IsPressed(force,pressed);
-    if(Engine->key(gg::GG_A))   A_IsPressed(force,pressed);
-    if(Engine->key(gg::GG_S))   S_IsPressed(force,pressed);
-    if(Engine->key(gg::GG_D))   D_IsPressed(force,pressed);
+
     if(Engine->key(ROTATE_KEY)) heroRotation = false;
 
     if(Engine->key(RUN_KEY))    MULT_FACTOR = MULT_RUN_FACTOR;
@@ -320,8 +270,8 @@ auto pos=cTransform->getPosition();
         }
     }
 
-    glm::vec3 Direction = cRigidBody->getVirtualRotation() * glm::vec3(0,0,1);
-    cRigidBody->setVirtualRotation(RotationBetween(Direction, cV));
+    // glm::vec3 Direction = cRigidBody->getVirtualRotation() * glm::vec3(0,0,1);
+    // cRigidBody->setVirtualRotation(RotationBetween(Direction, cV));
 
     // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
     cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
@@ -330,7 +280,6 @@ auto pos=cTransform->getPosition();
     // Acciones de Willy
     // -----------------------------------
     // DISPARO
-
     if(Engine->key(RELOAD_KEY)){
         CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
         if(gun && gun->canReload() && !gun->isReloading()){
@@ -359,7 +308,7 @@ auto pos=cTransform->getPosition();
     }
 
     // Graná
-    if(Engine->key(gg::GG_G)){
+    if(Engine->key(gg::G)){
         // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
         glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
         ////std::cout << actualGrenadeState << '\n';
@@ -371,14 +320,11 @@ auto pos=cTransform->getPosition();
     }
 
     // <DEBUG>
-    showDebug();
+    //showDebug();
     // </DEBUG>
 
-    if(Engine->key(gg::GG_P)) {
-        //Engine->Close();
-
+    if(Engine->key(gg::P)) {
         Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
-
     }
 
     // if(pressed){
@@ -389,7 +335,7 @@ auto pos=cTransform->getPosition();
     // }
 
 }
-
+/* message */
 
 // Código de los tutoriales de OpengGL, a optimisar
 glm::quat CPlayerController::RotationBetween(glm::vec3 &V1, glm::vec3 &V2){
@@ -466,44 +412,23 @@ void CPlayerController::playerThrowDopple(){
     factory->createSenyuelo(glm::vec3(gPos.x,gPos.y+GRENADE_THROW_Y_OFFSET,gPos.z),vel);
 }
 
-void CPlayerController::W_IsPressed(glm::vec3 &force, bool &pressed){
-    force = glm::vec3(-cV.x,0,-cV.z);
-    // if(Engine->key(ROTATE_KEY)){
-    //     cV2.x-=cV.x;
-    //     cV2.z-=cV.z;
-    //     camera->setCameraPositionBeforeLockRotation(cV2);
-    // };
-    pressed = true;
-}
+void CPlayerController::check_WASD(glm::vec3 &force, bool &flag_pressed){
+    int8_t W_S = Engine->key(gg::S) - Engine->key(gg::W);
+    int8_t A_D = Engine->key(gg::A) - Engine->key(gg::D);
 
-void CPlayerController::S_IsPressed(glm::vec3 &force, bool &pressed){
-    force = glm::vec3(+cV.x,0,+cV.z);
-    // if(Engine->key(ROTATE_KEY)){
-    //     cV2.x+=cV.x;
-    //     cV2.z+=cV.z;
-    //     camera->setCameraPositionBeforeLockRotation(cV2);
-    // }
-    pressed = true;
-}
+    if(W_S || A_D){
+        flag_pressed = true;
 
-void CPlayerController::D_IsPressed(glm::vec3 &force, bool &pressed){
-    force = glm::vec3(-ppV.x,0,-ppV.z);
-    // if(Engine->key(ROTATE_KEY)){
-    //     cV2.x-=ppV.x;
-    //     cV2.z-=ppV.z;
-    //     camera->setCameraPositionBeforeLockRotation(cV2);
-    // };
-    pressed = true;
-}
+        glm::vec3 cV;
+        camera->getDirectionVector(cV);
 
-void CPlayerController::A_IsPressed(glm::vec3 &force, bool &pressed){
-    force = glm::vec3(+ppV.x,0,+ppV.z);
-    // if(Engine->key(ROTATE_KEY)){
-    //     cV2.x-=ppV.x;
-    //     cV2.z-=ppV.z;
-    //     camera->setCameraPositionBeforeLockRotation(cV2);
-    // };
-    pressed = true;
+        if(W_S) force = glm::vec3(cV.x * W_S, 0, cV.z * W_S);
+
+        // Vector perpendicular al vector direccion
+        if(A_D) force += glm::vec3(-cV.z*A_D, 0, cV.x*A_D);
+
+        force = glm::normalize(force);
+    }
 }
 
 void CPlayerController::ApplyDash(glm::vec3 &force,float &MULT_FACTOR){
@@ -517,7 +442,7 @@ void CPlayerController::ApplyDash(glm::vec3 &force,float &MULT_FACTOR){
 }
 
 void CPlayerController::showDebug(){
-    if(Engine->key(gg::GG_F1)){
+    if(Engine->key(gg::F1)){
         if(!debug1){
             debug1 = true;
             debug2? debug2=false : debug2=true;
@@ -598,7 +523,7 @@ void CPlayerController::SprintDebuf(){
 }
 
 bool CPlayerController::canPickWeapon(){
-    if(Engine->key(gg::GG_F)){
+    if(Engine->key(gg::F)){
         if(!pulsacion_f){
             pulsacion_f = true;
             return true;
@@ -639,4 +564,48 @@ bool CPlayerController::useItem(const uint16_t &_item){
         }
     }
     return false;
+}
+
+
+void CPlayerController::ToggleSkill1(){
+    hab->ToggleSkill(0);
+}
+void CPlayerController::ToggleSkill2(){
+    hab->ToggleSkill(1);
+}
+void CPlayerController::ToggleSkill3(){
+    hab->ToggleSkill(2);
+}
+
+void CPlayerController::invocasionhorda(){
+    auto hola=glm::vec3(651.342,0.684987,-14.1424);
+    factory->createTank(hola, 200);
+}
+void CPlayerController::invocasionwander(){
+    glm::vec3 hola[]={
+        glm::vec3(463.316,0.684987,-23.9962),
+        glm::vec3(496.804,0.684987,-21.1747),
+        glm::vec3(443.705,0.684986,-26.6188),
+        glm::vec3(454.321,0.684986,-18.0602),
+        glm::vec3(514.321,0.684986,-20.0602),
+        glm::vec3(520.321,0.684986,-25.0602),
+        glm::vec3(603.705,0.684986,-20.6188),
+        glm::vec3(553.705,0.684986,-18.6188)
+    };
+    //wandering
+    for (int i = 0; i < 8; i++) {
+        factory->createSoldierWandering(hola[i], 200);
+    }
+}
+void CPlayerController::ToggleFreeCamera(){
+    camera->ToogleFreeCamera();
+
+    if(!FreeCamera){
+        PlayerMovement = false;
+        FreeCamera = true;
+    }
+    else{
+        PlayerMovement = true;
+        FreeCamera = false;
+    }
 }

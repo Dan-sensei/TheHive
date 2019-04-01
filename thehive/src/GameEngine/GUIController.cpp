@@ -57,7 +57,7 @@ void GUIController::Init(){
 }
 void GUIController::update(){
     /*
-    if(Engine->key(gg::GG_W)){
+    if(Engine->key(gg::W)){
         if(!arriba_pulsado){
             arriba_pulsado=true;
             if(cursorpos!=0){
@@ -68,7 +68,7 @@ void GUIController::update(){
     else{
         arriba_pulsado=false;
     }
-    if(Engine->key(gg::GG_S)){
+    if(Engine->key(gg::S)){
         if(!bajo_pulsado){
             bajo_pulsado=true;
             if(cursorpos!=(posmax-1)){
@@ -83,7 +83,7 @@ void GUIController::update(){
     //
     // int id =Engine->checkbutton();
     //
-    // if(Engine->key(gg::GG_Q)){
+    // if(Engine->key(gg::Q)){
     //     if(!enter_pulsado){
     //         enter_pulsado=true;
     //         id=Engine2D->Pulsarboton(cursorpos);

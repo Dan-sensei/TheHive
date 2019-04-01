@@ -14,7 +14,7 @@
 #include <Bullet/ggDynWorld.hpp>
 #include "Factory.hpp"
 
-#include <GameEngine/KEYCODES.hpp>
+#include <Omicron/KEYCODES.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
 #include <Omicron/Clock.hpp>
@@ -51,8 +51,7 @@ class CPlayerController : public IComponent {
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
         bool canPickWeapon();
-        void invocasionhorda();
-        void invocasionwander();
+
 
 
         bool hasItem(const uint16_t&);
@@ -75,6 +74,9 @@ class CPlayerController : public IComponent {
 
         CPlayerController();
         CPlayerController(const CPlayerController &orig) = delete;
+
+
+
 
         gg::Clock clocker;
         glm::vec3 Target;
@@ -120,13 +122,25 @@ class CPlayerController : public IComponent {
 
         glm::vec3 cV,ppV;
         // std::map<int, void (CPlayerController::*)(glm::vec3&,bool&)> mapPlayerActions;
-        void W_IsPressed(glm::vec3&,bool&);
-        void A_IsPressed(glm::vec3&,bool&);
-        void S_IsPressed(glm::vec3&,bool&);
-        void D_IsPressed(glm::vec3&,bool&);
+        void check_WASD(glm::vec3 &force, bool &flag_pressed);
         void ApplyDash(glm::vec3&,float&);
         void showDebug();
         void changeWeaponIfPossible(CGun*);
+
+
+        struct Key2Func{
+            gg::KEYCODE KEY;
+            void (CPlayerController::*Target)();
+        };
+
+        std::array<Key2Func, 6> KEYMAP;
+
+        void ToggleSkill1();
+        void ToggleSkill2();
+        void ToggleSkill3();
+        void invocasionhorda();
+        void invocasionwander();
+        void ToggleFreeCamera();
 
         glm::quat RotationBetween(glm::vec3 &V1, glm::vec3 &V2);
 

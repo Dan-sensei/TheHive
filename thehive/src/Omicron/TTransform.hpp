@@ -1,7 +1,7 @@
 #ifndef TTRANSFORM_H
 #define TTRANSFORM_H
 
-#include <GL/glew.h>
+
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>

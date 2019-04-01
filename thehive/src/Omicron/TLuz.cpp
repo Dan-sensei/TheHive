@@ -1,4 +1,7 @@
 #include "TLuz.hpp"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 //#include <iostream>
 
 TLuz::TLuz():light_shader(nullptr),intensidad(0,0,0){}

@@ -154,20 +154,20 @@ void CCamera::FreeCamera(){
     else if(p > PI/2 - 0.2) p = PI/2 - 0.2;
 
     #define SPEED 0.5
-    if(Engine->key(gg::GG_W)){
+    if(Engine->key(gg::W)){
         glm::vec3 dir = glm::normalize(CameraTarget - LastFreeCameraPosition);
         LastFreeCameraPosition += glm::vec3(dir.x * SPEED, dir.y * SPEED, dir.z * SPEED);
     }
-    else if(Engine->key(gg::GG_S)){
+    else if(Engine->key(gg::S)){
         glm::vec3 dir = glm::normalize(CameraTarget - LastFreeCameraPosition);
         LastFreeCameraPosition -= glm::vec3(dir.x * SPEED, dir.y * SPEED, dir.z * SPEED);
     }
-    if(Engine->key(gg::GG_A)){
+    if(Engine->key(gg::A)){
         glm::vec3 dir = CameraTarget - LastFreeCameraPosition;
         glm::vec3 ppV = glm::normalize(glm::vec3(-dir.z,0,dir.x));
         LastFreeCameraPosition -= glm::vec3(ppV.x * SPEED, 0, ppV.z * SPEED);
     }
-    else if(Engine->key(gg::GG_D)){
+    else if(Engine->key(gg::D)){
         glm::vec3 dir = CameraTarget - LastFreeCameraPosition;
         glm::vec3 ppV = glm::normalize(glm::vec3(-dir.z,0,dir.x));
         LastFreeCameraPosition += glm::vec3(ppV.x * SPEED, 0, ppV.z * SPEED);

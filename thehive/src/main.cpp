@@ -1,41 +1,18 @@
-/*
-#include "Game.hpp"
 //#include <iostream>
-#include <string>
-#include <Singleton.hpp>
-#include "GameAI/Pathfinding.hpp"
-#include "GameAI/NavmeshStructs.hpp"
-*/
 
-//#include <iostream>
-#include <cstdint>
-#include <string>
-#include <stack>
-
-#include "ComponentArch/ObjectManager.hpp"
-#include "GameEngine/Camera.hpp"
+#include <Omicron/Omicron.hpp>
+#include <ComponentArch/ObjectManager.hpp>
 #include "Singleton.hpp"
 #include "GameAI/Pathfinding.hpp"
-#include "GameAI/NavmeshStructs.hpp"
 
 #include "GameEngine/Motor2D.hpp"
-
-#include "Factory.hpp"
-#include <ComponentArch/Components/CNavmeshAgent.hpp>
-#include <EventSystem/Blackboard.hpp>
 
 #include "States/StateMachine.hpp"
 #include "Game.hpp"
 #include "MenuState.hpp"
 #include <FMOD/SoundSystem.hpp>
-#include <Omicron/Omicron.hpp>
-#include <vector>
-#include "BinaryParser.hpp"
 
 int main(int argc, char const *argv[]) {
-    // alias upd="rm -f EVENTOS.data && cp ~/Documentos/THE_HIVE_LevelEditor\ \(1\)/BinaryFiles/EVENTOS.data ."
-    // BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
-
 
     Omicron *Engine = Singleton<Omicron>::Instance();
     CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();

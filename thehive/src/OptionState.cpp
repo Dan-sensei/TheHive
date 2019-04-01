@@ -6,18 +6,9 @@
 #include <stack>
 
 #include "ComponentArch/ObjectManager.hpp"
-#include "GameEngine/Camera.hpp"
 #include "Singleton.hpp"
-#include "GameAI/Pathfinding.hpp"
-#include "GameAI/NavmeshStructs.hpp"
-
 #include "GameEngine/Motor2D.hpp"
-
-#include "Factory.hpp"
-#include <ComponentArch/Components/CNavmeshAgent.hpp>
-#include <EventSystem/Blackboard.hpp>
 #include <States/StateMachine.hpp>
-#include "GameEngine/Motor2D.hpp"
 
 
 
@@ -53,7 +44,6 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 
 OptionState::OptionState():cont(){
     Engine = Singleton<Omicron>::Instance();
-    EventSystem = Singleton<CTriggerSystem>::Instance();
     SS = Singleton<SoundSystem>::Instance();
     Engine->HideCursor(false);
 }
@@ -102,5 +92,4 @@ void OptionState::CLIN(){
     //Blackboard::ClearGlobalBlackboard();
     //Manager->clin();
     //world->clean();
-    //EventSystem->clin();
 }

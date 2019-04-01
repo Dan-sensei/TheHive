@@ -4,6 +4,7 @@
 #include <Singleton.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <Util.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
 

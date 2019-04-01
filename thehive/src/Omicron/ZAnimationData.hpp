@@ -5,6 +5,9 @@
 #include <vector>
 #include "Clock.hpp"
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 class ZAnimationData {
     friend class ZDynamicMesh;
     public:

@@ -1,9 +1,6 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include <vector>
 #include <map>
 #include <map>
@@ -23,7 +20,7 @@ class Shader{
         void Unbind() const;
         void freeBuffer();
 
-        GLuint getID(){return ShaderID;}
+        unsigned int getID(){return ShaderID;}
 
     private:
         unsigned int ShaderID;

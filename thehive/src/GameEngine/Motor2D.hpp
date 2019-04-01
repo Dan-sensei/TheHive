@@ -8,7 +8,6 @@
 #include <vector>
 
 
-#include <irrlicht/irrlicht.h>
 #include "Singleton.hpp"
 #include "Util.hpp"
 

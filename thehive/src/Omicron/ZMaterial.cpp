@@ -1,4 +1,5 @@
 #include "ZMaterial.hpp"
+#include <GL/glew.h>
 //#include <iostream>
 //#include "vendor/stb_image.h"
 #include "AssetManager.hpp"

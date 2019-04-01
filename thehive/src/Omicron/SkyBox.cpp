@@ -214,16 +214,16 @@ void SkyBox::init(){
 }
 
 void SkyBox::Draw(){
-    if(engine->key(gg::GG_6) && skyboxtype !=0){
+    if(engine->key(gg::_6) && skyboxtype !=0){
         skyboxtype = 0;
     }
-    if(engine->key(gg::GG_7) && skyboxtype !=1){
+    if(engine->key(gg::_7) && skyboxtype !=1){
         skyboxtype = 1;
     }
-    if(engine->key(gg::GG_8) && skyboxtype !=2){
+    if(engine->key(gg::_8) && skyboxtype !=2){
         skyboxtype = 2;
     }
-    if(engine->key(gg::GG_9) && skyboxtype !=3){
+    if(engine->key(gg::_9) && skyboxtype !=3){
         skyboxtype = 3;
     }
 

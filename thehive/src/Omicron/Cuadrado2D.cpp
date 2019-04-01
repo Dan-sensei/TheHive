@@ -3,8 +3,6 @@
 #include "AssetManager.hpp"
 //#include <iostream>
 
-
-
 #define WIDTH          1080.0f
 #define HEIGTH         720.0f
 

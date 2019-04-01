@@ -6,7 +6,7 @@
 
 
 #include <Bullet/ggDynWorld.hpp>
-#include <GameEngine/KEYCODES.hpp>
+#include <Omicron/KEYCODES.hpp>
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/ObjectManager.hpp>

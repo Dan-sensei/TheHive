@@ -1,14 +1,13 @@
 #ifndef GUICONTROLLER_H
 #define GUICONTROLLER_H
 
-#include <irrlicht/irrlicht.h>
 #include <string>
 #include "Singleton.hpp"
 #include "Util.hpp"
 
 
 #include <GameEngine/EnumButtonType.hpp>
-#include <GameEngine/KEYCODES.hpp>
+#include <Omicron/KEYCODES.hpp>
 #include <States/StateMachine.hpp>
 #include <Omicron/Omicron.hpp>
 
