@@ -20,6 +20,8 @@
 #include <EventSystem/Blackboard.hpp>
 #include <EventSystem/BRbData.hpp>
 #include <EventSystem/BFloat.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 class ggDynWorld;
 
@@ -84,6 +86,10 @@ class CRigidBody : public IComponent {
 
         void setLinearVelocity(glm::vec3);
 
+        // Just virtual, doesn't rotate the actual RigidBody
+        void setVirtualRotation(const glm::quat &Quaternion);
+        glm::quat getVirtualRotation();
+
         glm::vec3 getVelocity();
         glm::vec2 getXZVelocity();
 
@@ -102,13 +108,14 @@ class CRigidBody : public IComponent {
         void updateCTransformPosition();
         void Upd_MoverObjeto();
     private:
+
         struct Status {
             Status();
             Status(const Status &orig);
             ~Status();
 
             glm::vec3 Position;
-            glm::vec3 Rotation;
+            glm::quat Rotation;
         };
 
         Status Previous;

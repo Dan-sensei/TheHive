@@ -474,6 +474,14 @@ void CRigidBody::Upd_MoverObjeto(){
 
 }
 
+void CRigidBody::setVirtualRotation(const glm::quat &Quaternion){
+    Current.Rotation = Quaternion * Current.Rotation;
+}
+glm::quat CRigidBody::getVirtualRotation(){
+    return Current.Rotation;
+}
+
+
 gg::EMessageStatus CRigidBody::SavePreviousStatus(){
     Previous = Current;
 
@@ -492,16 +500,21 @@ gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
 
     double Tick = *static_cast<double*>(_Tick.mData);
 
+    //glm::vec3 NewPos = glm::lerp(Previous.Position, Current.Position, static_cast<float>(Tick));
     float X = Previous.Position.x *(1-Tick) + Current.Position.x*Tick;
     float Y = Previous.Position.y *(1-Tick) + Current.Position.y*Tick;
     float Z = Previous.Position.z *(1-Tick) + Current.Position.z*Tick;
 
     cTransform->setPosition(glm::vec3(X,Y,Z));
+    glm::quat newRotation = glm::slerp(Previous.Rotation, Current.Rotation, static_cast<float>(Tick));
+    cTransform->setRotation(newRotation);
     return gg::ST_TRUE;
 }
 
 
-CRigidBody::Status::Status(){}
+CRigidBody::Status::Status()
+:Rotation(1,0,0,0)
+{}
 CRigidBody::Status::Status(const Status &orig){
     Position = orig.Position;
     Rotation = orig.Rotation;

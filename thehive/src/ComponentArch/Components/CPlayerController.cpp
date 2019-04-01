@@ -318,6 +318,10 @@ auto pos=cTransform->getPosition();
             cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.3);
         }
     }
+
+    glm::vec3 Direction = cRigidBody->getVirtualRotation() * glm::vec3(0,0,1);
+    cRigidBody->setVirtualRotation(RotationBetween(Direction, cV));
+
     // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
     cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
 
@@ -382,6 +386,40 @@ auto pos=cTransform->getPosition();
     //         s_pasos->play();
     //    }
     // }
+
+}
+
+
+// Código de los tutoriales de OpengGL, a optimisar
+glm::quat CPlayerController::RotationBetween(glm::vec3 &V1, glm::vec3 &V2){
+	V1 = normalize(V1);
+
+	float cosTheta = dot(V1, V2);
+	glm::vec3 rotationAxis;
+
+	if (cosTheta < -1 + 0.001f){
+		// special case when vectors in opposite directions:
+		// there is no "ideal" rotation axis
+		// So guess one; any will do as long as it's perpendicular to start
+		rotationAxis = cross(glm::vec3(0.0f, 0.0f, 1.0f), V1);
+		if (glm::length2(rotationAxis) < 0.01 ) // bad luck, they were parallel, try again!
+			rotationAxis = cross(glm::vec3(1.0f, 0.0f, 0.0f), V1);
+
+		rotationAxis = normalize(rotationAxis);
+		return glm::angleAxis(glm::radians(180.0f), rotationAxis);
+	}
+
+	rotationAxis = cross(V1, V2);
+
+	float s = sqrt( (1+cosTheta)*2 );
+	float invs = 1 / s;
+
+	return glm::quat(
+		s * 0.5f,
+		rotationAxis.x * invs,
+		rotationAxis.y * invs,
+		rotationAxis.z * invs
+	);
 
 }
 

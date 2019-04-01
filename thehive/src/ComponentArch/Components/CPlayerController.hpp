@@ -128,6 +128,8 @@ class CPlayerController : public IComponent {
         void showDebug();
         void changeWeaponIfPossible(CGun*);
 
+        glm::quat RotationBetween(glm::vec3 &V1, glm::vec3 &V2);
+
         int actualGrenadeState; // 1,2,3
         std::map<int, void (CPlayerController::*)()> mapFuncGrenades;
         void playerThrowHolyBomb();
