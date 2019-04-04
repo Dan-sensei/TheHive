@@ -62,7 +62,6 @@ bool ZMeshData::load(const std::string& path){
         glVertexAttribFormat(3, 3, GL_FLOAT, false, 0);
         glVertexAttribFormat(4, 3, GL_FLOAT, false, 12);
 
-
         glVertexAttribBinding(0, 0);
         glVertexAttribBinding(1, 0);
         glVertexAttribBinding(2, 1);

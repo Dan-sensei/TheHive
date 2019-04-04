@@ -27,12 +27,10 @@ void main() {
   float LightPower = 150.0f;
 
   vec4 color = texture(DiffuseMap,UV);
-  if(color.a<0.6){
-      discard;
-  }
+  float alpha = color.a;
 
   // Material properties
-  vec3 MaterialDiffuseColor = texture( DiffuseMap, UV).rgb;
+  vec3 MaterialDiffuseColor = color.rgb;
   vec3 MaterialAmbientColor = vec3(BASE_FACTOR) * MaterialDiffuseColor;
   vec3 MaterialSpecularColor = texture( SpecularMap, UV ).rgb * 0.3;
   vec3 TextureNormal_tangentspace = normalize(texture2D( NormalMap, vec2(UV.x,-UV.y)).rgb*2.0 - 1.0);
@@ -51,6 +49,6 @@ void main() {
       // Diffuse : "color" of the object
       MaterialDiffuseColor * LightColor * LightPower * cosTheta / (dist*dist) +
       // Specular : reflective highlight, like a mirror
-      MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (dist*dist),1);
+      MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (dist*dist),alpha);
 
 };

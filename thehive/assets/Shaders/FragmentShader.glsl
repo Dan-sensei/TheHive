@@ -20,11 +20,8 @@ in vec3 VertexPosT;
 
 void main() {
 
-    vec4 color = texture(DiffuseMap,UV);
-    if(color.a<0.6){
-        discard;
-    }
-
+    vec4 texture_ = texture(DiffuseMap,UV);
+    float alpha = texture_.a;
     // Light emission properties
     // You probably want to put them as uniforms
     vec3 LightColor = vec3(255,255,255);
@@ -33,10 +30,12 @@ void main() {
 
 
     // Material properties
-    vec3 MaterialDiffuseColor = texture( DiffuseMap, UV).rgb;
+    vec3 MaterialDiffuseColor = texture_.rgb;
     vec3 MaterialAmbientColor = vec3(BASE_FACTOR) * MaterialDiffuseColor;
     vec3 MaterialSpecularColor = texture( SpecularMap, UV ).rgb * 0.3;
-    vec3 TextureNormal_tangentspace = normalize(texture2D( NormalMap, vec2(UV.x,-UV.y)).rgb*2.0 - 1.0);
+    vec3 TextureNormal_tangentspace = texture2D( NormalMap, vec2(UV.x,-UV.y)).rgb*2.0 - 1.0;
+    TextureNormal_tangentspace.xy *= 4;
+    TextureNormal_tangentspace = normalize(TextureNormal_tangentspace);
 
     float dist = length( LightPosition_worldspace - Position_worldspace );
     vec3 n = TextureNormal_tangentspace;
@@ -46,12 +45,14 @@ void main() {
     vec3 R = reflect(-l,n);
     float cosAlpha = clamp( dot( E,R ), 0,1 );
 
+    float specular = cosAlpha/(5 - 5*cosAlpha+cosAlpha);
+
     frag_colour = vec4(
         // Ambient : simulates indirect lighting
         MaterialAmbientColor +
         // Diffuse : "color" of the object
-        MaterialDiffuseColor * LightColor * LightPower * cosTheta / (dist*2) +
+        MaterialDiffuseColor * LightColor * LightPower * cosTheta / (dist*dist) +
         // Specular : reflective highlight, like a mirror
-        MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (dist*dist),1);
+        MaterialSpecularColor * LightColor * LightPower * specular / (dist*dist),alpha);
 
 };

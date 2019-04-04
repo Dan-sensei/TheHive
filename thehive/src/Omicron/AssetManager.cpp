@@ -74,9 +74,9 @@ void AssetManager::loadInit(){
 
     ZMaterial* 		Ground = getMaterial("Ground");
     Ground->attachShader(shader);
-    Ground->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Flat.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Ground->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Ground->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Ground->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Asfalto_Diffuse.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Ground->addTexture(GN::NORMAL_MAP,       "assets/Textures/Asfalto_Normal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Ground->addTexture(GN::SPECULAR_MAP,     "assets/Textures/Asfalto_Gloss.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
     ZMaterial* 		Farola = getMaterial("Farola");
     Farola->attachShader(shader);

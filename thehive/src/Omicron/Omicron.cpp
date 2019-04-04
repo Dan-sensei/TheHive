@@ -290,8 +290,8 @@ bool Omicron::Initialize(){
     glEnable(GL_CULL_FACE);
     glCullFace (GL_BACK);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable( GL_BLEND );
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);

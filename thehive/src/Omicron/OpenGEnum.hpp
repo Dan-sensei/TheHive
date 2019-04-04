@@ -12,8 +12,9 @@ namespace GN{
 
     //TEXTURES  -   SOIL
     enum{
-        INVERT_Y = 16,
         REPEAT_TEXTURE = 4,
+        TRANSPARENCY = 8,
+        INVERT_Y = 16,
         GEN_MIPMAPS = 4096,
         COMPRESS_TO_DDS = 32,
 

@@ -43,7 +43,6 @@ void ZStaticMesh::addLOD(std::string Name){
     }
 }
 
-
 void ZStaticMesh::assignMaterial(ZMaterial* material_){
     zmat = material_;
 }
