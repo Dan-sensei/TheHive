@@ -169,6 +169,7 @@ void Omicron::BeginDraw(){
 
 void Omicron::draw(){
     ++FPS;
+    glEnable (GL_BLEND); glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     ESCENA->drawRoot_M();
 }
 
@@ -296,7 +297,7 @@ bool Omicron::Initialize(){
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     Half_Window_Width = ancho/2;
     Half_Window_Height = alto/2;

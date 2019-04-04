@@ -22,16 +22,24 @@ void main() {
 
     vec4 texture_ = texture(DiffuseMap,UV);
     float alpha = texture_.a;
+
+    if(alpha == 0.0)
+        discard;
+
     // Light emission properties
     // You probably want to put them as uniforms
     vec3 LightColor = vec3(255,255,255);
     LightColor = normalize(LightColor);
     float LightPower = 150.0f;
 
+    vec3 TextureDiffuse = texture_.rgb;
 
     // Material properties
-    vec3 MaterialDiffuseColor = texture_.rgb;
-    vec3 MaterialAmbientColor = vec3(BASE_FACTOR) * MaterialDiffuseColor;
+
+    // Luz ambiente
+    vec3 Ambient = vec3(BASE_FACTOR) * TextureDiffuse;
+
+
     vec3 MaterialSpecularColor = texture( SpecularMap, UV ).rgb * 0.3;
     vec3 TextureNormal_tangentspace = texture2D( NormalMap, vec2(UV.x,-UV.y)).rgb*2.0 - 1.0;
     TextureNormal_tangentspace.xy *= 4;
@@ -48,11 +56,10 @@ void main() {
     float specular = cosAlpha/(5 - 5*cosAlpha+cosAlpha);
 
     frag_colour = vec4(
-        // Ambient : simulates indirect lighting
-        MaterialAmbientColor +
-        // Diffuse : "color" of the object
-        MaterialDiffuseColor * LightColor * LightPower * cosTheta / (dist*dist) +
-        // Specular : reflective highlight, like a mirror
-        MaterialSpecularColor * LightColor * LightPower * specular / (dist*dist),alpha);
+        Ambient +
+        TextureDiffuse * LightColor * LightPower * cosTheta / (dist*dist) +
+        MaterialSpecularColor * LightColor * LightPower * specular / (dist*dist),
+        alpha
+    );
 
 };

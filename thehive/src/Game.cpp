@@ -80,13 +80,14 @@ Game::~Game(){
 void Game::Init(){
     Engine->createZones(8);
 
-    BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
-
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
     // Los eventos son propios de cada zona!
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
+    
+    BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
+
 
     Engine2D->InitHUD();
 
