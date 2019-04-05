@@ -19,6 +19,7 @@
 #include <Omicron/KEYCODES.hpp>
 #include "Debug.hpp"
 #include <Omicron/Clock.hpp>
+#include <Omicron/FX/Particle_System_DATA.hpp>
 
 template <typename T>
 class Singleton;
@@ -34,6 +35,7 @@ class Omicron {
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
         TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
         TNodo* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        TNodo* CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone = 0);
 
         // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
         void createZones(uint8_t NumberOfZones);
@@ -105,6 +107,7 @@ class Omicron {
         TNodo* OKAMERAS_LAYER;
         TNodo* LIGHTS_LAYER;
         TNodo* BUFFERS_LAYER;
+
         GLFWwindow* window;
         AssetManager* gestorRecursos;
         Debug* Debugger;

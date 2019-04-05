@@ -21,7 +21,7 @@
 #include <Omicron/2D/Motor2D.hpp>
 
 #include <Bullet/ggDynWorld.hpp>
-
+#include <Omicron/FX/Particle_System_DATA.hpp>
 
 
 #define MOVEMENT_SPEED 1.f
@@ -131,6 +131,13 @@ void Game::Init(){
     sky.init();
     //Engine2D->prueba();
     // //std::cout << "\n -- INIT -- " << '\n';
+
+    ParticleSystem_Data PS;
+    PS.Texture = "assets/Textures/Particles/BlueQuad.png";
+    PS.SpawnTime = 0.05;
+    PS.MaxParticles = 20;
+
+    Engine->CreateParticleSystem(PS, 1);
 }
 
 void Game::Update(){
@@ -189,10 +196,10 @@ void Game::Update(){
 
     // //std::cout << "  - DRAW" << '\n';
     Engine->draw();
+    sky.Draw();
 
     Engine->DisplayFPS();
 
-    sky.Draw();
     Engine2D->DisplayHUD();
 
     //Engine2D->draw();

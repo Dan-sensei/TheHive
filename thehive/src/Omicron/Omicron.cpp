@@ -1,6 +1,7 @@
 #include "Omicron.hpp"
 #include <glm/gtx/matrix_decompose.hpp>
 #include <iostream>
+#include <Omicron/FX/ParticleSystem.hpp>
 
 
 bool* Omicron::KEYS = new bool[349];
@@ -26,8 +27,7 @@ Omicron::Omicron()
         Omicron::KEYS[i] = false;
 }
 
-Omicron::~Omicron(){
-}
+Omicron::~Omicron(){}
 
 void Omicron::createZones(uint8_t NumberOfZones){
     NumberOfZones += 1;
@@ -134,6 +134,21 @@ TNodo* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::quat& Ro
 
     return Malla;
 }
+
+TNodo* Omicron::CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone){
+    ParticleSystem* P = new ParticleSystem();
+
+    P->Init(Data.MaxParticles);
+    P->setGenerationTime(Data.SpawnTime);
+    P->setTexture(Data.Texture);
+    
+    TNodo* PADRE = ZONES[map_zone];
+    TNodo* ParticleNode = new TNodo(PADRE, P);
+
+    return ParticleNode;
+}
+
+
 
 TNodo* Omicron::bindTransform(const glm::vec3& pos, const glm::quat& rot, TNodo* FATHER){
     TTransform* Rotate = new TTransform();

@@ -7,8 +7,10 @@
 #include <stack>
 #include <Omicron/Clock.hpp>
 #include <Omicron/Shader.hpp>
+#include <Omicron/CORE/TEntidad.hpp>
+#include "Particle_System_DATA.hpp"
 
-class ParticleSystem {
+class ParticleSystem : public TEntidad {
 
     public:
         ParticleSystem();
@@ -16,21 +18,26 @@ class ParticleSystem {
         ~ParticleSystem();
 
         void Init(float MaxParticles);
+        void ResetTimerAndToggleUpdate();
+        void UpdateAndDraw();
         void Update();
         void Draw();
-        uint16_t getFreePosition();
 
         void setGenerationTime(float TIME_SECONDS);
         void setTexture(const std::string &_Texture);
 
+        virtual void beginDraw();
+        virtual void endDraw();
+
     private:
 
         void ParticleCreationHandler();
+        uint16_t getFreePosition();
 
         std::vector<Particle> Particles;
         std::vector<float> GL_Position_Size_Buffer;
         std::vector<float> GL_Color_Buffer;
-        std::stack<uint16_t> AvailablePositions;
+        uint16_t LastAvailablePosition;
 
         gg::Clock Timer;
 
@@ -46,6 +53,8 @@ class ParticleSystem {
         unsigned int Texture;
 
         uint16_t ActiveParticles;
+
+        void (ParticleSystem::*CurrentUpdate)();
 
 };
 
