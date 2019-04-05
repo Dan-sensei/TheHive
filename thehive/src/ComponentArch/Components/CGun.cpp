@@ -1,5 +1,5 @@
 #include "CGun.hpp"
-#include <GameEngine/Motor2D.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 #include <Bullet/ggDynWorld.hpp>
 #include "CAIEnem.hpp"
 #include <ComponentArch/Components/CVida.hpp>

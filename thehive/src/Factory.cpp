@@ -5,7 +5,7 @@
 #include <ComponentArch/Components/CGranade2.hpp>
 #include <Omicron/ZMaterial.hpp>
 #include <Omicron/AssetManager.hpp>
-#include <Omicron/ZStaticMesh.hpp>
+#include <Omicron/ZMESHES/ZStaticMesh.hpp>
 
 #include <ComponentArch/Components/CRigidBody.hpp>
 #include <ComponentArch/Components/Colliders/CBoxCollider.hpp>

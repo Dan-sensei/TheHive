@@ -1,14 +1,6 @@
 #ifndef SHADER_UNIFORMS_MAPPING
 #define SHADER_UNIFORMS_MAPPING
 
-
-// SHADERS
-enum ShadersIDs{
-
-    BLEND1 = 19,
-    BLEND2 = 20,
-};
-
 #define _A_POSITION 0
 #define _A_NORMAL 1
 #define _A_UV 2

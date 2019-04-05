@@ -1,25 +1,24 @@
-#ifndef Omicron_H
-#define Omicron_H
+#ifndef _OMICRON_H
+#define _OMICRON_H
 
 #include <map>
 #include <cstdint>
 #include <string>
 #include <Util.hpp>
 
-#include "TNodo.hpp"
-#include "TEntidad.hpp"
+#include <Omicron/CORE/TNodo.hpp>
+#include <Omicron/CORE/TEntidad.hpp>
 #include "TLuz.hpp"
-#include "TTransform.hpp"
-#include "TCamara.hpp"
+#include <Omicron/CORE/TTransform.hpp>
+#include <Omicron/CORE/TCamara.hpp>
 #include "Shader.hpp"
-#include "ZStaticMesh.hpp"
-#include "ZDynamicMesh.hpp"
-#include "ZMaterial.hpp"
-#include "AssetManager.hpp"
+#include <Omicron/ZMESHES/ZStaticMesh.hpp>
+#include <Omicron/ZMESHES/ZDynamicMesh.hpp>
+#include <Omicron/ZMaterial.hpp>
+#include <Omicron/AssetManager.hpp>
 #include <Omicron/KEYCODES.hpp>
-#include "TCamara.hpp"
 #include "Debug.hpp"
-#include "Clock.hpp"
+#include <Omicron/Clock.hpp>
 
 template <typename T>
 class Singleton;

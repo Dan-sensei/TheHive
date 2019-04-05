@@ -9,7 +9,7 @@
 
 #include <EventSystem/CTriggerSystem.hpp>
 #include <Bullet/ggDynWorld.hpp>
-#include "GameEngine/Motor2D.hpp"
+#include <Omicron/2D/Motor2D.hpp>
 
 #include <States/StateMachine.hpp>
 

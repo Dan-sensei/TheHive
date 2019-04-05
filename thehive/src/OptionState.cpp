@@ -7,7 +7,7 @@
 
 #include "ComponentArch/ObjectManager.hpp"
 #include "Singleton.hpp"
-#include "GameEngine/Motor2D.hpp"
+#include <Omicron/2D/Motor2D.hpp>
 #include <States/StateMachine.hpp>
 
 

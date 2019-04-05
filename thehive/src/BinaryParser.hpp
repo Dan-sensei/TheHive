@@ -9,7 +9,7 @@
 #include "EventSystem/TData.hpp"
 #include "GameAI/AIDirector.hpp"
 #include "Omicron/NatureGenerator.hpp"
-#include <Omicron/BoundingBox.hpp>
+#include <Omicron/ZMESHES/BoundingBox.hpp>
 #include "Util.hpp"
 
 namespace BinaryParser{

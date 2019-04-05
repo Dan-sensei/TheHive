@@ -7,7 +7,7 @@
 #include <random>
 #include "NavmeshStructs.hpp"
 #include <Util.hpp>
-#include <Omicron/BillboardBueno.hpp>
+#include <Omicron/2D/BillboardBueno.hpp>
 
 template <typename T>
 class Singleton;

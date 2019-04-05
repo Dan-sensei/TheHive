@@ -1,6 +1,6 @@
 #include "NatureGenerator.hpp"
-#include <Omicron/BoundingBox.hpp>
-#include "OpenGEnum.hpp"
+#include <Omicron/ZMESHES/BoundingBox.hpp>
+#include <Omicron/OpenGEnum.hpp>
 
 NatureGenerator::NatureGenerator(){
     fabrik = Singleton<Factory>::Instance();

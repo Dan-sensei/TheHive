@@ -9,7 +9,7 @@ class ggDynWorld;
 
 //#include <iostream>
 #include "States/State.hpp"
-#include "GameEngine/GUIController.hpp"
+#include <Omicron/2D/GUIController.hpp>
 
 class IAState : public State{
 public:

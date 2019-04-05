@@ -10,7 +10,7 @@
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/AIDirector.hpp"
 
-#include "GameEngine/Motor2D.hpp"
+#include <Omicron/2D/Motor2D.hpp>
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
@@ -18,7 +18,7 @@
 #include "BinaryParser.hpp"
 #include <Omicron/Omicron.hpp>
 
-#include <GameEngine/Motor2D.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 
 #include <Bullet/ggDynWorld.hpp>
 
@@ -85,7 +85,7 @@ void Game::Init(){
 
     // Los eventos son propios de cada zona!
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
-    
+
     BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
 
 
