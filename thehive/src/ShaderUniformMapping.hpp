@@ -1,6 +1,14 @@
 #ifndef SHADER_UNIFORMS_MAPPING
 #define SHADER_UNIFORMS_MAPPING
 
+
+// SHADERS
+enum ShadersIDs{
+
+    BLEND1 = 19,
+    BLEND2 = 20,
+};
+
 #define _A_POSITION 0
 #define _A_NORMAL 1
 #define _A_UV 2
@@ -17,7 +25,14 @@
 #define _U_LIGHT_POS 12
 #define _U_CAM_POS 13
 
+#define _U_DIFFUSE_MAP 14
+#define _U_NORMAL_MAP 15
+#define _U_SPECULAR_MAP 16
 
 #define _U_BLEND_FACTOR 18
+
+#define _U_VP 21
+#define _U_CAM_UP 22
+#define _U_CAM_RIGHT 23
 
 #endif

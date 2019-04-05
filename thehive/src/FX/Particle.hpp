@@ -8,15 +8,14 @@ class Particle{
 
     public:
         Particle();
-        Particle(const glm::vec3 &_Position, const gg::Color &_Color, float _Velocity, float _Life);
+        Particle(const glm::vec3 &_Position, glm::vec3 _Velocity, const gg::Color &_Color, float _Life, float _Size);
         Particle(const Particle &orig);
         ~Particle();
 
-    private:
         glm::vec3 Position;
+        glm::vec3 Velocity;
         gg::Color Color;
-        float Velocity;
-        float Life;
+        float Life, Size;
 };
 
 #endif
