@@ -28,6 +28,15 @@ namespace BinaryParser{
         std::vector<unsigned short> &index
     );
 
+    bool FillBuffers(
+        const std::string& BinaryFile,
+        unsigned int PositionsNormalsBuffer,
+        unsigned int UVBuffer,
+        unsigned int TangentsBitangentsBuffer,
+        unsigned int IndexBuffer,
+        unsigned int &IndexSize
+    );
+
     bool ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX);
 
     void ReadNatureData(const std::string &BinaryFile);

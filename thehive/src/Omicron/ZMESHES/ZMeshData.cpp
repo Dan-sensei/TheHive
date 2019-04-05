@@ -8,6 +8,8 @@ ZMeshData::ZMeshData()
 :VAO(0), IndexSize(0)
 {
     glGenVertexArrays(1, &VAO);
+    VBOs.reserve(3);
+    VBOs.resize(3);
 }
 
 ZMeshData::ZMeshData(const ZMeshData &orig)
@@ -28,28 +30,7 @@ ZMeshData::~ZMeshData(){
 
 bool ZMeshData::load(const std::string& path){
 
-    std::vector< float > PositionsNormals;
-    std::vector< float > UV_Coords;
-    std::vector< float > TangentsBitangents;
-    std::vector< unsigned short > Indexes;
-
-    bool loaded = BinaryParser::ImportMesh(path, PositionsNormals, UV_Coords, TangentsBitangents, Indexes);
-
-    if(!loaded){
-        //std::cout << "   --No se pudo abrir " << path << '\n';
-        return false;
-    }
-
-    VBOs.reserve(3);
-    IndexSize = Indexes.size();
-
-
     glBindVertexArray(VAO);
-
-        addVertexBuffer(PositionsNormals, 6);
-        addVertexBuffer(UV_Coords, 2);
-        addVertexBuffer(TangentsBitangents, 6);
-
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
@@ -68,71 +49,21 @@ bool ZMeshData::load(const std::string& path){
         glVertexAttribBinding(3, 2);
         glVertexAttribBinding(4, 2);
 
+        glCreateBuffers(1, &VBOs[0]);
+        glCreateBuffers(1, &VBOs[1]);
+        glCreateBuffers(1, &VBOs[2]);
+        glCreateBuffers(1, &IndexBuffer);
+
+        BinaryParser::FillBuffers(path, VBOs[0], VBOs[1], VBOs[2], IndexBuffer, IndexSize);
+        
         glBindVertexBuffer(0, VBOs[0], 0, 24);
         glBindVertexBuffer(1, VBOs[1], 0, 8);
         glBindVertexBuffer(2, VBOs[2], 0, 24);
-
-        glGenBuffers(1, &IndexBuffer);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indexes.size()*sizeof(unsigned short), &(Indexes[0]), GL_STATIC_DRAW);
 
     glBindVertexArray(0);
 
     return true;
-}
-bool ZMeshData::load2(const std::string& path){
-
-    std::vector< float > PositionsNormals;
-    std::vector< float > UV_Coords;
-    std::vector< float > TangentsBitangents;//no
-    std::vector< unsigned short > Indexes;
-
-    bool loaded = BinaryParser::ImportMesh(path, PositionsNormals, UV_Coords, TangentsBitangents, Indexes);
-
-    if(!loaded){
-        //std::cout << "   --No se pudo abrir " << path << '\n';
-        return false;
-    }
-
-    VBOs.reserve(3);
-    IndexSize = Indexes.size();
-
-
-    glBindVertexArray(VAO);
-
-        addVertexBuffer(PositionsNormals, 6);
-        addVertexBuffer(UV_Coords, 2);
-
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-
-        glVertexAttribFormat(0, 3, GL_FLOAT, false, 0);
-        glVertexAttribFormat(1, 2, GL_FLOAT, false, 0);
-
-
-        glVertexAttribBinding(0, 0);
-        glVertexAttribBinding(1, 1);
-
-        glBindVertexBuffer(0, VBOs[0], 0, 24);
-        glBindVertexBuffer(1, VBOs[1], 0, 8);
-
-        unsigned int IndexBuffer;
-        glGenBuffers(1, &IndexBuffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indexes.size()*sizeof(unsigned short), &(Indexes[0]), GL_STATIC_DRAW);
-
-    glBindVertexArray(0);
-
-    return true;
-}
-
-void ZMeshData::addVertexBuffer(std::vector<float> &data, unsigned int DataLength){
-
-    VBOs.push_back(0);
-
-    glGenBuffers(1, &VBOs.back());
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs.back());
-    glBufferData(GL_ARRAY_BUFFER, data.size()*sizeof(float), &data[0], GL_STATIC_DRAW);
 }
 
 void ZMeshData::draw(){

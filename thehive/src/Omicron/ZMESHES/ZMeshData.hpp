@@ -13,7 +13,6 @@ friend class ZAnimationData;
         ~ZMeshData();
 
         bool load(const std::string& path);
-        bool load2(const std::string& path);
         void draw();
 
         unsigned int VAO;
@@ -23,7 +22,7 @@ friend class ZAnimationData;
         std::vector<unsigned int> VBOs;
 
 
-        void addVertexBuffer(std::vector<float>& data, unsigned int DataLength);
+        //void addVertexBuffer(std::vector<float>& data, unsigned int DataLength);
 };
 
 #endif
