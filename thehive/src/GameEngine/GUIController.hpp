@@ -11,6 +11,8 @@
 #include <States/StateMachine.hpp>
 #include <Omicron/Omicron.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+
 class Motor2D;
 
 class GUIController{
@@ -33,6 +35,7 @@ class GUIController{
         bool enter_pulsado;
         bool back_pulsado;
         bool esc_pulsado;
+        SoundSystem* SS;
 
 void gotoPlay();
 void gotoCredits();

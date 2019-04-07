@@ -25,6 +25,7 @@
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
     Engine = Singleton<Omicron>::Instance();
+    //SS = Singleton<SoundSystem>::Instance();
 
 }
 

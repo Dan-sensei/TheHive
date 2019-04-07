@@ -86,8 +86,8 @@ void CPlayerController::Init(){
     s_dash = new SonidoNormal();
     SS->createSound("event:/SFX/Jugador/Habilidades/Dash", s_dash);
 
-    // s_pasos = new SonidoSuperficie();
-    // SS->createSound("event:/SFX/Jugador/Pasos", s_pasos);
+    s_pasos = new SonidoSuperficie();
+    SS->createSound("event:/SFX/Jugador/Pasos", s_pasos);
 
     KEYMAP[0] = {gg::_1, &CPlayerController::ToggleSkill1};
     KEYMAP[1] = {gg::_2, &CPlayerController::ToggleSkill2};
@@ -156,6 +156,9 @@ void CPlayerController::FixedUpdate(){
 
     bool pressed = false;
     check_WASD(force, pressed);
+
+    if(!s_pasos->isPlaying() && pressed)
+      s_pasos->play();
 
 
     for(uint8_t i = 0; i < KEYMAP.size(); ++i){
