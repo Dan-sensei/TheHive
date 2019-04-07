@@ -182,7 +182,7 @@ void Game::Update(){
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
     glm::vec3 pos = playerpos->getPosition();
-    pos.y = 10;
+    pos.y = 15;
     Engine->setPosition(luz, pos);
     // //std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();

@@ -1,5 +1,6 @@
 #include "TNodo.hpp"
 #include <cstdint>
+#include <iostream>
 
 //Constructor para el nodo raiz
 TNodo::TNodo()
@@ -108,4 +109,13 @@ void TNodo::drawRoot(){
         (*it)->draw();
         ++it;
     }
+}
+
+
+void TNodo::ROOT_OkameraUpdate(){
+    (*hijos.begin())->draw();
+}
+
+void TNodo::ROOT_LightsUpdate(){
+    hijos[1]->draw();
 }

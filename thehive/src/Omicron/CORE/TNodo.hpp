@@ -25,6 +25,9 @@ class TNodo {
 
         void setVisibility(bool Flag);
 
+        void ROOT_OkameraUpdate();
+        void ROOT_LightsUpdate();
+
     private:
         TEntidad* entidad;
         std::deque<TNodo*> hijos;

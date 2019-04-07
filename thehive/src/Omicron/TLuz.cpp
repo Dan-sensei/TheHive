@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 //#include <iostream>
+#include <ShaderUniformMapping.hpp>
+
 
 TLuz::TLuz():light_shader(nullptr),intensidad(0,0,0){}
 TLuz::~TLuz(){}
@@ -34,7 +36,7 @@ void TLuz::beginDraw(){
     // Mandar como uniform
     if(light_shader){
         glm::vec3 pos = glm::vec3(modelMatrix[3]);
-        glUniform3f(12,pos.x,pos.y,pos.z);
+        glUniform3f(_U_LIGHT_POS,pos.x,pos.y,pos.z);
     }
 }
 void TLuz::endDraw(){}

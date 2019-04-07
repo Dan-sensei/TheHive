@@ -20,6 +20,7 @@
 #include "Debug.hpp"
 #include <Omicron/Clock.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
+#include <Omicron/DeferredShading.hpp>
 
 template <typename T>
 class Singleton;
@@ -91,6 +92,7 @@ class Omicron {
             else
                 return KEYS[keyCode];
         };
+
         bool Initialize();
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
@@ -102,6 +104,8 @@ class Omicron {
         Omicron();
 
         gg::Clock FPS_Clock;
+
+        DeferredShading _DeferredShading;
 
         TNodo* ESCENA;
         TNodo* OKAMERAS_LAYER;

@@ -2,7 +2,7 @@
 //#include <iostream>
 #include <cstdint>
 
-
+#include <ShaderUniformMapping.hpp>
 
 TCamara::TCamara(float _fov, float _near, float _far)
 :target(0,0,0), hasTarget(false){
@@ -38,10 +38,12 @@ void TCamara::beginDraw(){
     // Matriz VISTA
     // -------------------
     // Mirar la funcion Dios glm::decompose si la posicion de la camara no funciona
+    glm::vec3 CameraPos(modelMatrix[3]);
+    glUniform3f(_U_CAM_POS, CameraPos.x, CameraPos.y, CameraPos.z);
 
     if(hasTarget){
         viewMatrix = glm::lookAt(
-            glm::vec3(modelMatrix[3]),
+            CameraPos,
             target,
             glm::vec3(0,1,0)
         );

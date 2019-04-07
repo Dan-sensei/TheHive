@@ -13,7 +13,7 @@ int Omicron::Half_Window_Width;
 int Omicron::Half_Window_Height;
 
 Omicron::Omicron()
-:main_camera(nullptr), FPS(0)
+:main_camera(nullptr), FPS(0), _DeferredShading()
 {
     ESCENA = new TNodo();
     Initialize();
@@ -141,7 +141,7 @@ TNodo* Omicron::CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map
     P->Init(Data.MaxParticles);
     P->setGenerationTime(Data.SpawnTime);
     P->setTexture(Data.Texture);
-    
+
     TNodo* PADRE = ZONES[map_zone];
     TNodo* ParticleNode = new TNodo(PADRE, P);
 
@@ -184,8 +184,18 @@ void Omicron::BeginDraw(){
 
 void Omicron::draw(){
     ++FPS;
-    glEnable (GL_BLEND); glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glDisable( GL_BLEND );
+
+    // Bindeamos el shader que recibe la info de luces y cámara
+    _DeferredShading.Bind_D_Shader();
+    ESCENA->ROOT_OkameraUpdate();   // Le enviamos la info
+    ESCENA->ROOT_LightsUpdate();
+
+    // Ahora bindeamos nuestro G-Búffer y renderizamos a las texturas
+    _DeferredShading.Bind_G_Buffer();
     ESCENA->drawRoot_M();
+    _DeferredShading.DrawQuad();
 }
 
 void Omicron::EndDraw(){
@@ -281,6 +291,7 @@ bool Omicron::Initialize(){
     float ancho = mode->width;
     float alto = mode->height;
 
+
 	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
 	    //fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
@@ -299,15 +310,14 @@ bool Omicron::Initialize(){
 	    return false;
 	}
 
+    _DeferredShading.init(ancho, alto);
+
 	glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
     glFrontFace(GL_CCW);
     glEnable(GL_CULL_FACE);
     glCullFace (GL_BACK);
-
-    glEnable( GL_BLEND );
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);

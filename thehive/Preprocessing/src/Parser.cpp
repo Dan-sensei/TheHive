@@ -44,5 +44,7 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/flor.obj",                        "flor");
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature1.obj",                     "nature1");
 
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/arbol.obj",                     "arbol");
+
     return 0;
 }
