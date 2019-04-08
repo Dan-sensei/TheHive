@@ -143,24 +143,31 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
                     if(rand == 1)
                     Dark = _AssetManager->getMaterial("House2");
                     break;
-            case 3: Dark = _AssetManager->getMaterial("Metal");
+            case 3: Dark = _AssetManager->getMaterial("Model3");
                     break;
             //container
-            case 4: Dark = _AssetManager->getMaterial("Container");
+            case 4: rand = gg::genIntRandom(0,2);
+                    if (rand == 0)
+                        Dark = _AssetManager->getMaterial("Model4");
+                    if (rand == 1)
+                        Dark = _AssetManager->getMaterial("Model4_2");
+                    if (rand == 2)
+                        Dark = _AssetManager->getMaterial("Model4_3");
+
                     break;
             //farola
-            case 5: Dark = _AssetManager->getMaterial("Farola");
+            case 5: Dark = _AssetManager->getMaterial("Model5");
                     break;
             //Separador
             case 6: rand = gg::genIntRandom(0,1);
                     if(rand == 0)
-                    Dark = _AssetManager->getMaterial("Red");
+                        Dark = _AssetManager->getMaterial("Model6");
                     if(rand == 1)
-                    Dark = _AssetManager->getMaterial("White");
+                        Dark = _AssetManager->getMaterial("Model6_2");
                     break;
-            case 7: Dark = _AssetManager->getMaterial("Grey");
+            case 7: Dark = _AssetManager->getMaterial("Model7");
                     break;
-            case 8: Dark = _AssetManager->getMaterial("Grey");
+            case 8: Dark = _AssetManager->getMaterial("Model8");
                     break;
             //basura1
             case 11: Dark = _AssetManager->getMaterial("Trash");
@@ -177,6 +184,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             case 29: Dark = _AssetManager->getMaterial("Door");
                     break;
             case 37: Dark = _AssetManager->getMaterial("Grey");
+                    break;
+            case 106: Dark = _AssetManager->getMaterial("Model106");
                     break;
             //arbol
             case 122: Dark = _AssetManager->getMaterial("Tree");

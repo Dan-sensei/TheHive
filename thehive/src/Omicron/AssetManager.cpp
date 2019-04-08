@@ -138,8 +138,65 @@ void AssetManager::loadInit(){
     Door->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Door->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
+    ZMaterial* 		Model3 = getMaterial("Model3");
+    Model3->attachShader(shader);
+    Model3->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model3.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model3->addTexture(GN::NORMAL_MAP,       "assets/Textures/Model3Normals.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model3->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
+    ZMaterial* 		Model4 = getMaterial("Model4");
+    Model4->attachShader(shader);
+    Model4->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model4.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model4->addTexture(GN::NORMAL_MAP,       "assets/Textures/Model4Normals.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model4->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
+    ZMaterial* 		Model4_2 = getMaterial("Model4_2");
+    Model4_2->attachShader(shader);
+    Model4_2->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model4_2.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model4_2->addTexture(GN::NORMAL_MAP,       "assets/Textures/Model4Normals.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model4_2->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+    ZMaterial* 		Model4_3 = getMaterial("Model4_3");
+    Model4_3->attachShader(shader);
+    Model4_3->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model4_3.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model4_3->addTexture(GN::NORMAL_MAP,       "assets/Textures/Model4Normals.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model4_3->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+    ZMaterial* 		Model5 = getMaterial("Model5");
+    Model5->attachShader(shader);
+    Model5->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model5.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model5->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model5->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+    ZMaterial* 		Model6 = getMaterial("Model6");
+    Model6->attachShader(shader);
+    Model6->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model6.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model6->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model6->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+    ZMaterial* 		Model6_2 = getMaterial("Model6_2");
+    Model6_2->attachShader(shader);
+    Model6_2->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model6_2.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model6_2->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model6_2->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+    ZMaterial* 		Model7 = getMaterial("Model7");
+    Model7->attachShader(shader);
+    Model7->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model7.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model7->addTexture(GN::NORMAL_MAP,       "assets/Textures/Model7Normals",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model7->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+    ZMaterial* 		Model8 = getMaterial("Model8");
+    Model8->attachShader(shader);
+    Model8->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model8.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model8->addTexture(GN::NORMAL_MAP,       "assets/Textures/Model8Normals",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model8->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+
+    ZMaterial* 		Model106 = getMaterial("Model106");
+    Model106->attachShader(shader);
+    Model106->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Model106.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model106->addTexture(GN::NORMAL_MAP,       "assets/Textures/Model106Normals.png",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Model106->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
     shader = getShader("Blend");
 
