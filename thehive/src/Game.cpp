@@ -86,7 +86,10 @@ void Game::Init(){
     // Los eventos son propios de cada zona!
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
 
+
+    //BinaryParser::LoadSounds();
     BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
+
 
 
     Engine2D->InitHUD();

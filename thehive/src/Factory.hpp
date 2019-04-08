@@ -10,6 +10,9 @@
 #include <EventSystem/BRbData.hpp>
 #include <EventSystem/BFloat.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
+
 template <typename T>
 class Singleton;
 
@@ -51,6 +54,10 @@ class Factory{
 
         ObjectManager* Manager;
         Omicron* Engine;
+
+        //SoundSystem* SS;
+
+        //SoundEvent* s_gotera;
 
 };
 

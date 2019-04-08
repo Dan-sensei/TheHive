@@ -14,6 +14,7 @@ void GUIController::setposmax(int p){
     posmax=p;
 }
 void GUIController::Init(){
+    SS = Singleton<SoundSystem>::Instance();
     dif=1;
     dialogue=50;
     music=50;
@@ -181,6 +182,7 @@ void GUIController::moreDialog(){
     }
     Engine2D->setVolDialogo(dialogue);
     Engine2D->InitMenu6();
+    SS->setVolume(music, "bus:/Voces");
 }
 //but 19
 void GUIController::lessDialog(){
@@ -188,6 +190,7 @@ void GUIController::lessDialog(){
         dialogue--;
     }
     Engine2D->setVolDialogo(dialogue);
+    SS->setVolume(music, "bus:/Voces");
     Engine2D->InitMenu6();
 }
 //but 20
@@ -196,6 +199,7 @@ void GUIController::moreMusic(){
         music++;
     }
     Engine2D->setVolMusic(music);
+    SS->setVolume(music, "bus:/Musica");
     Engine2D->InitMenu6();
 }
 //but 21
@@ -204,6 +208,9 @@ void GUIController::lessMusic(){
         music--;
     }
     Engine2D->setVolMusic(music);
+
+    SS->setVolume(music, "bus:/Musica");
+
     Engine2D->InitMenu6();
 }
 //but 22
@@ -213,6 +220,7 @@ void GUIController::moreEffect(){
     }
     Engine2D->setVolEffect(effect);
     Engine2D->InitMenu6();
+    SS->setVolume(music, "bus:/SFX");
 }
 //but 23
 void GUIController::lessEffect(){
@@ -221,4 +229,5 @@ void GUIController::lessEffect(){
     }
     Engine2D->setVolEffect(effect);
     Engine2D->InitMenu6();
+    SS->setVolume(music, "bus:/SFX");
 }

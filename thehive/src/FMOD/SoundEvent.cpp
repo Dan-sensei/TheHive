@@ -53,11 +53,11 @@ SoundEvent* SoundEvent::getEvent(){
 
 bool SoundEvent::isPlaying(){
 	bool ret = false;
-	FMOD_STUDIO_PLAYBACK_STATE *state = nullptr;
-	ERRCHECK(soundInstance->getPlaybackState(state));
+	FMOD_STUDIO_PLAYBACK_STATE state = FMOD_STUDIO_PLAYBACK_PLAYING;
+	ERRCHECK(soundInstance->getPlaybackState(&state));
 
-	// if(soundInstance->getPlaybackState(state) == FMOD_STUDIO_PLAYBACK_PLAYING)
-	// 	ret = true;
+	 if(state == FMOD_STUDIO_PLAYBACK_PLAYING)
+	 		ret = true;
 
 	return ret;
 }
