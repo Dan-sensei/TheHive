@@ -60,7 +60,7 @@ void StateMachine::ProcessStateChanges()
 			}
 			else
 			{
-				//states.top()->Pause();
+				states.top()->Pause();
 			}
 		}
 		states.push(newState);
