@@ -9,44 +9,43 @@
 #include "EventSystem/TData.hpp"
 #include "GameAI/AIDirector.hpp"
 #include "Omicron/NatureGenerator.hpp"
-#include <Omicron/BoundingBox.hpp>
+#include <Omicron/ZMESHES/BoundingBox.hpp>
 #include "Util.hpp"
 
-class BinaryParser{
-    public:
-        ~BinaryParser();
+namespace BinaryParser{
+    void ReadNavmeshData(
+        const std::string &BinaryFile,
+        std::vector<Node> &GRAPH,
+        std::vector<std::vector<Connection>> &Connections,
+        std::vector<Face> &SQUARE_FACES
+    );
 
-        static void ReadNavmeshData(
-            const std::string &BinaryFile,
-            std::vector<Node> &GRAPH,
-            std::vector<std::vector<Connection>> &Connections,
-            std::vector<Face> &SQUARE_FACES
-        );
+    bool ImportMesh(
+        const std::string& BinaryFile,
+        std::vector<float> &PositionsNormals,
+        std::vector<float> &uv,
+        std::vector<float> &TangentsBitangents,
+        std::vector<unsigned short> &index
+    );
 
-        static bool ImportMesh(
-            const std::string& BinaryFile,
-            std::vector<float> &PositionsNormals,
-            std::vector<float> &uv,
-            std::vector<float> &TangentsBitangents,
-            std::vector<unsigned short> &index
-        );
+    bool FillBuffers(
+        const std::string& BinaryFile,
+        unsigned int PositionsNormalsBuffer,
+        unsigned int UVBuffer,
+        unsigned int TangentsBitangentsBuffer,
+        unsigned int IndexBuffer,
+        unsigned int &IndexSize
+    );
 
-        static bool ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX);
+    bool ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX);
 
-        static void ReadNatureData(const std::string &BinaryFile);
+    void ReadNatureData(const std::string &BinaryFile);
 
-        static void ReadLoadZonesData(const std::string &BinaryFile);
-        static void ReadUnLoadZonesData(const std::string &BinaryFile);
-        static uint16_t ReadRespawnNodesData(const std::string &BinaryFile);
+    void ReadLoadZonesData(const std::string &BinaryFile);
+    void ReadUnLoadZonesData(const std::string &BinaryFile);
+    uint16_t ReadRespawnNodesData(const std::string &BinaryFile);
 
-        static void LoadLevelData(const std::string &DARTA, int8_t map_zone = 0);
-
-    private:
-        BinaryParser() = delete;
-        BinaryParser(const BinaryParser &orig) = delete;
-
-
-
+    void LoadLevelData(const std::string &DARTA, int8_t map_zone = 0);
 };
 
 #endif

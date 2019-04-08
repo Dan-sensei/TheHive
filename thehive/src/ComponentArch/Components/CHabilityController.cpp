@@ -2,9 +2,9 @@
 #include <Util.hpp>
 #include <string>
 //#include <GameAI/Hability.hpp>
-#include <GameEngine/Motor2D.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 #include <Singleton.hpp>
-// #include <GameEngine/Motor2D.hpp>
+// #include <Omicron/2D/Motor2D.hpp>
 
 
 CHabilityController::CHabilityController()

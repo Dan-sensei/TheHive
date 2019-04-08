@@ -1,25 +1,26 @@
-#ifndef Omicron_H
-#define Omicron_H
+#ifndef _OMICRON_H
+#define _OMICRON_H
 
 #include <map>
 #include <cstdint>
 #include <string>
 #include <Util.hpp>
 
-#include "TNodo.hpp"
-#include "TEntidad.hpp"
+#include <Omicron/CORE/TNodo.hpp>
+#include <Omicron/CORE/TEntidad.hpp>
 #include "TLuz.hpp"
-#include "TTransform.hpp"
-#include "TCamara.hpp"
+#include <Omicron/CORE/TTransform.hpp>
+#include <Omicron/CORE/TCamara.hpp>
 #include "Shader.hpp"
-#include "ZStaticMesh.hpp"
-#include "ZDynamicMesh.hpp"
-#include "ZMaterial.hpp"
-#include "AssetManager.hpp"
+#include <Omicron/ZMESHES/ZStaticMesh.hpp>
+#include <Omicron/ZMESHES/ZDynamicMesh.hpp>
+#include <Omicron/ZMaterial.hpp>
+#include <Omicron/AssetManager.hpp>
 #include <Omicron/KEYCODES.hpp>
-#include "TCamara.hpp"
 #include "Debug.hpp"
-#include "Clock.hpp"
+#include <Omicron/Clock.hpp>
+#include <Omicron/FX/Particle_System_DATA.hpp>
+#include <Omicron/DeferredShading.hpp>
 
 template <typename T>
 class Singleton;
@@ -35,6 +36,7 @@ class Omicron {
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
         TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
         TNodo* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        TNodo* CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone = 0);
 
         // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
         void createZones(uint8_t NumberOfZones);
@@ -81,7 +83,16 @@ class Omicron {
 
         void Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c);
 
-        inline bool key(gg::KEYCODE keyCode){ return KEYS[keyCode];};
+        inline bool key(gg::KEYCODE keyCode, bool setToFalse = false){
+            if(setToFalse){
+                bool result = KEYS[keyCode];
+                KEYS[keyCode] = false;
+                return result;
+            }
+            else
+                return KEYS[keyCode];
+        };
+
         bool Initialize();
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
@@ -94,10 +105,13 @@ class Omicron {
 
         gg::Clock FPS_Clock;
 
+        DeferredShading _DeferredShading;
+
         TNodo* ESCENA;
         TNodo* OKAMERAS_LAYER;
         TNodo* LIGHTS_LAYER;
         TNodo* BUFFERS_LAYER;
+
         GLFWwindow* window;
         AssetManager* gestorRecursos;
         Debug* Debugger;

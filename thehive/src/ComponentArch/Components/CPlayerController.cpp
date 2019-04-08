@@ -34,9 +34,9 @@
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
-,ToggleFreeCameraKey(true), FreeCamera(false), PlayerMovement(true)
+,ToggleFreeCameraKey(true), FreeCamera(false), PlayerMovement(true), cV(0,0,1)
 {
-  GranadeCreate=false;
+
 }
 
 CPlayerController::~CPlayerController() {
@@ -54,26 +54,18 @@ void CPlayerController::Init(){
     camera  = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
 
-
-    pulsacion_soldier= false;
-    pulsacion_tank= false;
-    pulsacion_rusher= false;
-    pulsacion_granada = false;
-    pulsacion_espacio = false;
-    pulsacion_q = false;
-    pulsacion_dash = false;
     pulsacion_f = false;
     debug1 = false;
     debug2 = false;
     MULT_BASE=1;
 
-    maxsoldier  =10;
-    maxrusher   =10;
-    maxtank     =10;
+    maxsoldier  = 10;
+    maxrusher   = 10;
+    maxtank     = 10;
 
-    currentsoldier=1;
-    currentrusher=1;
-    currenttank=1;
+    currentsoldier = 1;
+    currentrusher  = 1;
+    currenttank    = 1;
 
     //pulsacion_enemigos=false;
 
@@ -94,17 +86,25 @@ void CPlayerController::Init(){
     s_dash = new SonidoNormal();
     SS->createSound("event:/SFX/Jugador/Habilidades/Dash", s_dash);
 
-    // s_pasos = new SonidoSuperficie();
-    // SS->createSound("event:/SFX/Jugador/Pasos", s_pasos);
+    s_pasos = new SonidoSuperficie();
+    SS->createSound("event:/SFX/Jugador/Pasos", s_pasos);
 
     KEYMAP[0] = {gg::_1, &CPlayerController::ToggleSkill1};
     KEYMAP[1] = {gg::_2, &CPlayerController::ToggleSkill2};
     KEYMAP[2] = {gg::_3, &CPlayerController::ToggleSkill3};
-    KEYMAP[3] = {gg::I, &CPlayerController::invocasionwander};
-    KEYMAP[4] = {gg::U, &CPlayerController::invocasionhorda};
-    KEYMAP[5] = {gg::_4, &CPlayerController::ToggleFreeCamera};
-}
+    KEYMAP[3] = {RELOAD_KEY, &CPlayerController::ReloadGun};
+    KEYMAP[4] = {gg::G, &CPlayerController::ThrowGranade};
+    KEYMAP[5] = {WEAPON_KEY, &CPlayerController::ChangeWeapon};
+    KEYMAP[6] = {RUN_KEY, &CPlayerController::Run};
+    KEYMAP[7] = {DASH_KEY, &CPlayerController::DASH};
+    KEYMAP[8] = {JUMP_KEY, &CPlayerController::JUMP};
+    KEYMAP[9] = {gg::P, &CPlayerController::TogglePause};
 
+    KEYMAP[10] = {gg::I, &CPlayerController::invocasionwander};
+    KEYMAP[11] = {gg::U, &CPlayerController::invocasionhorda};
+    KEYMAP[12] = {gg::_4, &CPlayerController::ToggleFreeCamera};
+    KEYMAP[13] = {gg::M, &CPlayerController::EnemyInfo};
+}
 
 gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 
@@ -139,125 +139,33 @@ void CPlayerController::Update(){
         //gg::cout(" -- ACTUAL GRENADE SET: "+std::to_string(actualGrenadeState));
     }
 
-    if(clocker.ElapsedTime().Seconds() < 0.1){
+    //if(clocker.ElapsedTime().Seconds() < 0.1){
         //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 0.5, 0), Target, gg::Color(255, 0, 0));
-    }
-
+    //}
 }
 
 void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !cRigidBody)  return;
-    //hab.update();
-    // -----------------------------------------------------------------------------
-    // Echarle un vistazo!
-    // CommonWindowInterface* window = m_guiHelper->getAppInterface()->m_window;
-    // -----------------------------------------------------------------------------
-
-
-    for(uint8_t i = 0; i < KEYMAP.size(); ++i){
-        if(Engine->key(KEYMAP[i].KEY))  (this->*KEYMAP[i].Target)();
-    }
-
-    if(!PlayerMovement) return;
-
-    //  If exists, we get its position
-    auto pos=cTransform->getPosition();
-
-    bool heroRotation = true;
 
     // Vector que tendrá el impulso para aplicar al body
-    glm::vec3    force(0,0,0);
+    force.x = 0;
+    force.y = 0;
+    force.z = 0;
+    MULT_FACTOR = 1;
+
     bool pressed = false;
     check_WASD(force, pressed);
 
-
-    float           MULT_FACTOR = 1;
-
-
+    if(!s_pasos->isPlaying() && pressed)
+      s_pasos->play();
 
 
-    // if(Engine->key(gg::T)){
-    //     if(pulsacion_soldier==false){
-    //         pulsacion_soldier=true;
-    //         if(maxsoldier>currentsoldier){
-    //             currentsoldier++;
-    //             auto sF = Singleton<Factory>::Instance();
-    //             sF->createSoldier(glm::vec3(-10,3, -50),200);
-    //
-    //         }
-    //
-    //     }
-    // }
-    // else{
-    //     pulsacion_soldier= false;
-    // }
-    // if(Engine->key(gg::Y)){
-    //     if(pulsacion_tank==false){
-    //         pulsacion_tank=true;
-    //         if(maxtank>currenttank){
-    //             currenttank++;
-    //
-    //             auto sF = Singleton<Factory>::Instance();
-    //             sF->createTank(glm::vec3(5,3,65),200);
-    //         }
-    //     }
-    // }
-    // else{
-    //     pulsacion_tank= false;
-    // }
-    // if(Engine->key(gg::U)){
-    //     if(pulsacion_rusher==false){
-    //         pulsacion_rusher=true;
-    //         if(maxrusher>currentrusher){
-    //             currentrusher++;
-    //
-    //             auto sF = Singleton<Factory>::Instance();
-    //             sF->createRusher(glm::vec3(-45,3,-23),200);
-    //         }
-    //     }
-    // }
-    // else{
-    //     pulsacion_rusher= false;
-    // }
-    if(Engine->key(gg::M)){
-        //hab->ToggleSkill(2);
-        //devuelve ide de un objeto
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition(),200);
-        int id=world->getIDFromRaycast();
-        ////std::cout << "id:" <<id<< '\n';
-        if(id!=-1){
-
-            CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
-            if(AIEnem){
-                ////std::cout << "no hay enemigo" << '\n';
-                Singleton<StateMachine>::Instance()->AddState(new IAState(id),false);
-
-
-            }
-        }
-
-        //gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
+    for(uint8_t i = 0; i < KEYMAP.size(); ++i){
+        if(Engine->key(KEYMAP[i].KEY, true))  (this->*KEYMAP[i].Target)();
     }
 
-
-    if(Engine->key(ROTATE_KEY)) heroRotation = false;
-
-    if(Engine->key(RUN_KEY))    MULT_FACTOR = MULT_RUN_FACTOR;
-    if(Engine->key(DASH_KEY)){
-        if(!pulsacion_dash) {ApplyDash(force,MULT_FACTOR);}
-    }
-    else {pulsacion_dash = false;}
-
-    if(Engine->key(JUMP_KEY)){
-        if(!pulsacion_espacio /*&& abs(cRigidBody->getVelocity().y) < 40*/){
-            pulsacion_espacio = true;
-            cRigidBody->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
-        }
-    }
-    else{
-        pulsacion_espacio = false;
-    }
+    if(!PlayerMovement) return;
 
     if( !pressed ){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::STANDING){
@@ -270,23 +178,13 @@ void CPlayerController::FixedUpdate(){
         }
     }
 
-    // glm::vec3 Direction = cRigidBody->getVirtualRotation() * glm::vec3(0,0,1);
-    // cRigidBody->setVirtualRotation(RotationBetween(Direction, cV));
+
+    glm::vec3 Direction = cRigidBody->getVirtualRotation() * glm::vec3(0,0,1);
+    cRigidBody->setVirtualRotation(RotationBetween(Direction, cV));
 
     // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
     cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
 
-    // -----------------------------------
-    // Acciones de Willy
-    // -----------------------------------
-    // DISPARO
-    if(Engine->key(RELOAD_KEY)){
-        CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
-        if(gun && gun->canReload() && !gun->isReloading()){
-            Manager->returnIDFromRigid(nullptr);
-            gun->reload();
-        }
-    }
 
     // DISPARO
     if(Engine->isLClickPressed()){
@@ -297,49 +195,15 @@ void CPlayerController::FixedUpdate(){
         if(gun) gun->shoot(Target);
     }
 
-    if(Engine->key(WEAPON_KEY) && secondWeapon){
-        CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
-        if(!pulsacion_q && !aux->isReloading()){
-            changeWeaponIfPossible(aux);
-        }
-    }
-    else{
-        pulsacion_q = false;
-    }
-
-    // Graná
-    if(Engine->key(gg::G)){
-        // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
-        glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
-        ////std::cout << actualGrenadeState << '\n';
-        if(pulsacion_granada==false)
-            (this->*mapFuncGrenades[actualGrenadeState])();
-    }
-    else{
-        pulsacion_granada=false;
-    }
-
     // <DEBUG>
     //showDebug();
     // </DEBUG>
-
-    if(Engine->key(gg::P)) {
-        Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
-    }
-
-    // if(pressed){
-    //     if(s_pasos->isPlaying()){
-    //         s_pasos->setParameter("Superficie", 0);
-    //         s_pasos->play();
-    //    }
-    // }
-
 }
-/* message */
 
 // Código de los tutoriales de OpengGL, a optimisar
 glm::quat CPlayerController::RotationBetween(glm::vec3 &V1, glm::vec3 &V2){
 	V1 = normalize(V1);
+	V2 = normalize(V2);
 
 	float cosTheta = dot(V1, V2);
 	glm::vec3 rotationAxis;
@@ -371,7 +235,6 @@ glm::quat CPlayerController::RotationBetween(glm::vec3 &V1, glm::vec3 &V2){
 }
 
 void CPlayerController::playerThrowHolyBomb(){
-    pulsacion_granada   = true;
 
     glm::vec3 gPos   = cTransform->getPosition();
     glm::vec3 from   = gPos;
@@ -385,8 +248,6 @@ void CPlayerController::playerThrowHolyBomb(){
 }
 
 void CPlayerController::playerThrowMatrioska(){
-    pulsacion_granada   = true;
-
     glm::vec3 gPos   = cTransform->getPosition();
     glm::vec3 from   = gPos;
     glm::vec3 to     = world->getRaycastVector();
@@ -399,8 +260,6 @@ void CPlayerController::playerThrowMatrioska(){
 }
 
 void CPlayerController::playerThrowDopple(){
-    pulsacion_granada   = true;
-
     glm::vec3 gPos   = cTransform->getPosition();
     glm::vec3 from   = gPos;
     glm::vec3 to     = world->getRaycastVector();
@@ -419,7 +278,6 @@ void CPlayerController::check_WASD(glm::vec3 &force, bool &flag_pressed){
     if(W_S || A_D){
         flag_pressed = true;
 
-        glm::vec3 cV;
         camera->getDirectionVector(cV);
 
         if(W_S) force = glm::vec3(cV.x * W_S, 0, cV.z * W_S);
@@ -429,16 +287,6 @@ void CPlayerController::check_WASD(glm::vec3 &force, bool &flag_pressed){
 
         force = glm::normalize(force);
     }
-}
-
-void CPlayerController::ApplyDash(glm::vec3 &force,float &MULT_FACTOR){
-    MULT_FACTOR = MULT_DASH_FACTOR;
-    force.x *= DASH_FORCE_FACTOR;
-    force.z *= DASH_FORCE_FACTOR;
-
-    pulsacion_dash = true;
-
-    s_dash->play();
 }
 
 void CPlayerController::showDebug(){
@@ -465,7 +313,6 @@ void CPlayerController::showDebug(){
 
 void CPlayerController::changeWeaponIfPossible(CGun *gun){
     Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
-    pulsacion_q = true;
     Singleton<Motor2D>::Instance()->changeWeapon();
     if(isPrincipal){
         isPrincipal = false;
@@ -577,6 +424,49 @@ void CPlayerController::ToggleSkill3(){
     hab->ToggleSkill(2);
 }
 
+void CPlayerController::ReloadGun(){
+    CGun* gun = static_cast<CGun*>(Manager->getComponent(gg::GUN, getEntityID()));
+    if(gun && gun->canReload() && !gun->isReloading()){
+        Manager->returnIDFromRigid(nullptr);
+        gun->reload();
+    }
+}
+
+void CPlayerController::ThrowGranade(){
+    // glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),cTransform->getPosition());
+    glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition());
+    ////std::cout << actualGrenadeState << '\n';
+    (this->*mapFuncGrenades[actualGrenadeState])();
+}
+
+void CPlayerController::ChangeWeapon(){
+    if(secondWeapon){
+        CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
+        if(!aux->isReloading()){
+            changeWeaponIfPossible(aux);
+        }
+    }
+}
+
+void CPlayerController::Run(){
+    MULT_FACTOR = MULT_RUN_FACTOR;
+}
+
+void CPlayerController::DASH(){
+    MULT_FACTOR = MULT_DASH_FACTOR;
+    force.x *= DASH_FORCE_FACTOR;
+    force.z *= DASH_FORCE_FACTOR;
+
+    s_dash->play();
+}
+
+void CPlayerController::JUMP(){
+    cRigidBody->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
+}
+void CPlayerController::TogglePause(){
+    Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
+}
+
 void CPlayerController::invocasionhorda(){
     auto hola=glm::vec3(651.342,0.684987,-14.1424);
     factory->createTank(hola, 200);
@@ -608,4 +498,22 @@ void CPlayerController::ToggleFreeCamera(){
         PlayerMovement = true;
         FreeCamera = false;
     }
+}
+
+void CPlayerController::EnemyInfo(){
+    //devuelve ide de un objeto
+    glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition(),200);
+    int id=world->getIDFromRaycast();
+    ////std::cout << "id:" <<id<< '\n';
+    if(id!=-1){
+
+        CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+        if(AIEnem){
+            ////std::cout << "no hay enemigo" << '\n';
+            Singleton<StateMachine>::Instance()->AddState(new IAState(id),false);
+
+
+        }
+    }
+    //gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
 }

@@ -10,7 +10,7 @@
 #include "GameAI/Pathfinding.hpp"
 #include "GameAI/AIDirector.hpp"
 
-#include "GameEngine/Motor2D.hpp"
+#include <Omicron/2D/Motor2D.hpp>
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
@@ -18,10 +18,10 @@
 #include "BinaryParser.hpp"
 #include <Omicron/Omicron.hpp>
 
-#include <GameEngine/Motor2D.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 
 #include <Bullet/ggDynWorld.hpp>
-
+#include <Omicron/FX/Particle_System_DATA.hpp>
 
 
 #define MOVEMENT_SPEED 1.f
@@ -80,13 +80,17 @@ Game::~Game(){
 void Game::Init(){
     Engine->createZones(8);
 
-    BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
-
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
     // Los eventos son propios de cada zona!
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
+
+
+    //BinaryParser::LoadSounds();
+    BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
+
+
 
     Engine2D->InitHUD();
 
@@ -130,6 +134,13 @@ void Game::Init(){
     sky.init();
     //Engine2D->prueba();
     // //std::cout << "\n -- INIT -- " << '\n';
+
+    ParticleSystem_Data PS;
+    PS.Texture = "assets/Textures/Particles/BlueQuad.png";
+    PS.SpawnTime = 0.05;
+    PS.MaxParticles = 20;
+
+    Engine->CreateParticleSystem(PS, 1);
 }
 
 void Game::Update(){
@@ -174,7 +185,7 @@ void Game::Update(){
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
     glm::vec3 pos = playerpos->getPosition();
-    pos.y = 100;
+    pos.y = 15;
     Engine->setPosition(luz, pos);
     // //std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();
@@ -188,10 +199,10 @@ void Game::Update(){
 
     // //std::cout << "  - DRAW" << '\n';
     Engine->draw();
+    //sky.Draw();
 
     Engine->DisplayFPS();
 
-    sky.Draw();
     Engine2D->DisplayHUD();
 
     //Engine2D->draw();

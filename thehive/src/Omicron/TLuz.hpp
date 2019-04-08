@@ -2,7 +2,7 @@
 #define TLUZ_H
 
 #include <Util.hpp>
-#include "TEntidad.hpp"
+#include <Omicron/CORE/TEntidad.hpp>
 #include "Shader.hpp"
 
 

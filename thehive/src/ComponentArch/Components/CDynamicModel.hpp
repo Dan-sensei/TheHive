@@ -3,14 +3,14 @@
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
-#include <Omicron/ZStaticMesh.hpp>
+#include <Omicron/ZMESHES/ZStaticMesh.hpp>
 #include <Omicron/ZMaterial.hpp>
 #include <map>
 #include <iostream>
 #include <Singleton.hpp>
 #include <Omicron/Omicron.hpp>
 
-#include <Omicron/ZAnimationData.hpp>
+#include <Omicron/ZMESHES/ZAnimationData.hpp>
 #include <AnimationLUT.hpp>
 
 class CTransform;

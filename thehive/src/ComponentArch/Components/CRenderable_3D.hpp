@@ -3,7 +3,7 @@
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
-#include <Omicron/ZStaticMesh.hpp>
+#include <Omicron/ZMESHES/ZStaticMesh.hpp>
 #include <Omicron/ZMaterial.hpp>
 #include <map>
 //#include <iostream>

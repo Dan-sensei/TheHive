@@ -1,6 +1,6 @@
 #include "Hability.hpp"
 //#include "Enum.hpp"
-#include <GameEngine/Motor2D.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 #include <Singleton.hpp>
 
 /* data */

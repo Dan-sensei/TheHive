@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 //#include <iostream>
 //#include "vendor/stb_image.h"
-#include "AssetManager.hpp"
+#include <Omicron/AssetManager.hpp>
 
 ZMaterial::ZMaterial()
 {

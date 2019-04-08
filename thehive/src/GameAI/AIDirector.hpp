@@ -2,7 +2,7 @@
 #define AIDIRECTOR
 
 #include <chrono>
-#include <GameEngine/Motor2D.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 #include <vector>
 #include <list>
 #include <ComponentArch/ObjectManager.hpp>

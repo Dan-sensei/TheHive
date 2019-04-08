@@ -41,5 +41,6 @@ CMeshCollider::~CMeshCollider(){
     delete myMotionState;
     world->removeRigidBody(body);
     delete body;
+    fileLoader->deleteAllData();
     delete fileLoader;
 }
