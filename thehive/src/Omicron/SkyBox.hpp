@@ -2,7 +2,7 @@
 #define _SKYBOX
 
 //#include <iostream>
-#include "AssetManager.hpp"
+#include <Omicron/AssetManager.hpp>
 #include <SOIL2/SOIL2.h>
 #include <SOIL2/stb_image.h>
 #include <Singleton.hpp>

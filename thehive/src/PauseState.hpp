@@ -10,7 +10,7 @@ class ggDynWorld;
 //#include <iostream>
 #include "States/State.hpp"
 #include <Omicron/SkyBox.hpp>
-#include "GameEngine/GUIController.hpp"
+#include <Omicron/2D/GUIController.hpp>
 #include <FMOD/SoundSystem.hpp>
 
 class PauseState : public State{

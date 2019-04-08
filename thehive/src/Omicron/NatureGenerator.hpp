@@ -10,9 +10,9 @@
 #include "Factory.hpp"
 #include "Singleton.hpp"
 #include "BinaryParser.hpp"
-#include "AssetManager.hpp"
+#include <Omicron/AssetManager.hpp>
 #include "Shader.hpp"
-#include "ZMaterial.hpp"
+#include <Omicron/ZMaterial.hpp>
 
 class NatureGenerator {
     public:

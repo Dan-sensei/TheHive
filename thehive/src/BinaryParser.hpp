@@ -9,7 +9,7 @@
 #include "EventSystem/TData.hpp"
 #include "GameAI/AIDirector.hpp"
 #include "Omicron/NatureGenerator.hpp"
-#include <Omicron/BoundingBox.hpp>
+#include <Omicron/ZMESHES/BoundingBox.hpp>
 #include "Util.hpp"
 
 namespace BinaryParser{
@@ -26,6 +26,15 @@ namespace BinaryParser{
         std::vector<float> &uv,
         std::vector<float> &TangentsBitangents,
         std::vector<unsigned short> &index
+    );
+
+    bool FillBuffers(
+        const std::string& BinaryFile,
+        unsigned int PositionsNormalsBuffer,
+        unsigned int UVBuffer,
+        unsigned int TangentsBitangentsBuffer,
+        unsigned int IndexBuffer,
+        unsigned int &IndexSize
     );
 
     bool ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX);

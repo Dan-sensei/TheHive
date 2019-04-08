@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <cmath>
 #include <Omicron/Omicron.hpp>
-#include <Omicron/TNodo.hpp>
+#include <Omicron/CORE/TNodo.hpp>
 #include <Singleton.hpp>
 
 #include "CTransform.hpp"

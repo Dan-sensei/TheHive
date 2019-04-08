@@ -3,12 +3,12 @@
 
 #include <string>
 #include <map>
-#include "ZMeshData.hpp"
-#include "ZAnimationData.hpp"
-#include "ZMaterial.hpp"
-#include "OpenGEnum.hpp"
+#include <Omicron/ZMESHES/ZMeshData.hpp>
+#include <Omicron/ZMESHES/ZAnimationData.hpp>
+#include <Omicron/ZMESHES/BoundingBox.hpp>
+#include <Omicron/ZMaterial.hpp>
+#include <Omicron/OpenGEnum.hpp>
 #include "Singleton.hpp"
-#include "BoundingBox.hpp"
 
 template <typename T>
 class Singleton;

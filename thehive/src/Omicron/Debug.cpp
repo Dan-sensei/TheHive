@@ -14,7 +14,7 @@
 #include <SOIL2/SOIL2.h>
 #include "Shader.hpp"
 #include "Mesh.hpp"
-#include "AssetManager.hpp"
+#include <Omicron/AssetManager.hpp>
 */
 
 #include <Omicron/AssetManager.hpp>

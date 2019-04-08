@@ -3,7 +3,7 @@
 
 #include "Enumhabs.hpp"
 #include <chrono>
-#include <GameEngine/Motor2D.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 #include "Hability.hpp"
 #include <FMOD/SoundSystem.hpp>
 #include <FMOD/SonidoNormal.hpp>

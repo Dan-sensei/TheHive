@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <string>
 #include "Shader.hpp"
-#include "OpenGEnum.hpp"
+#include <Omicron/OpenGEnum.hpp>
 
 class ZMaterial{
 

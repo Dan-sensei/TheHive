@@ -1,6 +1,7 @@
 #include "Omicron.hpp"
 #include <glm/gtx/matrix_decompose.hpp>
 #include <iostream>
+#include <Omicron/FX/ParticleSystem.hpp>
 
 
 bool* Omicron::KEYS = new bool[349];
@@ -12,7 +13,7 @@ int Omicron::Half_Window_Width;
 int Omicron::Half_Window_Height;
 
 Omicron::Omicron()
-:main_camera(nullptr), FPS(0)
+:main_camera(nullptr), FPS(0), _DeferredShading()
 {
     ESCENA = new TNodo();
     Initialize();
@@ -26,8 +27,7 @@ Omicron::Omicron()
         Omicron::KEYS[i] = false;
 }
 
-Omicron::~Omicron(){
-}
+Omicron::~Omicron(){}
 
 void Omicron::createZones(uint8_t NumberOfZones){
     NumberOfZones += 1;
@@ -135,6 +135,21 @@ TNodo* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::quat& Ro
     return Malla;
 }
 
+TNodo* Omicron::CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone){
+    ParticleSystem* P = new ParticleSystem();
+
+    P->Init(Data.MaxParticles);
+    P->setGenerationTime(Data.SpawnTime);
+    P->setTexture(Data.Texture);
+
+    TNodo* PADRE = ZONES[map_zone];
+    TNodo* ParticleNode = new TNodo(PADRE, P);
+
+    return ParticleNode;
+}
+
+
+
 TNodo* Omicron::bindTransform(const glm::vec3& pos, const glm::quat& rot, TNodo* FATHER){
     TTransform* Rotate = new TTransform();
     TTransform* Translate = new TTransform();
@@ -169,7 +184,18 @@ void Omicron::BeginDraw(){
 
 void Omicron::draw(){
     ++FPS;
+
+    glDisable( GL_BLEND );
+
+    // Bindeamos el shader que recibe la info de luces y cámara
+    _DeferredShading.Bind_D_Shader();
+    ESCENA->ROOT_OkameraUpdate();   // Le enviamos la info
+    ESCENA->ROOT_LightsUpdate();
+
+    // Ahora bindeamos nuestro G-Búffer y renderizamos a las texturas
+    _DeferredShading.Bind_G_Buffer();
     ESCENA->drawRoot_M();
+    _DeferredShading.DrawQuad();
 }
 
 void Omicron::EndDraw(){
@@ -265,6 +291,7 @@ bool Omicron::Initialize(){
     float ancho = mode->width;
     float alto = mode->height;
 
+
 	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
 	    //fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
@@ -283,6 +310,8 @@ bool Omicron::Initialize(){
 	    return false;
 	}
 
+    _DeferredShading.init(ancho, alto);
+
 	glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
@@ -290,13 +319,10 @@ bool Omicron::Initialize(){
     glEnable(GL_CULL_FACE);
     glCullFace (GL_BACK);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable( GL_BLEND );
-
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     Half_Window_Width = ancho/2;
     Half_Window_Height = alto/2;

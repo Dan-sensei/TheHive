@@ -5,7 +5,7 @@
 #include "Singleton.hpp"
 #include "GameAI/Pathfinding.hpp"
 
-#include "GameEngine/Motor2D.hpp"
+#include <Omicron/2D/Motor2D.hpp>
 
 #include "States/StateMachine.hpp"
 #include "Game.hpp"
@@ -96,12 +96,12 @@ int main(int argc, char const *argv[]) {
 //
 // #include <Util.hpp>
 //
-// #include <Omicron/TNodo.hpp>
+// #include <Omicron/CORE/TNodo.hpp>
 // #include <Omicron/TEntidad.hpp>
 // #include <Omicron/TLuz.hpp>
 // #include <Omicron/TCamara.hpp>
 // #include <Omicron/TTransform.hpp>
-// #include <Omicron/ZStaticMesh.hpp>
+// #include <Omicron/ZMESHES/ZStaticMesh.hpp>
 // #include <Omicron/ZMaterial.hpp>
 // #include <Omicron/Shader.hpp>
 // #include <Omicron/OpenGEnum.hpp>
