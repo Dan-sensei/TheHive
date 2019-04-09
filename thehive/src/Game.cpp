@@ -204,7 +204,7 @@ void Game::Update(){
 
     // //std::cout << "  - DRAW" << '\n';
     Engine->draw();
-    sky.Draw();
+    //sky.Draw();
 
     Engine->DisplayFPS();
 

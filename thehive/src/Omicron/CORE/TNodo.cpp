@@ -90,16 +90,6 @@ void TNodo::setVisibility(bool Flag){
     Visibility = Flag;
 }
 
-// Este es llamado desde el main (PURE ROOT)
-void TNodo::drawRoot_M(){
-
-    auto it = hijos.begin();
-    while(it != hijos.end()){
-        (*it)->draw();
-        ++it;
-    }
-
-}
 
 // Este para los demas
 void TNodo::drawRoot(){
@@ -113,9 +103,14 @@ void TNodo::drawRoot(){
 
 
 void TNodo::ROOT_OkameraUpdate(){
-    (*hijos.begin())->draw();
+    hijos[0]->draw();
 }
 
 void TNodo::ROOT_LightsUpdate(){
     hijos[1]->draw();
+}
+
+// Este es llamado desde el main (PURE ROOT)
+void TNodo::drawRoot_M(){
+    hijos[2]->draw();
 }

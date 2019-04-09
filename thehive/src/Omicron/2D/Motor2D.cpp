@@ -42,10 +42,9 @@ void Motor2D::draw(){
         (*it3)->Draw();
         it3++;
     }
-    auto it2 = IMAGENES.begin();
+    auto it2=IMAGENES.begin();
     while(it2!=IMAGENES.end()){
-        auto img =it2->second;
-        img->Draw();
+        (*it2)->Draw();
         it2++;
     }
 }
@@ -96,7 +95,7 @@ void Motor2D::aplyhover(){
     }
 }
 
-Imagen2D* Motor2D::AddImage(std::string palabra,std::string source,float _posx,float _posy,float _width,float _height){
+Imagen2D* Motor2D::AddImage(std::string source,float _posx,float _posy,float _width,float _height){
     float x,y,w,h;
     x=_posx/100.0;
     y=_posy/100.0;
@@ -104,7 +103,7 @@ Imagen2D* Motor2D::AddImage(std::string palabra,std::string source,float _posx,f
     h=(_posy+_height)/100.0;
     auto nuevo = new Imagen2D(x,y,w,h,source);
 
-    IMAGENES.push_back(std::make_pair(palabra,nuevo));
+    IMAGENES.push_back(nuevo);
     return nuevo;
 }
 
@@ -168,18 +167,9 @@ void Motor2D::changeWeapon(){
     Imagen2D* armaP;
     Imagen2D* armaS;
     // hab3
-    auto it=IMAGENES.begin();
-    while(it!=IMAGENES.end()){
-    if(it->first=="1arma"||it->first=="0arma"){
-            if(it->first=="1arma"){
-                armaS=it->second;
-            }
-            else{
-                armaP=it->second;
-            }
-        }
-        it++;
-    }
+    armaP=IMAGENES[4];
+    armaS=IMAGENES[3];
+
     auto str =armaP->getImage();
     auto str2 =armaS->getImage();
     armaP->setImage(str2);
@@ -202,18 +192,8 @@ void Motor2D::setWeaponImg(int tipo,std::string img){
     Imagen2D* armaP;
     Imagen2D* armaS;
     // hab3
-    auto it=IMAGENES.begin();
-    while(it!=IMAGENES.end()){
-    if(it->first=="1arma"||it->first=="0arma"){
-            if(it->first=="1arma"){
-                armaS=it->second;
-            }
-            else{
-                armaP=it->second;
-            }
-        }
-        it++;
-    }
+    armaP=IMAGENES[4];
+    armaS=IMAGENES[3];
 
     if(tipo==0){//P
             armaP->setImage(img);
@@ -329,7 +309,7 @@ int Motor2D::InitPause(){
 //Main Menu
 int Motor2D::InitMenu(){
     CLINMenu();
-    AddImage("fondo","assets/HUD/menu.png",0,0,100,100);
+    AddImage("assets/HUD/menu.png",0,0,100,100);
     //addText(45,10,"Menu principal");
 
     auto but1=addButton(39,57,9,12,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Play");
@@ -345,7 +325,7 @@ int Motor2D::InitMenu(){
 //Jugar
 int Motor2D::InitMenu2(){
     CLINMenu();
-    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+    AddImage("assets/HUD/menucerca.png",0,0,100,100);
 
     //addText(45,10,"Play");
     addButton(40,21,20,10,DIFF1,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Larva",true);
@@ -359,7 +339,7 @@ return 5;
 //Creditos
 int Motor2D::InitMenu3(){
     CLINMenu();
-    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+    AddImage("assets/HUD/menucerca.png",0,0,100,100);
 
     //addText(45,10,"Credits");
     addButton(20,20,5,9,GOMAIN,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
@@ -369,7 +349,7 @@ int Motor2D::InitMenu3(){
 //Opciones
 int Motor2D::InitMenu4(){
     CLINMenu();
-    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+    AddImage("assets/HUD/menucerca.png",0,0,100,100);
 
     //addText(45,10,"Options");
     addButton(40,31,20,10,GOVIDEO,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Graphics");
@@ -383,7 +363,7 @@ int Motor2D::InitMenu4(){
 //graficos
 int Motor2D::InitMenu5(){
     CLINMenu();
-    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+    AddImage("assets/HUD/menucerca.png",0,0,100,100);
 
     //addText(45,10,"Video");
     addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
@@ -394,7 +374,7 @@ int Motor2D::InitMenu5(){
 int Motor2D::InitMenu6(){
     CLINMenu();
 
-    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+    AddImage("assets/HUD/menucerca.png",0,0,100,100);
 
 
 
@@ -421,7 +401,7 @@ int Motor2D::InitMenu6(){
 //controles
 int Motor2D::InitMenu7(){
     CLINMenu();
-    AddImage("fondo","assets/HUD/menucerca.png",0,0,100,100);
+    AddImage("assets/HUD/menucerca.png",0,0,100,100);
 
     //addText(45,10,"Controlls");
 
@@ -434,17 +414,17 @@ int Motor2D::InitMenu7(){
 void Motor2D::InitHUD(){
 
 
-    AddImage("hab1","assets/HUD/hab1.png",  2, 90,7,10);
+    AddImage("assets/HUD/hab1.png",  2, 90,7,10);
     auto boton=addRect(                     2, 90,7,10);
     boton->setColor(glm::vec4(1,1,1,0.25));
 
 
-    AddImage("hab2","assets/HUD/hab2.png",  12, 90,7,10);
+    AddImage("assets/HUD/hab2.png",  12, 90,7,10);
     boton=addRect(                          12, 90,7,10);
     boton->setColor(glm::vec4(1,1,1,0.25));
 
 
-    AddImage("hab3","assets/HUD/hab3.png",  22,90,7,10);
+    AddImage("assets/HUD/hab3.png",  22,90,7,10);
     //AddImage("hab3","assets/HUD/AMETRALLADORA_HUD.png",  22,90,7,10);
     boton=addRect(                          22,90,7,10);
     boton->setColor(glm::vec4(1,1,1,0.25));
@@ -457,7 +437,7 @@ void Motor2D::InitHUD(){
     h=15;
     _x= x+w*0.65;
     _y= y+h*0.7;
-    auto yep=AddImage("1arma","assets/HUD/cf_hud_b.jpg",75,85,20,15);//secundaria
+    auto yep=AddImage("assets/HUD/cf_hud_b.jpg",75,85,20,15);//secundaria
     yep->setZindex(-0.9997);
     addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
     x=70;
@@ -467,12 +447,12 @@ void Motor2D::InitHUD(){
     _x= x+w*0.65;
     _y= y+h*0.7;
     //AddImage("1arma","assets/HUD/AMETRALLADORA_HUD.png",70,80,20,15); // Principal
-    yep=AddImage("0arma","assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
+    yep=AddImage("assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
     yep->setZindex(-0.9998);
     addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 
 
-    AddImage("vida1","assets/HUD/Vida.png",  60,3.77,35,7);
+    AddImage("assets/HUD/Vida.png",  60,3.77,35,7);
     boton=addRect(                          60,2,35,7);
     boton->setColor(glm::vec4(0,0.5,0,1));
     boton->setZindex(-0.9998);
@@ -498,12 +478,12 @@ void Motor2D::InitHUD(){
     //AddImage("G3","assets/HUD/Botonsolo.png",porc_ancho(24),porc_alto(2),porc_alto(10),porc_alto(10));
 
     // MAPA A FUNCIONES MOLON
-    mapHudFunctions.insert(std::make_pair("hab1",&Motor2D::HUD_hability1));
-    mapHudFunctions.insert(std::make_pair("hab2",&Motor2D::HUD_hability2));
-    mapHudFunctions.insert(std::make_pair("hab3",&Motor2D::HUD_hability3));
-    mapHudFunctions.insert(std::make_pair("vida1",&Motor2D::HUD_vida));
-    mapHudFunctions.insert(std::make_pair("1arma",&Motor2D::HUD_arma0));//secundaria
-    mapHudFunctions.insert(std::make_pair("0arma",&Motor2D::HUD_arma1));
+    //mapHudFunctions[0]=&Motor2D::HUD_hability1;
+    //mapHudFunctions[1]=&Motor2D::HUD_hability2;
+    //mapHudFunctions[2]=&Motor2D::HUD_hability3;
+    //mapHudFunctions[3]=&Motor2D::HUD_vida;
+    //mapHudFunctions[4]=&Motor2D::HUD_arma0;
+    //mapHudFunctions[5]=&Motor2D::HUD_arma1;
 
     perc        =   0;
     perc2       =   0;
@@ -535,12 +515,14 @@ void Motor2D::CLINMenu(){
     //std::vector<Boton2D*> BOTONES;
     //std::vector<Boton2D*> TEXT;
 
-    auto it = IMAGENES.begin();
+
+    auto it=IMAGENES.begin();
     while(it!=IMAGENES.end()){
-        delete it->second;
+        delete (*it);
         it++;
     }
     IMAGENES.clear();
+
 
     auto it2=TEXT.begin();
     while(it2!=TEXT.end()){
@@ -569,9 +551,9 @@ void Motor2D::CLINNormal(){
     //std::vector<Cuadrado2D*> RECTANGULOS;
     //std::vector<Boton2D*> BOTONES;
     //std::vector<Boton2D*> TEXT;
-    auto it = IMAGENES.begin();
+    auto it=IMAGENES.begin();
     while(it!=IMAGENES.end()){
-        delete it->second;
+        delete (*it);
         it++;
     }
     IMAGENES.clear();
@@ -579,23 +561,33 @@ void Motor2D::CLINNormal(){
 
 void Motor2D::DisplayHUD(){
     if(true){
-        auto it = IMAGENES.begin();
-        float X,Y,H,W,T_W,T_H;
+
+        auto it=IMAGENES.begin();
+        Imagen2D*img;
         while(it!=IMAGENES.end()){
-            auto img =it->second;
-            img->Draw();
-            if(mapHudFunctions.find(it->first) != mapHudFunctions.end())
-                (this->*mapHudFunctions[it->first])(img);
+            (*it)->Draw();
             it++;
         }
+        HUD_hability1();
+
         RECTANGULOS[5]->Draw();
         RECTANGULOS[6]->Draw();
+
+        HUD_hability1( );
+        HUD_hability2( );
+        HUD_hability3( );
+        HUD_vida(      );
+        HUD_arma0(     );
+        HUD_arma1(     );
+
+
     }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
-void Motor2D::HUD_hability1(Imagen2D *it){
+void Motor2D::HUD_hability1(){
     float x,y,w,h;
+    auto it =IMAGENES[0];
     x=it->getX();
     y=it->getY();
     w=it->getW();
@@ -605,8 +597,9 @@ void Motor2D::HUD_hability1(Imagen2D *it){
     RECTANGULOS[0]->Draw();
 }
 
-void Motor2D::HUD_hability2(Imagen2D *it){
+void Motor2D::HUD_hability2(){
     float x,y,w,h;
+    auto it =IMAGENES[1];
     x=it->getX();
     y=it->getY();
     w=it->getW();
@@ -616,8 +609,9 @@ void Motor2D::HUD_hability2(Imagen2D *it){
     RECTANGULOS[1]->Draw();
 }
 
-void Motor2D::HUD_hability3(Imagen2D *it){
+void Motor2D::HUD_hability3(){
     float x,y,w,h;
+    auto it =IMAGENES[2];
     x=it->getX();
     y=it->getY();
     w=it->getW();
@@ -626,7 +620,8 @@ void Motor2D::HUD_hability3(Imagen2D *it){
     RECTANGULOS[2]->Draw();
 }
 
-void Motor2D::HUD_vida(Imagen2D *it){
+void Motor2D::HUD_vida(){
+    auto it =IMAGENES[5];
     float x,y,w,h;
     x=it->getX()+0.065;
     y=it->getY();
@@ -640,14 +635,15 @@ void Motor2D::HUD_vida(Imagen2D *it){
     RECTANGULOS[3]->Draw();
 }
 //necesitamos escribir por pantalla
-void Motor2D::HUD_arma0(Imagen2D *it){
-
+void Motor2D::HUD_arma0(){
+auto it =IMAGENES[3];
     std::string hola=std::to_string(balaS)+"/"+std::to_string(balaS_TOT);
     TEXT[0]->setText(hola);
     TEXT[0]->Draw();
 }
 
-void Motor2D::HUD_arma1(Imagen2D *it){
+void Motor2D::HUD_arma1(){
+    auto it =IMAGENES[4];
     std::string hola=std::to_string(balaP)+"/"+std::to_string(balaP_TOT);
     TEXT[1]->setText(hola);
     TEXT[1]->Draw();
