@@ -18,6 +18,7 @@ class Motor2D;
 class GUIController{
     public:
         GUIController();
+        ~GUIController();
         void update();
         void setposmax(int p);
     private:
@@ -63,12 +64,18 @@ void lessMusic();
 void moreEffect();
 void lessEffect();
 void initOptions();
+void sonido_accion(float);
 
 
         Omicron* Engine;
         Motor2D* Engine2D;
         using pFunc = void(GUIController::*)();
         pFunc VectorAcciones[Butn];
+
+        SoundEvent* s_accion;
+        SoundEvent* s_musica_menu;
+        SoundEvent* s_musica_cred;
+        bool reproduce;
 
         void Init();
         GUIController(const GUIController &orig) = delete;

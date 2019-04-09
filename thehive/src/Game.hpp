@@ -29,6 +29,7 @@ public:
     virtual void Init();
     virtual void Update();
     virtual void Resume();
+    virtual void Pause();
 
     /*
 
@@ -49,6 +50,7 @@ private:
     CCamera* MainCamera;
     AIDirector* Director;
     SoundSystem* soundSys;
+    SoundEvent* s_musica_basica;
 
     gg::Clock MasterClock;
     double DeltaTime;

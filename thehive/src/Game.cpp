@@ -94,6 +94,11 @@ void Game::Init(){
 
     Engine2D->InitHUD();
 
+    s_musica_basica = new SonidoNormal();
+    soundSys->createSound("event:/Musica/Ciudad/MusicaBasica",s_musica_basica);
+
+    s_musica_basica->play();
+
 
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
@@ -221,6 +226,10 @@ void Game::Resume(){
     MainCamera->resetMouse();
 
     //Engine->HideCursor(true);
+}
+
+void Game::Pause() {
+  s_musica_basica->stop();
 }
 
 void Game::CLIN(){
