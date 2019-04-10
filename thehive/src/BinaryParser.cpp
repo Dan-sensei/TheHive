@@ -187,6 +187,19 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
                     break;
             case 106: Dark = _AssetManager->getMaterial("Model106");
                     break;
+            case 107: Dark = _AssetManager->getMaterial("Model106");
+                    break;
+            case 108: Dark = _AssetManager->getMaterial("Model106");
+                    break;
+            case 109: Dark = _AssetManager->getMaterial("Model109");
+                    break;
+            case 110: Dark = _AssetManager->getMaterial("Model110");
+                    break;
+            case 111: Dark = _AssetManager->getMaterial("Model106");
+                    break;
+            case 113: Dark = _AssetManager->getMaterial("Model113");
+                    break;
+
             //arbol
             case 122: Dark = _AssetManager->getMaterial("Tree");
                     break;
