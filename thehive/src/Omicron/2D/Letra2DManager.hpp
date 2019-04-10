@@ -19,7 +19,7 @@ class Letra2DManager {
         Letra2DManager(const Letra2DManager &orig) = delete;
         ~Letra2DManager();
 
-        Letra2D* getChar(char letra);
+        Letra2D* getChar(const char &letra);
 
         float ancho;
         float alto;

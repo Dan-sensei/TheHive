@@ -61,7 +61,7 @@ class Motor2D{
 
         //void AddTextToBuffer(const std::string &Text, const gg::Color &color);
         //void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
-        Imagen2D* AddImage(std::string palabra,std::string source  ,float _posx,float _posy,float _width,float _height);
+        Imagen2D* AddImage(std::string source  ,float _posx,float _posy,float _width,float _height);
         Boton2D* addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus=false,glm::vec4 _color=glm::vec4(0,0.0,0,1));
         void addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(0,0,0,1),float tam=20);
         Cuadrado2D* addRect(float x, float y,float w, float h);
@@ -72,15 +72,18 @@ class Motor2D{
         SoundSystem* SS;
 
         SoundEvent* s_hover;
-        SoundEvent* s_seleccionar;
         //nuevo
         std::vector<Cuadrado2D*> RECTANGULOS;
         Omicron* motor;
         std::vector<Boton2D*> BOTONES;
         std::vector<Texto2D*> TEXT;
         //std::vector<Imagen2D*> IMAGENES;
-        std::vector<std::pair<std::string,Imagen2D*>> IMAGENES;
-        std::map<std::string,void(Motor2D::*)(Imagen2D*)> mapHudFunctions;
+        //std::vector<std::pair<std::string,Imagen2D*>> IMAGENES;
+        std::vector<Imagen2D*> IMAGENES;
+        //td::vector<std::pair<std::string,Imagen2D*>> IMAGENES;
+        //std::vector<void(Motor2D::*)(Imagen2D*)> mapHudFunctions;
+        //using pGui = void(Motor2D::*)(Imagen2D*);
+        //pGui mapHudFunctions[6];
 
 
 
@@ -105,12 +108,12 @@ class Motor2D{
 
 
 
-        void HUD_hability1(Imagen2D*);
-        void HUD_hability2(Imagen2D*);
-        void HUD_hability3(Imagen2D*);
-        void HUD_vida(Imagen2D*);
-        void HUD_arma0(Imagen2D*);
-        void HUD_arma1(Imagen2D*);      // Principal
+        void HUD_hability1( );
+        void HUD_hability2( );
+        void HUD_hability3( );
+        void HUD_vida(      );
+        void HUD_arma0(     );
+        void HUD_arma1(     );      // Principal
         std::string  BoolToString(bool b);
 
 };

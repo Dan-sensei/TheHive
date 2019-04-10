@@ -22,7 +22,7 @@ public:
     virtual void Init();
     virtual void Update();
     virtual void Resume();
-
+    virtual void Pause() { }
     /*
 
     virtual void HandleInput() = 0;
@@ -39,7 +39,7 @@ private:
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
-    GUIController cont;
+    GUIController* cont;
 
 };
 

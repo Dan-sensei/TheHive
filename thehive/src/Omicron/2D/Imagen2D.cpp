@@ -1,7 +1,7 @@
 #include "Imagen2D.hpp"
 #include <Omicron/ZMESHES/ZMeshData.hpp>
 #include <Omicron/AssetManager.hpp>
-//#include <iostream>
+#include <iostream>
 #include <SOIL2/SOIL2.h>
 
 
@@ -177,11 +177,11 @@ void Imagen2D::Draw(){
     glUniform4fv(inputColour,1,&color[0]);
     glUniform1f(Zindex,index);
     glUniform1i(textura, 0);
+    glBindVertexArray(VAO);
 
     glActiveTexture(GL_TEXTURE0 + 0);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
-    glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
 

@@ -44,7 +44,9 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 */
 //============================================================================================
 
-IAState::IAState(int _id):cont(),id(_id){
+IAState::IAState(int _id):id(_id){
+    cont = Singleton<GUIController>::Instance();
+
     Engine = Singleton<Omicron>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     //Engine->Starto();
@@ -61,7 +63,7 @@ IAState::~IAState(){
 
 void IAState::Init(){
     Engine->HideCursor(false);
-    
+
     Singleton<Motor2D>::Instance()->InitAIDebug(id);
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
@@ -78,7 +80,7 @@ void IAState::Update(){
 
     Engine->BeginDraw();
     Engine->draw();
-    cont.update();
+    cont->update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
     Singleton<Motor2D>::Instance()->draw();

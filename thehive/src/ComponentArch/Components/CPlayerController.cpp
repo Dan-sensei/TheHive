@@ -42,7 +42,7 @@ CPlayerController::CPlayerController()
 CPlayerController::~CPlayerController() {
     if(secondWeapon) delete secondWeapon;
     delete s_dash;
-    //delete s_pasos;
+    delete s_pasos;
 }
 
 void CPlayerController::Init(){

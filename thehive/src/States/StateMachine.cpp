@@ -1,5 +1,5 @@
 #include "StateMachine.hpp"
-//#include <iostream>
+#include <iostream>
 StateMachine::StateMachine():cantidad(0) { }
 StateMachine::~StateMachine() {
 
@@ -49,7 +49,6 @@ void StateMachine::ProcessStateChanges()
 
 	if (isAdding)
 	{
-
 		if (!states.empty())
 		{
 			if (isReplacing)
@@ -60,7 +59,7 @@ void StateMachine::ProcessStateChanges()
 			}
 			else
 			{
-				//states.top()->Pause();
+				states.top()->Pause();
 			}
 		}
 		states.push(newState);

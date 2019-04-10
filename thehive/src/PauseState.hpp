@@ -24,6 +24,7 @@ public:
     virtual void Init();
     virtual void Update();
     virtual void Resume();
+    virtual void Pause() { }
 
     /*
 
@@ -40,7 +41,7 @@ private:
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
-    GUIController _GUIController;
+    GUIController* _GUIController;
     SkyBox sky;
 
     SoundSystem* SS;

@@ -60,6 +60,7 @@ Game::Game()
     Engine2D = Singleton<Motor2D>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     Director = Singleton<AIDirector>::Instance();
+    cont = Singleton<GUIController>::Instance();
 
     //Engine->Starto();
     //Engine->HideCursor(true);
@@ -74,7 +75,6 @@ Game::Game()
 }
 
 Game::~Game(){
-
 }
 
 void Game::Init(){
@@ -93,6 +93,10 @@ void Game::Init(){
 
 
     Engine2D->InitHUD();
+
+
+    cont->musicaJuegoPlay();
+    cont->musicaMenuStop();
 
 
     auto sF = Singleton<Factory>::Instance();
@@ -220,13 +224,23 @@ void Game::Resume(){
     Engine2D->InitHUD();
     MainCamera->resetMouse();
 
+    cont->musicaJuegoPause(false);
+    cont->musicaMenuStop();
+
+
+
     //Engine->HideCursor(true);
 }
 
+
 void Game::CLIN(){
+
     //Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     world->clear();
+
+    cont->musicaJuegoStop();
+    cont->musicaMenuPlay();
 
     //Engine2D->CLINNormal();
     //EventSystem->clin();
@@ -234,5 +248,9 @@ void Game::CLIN(){
     // //std::cout << "1/60 = " << 1/60.F << '\n';
     // //std::cout << "UPDTES " << UPDATE  << '\n';
     // //std::cout << "DRO " << DRO  << '\n';
+
+}
+void Game::Pause(){
+    cont->musicaJuegoPause(true);
 
 }

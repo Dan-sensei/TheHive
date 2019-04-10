@@ -39,10 +39,10 @@ SoundEvent* SoundSystem::createSound(const std::string &_str, SoundEvent* ret){
 	if(soundEvents.find(_str) == soundEvents.end()){
 
 		FMOD::Studio::EventDescription 	*event 	= nullptr;
-		system->getEvent(_str.c_str(), &event);
+		ERRCHECK(system->getEvent(_str.c_str(), &event));
 
 
-		event->createInstance(&instance);
+		ERRCHECK(event->createInstance(&instance));
 
 		ret->newSoundEvent(instance);
 
@@ -88,7 +88,19 @@ void SoundSystem::update(){
 	}
 }
 
+float SoundSystem::getVolume(const std::string& busPath){
+	FMOD::Studio::Bus *bus;
+	float v;
+
+	system->getBus(busPath.c_str(), &bus);
+	bus->getVolume(&v,0);
+
+	return v;
+
+}
+
 void SoundSystem::CLIN(){
+
 	// A clinear!
 
 	// auto it2 = eventDescriptions.begin();
