@@ -74,7 +74,6 @@ Game::Game()
 }
 
 Game::~Game(){
-
 }
 
 void Game::Init(){
@@ -224,15 +223,19 @@ void Game::Resume(){
     Engine->HideCursor(true);
     Engine2D->InitHUD();
     MainCamera->resetMouse();
+    s_musica_basica->pause(false);
 
     //Engine->HideCursor(true);
 }
 
 void Game::Pause() {
-  s_musica_basica->stop();
+  s_musica_basica->pause(true);
 }
 
 void Game::CLIN(){
+
+    s_musica_basica->stop();
+    delete s_musica_basica;
     //Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     world->clear();

@@ -21,7 +21,7 @@ class Motor2D;
 class Game : public State{
 public:
     Game();
-    virtual void Pause() { }
+    // virtual void Pause() { }
     Game(const Game &orig) = delete;
     ~Game();
     //void update();

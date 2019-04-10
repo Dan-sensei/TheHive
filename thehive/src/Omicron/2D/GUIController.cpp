@@ -12,12 +12,14 @@ GUIController::GUIController()
 GUIController::~GUIController(){
   delete s_accion;
   delete s_musica_menu;
+  delete s_musica_cred;
 }
 void GUIController::setposmax(int p){
     cursorpos=0;
     posmax=p;
 }
 void GUIController::Init(){
+
     SS = Singleton<SoundSystem>::Instance();
     s_accion = new SonidoNormal();
     SS->createSound("event:/SFX/Menu/Aceptar",s_accion);
@@ -27,8 +29,6 @@ void GUIController::Init(){
 
     s_musica_cred = new SonidoNormal();
     SS->createSound("event:/Musica/Menu/MusicaCreditos",s_musica_cred);
-
-
 
     reproduce = false;
     dif=1;
@@ -113,12 +113,12 @@ void GUIController::update(){
     //     enter_pulsado=false;
     // }
 
-
-    /////////
     if(!reproduce){
       s_musica_menu->play();
       reproduce = true;
     }
+
+    /////////
 
     int id =Engine2D->checkbuton();
      if(id!=-1){
@@ -137,7 +137,7 @@ void GUIController::gotoPlay(){
 }
 //but1
 void GUIController::gotoCredits(){
-    s_musica_menu->stop();
+    s_musica_menu->pause(true);
     s_musica_cred->play();
     sonido_accion(0);
     Engine2D->InitMenu3();
@@ -174,6 +174,7 @@ void GUIController::gotoControlls(){
 //but7
 void GUIController::StartGame(){
     s_musica_menu->stop();
+    reproduce = false;
     sonido_accion(0);
     Engine2D->CLINMenu();
     Singleton<StateMachine>::Instance()->AddState(new Game(),false);
@@ -184,7 +185,7 @@ void GUIController::gotoMain(){
     sonido_accion(1);
     if(s_musica_cred->isPlaying()){
       s_musica_cred->stop();
-      reproduce = false;
+      s_musica_menu->pause(false);
     }
 }
 //but9
@@ -201,6 +202,7 @@ void GUIController::dif3(){
 }
 //but12
 void GUIController::Continue(){
+    s_musica_menu->stop();
     Engine->resetClickVariable();
     Singleton<StateMachine>::Instance()->RemoveState();
     sonido_accion(1);
@@ -209,6 +211,9 @@ void GUIController::Continue(){
 void GUIController::ReturnMain(){
     Singleton<StateMachine>::Instance()->RemoveState(2);
     sonido_accion(0);
+    s_musica_menu->stop();
+    reproduce = false;
+
 }
 //but 14
 void GUIController::initOptions(){
