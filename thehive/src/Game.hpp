@@ -16,12 +16,13 @@ class AIDirector;
 #include <Omicron/SkyBox.hpp>
 #include <FMOD/SoundSystem.hpp>
 #include <Omicron/NatureGenerator.hpp>
+#include <Omicron/2D/GUIController.hpp>
 
 class Motor2D;
 class Game : public State{
 public:
     Game();
-    virtual void Pause() { }
+    // virtual void Pause() { }
     Game(const Game &orig) = delete;
     ~Game();
     //void update();
@@ -30,6 +31,7 @@ public:
     virtual void Init();
     virtual void Update();
     virtual void Resume();
+    virtual void Pause();
 
     /*
 
@@ -50,6 +52,8 @@ private:
     CCamera* MainCamera;
     AIDirector* Director;
     SoundSystem* soundSys;
+    GUIController* cont;
+
 
     gg::Clock MasterClock;
     double DeltaTime;

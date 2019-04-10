@@ -21,8 +21,16 @@ class GUIController{
     friend class Singleton<GUIController>;
     public:
         GUIController();
+        ~GUIController();
         void update();
         void setposmax(int p);
+        void musicaPause();
+        void musicaMenuPlay();
+        void musicaMenuStop();
+        void musicaJuegoStop();
+        void musicaMenuPause(bool);
+        void musicaJuegoPlay();
+        void musicaJuegoPause(bool);
     private:
         int dif;
         int dialogue;
@@ -66,12 +74,19 @@ void lessMusic();
 void moreEffect();
 void lessEffect();
 void initOptions();
+void sonido_accion(float);
 
 
         Omicron* Engine;
         Motor2D* Engine2D;
         using pFunc = void(GUIController::*)();
         pFunc VectorAcciones[Butn];
+
+        SoundEvent* s_accion;
+        SoundEvent* s_musica_menu;
+        SoundEvent* s_musica_cred;
+        SoundEvent* s_musica_basica;
+        bool reproduce;
 
         void Init();
         GUIController(const GUIController &orig) = delete;

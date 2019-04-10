@@ -22,7 +22,7 @@ public:
     virtual void Init();
     virtual void Update();
     virtual void Resume();
-virtual void Pause() { }
+    virtual void Pause() { }
     /*
 
     virtual void HandleInput() = 0;

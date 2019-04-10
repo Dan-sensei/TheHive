@@ -56,9 +56,10 @@ MenuState::~MenuState(){
 }
 
 void MenuState::Init(){
-
     Singleton<Motor2D>::Instance()->InitMenu();
     Engine->HideCursor(false);
+
+    cont->musicaMenuPlay();
 
     //musica_menu->play();
 
@@ -67,6 +68,8 @@ void MenuState::Init(){
 void MenuState::Resume() {
     Singleton<Motor2D>::Instance()->InitMenu();
     Engine->HideCursor(false);
+
+    // cont->musicaMenuPause(false);
 
 }
 //void MenuState::submenu(){
@@ -94,5 +97,10 @@ void MenuState::Update(){
 
 void MenuState::CLIN(){
     Singleton<Motor2D>::Instance()->CLINMenu();
+    cont->musicaMenuStop();
     //EventSystem->clin();
 }
+//
+// void MenuState::Pause(){
+//   cont->musicaMenuPause(true);
+// }

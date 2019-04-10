@@ -23,8 +23,6 @@ Motor2D::Motor2D(){
     s_hover = new SonidoNormal();
     SS->createSound("event:/SFX/Menu/Seleccionar",s_hover);
 
-    s_seleccionar = new SonidoNormal();
-    SS->createSound("event:/SFX/Menu/Aceptar",s_seleccionar);
 }
 
 
@@ -68,7 +66,6 @@ int Motor2D::checkbuton(){
     while(it!=BOTONES.end()){
         auto but=*it;
         if(but->checkOn(x, y)){
-            s_seleccionar->play();
             return but->getType();
         }
         it++;

@@ -35,6 +35,9 @@ void PauseState::Init(){
 
     Engine->HideCursor(false);
     Singleton<Motor2D>::Instance()->InitPause();
+    _GUIController->musicaMenuPlay();
+
+
     //Engine->createCamera(glm::vec3(0, /* message */30, 30), glm::vec3(0, 0, 0));
 }
  void PauseState::Resume(){
@@ -69,6 +72,7 @@ void PauseState::Update(){
 
 void PauseState::CLIN(){
     Singleton<Motor2D>::Instance()->CLINMenu();
+    _GUIController->musicaMenuStop();
 
     //Blackboard::ClearGlobalBlackboard();
     //Manager->clin();

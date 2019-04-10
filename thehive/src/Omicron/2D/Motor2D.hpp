@@ -72,7 +72,6 @@ class Motor2D{
         SoundSystem* SS;
 
         SoundEvent* s_hover;
-        SoundEvent* s_seleccionar;
         //nuevo
         std::vector<Cuadrado2D*> RECTANGULOS;
         Omicron* motor;
