@@ -85,6 +85,7 @@ void Game::Init(){
 
     // Los eventos son propios de cada zona!
     BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
+    // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
 
 
     //BinaryParser::LoadSounds();
