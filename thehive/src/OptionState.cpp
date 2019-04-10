@@ -42,7 +42,8 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 */
 //============================================================================================
 
-OptionState::OptionState():cont(){
+OptionState::OptionState(){
+    cont = Singleton<GUIController>::Instance();
     Engine = Singleton<Omicron>::Instance();
     SS = Singleton<SoundSystem>::Instance();
     Engine->HideCursor(false);
@@ -70,7 +71,7 @@ void OptionState::Update(){
 
     Engine->BeginDraw();
     Engine->draw();
-    cont.update();
+    cont->update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
     Singleton<Motor2D>::Instance()->draw();

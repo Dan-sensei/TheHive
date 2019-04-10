@@ -14,8 +14,11 @@
 #include <FMOD/SoundSystem.hpp>
 
 class Motor2D;
+template <typename T>
+class Singleton;
 
 class GUIController{
+    friend class Singleton<GUIController>;
     public:
         GUIController();
         void update();
