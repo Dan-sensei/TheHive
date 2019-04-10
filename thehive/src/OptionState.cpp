@@ -56,11 +56,11 @@ OptionState::~OptionState(){
 
 void OptionState::Init(){
     Singleton<Motor2D>::Instance()->InitMenu4();
+
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }
 void OptionState::Resume() {
     Init();
-
 }
 //void OptionState::submenu(){
 //    CLIN();
@@ -88,6 +88,7 @@ void OptionState::Update(){
 }
 
 void OptionState::CLIN(){
+
     Singleton<Motor2D>::Instance()->CLINMenu();
 
     //Blackboard::ClearGlobalBlackboard();

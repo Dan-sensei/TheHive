@@ -46,7 +46,6 @@ int main(int argc, char const *argv[]) {
     world->clean();
     EventSystem->clin();
     mainstates->clin();
-    Sound->CLIN();
 
 
 

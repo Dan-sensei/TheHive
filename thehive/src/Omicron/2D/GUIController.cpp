@@ -13,6 +13,7 @@ GUIController::~GUIController(){
   delete s_accion;
   delete s_musica_menu;
   delete s_musica_cred;
+  delete s_musica_basica;
 }
 void GUIController::setposmax(int p){
     cursorpos=0;
@@ -30,14 +31,16 @@ void GUIController::Init(){
     s_musica_cred = new SonidoNormal();
     SS->createSound("event:/Musica/Menu/MusicaCreditos",s_musica_cred);
 
+    s_musica_basica = new SonidoNormal();
+    SS->createSound("event:/Musica/Ciudad/MusicaBasica",s_musica_basica);
+
     reproduce = false;
     dif=1;
 
     dialogue = ((SS->getVolume("bus:/Voces") + 60)/70)*100;
     music = ((SS->getVolume("bus:/Musica") + 60)/70)*100;
     effect = ((SS->getVolume("bus:/SFX") + 60)/70)*100;
-    // // music=50;
-    // effect=50;
+
     cursorpos=0;
     music_max=100;
     effect_max=100;
@@ -76,55 +79,10 @@ void GUIController::Init(){
 
 }
 void GUIController::update(){
-    /*
-    if(Engine->key(gg::W)){
-        if(!arriba_pulsado){
-            arriba_pulsado=true;
-            if(cursorpos!=0){
-                cursorpos--;
-            }
-        }
-    }
-    else{
-        arriba_pulsado=false;
-    }
-    if(Engine->key(gg::S)){
-        if(!bajo_pulsado){
-            bajo_pulsado=true;
-            if(cursorpos!=(posmax-1)){
-                cursorpos++;
-            }
-        }
-    }else{
-        bajo_pulsado=false;
-    }
-    */
-
-    //
-    // int id =Engine->checkbutton();
-    //
-    // if(Engine->key(gg::Q)){
-    //     if(!enter_pulsado){
-    //         enter_pulsado=true;
-    //         id=Engine2D->Pulsarboton(cursorpos);
-    //
-    //     }
-    // }else{
-    //     enter_pulsado=false;
-    // }
-
-    if(!reproduce){
-      s_musica_menu->play();
-      reproduce = true;
-    }
-
-    /////////
 
     int id =Engine2D->checkbuton();
      if(id!=-1){
 
-         ////std::cout << "id" <<id<< '\n';
-         ////std::cout << "entramos" << '\n';
          if(VectorAcciones[id] != nullptr)
              (this->*VectorAcciones[id])();
      }
@@ -173,11 +131,11 @@ void GUIController::gotoControlls(){
 }
 //but7
 void GUIController::StartGame(){
-    s_musica_menu->stop();
-    reproduce = false;
+    // s_musica_menu->stop();
     sonido_accion(0);
     Engine2D->CLINMenu();
     Singleton<StateMachine>::Instance()->AddState(new Game(),false);
+    // s_musica_basica->play();
 }
 //but8
 void GUIController::gotoMain(){
@@ -202,18 +160,16 @@ void GUIController::dif3(){
 }
 //but12
 void GUIController::Continue(){
-    s_musica_menu->stop();
     Engine->resetClickVariable();
     Singleton<StateMachine>::Instance()->RemoveState();
     sonido_accion(1);
+    // s_musica_basica->pause(false);
 }
 //but13
 void GUIController::ReturnMain(){
     Singleton<StateMachine>::Instance()->RemoveState(2);
     sonido_accion(0);
-    s_musica_menu->stop();
-    reproduce = false;
-
+    // s_musica_basica->stop();
 }
 //but 14
 void GUIController::initOptions(){
@@ -224,6 +180,30 @@ void GUIController::initOptions(){
 void GUIController::gotoPause(){
     Engine2D->InitPause();
 }
+
+void GUIController::musicaMenuPlay(){
+  s_musica_menu->play();
+}
+
+void GUIController::musicaMenuStop(){
+  s_musica_menu->stop();
+}
+
+void GUIController::musicaJuegoStop(){
+  s_musica_basica->stop();
+}
+void GUIController::musicaMenuPause(bool b){
+  s_musica_menu->pause(b);
+}
+
+void GUIController::musicaJuegoPlay(){
+  s_musica_basica->play();
+}
+void GUIController::musicaJuegoPause(bool b){
+  s_musica_basica->pause(b);
+}
+
+
 //but 18
 void GUIController::moreDialog(){
     if(dialogue!=dialogue_max){

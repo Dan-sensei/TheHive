@@ -100,6 +100,7 @@ float SoundSystem::getVolume(const std::string& busPath){
 }
 
 void SoundSystem::CLIN(){
+
 	// A clinear!
 
 	// auto it2 = eventDescriptions.begin();

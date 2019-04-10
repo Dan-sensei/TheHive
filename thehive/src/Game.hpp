@@ -16,6 +16,7 @@ class AIDirector;
 #include <Omicron/SkyBox.hpp>
 #include <FMOD/SoundSystem.hpp>
 #include <Omicron/NatureGenerator.hpp>
+#include <Omicron/2D/GUIController.hpp>
 
 class Motor2D;
 class Game : public State{
@@ -51,7 +52,8 @@ private:
     CCamera* MainCamera;
     AIDirector* Director;
     SoundSystem* soundSys;
-    SoundEvent* s_musica_basica;
+    GUIController* cont;
+
 
     gg::Clock MasterClock;
     double DeltaTime;
