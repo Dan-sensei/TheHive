@@ -20,8 +20,8 @@
 
 
 PauseState::PauseState()
-:_GUIController()
 {
+    _GUIController = Singleton<GUIController>::Instance();
     Engine = Singleton<Omicron>::Instance();
     SS = Singleton<SoundSystem>::Instance();
     sky.init();
@@ -35,7 +35,7 @@ void PauseState::Init(){
 
     Engine->HideCursor(false);
     Singleton<Motor2D>::Instance()->InitPause();
-    //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
+    //Engine->createCamera(glm::vec3(0, /* message */30, 30), glm::vec3(0, 0, 0));
 }
  void PauseState::Resume(){
 
@@ -51,7 +51,7 @@ void PauseState::Update(){
 
     Engine->BeginDraw();
     Engine->draw();
-    _GUIController.update();
+    _GUIController->update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
     sky.Draw();

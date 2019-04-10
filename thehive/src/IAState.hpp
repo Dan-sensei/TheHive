@@ -39,7 +39,7 @@ private:
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
-    GUIController cont;
+    GUIController* cont;
 
 };
 

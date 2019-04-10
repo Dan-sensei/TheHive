@@ -160,7 +160,6 @@ void Imagen2D::setColor(glm::vec4 _color){
 }
 
 void Imagen2D::setImage(const std::string &Name){
-    // std::cout << "cambiando imagen" << '\n';
     texturaURL=Name;
     auto Manager = Singleton<AssetManager>::Instance();
     textureID=Manager->getTexture(Name,   GN::RGBA,0);
