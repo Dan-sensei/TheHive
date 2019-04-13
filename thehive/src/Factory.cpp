@@ -56,6 +56,9 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, hero);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Standing"));
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Walking"));
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Walking_Weapon"));
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Jumping"));
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Jumping_Walking"));
     DynamicModel->ToggleAnimation(0, 2);
 
     CRigidBody* RigidBody               = new CRigidBody(false, false,"", Position.x, Position.y, Position.z, 0.581/2,1.89/2, 0.314/2, 50, 0,0,0);
