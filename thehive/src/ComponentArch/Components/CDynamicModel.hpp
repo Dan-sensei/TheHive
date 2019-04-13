@@ -30,6 +30,7 @@ class CDynamicModel : public IComponent {
         void ToggleAnimation(uint8_t Anim, float Time);
 
         inline uint8_t getCurrentAnimation(){ return CurrentAnimation; };
+        inline bool getAnimationPlayed(){ return static_cast<ZDynamicMesh*>(DynamicModel->getEntidad())->getAnimationPlayed(); };
 
         //  Handler
         gg::EMessageStatus MHandler_SETPTRS();

@@ -532,8 +532,8 @@ void AssetManager::loadInit(){
 
     ZMaterial* 		Hero = getMaterial("Hero");
     Hero->attachShader(shader);
-    Hero->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/DefaultDiffuse.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Hero->addTexture(GN::NORMAL_MAP,       "assets/Textures/HERO_NORMALS3.png",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Hero->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/HERO/HERO_t.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Hero->addTexture(GN::NORMAL_MAP,       "assets/Textures/HERO/HERO_n.png",         GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Hero->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
 
@@ -552,10 +552,26 @@ void AssetManager::loadInit(){
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing1.modelgg");
 
     AnimationData = getAnimation("Hero_Walking");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking4.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking3.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking2.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking1.modelgg");
+
+    AnimationData = getAnimation("Hero_Walking_Weapon");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon1.modelgg");
+
+    AnimationData = getAnimation("Hero_Jumping");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping4.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping1.modelgg");
+
+    AnimationData = getAnimation("Hero_Jumping_Walking");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping_Walking4.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping_Walking3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping_Walking2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping_Walking1.modelgg");
 }
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {

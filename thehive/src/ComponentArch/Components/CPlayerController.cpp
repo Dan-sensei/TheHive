@@ -154,7 +154,7 @@ void CPlayerController::FixedUpdate(){
     force.z = 0;
     MULT_FACTOR = 1;
 
-    bool pressed = false;
+    pressed = false;
     check_WASD(force, pressed);
 
     if(!s_pasos->isPlaying() && pressed)
@@ -167,14 +167,25 @@ void CPlayerController::FixedUpdate(){
 
     if(!PlayerMovement) return;
 
-    if( !pressed ){
-        if(cDynamicModel->getCurrentAnimation() != A_HERO::STANDING){
-            cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);
+    if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING && cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
+        if( !pressed){
+            if(cDynamicModel->getCurrentAnimation() != A_HERO::STANDING){
+                cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);
+            }
+        }
+        else{
+            if(cDynamicModel->getCurrentAnimation() != A_HERO::WALKING){
+                cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.5);
+            }
         }
     }
-    else{
-        if(cDynamicModel->getCurrentAnimation() != A_HERO::WALKING){
-            cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.3);
+    else if(cDynamicModel->getAnimationPlayed()){
+        if(pressed){
+            cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.5);
+
+        }
+        else{
+            cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);
         }
     }
 
@@ -462,6 +473,16 @@ void CPlayerController::DASH(){
 
 void CPlayerController::JUMP(){
     cRigidBody->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
+    if(pressed){
+        if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
+            cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.6);
+        }
+    }
+    else{
+        if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING){
+            cDynamicModel->ToggleAnimation(A_HERO::JUMPING, 0.6);
+        }
+    }
 }
 void CPlayerController::TogglePause(){
     Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
