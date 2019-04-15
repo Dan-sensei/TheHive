@@ -7,14 +7,16 @@
 #define FORCE_FACTOR        1000.f
 #define DIST_OFFSET         2.f
 
-CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType, std::string sonido_disparo, std::string sonido_recarga, std::string sonido_desenfundado, std::string sonido_vacio)
+CGun::CGun(float _dmg, float _cadence, int _charger_bullets, int _total_bullets, float _reloadDT, float _range, int _wType, std::string sonido_disparo, std::string sonido_recarga, std::string sonido_desenfundado, std::string sonido_vacio)
 :Manager(nullptr), cTransform(nullptr),
-damage(_dmg), cadence(_cadence), total_bullets(_total_bullets),
+damage(_dmg), cadence(_cadence), charger_bullets(_charger_bullets), total_bullets(_total_bullets),
 reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
 {
+    kcharger_bullets = charger_bullets;
     ktotal_bullets = total_bullets;
     canShoot = true;
     reloading = false;
+    generatorDT = 2;
 
     SS = Singleton<SoundSystem>::Instance();
 
@@ -56,7 +58,7 @@ void CGun::shoot(glm::vec3 to){
         dtCadence = std::chrono::high_resolution_clock::now();
 
         // Comprobar balas
-        if(!total_bullets){
+        if(!charger_bullets){
             //gg::cout("Click!");
             s_vacio->play();
             //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
@@ -67,12 +69,12 @@ void CGun::shoot(glm::vec3 to){
         s_disparo->play();
         // Comprobar si no es la katana
         if(total_bullets!=-1){
-            total_bullets--;
+            charger_bullets--;
             if(WEAPON_TYPE == 1)
                 s_recarga->setParameter("Lleno",0);
         }
 
-        Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
+        Singleton<Motor2D>::Instance()->setbullet(0,charger_bullets,total_bullets);
 
         // Comprobar destino
         if(to.x == -1){
@@ -133,7 +135,7 @@ void CGun::reload(){
 }
 
 void CGun::recarga_escopeta(){
-    if(total_bullets != ktotal_bullets-1){
+    if(charger_bullets != kcharger_bullets-1){
         s_recarga->play();
     }
     else{
@@ -148,11 +150,11 @@ bool CGun::isReloading(){
 }
 
 int CGun::getBullets(){
-    return total_bullets;
+    return charger_bullets;
 }
 
 int CGun::getTotalBullets(){
-    return ktotal_bullets;
+    return total_bullets;
 }
 
 int CGun::getType(){
@@ -160,7 +162,7 @@ int CGun::getType(){
 }
 
 bool CGun::canReload(){
-    if(ktotal_bullets > total_bullets)    return true;
+    if(kcharger_bullets > charger_bullets && total_bullets > 0)    return true;
     else                                return false;
 }
 
@@ -203,10 +205,20 @@ void CGun::FixedUpdate(){
             //gg::cout(" -- RELOADED" , gg::Color(255, 0, 0, 1));
             reloading = false;
             if(WEAPON_TYPE == 1){
-                total_bullets++;
+                if(total_bullets>0){
+                    charger_bullets++;
+                    total_bullets--;
+                }
             }
             else{
-                total_bullets = ktotal_bullets;
+                if(total_bullets-(kcharger_bullets-charger_bullets)<0){
+                    charger_bullets = charger_bullets + total_bullets;
+                    total_bullets=0;
+                }
+                else{
+                    total_bullets = total_bullets - (kcharger_bullets-charger_bullets);
+                    charger_bullets = kcharger_bullets;
+                }
             }
         }
     }
@@ -220,8 +232,23 @@ void CGun::FixedUpdate(){
             canShoot = true;
         }
     }
-    Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
+    fullDeBalas(0);
 }
+
+void CGun::fullDeBalas(uint8_t a){
+    auto end         = std::chrono::high_resolution_clock::now();
+    auto elapsedtime = end - dtBulletGenerator;
+    auto ms          = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
+    if(ms > generatorDT*1000){
+        if(total_bullets<ktotal_bullets){
+            total_bullets++;
+        }
+        dtBulletGenerator = std::chrono::high_resolution_clock::now();
+    }
+
+    Singleton<Motor2D>::Instance()->setbullet(a,charger_bullets,total_bullets);
+}
+
 
 void CGun::desenfundado(){
     s_desenfundado->play();

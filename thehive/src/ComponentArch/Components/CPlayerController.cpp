@@ -206,6 +206,8 @@ void CPlayerController::FixedUpdate(){
         if(gun) gun->shoot(Target);
     }
 
+    if(secondWeapon) secondWeapon->fullDeBalas(1);
+
     // <DEBUG>
     //showDebug();
     // </DEBUG>
