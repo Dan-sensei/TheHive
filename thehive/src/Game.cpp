@@ -231,6 +231,7 @@ void Game::Resume(){
 
     cont->musicaJuegoPause(false);
     cont->musicaMenuStop();
+    // Engine2D->pauseVida(false);
 
 
 
@@ -246,6 +247,7 @@ void Game::CLIN(){
 
     cont->musicaJuegoStop();
     cont->musicaMenuPlay();
+    // Engine2D->stopVida();
 
     //Engine2D->CLINNormal();
     //EventSystem->clin();
@@ -257,5 +259,6 @@ void Game::CLIN(){
 }
 void Game::Pause(){
     cont->musicaJuegoPause(true);
+    // Engine2D->pauseVida(true);
 
 }

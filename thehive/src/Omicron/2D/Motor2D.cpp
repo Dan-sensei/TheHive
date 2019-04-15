@@ -23,6 +23,9 @@ Motor2D::Motor2D(){
     s_hover = new SonidoNormal();
     SS->createSound("event:/SFX/Menu/Seleccionar",s_hover);
 
+    // s_salud = new SonidoNormal();
+    // SS->createSound("event:/SFX/Jugador/PocaVida",s_salud);
+
 }
 
 
@@ -142,6 +145,8 @@ void Motor2D::setprogress(int hab,float prog){
 void Motor2D::setvida(float _vida){
     // //std::cout << "hacemos algo" << '\n';
     vida=_vida;
+
+    // s_salud->setParameter("Vida",_vida);
 }
 void Motor2D::setVolDialogo(int _vol){
 VolDialogo=_vol;
@@ -410,8 +415,18 @@ int Motor2D::InitMenu7(){
     return 1;
 }
 
+// void Motor2D::stopVida(){
+//   s_salud->stop();
+// }
+//
+// void Motor2D::pauseVida(bool b){
+//   s_salud->pause(b);
+// }
 
 void Motor2D::InitHUD(){
+
+    // s_salud->setParameter("Vida", 20);
+    // s_salud->play();
 
 
     AddImage("assets/HUD/hab1.png",  2, 90,7,10);

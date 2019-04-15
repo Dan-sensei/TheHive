@@ -52,6 +52,9 @@ class Motor2D{
         void changeWeapon();
         void setWeaponImg(int tipo,std::string);
 
+        // void stopVida();
+        // void pauseVida(bool);
+
         //int InitPause2();
         //int InitPause3();
         //int InitPause4();
@@ -72,6 +75,7 @@ class Motor2D{
         SoundSystem* SS;
 
         SoundEvent* s_hover;
+        // SoundEvent* s_salud;
         //nuevo
         std::vector<Cuadrado2D*> RECTANGULOS;
         Omicron* motor;
