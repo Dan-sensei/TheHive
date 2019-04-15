@@ -2,7 +2,7 @@
 
 CStaticModel::CStaticModel(const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
     Surreal = Singleton<Omicron>::Instance();
-    _3DModel = Surreal->crearMalla(pathToModel.c_str(), Position, Rotation, map_zone, BoundingBoxPath);
+    _3DModel = Surreal->createStaticMesh(pathToModel.c_str(), Position, Rotation, map_zone, BoundingBoxPath);
     Surreal->bindMaterialToMesh(_3DModel, material);
 }
 
