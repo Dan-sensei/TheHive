@@ -32,7 +32,7 @@ class Texto2D {
         float getY();
         float getH();
         Letra2DManager* Manager;
-        float ChangeChar(float x,float y,char cha);
+        void ChangeChar(float &incx,const char &cha);
 
         float  getWid(char car);
 

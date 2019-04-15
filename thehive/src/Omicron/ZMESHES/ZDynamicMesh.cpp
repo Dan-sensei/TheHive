@@ -3,7 +3,7 @@
 #include <iostream>
 
 ZDynamicMesh::ZDynamicMesh()
-:CurrentAnimation(0), shader(nullptr), zmat(nullptr), CurrentFrame(0), NextFrame(0), NFrames(0)
+:CurrentAnimation(0), shader(nullptr), zmat(nullptr), CurrentFrame(0), NextFrame(0), NFrames(0), animationPlayed(false)
 {
     Animations.reserve(5);
 }
@@ -25,6 +25,7 @@ void ZDynamicMesh::SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes
     TimeBetweenAnimations = TimeBetweenKeyframes;
     Timer = 0;
     CurrentFrame = 0;
+    animationPlayed = false;
     NFrames = Animations[Animation]->Keyframes.size() - 1;
 }
 
@@ -54,6 +55,7 @@ void ZDynamicMesh::beginDraw(){
         CurrentFrame = (CurrentFrame + 1) % NFrames;
         NextFrame = (CurrentFrame + 1) % NFrames;
         Timer -= TimeBetweenAnimations;
+        animationPlayed = true;
     }
 
     glUniform1f(_U_BLEND_FACTOR, Timer/TimeBetweenAnimations);

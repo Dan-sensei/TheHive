@@ -182,7 +182,7 @@ Letra2DManager::Letra2DManager():letraux(nullptr)
     letraux=new Letra2D(ancho,alto);
 
 }
-Letra2D* Letra2DManager::getChar(char letra){
+Letra2D* Letra2DManager::getChar(const char &letra){
     if(mapHudFunctions.find(letra) != mapHudFunctions.end())
         (letraux->*mapHudFunctions[letra])();
     letraux->secondinit();

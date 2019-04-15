@@ -33,11 +33,24 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking1.obj",                        "Walking1");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking2.obj",                        "Walking2");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking3.obj",                        "Walking3");
-    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking4.obj",                        "Walking4");
+
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking_Weapon1.obj",                        "Walking_Weapon1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking_Weapon2.obj",                        "Walking_Weapon2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking_Weapon3.obj",                        "Walking_Weapon3");
 
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Standing1.obj",                        "Standing1");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Standing2.obj",                        "Standing2");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Standing3.obj",                        "Standing3");
+
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping1.obj",                        "Jumping1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping2.obj",                        "Jumping2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping3.obj",                        "Jumping3");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping4.obj",                        "Jumping4");
+
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking1.obj",                        "Jumping_Walking1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking2.obj",                        "Jumping_Walking2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking3.obj",                        "Jumping_Walking3");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking4.obj",                        "Jumping_Walking4");
 
     NavmeshParser::generateBinaryGG_Navmesh("../assets/NavMeshes/THE_HIVE.obj",             "NavmeshCITY.gg");
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature_test1.obj",                "nature_test1");

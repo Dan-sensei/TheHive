@@ -1,1 +1,1 @@
-⌡Nапqaа6МBаL╠;Aпqaа6МBаL╠;AoH╞@6МBа⌡NаoH╞@6МBа⌡NаoH╞@┐JAL╠;AoH╞@┐JAL╠;Aпqaа┐JA⌡Nапqaа┐JA
+⌡Nаяqaа5МBаL╠;Aяqaа5МBаL╠;AoH╞@5МBа⌡NаoH╞@5МBа⌡NаoH╞@└JAL╠;AoH╞@└JAL╠;Aяqaа└JA⌡Nаяqaа└JA

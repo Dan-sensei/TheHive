@@ -23,6 +23,7 @@ public:
     virtual void Init();
     virtual void Update();
     virtual void Resume();
+    virtual void Pause() { }
 
     /*
 
@@ -39,7 +40,7 @@ private:
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
-    GUIController cont;
+    GUIController* cont;
 
     SoundSystem* SS;
 

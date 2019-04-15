@@ -25,18 +25,24 @@ float Texto2D::getH(){
 void Texto2D::setText(std::string pal){
     palabra=pal;
 }
-float Texto2D::ChangeChar(float x,float y,char cha){
-
+void Texto2D::ChangeChar(float &incx,const char &cha){
+    //tam =letra->getW();
     ////std::cout << "cha:" <<cha<< '\n';
+    //incx=incx+tam;
 
-    float _x,_y,_w,_h;
     float T_x,T_y,T_w,T_h;
-    _x=x*2.0-1;
-    _y=y*-2.0+1;
+    float _x,_y,_w,_h;
+    _x=incx*2.0-1;
+    _y=Y*-2.0+1;
+
+    //float tam=letra->getW();
     auto letra=Manager->getChar(cha);
     letra->resize(tamanyo);
-    _w=(x+letra->getW())*2.0-1;
-    _h=(y+letra->getH())*-2.0+1;
+
+    incx+=letra->getW();
+
+    _w=incx*2.0-1;
+    _h=(Y+letra->getH())*-2.0+1;
 
         T_x=letra->getTX();
         T_w=letra->getTW();
@@ -51,11 +57,11 @@ float Texto2D::ChangeChar(float x,float y,char cha){
             _w,  _h,  T_w, T_h, // Bottom-right
             _x,  _h,  T_x, T_h  // Bottom-left
         };
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        //glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+        //incx+=tam;
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        return letra->getW();
 }
 Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra,glm::vec4 _color,float tam)
 :Texto2D(x,y,Palabra,_color,tam)
@@ -266,6 +272,7 @@ void Texto2D::Draw(){
 
     glBindVertexArray(VAO);
 
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     float incx=X;//opengl
     separacion=0;//si queremos espaci entre las palabras
@@ -274,18 +281,16 @@ void Texto2D::Draw(){
 
         if(palabra[i]==' ')
         {
-            float tam=ChangeChar(incx,Y,'G');
-            incx=incx+tam+separacion;
+            ChangeChar(incx,'G');
         }
         else{
-            float tam=ChangeChar(incx,Y,palabra[i]);
-            incx=incx+tam+separacion;
+            ChangeChar(incx,palabra[i]);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         }
 
     }
-
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     fin->Bind();
 

@@ -103,6 +103,8 @@ class CPlayerController : public IComponent {
         bool PlayerMovement;
         bool pulsacion_f;
 
+        bool pressed;
+
         bool debug1;
         bool debug2;
         float MULT_BASE;

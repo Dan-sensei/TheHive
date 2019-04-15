@@ -15,18 +15,22 @@ class ZDynamicMesh : public TEntidad {
         void SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes);
         void AddAnimation(ZAnimationData* Anim);
 
+        inline bool getAnimationPlayed(){ return animationPlayed; };
+
         virtual void beginDraw();
         virtual void endDraw();
 
     private:
         gg::Clock DeltaTime;
-        
+
         std::vector<ZAnimationData*> Animations;
         Shader* shader;
         ZMaterial* zmat;
 
         double Timer;
         float TimeBetweenAnimations;
+
+        bool animationPlayed;
 
         uint8_t CurrentAnimation;
         uint8_t CurrentFrame;
