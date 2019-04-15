@@ -36,8 +36,14 @@ void ZDynamicMesh::AddAnimation(ZAnimationData* Anim){
 void ZDynamicMesh::beginDraw(){
     zmat->Bind();
 
+    glm::mat4 MV = viewMatrix*modelMatrix;
+
     // MODELO
-    glUniformMatrix4fv(_U_MODEL,1,GL_FALSE,&modelMatrix[0][0]);
+    glUniformMatrix4fv(9,1,GL_FALSE,&MV[0][0]);
+
+    // NORMAL_MATRIX
+    glm::mat3 VP = glm::transpose(glm::inverse(glm::mat3(MV)));
+    glUniformMatrix3fv(_U_MODEL,1,GL_FALSE,&VP[0][0]);
 
     // MODELO*VISTA*PERSPECTIVA
     glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;

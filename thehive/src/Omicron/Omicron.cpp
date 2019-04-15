@@ -291,7 +291,6 @@ bool Omicron::Initialize(){
     float ancho = mode->width;
     float alto = mode->height;
 
-
 	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
 	    //fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
@@ -311,6 +310,8 @@ bool Omicron::Initialize(){
 	}
 
     _DeferredShading.init(ancho, alto);
+
+    glDepthRange(0.f,1.f);
 
 	glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);

@@ -6,24 +6,26 @@ layout(location = 2) in vec2 vertexUV;
 layout(location = 3) in vec3 vertexTangent_modelspace;
 layout(location = 4) in vec3 vertexBitangent_modelspace;
 
-layout(location = 10) uniform mat4 M;
+
+layout(location =  9) uniform mat4 M;
+layout(location = 10) uniform mat3 NormalMatrix;
 layout(location = 11) uniform mat4 MVP;
 
-out vec3 Position_worldspace;
+out float Z;
 out mat3 TBN;
 out vec2 UV;
 
 void main() {
 
+    vec4 Pos = M * vec4(vertexPosition_modelspace, 1);
+    Z = Pos.z;
     gl_Position = MVP*vec4(vertexPosition_modelspace, 1);
-    vec4 PosInWorldV4 = M * vec4(vertexPosition_modelspace,1);
-    Position_worldspace = PosInWorldV4.xyz;
 
     UV = vertexUV;
-
-	vec3 T = normalize(M * vec4(vertexTangent_modelspace,0)).xyz;
-	vec3 B = normalize(M * vec4(vertexBitangent_modelspace,0)).xyz;
-	vec3 N = normalize(M * vec4(vertexNormal_modelspace,0)).xyz;
+    
+	vec3 T = normalize(NormalMatrix * vertexTangent_modelspace);
+	vec3 B = normalize(NormalMatrix * vertexBitangent_modelspace);
+	vec3 N = normalize(NormalMatrix * vertexNormal_modelspace);
 
 	TBN = transpose(mat3(T,B,N));
 };

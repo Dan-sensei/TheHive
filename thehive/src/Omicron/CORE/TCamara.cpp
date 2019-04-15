@@ -39,18 +39,20 @@ void TCamara::beginDraw(){
     // -------------------
     // Mirar la funcion Dios glm::decompose si la posicion de la camara no funciona
     glm::vec3 CameraPos(modelMatrix[3]);
-    glUniform3f(_U_CAM_POS, CameraPos.x, CameraPos.y, CameraPos.z);
 
-    if(hasTarget){
+    double t = tan((fov * 3.14159265359f / 180.f) / 2.f) * 2;
+    glUniform2f(2, t * 16.f/9.f, t);
+
+    //if(hasTarget){
         viewMatrix = glm::lookAt(
             CameraPos,
             target,
             glm::vec3(0,1,0)
         );
-    }
-    else{
-        viewMatrix = glm::inverse(modelMatrix);
-    }
+    // }
+    // else{
+    //     viewMatrix = glm::inverse(modelMatrix);
+    // }
 
 }
 void TCamara::endDraw(){}
