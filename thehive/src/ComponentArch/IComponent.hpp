@@ -39,8 +39,6 @@ class IComponent{
         //========================================================================
         virtual void FixedUpdate();
 
-
-
     protected:
         IComponent();
 

@@ -176,6 +176,26 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
     sendMessageToEntity(EntityID, recalculatePointersToAnotherComponents);
 }
 
+void ObjectManager::swapComponents(gg::EComponentType type, uint16_t EntityID, IComponent **Component){
+    IComponent* tmp = nullptr;
+    // std::cout << "BEFORE" << '\n';
+    // std::cout << "  PRIMARY:         " << (TypeToComponentMap[type])[EntityID] << '\n';
+    // std::cout << "  SECONDARY:       " << *Component << '\n';
+    // std::cout << "  TMP:             " << tmp << '\n';
+
+    tmp = (TypeToComponentMap[type])[EntityID];
+    (TypeToComponentMap[type])[EntityID] = *Component;
+    *Component = tmp;
+
+    (TypeToComponentMap[type])[EntityID]->setEntityID(EntityID);
+    (TypeToComponentMap[type])[EntityID]->Init();
+
+    // std::cout << "AFTER" << '\n';
+    // std::cout << "  PRIMARY:         " << (TypeToComponentMap[type])[EntityID] << '\n';
+    // std::cout << "  TMP:             " << tmp << '\n';
+    // std::cout << "  SECONDARY:       " << *Component << '\n';
+}
+
 void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID){
     auto foundComponent = TypeToComponentMap[type].find(EntityID);
 

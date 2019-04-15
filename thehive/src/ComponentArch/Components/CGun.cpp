@@ -186,8 +186,9 @@ gg::EMessageStatus CGun::processMessage(const Message &m) {
 
 gg::EMessageStatus CGun::MHandler_SETPTRS(){
     // Inicializando punteros
+
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-     //Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
+    //Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
     return gg::ST_TRUE;
 }
