@@ -2,8 +2,10 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-//#include <iostream>
+#include <iostream>
 #include <ShaderUniformMapping.hpp>
+#include <glm/glm.hpp>
+#include <string>
 
 
 TLuz::TLuz():light_shader(nullptr),intensidad(0,0,0){}
@@ -35,8 +37,10 @@ gg::Color TLuz::getIntensidad(){
 void TLuz::beginDraw(){
     // Mandar como uniform
     if(light_shader){
-        glm::vec3 pos = glm::vec3(modelMatrix[3]);
-        glUniform3f(_U_LIGHT_POS,pos.x,pos.y,pos.z);
+        glm::vec4 pos = viewMatrix * modelMatrix[3];
+        //glm::vec3 pos = glm::vec3(asd[3]);
+
+        glUniform3f(_U_LIGHT_POS, pos.x,pos.y,pos.z);
     }
 }
 void TLuz::endDraw(){}

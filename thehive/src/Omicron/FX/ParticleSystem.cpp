@@ -185,8 +185,8 @@ uint16_t ParticleSystem::getFreePosition(){
 
 void ParticleSystem::Draw(){
     Particles_Shader->Bind();
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glDisable(GL_BLEND);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, Texture);
     glUniform1i(_U_DIFFUSE_MAP, 0);

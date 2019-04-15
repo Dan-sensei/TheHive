@@ -103,6 +103,10 @@ void Game::Init(){
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
+
+
+    Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
+
     // Pos init del heroe normal
     // 360, 0, 350
     Engine->HideCursor(true);
@@ -132,7 +136,7 @@ void Game::Init(){
     Accumulator = 0;
 
     //Singleton<Pathfinding>::Instance()->SetDebug(true);
-    //world->setDebug(true);
+    // world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
@@ -189,9 +193,9 @@ void Game::Update(){
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
-    glm::vec3 pos = playerpos->getPosition();
-    pos.y = 15;
-    Engine->setPosition(luz, pos);
+    // glm::vec3 pos = playerpos->getPosition();
+    // std::cout << " - " << glm::to_string(pos) << '\n';
+    // pos.y = 15;
     // //std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();
 
@@ -210,7 +214,6 @@ void Game::Update(){
 
     Engine2D->DisplayHUD();
 
-    //Engine2D->draw();
     // Consola por pantalla
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();

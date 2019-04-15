@@ -12,27 +12,30 @@ layout(location = 6) in vec3 vertexNormal_modelspace1;
 layout(location = 7) in vec3 vertexTangent_modelspace1;
 layout(location = 8) in vec3 vertexBitangent_modelspace1;
 
-layout(location = 10) uniform mat4 M;
+layout(location = 9) uniform mat4 M;
+layout(location = 10) uniform mat3 NormalMatrix;
 layout(location = 11) uniform mat4 MVP;
 
 layout(location = 18) uniform float TweenFactor;
 
-out vec3 Position_worldspace;
+out float Z;
 out mat3 TBN;
 out vec2 UV;
 
 void main() {
 
+    vec4 Pos = M * vec4(vertexPosition_modelspace, 1);
+    Z = Pos.z;
     vec3 mixPos = mix(vertexPosition_modelspace, vertexPosition_modelspace1, TweenFactor);
     gl_Position = MVP*vec4(mixPos, 1);
-    vec4 PosInWorldV4 = M * vec4(mixPos,1);
-    Position_worldspace = PosInWorldV4.xyz;
 
     UV = vertexUV;
+    //mat3 normalMatrix = transpose(inverse(M));
+    //Normal = M * vertexNormal_modelspace;
 
-	vec3 T = normalize(M * vec4(mix(vertexTangent_modelspace, vertexTangent_modelspace1, TweenFactor),0)).xyz;
-	vec3 B = normalize(M * vec4(mix(vertexBitangent_modelspace, vertexBitangent_modelspace1, TweenFactor),0)).xyz;
-	vec3 N = normalize(M * vec4(mix(vertexNormal_modelspace, vertexNormal_modelspace1, TweenFactor),0)).xyz;
+	vec3 T = normalize(NormalMatrix * mix(vertexTangent_modelspace, vertexTangent_modelspace1, TweenFactor));
+	vec3 B = normalize(NormalMatrix * mix(vertexBitangent_modelspace, vertexBitangent_modelspace1, TweenFactor));
+	vec3 N = normalize(NormalMatrix * mix(vertexNormal_modelspace, vertexNormal_modelspace1, TweenFactor));
 
 	TBN = transpose(mat3(T,B,N));
 };

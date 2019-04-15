@@ -3,19 +3,24 @@
 out vec4 FragColor;
 
 in vec2 UV;
+in vec2 half_ndc_position;
 
-layout(location = 5) uniform sampler2D gPosition;
+
+layout(location = 5) uniform sampler2D depthTex;
 layout(location = 6) uniform sampler2D gNormal;
 layout(location = 7) uniform sampler2D gDiffuseSpec;
 
-
 layout(location = 12) uniform vec3 LightPosition_worldspace;
-layout(location = 13) uniform vec3 CameraPos;
+
+
+vec3 getViewPosition(float Depth) {
+    vec3 Position = vec3(half_ndc_position * Depth, Depth);
+    return(Position);
+}
 
 void main()
 {
-
-    vec3 VertexPos = texture(gPosition, UV).rgb;
+    vec3 VertexPos = getViewPosition(texture(depthTex, UV).r);
     vec3 Normal = texture(gNormal, UV).rgb;
     vec3 Diffuse = texture(gDiffuseSpec, UV).rgb;
     float SpecularTex = texture(gDiffuseSpec, UV).a;
@@ -27,10 +32,10 @@ void main()
 
     // Diffuse
     vec3 LightDir = normalize(LightPosition_worldspace - VertexPos);
-    vec3 diffuse = clamp( dot( Normal, LightDir ), 0,1 ) * Diffuse * LightPower;
+    vec3 diffuse = clamp( dot( Normal, LightDir ), 0, 1 ) * Diffuse * LightPower;
 
     // Specular
-    vec3 E = normalize(CameraPos - VertexPos);
+    vec3 E = normalize(-VertexPos);
     vec3 halfwayDir = normalize(LightDir + E);
     float cosAlpha = max(dot(Normal, halfwayDir), 0.0);
     // Optimización a pow(cosAlpha, n) = cosAlpha / (n - n*cosAlpha + cosAlpha)
