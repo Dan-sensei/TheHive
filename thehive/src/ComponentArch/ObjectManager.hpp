@@ -42,6 +42,11 @@ class ObjectManager{
         void removeComponentFromEntity(gg::EComponentType type, uint16_t EntityID, bool Erase = false);
         void removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID);
 
+        //  ---
+        //  Swap the POINTERS of two components in the component map (Danny he seguido la plantilla de comentario)
+        //========================================================================
+        void swapComponents(gg::EComponentType type, uint16_t EntityID, IComponent **Component);
+
 
         //  ---
         //  Searchs and returns a pointer to the component of the given EntityID,

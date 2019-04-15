@@ -340,8 +340,6 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             CBoxCollider* RIGID = new CBoxCollider(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
             Manager->addComponentToEntity(RIGID, gg::BOXCOLLIDER, NewEntity);
         }
-
-
     }
 
     // ------------------------------------------------------------------------------------ //

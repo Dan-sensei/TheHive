@@ -28,7 +28,7 @@ void main()
     vec3 LightColor = vec3(1,1,1);
     float LightPower = 150.0f;
 
-    vec3 FinalPixelColor  = Diffuse * 0.1f;
+    vec3 FinalPixelColor  = Diffuse * 0.18f;
 
     // Diffuse
     vec3 LightDir = normalize(LightPosition_worldspace - VertexPos);

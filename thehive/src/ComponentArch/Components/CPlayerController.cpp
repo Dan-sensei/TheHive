@@ -324,38 +324,6 @@ void CPlayerController::showDebug(){
     }
 }
 
-void CPlayerController::changeWeaponIfPossible(CGun *gun){
-    Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
-    Singleton<Motor2D>::Instance()->changeWeapon();
-    if(isPrincipal){
-        isPrincipal = false;
-
-        Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
-        Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
-
-        secondWeapon->desenfundado();
-
-        //gg::cout("| -- PRINCIPAL TO SECONDARY -- ");
-        //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
-        secondWeapon = gun;
-        //gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
-    }
-    else{
-        // SIEMPRE entrara primero aqui
-        isPrincipal = true;
-
-        Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
-        Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
-
-        //secondWeapon->get
-        secondWeapon->desenfundado();
-        //gg::cout("| -- SECONDARY TO PRINCIPAL -- ");
-        //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
-        secondWeapon = gun;
-        //gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
-    }
-}
-
 bool CPlayerController::heroHasSecondWeapon(){
     if(secondWeapon)    return true;
     else                return false;
@@ -454,12 +422,56 @@ void CPlayerController::ThrowGranade(){
 
 void CPlayerController::ChangeWeapon(){
     if(secondWeapon){
-        CGun *aux = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
-        if(!aux->isReloading()){
-            changeWeaponIfPossible(aux);
+        CGun *gun = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
+        if(!gun->isReloading()){
+            Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
+            Singleton<Motor2D>::Instance()->changeWeapon();
+
+            // std::cout << "PRIMARY:  " << Manager->getComponent(gg::GUN,getEntityID()) << '\n';
+            // std::cout << "SECONDARY:" << secondWeapon << '\n';
+            Manager->swapComponents(gg::GUN,getEntityID(),reinterpret_cast<IComponent**>(&secondWeapon));
+            secondWeapon->desenfundado();
+
+            // std::cout << "PRIMARY:  " << Manager->getComponent(gg::GUN,getEntityID()) << '\n';
+            // std::cout << "SECONDARY:" << secondWeapon << '\n';
         }
     }
 }
+
+
+void CPlayerController::changeWeaponIfPossible(CGun *gun){
+    // Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
+    // Singleton<Motor2D>::Instance()->changeWeapon();
+    //
+    // if(isPrincipal){
+    //     isPrincipal = false;
+    //
+    //     Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
+    //     Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
+    //
+    //     secondWeapon->desenfundado();
+    //
+    //     //gg::cout("| -- PRINCIPAL TO SECONDARY -- ");
+    //     //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
+    //     secondWeapon = gun;
+    //     //gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
+    // }
+    // else{
+    //     // SIEMPRE entrara primero aqui
+    //     isPrincipal = true;
+    //
+    //     Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
+    //     Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
+    //
+    //     //secondWeapon->get
+    //     secondWeapon->desenfundado();
+    //     //gg::cout("| -- SECONDARY TO PRINCIPAL -- ");
+    //     //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
+    //     secondWeapon = gun;
+    //     //gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
+    // }
+}
+
 
 void CPlayerController::Run(){
     MULT_FACTOR = MULT_RUN_FACTOR;

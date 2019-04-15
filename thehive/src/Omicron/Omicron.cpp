@@ -115,8 +115,27 @@ TNodo* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec
     return Luz;
 }
 
-TNodo* Omicron::crearMalla(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
-    ZStaticMesh* M = new ZStaticMesh();
+TNodo* Omicron::createStaticMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+
+    TTransform T_Position;
+    TTransform T_Rotation;
+    T_Position.setPosition(pos);
+    T_Rotation.setRotation(Rotation);
+
+    glm::mat4 Model = T_Position.matrix * T_Rotation.matrix;
+
+    ZStaticMesh* M = new ZStaticMesh(Model);
+    M->load(_path);
+    M->loadBoundingBox(BoundingBoxPath);
+
+    TNodo* PADRE = ZONES[map_zone];
+    TNodo* Malla = new TNodo(PADRE, M);
+
+    return Malla;
+}
+
+TNodo* Omicron::createMovableMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+    ZMovableMesh* M = new ZMovableMesh();
     M->load(_path);
     M->loadBoundingBox(BoundingBoxPath);
 
