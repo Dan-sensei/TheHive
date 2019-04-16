@@ -342,7 +342,7 @@ bool Omicron::Initialize(){
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    glClearColor(60.f/255, 87.f/255, 106.f/255, 1.0f);
+    glClearColor(0, 0, 0, 1.0f);
 
     Half_Window_Width = ancho/2;
     Half_Window_Height = alto/2;

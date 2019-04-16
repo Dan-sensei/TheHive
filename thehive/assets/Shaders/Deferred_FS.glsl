@@ -18,12 +18,21 @@ vec3 getViewPosition(float Depth) {
     return(Position);
 }
 
+#define FOG_DENSTITY 0.05f * 0.05f
+#define FOG_GRADIENT 0.8f * 0.8f
+
 void main()
 {
+    vec4 DiffuseTexture = texture(gDiffuseSpec, UV);
+    float SpecularTex = DiffuseTexture.a;
+    if(SpecularTex == 1){
+        FragColor = vec4(60.f/255, 87.f/255, 106.f/255, 1.0f);
+        return;
+    }
+
     vec3 VertexPos = getViewPosition(texture(depthTex, UV).r);
     vec3 Normal = texture(gNormal, UV).rgb;
-    vec3 Diffuse = texture(gDiffuseSpec, UV).rgb;
-    float SpecularTex = texture(gDiffuseSpec, UV).a;
+    vec3 Diffuse = DiffuseTexture.rgb;
 
     vec3 LightColor = vec3(1,1,1);
     float LightPower = 150.0f;
@@ -51,7 +60,16 @@ void main()
 
     FinalPixelColor += diffuse + FinalSpecular;
 
+    // Niebla
+    float DistanceFromCamera = dot(VertexPos, VertexPos);
+    float Base = DistanceFromCamera*FOG_DENSTITY;
+    float FogBlendFactor = exp(-Base / (FOG_GRADIENT - FOG_GRADIENT*Base + Base));
+    FogBlendFactor = clamp(FogBlendFactor, 0.0, 1.0);
+
     FragColor = vec4(
         FinalPixelColor, 1.0
     );
+
+    FragColor = mix(vec4(60.f/255, 87.f/255, 106.f/255, 1.0f), FragColor, FogBlendFactor);
+
 }

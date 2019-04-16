@@ -22,7 +22,7 @@ void main() {
     gl_Position = MVP*vec4(vertexPosition_modelspace, 1);
 
     UV = vertexUV;
-    
+
 	vec3 T = normalize(NormalMatrix * vertexTangent_modelspace);
 	vec3 B = normalize(NormalMatrix * vertexBitangent_modelspace);
 	vec3 N = normalize(NormalMatrix * vertexNormal_modelspace);
