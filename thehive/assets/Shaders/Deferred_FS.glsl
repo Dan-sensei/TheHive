@@ -18,7 +18,7 @@ vec3 getViewPosition(float Depth) {
     return(Position);
 }
 
-#define FOG_DENSTITY 0.05f * 0.05f
+#define FOG_DENSTITY 0.03f * 0.03f
 #define FOG_GRADIENT 0.8f * 0.8f
 
 void main()
@@ -63,7 +63,8 @@ void main()
     // Niebla
     float DistanceFromCamera = dot(VertexPos, VertexPos);
     float Base = DistanceFromCamera*FOG_DENSTITY;
-    float FogBlendFactor = exp(-Base / (FOG_GRADIENT - FOG_GRADIENT*Base + Base));
+    float FogBlendFactor = exp(-(Base / (FOG_GRADIENT - FOG_GRADIENT*Base + Base*0.75)));
+    //float FogBlendFactor = exp(-pow(Base, FOG_GRADIENT));
     FogBlendFactor = clamp(FogBlendFactor, 0.0, 1.0);
 
     FragColor = vec4(

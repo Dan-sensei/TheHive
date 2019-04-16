@@ -20,7 +20,7 @@ class ZMesh : public TEntidad {
         static void setCameraPtr(glm::vec3* _PlayerPosition);
 
     protected:
-        void FrustrumTest(const glm::vec3 Position, bool &dib);
+        void FrustrumTest(const glm::vec3 &Position, bool &dib);
         bool LODTest(const glm::vec3 Position, uint8_t &LOD);
 
         BoundingBox VOX;
@@ -30,6 +30,7 @@ class ZMesh : public TEntidad {
         std::vector<ZMeshData*> MeshLODs;
 
         ZMaterial* zmat;
+        uint16_t Radius;
 };
 
 #endif

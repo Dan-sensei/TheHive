@@ -8,6 +8,7 @@
 
 ZMovableMesh::ZMovableMesh() {
     zmat = nullptr;
+    Radius = 0;
 }
 
 bool ZMovableMesh::load(const std::string& Name){
