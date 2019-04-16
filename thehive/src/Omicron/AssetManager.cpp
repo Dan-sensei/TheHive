@@ -140,6 +140,67 @@ void AssetManager::loadInit(){
     Door->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Door->addTexture(GN::SPECULAR_MAP,     "assets/Textures/Asfalto_Gloss.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
+    // Las buenas funciones lambda
+    auto getTextureFromPath = [](const std::string &LINE, const std::string &SEPARATOR) -> std::string{
+        size_t found = LINE.find_last_of(SEPARATOR);
+        return LINE.substr(found+1);
+    };
+
+    // Lectura de materiales desde disco
+    std::string line,type;
+    std::string TEXTURE_PATH,NORMAL_PATH;
+    std::string PATH;
+
+#define OBJECTS 151
+
+    for(uint8_t i=1 ; i < OBJECTS ; ++i){
+        struct stat buffer;
+        PATH = "assets/Textures/Materials/"+std::to_string(i)+".mtl";
+        if(stat (PATH.c_str(), &buffer) == 0) {
+            // std::cout << "[LOADED] MATERIAL " << PATH << '\n';
+
+            std::ifstream infile(PATH);
+            bool found = false;
+            NORMAL_PATH = "";
+            while (std::getline(infile, line)){
+                found = false;
+                std::istringstream iss(line);
+                iss >> type;
+
+                if(type == "map_Bump"){
+                    found = true;
+                    NORMAL_PATH = getTextureFromPath(line,"/");
+                }
+                else if(type == "map_Kd"){
+                    found = true;
+                    TEXTURE_PATH = getTextureFromPath(line,"/");
+                }
+            }
+            if(found){
+                // std::cout << "  NORMAL TEXTURE: " << NORMAL_PATH << '\n';
+                // std::cout << "  TEXTURE:        " << TEXTURE_PATH << '\n';
+
+                ZMaterial* MAT = getMaterial("Model"+std::to_string(i));
+                                        MAT->attachShader(shader);
+                                        MAT->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/UINT8_T_TEXTURES/"+TEXTURE_PATH,  GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+                if(NORMAL_PATH != "")   MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/UINT8_T_NORMALS/"+NORMAL_PATH,    GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+                else                    MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",               GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+                                        MAT->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",            GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+            }
+        }
+        else{
+            // std::cout << " [ERROR] MATERIAL " << PATH << '\n';
+            ZMaterial* 		MAT = getMaterial("Model"+std::to_string(i));
+            MAT->attachShader(shader);
+            MAT->addTexture(GN::DIFFUSE_MAP,    "assets/Textures/DefaultDiffuse.jpg",       GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+            MAT->addTexture(GN::NORMAL_MAP,     "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+            MAT->addTexture(GN::SPECULAR_MAP,   "assets/Textures/DefaultSpecular.jpeg",     GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        }
+    }
+
+
+
+    /*
     ZMaterial* 		Model2 = getMaterial("Model2");
     Model2->attachShader(shader);
     Model2->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/UINT8_T_TEXTURES/2_t.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
@@ -544,7 +605,7 @@ void AssetManager::loadInit(){
     Model128->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/UINT8_T_TEXTURES/128_t.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Model128->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Model128->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-
+    */
 
 
     shader = getShader("Blend");

@@ -112,14 +112,11 @@ void CAgent::Init(){
     // mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Plantilla,    &CAgent::EXIT_func_kTrig_Plantilla));
 
 
-    zonesMap.insert(std::make_pair(0,"INICIO"));
-    zonesMap.insert(std::make_pair(1,"ESTACION"));
-    zonesMap.insert(std::make_pair(2,"POST_ESTACION"));
-    zonesMap.insert(std::make_pair(3,"CALLE_PRINCIPAL"));
-    zonesMap.insert(std::make_pair(4,"PASEO"));
-    zonesMap.insert(std::make_pair(5,"PARQUE"));
-    zonesMap.insert(std::make_pair(6,"TAMESIS"));
-    zonesMap.insert(std::make_pair(7,"END"));
+    zonesMap.insert(std::make_pair(1,"INICIO"));
+    zonesMap.insert(std::make_pair(2,"PASILLOS"));
+    zonesMap.insert(std::make_pair(3,"TUNELES"));
+    zonesMap.insert(std::make_pair(4,"INICIO_CIUDAD"));
+    zonesMap.insert(std::make_pair(5,"CALLE_PRINCIPAL"));
 
 
     //  Inicializar punteros a otras compnentes
@@ -181,7 +178,7 @@ void CAgent::ENTER_func_kTrig_Gunfire       (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     std::string name = zonesMap[id];
-    BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+".data", id+1);
+    BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+".data", id);
 
     // //std::cout << " -["+std::to_string(id)+"]- LOADING ZONE: " << name << '\n';
 }
@@ -190,7 +187,7 @@ void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     // std::string name = zonesMap[id];
 
-    Engine->SetMapZoneVisibility(id+1,false);
+    Engine->SetMapZoneVisibility(id,false);
 
     // //std::cout << " -["+std::to_string(id)+"]- UNLOADING ZONE: " << name << '\n';
 }

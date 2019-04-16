@@ -11,8 +11,10 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/WEAPONS/escopeta.obj",                  "escopeta");
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/fusible.obj",                           "fusible");
 
-    for(uint16_t i = 1; i < 147; ++i){
-        if (i == 70)
+    for(uint16_t i = 1; i < 151; ++i){
+        if(i == 144)
+            ModelParser::generateBinaryGG_StaticModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i), false);
+        else if (i == 70)
             ModelParser::generateBinaryGG_DynamicModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",           std::to_string(i));
         else
             ModelParser::generateBinaryGG_StaticModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i));

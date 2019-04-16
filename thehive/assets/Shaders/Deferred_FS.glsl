@@ -64,6 +64,7 @@ void main()
     vec3 LightColor = vec3(1,1,1);
     float LightPowerDir = luces.intluzD;
     float LightPowerFo;// = 150.0f;
+    //float LightPower = 25.0f;
 
 
     vec3 FinalPixelColor  = Diffuse * 0.18f;
