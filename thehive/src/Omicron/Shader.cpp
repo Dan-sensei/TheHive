@@ -107,6 +107,17 @@ bool Shader::loadFiles(const char* VertexShader, const char* GeometryShader, con
 
     return true;
 }
+int Shader::getUniformBlockLocation(std::string target){
+    auto UniformBlockSearch = UniformBlockLocations.find(target);
+    if(UniformBlockSearch != UniformBlockLocations.end()){
+        return UniformBlockSearch->second;
+    }
+    else{
+        int location = glGetUniformBlockIndex(ShaderID, target.c_str());
+        UniformBlockLocations[target] = location;
+        return location;
+    }
+}
 
 unsigned int Shader::loadShader(const char *path, unsigned int type){
     //Leyendo shader

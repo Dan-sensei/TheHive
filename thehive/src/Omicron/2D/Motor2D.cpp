@@ -8,10 +8,15 @@
 #include <Omicron/2D/Cuadrado2D.hpp>
 #include <Omicron/2D/Texto2D.hpp>
 #include <ComponentArch/Components/CVida.hpp>
-
+/*
+std::string imgarmaP;
+std::string imgarmaS;
+*/
 Motor2D::Motor2D(){
     motor = Singleton<Omicron>::Instance();
 
+    imgarmaP="assets/HUD/cf_hud_b.jpg";
+    imgarmaS="assets/HUD/cf_hud_b.jpg";
     //font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
     //irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
 
@@ -103,6 +108,7 @@ Imagen2D* Motor2D::AddImage(std::string source,float _posx,float _posy,float _wi
     h=(_posy+_height)/100.0;
     auto nuevo = new Imagen2D(x,y,w,h,source);
 
+
     IMAGENES.push_back(nuevo);
     return nuevo;
 }
@@ -164,16 +170,14 @@ void Motor2D::changeWeapon(){
     balaS_TOT=aux;
 
 
-    Imagen2D* armaP;
-    Imagen2D* armaS;
     // hab3
-    armaP=IMAGENES[4];
-    armaS=IMAGENES[3];
 
-    auto str =armaP->getImage();
-    auto str2 =armaS->getImage();
-    armaP->setImage(str2);
-    armaS->setImage(str);
+    auto auxi=imgarmaP;
+    imgarmaP=imgarmaS;
+    imgarmaS=auxi;
+
+    IMAGENES[4]->setImage(imgarmaP);
+    IMAGENES[3]->setImage(imgarmaS);
 
 
 }
@@ -189,16 +193,12 @@ void Motor2D::setbullet(int tipo,int b_act, int b_tot){
 }
 
 void Motor2D::setWeaponImg(int tipo,std::string img){
-    Imagen2D* armaP;
-    Imagen2D* armaS;
-    // hab3
-    armaP=IMAGENES[4];
-    armaS=IMAGENES[3];
-
     if(tipo==0){//P
-            armaP->setImage(img);
+            IMAGENES[4]->setImage(img);
+            imgarmaP=img;
     }else {//S
-        armaS->setImage(img);
+        IMAGENES[3]->setImage(img);
+        imgarmaS=img;
     }
 }
 
@@ -437,7 +437,7 @@ void Motor2D::InitHUD(){
     h=15;
     _x= x+w*0.65;
     _y= y+h*0.7;
-    auto yep=AddImage("assets/HUD/cf_hud_b.jpg",75,85,20,15);//secundaria
+    auto yep=AddImage(imgarmaS,75,85,20,15);//secundaria
     yep->setZindex(-0.9997);
     addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
     x=70;
@@ -447,7 +447,7 @@ void Motor2D::InitHUD(){
     _x= x+w*0.65;
     _y= y+h*0.7;
     //AddImage("1arma","assets/HUD/AMETRALLADORA_HUD.png",70,80,20,15); // Principal
-    yep=AddImage("assets/HUD/cf_hud_b.jpg",70,80,20,15); // Principal
+    yep=AddImage(imgarmaP,70,80,20,15); // Principal
     yep->setZindex(-0.9998);
     addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 

@@ -290,7 +290,6 @@ void Treecontroller::arboltank(){
 
 void Treecontroller::arbolsoldado(){
 
-
     Sequence* sec1= createSequence();
     sec1->addChild(addAction(RANGO_ULTRASONIDO));
     sec1->addChild(addAction(ATURDIDO));
