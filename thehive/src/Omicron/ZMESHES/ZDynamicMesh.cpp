@@ -3,21 +3,24 @@
 #include <iostream>
 
 ZDynamicMesh::ZDynamicMesh()
-:CurrentAnimation(0), shader(nullptr), zmat(nullptr), CurrentFrame(0), NextFrame(0), NFrames(0), animationPlayed(false)
+:CurrentAnimation(0), shader(nullptr), CurrentFrame(0), NextFrame(0), NFrames(0), animationPlayed(false)
 {
     Animations.reserve(5);
+    zmat = nullptr;
 }
 
 ZDynamicMesh::ZDynamicMesh(const ZDynamicMesh &orig)
-:Animations(orig.Animations), shader(orig.shader), zmat(orig.zmat)
-{}
+:Animations(orig.Animations), shader(orig.shader)
+{
+    zmat = orig.zmat;
+}
 
 ZDynamicMesh::~ZDynamicMesh(){}
-
-void ZDynamicMesh::assignMaterial(ZMaterial* material_){
-    zmat = material_;
-    shader = zmat->getShader();
-}
+// 
+// void ZDynamicMesh::assignMaterial(ZMaterial* material_){
+//     zmat = material_;
+//     shader = zmat->getShader();
+// }
 
 void ZDynamicMesh::SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes){
     CurrentAnimation = Animation;

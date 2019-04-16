@@ -115,8 +115,27 @@ TNodo* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec
     return Luz;
 }
 
-TNodo* Omicron::crearMalla(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
-    ZStaticMesh* M = new ZStaticMesh();
+TNodo* Omicron::createStaticMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+
+    TTransform T_Position;
+    TTransform T_Rotation;
+    T_Position.setPosition(pos);
+    T_Rotation.setRotation(Rotation);
+
+    glm::mat4 Model = T_Position.matrix * T_Rotation.matrix;
+
+    ZStaticMesh* M = new ZStaticMesh(Model);
+    M->load(_path);
+    M->loadBoundingBox(BoundingBoxPath);
+
+    TNodo* PADRE = ZONES[map_zone];
+    TNodo* Malla = new TNodo(PADRE, M);
+
+    return Malla;
+}
+
+TNodo* Omicron::createMovableMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+    ZMovableMesh* M = new ZMovableMesh();
     M->load(_path);
     M->loadBoundingBox(BoundingBoxPath);
 
@@ -202,13 +221,13 @@ void Omicron::EndDraw(){
     glfwSwapBuffers(window);
 }
 
-void Omicron::move(TNodo *_node, const glm::vec3& _offpos){
-    static_cast<TTransform*>(_node->getPadre()->getEntidad())->translate(_offpos);
-}
-
-void Omicron::rotate(TNodo *_node,const float& _angle,const glm::vec3& _offrot){
-    static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->rotate(_angle,_offrot);
-}
+// void Omicron::move(TNodo *_node, const glm::vec3& _offpos){
+//     static_cast<TTransform*>(_node->getPadre()->getEntidad())->translate(_offpos);
+// }
+//
+// void Omicron::rotate(TNodo *_node,const float& _angle,const glm::vec3& _offrot){
+//     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->rotate(_angle,_offrot);
+// }
 
 
 void Omicron::setPosition(TNodo* _node, const glm::vec3& _offpos){
@@ -323,7 +342,7 @@ bool Omicron::Initialize(){
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(0, 0, 0, 1.0f);
 
     Half_Window_Width = ancho/2;
     Half_Window_Height = alto/2;

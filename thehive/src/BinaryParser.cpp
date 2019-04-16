@@ -176,8 +176,6 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             CBoxCollider* RIGID = new CBoxCollider(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
             Manager->addComponentToEntity(RIGID, gg::BOXCOLLIDER, NewEntity);
         }
-
-
     }
 
     // ------------------------------------------------------------------------------------ //
@@ -341,9 +339,13 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             glm::vec3 Position(x,y,z);
             glm::quat Rotation(rw,rx,ry,rz);
 
+
             // PUERTA
-            CStaticModel* Transform = new CStaticModel(str, Dark, Position, Rotation);
-            Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
+            CTransform* T = new CTransform(Position, Rotation);
+            Manager->addComponentToEntity(T, gg::TRANSFORM, NewEntity);
+
+            CRenderable_3D* Transform = new CRenderable_3D(str, Dark);
+            Manager->addComponentToEntity(Transform, gg::RENDERABLE_3D, NewEntity);
 
             if(hasCollider){
                 CRigidBody* RIGID = new CRigidBody(cx, cy, cz, crx,cry,crz,crw, csx/2, csy/2, csz/2);

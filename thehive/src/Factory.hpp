@@ -38,7 +38,7 @@ class Factory{
         // uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
         // uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
         // uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const glm::vec3 &Position, const glm::vec3 &Rotation = glm::vec3());
-        uint16_t createPathFindingActor(const glm::vec3 &Position);
+        //uint16_t createPathFindingActor(const glm::vec3 &Position);
         uint16_t createHolyBomb(const glm::vec3 &Position, const glm::vec3 &Impulse);
         uint16_t createMatriuska(const glm::vec3 &Position, const glm::vec3 &Impulse);
         uint16_t createSenyuelo(const glm::vec3 &Position, const glm::vec3 &Impulse);

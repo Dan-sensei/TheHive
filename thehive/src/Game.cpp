@@ -72,6 +72,7 @@ Game::Game()
     soundSys = Singleton<SoundSystem>::Instance();
     //world->inito();
     //Engine->HideCursor(true);
+
 }
 
 Game::~Game(){

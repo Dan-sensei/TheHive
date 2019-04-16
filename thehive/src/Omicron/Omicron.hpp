@@ -13,6 +13,7 @@
 #include <Omicron/CORE/TCamara.hpp>
 #include "Shader.hpp"
 #include <Omicron/ZMESHES/ZStaticMesh.hpp>
+#include <Omicron/ZMESHES/ZMovableMesh.hpp>
 #include <Omicron/ZMESHES/ZDynamicMesh.hpp>
 #include <Omicron/ZMaterial.hpp>
 #include <Omicron/AssetManager.hpp>
@@ -34,7 +35,8 @@ class Omicron {
 
         TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
         TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
-        TNodo* crearMalla(const char*, const glm::vec3& = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        TNodo* createStaticMesh(const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        TNodo* createMovableMesh(const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
         TNodo* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
         TNodo* CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone = 0);
 
@@ -48,8 +50,8 @@ class Omicron {
 
         void DisplayFPS();
 
-        void move(TNodo*,const glm::vec3&);
-        void rotate(TNodo*,const float&,const glm::vec3&);
+        // void move(TNodo*,const glm::vec3&);
+        // void rotate(TNodo*,const float&,const glm::vec3&);
         void setPosition(TNodo* _node, const glm::vec3&);
         void setRotation(TNodo* _node,const glm::quat&);
 

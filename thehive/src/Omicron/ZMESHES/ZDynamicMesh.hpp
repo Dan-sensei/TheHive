@@ -4,14 +4,14 @@
 #include <Omicron/ZMaterial.hpp>
 #include "ZAnimationData.hpp"
 #include <Omicron/CORE/TEntidad.hpp>
+#include <Omicron/ZMESHES/ZMesh.hpp>
 
-class ZDynamicMesh : public TEntidad {
+class ZDynamicMesh : public ZMesh {
     public:
         ZDynamicMesh();
         ZDynamicMesh(const ZDynamicMesh &orig);
         virtual ~ZDynamicMesh();
 
-        void assignMaterial(ZMaterial* material_);
         void SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes);
         void AddAnimation(ZAnimationData* Anim);
 
@@ -25,7 +25,6 @@ class ZDynamicMesh : public TEntidad {
 
         std::vector<ZAnimationData*> Animations;
         Shader* shader;
-        ZMaterial* zmat;
 
         double Timer;
         float TimeBetweenAnimations;

@@ -18,7 +18,7 @@
 
 class CGun : public IComponent {
     public:
-        CGun(float, float, int, float, float, int, std::string, std::string, std::string, std::string);                //  No queremos que alguien lo construya fuera (Limón)
+        CGun(float, float, int, int, float, float, int, std::string, std::string, std::string, std::string);                //  No queremos que alguien lo construya fuera (Limón)
         CGun(const CGun &orig) = delete;
         virtual ~CGun();
 
@@ -33,6 +33,7 @@ class CGun : public IComponent {
         // Funciones propias de CGun
         void shoot(glm::vec3);
 
+        void fullDeBalas(uint8_t a);
         void reload();
         void recarga_escopeta();
         bool isReloading();
@@ -52,11 +53,14 @@ class CGun : public IComponent {
         CTransform* cTransform;
 
         //  Variables de esta componente
+        int     kcharger_bullets;
         int     ktotal_bullets;
         float   damage;
         float   cadence;
         int     total_bullets;
+        int     charger_bullets;
         float   reloadDT;
+        float   generatorDT;
         float   range;
 
         SoundSystem* SS;
@@ -72,6 +76,7 @@ class CGun : public IComponent {
         bool    reloading;
         std::chrono::high_resolution_clock::time_point dtCadence;
         std::chrono::high_resolution_clock::time_point dtReload;
+        std::chrono::high_resolution_clock::time_point dtBulletGenerator;
 };
 
 #endif

@@ -6,7 +6,7 @@ CRenderable_3D::CRenderable_3D(const std::string &pathToModel, ZMaterial* materi
 :_3DModel(nullptr), cTransform(nullptr)
 {
     Surreal = Singleton<Omicron>::Instance();
-    _3DModel = Surreal->crearMalla(pathToModel.c_str());
+    _3DModel = Surreal->createMovableMesh(pathToModel.c_str());
     Surreal->bindMaterialToMesh(_3DModel, material);
 }
 
