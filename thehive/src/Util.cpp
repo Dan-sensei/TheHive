@@ -96,7 +96,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             dmg = 0.7;
             cdc = 7;
             cb  = 30;
-            tb  = 30;
+            tb  = 150;
             relDT = 1;
             rng = 0.7;
             imagen="assets/HUD/AMETRALLADORA_HUD.png";//ametralladora y rifle

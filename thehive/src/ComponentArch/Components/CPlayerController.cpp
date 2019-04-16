@@ -157,7 +157,7 @@ void CPlayerController::FixedUpdate(){
     pressed = false;
     check_WASD(force, pressed);
 
-    if(!s_pasos->isPlaying() && pressed)
+    if(!s_pasos->isStop() && pressed)
       s_pasos->play();
 
 

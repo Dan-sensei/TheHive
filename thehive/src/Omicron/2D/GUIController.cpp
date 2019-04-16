@@ -34,6 +34,14 @@ void GUIController::Init(){
     s_musica_basica = new SonidoNormal();
     SS->createSound("event:/Musica/Ciudad/MusicaBasica",s_musica_basica);
 
+    snap_menu = new SonidoNormal();
+    SS->createSound("snapshot:/Pause",snap_menu);
+
+    snap_game = new SonidoNormal();
+    SS->createSound("snapshot:/Game",snap_game);
+
+
+
     reproduce = false;
     dif=1;
 
@@ -183,6 +191,14 @@ void GUIController::initOptions(){
 //but 14
 void GUIController::gotoPause(){
     Engine2D->InitPause();
+}
+
+void GUIController::play_snap_game(){
+    // snap_game->play();
+}
+
+void GUIController::play_snap_menu(){
+    snap_menu->play();
 }
 
 void GUIController::musicaMenuPlay(){

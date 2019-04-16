@@ -31,6 +31,8 @@ class GUIController{
         void musicaMenuPause(bool);
         void musicaJuegoPlay();
         void musicaJuegoPause(bool);
+        void play_snap_game();
+        void play_snap_menu();
     private:
         int dif;
         float dialogue;
@@ -86,6 +88,9 @@ void sonido_accion(float);
         SoundEvent* s_musica_menu;
         SoundEvent* s_musica_cred;
         SoundEvent* s_musica_basica;
+
+        SoundEvent* snap_menu;
+        SoundEvent* snap_game;
         bool reproduce;
 
         void Init();

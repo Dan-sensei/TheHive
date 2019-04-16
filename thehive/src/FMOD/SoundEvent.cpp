@@ -54,17 +54,24 @@ SoundEvent* SoundEvent::getEvent(){
 bool SoundEvent::isPlaying(){
 	bool paused = false;
 	bool ret = false;
-	// FMOD_STUDIO_PLAYBACK_STATE state = FMOD_STUDIO_PLAYBACK_PLAYING;
-	// ERRCHECK(soundInstance->getPlaybackState(&state));
-	//
-	//  if(state == FMOD_STUDIO_PLAYBACK_PLAYING)
-	//  		ret = true;
 
 	soundInstance->getPaused(&paused);
 
 	if(!paused)
 			ret = true;
 
+
+	return ret;
+}
+
+bool SoundEvent::isStop(){
+	bool ret = false;
+
+	FMOD_STUDIO_PLAYBACK_STATE state = FMOD_STUDIO_PLAYBACK_PLAYING;
+	ERRCHECK(soundInstance->getPlaybackState(&state));
+
+	 if(state == FMOD_STUDIO_PLAYBACK_PLAYING)
+	 		ret = true;
 
 	return ret;
 }
