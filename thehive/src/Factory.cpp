@@ -74,15 +74,15 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 
     std::string sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img;
     float dmg,cdc,relDT,rng;
-    int tb;
+    int cb,tb;
     int _type = 0;
-    gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_type,sonido_disparo,sonido_recarga,sonido_desenfundado, sonido_vacia,img);
+    gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_type,sonido_disparo,sonido_recarga,sonido_desenfundado, sonido_vacia,img);
 
 
 
 
 
-    CGun *gun = new CGun(dmg,cdc,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia);
+    CGun *gun = new CGun(dmg,cdc,cb,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
     Singleton<Motor2D>::Instance()->setWeaponImg(0,img);

@@ -300,7 +300,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Gunfire){
         float   dmg, cdc, relDT, rng;
         std::string sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia,img;
-        int     tb;
+        int     cb,tb;
         CGun *gun = static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID));
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
 
@@ -317,10 +317,10 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
+                gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
 
                 // Le anyado la nueva
-                CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
+                CGun* Gun = new CGun(dmg,cdc,cb,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
                 cpc->setSecondWeapon(Gun);
                 Gun->cogida();
                 Singleton<Motor2D>::Instance()->setbullet(1,Gun->getBullets(),Gun->getTotalBullets());
@@ -333,13 +333,13 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
+                gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
 
                 // Elimino el arma que tiene la entidad
                 oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
 
                 // Le anyado la nueva
-                CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
+                CGun* Gun = new CGun(dmg,cdc,cb,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
                 oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
                 Gun->cogida();
 
@@ -372,10 +372,10 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
         }
         else{
             // NO TIENE ARMA
-            gg::getWeaponInformation(dmg,cdc,relDT,rng,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
+            gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
 
             // Creo y anyado un arma a la entidad
-            CGun* Gun = new CGun(dmg,cdc,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
+            CGun* Gun = new CGun(dmg,cdc,cb,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
             oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
             Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
             Singleton<Motor2D>::Instance()->setWeaponImg(0,img);

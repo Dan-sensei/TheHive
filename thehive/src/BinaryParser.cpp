@@ -503,9 +503,13 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             glm::vec3 Position(x,y,z);
             glm::quat Rotation(rw,rx,ry,rz);
 
+
             // PUERTA
-            CStaticModel* Transform = new CStaticModel(str, Dark, Position, Rotation);
-            Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
+            CTransform* T = new CTransform(Position, Rotation);
+            Manager->addComponentToEntity(T, gg::TRANSFORM, NewEntity);
+
+            CRenderable_3D* Transform = new CRenderable_3D(str, Dark);
+            Manager->addComponentToEntity(Transform, gg::RENDERABLE_3D, NewEntity);
 
             if(hasCollider){
                 CRigidBody* RIGID = new CRigidBody(cx, cy, cz, crx,cry,crz,crw, csx/2, csy/2, csz/2);
@@ -717,7 +721,7 @@ uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
     GG_Read(inStream,z);
     glm::vec3 Position(x,y,z);
 
-    uint16_t HERO = fac->createHero(Position,-1);
+    uint16_t HERO = fac->createHero(Position,1);
 
     std::vector<AINode*> nodes;
     nodes.reserve(TOTAL);

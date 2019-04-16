@@ -89,12 +89,13 @@ uint16_t gg::genIntRandom(uint16_t min, uint16_t max){
     return distribution(gen);
 }
 
-void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, int& tb, int _type, std::string& sonido_disparo,std::string& sonido_recarga,std::string& sonido_desenfundado, std::string& sonido_vacia,std::string& imagen){
+void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, int& cb, int& tb, int _type, std::string& sonido_disparo,std::string& sonido_recarga,std::string& sonido_desenfundado, std::string& sonido_vacia,std::string& imagen){
     switch (_type){
         case 0:
             // Rifle
             dmg = 0.7;
             cdc = 7;
+            cb  = 30;
             tb  = 30;
             relDT = 1;
             rng = 0.7;
@@ -109,7 +110,8 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             // Escopeta
             dmg = 0.8;
             cdc = 0.8;
-            tb  = 10;
+            cb  = 10;
+            tb  = 70;
             relDT = 0.3;
             rng = 0.4;
 
@@ -124,7 +126,8 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             // Ametralladora
             dmg = 0.3;
             cdc = 9;
-            tb  = 100;
+            cb  = 100;
+            tb  = 300;
             relDT = 6;
             rng = 0.7;
 
@@ -139,7 +142,8 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             // Pistola
             dmg = 0.4;
             cdc = 2.5;
-            tb  = 15;
+            cb  = 15;
+            tb  = 150;
             relDT = 1.8;
             rng = 0.5;
 
@@ -154,7 +158,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             // Katana
             dmg = 1;
             cdc = 0.5;
-            tb  = -1;
+            cb  = -1;
             relDT = -1;
             rng = 0.1;
             imagen="assets/HUD/assets/HUD/cf_hud_b.jpg";

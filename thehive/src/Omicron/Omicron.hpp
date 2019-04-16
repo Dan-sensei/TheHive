@@ -50,8 +50,8 @@ class Omicron {
 
         void DisplayFPS();
 
-        void move(TNodo*,const glm::vec3&);
-        void rotate(TNodo*,const float&,const glm::vec3&);
+        // void move(TNodo*,const glm::vec3&);
+        // void rotate(TNodo*,const float&,const glm::vec3&);
         void setPosition(TNodo* _node, const glm::vec3&);
         void setRotation(TNodo* _node,const glm::quat&);
 

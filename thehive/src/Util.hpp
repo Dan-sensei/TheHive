@@ -43,7 +43,7 @@ namespace gg{
         float vX,vY,vZ;
     };
 
-    void getWeaponInformation(float&, float&, float&, float&, int&, int, std::string&,std::string&,std::string&, std::string&,std::string&);
+    void getWeaponInformation(float&, float&, float&, float&, int&, int&, int, std::string&,std::string&,std::string&, std::string&,std::string&);
 };
 
 //std::ostream& operator<<(std::ostream& os, const glm::vec3 &v1);
