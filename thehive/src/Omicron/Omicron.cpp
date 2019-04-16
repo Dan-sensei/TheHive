@@ -221,13 +221,13 @@ void Omicron::EndDraw(){
     glfwSwapBuffers(window);
 }
 
-void Omicron::move(TNodo *_node, const glm::vec3& _offpos){
-    static_cast<TTransform*>(_node->getPadre()->getEntidad())->translate(_offpos);
-}
-
-void Omicron::rotate(TNodo *_node,const float& _angle,const glm::vec3& _offrot){
-    static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->rotate(_angle,_offrot);
-}
+// void Omicron::move(TNodo *_node, const glm::vec3& _offpos){
+//     static_cast<TTransform*>(_node->getPadre()->getEntidad())->translate(_offpos);
+// }
+//
+// void Omicron::rotate(TNodo *_node,const float& _angle,const glm::vec3& _offrot){
+//     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->rotate(_angle,_offrot);
+// }
 
 
 void Omicron::setPosition(TNodo* _node, const glm::vec3& _offpos){
@@ -342,7 +342,7 @@ bool Omicron::Initialize(){
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(60.f/255, 87.f/255, 106.f/255, 1.0f);
 
     Half_Window_Width = ancho/2;
     Half_Window_Height = alto/2;
