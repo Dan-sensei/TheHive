@@ -26,7 +26,7 @@ void main()
     float SpecularTex = texture(gDiffuseSpec, UV).a;
 
     vec3 LightColor = vec3(1,1,1);
-    float LightPower = 150.0f;
+    float LightPower = 25.0f;
 
     vec3 FinalPixelColor  = Diffuse * 0.1f;
 

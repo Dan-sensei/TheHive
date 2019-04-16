@@ -161,8 +161,9 @@ void AssetManager::loadInit(){
 
             std::ifstream infile(PATH);
             bool found = false;
+            NORMAL_PATH = "";
             while (std::getline(infile, line)){
-                NORMAL_PATH = "";
+                found = false;
                 std::istringstream iss(line);
                 iss >> type;
 
@@ -174,18 +175,17 @@ void AssetManager::loadInit(){
                     found = true;
                     TEXTURE_PATH = getTextureFromPath(line,"/");
                 }
+            }
+            if(found){
+                // std::cout << "  NORMAL TEXTURE: " << NORMAL_PATH << '\n';
+                // std::cout << "  TEXTURE:        " << TEXTURE_PATH << '\n';
 
-                if(found){
-                    // std::cout << "  NORMAL TEXTURE: " << NORMAL_PATH << '\n';
-                    // std::cout << "  TEXTURE:        " << TEXTURE_PATH << '\n';
-
-                    ZMaterial* MAT = getMaterial("Model"+std::to_string(i));
-                                            MAT->attachShader(shader);
-                                            MAT->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/UINT8_T_TEXTURES/"+TEXTURE_PATH,  GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-                    if(NORMAL_PATH == "")   MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/UINT8_T_NORMALS/"+NORMAL_PATH,    GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-                    else                    MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",               GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-                                            MAT->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",            GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-                }
+                ZMaterial* MAT = getMaterial("Model"+std::to_string(i));
+                                        MAT->attachShader(shader);
+                                        MAT->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/UINT8_T_TEXTURES/"+TEXTURE_PATH,  GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+                if(NORMAL_PATH != "")   MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/UINT8_T_NORMALS/"+NORMAL_PATH,    GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+                else                    MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",               GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+                                        MAT->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",            GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
             }
         }
         else{
@@ -193,7 +193,7 @@ void AssetManager::loadInit(){
             ZMaterial* 		MAT = getMaterial("Model"+std::to_string(i));
             MAT->attachShader(shader);
             MAT->addTexture(GN::DIFFUSE_MAP,    "assets/Textures/DefaultDiffuse.jpg",       GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-            MAT->addTexture(GN::NORMAL_MAP,     "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+            MAT->addTexture(GN::NORMAL_MAP,     "assets/Textures/DefaultNormal.jpg",        GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
             MAT->addTexture(GN::SPECULAR_MAP,   "assets/Textures/DefaultSpecular.jpeg",     GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
         }
     }

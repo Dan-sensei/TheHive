@@ -136,7 +136,7 @@ void Game::Init(){
     Accumulator = 0;
 
     //Singleton<Pathfinding>::Instance()->SetDebug(true);
-    // world->setDebug(true);
+    world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
@@ -193,9 +193,11 @@ void Game::Update(){
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
-    // glm::vec3 pos = playerpos->getPosition();
+
     // std::cout << " - " << glm::to_string(pos) << '\n';
-    // pos.y = 15;
+    glm::vec3 pos = playerpos->getPosition();
+    pos.y += 3;
+    Engine->setPosition(luz,pos);
     // //std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();
 
@@ -215,6 +217,7 @@ void Game::Update(){
     Engine2D->DisplayHUD();
 
     // Consola por pantalla
+    // glClear(GL_DEPTH_BUFFER_BIT);
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
