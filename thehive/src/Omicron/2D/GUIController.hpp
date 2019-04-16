@@ -33,12 +33,12 @@ class GUIController{
         void musicaJuegoPause(bool);
     private:
         int dif;
-        int dialogue;
-        int music;
-        int effect;
-        int dialogue_max;
-        int music_max;
-        int effect_max;
+        float dialogue;
+        float music;
+        float effect;
+        float dialogue_max;
+        float music_max;
+        float effect_max;
         int cursorpos;
         int posmax;
         bool arriba_pulsado;

@@ -37,9 +37,13 @@ void GUIController::Init(){
     reproduce = false;
     dif=1;
 
-    dialogue = ((SS->getVolume("bus:/Voces") + 60)/70)*100;
-    music = ((SS->getVolume("bus:/Musica") + 60)/70)*100;
-    effect = ((SS->getVolume("bus:/SFX") + 60)/70)*100;
+    dialogue = 50;
+    music = 50;
+    effect = 50;
+
+    SS->setVolume(0.5,"bus:/Voces");
+    SS->setVolume(0.5,"bus:/Musica");
+    SS->setVolume(0.5,"bus:/SFX");
 
     cursorpos=0;
     music_max=100;
@@ -211,7 +215,7 @@ void GUIController::moreDialog(){
     }
     Engine2D->setVolDialogo(dialogue);
     Engine2D->InitMenu6();
-    SS->setVolume(music, "bus:/Voces");
+    SS->setVolume(dialogue/100, "bus:/Voces");
 }
 //but 19
 void GUIController::lessDialog(){
@@ -219,7 +223,7 @@ void GUIController::lessDialog(){
         dialogue--;
     }
     Engine2D->setVolDialogo(dialogue);
-    SS->setVolume(music, "bus:/Voces");
+    SS->setVolume(dialogue/100, "bus:/Voces");
     Engine2D->InitMenu6();
 }
 //but 20
@@ -228,7 +232,7 @@ void GUIController::moreMusic(){
         music++;
     }
     Engine2D->setVolMusic(music);
-    SS->setVolume(music, "bus:/Musica");
+    SS->setVolume(music/100, "bus:/Musica");
     Engine2D->InitMenu6();
 }
 //but 21
@@ -238,7 +242,7 @@ void GUIController::lessMusic(){
     }
     Engine2D->setVolMusic(music);
 
-    SS->setVolume(music, "bus:/Musica");
+    SS->setVolume(music/100, "bus:/Musica");
 
     Engine2D->InitMenu6();
 }
@@ -249,7 +253,7 @@ void GUIController::moreEffect(){
     }
     Engine2D->setVolEffect(effect);
     Engine2D->InitMenu6();
-    SS->setVolume(music, "bus:/SFX");
+    SS->setVolume(effect/100, "bus:/SFX");
 }
 //but 23
 void GUIController::lessEffect(){
@@ -258,7 +262,8 @@ void GUIController::lessEffect(){
     }
     Engine2D->setVolEffect(effect);
     Engine2D->InitMenu6();
-    SS->setVolume(music, "bus:/SFX");
+    SS->setVolume(effect/100, "bus:/SFX");
+    std::cout << SS->getVolume("bus:/SFX") << '\n';
 }
 
 
