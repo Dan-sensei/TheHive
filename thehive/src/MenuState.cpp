@@ -60,6 +60,7 @@ void MenuState::Init(){
     Engine->HideCursor(false);
 
     cont->musicaMenuPlay();
+    SS->snapPlay("snapshot:/Pause");
 
     //musica_menu->play();
 

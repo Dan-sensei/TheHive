@@ -28,6 +28,7 @@
 
 #include "SoundEvent.hpp"
 #include "TiposSonido.hpp"
+#include "SonidoNormal.hpp"
 
 >>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
 #include <Singleton.hpp>
@@ -48,7 +49,12 @@ class SoundSystem {
 		void setListenerPosition(glm::vec3);
 		void update();
 		float getVolume(const std::string&);
+<<<<<<< HEAD
 >>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
+=======
+		void createSnaps();
+		void snapPlay(const std::string &);
+>>>>>>> 71fc74f8c598b9167bee905b04fdbd587fc49398
 		void CLIN();
 	private:
 		FMOD::Studio::System	*system;
@@ -69,8 +75,13 @@ class SoundSystem {
 		FMOD::Studio::Bank		*musicaBank;
 		FMOD::Studio::Bank		*vocesBank;
 
-	    std::map<std::string, FMOD::Studio::EventDescription*> eventDescriptions;
+	  std::map<std::string, FMOD::Studio::EventDescription*> eventDescriptions;
 		std::map<std::string, SoundEvent*> soundEvents;
+
+		SoundEvent* snap_latido;
+		SoundEvent* snap_dialogos;
+		SoundEvent* snap_pause;
+		SoundEvent* snap_game;
 
 		// using pFunc = SoundEvent*(SoundSystem::*)(const std::string &);
         // pFunc VectorTipos[NUM_TIPOS];

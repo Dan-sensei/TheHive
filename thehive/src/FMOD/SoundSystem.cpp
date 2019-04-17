@@ -51,7 +51,7 @@ SoundEvent* SoundSystem::createSound(const std::string &_str){
 	lowLevelSystem->setSoftwareFormat	(0,FMOD_SPEAKERMODE_5POINT1,0);
 	lowLevelSystem->setOutput			(FMOD_OUTPUTTYPE_AUTODETECT);
 
-	system->initialize	(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0);
+	system->initialize	(512, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_NORMAL, 0);
 
 	masterBank 	= nullptr;
 	system->loadBankFile("assets/FMOD/Master_Bank.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&masterBank);
@@ -69,6 +69,8 @@ SoundEvent* SoundSystem::createSound(const std::string &_str){
 
 	  FMOD_3D_ATTRIBUTES *attr;
 	  system->setListenerAttributes(0, attr);
+
+		createSnaps();
 }
 
 SoundSystem::~SoundSystem(){
@@ -100,6 +102,54 @@ SoundEvent* SoundSystem::createSound(const std::string &_str, SoundEvent* ret){
 		ret->newSoundEvent(instance);
 		return ret;
 	}
+}
+
+void SoundSystem::createSnaps(){
+
+	FMOD::Studio::EventDescription 	*event 	= nullptr;
+	FMOD::Studio::EventInstance 	*instance = nullptr;
+	ERRCHECK(system->getEvent("snapshot:/Latido", &event));
+	ERRCHECK(event->createInstance(&instance));
+
+	snap_latido = new SonidoNormal();
+	snap_latido->newSoundEvent(instance);
+
+	eventDescriptions.insert(std::make_pair("snapshot:/Latido",event));
+	soundEvents.insert(std::make_pair("snapshot:/Latido",snap_latido));
+
+
+	FMOD::Studio::EventDescription 	*event2 	= nullptr;
+	FMOD::Studio::EventInstance 	*instance2 = nullptr;
+	ERRCHECK(system->getEvent("snapshot:/Game", &event2));
+	ERRCHECK(event2->createInstance(&instance2));
+
+	snap_game = new SonidoNormal();
+	snap_game->newSoundEvent(instance2);
+
+	eventDescriptions.insert(std::make_pair("snapshot:/Game",event2));
+	soundEvents.insert(std::make_pair("snapshot:/Game",snap_game));
+
+	FMOD::Studio::EventDescription 	*event3 	= nullptr;
+	FMOD::Studio::EventInstance 	*instance3 = nullptr;
+	ERRCHECK(system->getEvent("snapshot:/Dialogos", &event3));
+	ERRCHECK(event3->createInstance(&instance3));
+
+	snap_dialogos = new SonidoNormal();
+	snap_dialogos->newSoundEvent(instance3);
+
+	eventDescriptions.insert(std::make_pair("snapshot:/Dialogos",event3));
+	soundEvents.insert(std::make_pair("snapshot:/Dialogos",snap_dialogos));
+
+	FMOD::Studio::EventDescription 	*event4 	= nullptr;
+	FMOD::Studio::EventInstance 	*instance4 = nullptr;
+	ERRCHECK(system->getEvent("snapshot:/Pause", &event4));
+	ERRCHECK(event4->createInstance(&instance4));
+
+	snap_pause = new SonidoNormal();
+	snap_pause->newSoundEvent(instance4);
+
+	eventDescriptions.insert(std::make_pair("snapshot:/Pause",event4));
+	soundEvents.insert(std::make_pair("snapshot:/Pause",snap_pause));
 }
 
 
@@ -155,6 +205,10 @@ float SoundSystem::getVolume(const std::string& busPath){
 
 	return v;
 
+}
+
+void SoundSystem::snapPlay(const std::string &_str){
+	soundEvents.find(_str)->second->play();
 }
 
 void SoundSystem::CLIN(){
