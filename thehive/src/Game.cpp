@@ -53,6 +53,8 @@ void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
 */
 //============================================================================================
 
+#include <Omicron/ZPlayer.hpp>
+
 Game::Game()
 :Accumulator(0)
 {
