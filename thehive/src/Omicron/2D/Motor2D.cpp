@@ -468,16 +468,32 @@ void Motor2D::InitHUD(){
     boton->setZindex(-0.9997);
     //cruceta
     float anchura,longitud,c;
-    anchura=0.001;
-    longitud=0.02;
+
+    //cruceta negra
+    anchura=0.002;
+    longitud=0.011;
     c=0.5;
     boton=addRect(c-longitud,c-anchura,c+longitud,c+anchura);
     boton->setColor(glm::vec4(0,0,0,1));
     //ratio d epantalla para tenerlo exacto :D
-    anchura=0.001;
-    longitud=0.033;
+    anchura=0.0012;
+    longitud=0.0185;
     boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
     boton->setColor(glm::vec4(0,0,0,1));
+
+    //cruceta blanca
+
+    anchura=0.001;
+    longitud=0.01;
+    c=0.5;
+    boton=addRect(c-longitud,c-anchura,c+longitud,c+anchura);
+    boton->setColor(glm::vec4(100,100,100,1));
+    //ratio d epantalla para tenerlo exacto :D
+    anchura=0.001;
+    longitud=0.0165;
+    boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
+    boton->setColor(glm::vec4(100,100,100,1));
+
 
 
     //AddImage("G1","assets/HUD/Botonsolo.png",porc_ancho(2),porc_alto(2),porc_alto(10),porc_alto(10));
@@ -630,6 +646,8 @@ void Motor2D::DisplayHUD(){
         }
         HUD_hability1();
 
+        RECTANGULOS[7]->Draw();
+        RECTANGULOS[8]->Draw();
         RECTANGULOS[5]->Draw();
         RECTANGULOS[6]->Draw();
 
