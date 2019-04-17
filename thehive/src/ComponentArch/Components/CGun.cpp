@@ -1,36 +1,63 @@
 #include "CGun.hpp"
+#include <Omicron/2D/Motor2D.hpp>
+#include <Bullet/ggDynWorld.hpp>
+#include "CAIEnem.hpp"
+#include <ComponentArch/Components/CVida.hpp>
 
 #define FORCE_FACTOR        1000.f
 #define DIST_OFFSET         2.f
 
-CGun::CGun(float _dmg, float _cadence, int _total_bullets, float _reloadDT, float _range, int _wType)
-:Engine(nullptr), Manager(nullptr), cTransform(nullptr),
-damage(_dmg), cadence(_cadence), total_bullets(_total_bullets),
+CGun::CGun(float _dmg, float _cadence, int _charger_bullets, int _total_bullets, float _reloadDT, float _range, int _wType, std::string sonido_disparo, std::string sonido_recarga, std::string sonido_desenfundado, std::string sonido_vacio)
+:Manager(nullptr), cTransform(nullptr),
+damage(_dmg), cadence(_cadence), charger_bullets(_charger_bullets), total_bullets(_total_bullets),
 reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
 {
+    kcharger_bullets = charger_bullets;
     ktotal_bullets = total_bullets;
     canShoot = true;
     reloading = false;
+<<<<<<< HEAD
 
     SS = Singleton<SoundSystem>::Instance();
     prueba = SS->createSound("event:/Armas/Rifle/Rifle_disparo");
 }
+=======
+    generatorDT = 2;
+>>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
+
+    SS = Singleton<SoundSystem>::Instance();
+
+    s_disparo = new SonidoNormal();
+    SS->createSound(sonido_disparo, s_disparo);
+    s_desenfundado = new SonidoNormal();
+    SS->createSound(sonido_desenfundado, s_desenfundado);
+    s_vacio = new SonidoNormal();
+    SS->createSound(sonido_vacio, s_vacio);
+
+    if(_wType != 1){
+        s_recarga = new SonidoNormal();
+    }
+    else{
+        s_recarga = new SonidoEscopeta();
+    }
+    SS->createSound(sonido_recarga, s_recarga);
+
+    s_cogida = new SonidoNormal();
+    SS->createSound("event:/SFX/Objetos/Arma", s_cogida);
+
+}
 
 CGun::~CGun() {
 
-}
-
-void CGun::initComponent() {
-    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
-    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
-
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::GUN, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::GUN, gg::M_SETPTRS);
+    delete s_disparo;
+    delete s_desenfundado;
+    delete s_vacio;
+    delete s_recarga;
+    delete s_cogida;
 
 }
 
-void CGun::shoot(gg::Vector3f to){
-    TData mes;
+void CGun::shoot(glm::vec3 to){
     CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
     if(canShoot && !reloading){
         // Activar cadencia
@@ -38,77 +65,98 @@ void CGun::shoot(gg::Vector3f to){
         dtCadence = std::chrono::high_resolution_clock::now();
 
         // Comprobar balas
-        if(!total_bullets){
-            gg::cout("Click!");
-            EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,mes);
+        if(!charger_bullets){
+            //gg::cout("Click!");
+            s_vacio->play();
+            //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
             return;
         }
 
+        s_disparo->play();
         // Comprobar si no es la katana
         if(total_bullets!=-1){
-            total_bullets--;
+            charger_bullets--;
+            if(WEAPON_TYPE == 1)
+                s_recarga->setParameter("Lleno",0);
         }
-        Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+
+        Singleton<Motor2D>::Instance()->setbullet(0,charger_bullets,total_bullets);
 
         prueba->play();
 
         // Comprobar destino
-        if(to.X == -1){
-            gg::cout("PAM! - "+std::to_string(total_bullets));
+        if(to.x == -1){
+            //gg::cout("PAM! - "+std::to_string(total_bullets));
             return;
         }
 
-        gg::cout("PIM! - "+std::to_string(total_bullets));
+        //gg::cout("PIM! - "+std::to_string(total_bullets));
 
         //TData mes;
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
-        EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,mes);
+        //EventSystem->PulsoTrigger(kTrig_EnemyNear,0,cTransform->getPosition(),500,TData());
 
+        // // //std::cout << "PIM!!! -> " << total_bullets << '\n';
+        glm::vec3 from = cTransform->getPosition();
 
-        // // std::cout << "PIM!!! -> " << total_bullets << '\n';
-        gg::Vector3f from = cTransform->getPosition();
-        gg::Vector3f vel(
-            to.X-from.X,
-            to.Y-from.Y,
-            to.Z-from.Z
-        );
-
-        float length = sqrt(vel.X*vel.X + vel.Y*vel.Y + vel.Z*vel.Z);
-            vel.X /= length;
-            vel.Y /= length;
-            vel.Z /= length;
-
+        glm::vec3 vel=glm::normalize(to-from);
         // Se modulara segun el danyo de cada arma 0-1
-        vel.X *= FORCE_FACTOR*damage;
-        vel.Y *= FORCE_FACTOR*damage;
-        vel.Z *= FORCE_FACTOR*damage;
+        vel *= FORCE_FACTOR*damage;
 
-        from.Y += DIST_OFFSET;
 
-        Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(from,vel);
-        //TData mes;
+        Singleton<ggDynWorld>::Instance()->applyForceToRaycastCollisionBody(vel);
+        float id =Singleton<ggDynWorld>::Instance()->getIDFromRaycast();
         //CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
         //EventSystem->PulsoTrigger(kTrig_Shoot,0,to,500,mes);//sonido de disparo
+<<<<<<< HEAD
         Singleton<CTriggerSystem>::Instance()->PulsoTrigger(kTrig_Shoot,getEntityID(),to,50,TData());
         // Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_Shoot,1,getEntityID(),to, 5, 50, false, TData());
+=======
+        /////////cambiar todo esto a una funcion de CAIENEM
+
+        if(id!=-1){
+            CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+            if(AIEnem){
+                AIEnem->setPlayerIsAttacking(true);
+                //
+                CVida *health = static_cast<CVida*>(Manager->getComponent(gg::VIDA,id));
+                if(health){
+                    //gg::cout("PUM! -> ["+std::to_string(damage)+"]", gg::Color(0, 0, 255, 1));
+                    health->quitarvida(damage);
+                }
+            }
+        }
+>>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
 
         // <DEBUG>
-            Material moradoDeLos80("assets/Textures/Blue.png");
-            uint16_t debug = Manager->createEntity();
-            CTransform* Transform               = new CTransform(to, gg::Vector3f(0, 0, 0));
-            CRenderable_3D* Renderable_3D       = new CRenderable_3D("assets/Models/bullet.obj", moradoDeLos80);
-            Manager->addComponentToEntity(Transform,        gg::TRANSFORM, debug);
-            Manager->addComponentToEntity(Renderable_3D,    gg::RENDERABLE_3D, debug);
+            // Factory *fac = Singleton<Factory>::Instance();
+            // fac->createDebugBullet(glm::vec3(to));
         // </DEBUG>
     }
 }
 
 void CGun::reload(){
     // NEED TO APPLY THE RELOAD TIME
-    gg::cout(" -- RELOAD -- ");
+    //gg::cout(" -- RELOAD -- ");
     reloading = true;
     dtReload = std::chrono::high_resolution_clock::now();
+
+    if(WEAPON_TYPE!=1)
+        s_recarga->play();
+    else
+        recarga_escopeta();
+}
+
+void CGun::recarga_escopeta(){
+    if(charger_bullets != kcharger_bullets-1){
+        s_recarga->play();
+    }
+    else{
+        std::cout << "ultima" << '\n';
+        s_recarga->setParameter("Lleno",1);
+        s_recarga->play();
+    }
 }
 
 bool CGun::isReloading(){
@@ -116,6 +164,10 @@ bool CGun::isReloading(){
 }
 
 int CGun::getBullets(){
+    return charger_bullets;
+}
+
+int CGun::getTotalBullets(){
     return total_bullets;
 }
 
@@ -123,10 +175,13 @@ int CGun::getType(){
     return WEAPON_TYPE;
 }
 
-void CGun::Init(){
+bool CGun::canReload(){
+    if(kcharger_bullets > charger_bullets && total_bullets > 0)    return true;
+    else                                return false;
+}
 
+void CGun::Init(){
     // Inicializar singletons
-    Engine = Singleton<GameEngine>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
 
     //  Inicializar punteros a otras compnentes
@@ -136,8 +191,7 @@ void CGun::Init(){
 
 gg::EMessageStatus CGun::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -148,42 +202,72 @@ gg::EMessageStatus CGun::processMessage(const Message &m) {
 
 gg::EMessageStatus CGun::MHandler_SETPTRS(){
     // Inicializando punteros
+
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-    Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
+    //Singleton<Motor2D>::Instance()->setbullet(0,total_bullets,ktotal_bullets);
 
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CGun::MHandler_UPDATE(){
+void CGun::FixedUpdate(){
     // UPDATE
-
-    // Update delta time de la cadencia de fuego
     if(reloading){
-        auto end = std::chrono::high_resolution_clock::now();
+        auto end         = std::chrono::high_resolution_clock::now();
         auto elapsedtime = end - dtReload;
-        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
-
+        auto ms          = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
 
         if(ms > reloadDT*1000){
-            gg::cout(" -- RELOADED" , gg::Color(255, 0, 0, 1));
+            //gg::cout(" -- RELOADED" , gg::Color(255, 0, 0, 1));
             reloading = false;
-            total_bullets = ktotal_bullets;
-            Singleton<ScreenConsole>::Instance()->setbullet(0,total_bullets);
-
+            if(WEAPON_TYPE == 1){
+                if(total_bullets>0){
+                    charger_bullets++;
+                    total_bullets--;
+                }
+            }
+            else{
+                if(total_bullets-(kcharger_bullets-charger_bullets)<0){
+                    charger_bullets = charger_bullets + total_bullets;
+                    total_bullets=0;
+                }
+                else{
+                    total_bullets = total_bullets - (kcharger_bullets-charger_bullets);
+                    charger_bullets = kcharger_bullets;
+                }
+            }
         }
     }
     else if(!canShoot){
-        auto end = std::chrono::high_resolution_clock::now();
+        auto end         = std::chrono::high_resolution_clock::now();
         auto elapsedtime = end - dtCadence;
-        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
-
-        // gg::cout(std::to_string(ms)+" -> "+std::to_string((1/cadence)*1000));
+        auto ms          = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
 
         if(ms > (1/cadence)*1000){
-            // gg::cout(" --- READY TO SHOOT --- ", gg::Color(255, 0, 0, 1)),
+            // //gg::cout(" --- READY TO SHOOT --- ", gg::Color(255, 0, 0, 1)),
             canShoot = true;
         }
     }
+    fullDeBalas(0);
+}
 
-    return gg::ST_TRUE;
+void CGun::fullDeBalas(uint8_t a){
+    auto end         = std::chrono::high_resolution_clock::now();
+    auto elapsedtime = end - dtBulletGenerator;
+    auto ms          = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
+    if(ms > generatorDT*1000){
+        if(total_bullets<ktotal_bullets){
+            total_bullets++;
+        }
+        dtBulletGenerator = std::chrono::high_resolution_clock::now();
+    }
+
+    Singleton<Motor2D>::Instance()->setbullet(a,charger_bullets,total_bullets);
+}
+
+
+void CGun::desenfundado(){
+    s_desenfundado->play();
+}
+void CGun::cogida(){
+    s_cogida->play();
 }

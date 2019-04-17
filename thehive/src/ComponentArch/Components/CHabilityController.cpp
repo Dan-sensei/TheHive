@@ -2,9 +2,9 @@
 #include <Util.hpp>
 #include <string>
 //#include <GameAI/Hability.hpp>
-#include <GameEngine/ScreenConsole.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 #include <Singleton.hpp>
-// #include <GameEngine/ScreenConsole.hpp>
+// #include <Omicron/2D/Motor2D.hpp>
 
 
 CHabilityController::CHabilityController()
@@ -16,21 +16,15 @@ CHabilityController::CHabilityController()
 }
 
 CHabilityController::~CHabilityController() {
-    for (size_t i = 0; i < 3; i++) {
+     for (size_t i = 0; i < 3; i++) {
 
-        delete hab[i];
-    }
+         delete Habilities[i];
+     }
 }
 
-void CHabilityController::initComponent() {
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::HAB, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::HAB, gg::M_SETPTRS);
+void CHabilityController::ToggleSkill(int HabilityID){
 
-}
-
-void CHabilityController::pulsado(int habi){
-
-    hab[habi]->init();
+    Habilities[HabilityID]->init();
 
 }
 void CHabilityController::Init(){
@@ -42,8 +36,7 @@ void CHabilityController::Init(){
 
 gg::EMessageStatus CHabilityController::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -53,21 +46,17 @@ gg::EMessageStatus CHabilityController::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CHabilityController::MHandler_SETPTRS(){
-    hab[0]=new Hability1(getEntityID());
-    hab[1]=new Hability2(getEntityID());
-    hab[2]=new Hability3(getEntityID());
+    Habilities[0] = new Hability1(getEntityID());
+    Habilities[1] = new Hability2(getEntityID());
+    Habilities[2] = new Hability3(getEntityID());
 
     return gg::ST_TRUE;
 }
 
-gg::EMessageStatus CHabilityController::MHandler_UPDATE(){
+void CHabilityController::FixedUpdate(){
     for (size_t i = 0; i < 3; i++) {
 
-        hab[i]->update();
-        Singleton<ScreenConsole>::Instance()->setprogress(i,hab[i]->getProg());
+        Habilities[i]->update();
+        Singleton<Motor2D>::Instance()->setprogress(i, Habilities[i]->getProg());
     }
-
-
-    return gg::ST_TRUE;
-
 }

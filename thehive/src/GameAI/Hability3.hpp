@@ -3,8 +3,10 @@
 
 #include "Enumhabs.hpp"
 #include <chrono>
-#include <GameEngine/ScreenConsole.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 #include "Hability.hpp"
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
 //#include <string>
 
 class CTriggerSystem;
@@ -20,6 +22,9 @@ public:
 
 private:
 
+    SoundSystem* SS;
+
+    SoundEvent* s_hab;
 
 
 };

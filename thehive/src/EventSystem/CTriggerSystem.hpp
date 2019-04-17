@@ -2,7 +2,7 @@
 #define _CTRIGGERSYSTEM_H
 
 #include <map>
-#include <iostream>
+//#include <iostream>
 #include <math.h>
 //#include <cstdlib>
 //#include <iomanip>
@@ -26,21 +26,21 @@ struct TriggerRecordStruct
     TriggerRecordStruct(
         EnumTriggerType _eTriggerType,
         unsigned long _idSource,
-        const gg::Vector3f _vPos,
+        const glm::vec3 _vPos,
         float _fRadius,
         unsigned long _fDuration,
         bool _bDynamicSourcePos,
         TData _data
     );
     TriggerRecordStruct(const TriggerRecordStruct &orig);
+    glm::vec3 vPos;
     TData data;
-    EnumTriggerType eTriggerType;
-    gg::Vector3f vPos;
+    std::chrono::high_resolution_clock::time_point nTimeStamp;
     unsigned long nTriggerID;
     unsigned long idSource;
-    std::chrono::high_resolution_clock::time_point nTimeStamp;
     unsigned long nExpirationTime;//milliseconds
     float fRadius;
+    EnumTriggerType eTriggerType;
     bool bDynamicSourcePos;
 };
 
@@ -55,20 +55,21 @@ class CTriggerSystem{
 public:
     ~CTriggerSystem();
     void PulsoTrigger(
-        EnumTriggerType _eTriggerType,
-        unsigned long _idSource,
-        const gg::Vector3f& _vPos,
-        float _fRadius,
-        TData _data);
+                EnumTriggerType     _eTriggerType,
+                unsigned long       _idSource,
+        const   glm::vec3&          _vPos,
+                float               _fRadius,
+                TData               _data);
+
     unsigned long RegisterTriger(
-        EnumTriggerType _eTriggerType,
-        unsigned long _nPriority,
-        unsigned long _idSource,
-        const gg::Vector3f& _vPos,
-        float _fRadius,
-        float _fDuration,
-        bool _bDynamicSourcePos,
-        TData _data);
+                EnumTriggerType     _eTriggerType,
+                unsigned long       _nPriority,
+                unsigned long       _idSource,
+        const   glm::vec3&          _vPos,
+                float               _fRadius,
+                float               _fDuration,
+                bool                _bDynamicSourcePos,
+                TData               _data);
 
     void clin();
 

@@ -5,51 +5,65 @@
 #include <ComponentArch/Message.hpp>
 #include <cstdint>
 #include <cmath>
-#include <GameEngine/GameEngine.hpp>
-#include <GameEngine/Camera.hpp>
-#include "CTransform.hpp"
+#include <Omicron/Omicron.hpp>
+#include <Omicron/CORE/TNodo.hpp>
 #include <Singleton.hpp>
 
+#include "CTransform.hpp"
+#include <ComponentArch/ObjectManager.hpp>
 
-class ObjectManager;
-
+class ggDynWorld;
 class CCamera : public IComponent {
 friend class Factory;
 public:
-    CCamera(bool);
+    CCamera(int8_t);
     CCamera(const CCamera &orig) = delete;
     virtual ~CCamera ();
 
     // Functions of IComponent
-    static void initComponent();
-    virtual gg::EMessageStatus processMessage(const Message &m);
     virtual void Init();
 
-    //  Handlers
-    gg::EMessageStatus MHandler_SETPTRS();
+    glm::vec3 getTargetPosition();
+    void resetMouse();
+    void setTarget(CTransform* T);
+    void CameraUpdate();
 
-    void updateCameraTarget(gg::Vector3f, bool);
-    gg::Vector3f getCameraPosition();
-    gg::Vector3f getCameraRotation();
-    gg::Vector3f getCameraTarget();
-    gg::Vector3f getOffsetPositionVector();
+    glm::vec3 getCameraPosition();
+    glm::vec3 getOffsetPositionVector();
 
-    gg::Vector3f getlastHeroPosition();
-    gg::Vector3f getCameraPositionBeforeLockRotation();
-    void setCameraPositionBeforeLockRotation(gg::Vector3f);
+    void moveCameraPosition(glm::vec3);
+
+    void getDirectionVector(glm::vec3 &Output);
+
+    void ToogleFreeCamera();
+    void FollowTarget();
+    void FreeCamera();
 
 private:
+    Omicron       *Engine;
+    TNodo           *cam;
+    CTransform      *Target;
+    ggDynWorld      *dynWorld;
 
-    gg::Vector3f lastHeroPosition;
-    gg::Vector3f cameraPositionBeforeLockRotation;
+    glm::vec3 pos_on_collision;
+    glm::vec3 CameraTarget;
+    glm::vec3 CurrentPosition;
+    glm::vec3 LastFreeCameraPosition;
 
-    GameEngine *Engine;
-    ObjectManager *Manager;
-    Camera* cam;
-    CTransform *mod;
+    float screenW;
+    float screenH;
 
-    bool daniNoSabeProgramar;
-    gg::Vector3f offsetPositionVector;
+    int8_t InvertCamera;
+    bool collision;
+
+    void fixCameraPositionOnCollision   (glm::vec3&);
+    void setPerpendicularOffsetVector   (glm::vec3&);
+
+    double prevX, prevY;
+    float t, p;
+
+    using FunctionPTR = void (CCamera::*)();
+    FunctionPTR CurrentUpdate;
 };
 
 

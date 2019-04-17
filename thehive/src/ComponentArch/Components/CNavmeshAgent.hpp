@@ -1,20 +1,23 @@
 #ifndef CNAVMESHAGENT_H
 #define CNAVMESHAGENT_H
 
-
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
 #include <GameAI/NavmeshStructs.hpp>
 #include <Util.hpp>
 #include <stack>
 
-#include <GameEngine/GameEngine.hpp>
+#include <Omicron/Omicron.hpp>
 #include <ComponentArch/ObjectManager.hpp>
-#include "CTransform.hpp"
 #include <Singleton.hpp>
 
-#include "CRigidBody.hpp"
-#include <Bullet/ggDynWorld.hpp>
+#include "CTransform.hpp"
+
+
+
+#include <Omicron/Clock.hpp>
+class CRigidBody;
+class ggDynWorld;
 
 class CNavmeshAgent : public IComponent {
     friend class Factory;
@@ -22,16 +25,17 @@ class CNavmeshAgent : public IComponent {
         virtual ~CNavmeshAgent();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
+        virtual void FixedUpdate();
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
-        gg::EMessageStatus MHandler_UPDATE  ();
 
-        void SetDestination(const gg::Vector3f &Target);
+        void SetDestination(const glm::vec3 &Target);
         bool HasDestination();
+        void ResetDestination();
 
         std::stack<Waypoint> Waypoints;
 
@@ -39,16 +43,24 @@ class CNavmeshAgent : public IComponent {
         CNavmeshAgent();
         CNavmeshAgent(const CNavmeshAgent &orig) = delete;
 
-        GameEngine* Engine;
+        void CheckShortcut();
+        void ApplyCouterForce(const glm::vec3 &DirVector);
+
+        gg::Clock Timer;
+        glm::vec3 RS, LS;
+        glm::vec3 moveVector;
+
+        Omicron* Engine;
         ggDynWorld* world;
 
         CTransform* cTransform;
-        uint16_t currentWaypointID;
 
         CRigidBody* cRigidBody;
 
-        bool        currentlyMovingTowardsTarget;
         float SightDistance;
+        uint16_t currentWaypointID;
+        bool        currentlyMovingTowardsTarget;
+        float vel;
 };
 
 #endif

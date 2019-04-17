@@ -1,4 +1,4 @@
-#include <iostream>
+//#include <iostream>
 #include "Repetidor.hpp"
 
 Repetidor::Repetidor(Behavior* _m_pChild,float cont):Decorator(_m_pChild){

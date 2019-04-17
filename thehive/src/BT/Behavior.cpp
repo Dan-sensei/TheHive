@@ -1,9 +1,21 @@
 #include "Behavior.hpp"
-#include <iostream>
+//#include <iostream>
 
+void Behavior::SetStatus(Status _m_eStatus){
+    m_eStatus=_m_eStatus;
+}
 bool Behavior::isTerminate(){
     if(m_eStatus==BH_RUNNING) return false;
     else return true;
+
+
+
+    //BH_INVALID,
+    //BH_RUNNING,
+    //BH_SUCCESS,
+    //BH_FAILURE,
+    //BH_SUSPENDED,
+    //BH_NEUTRAL
 }
 Behavior::~Behavior(){
 
@@ -19,7 +31,6 @@ Status Behavior::tick(){
     }
 
     m_eStatus = update();
-//std::cout << "estatus final" << m_eStatus<< '\n';
     if (m_eStatus != BH_RUNNING) onTerminate(m_eStatus);
 
     return m_eStatus;

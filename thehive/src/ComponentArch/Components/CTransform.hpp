@@ -4,29 +4,31 @@
 #include <Singleton.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <Util.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 
 class CTransform : public IComponent {
+    friend class Factory;
     public:
-        CTransform(const gg::Vector3f &Position, const gg::Vector3f &Rotation);
+        CTransform(const glm::vec3 &Position, const glm::quat &Rotation);
         CTransform(const CTransform &orig);
         virtual ~CTransform();
 
         //  Functions of IComponent
-        static void initComponent();
-
 
         // Functions of this component
-        gg::Vector3f getPosition();
-        gg::Vector3f getRotation();
-        void setPosition(const gg::Vector3f &_Position);
-        void setRotation(const gg::Vector3f &_Rotation);
-        void setScale(const gg::Vector3f &scale);
+        glm::vec3 getPosition();
+        glm::quat getRotation();
+        void setPosition(const glm::vec3 &_Position);
+        void setRotation(const glm::quat &_Rotation);
+        glm::quat rotate(const float &Angle_RADs, const glm::vec3 &Axis);
+        void setScale(const glm::vec3 &scale);
 
 
     private:
-        gg::Vector3f Position;
-        gg::Vector3f Rotation;
+        glm::vec3 Position;
+        glm::quat Rotation;
 };
 
 #endif

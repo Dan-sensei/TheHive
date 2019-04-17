@@ -3,36 +3,71 @@
 
 #include <GameAI/Pathfinding.hpp>
 #include <cmath>
-#include <iostream>
-#include <GameEngine/ScreenConsole.hpp>
+//#include <iostream>
+#include <Omicron/2D/Motor2D.hpp>
 #include <Singleton.hpp>
+#include <GameAI/AIDirector.hpp>
+
+#include <BT/Action.hpp>
+#include <ComponentArch/Components/CPlayerController.hpp>
+#include <ComponentArch/Components/CFlock.hpp>
+
+#define K_DMG_VALUE 20.f
+
 CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
 {
-std::cout << "vida" << '\n';
+    Manager         = Singleton<ObjectManager>::Instance();
+    hud             = Singleton<Motor2D>::Instance();
+    triggerSystem   = Singleton<CTriggerSystem>::Instance();
 }
 
-CVida::~CVida() {
+CVida::~CVida() {}
 
+void CVida::Muerte(){
+    vida=0;
 }
-void CVida::quitarvida(){
-    vida--;
-    if(vida==0){
+float CVida::getVida(){
+    return vida;
+}
+bool CVida::quitarvida(const float &_factor){
+    bool ret = false;
 
-        //destory
-        //Manager->removeEntity(getEntityID());
-
+    vida -= K_DMG_VALUE*_factor;
+    if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+        hud->setvida(vida/vida_max);
     }
-    float res=(float)vida/vida_max;
-    Singleton<ScreenConsole>::Instance()->setvida(res);
-    std::cout << "vida:" <<vida << '\n';
-}
+    else{
+        if(vida <= 0){
+            //gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
+            vida = 0;
+            ret = true;
 
-void CVida::initComponent() {
-    std::cout << "llega a la vida" << '\n';
+            //Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID());
+            //Manager->getComponent(gg::AIENEM,getEntityID());
 
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::VIDA, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::VIDA, gg::M_SETPTRS);
+            CAIEnem* cAIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+            CPlayerController* cPlayerController = static_cast<CPlayerController*>(Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID()));
+            //cTransform = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,yo->getEntityID()));
+            switch (cAIEnem->getEnemyType()) {
+                case gg::SOLDIER:
+                    cPlayerController->currentsoldier--;
+                    break;
+                case gg::TANK:
+                cPlayerController->currenttank--;
+                    break;
+                case gg::RUSHER:
+                cPlayerController->currentrusher--;
+                    break;
+            }
+
+
+            //
+        }
+    }
+    //gg::cout("DAMAGE DONE-> "+std::to_string(K_DMG_VALUE*_factor)+"["+std::to_string(vida)+"/"+std::to_string(vida_max)+"]");
+
+    return ret;
 }
 
 void CVida::Init(){
@@ -44,8 +79,7 @@ void CVida::Init(){
 
 gg::EMessageStatus CVida::processMessage(const Message &m) {
 
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
@@ -57,14 +91,35 @@ gg::EMessageStatus CVida::processMessage(const Message &m) {
 gg::EMessageStatus CVida::MHandler_SETPTRS(){
     //cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
     //cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
-
     return gg::ST_TRUE;
 }
 
 
-gg::EMessageStatus CVida::MHandler_UPDATE(){
+void CVida::FixedUpdate() {
+    if(vida <= 0){
+        if(!Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+            CTransform  *t  = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,getEntityID()));
+            CAIEnem     *AI = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+            if(t && AI){
+                // //gg::cout("DEAD ALIEN");
+                if(AI->getImAttacking())
+                    Action::aliensAttacking--;
+                // Evento para que los enemigos vean que se ha muerto un aliado suyo
 
+                triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 20, 5000, false, TData());
+            }
+            AIDirector* dir=Singleton<AIDirector>::Instance();
+            //dir->removeEnemy(t);
+            CFlock* flock_lider = static_cast<CFlock*>(Manager->getComponent(gg::FLOCK,getEntityID()));
+            if(flock_lider){
+                flock_lider->Muerte();
+            }
+            Manager->removeEntity(getEntityID());
+            //aqui se muere
 
+        }
+        else{
 
-    return gg::ST_TRUE;
+        }
+    }
 }

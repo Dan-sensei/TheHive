@@ -20,6 +20,6 @@ std::string     BData::getString(){
     return "";
 }
 
-gg::Vector3f    BData::getVector3f(){
-    return gg::Vector3f();
+glm::vec3    BData::getVector3f(){
+    return glm::vec3();
 }

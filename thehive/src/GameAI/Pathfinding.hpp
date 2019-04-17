@@ -4,9 +4,10 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <random>
 #include "NavmeshStructs.hpp"
 #include <Util.hpp>
-#include <GameEngine/Billboard.hpp>
+#include <Omicron/2D/BillboardBueno.hpp>
 
 template <typename T>
 class Singleton;
@@ -21,14 +22,14 @@ class Pathfinding {
     public:
         ~Pathfinding();
 
-        void FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output);
+        void FindPath(const glm::vec3 &START, const glm::vec3 &GOAL, std::stack<Waypoint> &Output);
         void A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output);
         void resetGraph();
         void print();
 
-        void DroNodes();
+        glm::vec3 getRandomNodePosition();
 
-        uint16_t getGraphSize();
+        void DroNodes();
 
         void SetDebug(bool flag);
         bool isDebugging();
@@ -39,7 +40,8 @@ class Pathfinding {
         Pathfinding(const Pathfinding &orig) = delete;
         Pathfinding operator=(const Pathfinding &orig) = delete;
 
-        void printStats();
+        uint16_t FindClosestNodeOfFace(const glm::vec3 &Position, uint16_t Node);
+
         std::vector<Node> GRAPH;
         std::vector<std::vector<Connection>> GConnections;
         std::priority_queue<Node*, std::vector<Node*>, Comparator> OpenList;
@@ -47,10 +49,10 @@ class Pathfinding {
         std::vector<Face> FACES;
 
         //Debug
-        std::vector<Billboard> IDs;
-        std::vector<Billboard> BillboardFaces;
+        std::vector<BillboardBueno> IDs;
+        std::vector<BillboardBueno> BillboardFaces;
+        glm::vec3 Goal;
         bool Debug;
-        uint16_t goal;
 };
 
 

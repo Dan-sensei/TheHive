@@ -1,3 +1,11 @@
+
+
+
+
+//
+
+
+
 enum Hojas {
     ANDAR_RAND,
     COMER,
@@ -13,6 +21,8 @@ enum Hojas {
     MOVE_TO_LAST_POS_KWON,
     IN_LAST_POS_KWON,
     JUST_MOVE,
+    MOVEP_UNTILX,
+    IAMATACKING,
     RANGO_ULTRASONIDO,
     RANGO_SENYUELO,
     MOVER_SENYUELO,
@@ -29,5 +39,16 @@ enum Hojas {
     RONDAR_PLAYER,
     PAUSE,
     MOVE_TO_PLAYER,
+    FIVE_SINCELASTHABILITY,
+    EXPANSIVE_WAVE,
+    SPIT, // Es escupir en inglis
+    ENEMY_OVER_2_METERS,
+    PRE_DASH_TO_PLAYER,
+    PRE_DASH_TO_LAST_PLAYER,
+    DASH,
+    IAMLEADER,
+    FOLLOWLEADER,
+    KAMIKACE,
+    LOOKAROUND,
     NUM_ACCIONES
 };

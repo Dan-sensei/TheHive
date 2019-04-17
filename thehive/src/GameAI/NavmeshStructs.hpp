@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <string>
-#include <iostream>
+//#include <iostream>
 #include <Util.hpp>
 #include <vector>
 
@@ -14,19 +14,19 @@ enum Type{
 };
 
 struct Face{
-    Face(const gg::Vector3f _TL, const gg::Vector3f _BR);
+    Face(const glm::vec3 _TL, const glm::vec3 _BR);
     Face(const Face &orig);
 
     std::vector<uint16_t> Portals;
-    gg::Vector3f TL, BR;
+    glm::vec3 TL, BR;
 };
 
 struct Connection{
-    Connection(float _Value = 0, uint16_t _From = 0, uint16_t _To = 0/*, const gg::Vector3f &_Vertex1 = gg::Vector3f(), const gg::Vector3f &_Vertex2 = gg::Vector3f()*/);
+    Connection(float _Value = 0, uint16_t _From = 0, uint16_t _To = 0/*, const glm::vec3 &_Vertex1 = glm::vec3(), const glm::vec3 &_Vertex2 = glm::vec3()*/);
     Connection(const Connection &orig);
 
-    //gg::Vector3f Vertex1;
-    //gg::Vector3f Vertex2;
+    //glm::vec3 Vertex1;
+    //glm::vec3 Vertex2;
     float Value;
     uint16_t From;
     uint16_t To;
@@ -34,11 +34,11 @@ struct Connection{
 
 struct Node{
     Node();
-    Node(uint16_t _ID, uint16_t _NODE_1, uint16_t _NODE_2, const gg::Vector3f &_Position, float _Radius);
+    Node(uint16_t _ID, uint16_t _NODE_1, uint16_t _NODE_2, const glm::vec3 &_Position, float _Radius);
     Node(const Node &orig);
 
+    glm::vec3 Position;
     Connection Bitconnect;
-    gg::Vector3f Position;
     float RealCost;
     float EstimatedCost;
     float Radius;
@@ -50,14 +50,12 @@ struct Node{
 
 struct Waypoint{
     Waypoint();
-    Waypoint(const gg::Vector3f &_Position, uint16_t _ID, float _Radius);
+    Waypoint(const glm::vec3 &_Position, uint16_t _ID, float _Radius);
     Waypoint(const Waypoint &orig);
 
-    gg::Vector3f Position;
+    glm::vec3 Position;
     float Radius;
     uint16_t ID;
 };
-
-std::ostream& operator<<(std::ostream& os, const Node &N);
 
 #endif

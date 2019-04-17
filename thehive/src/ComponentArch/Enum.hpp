@@ -4,12 +4,10 @@
 namespace gg{
 
     enum EComponentType{
-        TRANSFORM = 0,
         PLAYERCONTROLLER,
-        RENDERABLE_3D,
-        CAMERA,
+        FLOCK,
         RIGID_BODY,
-        AGENT,
+        RENDERABLE_3D,
         GRANADE,
         GUN,
         NAVMESHAGENT,
@@ -17,13 +15,27 @@ namespace gg{
         AIENEM,
         CLOCK,
         VIDA,
+
+        CAMERA,
+        AGENT,
+        TRANSFORM,
+        STATICMODEL,
+        DYNAMICMODEL,
+        BOXCOLLIDER,
+        MESHCOLLIDER,
         //HEALTH,
         //RESPECT,
-        //PABLONDEMADERASABEPROGRAMAR
+        //PABLONDEMADERANOSABEPROGRAMAR
         NUM_COMPONENTS
     };
+
+    // ORDENADOS DE MAYOR A MENOR VELOCIDAD DE MOVIMIENTO!!
     enum EEnemyType{
+        RUSHER,
         SOLDIER,
+        TRACKER,
+        TANK,
+        SWARM,
         NUM_ENEMY
     };
 

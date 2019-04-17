@@ -1,21 +1,13 @@
 #include "CGranade2.hpp"
 
-
-#include "ComponentArch/Message.hpp"
-
-#include <EventSystem/TData.hpp>
-#include "Factory.hpp"
-
-
 CGranade2::CGranade2()
-: CGranade(600)
-{
-}
+: CGranade(30,0)
+{}
 
-CGranade2::~CGranade2() {
+CGranade2::~CGranade2() {}
 
-}
 void CGranade2::explosion(){
     TData mes;
-    EventSystem->RegisterTriger(kTrig_Senyuelo,1,0,cTransform->getPosition(), radius, 10000,false,mes);
+    int dur = 3000;
+    EventSystem->RegisterTriger(kTrig_Senyuelo,1,0,cTransform->getPosition(), radius, dur,false,mes);
 }

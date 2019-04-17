@@ -2,23 +2,66 @@
 //#include "Enum.hpp"
 #include <GameAI/Pathfinding.hpp>
 #include <Singleton.hpp>
-#include <iostream>
-
+//#include <iostream>
+#include "Bullet/ggDynWorld.hpp"
+#include <ComponentArch/Components/CRigidBody.hpp>
                      //  2^16
 #define MAX_ENTITIES 65536
 
-void *operator new(std::size_t size, Arena &A){
-    return A.allocate(size);
-}
+ObjectManager::ObjectManager() {
+    nextAvailableEntityID.push(1);//
 
-void operator delete(void* p, Arena &A){
-    return A.deallocate(p);
-}
+    //  Defines wich kind of messages will receive each type of component
+    //  We just insert in the array of vectors, the component type in the messageTYpe array position
+    //  Dani deja el ingle
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::VIDA);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::VIDA);
 
-ObjectManager::ObjectManager()
-:memory(128)
-{
-    nextAvailableEntityID.push(1);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::M_EVENT_ACTION].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::M_INTERPOLATE_PRESAVE].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::M_INTERPOLATE_POSTSAVE].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::M_INTERPOLATE].push_back(gg::RIGID_BODY);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::RIGID_BODY);
+
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::RENDERABLE_3D);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::RENDERABLE_3D);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::DYNAMICMODEL);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::DYNAMICMODEL);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::PLAYERCONTROLLER);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::PLAYERCONTROLLER);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::PLAYERCONTROLLER);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::NAVMESHAGENT);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::NAVMESHAGENT);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::NAVMESHAGENT);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::HAB);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::HAB);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::GUN);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::GUN);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::GRANADE);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::GRANADE);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::CLOCK);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::CLOCK);
+
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::FLOCK);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::FLOCK);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AIENEM);
+    MessageToListeningComponents[gg::FIXED_UPDATE].push_back(gg::AIENEM);
+    MessageToListeningComponents[gg::UPDATE].push_back(gg::AIENEM);
+
+    MessageToListeningComponents[gg::M_SETPTRS].push_back(gg::AGENT);
+
 }
 
 
@@ -30,23 +73,47 @@ ObjectManager::~ObjectManager() {
 }
 
 void ObjectManager::clin(){
-    // std::cout << "Destruyendo todos los componentes..." << '\n';
     uint8_t i = gg::NUM_COMPONENTS;
     while (i--){
         std::map<uint16_t, IComponent*>::iterator it=TypeToComponentMap[i].begin();
 
         while(it!=TypeToComponentMap[i].end()){
-            // std::cout << "  -Eliminando componente " << (int)i << " de entidad " << it->first << '\n';
             //it->second->~IComponent();
             //memory.deallocate(it->second);
             delete it->second;
             ++it;
         };
+        TypeToComponentMap[i].clear();
     }
+
     Singleton<Pathfinding>::Instance()->clear();    //  Provisional
 }
 
+int ObjectManager::returnIDFromRigid(btRigidBody* esto){
+    //compr esto
+    //const gg::EComponentType &cType
+    ////std::cout << "hecho" << '\n';
+    std::map<uint16_t, IComponent*>::iterator found = TypeToComponentMap[gg::RIGID_BODY].begin();
+    while(found!=TypeToComponentMap[gg::RIGID_BODY].end()){
+        ////std::cout << "entra" << '\n';
+        CRigidBody* cRigidBody = static_cast<CRigidBody*>(found->second);
+        if(esto!=nullptr&&cRigidBody->getBody()!=nullptr&&cRigidBody->getBody()==esto){
+            ////std::cout << "si joder" << '\n';
+            ////std::cout << found->first << '\n';
+            return found->first;
+        }
+        found++;
+        ////std::cout << "sale" << '\n';
+        //found->second;
+    }
+    ////std::cout << "sale fin" << '\n';
+return 0;
+    //  If exists
+    //if(found != TypeToComponentMap[cType].end())
+    //    return found->second;   // <- We return the pointer to it
 
+
+}
 
 uint16_t ObjectManager::createEntity() {
     //  The stack will usually contain only one element wich will
@@ -100,15 +167,33 @@ void ObjectManager::removeComponentFromEntity(gg::EComponentType type, uint16_t 
     if(foundComponent == TypeToComponentMap[type].end())
         return;
 
-    // std::cout << "B Component " << type << '\n';
     delete foundComponent->second;
     TypeToComponentMap[type].erase(foundComponent);
-
+    ////std::cout << "FLOCKING SIZE " << TypeToComponentMap[gg::FLOCK].size() << '\n';
     if(Erase) return;
 
     Message recalculatePointersToAnotherComponents(gg::M_SETPTRS);
     sendMessageToEntity(EntityID, recalculatePointersToAnotherComponents);
-    // std::cout << "Deleting" << '\n';
+}
+
+void ObjectManager::swapComponents(gg::EComponentType type, uint16_t EntityID, IComponent **Component){
+    IComponent* tmp = nullptr;
+    // std::cout << "BEFORE" << '\n';
+    // std::cout << "  PRIMARY:         " << (TypeToComponentMap[type])[EntityID] << '\n';
+    // std::cout << "  SECONDARY:       " << *Component << '\n';
+    // std::cout << "  TMP:             " << tmp << '\n';
+
+    tmp = (TypeToComponentMap[type])[EntityID];
+    (TypeToComponentMap[type])[EntityID] = *Component;
+    *Component = tmp;
+
+    (TypeToComponentMap[type])[EntityID]->setEntityID(EntityID);
+    (TypeToComponentMap[type])[EntityID]->Init();
+
+    // std::cout << "AFTER" << '\n';
+    // std::cout << "  PRIMARY:         " << (TypeToComponentMap[type])[EntityID] << '\n';
+    // std::cout << "  TMP:             " << tmp << '\n';
+    // std::cout << "  SECONDARY:       " << *Component << '\n';
 }
 
 void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID){
@@ -120,21 +205,15 @@ void ObjectManager::removeComponentFromEntityMAP(gg::EComponentType type, uint16
     TypeToComponentMap[type].erase(foundComponent);
 }
 
-
-
-void ObjectManager::subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType) {
-    //  We just insert in the array of vectors, the component type in the messageTYpe array position
-    MessageToListeningComponents[mType].push_back(cType);
-}
-
-
 void ObjectManager::sendMessageToAllEntities(const Message &m){
     // We iterate over every component in the map that expects to receive that kind of message
 
     std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
     std::map<uint16_t, IComponent*>::iterator entitiesIterator;
     // First we search for a component type that expects that message type
+    int i=0;
     while(componentsIterator != MessageToListeningComponents[m.mType].end()){
+        i++;
 
         //  Found one!
         entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
@@ -150,6 +229,29 @@ void ObjectManager::sendMessageToAllEntities(const Message &m){
     }
 }
 
+void ObjectManager::UpdateAll(){
+    CallFunctionOfComponentes(gg::UPDATE, &IComponent::Update);
+}
+
+void ObjectManager::FixedUpdateAll(){
+    CallFunctionOfComponentes(gg::FIXED_UPDATE, &IComponent::FixedUpdate);
+}
+
+void ObjectManager::CallFunctionOfComponentes(gg::MessageType mType, void (IComponent::*TypeOfUpdate)()){
+    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[mType].begin();
+    std::map<uint16_t, IComponent*>::iterator entitiesIterator;
+
+    while(componentsIterator != MessageToListeningComponents[mType].end()){
+        entitiesIterator = TypeToComponentMap[*componentsIterator].begin();
+        while(entitiesIterator != TypeToComponentMap[*componentsIterator].end()) {
+            auto current = entitiesIterator;
+            ++entitiesIterator;
+            (current->second->*TypeOfUpdate)();
+        }
+
+        ++componentsIterator;
+    }
+}
 
 void ObjectManager::sendMessageToEntity(uint16_t EntityID, const Message &m){
 
@@ -171,27 +273,6 @@ void ObjectManager::sendMessageToEntity(uint16_t EntityID, const Message &m){
     }
 }
 
-bool ObjectManager::checkEvent(uint16_t EntityID, const Message &m){
-
-    // Same as sendMessageToAllEntities, but just for one EntityID
-    std::vector<gg::EComponentType>::iterator componentsIterator = MessageToListeningComponents[m.mType].begin();
-    std::map<uint16_t, IComponent*> entitiesMap;
-    while(componentsIterator != MessageToListeningComponents[m.mType].end()){
-
-        entitiesMap = TypeToComponentMap[*componentsIterator];
-
-        std::map<uint16_t, IComponent*>::iterator EntityFound;
-        EntityFound = entitiesMap.find(EntityID);
-
-        if(EntityFound != entitiesMap.end()){
-            if(EntityFound->second->processMessage(m)==gg::ST_FALSE) return false;
-        }
-
-        ++componentsIterator;
-    }
-    return true;
-}
-
 IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const uint16_t &EntityID){
     //  Searchs on the map of that componentType if that EntityID exists
     std::map<uint16_t, IComponent*>::iterator found = TypeToComponentMap[cType].find(EntityID);
@@ -200,7 +281,14 @@ IComponent* ObjectManager::getComponent(const gg::EComponentType &cType, const u
     if(found != TypeToComponentMap[cType].end())
         return found->second;   // <- We return the pointer to it
 
-
     //  If not
     return nullptr; //  <- We return nullptr
+}
+
+uint16_t ObjectManager::getHeroID(){
+    return HERO_ID;
+}
+
+void ObjectManager::setHeroID(uint16_t _id){
+    HERO_ID = _id;
 }

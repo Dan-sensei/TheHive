@@ -1,8 +1,8 @@
 #include "Pathfinding.hpp"
-#include <iostream>
-#include "MeshImporter.hpp"
+//#include <iostream>
+#include <BinaryParser.hpp>
 #include "Singleton.hpp"
-#include <GameEngine/GameEngine.hpp>
+#include <Omicron/Omicron.hpp>
 #include <numeric>
 
 
@@ -12,51 +12,12 @@ bool Comparator::operator()(const Node* N1, const Node* N2){
 }
 
 Pathfinding::Pathfinding()
-:Debug(false), goal(0)
+:Debug(false)
 {
 
-    bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
-    for(uint16_t i = 0; i < GConnections.size(); ++i){
-        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            if(GConnections[i][j].Value == 0)
-                GConnections[i][j].Value = gg::DIST(GRAPH[GConnections[i][j].From].Position, GRAPH[GConnections[i][j].To].Position);
-        }
-    }
-
-    //std::cout << "GRAPH CREATED!" << '\n';
-
-    std::cout << " ->" << GRAPH.size() << " Nodes created!" << '\n';
-
-    for(uint16_t i = 0; i < GRAPH.size(); ++i){
-        std::cout << "  -- " << i << " = " << GRAPH[i] << '\n';
-    }
-
-    uint16_t cons = 0;
-    //std::cout << "Connections:" << '\n';
-    for(uint16_t i = 0; i < GConnections.size(); ++i){
-        //std::cout << "[" << i << "] => ";
-        for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            //std::cout << GConnections[i][j].Name << " = " << GConnections[i][j].Value << " | ";
-            ++cons;
-        }
-        //std::cout << '\n';
-    }
-
-    std::cout << " ->" << cons << " Connections created!" << '\n';
-    std::cout << " ->" << FACES.size() << " Faces created!" << '\n';
-    for(uint16_t i = 0; i < FACES.size(); ++i){
-        std::cout << "   Face " << i << "  | P: ";
-        for(uint16_t j = 0; j < FACES[i].Portals.size(); ++j)
-            std::cout << " " << FACES[i].Portals[j];
-        std::cout << '\n';
-    }
-    //std::cout << "Test" << '\n';
-    //GRAPH[0].EstimatedCost = 10;
-    //GRAPH[2].EstimatedCost = 20;
-    //OpenList.push(&GRAPH[0]);
-    //OpenList.push(&GRAPH[1]);
-
-    //std::cout << "ID : " << OpenList.top()->ID << " | ESTIMATED COST = " << OpenList.top()->EstimatedCost << '\n';
+    //bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
+    BinaryParser::ReadNavmeshData("assets/BinaryFiles/NavmeshCITY.gg", GRAPH, GConnections, FACES);
+    //// //std::cout << "GRAPH CREATED!" << '\n';
 }
 
 Pathfinding::~Pathfinding(){
@@ -66,30 +27,30 @@ Pathfinding::~Pathfinding(){
 void Pathfinding::SetDebug(bool flag){
     Debug = flag;
 
-    if(flag && IDs.empty()){
-        IDs.resize(GRAPH.size());
-        uint16_t i = GRAPH.size();
-        while(i--){
-
-            Singleton<GameEngine>::Instance()->createBillboard(IDs[i], GRAPH[i].Position + gg::Vector3f(0, 60, 0));
-            IDs[i].setText(std::to_string(i) );
-            uint8_t color[4] = {1, 0, 0, 0};
-            IDs[i].setColor(color);
-        }
-
-        BillboardFaces.resize(FACES.size());
-        uint16_t j = FACES.size();
-        while(j--){
-            uint8_t color[4] = {1, 0, 0, 0};
-
-            Singleton<GameEngine>::Instance()->createBillboard(BillboardFaces[j], FACES[j].TL + gg::Vector3f(0, 60+j*2, 0));
-            BillboardFaces[j].setText(std::to_string(j));
-            BillboardFaces[j].setColor(color);
-        }
-    }
-    else if(!flag && !IDs.empty()){
-        IDs.clear();
-    }
+    // if(flag && IDs.empty()){
+    //     IDs.resize(GRAPH.size());
+    //     uint16_t i = GRAPH.size();
+    //     while(i--){
+    //
+    //         Singleton<GameEngine>::Instance()->createBillboard(IDs[i], GRAPH[i].Position + glm::vec3(0, 60, 0));
+    //         IDs[i].setText(std::to_string(i) );
+    //         uint8_t color[4] = {1, 0, 0, 0};
+    //         IDs[i].setColor(color);
+    //     }
+    //
+    //     BillboardFaces.resize(FACES.size());
+    //     uint16_t j = FACES.size();
+    //     while(j--){
+    //         uint8_t color[4] = {1, 0, 0, 0};
+    //
+    //         Singleton<GameEngine>::Instance()->createBillboard(BillboardFaces[j], FACES[j].TL + glm::vec3(0, 60+j*2, 0));
+    //         BillboardFaces[j].setText(std::to_string(j));
+    //         BillboardFaces[j].setColor(color);
+    //     }
+    // }
+    // else if(!flag && !IDs.empty()){
+    //     IDs.clear();
+    // }
 }
 
 bool Pathfinding::isDebugging(){
@@ -97,7 +58,7 @@ bool Pathfinding::isDebugging(){
 }
 
 void Pathfinding::resetGraph(){
-    //std::cout << "Reseting" << '\n';
+    //// //std::cout << "Reseting" << '\n';
     uint16_t i = GRAPH.size();
     while(i--){
         GRAPH[i].Status = Type::UNVISITED;
@@ -108,7 +69,6 @@ void Pathfinding::resetGraph(){
 }
 
 void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint> &Output){
-    goal = GOAL;
     resetGraph();
     OpenList = std::priority_queue<Node*, std::vector<Node*>, Comparator>();
 
@@ -164,137 +124,99 @@ void Pathfinding::A_Estrella(uint16_t START, uint16_t GOAL, std::stack<Waypoint>
     }
 
     if(CurrentNode->ID != GOAL) {
-        gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
+        ////gg::cout("CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR");
         //std::cout << "CAMINANTE NO HAY CAMINO SE HACE CAMINO AL ANDAR" << '\n';
     }
     else{
-        uint16_t nodes = 0;
         while(CurrentNode->ID != START) {
             Node* Next = &GRAPH[CurrentNode->Bitconnect.To];
-            Output.emplace(Next->Position, CurrentNode->ID, Next->Radius);
+            Output.emplace(Next->Position, Next->ID, Next->Radius);
             CurrentNode = &GRAPH[CurrentNode->Bitconnect.From];
-            ++nodes;
         }
-        gg::cout("PATH " + std::to_string(nodes));
     }
-
-    printStats();
 }
 
-void Pathfinding::FindPath(const gg::Vector3f &START, const gg::Vector3f &GOAL, std::stack<Waypoint> &Output) {
+void Pathfinding::FindPath(const glm::vec3 &START, const glm::vec3 &GOAL, std::stack<Waypoint> &Output) {
 
-    std::cout << "SEARCHING!" << '\n';
     uint16_t StartFN, GoalFN;
-    //float dist = std::inner_product(p.normal, (vectorSubtract(point, p.point)));
+
     bool FoundStart = false;
     bool FoundGoal = false;
     for(uint16_t i = 0; i < FACES.size(); ++i) {
 
-        if(START.X < FACES[i].TL.X || START.Z > FACES[i].TL.Z)
-            continue;
+        if(!FoundStart){
+            if(START.x >= FACES[i].TL.x && START.z <= FACES[i].TL.z && START.x <= FACES[i].BR.x && START.z >= FACES[i].BR.z){
+                // float FaceYCenter = (FACES[i].TL.y + FACES[i].BR.y)/2;
+                // if(abs(FaceYCenter - START.y) < 85){
+                    StartFN = i;
+                    FoundStart = true;
+                //}
+            }
+        }
 
-        else if(START.X > FACES[i].BR.X || START.Z < FACES[i].BR.Z)
-            continue;
+        if(!FoundGoal){
+            if(GOAL.x >= FACES[i].TL.x && GOAL.z <= FACES[i].TL.z && GOAL.x <= FACES[i].BR.x && GOAL.z >= FACES[i].BR.z){
+                // float FaceYCenter = (FACES[i].TL.y + FACES[i].BR.y)/2;
+                // if(abs(FaceYCenter - GOAL.y) < 85){
+                    GoalFN = i;
+                    FoundGoal = true;
+                //}
+            }
+        }
 
-
-        StartFN = i;
-        FoundStart = true;
-        break;
-    }
-
-    for(uint16_t i = 0; i < FACES.size(); ++i) {
-        if(GOAL.X < FACES[i].TL.X || GOAL.Z > FACES[i].TL.Z)
-            continue;
-
-        else if(GOAL.X > FACES[i].BR.X || GOAL.Z < FACES[i].BR.Z)
-            continue;
-
-        GoalFN = i;
-        FoundGoal = true;
-        break;
+        if(FoundStart && FoundGoal) break;
     }
 
     if(!FoundStart || !FoundGoal){
-        gg::cout("LA POSICION DEL JUGADOR O GOAL, NO ESTÁN EN NINGUN POLÍGONO", gg::Color(255, 0, 0, 1));
+        // //gg::cout("El destino no esta en ninguna cara del Navmesh", gg::Color(255, 0, 0, 1));
         return;
     }
-    std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
+    // //std::cout << "FOUND IT! Start = " << StartFN << " | Goal " << GoalFN << '\n';
 
+    Goal = GOAL;
     if(StartFN == GoalFN){
-        Output.emplace(START, 0, 0);
+        Output.emplace(GOAL, 0, 0);
         return;
     }
 
-
-    uint16_t StartPortal = FACES[StartFN].Portals[0];
-    if(FACES[StartFN].Portals.size() > 1){
-        float currentDist = gg::FastDIST(START, GRAPH[FACES[StartFN].Portals[0]].Position);
-        for(uint16_t i = 1; i < FACES[StartFN].Portals.size(); ++i){
-            float newMin = gg::FastDIST(START, GRAPH[FACES[StartFN].Portals[i]].Position);
-            if(newMin < currentDist) {
-                currentDist = newMin;
-                StartPortal = FACES[StartFN].Portals[i];
-            }
-        }
-    }
-
-    uint16_t EndPortal = FACES[GoalFN].Portals[0];
-    if(FACES[GoalFN].Portals.size() > 1){
-        float currentDist = gg::FastDIST(GOAL, GRAPH[FACES[GoalFN].Portals[0]].Position);
-        for(uint16_t i = 1; i < FACES[GoalFN].Portals.size(); ++i){
-            float newMin = gg::FastDIST(GOAL, GRAPH[FACES[GoalFN].Portals[i]].Position);
-            if(newMin < currentDist) {
-                currentDist = newMin;
-                EndPortal = FACES[GoalFN].Portals[i];
-            }
-        }
-    }
+    //  They're not in the same face, find wich Node of that face is the closest to the position
+    uint16_t StartPortal    =   FindClosestNodeOfFace(START, StartFN);
+    uint16_t EndPortal      =   FindClosestNodeOfFace(GOAL, GoalFN);
 
     Output.emplace(GOAL, EndPortal, GRAPH[EndPortal].Radius);
     A_Estrella(StartPortal, EndPortal, Output);
+    Output.emplace(GRAPH[StartPortal].Position, StartPortal, GRAPH[StartPortal].Radius);
 }
 
-uint16_t Pathfinding::getGraphSize(){
-    return GRAPH.size()-1;
-}
+uint16_t Pathfinding::FindClosestNodeOfFace(const glm::vec3 &Position, uint16_t Node) {
+    auto Iterator = FACES[Node].Portals.begin();
+    uint16_t Portal = *Iterator;
+    ++Iterator;
+    if(Iterator != FACES[Node].Portals.end()){
+        float currentDist = glm::distance(Position, GRAPH[Portal].Position);
 
-void Pathfinding::printStats(){
-    uint16_t OPEN        = 0;
-    uint16_t CLOSED      = 0;
-    uint16_t UNVISITED   = 0;
-    for(uint8_t i = 0; i < GRAPH.size(); ++i){
-        if(GRAPH[i].Status == Type::OPEN)
-            ++OPEN;
-        else if(GRAPH[i].Status == Type::CLOSED)
-            ++CLOSED;
-        else if(GRAPH[i].Status == Type::UNVISITED)
-            ++UNVISITED;
+        while( Iterator != FACES[Node].Portals.end()){
+            float newMin = glm::distance(Position, GRAPH[*Iterator].Position);
+            if(newMin < currentDist) {
+                 currentDist = newMin;
+                 Portal = *Iterator;
+            }
+            ++Iterator;
+        }
+
     }
-    //std::cout << '\n';
-    //std::cout << "OPEN:      " << OPEN << '\n';
-    //std::cout << "CLOSED:    " << CLOSED << '\n';
-    //std::cout << "UNVISITED: " << UNVISITED << '\n' << '\n';
+    return Portal;
 }
-
 
 void Pathfinding::DroNodes(){
     if(!Debug) return;
     gg::Color color;
-    uint8_t i = GRAPH.size();
+    uint16_t i = GRAPH.size();
     uint8_t length = 0;
-
-    GameEngine* Engine = Singleton<GameEngine>::Instance();
+    Omicron* Engine = Singleton<Omicron>::Instance();
 
     while(i--){
-        if(i==goal){
-             length = 200;
-             color.Alpha = 1;
-             color.R = 212;
-             color.G = 175;
-             color.B = 55;
-             goto dro;
-        }
-        else length = 100;
+        length = 50;
 
         if(GRAPH[i].Status == Type::UNVISITED){
             color.Alpha = 1;
@@ -314,19 +236,27 @@ void Pathfinding::DroNodes(){
             color.G = 102;
             color.B = 204;
         }
-        dro:
-        Engine->Draw3DLine(GRAPH[i].Position, gg::Vector3f(GRAPH[i].Position.X, GRAPH[i].Position.Y + length, GRAPH[i].Position.Z), color, 5);
 
+        //Engine->Draw3DLine(GRAPH[i].Position, glm::vec3(GRAPH[i].Position.x, GRAPH[i].Position.y + length, GRAPH[i].Position.z), color);
+
+        if(Goal.x && Goal.y && Goal.z){
+            length = 100;
+            color.Alpha = 1;
+            color.R = 212;
+            color.G = 175;
+            color.B = 55;
+            //Engine->Draw3DLine(Goal, Goal + glm::vec3(0,length,0), color);
+        }
     }
 
-    //  Connections
+    // Connections
     color.Alpha = 1;
     color.R = 0;
     color.G = 153;
     color.B = 153;
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + gg::Vector3f(0, 100, 0), GRAPH[GConnections[i][j].To].Position + gg::Vector3f(0, 100, 0), color, 2);
+            //Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 40, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 40, 0), color);
         }
     }
 
@@ -337,12 +267,20 @@ void Pathfinding::DroNodes(){
     // color.G = 20;
     // color.B = 147;
     // for(uint16_t i = 0; i < FACES.size(); ++i){
-    //     Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + gg::Vector3f(0, 100, 0), color, 2);
-    //     Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + gg::Vector3f(0, 100, 0), color, 2);
+    //     //Engine->Draw3DLine(FACES[i].TL, FACES[i].TL + glm::vec3(0, 100, 0), gg::Color(255, 20, 147, 1));
+    //     //Engine->Draw3DLine(FACES[i].BR, FACES[i].BR + glm::vec3(0, 100, 0), gg::Color(255, 20, 147, 1));
     // }
 }
 
 void Pathfinding::clear(){  //  Provisional
     IDs.clear();
     BillboardFaces.clear();
+}
+
+glm::vec3 Pathfinding::getRandomNodePosition(){
+    std::random_device rd;
+    std::default_random_engine gen(rd());
+    std::uniform_int_distribution<int> distribution(0,GRAPH.size());
+
+    return GRAPH[distribution(gen)].Position;
 }

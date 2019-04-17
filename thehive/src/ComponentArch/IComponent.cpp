@@ -1,5 +1,5 @@
 #include "IComponent.hpp"
-#include <iostream>
+//#include <iostream>
 
 IComponent::IComponent()
 :EntityID(0)
@@ -25,3 +25,5 @@ uint16_t IComponent::getEntityID(){
 }
 
 void IComponent::Init(){}
+void IComponent::Update(){}
+void IComponent::FixedUpdate(){}

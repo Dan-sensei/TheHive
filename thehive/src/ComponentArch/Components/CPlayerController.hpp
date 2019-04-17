@@ -3,46 +3,63 @@
 
 #include <cmath>
 #include <map>
+#include <string>
 
-#include <GameEngine/GameEngine.hpp>
-#include <Bullet/ggDynWorld.hpp>
-#include <GameEngine/KEYCODES.hpp>
+#include <Util.hpp>
 
-#include <ComponentArch/IComponent.hpp>
+#include <Singleton.hpp>
+#include <Omicron/Omicron.hpp>
 #include <ComponentArch/ObjectManager.hpp>
-#include <ComponentArch/Message.hpp>
-//#include <ComponentArch/Components/CHabilityController.hpp>
-//#include <GameAI/Hability.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
+#include <Bullet/ggDynWorld.hpp>
+#include "Factory.hpp"
 
+#include <Omicron/KEYCODES.hpp>
+#include <ComponentArch/IComponent.hpp>
+#include <ComponentArch/Message.hpp>
+#include <Omicron/Clock.hpp>
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
+#include <FMOD/SonidoSuperficie.hpp>
+
+<<<<<<< HEAD
 #include <FMOD/SoundEvent.hpp>
 #include <FMOD/SoundSystem.hpp>
 
 #include <Singleton.hpp>
+=======
+#define NUMBER_OF_ITEMS     3
+>>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
 
-//class Hability;
 class CCamera;
 class CTransform;
 class CRigidBody;
+class CDynamicModel;
 class CGun;
 class CHabilityController;
 
 class GameEngine;
 class ObjectManager;
 class ggDynWorld;
+class Factory;
 
 class CPlayerController : public IComponent {
     friend class Factory;
     public:
+        //static int cont_enemigos;
         virtual ~CPlayerController();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void FixedUpdate();
+        virtual void Update();
 
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
         bool canPickWeapon();
+
+
 
         bool hasItem(const uint16_t&);
         bool pickItem(const uint16_t&);
@@ -50,35 +67,96 @@ class CPlayerController : public IComponent {
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
-        gg::EMessageStatus MHandler_UPDATE  ();
 
-        void buf();
-        void debuf();
+        void SprintBuf();
+        void SprintDebuf();
+        int maxsoldier;
+        int maxrusher;
+        int maxtank;
+
+        int currentsoldier;
+        int currentrusher;
+        int currenttank;
     private:
+
         CPlayerController();
         CPlayerController(const CPlayerController &orig) = delete;
 
+
+
+
+        gg::Clock clocker;
+        glm::vec3 Target;
+
         ObjectManager* Manager;
-        GameEngine* Engine;
+        Factory* factory;
+        Omicron* Engine;
         ggDynWorld* world;
         CTransform* cTransform;
         CRigidBody* cRigidBody;
-        CCamera *camera;
+        CCamera* camera;
+        CDynamicModel* cDynamicModel;
         CHabilityController* hab;
-        bool GranadeCreate;
+        CGun *secondWeapon;
 
-        bool pulsacion_granada;
-        bool pulsacion_espacio;
-        bool pulsacion_q;
-        bool pulsacion_dash;
+        SoundSystem* SS;
+        SoundEvent* s_dash;
+
+        glm::vec3    force;
+        glm::vec3 cV;
+        float           MULT_FACTOR;
+        bool FreeCamera;
+        bool ToggleFreeCameraKey;
+        bool PlayerMovement;
         bool pulsacion_f;
+
+        bool pressed;
 
         bool debug1;
         bool debug2;
-        float           MULT_BASE;
+        float MULT_BASE;
+
+
+        SoundEvent* s_pasos;
+
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
-        CGun *secondWeapon;
-        std::array<uint16_t,3> items;
+        std::array<uint16_t,NUMBER_OF_ITEMS> items;
+
+        // std::map<int, void (CPlayerController::*)(glm::vec3&,bool&)> mapPlayerActions;
+        void check_WASD(glm::vec3 &force, bool &flag_pressed);
+        void showDebug();
+        void changeWeaponIfPossible(CGun*);
+
+
+        struct Key2Func{
+            gg::KEYCODE KEY;
+            void (CPlayerController::*Target)();
+        };
+
+        std::array<Key2Func, 14> KEYMAP;
+
+        void ToggleSkill1();
+        void ToggleSkill2();
+        void ToggleSkill3();
+        void ReloadGun();
+        void ThrowGranade();
+        void ChangeWeapon();
+        void Run();
+        void DASH();
+        void JUMP();
+        void TogglePause();
+        void invocasionhorda();
+        void invocasionwander();
+        void ToggleFreeCamera();
+        void EnemyInfo();
+
+        glm::quat RotationBetween(glm::vec3 &V1, glm::vec3 &V2);
+
+        int actualGrenadeState; // 1,2,3
+        std::map<int, void (CPlayerController::*)()> mapFuncGrenades;
+        void playerThrowHolyBomb();
+        void playerThrowMatrioska();
+        void playerThrowDopple();
 };
 
 #endif

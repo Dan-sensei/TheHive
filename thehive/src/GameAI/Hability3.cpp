@@ -16,12 +16,16 @@
     //}
     Hability3::Hability3 (int _id):Hability(_id,0,4000)
     {
+        SS = Singleton<SoundSystem>::Instance();
 
+        s_hab = new SonidoNormal();
+        SS->createSound("event:/SFX/Jugador/Habilidades/ExpansiveWave", s_hab);
     }
     Hability3::Hability3 (){
 
     }
     Hability3::~Hability3 (){
+        delete s_hab;
     }
 
     Hability3::Hability3 (const Hability3 &orig){
@@ -44,13 +48,14 @@
     //codigo de las habilidades
     void Hability3::Hab1_init (){
         TData mes;
-        mes.add(kDat_damage,6000);
+        mes.add(kDat_Damage,6000);
         CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
 
         CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, id));
         float id=cTransform->getEntityID();
-        EventSystem->PulsoTrigger(kTrig_Explosion,id,cTransform->getPosition(),500,mes);
+        EventSystem->PulsoTrigger(kTrig_ExpansiveForce,id,cTransform->getPosition(),500,mes);
         //EventSystem->RegisterTriger(kTrig_Explosion,1,0,cTransform->getPosition(), radius, 10000,false,mes);
 
+        s_hab->play();
 
     }

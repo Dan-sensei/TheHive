@@ -1,70 +1,61 @@
 #include "CGranade.hpp"
 
-
-#include "ComponentArch/Message.hpp"
-
-#include <EventSystem/TData.hpp>
-#include "Factory.hpp"
-
 #define VEL_FACTOR      200.f
 
 CGranade::CGranade(){
 
 }
-CGranade::CGranade(float _radius)
-:radius(_radius)
+CGranade::CGranade(float _radius, int time)
+:radius(_radius),exTime(time)
 {
     begin = std::chrono::high_resolution_clock::now();
+    hasContact = false;
 }
 
-CGranade::~CGranade() {
-
-}
-void CGranade::initComponent() {
-    //  We wait for the M_UPDATE message
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::GRANADE, gg::M_UPDATE);
-}
-
+CGranade::~CGranade() {}
 
 void CGranade::Init(){
-
     EventSystem = Singleton<CTriggerSystem>::Instance();
-    engine = Singleton<GameEngine>::Instance();
-    Manager = Singleton<ObjectManager>::Instance();
+    Manager     = Singleton<ObjectManager>::Instance();
+    factory     = Singleton<Factory>::Instance();
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
 }
 
 gg::EMessageStatus CGranade::processMessage(const Message &m) {
-
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
+    if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
 
     return gg::ST_ERROR;
 }
 
 gg::EMessageStatus CGranade::MHandler_SETPTRS(){
     // Inicializando punteros
-    cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
+    cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
+    cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()));
 
     return gg::ST_TRUE;
 }
 
 void CGranade::explosion(){
 }
-gg::EMessageStatus CGranade::MHandler_UPDATE(){
-    if(cTransform){
 
+
+void CGranade::FixedUpdate(){
+    if(!hasContact){
+        if(cRigidBody && cRigidBody->checkContactResponse()){
+            begin = std::chrono::high_resolution_clock::now();
+            hasContact = true;
+        }
+    }
+    else{
         auto end = std::chrono::high_resolution_clock::now(); //Start de another chrono tu see the processor time now
         auto elapsedtime = end - begin; //The difference between both crhonos is the elapsed time
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count(); //Calculate the elapsed time as milisecons
 
-        if(ms>1200){  //we control the time that we want the granade to move
+        if(ms>exTime){  //we control the time that we want the granade to move
             explosion();
             Manager->removeEntity(getEntityID());
         }
     }
-
-    return gg::ST_TRUE;
 }

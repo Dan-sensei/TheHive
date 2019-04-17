@@ -1,45 +1,36 @@
 include MakeColors
 
 BUILD	:= build/
-COMPONENTHEADERS:= src/ComponentArch/Components/ComponentHeaders.hpp
-COMPONENTS := $(wildcard src/ComponentArch/Components/*.hpp)
-COMPONENTS := $(subst src/,,$(COMPONENTS))
 
-COMPONENTINITIALIZER:= src/ComponentArch/Components/ComponentInitializer
-COMPONENTSCLASS := $(basename $(notdir $(COMPONENTS)))
-COMPONENTSCLASS := $(subst ComponentHeaders,,$(COMPONENTSCLASS))
-
-
-SOURCES := $(shell find src/ -type f -name "*.cpp")
+SOURCES := $(shell find src/ -type f -name "*.cpp" ! -path "src/Preprocessing/*")
 OBJECTS := $(patsubst %.cpp,%.o, $(SOURCES))
 OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 
 LIB := ./lib/
 
 ADDITIONAL_H :=  -I ./include -I ./src -I /usr/include/bullet
-LIBRARIES := -lGL -lGLEW -lGLU -lglut -lglfw -lassimp -lIrrlicht -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader -lBullet2FileLoader -lfmod  -lfmodstudio
-
-COMPILER := g++
+ADDITIONAL_LIB := -L ./lib
+LIBRARIES := -lfmod -lfmodL -lfmodstudio -lfmodstudioL -lGLEW -lGL -lGLU -lglut -lglfw -lSOIL2 -lassimp -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader -lBullet2FileLoader
+COMPILER := g++ -std=c++17 -O3
 
 EXE := main
 
-build: PRE_BUILD $(EXE)
+build: preprocessing $(EXE)
 
-PRE_BUILD:
-	@echo "#ifndef COMPONENTHEADERS_H" > $(COMPONENTHEADERS)
-	@echo "#define COMPONENTHEADERS_H" >> $(COMPONENTHEADERS)
-	@for header in $(COMPONENTS) ; do echo "	#include <$$header>" >> $(COMPONENTHEADERS); done
-	@echo "#endif" >> $(COMPONENTHEADERS)
-	@echo "void Factory::ComponentInitializer() {" > $(COMPONENTINITIALIZER)
-	@for init in $(COMPONENTSCLASS) ; do echo "	$$init::initComponent();" >> $(COMPONENTINITIALIZER); done
-	@echo "}" >> $(COMPONENTINITIALIZER)
+
+preprocessing:
+	cd Preprocessing && $(MAKE)
 
 $(EXE): $(OBJECTS)
 	$(call br)
 	$(call printInfo, "Generating")
 	$(call printWarning, $(EXE))
 	$(call printInfo,"...")
+<<<<<<< HEAD
 	@$(COMPILER) -o $@ $^ -L ./lib $(LIBRARIES) -Wl,-rpath,$(LIB)
+=======
+	@$(COMPILER) -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
+>>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
 	$(call printObj,  "Finished!")
 	$(call br)
 	$(call br)
@@ -54,6 +45,7 @@ $(OBJECTS): $(BUILD)%.o : %.cpp
 	$(call br)
 
 clean:
+	cd Preprocessing && $(MAKE) clean
 	$(call printWarning, "Deleting" )
 	$(call printObj,$(BUILD))
 	$(call printWarning,"..." )
@@ -65,6 +57,9 @@ clean:
 	@rm -f $(EXE)
 	$(call printSuccess,  "[OK]")
 	$(call br)
+
+pre:
+	cd Preprocessing && $(MAKE) clean
 
 init:
 	./$(EXE)
@@ -88,7 +83,7 @@ info:
 	$(call br)
 	$(call br)
 	$(call objColor)
-	#@$(foreach var,$(SOURCES), echo " "$(var); )
+	@$(foreach var,$(SOURCES), echo " "$(var); )
 	$(call noColor)
 
 	$(call br)

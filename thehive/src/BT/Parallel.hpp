@@ -1,16 +1,16 @@
 #ifndef PARALLEL_HPP
 #define PARALLEL_HPP
 
-#include <iostream>
+//#include <iostream>
 #include "Composite.hpp"
 
+enum Policy{
+    RequireOne,
+    RequireAll,
+};
 class Parallel : public Composite{
     public:
      //Status update();
-     enum Policy{
-       RequireOne,
-       RequireAll,
-     };
      Parallel(Policy succes,Policy failure);
 
      Parallel();

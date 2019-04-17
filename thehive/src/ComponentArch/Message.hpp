@@ -5,10 +5,12 @@
 namespace gg{
 
     enum MessageType{
-        M_UPDATE=0,
-        M_SETPTRS,
-        M_TRANSFORM,
-        M_DAMAGE,
+        M_SETPTRS = 0,
+        UPDATE,         //  Provisional
+        FIXED_UPDATE,   //  Provisional
+        M_INTERPOLATE_PRESAVE,
+        M_INTERPOLATE_POSTSAVE,
+        M_INTERPOLATE,
         M_EVENT_ACTION,
         //M_XPLOTATO,
         // M_PICKGUN

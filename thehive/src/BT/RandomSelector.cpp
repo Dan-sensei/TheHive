@@ -39,7 +39,6 @@ secuencia.clear();
                         incluido=true;
                         secuencia[i]=x;
 
-                        //std::cout<<"El random es "<< x<<'\n';
 
                     }
                 }
@@ -80,5 +79,4 @@ secuencia.clear();
   return BH_INVALID;
 }
 void RandomSelector::onTerminate(Status state){
-  //std::cout << "RandomSelector onTerminate" << state << '\n';
 }

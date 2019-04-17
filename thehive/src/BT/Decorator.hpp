@@ -1,7 +1,7 @@
 #ifndef DECORATOR_H
 #define DECORATOR_H
 
-#include <iostream>
+//#include <iostream>
 #include "Behavior.hpp"
 
 // Rama del arbol con solo un hijo

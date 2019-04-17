@@ -1,7 +1,7 @@
 #ifndef INVERSO_H
 #define INVERSO_H
 
-#include <iostream>
+//#include <iostream>
 #include "Decorator.hpp"
 
 class Inverso : public Decorator{

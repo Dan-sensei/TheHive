@@ -2,11 +2,9 @@
 #define GL_DEBUG_DRAWER_H
 
 #include <stdio.h>
-#include <iostream>
-#include <irrlicht/irrlicht.h>
+//#include <iostream>
 #include <LinearMath/btIDebugDraw.h>
 
-#include <GameEngine/GameEngine.hpp>
 #include <Singleton.hpp>
 #include <Util.hpp>
 

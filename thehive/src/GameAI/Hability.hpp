@@ -3,7 +3,7 @@
 
 #include "Enumhabs.hpp"
 #include <chrono>
-#include <GameEngine/ScreenConsole.hpp>
+#include <Omicron/2D/Motor2D.hpp>
 //#include <string>
 
 class CTriggerSystem;

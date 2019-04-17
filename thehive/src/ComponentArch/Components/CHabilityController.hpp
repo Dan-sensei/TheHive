@@ -4,9 +4,9 @@
 #include <cmath>
 #include <map>
 
-#include <GameEngine/GameEngine.hpp>
+
 #include <Bullet/ggDynWorld.hpp>
-#include <GameEngine/KEYCODES.hpp>
+#include <Omicron/KEYCODES.hpp>
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/ObjectManager.hpp>
@@ -19,14 +19,14 @@
 #include <Singleton.hpp>
 
 //class Hability;
-class CCamera;
-class CTransform;
-class CRigidBody;
-class CGun;
+// class CCamera;
+// class CTransform;
+// class CRigidBody;
+// class CGun;
 
-class GameEngine;
-class ObjectManager;
-class ggDynWorld;
+// class GameEngine;
+// class ObjectManager;
+// class ggDynWorld;
 
 class CHabilityController : public IComponent {
 
@@ -35,22 +35,21 @@ class CHabilityController : public IComponent {
         virtual ~CHabilityController();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void FixedUpdate();
 
 
         // Handlers
         gg::EMessageStatus MHandler_SETPTRS ();
-        gg::EMessageStatus MHandler_UPDATE  ();
 
-        void pulsado(int hab);
+        void ToggleSkill(int HabilityID);
 
     private:
         CHabilityController(const CHabilityController &orig) = delete;
 
 
-        Hability* hab[3];
+        Hability* Habilities[3];
         //Hability hab2;
         //Hability hab3;
 

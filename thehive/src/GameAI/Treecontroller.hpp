@@ -1,35 +1,58 @@
 #ifndef TREECONTROLLER
 #define TREECONTROLLER
 
-#include "EventSystem/Blackboard.hpp"
-#include <BT/BehaviorTree.hpp>
-#include "ComponentArch/Components/CAIEnem.hpp"
-
 #include <vector>
+#include <map>
+#include <Util.hpp>
+
+#include <BT/BehaviorTree.hpp>
+#include <BT/Action.hpp>
+
+#include "EventSystem/Blackboard.hpp"
+#include "ComponentArch/Components/CAIEnem.hpp"
+//#include "BT/Hojas.hpp"
+
+
 class CAIEnem;
+class Action;
+class Parallel;
+class Sequence;
+class Selector;
+class Inverso;
+class RandomSelector;
+//enum Hojas;
 class Treecontroller {
-private:
-    /* data */
-    Blackboard* data;
+    public:
 
-    using Behaviors = std::vector<Behavior*>;
-    Behaviors m_Children;
+        Treecontroller (Blackboard*,gg::EEnemyType,CAIEnem*);
+        Treecontroller ();
+        virtual ~Treecontroller();
 
-    BehaviorTree* BT;
-CAIEnem* yo;
-public:
-    Treecontroller (Blackboard* _data,int tipo,CAIEnem* ai);
-    Treecontroller ();
-    //void iniciar (Blackboard* _data);
-    virtual ~Treecontroller ();
-    void arbolsoldado();
-    void arboltracker();
-    void arbolrusher();
-    void arboltank();
+        void reset();
+        int taskactual();
+        void update();
 
+        Action* addAction(Hojas ac);
+        void arbolsoldado();
+        void arboltracker();
+        void arbolrusher();
+        void arboltank();
+        void arbolswarm();
 
-    void reset();
-    void update();
+    private:
+        Parallel* createParallel(Behavior* condiciones);
+        Inverso* createInverso(Behavior* condiciones);
+        Sequence* createSequence();
+        Selector* createSelector();
+        RandomSelector* createRandomSelector();
+        /* data */
+        CAIEnem* yo;
+        BehaviorTree* BT;
+
+        using Behaviors = std::vector<Behavior*>;
+        Behaviors m_Children;
+
+        Blackboard* data;
 
 };
 #endif

@@ -1,529 +1,405 @@
 #include "Treecontroller.hpp"
 #include <BT/RandomSelector.hpp>
 #include <BT/RandomSequence.hpp>
-#include <BT/Action.hpp>
+//#include <BT/Action.hpp>
 #include <BT/Sequence.hpp>
+#include <BT/Inverso.hpp>
 #include <BT/Selector.hpp>
-#include <iostream>
+#include <BT/Parallel.hpp>
+#include <BT/UntilFail.hpp>
+#include <BT/RandomSelector.hpp>
+//#include <iostream>
 
+Treecontroller::Treecontroller(){}
+//hacer herencia para cada tipo de enemigo ?
+Treecontroller::Treecontroller(Blackboard *_data, gg::EEnemyType tipo, CAIEnem* ai){
+    yo      = ai;
+    data    = _data;
 
-    /* data */
-    //void Treecontroller::iniciar (Blackboard* _data){
-    //    Treecontroller (Blackboard* _data);
-
-    //}
-    Treecontroller::Treecontroller (){
-
-    }
-
-    Treecontroller::Treecontroller (Blackboard* _data,int tipo,CAIEnem* ai){
-        yo=ai;
-        
-
-        //std::cout << "creacion" << '\n';
-        data=_data;
-        if(tipo==0){
+    switch (tipo) {
+        case gg::SOLDIER:
             arbolsoldado();
-        }else if(tipo==1){
+            break;
+        case gg::TANK:
             arboltank();
+            break;
+        case gg::RUSHER:
+            arbolrusher();
+            break;
+        case gg::SWARM:
+            arbolswarm();
+            break;
+        case gg::TRACKER:
+            arboltracker();
+            break;
+    }
+}
+
+Action* Treecontroller::addAction(Hojas ac){
+
+    Action* a1= new Action(ac,data,yo);
+    m_Children.push_back(a1);
+    return a1;
+
+
+}
+Treecontroller::~Treecontroller(){
+    for (size_t i = 0; i < m_Children.size(); i++) {
+        delete m_Children[i];
+    }
+    if(BT!=nullptr){
+        delete BT;
+    }
+    if(data!=nullptr){
+        delete data;
+    }
+}
+
+void Treecontroller::reset(){
+    for (size_t i = 0; i < m_Children.size(); i++) {
+        //// //std::cout << "borra" << i<<'\n';
+        m_Children[i]->abort();
+    }
+}
+int Treecontroller::taskactual(){
+    for (size_t i = 0; i < m_Children.size(); i++) {
+        //// //std::cout << "borra" << i<<'\n';
+        if(m_Children[i]->getStatus()==BH_RUNNING){
+            //CAIEnem* AIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,id));
+
+            return static_cast<Action*>(m_Children[i])->getTask();
         }
-
     }
-    Treecontroller::~Treecontroller (){
-        for (size_t i = 0; i < m_Children.size(); i++) {
-            //std::cout << "entra hijo" << '\n';
-            //std::cout << "borra" << i<<'\n';
-            delete m_Children[i];
-        }
-        //std::cout << "llega" << '\n';
-        if(BT!=nullptr){
-            //std::cout << "entra BT" << '\n';
-            delete BT;
-        }
-        if(data!=nullptr){
-            //std::cout << "entra data" << '\n';
-            delete data;
-        }
-        //std::cout << "sale" << '\n';
+    return -1;
+}
 
-    }
-    void Treecontroller::reset(){
-        for (size_t i = 0; i < m_Children.size(); i++) {
-            //std::cout << "borra" << i<<'\n';
-            m_Children[i]->abort();
-        }
-    }
-    void Treecontroller::update(){
-        //std::cout << "update1" << '\n';
-        BT->tick();
-        //std::cout << "update2" << '\n';
-    }
-    void Treecontroller::arboltracker(){
-        Action* a1= new Action(TEN_METROS,data,yo);//rango ultrasonido
-        Action* a2= new Action(TEN_METROS,data,yo);//aturdido
-        Action* a3= new Action(TEN_METROS,data,yo);//rango señuelo
-        Action* a4= new Action(TEN_METROS,data,yo);//escupir señuelo
-        Action* a5= new Action(TEN_METROS,data,yo);//estoy viendo al jugador
-        Action* a6= new Action(TEN_METROS,data,yo);//esta a rango
-        Action* a7= new Action(TEN_METROS,data,yo);//no estoy en una zona peligrosa
-        Action* a8= new Action(TEN_METROS,data,yo);//escupir
-        Action* a9= new Action(TEN_METROS,data,yo);//jugador me esta disparando
-        Action* a10= new Action(TEN_METROS,data,yo);//hacerse invisible
-        Action* a11= new Action(TEN_METROS,data,yo);//deshacerse de la invisibilidad
-        Action* a12= new Action(TEN_METROS,data,yo);//buscar zona no peligrosa cercana
-        Action* a13= new Action(TEN_METROS,data,yo);//esta en el mismo edificio en el que estoy ya
-        Action* a14= new Action(TEN_METROS,data,yo);//moverse a zona no peligrosa mas cercana
-        Action* a15= new Action(TEN_METROS,data,yo);//saltar a la zona no peligrosa mas cercana
-        Action* a16= new Action(TEN_METROS,data,yo);//estoy escuchando al jugador
-        Action* a17= new Action(TEN_METROS,data,yo);//he visto al jugaodr
-        Action* a18= new Action(TEN_METROS,data,yo);//no estoy en la zona
-        Action* a19= new Action(TEN_METROS,data,yo);//moverse); a la zona
-        Action* a20= new Action(TEN_METROS,data,yo);//patrullar los tejador
-        Action* a21= new Action(TEN_METROS,data,yo);//moverse por el mapa
+void Treecontroller::update(){
+    BT->tick();
+}
 
+void Treecontroller::arboltracker(){
+    BT= new BehaviorTree(addAction(GIRAR));
+}
+void Treecontroller::arbolswarm(){
+    Sequence* sec6= createSequence();//cargar dash random+
+    sec6->addChild(addAction(ON_RANGE));
+    sec6->addChild(addAction(KAMIKACE));
 
-        m_Children.push_back(a1);
-        m_Children.push_back(a2);
-        m_Children.push_back(a3);
-        m_Children.push_back(a4);
-        m_Children.push_back(a5);
-        m_Children.push_back(a6);
-        m_Children.push_back(a7);
-        m_Children.push_back(a8);
-        m_Children.push_back(a9);
-        m_Children.push_back(a10);
-        m_Children.push_back(a11);
-        m_Children.push_back(a12);
-        m_Children.push_back(a13);
-        m_Children.push_back(a14);
-        m_Children.push_back(a15);
-        m_Children.push_back(a16);
-        m_Children.push_back(a17);
-        m_Children.push_back(a18);
-        m_Children.push_back(a19);
-        m_Children.push_back(a20);
-        m_Children.push_back(a21);
-    }
+    Selector* sel4= createSelector();
+    sel4->addChild(addAction(PLAYER_SEEN));
+    sel4->addChild(addAction(PLAYER_SEEING));
+    Parallel* pal5=createParallel(sel4);
+    pal5->addChild(addAction(MOVE_AROUND));//animal en rango
+    Inverso* inv3=createInverso(addAction(PLAYER_SEEING));
+    Parallel* pal1=createParallel(inv3);
+    pal1->addChild(addAction(MOVE_TO_PLAYER));//animal en rango
+    Parallel* pal4=createParallel(addAction(PLAYER_SEEING));
+    pal4->addChild(addAction(LOOKAROUND));//animal en rango
+    Parallel* pal3=createParallel(addAction(PLAYER_SEEING));
+    pal3->addChild(addAction(MOVE_TO_LAST_POS_KWON));//animal en rango
+    Sequence* sec5= createSequence();
+    sec5->addChild(addAction(PLAYER_SEEN));
+    sec5->addChild(pal3);
+    sec5->addChild(pal4);
+    Sequence* sec4= createSequence();
+    sec4->addChild(addAction(PLAYER_SEEING));
+    sec4->addChild(pal1);
+    Sequence* sec3= createSequence();
+    sec3->addChild(addAction(RANGO_SENYUELO));
+    sec3->addChild(addAction(MOVER_SENYUELO));
+    Sequence* sec2= createSequence();
+    sec2->addChild(addAction(RANGO_ULTRASONIDO));
+    sec2->addChild(addAction(ATURDIDO));
+    Selector* sel1= createSelector();//random selector?
+    sel1->addChild(sec2);
+    sel1->addChild(sec3);
+    sel1->addChild(sec4);
+    sel1->addChild(sec5);
+    sel1->addChild(pal5);
+    Sequence* sec1= createSequence();//cargar dash random+
+    sec1->addChild(addAction(IAMLEADER));
+    sec1->addChild(sel1);
 
-    void Treecontroller::arbolrusher(){
-        Action* a1= new Action(TEN_METROS,data,yo);        //rango ultrasonido
-        Action* a2= new Action(TEN_METROS,data,yo);        //ATURDIDO
-        Action* a3= new Action(TEN_METROS,data,yo);        //rango señuelo
-        Action* a4= new Action(TEN_METROS,data,yo);        //mover
-        Action* a5= new Action(TEN_METROS,data,yo);        //rondar
-        Action* a6= new Action(TEN_METROS,data,yo);        //estoy viendo al jugador
-        Action* a7= new Action(TEN_METROS,data,yo);        //esta a rango
-        Action* a8= new Action(TEN_METROS,data,yo);        //cargar
-        Action* a9= new Action(TEN_METROS,data,yo);        //dash
-        Action* a10= new Action(TEN_METROS,data,yo);       //cargar dash
-        Action* a11= new Action(TEN_METROS,data,yo);       //dash hacia el jugador
-        Action* a12= new Action(TEN_METROS,data,yo);       //estoy escuchando al jugador
-        Action* a13= new Action(TEN_METROS,data,yo);       //he visto al jugador
-        Action* a14= new Action(TEN_METROS,data,yo);       //no estoy en la zona
-        Action* a15= new Action(TEN_METROS,data,yo);       //cargar dash
-        Action* a16= new Action(TEN_METROS,data,yo);       //dash hacia la zona
-        Action* a17= new Action(TEN_METROS,data,yo);       //cargar dash
-        Action* a18= new Action(TEN_METROS,data,yo);       //dash por la zona
-        Action* a19= new Action(TEN_METROS,data,yo);       //cargar dash
-        Action* a20= new Action(TEN_METROS,data,yo);       //dash random
-
-        m_Children.push_back(a1);
-        m_Children.push_back(a2);
-        m_Children.push_back(a3);
-        m_Children.push_back(a4);
-        m_Children.push_back(a5);
-        m_Children.push_back(a6);
-        m_Children.push_back(a7);
-        m_Children.push_back(a8);
-        m_Children.push_back(a9);
-        m_Children.push_back(a10);
-        m_Children.push_back(a11);
-        m_Children.push_back(a12);
-        m_Children.push_back(a13);
-        m_Children.push_back(a14);
-        m_Children.push_back(a15);
-        m_Children.push_back(a16);
-        m_Children.push_back(a17);
-        m_Children.push_back(a18);
-        m_Children.push_back(a19);
-        m_Children.push_back(a20);
-
-        Sequence* sec1= new Sequence();
-        sec1->addChild(a1);
-        sec1->addChild(a2);
-
-        Sequence* sec2= new Sequence();
-        sec2->addChild(a3);
-        sec2->addChild(a4);
-        sec2->addChild(a5);
-
-        Sequence* sec5= new Sequence();
-        sec5->addChild(a10);
-        sec5->addChild(a11);
-        Sequence* sec4= new Sequence();
-        sec4->addChild(a7);
-        sec4->addChild(a8);
-        sec4->addChild(a9);
-        Selector* sel1= new Selector();
-        sel1->addChild(sec4);
-        sel1->addChild(sec5);
-        Sequence* sec3= new Sequence();
-        sec3->addChild(a6);
-        sec3->addChild(sel1);
-
-        Sequence* sec8= new Sequence();
-        sec8->addChild(a17);
-        sec8->addChild(a18);
-        Sequence* sec9= new Sequence();
-        sec9->addChild(a15);
-        sec9->addChild(a16);
-        Sequence* sec7= new Sequence();
-        sec7->addChild(a14);
-        sec7->addChild(sec9);
-        Selector* sel3= new Selector();
-        sel3->addChild(sec7);
-        sel3->addChild(sec8);
-        Selector* sel2= new Selector();
-        sel2->addChild(a12);
-        sel2->addChild(a13);
-        Sequence* sec6= new Sequence();
-        sec6->addChild(sel2);
-        sec6->addChild(sel3);
-
-
-        Sequence* sec10= new Sequence();
-        sec10->addChild(a19);
-        sec10->addChild(a20);
-
-
-        Selector* sel4= new Selector();
-        sel4->addChild(sec1);
-        sel4->addChild(sec2);
-        sel4->addChild(sec3);
-        sel4->addChild(sec6);
-        sel4->addChild(sec10);
-
-
-        m_Children.push_back(sec1);
-        m_Children.push_back(sec2);
-        m_Children.push_back(sec3);
-        m_Children.push_back(sec4);
-        m_Children.push_back(sec5);
-        m_Children.push_back(sec6);
-        m_Children.push_back(sec7);
-        m_Children.push_back(sec8);
-        m_Children.push_back(sec9);
-        m_Children.push_back(sec10);
-
-        m_Children.push_back(sel1);
-        m_Children.push_back(sel2);
-        m_Children.push_back(sel3);
-        m_Children.push_back(sel4);
-
-
-
-        BT= new BehaviorTree(sel4);
-
-    }
-
-    void Treecontroller::arboltank(){
-        Action* a1= new Action(TEN_METROS,data,yo);//rango ultrasonido
-        Action* a2= new Action(TEN_METROS,data,yo);//aturdido
-        Action* a3= new Action(TEN_METROS,data,yo);//rango señuelo
-        Action* a4= new Action(TEN_METROS,data,yo);//mover
-        Action* a5= new Action(TEN_METROS,data,yo);//rondar
-        Action* a6= new Action(TEN_METROS,data,yo);//estoy viendo al jugador
-        Action* a7= new Action(TEN_METROS,data,yo);//esta el jugado a menos d eun metro
-        Action* a8= new Action(TEN_METROS,data,yo);//golpar
-        Action* a9= new Action(TEN_METROS,data,yo);//esta entre 2-10 metros
-        Action* a10= new Action(TEN_METROS,data,yo);//ha pasado tiempo desde la vez anterior
-        Action* a11= new Action(TEN_METROS,data,yo);//onda expansiva
-        Action* a12= new Action(TEN_METROS,data,yo);//escupir
-        Action* a13= new Action(TEN_METROS,data,yo);//mover hacia jugdor
-        Action* a14= new Action(TEN_METROS,data,yo);//estoy escuchando al jugaodr
-        Action* a15= new Action(TEN_METROS,data,yo);//he visto al jugaodr
-        Action* a16= new Action(TEN_METROS,data,yo);//no estoy en la zona
-        Action* a17= new Action(TEN_METROS,data,yo);//moverse hacia la zona
-        Action* a18= new Action(TEN_METROS,data,yo);//patrullar la zona
-        Action* a19= new Action(TEN_METROS,data,yo);//andar random
-
-        m_Children.push_back(a1);
-        m_Children.push_back(a2);
-        m_Children.push_back(a3);
-        m_Children.push_back(a4);
-        m_Children.push_back(a5);
-        m_Children.push_back(a6);
-        m_Children.push_back(a7);
-        m_Children.push_back(a8);
-        m_Children.push_back(a9);
-        m_Children.push_back(a10);
-        m_Children.push_back(a11);
-        m_Children.push_back(a12);
-        m_Children.push_back(a13);
-        m_Children.push_back(a14);
-        m_Children.push_back(a15);
-        m_Children.push_back(a16);
-        m_Children.push_back(a17);
-        m_Children.push_back(a18);
-        m_Children.push_back(a19);
-
-
-
-        Sequence* sec1= new Sequence();
-        sec1->addChild(a1);
-        sec1->addChild(a2);
-
-        Sequence* sec2= new Sequence();
-        sec2->addChild(a3);
-        sec2->addChild(a4);
-        sec2->addChild(a5);
-
-        Sequence* sec4= new Sequence();
-        sec4->addChild(a7);
-        sec4->addChild(a8);
-        Selector* sel2= new Selector();
-        sel2->addChild(a11);
-        sel2->addChild(a12);
-        Sequence* sec6= new Sequence();
-        sec6->addChild(a10);
-        sec6->addChild(sel2);
-        Sequence* sec5= new Sequence();
-        sec5->addChild(a9);
-        sec5->addChild(sec6);
-        Selector* sel1= new Selector();
-        sel1->addChild(sec4);
-        sel1->addChild(sec5);
-        sel1->addChild(a13);
-        Sequence* sec3= new Sequence();
-        sec3->addChild(a6);
-        sec3->addChild(sel1);
-
-
-
-        Sequence* sec8= new Sequence();
-        sec8->addChild(a16);
-        sec8->addChild(a17);
-        Selector* sel4= new Selector();
-        sel4->addChild(sec8);
-        sel4->addChild(a18);
-        Selector* sel3= new Selector();
-        sel3->addChild(a14);
-        sel3->addChild(a15);
-        Sequence* sec7= new Sequence();
-        sec7->addChild(sel3);
-        sec7->addChild(sel4);
-
-
-
-        Selector* sel5= new Selector();
-        sel5->addChild(sec1);
-        sel5->addChild(sec2);
-        sel5->addChild(sec3);
-        sel5->addChild(sec7);
-        sel5->addChild(a19);
-
-
-        m_Children.push_back(sec1);
-        m_Children.push_back(sec2);
-        m_Children.push_back(sec3);
-        m_Children.push_back(sec4);
-        m_Children.push_back(sec5);
-        m_Children.push_back(sec6);
-        m_Children.push_back(sec7);
-
-        m_Children.push_back(sel1);
-        m_Children.push_back(sel2);
-        m_Children.push_back(sel3);
-        m_Children.push_back(sel4);
-        m_Children.push_back(sel5);
-
-
-
-        BT= new BehaviorTree(sel5);
+    Selector* sel2= createSelector();//random selector?
+    sel2->addChild(sec6);
+    sel2->addChild(sec1);
+    sel2->addChild(addAction(FOLLOWLEADER));
 
 
 
 
-    }
-    void Treecontroller::arbolsoldado(){
-/*
-        Action* a1= new Action(TEN_METROS,data,yo);//10 metros del jugador?
-        Action* a2= new Action(THREE_ATACK,data,yo);//hay tres atacando?
-        Action* a3= new Action(ON_RANGE,data,yo);//estoy a rango?
-        Action* a4= new Action(IN_PLACE,data,yo);//no estoy en el lugar?
-        Action* a5= new Action(PLAYER_SEEN,data,yo);//he visto al jugador?
-        Action* a6= new Action(PLAYER_SEEING,data,yo);//estoy viendo al jugador?
-        //acciones
-        Action* a7= new Action(MOVE_AROUND,data,yo);//rondar al jugador
-        Action* a8= new Action(BLOCK,data,yo);//bloquear el camino
-        Action* a9= new Action(MOVE_TO_PLAYER,data,yo);//moverse hacia el jugador
-        Action* a10= new Action(HIT,data,yo);//golpear
-        Action* a11= new Action(MOVE_TO_LAST_POS_KWON,data,yo);//mover ultima pos
-        Action* a12= new Action(JUST_MOVE,data,yo);//mover por el mapa
-*/
-        Action* a1= new Action(RANGO_ULTRASONIDO,data,yo);//rango ultrasonido
-        Action* a2= new Action(ATURDIDO,data,yo);//aturdido
-        Action* a3= new Action(RANGO_SENYUELO,data,yo);//rango señuelo
-        Action* a4= new Action(MOVER_SENYUELO,data,yo);//mover
-        Action* a5= new Action(RONDAR_SENYUELO,data,yo);//rondar
-        Action* a6= new Action(PLAYER_SEEING,data,yo);//estoy viendo al jugador
-        Action* a7= new Action(ON_RANGE,data,yo);//esta a rango
-        Action* a8= new Action(HIT,data,yo);//golpear
-        Action* a9= new Action(NOT_ATTACKED,data,yo);//el jugador me ha atacado
-        Action* a10= new Action(ALLY_DEAD,data,yo);//ha muerto aliado
-        Action* a11= new Action(MORE_RAGE,data,yo);//aumentar enfado
-        Action* a12= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando
-        Action* a13= new Action(X_ALIENS_ATTACKING,data,yo);//hay x aliens atacando
-        Action* a14= new Action(X_METRES_PLAYER,data,yo);// esta a x metros o menos del jugador
-        Action* a15= new Action(RONDAR_PLAYER,data,yo);//rodar jugador
-        Action* a16= new Action(GIRAR,data,yo);//no esta en la ruta
-        Action* a17= new Action(GIRAR,data,yo);//calcular ruta a bloquear
-        Action* a18= new Action(MOVE_AROUND,data,yo);//mover
-        Action* a19= new Action(PAUSE,data,yo);//esperar
-        Action* a20= new Action(MOVE_TO_PLAYER,data,yo);//moverse en direccion al jugador
-        Action* a21= new Action(PLAYER_SEEN,data,yo);//estoy escuhando al jugador
-        Action* a22= new Action(PLAYER_SEEN,data,yo);//he visto al jugador
-        Action* a23= new Action(IN_LAST_POS_KWON,data,yo);//no estoy en la zona
-        Action* a24= new Action(MOVE_TO_LAST_POS_KWON,data,yo);//moverse a la zona
-        Action* a25= new Action(GIRAR,data,yo);//patrullar la zona
-        Action* a26= new Action(MOVE_AROUND,data,yo);//andar random
-        Action* a27= new Action(GIRAR,data,yo);//animal en rango
-        Action* a28= new Action(GIRAR,data,yo);//no hay mas de 3 comiendo
-        Action* a29= new Action(GIRAR,data,yo);//mover
-        Action* a30= new Action(GIRAR,data,yo);//comer
+    BT= new BehaviorTree(sel2);
+}
 
-        m_Children.push_back(a1);
-        m_Children.push_back(a2);
-        m_Children.push_back(a3);
-        m_Children.push_back(a4);
-        m_Children.push_back(a5);
-        m_Children.push_back(a6);
-        m_Children.push_back(a7);
-        m_Children.push_back(a8);
-        m_Children.push_back(a9);
-        m_Children.push_back(a10);
-        m_Children.push_back(a11);
-        m_Children.push_back(a12);
-        m_Children.push_back(a13);
-        m_Children.push_back(a14);
-        m_Children.push_back(a15);
-        m_Children.push_back(a16);
-        m_Children.push_back(a17);
-        m_Children.push_back(a18);
-        m_Children.push_back(a19);
-        m_Children.push_back(a20);
-        m_Children.push_back(a21);
-        m_Children.push_back(a22);
-        m_Children.push_back(a23);
-        m_Children.push_back(a24);
-        m_Children.push_back(a25);
-        m_Children.push_back(a26);
-        m_Children.push_back(a27);
-        m_Children.push_back(a28);
-        m_Children.push_back(a29);
-        m_Children.push_back(a30);
-
-        Sequence* sec1= new Sequence();
-        sec1->addChild(a1);
-        sec1->addChild(a2);
-
-        Sequence* sec2= new Sequence();
-        sec2->addChild(a3);
-        sec2->addChild(a4);
-        sec2->addChild(a5);
-
-        Sequence* sec9= new Sequence();
-        sec9->addChild(a16);
-        sec9->addChild(a17);
-        sec9->addChild(a18);
-        Selector* sel5= new Selector();//5
-        sel5->addChild(sec9);
-        sel5->addChild(a19);
-        Sequence* sec8= new Sequence();
-        sec8->addChild(a14);
-        sec8->addChild(a15);
-        Selector* sel3= new Selector();//5
-        sel3->addChild(sec8);
-        sel3->addChild(sel5);
-        Sequence* sec7= new Sequence();
-        sec7->addChild(a10);
-        sec7->addChild(a11);
-        sec7->addChild(a12);
-        Selector* sel4= new Selector();//5
-        sel4->addChild(sec7);
-        sel4->addChild(a13);
-        Sequence* sec6= new Sequence();
-        sec6->addChild(a9);
-        sec6->addChild(sel4);
-        Sequence* sec5= new Sequence();
-        sec5->addChild(sec6);
-        sec5->addChild(sel3);
-        Selector* sel2= new Selector();//5
-        sel2->addChild(sec5);
-        sel2->addChild(a20);
-        Sequence* sec4= new Sequence();
-        sec4->addChild(a7);
-        sec4->addChild(a8);
-        Selector* sel1= new Selector();//5
-        sel1->addChild(sec4);
-        sel1->addChild(sel2);
-        Sequence* sec3= new Sequence();
-        sec3->addChild(a6);
-        sec3->addChild(sel1);
-
-        Sequence* sec11= new Sequence();
-        sec11->addChild(a23);
-        sec11->addChild(a24);
-        Selector* sel7= new Selector();//5
-        sel7->addChild(sec11);
-        sel7->addChild(a25);
-        Selector* sel6= new Selector();//5
-        sel6->addChild(a21);
-        sel6->addChild(a22);
-        Sequence* sec10= new Sequence();
-        sec10->addChild(sel6);
-        sec10->addChild(sel7);
-
-        Sequence* sec12= new Sequence();
-        sec12->addChild(a27);
-        sec12->addChild(a28);
-        sec12->addChild(a29);
-        sec12->addChild(a30);
-        Selector* sel8= new Selector();//5
-        sel8->addChild(a26);
-        sel8->addChild(sec12);
+void Treecontroller::arbolrusher(){
 
 
-        Selector* sel9= new Selector();//5
-        sel9->addChild(sec1);
-        sel9->addChild(sec2);
-        sel9->addChild(sec3);
-        sel9->addChild(sec10);
-        sel9->addChild(sel8);
+    Sequence* sec20= createSequence();
+    sec20->addChild(addAction(ON_RANGE));
+    sec20->addChild(addAction(HIT));
 
-        m_Children.push_back(sec1);
-        m_Children.push_back(sec2);
-        m_Children.push_back(sec3);
-        m_Children.push_back(sec4);
-        m_Children.push_back(sec5);
-        m_Children.push_back(sec6);
-        m_Children.push_back(sec7);
-        m_Children.push_back(sec8);
-        m_Children.push_back(sec9);
-        m_Children.push_back(sec10);
-        m_Children.push_back(sec11);
-        m_Children.push_back(sec12);
+    Sequence* sec1= createSequence();
+    sec1->addChild(addAction(RANGO_ULTRASONIDO));
+    sec1->addChild(addAction(ATURDIDO));
 
-        m_Children.push_back(sel1);
-        m_Children.push_back(sel2);
-        m_Children.push_back(sel3);
-        m_Children.push_back(sel4);
-        m_Children.push_back(sel5);
-        m_Children.push_back(sel6);
-        m_Children.push_back(sel7);
-        m_Children.push_back(sel8);
-        m_Children.push_back(sel9);
+    Sequence* sec2= createSequence();
+    sec2->addChild(addAction(RANGO_SENYUELO));
+    sec2->addChild(addAction(MOVER_SENYUELO));
+    sec2->addChild(addAction(RONDAR_SENYUELO));
+
+    Selector* sel66= createSelector();
+    sel66->addChild(addAction(ON_RANGE));
+    Parallel* pal11=createParallel(sel66);
+    pal11->addChild(addAction(DASH));//animal en rango
+
+    //Inverso* inv3=createInverso(addAction(PLAYER_SEEING));
+    Selector* sel6= createSelector();
+    //sel6->addChild(inv3);
+    sel6->addChild(addAction(ON_RANGE));
+    Parallel* pal1=createParallel(sel6);
+    pal1->addChild(addAction(DASH));//animal en rango
+
+    Sequence* sec5= createSequence();
+    sec5->addChild(addAction(PRE_DASH_TO_PLAYER));//cargar dash movimiento hacia el jugador
+    sec5->addChild(pal1);//dash
+    Sequence* sec4= createSequence();
+    sec4->addChild(addAction(ON_RANGE));
+    sec4->addChild(addAction(PRE_DASH_TO_PLAYER));//cargar dash ataque hacia jugador
+    sec4->addChild(pal11);//dash de ataque//no implementado
+    Selector* sel1= createSelector();
+    sel1->addChild(sec4);
+    sel1->addChild(sec5);
+    Sequence* sec3= createSequence();
+    sec3->addChild(addAction(PLAYER_SEEING));
+    sec3->addChild(sel1);
 
 
-        BT= new BehaviorTree(sel9);
-    }
+    Inverso* inv1=createInverso(addAction(PLAYER_SEEN));
+
+    Parallel* pal4=createParallel(addAction(PLAYER_SEEING));
+    pal4->addChild(addAction(LOOKAROUND));//animal en rango
+    Parallel* pal3=createParallel(addAction(PLAYER_SEEING));
+    pal3->addChild(addAction(DASH));//animal en rango
+    Sequence* sec6= createSequence();
+    sec6->addChild(addAction(PLAYER_SEEN));
+    sec6->addChild(addAction(PRE_DASH_TO_LAST_PLAYER));
+    sec6->addChild(pal3);
+    sec6->addChild(inv1);
+    sec6->addChild(pal4);
+
+
+    Selector* sel5= createSelector();
+    sel5->addChild(addAction(PLAYER_SEEN));
+    sel5->addChild(addAction(PLAYER_SEEING));
+    Parallel* pal5=createParallel(sel5);
+    pal5->addChild(addAction(MOVE_AROUND));//animal en rango
+
+
+    //Sequence* sec10= createSequence();//cargar dash random+
+    //sec10->addChild(addAction(MOVE_AROUND));
+    //sec10->addChild(addAction(GIRAR));//cargar dash random
+    //sec10->addChild(addAction(GIRAR));//dash random
+
+
+    Selector* sel4= createSelector();
+    sel4->addChild(sec20);
+    sel4->addChild(sec1);
+    sel4->addChild(sec2);
+    sel4->addChild(sec3);
+    sel4->addChild(sec6);
+    sel4->addChild(pal5);
+
+
+
+
+    BT= new BehaviorTree(sel4);
+
+}
+
+void Treecontroller::arboltank(){
+
+
+    Sequence* sec1= createSequence();
+    sec1->addChild(addAction(RANGO_ULTRASONIDO));
+    sec1->addChild(addAction(ATURDIDO));
+
+    Sequence* sec2= createSequence();
+    sec2->addChild(addAction(RANGO_SENYUELO));
+    sec2->addChild(addAction(MOVER_SENYUELO));
+    sec2->addChild(addAction(RONDAR_SENYUELO));
+
+
+    Inverso* inv3=createInverso(addAction(PLAYER_SEEING));
+    Parallel* pal1=createParallel(inv3);
+    pal1->addChild(addAction(MOVE_TO_PLAYER));//animal en rango
+
+    Selector* sel2= createSelector();//random selector?
+    sel2->addChild(addAction(EXPANSIVE_WAVE));
+    sel2->addChild(addAction(SPIT));
+    Sequence* sec6= createSequence();
+    sec6->addChild(addAction(FIVE_SINCELASTHABILITY));
+    sec6->addChild(sel2);
+    Sequence* sec5= createSequence();//eing?
+    sec5->addChild(addAction(ENEMY_OVER_2_METERS));   // Por encima de 2 metros
+    sec5->addChild(addAction(TEN_METROS));     // Por debajo de 10 metros
+    sec5->addChild(sec6);
+    Sequence* sec4= createSequence();
+    sec4->addChild(addAction(ON_RANGE));
+    sec4->addChild(addAction(HIT));
+    Selector* sel1= createSelector();
+    sel1->addChild(sec4);
+    sel1->addChild(sec5);
+    sel1->addChild(pal1);
+    //sel1->addChild(addAction(MOVE_TO_PLAYER));//acabar cuando deje de verlo
+    Sequence* sec3= createSequence();
+    sec3->addChild(addAction(PLAYER_SEEING));
+    sec3->addChild(sel1);
+
+
+
+    Parallel* pal4=createParallel(addAction(PLAYER_SEEING));
+    pal4->addChild(addAction(LOOKAROUND));//animal en rango
+    Parallel* pal3=createParallel(addAction(PLAYER_SEEING));
+    pal3->addChild(addAction(MOVE_TO_LAST_POS_KWON));//animal en rango
+    Sequence* sec8= createSequence();
+    sec8->addChild(addAction(PLAYER_SEEN));
+    sec8->addChild(pal3);
+    sec8->addChild(pal4);
+
+
+
+    Selector* sel4= createSelector();
+    sel4->addChild(addAction(PLAYER_SEEN));
+    sel4->addChild(addAction(PLAYER_SEEING));
+    Parallel* pal5=createParallel(sel4);
+    pal5->addChild(addAction(MOVE_AROUND));//animal en rango
+    Selector* sel5= createSelector();
+    sel5->addChild(sec1);
+    sel5->addChild(sec2);
+    sel5->addChild(sec3);
+    sel5->addChild(sec8);
+    sel5->addChild(pal5);//
+
+
+
+    BT= new BehaviorTree(sel5);
+}
+
+
+
+
+void Treecontroller::arbolsoldado(){
+
+
+    Sequence* sec1= createSequence();
+    sec1->addChild(addAction(RANGO_ULTRASONIDO));
+    sec1->addChild(addAction(ATURDIDO));
+
+    Sequence* sec2= createSequence();
+    sec2->addChild(addAction(RANGO_SENYUELO));
+    sec2->addChild(addAction(MOVER_SENYUELO));
+    sec2->addChild(addAction(RONDAR_SENYUELO));
+
+
+    Inverso* inv4=createInverso(addAction(PLAYER_SEEING));
+    Parallel* pal2=createParallel(inv4);
+    pal2->addChild(addAction(RONDAR_PLAYER));//animal en rango
+    RandomSelector* rsel1=createRandomSelector();
+    rsel1->addChild(addAction(PAUSE));
+    rsel1->addChild(pal2);//poner pal
+    rsel1->addChild(addAction(MOVEP_UNTILX));
+    Inverso* inv3=createInverso(addAction(PLAYER_SEEING));
+    Parallel* pal1=createParallel(inv3);
+    pal1->addChild(addAction(MOVE_TO_PLAYER));//animal en rango
+    Inverso* inv1=createInverso(addAction(NOT_ATTACKED));
+    Inverso* inv2=createInverso(addAction(X_ALIENS_ATTACKING));
+    Selector* sel3= createSelector();
+    sel3->addChild(addAction(IAMATACKING));
+    sel3->addChild(inv1);
+    sel3->addChild(inv2);
+    Sequence* sec5= createSequence();
+    sec5->addChild(sel3);
+    sec5->addChild(pal1);
+    Selector* sel2= createSelector();
+    sel2->addChild(sec5);
+    sel2->addChild(rsel1);
+    Sequence* sec4= createSequence();
+    sec4->addChild(addAction(ON_RANGE));
+    sec4->addChild(addAction(HIT));
+    Selector* sel1= createSelector();
+    sel1->addChild(sec4);
+    sel1->addChild(sel2);
+    Sequence* sec3= createSequence();
+    sec3->addChild(addAction(PLAYER_SEEING));
+    sec3->addChild(sel1);
+
+
+
+    Parallel* pal4=createParallel(addAction(PLAYER_SEEING));
+    pal4->addChild(addAction(LOOKAROUND));//animal en rango
+    Parallel* pal3=createParallel(addAction(PLAYER_SEEING));
+    pal3->addChild(addAction(MOVE_TO_LAST_POS_KWON));//animal en rango
+    Sequence* sec6= createSequence();
+    sec6->addChild(addAction(PLAYER_SEEN));
+    sec6->addChild(pal3);
+    sec6->addChild(pal4);
+
+
+    Selector* sel4= createSelector();
+    sel4->addChild(addAction(PLAYER_SEEN));
+    sel4->addChild(addAction(PLAYER_SEEING));
+    Parallel* pal5=createParallel(sel4);
+    pal5->addChild(addAction(MOVE_AROUND));//animal en rango
+
+
+    Selector* sel5= createSelector();
+    sel5->addChild(sec1);
+    sel5->addChild(sec2);
+    sel5->addChild(sec3);
+    sel5->addChild(sec6);
+    sel5->addChild(pal5);
+
+
+
+    BT= new BehaviorTree(sel5);
+}
+Parallel* Treecontroller::createParallel(Behavior* condiciones){
+
+    Inverso* inv=createInverso(condiciones);
+    UntilFail* fail=new UntilFail(inv);
+    Parallel* pal =new Parallel(RequireOne,RequireOne);
+    pal->addChild(fail);
+
+    m_Children.push_back(fail);
+    m_Children.push_back(pal);
+
+    return pal;
+
+
+}
+Inverso* Treecontroller::createInverso(Behavior* condiciones){
+    Inverso* inv4=new Inverso(condiciones);
+    m_Children.push_back(inv4);
+    return inv4;
+}
+Sequence* Treecontroller::createSequence(){
+
+    Sequence* sec1= new Sequence();
+    m_Children.push_back(sec1);
+    return sec1;
+
+}
+Selector* Treecontroller::createSelector(){
+
+    Selector* sec1= new Selector();
+    m_Children.push_back(sec1);
+    return sec1;
+
+}
+RandomSelector* Treecontroller::createRandomSelector(){
+
+    RandomSelector* sec1= new RandomSelector();
+    m_Children.push_back(sec1);
+    return sec1;
+
+}

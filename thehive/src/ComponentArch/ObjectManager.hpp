@@ -4,7 +4,6 @@
 #include "IComponent.hpp"
 #include "Enum.hpp"
 #include "Message.hpp"
-#include <Arena.hpp>
 
 #include <stack>
 #include <map>
@@ -13,6 +12,7 @@
 
 template <typename T>
 class Singleton;
+class btRigidBody;
 
 class ObjectManager{
     friend class Singleton<ObjectManager>;
@@ -43,15 +43,19 @@ class ObjectManager{
         void removeComponentFromEntityMAP(gg::EComponentType type, uint16_t EntityID);
 
         //  ---
-        //  Defines wich kind of messages will receive each type of component
+        //  Swap the POINTERS of two components in the component map (Danny he seguido la plantilla de comentario)
         //========================================================================
-        void subscribeComponentTypeToMessageType(const gg::EComponentType &cType, const gg::MessageType &mType);
+        void swapComponents(gg::EComponentType type, uint16_t EntityID, IComponent **Component);
+
 
         //  ---
         //  Searchs and returns a pointer to the component of the given EntityID,
         //  if nothing is found, returns nullptr
         //========================================================================
         IComponent* getComponent(const gg::EComponentType &cType, const uint16_t &EntityID);
+
+        //cosas varias que dani me va a matar :D
+        int returnIDFromRigid(btRigidBody* esto);
 
         //  ---
         //  Sends a message to every component of every entity in the system
@@ -65,22 +69,31 @@ class ObjectManager{
         //========================================================================
         void sendMessageToEntity(uint16_t EntityID, const Message &m);
 
+        void UpdateAll();
+        void FixedUpdateAll();
+
         //  ---
         //  Cleans the maps
         //========================================================================
         void clin();
 
+<<<<<<< HEAD
 
 
         //
         bool checkEvent(uint16_t EntityID, const Message &m);
 
+=======
+        uint16_t getHeroID();
+        void setHeroID(uint16_t);
+>>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
 
     private:
         ObjectManager();
         ObjectManager(const ObjectManager &orig) = delete;
         void operator=(const ObjectManager &orig) = delete;
 
+        void CallFunctionOfComponentes(gg::MessageType mType, void (IComponent::*TypeOfUpdate)());
 
         //  ---
         //  Every position of this array, is a map wich contains all the
@@ -124,9 +137,9 @@ class ObjectManager{
         std::stack<uint16_t> nextAvailableEntityID;
 
         //  ---
-        //  Memory manager class
+        //  Hero entity id. To avoid computing time and problems
         //========================================================================
-        Arena memory;
+        uint16_t HERO_ID;
 };
 
 #endif

@@ -3,31 +3,36 @@
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
-#include <GameEngine/Model.hpp>
+#include <Omicron/ZMESHES/ZStaticMesh.hpp>
+#include <Omicron/ZMaterial.hpp>
 #include <map>
-#include <iostream>
+//#include <iostream>
 #include <Singleton.hpp>
+#include <Omicron/Omicron.hpp>
 
 
 class CTransform;
 
 class CRenderable_3D : public IComponent {
     public:
-        CRenderable_3D(const std::string &pathToModel, const Material &material);
+        CRenderable_3D(const std::string &pathToModel, ZMaterial* material);
         CRenderable_3D(const CRenderable_3D &orig);
         virtual ~CRenderable_3D();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);
         virtual void Init();
+        virtual void Update();
 
+        void changeMaterial(ZMaterial* material);
         //  Handler
-        gg::EMessageStatus MHandler_UPDATE();
         gg::EMessageStatus MHandler_SETPTRS();
+        void setVisibility(bool flag);
+
 
     private:
-        Model _3DModel;
+        TNodo* _3DModel;
+        Omicron* Surreal;
 
         CTransform* cTransform;
 };

@@ -8,7 +8,6 @@ BehaviorTree::BehaviorTree(Behavior* behavior_Root){
 
 
 void BehaviorTree::tick(){
-    //std::cout << "BT tick" << '\n';
   b_Root->tick(); //Run de la raiz
 }
 

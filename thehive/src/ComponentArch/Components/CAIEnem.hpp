@@ -1,117 +1,152 @@
 #ifndef _CAIENEM_H
 #define _CAIENEM_H
 
-#include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
-#include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
 #include <cstdint>
 #include <list>
 #include <vector>
-//#include <irrlicht>
-
 #include <Util.hpp>
+#include <Singleton.hpp>
+
 #include <EventSystem/EnumTriggerType.hpp>
 #include <EventSystem/CTriggerSystem.hpp>
+#include "EventSystem/Blackboard.hpp"
 
+#include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>
 #include <ComponentArch/Enum.hpp>
-//#include <BT/BehaviorTree.hpp>
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+#include <Bullet/ggDynWorld.hpp>
 
-#include <Singleton.hpp>
-#include "EventSystem/Blackboard.hpp"
+#include <ComponentArch/Components/CClock.hpp>
+
+#include <Omicron/Omicron.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <GameAI/Treecontroller.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
 
-                                    //            punteros a otras componentes
 class Treecontroller;
-class CAgent;
-class GameEngine;        //  [OPCIONAL] Si necesitas acceder a algún método de GameEngine
-class ObjectManager;     //  [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
+class ObjectManager;
 
-class CTransform;           //  Forward declaration de otras componentes que incluyas
+class CAgent;
+class CTransform;
+class CNavmeshAgent;
+class ggDynWorld;
 
 class CAIEnem : public IComponent {
     public:
-        CAIEnem(gg::EEnemyType _type, float _agresividad, gg::Vector3f _playerPos, bool _playerSeen);
+        CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos, bool _playerSeen);
         CAIEnem(const CAIEnem &orig) = delete;
         virtual ~CAIEnem();
 
         // Functions of IComponent
-        static void initComponent();
         virtual gg::EMessageStatus processMessage(const Message &m);    // [OPCIONAL] (Obligatorio si referencias a otras componentes)
-        virtual void Init();         // [OBLIGATORIO] Aunque esté vacío en el .cpp
+        virtual void Init();
+        virtual void FixedUpdate();
+        virtual void Update();
 
         // Handlers                                 // Funciones que se llaman dependiendo del mensaje que recibas
         gg::EMessageStatus MHandler_SETPTRS ();     // IMPORTANTE: SETPTRS Se usará para inicializar punteros a otras componentes
-        gg::EMessageStatus MHandler_UPDATE  ();
         void MHandler_SENYUELO(TriggerRecordStruct* cdata);
         void MHandler_SENYUELO_END();
-
+        void MHandler_NEAR(TriggerRecordStruct* cdata){}
         void MHandler_ATURD();
 
-        void MHandler_NEAR(TriggerRecordStruct* cdata);
-
-
-        //void MHandler_ATURD_END();
-
+        void resetMyOwnTree();
 
         void enemyseen();
         void enemyrange();
 
+        void setPlayerIsAttacking(bool);
+        bool getPlayerIsAttacking();
 
-        //new Blackboard datos*;
-        //dato add("type",TIPO_EENEMYTYPE,4)
-        //dato add("type",TIPO_EENEMYTYPE,4)
-        gg::EEnemyType type;
+        void setCloserAllyIsDead(bool);
+        bool getCloserAllyIsDead();
+
+        void setImAttacking(bool);
+        bool getImAttacking();
+
+        void setSigno(int);
+        int getSigno();
+
+        bool getPlayerSeeing();
+
+        void upgradeMaxAliensAttackingAtOnce();
+        int getMaxAliensAttackingAtOnce();
+
+        void upgradeRage();
+        float getRage();
+
+        void resetHabilityUpdateCounter();
+        int getHabilityUpdateCounter();
+
+        void explosiveWave();
+
+        int getEnemyType();
+        float getVelocity();
+
+        void playMovement();
+        void playAttack();
+        void playAttack2();
+        // /////////////////////////////////////////////// //
+        // JAVI CAMBIA LO DE LAS VARIABLES PUBLICAS !      //
+        // /////////////////////////////////////////////// //
+
+        static CTransform* PlayerTransform;     //  Punteros a otras componentes
+        static CRigidBody* PlayerBody;     //  Punteros a otras componentes
+        Treecontroller* arbol;
+
+        glm::vec3 playerPos;
+        glm::vec3 senpos;
+        glm::vec3 destino;
+        float enfado;
         float agresividad;
         float Vrange;
         float Arange;
+        float gradovision;
 
-        //des/activar eventos sonoros
         Blackboard* data;
 
-        float enfado;
-        //BehaviorTree* BT;
-        Treecontroller* arbol;
+        int signo;
+        int ID;
+        int ultrasonido_cont;
+        int rondacion_cont;
 
 
-
-        //uint16_t getEntityID();upda
-
-
-        static CTransform* PlayerTransform;     //  Punteros a otras componentes
-
-        gg::Vector3f playerPos;
         bool playerSeen;
         bool playerOnRange;
-
         bool playerSeeing;
         bool ultrasonido;
         bool senyuelo;
-        gg::Vector3f senpos;
-        gg::Vector3f destino;
-        int id;
-        int id2;
-        int ultrasonido_cont;
-        int rondacion_cont;
+        bool            CanIReset;
+
     private:
-        //bool playerSeen;
-        //bool playerOnRange;
-        //gg::Vector3f playerPos;
+        Omicron      *Engine;
+        ObjectManager   *Manager;
+        CTriggerSystem  *EventSystem;
+        CTransform      *cTransform;
+        CAgent          *cAgent;
+        ggDynWorld      *world;
 
+        // CNavmeshAgent   *nvAgent;
 
-        //CAIEnem(unsigned long _dwTriggerFlags,gg::Vector3f _vPos);
+        gg::EEnemyType type;
+        int             numberOfUpdatesSinceLastHability;
+        int             maxAliensAttacking;
+        float             velocity;
 
-        //using Behaviors = std::vector<Behavior*>;
-        //Behaviors m_Children;
+        static bool     debugvis;
+        bool            imAttacking;
+        bool            isPlayerAttacking;
+        bool            closerAllyIsDead;
 
+        SoundSystem* SS;
 
-        GameEngine* Engine;
+        SoundEvent* s_caminar;
+        SoundEvent* s_atacar;
+        SoundEvent* s_atacar2;
+        //bool            CanIReset;
 
-        CTransform* cTransform;     //  Punteros a otras componentes
-        CAgent* cAgent;     //  Punteros a otras componentes
-
-
+        void enableVisualDebug();
 };
 
 #endif

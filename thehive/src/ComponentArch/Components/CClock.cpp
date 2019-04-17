@@ -1,6 +1,4 @@
 #include "CClock.hpp"
-#include <GameEngine/GameEngine.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
-#include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 
 CClock::CClock()
 {
@@ -11,28 +9,14 @@ CClock::CClock()
 
 CClock::~CClock(){}
 
-void CClock::initComponent(){
-    //  Si necesitas punteros a otras funciones es importante suscribir esta componente al mensaje M_SETPTRS
-    //  Este mensaje se llamará para recalular los punteros cuando se borre una componente de un objeto
-
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CLOCK, gg::M_UPDATE);
-    Singleton<ObjectManager>::Instance()->subscribeComponentTypeToMessageType(gg::CLOCK, gg::M_SETPTRS);
-
-}
-
-void CClock::Init(){
-    engine = Singleton<GameEngine>::Instance();
-
-    //  Inicializar punteros a otras compnentes
-    MHandler_SETPTRS();
-}
+void CClock::Init(){}
 
 bool CClock::startChrono(float _end){
     if(initialized){
         return false;
     }
     else{
-        // gg::cout("INIT CHRONO ON "+std::to_string(_end));
+        // //gg::cout("INIT CHRONO ON "+std::to_string(_end));
         limitReached = false;
         initialized = true;
         msEnd       = _end;
@@ -78,25 +62,8 @@ bool CClock::hasEnded(){
     }
 }
 
-gg::EMessageStatus CClock::processMessage(const Message &m) {
-
-    if      (m.mType == gg::M_UPDATE)   return MHandler_UPDATE  ();
-    else if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS ();
-
-    return gg::ST_ERROR;
-}
-
-
-//  Message handler functions_______________________________________________________________
-//|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-
-gg::EMessageStatus CClock::MHandler_SETPTRS(){
-    // Inicializando punteros
-
-    return gg::ST_TRUE;
-}
-
-gg::EMessageStatus CClock::MHandler_UPDATE(){
-    // UPDATE
-    return gg::ST_TRUE;
+void CClock::restart(){
+    limitReached = false;
+    initialized = true;
+    begin       = std::chrono::high_resolution_clock::now();
 }

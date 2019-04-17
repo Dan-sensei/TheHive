@@ -2,8 +2,83 @@
 
 SoundEvent::SoundEvent(){}
 SoundEvent::~SoundEvent(){}
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
 void SoundEvent::play(){
 	ERRCHECK(soundInstance->start());
 	ERRCHECK(soundInstance->setVolume(1));
 }
+<<<<<<< HEAD
+=======
+
+void SoundEvent::setParameter(const std::string& parameter, float valor){
+    soundInstance->setParameterValue(parameter.c_str(), valor);
+}
+
+void SoundEvent::stop(){
+	ERRCHECK(soundInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE));
+}
+
+void SoundEvent::stop_fadeout(){
+	ERRCHECK(soundInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT));
+}
+
+void SoundEvent::pause(bool pause){
+	ERRCHECK(soundInstance->setPaused(pause));
+}
+
+void SoundEvent::setPitch(float pitch){
+	ERRCHECK(soundInstance->setPitch(pitch));
+}
+
+void SoundEvent::setVolume(float vol){
+	ERRCHECK(soundInstance->setVolume(vol));
+}
+
+void SoundEvent::setPosition(glm::vec3 _pos){
+
+	FMOD_3D_ATTRIBUTES *att;
+	soundInstance->get3DAttributes(att);
+
+	FMOD_VECTOR vec;
+	vec.x = _pos.x;
+	vec.y = _pos.y;
+	vec.z = _pos.z;
+
+	att->position = vec;
+	soundInstance->set3DAttributes(att);
+
+}
+
+SoundEvent* SoundEvent::getEvent(){
+	return this;
+}
+
+bool SoundEvent::isPlaying(){
+	bool paused = false;
+	bool ret = false;
+
+	soundInstance->getPaused(&paused);
+
+	if(!paused)
+			ret = true;
+
+
+	return ret;
+}
+
+bool SoundEvent::isStop(){
+	bool ret = false;
+
+	FMOD_STUDIO_PLAYBACK_STATE state = FMOD_STUDIO_PLAYBACK_PLAYING;
+	ERRCHECK(soundInstance->getPlaybackState(&state));
+
+	 if(state == FMOD_STUDIO_PLAYBACK_PLAYING)
+	 		ret = true;
+
+	return ret;
+}
+>>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce

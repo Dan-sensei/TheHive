@@ -1,0 +1,1 @@
+Nมัqaม5ํBมLฑ;Aัqaม5ํBมLฑ;AoHฏ@5ํBมNมoHฏ@5ํBมNมoHฏ@JALฑ;AoHฏ@JALฑ;AัqaมJANมัqaมJA
