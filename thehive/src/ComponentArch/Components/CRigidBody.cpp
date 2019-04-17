@@ -501,14 +501,13 @@ gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
 
     double Tick = *static_cast<double*>(_Tick.mData);
 
-    //glm::vec3 NewPos = glm::lerp(Previous.Position, Current.Position, static_cast<float>(Tick));
-    float X = Previous.Position.x *(1-Tick) + Current.Position.x*Tick;
-    float Y = Previous.Position.y *(1-Tick) + Current.Position.y*Tick;
-    float Z = Previous.Position.z *(1-Tick) + Current.Position.z*Tick;
+    // float X = Previous.Position.x *(1-Tick) + Current.Position.x*Tick;
+    // float Y = Previous.Position.y *(1-Tick) + Current.Position.y*Tick;
+    // float Z = Previous.Position.z *(1-Tick) + Current.Position.z*Tick;
 
-    cTransform->setPosition(glm::vec3(X,Y,Z));
-    glm::quat newRotation = glm::slerp(Previous.Rotation, Current.Rotation, static_cast<float>(Tick));
-    cTransform->setRotation(newRotation);
+    cTransform->setPosition(glm::mix(Previous.Position, Current.Position, static_cast<float>(Tick)));
+    cTransform->setRotation(glm::slerp(Previous.Rotation, Current.Rotation, static_cast<float>(Tick)));
+    
     return gg::ST_TRUE;
 }
 

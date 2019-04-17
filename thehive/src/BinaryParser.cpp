@@ -350,6 +350,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             if(hasCollider){
                 CRigidBody* RIGID = new CRigidBody(cx, cy, cz, crx,cry,crz,crw, csx/2, csy/2, csz/2);
                 Manager->addComponentToEntity(RIGID, gg::RIGID_BODY, NewEntity);
+                RIGID->setVirtualRotation(Rotation);
             }
 
             // LLAVE
@@ -557,7 +558,7 @@ uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
     GG_Read(inStream,z);
     glm::vec3 Position(x,y,z);
 
-    uint16_t HERO = fac->createHero(Position,-1);
+    uint16_t HERO = fac->createHero(Position,1);
 
     std::vector<AINode*> nodes;
     nodes.reserve(TOTAL);

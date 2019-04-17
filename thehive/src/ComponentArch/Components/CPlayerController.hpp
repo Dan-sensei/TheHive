@@ -143,6 +143,7 @@ class CPlayerController : public IComponent {
         void ToggleFreeCamera();
         void EnemyInfo();
 
+        glm::quat GetQuaternionBetween_MaxAngle(glm::vec3 &V1, glm::vec3 &V2, glm::quat CurrentRotation, const float &MaxTurnAngle);
         glm::quat RotationBetween(glm::vec3 &V1, glm::vec3 &V2);
 
         int actualGrenadeState; // 1,2,3

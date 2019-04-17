@@ -191,7 +191,10 @@ void CPlayerController::FixedUpdate(){
 
 
     glm::vec3 Direction = cRigidBody->getVirtualRotation() * glm::vec3(0,0,1);
-    cRigidBody->setVirtualRotation(RotationBetween(Direction, cV));
+    glm::vec3 Velocity = cRigidBody->getVelocity() * glm::vec3(-1, 0,-1);
+
+    if(Velocity.x || Velocity.z)
+    cRigidBody->setVirtualRotation(RotationBetween(Direction, Velocity));
 
     // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
     cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
@@ -222,11 +225,9 @@ glm::quat CPlayerController::RotationBetween(glm::vec3 &V1, glm::vec3 &V2){
 	glm::vec3 rotationAxis;
 
 	if (cosTheta < -1 + 0.001f){
-		// special case when vectors in opposite directions:
-		// there is no "ideal" rotation axis
-		// So guess one; any will do as long as it's perpendicular to start
+
 		rotationAxis = cross(glm::vec3(0.0f, 0.0f, 1.0f), V1);
-		if (glm::length2(rotationAxis) < 0.01 ) // bad luck, they were parallel, try again!
+		if (glm::length2(rotationAxis) < 0.01 )
 			rotationAxis = cross(glm::vec3(1.0f, 0.0f, 0.0f), V1);
 
 		rotationAxis = normalize(rotationAxis);

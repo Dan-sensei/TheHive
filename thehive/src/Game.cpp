@@ -197,7 +197,7 @@ void Game::Update(){
 
     // std::cout << " - " << glm::to_string(pos) << '\n';
     glm::vec3 pos = playerpos->getPosition();
-    pos.y += 3;
+    pos.y += 10;
     Engine->setPosition(luz,pos);
     // //std::cout << " - BEGIN DRAW" << '\n';
     Engine->BeginDraw();
