@@ -12,7 +12,8 @@
 #include <ComponentArch/Components/CPlayerController.hpp>
 #include <ComponentArch/Components/CFlock.hpp>
 
-#define K_DMG_VALUE 20.f
+//He cambiado la forma de recibir daño, he quitado el factor y directamente cada arma quita unos puntos de daño determinados.
+//#define K_DMG_VALUE 20.f
 
 CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
@@ -33,7 +34,7 @@ float CVida::getVida(){
 bool CVida::quitarvida(const float &_factor){
     bool ret = false;
 
-    vida -= K_DMG_VALUE*_factor;
+    vida -= _factor;
     if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
         hud->setvida(vida/vida_max);
     }
