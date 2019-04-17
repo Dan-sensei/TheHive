@@ -104,6 +104,9 @@ void CPlayerController::Init(){
     KEYMAP[11] = {gg::U, &CPlayerController::invocasionhorda};
     KEYMAP[12] = {gg::_4, &CPlayerController::ToggleFreeCamera};
     KEYMAP[13] = {gg::M, &CPlayerController::EnemyInfo};
+
+    KEYMAP[14] = {gg::V, &CPlayerController::MostrarTexto};
+    KEYMAP[15] = {gg::C, &CPlayerController::QuitarTexto};
 }
 
 gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
@@ -502,7 +505,19 @@ void CPlayerController::JUMP(){
 void CPlayerController::TogglePause(){
     Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
 }
-
+void CPlayerController::MostrarTexto(){
+    std::string texto[]{
+        "German es muy muy gay",
+        "Effects",
+        "Effects",
+        "Effects"
+    };
+    int nlineas=4;
+    Singleton<Motor2D>::Instance()->pintarTexto(nlineas,texto);
+}
+void CPlayerController::QuitarTexto(){
+    Singleton<Motor2D>::Instance()->InitHUD();
+}
 void CPlayerController::invocasionhorda(){
     auto hola=glm::vec3(651.342,0.684987,-14.1424);
     factory->createTank(hola, 200);

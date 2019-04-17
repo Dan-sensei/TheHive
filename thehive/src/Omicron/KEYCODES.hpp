@@ -12,6 +12,7 @@ namespace gg{
         A = GLFW_KEY_A,
         B = GLFW_KEY_B,
         D = GLFW_KEY_D,
+        C = GLFW_KEY_C,
         E = GLFW_KEY_E,
         F = GLFW_KEY_F,
         G = GLFW_KEY_G,

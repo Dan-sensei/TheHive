@@ -28,6 +28,8 @@ class Motor2D{
     friend class GameEngine;
     public:
         ~Motor2D();
+        void pintarTexto(int nlineas,std::string texto[]);
+        void CLINTexto();
         void setprogress(int hab,float _prog);
         void setvida(float _vida);
         void setbullet(int,int,int);

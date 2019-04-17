@@ -409,10 +409,17 @@ int Motor2D::InitMenu7(){
 
     return 1;
 }
+//int Motor2D::InitTuto(){
+//    CLINMenu();
+//    //AddImage("assets/HUD/menucerca.png",0,0,100,100);
+//    addText(30,63,"Effects"    );
+//
+//    return 1;
+//}
 
 
 void Motor2D::InitHUD(){
-
+    CLINMenu();
 
     AddImage("assets/HUD/hab1.png",  2, 90,7,10);
     auto boton=addRect(                     2, 90,7,10);
@@ -484,7 +491,7 @@ void Motor2D::InitHUD(){
     //mapHudFunctions[3]=&Motor2D::HUD_vida;
     //mapHudFunctions[4]=&Motor2D::HUD_arma0;
     //mapHudFunctions[5]=&Motor2D::HUD_arma1;
-
+//pintarTexto();
     perc        =   0;
     perc2       =   0;
     perc3       =   0;
@@ -508,7 +515,53 @@ void Motor2D::InitHUD(){
 //void Motor2D::AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color){
 //    TEXT_BUFFER.emplace_back(x,y,Text, color);
 //}
+void Motor2D::pintarTexto(int nlineas,std::string texto[]){
+    //fondo
+    auto boton=addRect(0.2,0.2,0.8,0.8);
+    //texto
+    // valores porcentuales (0--100)
+    int tam=30;
+    //int nlineas=4;
+    int x_parrafo=25;
+    int y_parrafo=25;
+    int interliniado=5;
+    glm::vec4 color =glm::vec4(1,0,0,1);
+    //std::string texto[]{
+    //    "German es muy muy gay",
+    //    "Effects",
+    //    "Effects",
+    //    "Effects"
+    //};
+    //incluimos cada liena
+    for (size_t i = 0; i < nlineas; i++) {
+        /* code */
+        addText(x_parrafo,y_parrafo+interliniado*i,texto[i],color,tam);
+    }
+}
+void Motor2D::CLINTexto(){
+    auto it=TEXT.begin();
+    it++;
+    if(TEXT.size()>2){
+        for (size_t i = 2; i < TEXT.size(); i++) {
+            //TEXT[i]->Draw();
+            //delete (TEXT[i]);
+            TEXT.erase(it);
+            it++;
 
+        }
+    }
+    //RECTANGULOS[7]->Draw();
+
+    auto it2=RECTANGULOS.begin();
+    for (size_t e = 0; e < 8; e++) {
+        /* code */
+        it2++;
+    }
+    //delete (RECTANGULOS[7]);
+    RECTANGULOS.erase(it2);
+
+
+}
 void Motor2D::CLINMenu(){
     //liberar eso
     //std::vector<Cuadrado2D*> RECTANGULOS;
@@ -557,6 +610,13 @@ void Motor2D::CLINNormal(){
         it++;
     }
     IMAGENES.clear();
+
+    auto it2=TEXT.begin();
+    while(it2!=TEXT.end()){
+        delete (*it);
+        it2++;
+    }
+    TEXT.clear();
 }
 
 void Motor2D::DisplayHUD(){
@@ -580,7 +640,12 @@ void Motor2D::DisplayHUD(){
         HUD_arma0(     );
         HUD_arma1(     );
 
-
+        if(TEXT.size()>2){
+            for (size_t i = 2; i < TEXT.size(); i++) {
+                TEXT[i]->Draw();
+            }
+            RECTANGULOS[7]->Draw();
+        }
     }
 }
 
