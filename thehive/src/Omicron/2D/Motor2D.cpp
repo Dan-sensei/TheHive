@@ -424,8 +424,9 @@ void Motor2D::pauseVida(bool b){
 }
 
 void Motor2D::InitHUD(){
-  
+
     s_salud->play();
+
 
 
     AddImage("assets/HUD/hab1.png",  2, 90,7,10);

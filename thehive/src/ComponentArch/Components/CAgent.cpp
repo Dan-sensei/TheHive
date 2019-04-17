@@ -398,6 +398,7 @@ void CAgent::STAY_func_kTrig_Touchable   (TriggerRecordStruct *_pRec){
         if(item && !cpc->hasItem(item)){
 
             s_fusible->play();
+            SS->snapPlay("snapshot:/Dialogos");
             // El heroe no ha cogido el item en concreto para realizar la accion
             //gg::cout("You shall not PASS!!!");
             return;

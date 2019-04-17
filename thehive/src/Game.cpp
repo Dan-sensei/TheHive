@@ -98,7 +98,7 @@ void Game::Init(){
 
 
     cont->musicaJuegoPlay();
-    cont->play_snap_game();
+    soundSys->snapPlay("snapshot:/Game");
     cont->musicaMenuStop();
 
 
@@ -232,7 +232,7 @@ void Game::Resume(){
 
     cont->musicaJuegoPause(false);
     cont->musicaMenuStop();
-    cont->play_snap_game();
+    soundSys->snapPlay("snapshot:/Game");
     Engine2D->pauseVida(false);
 
 
@@ -249,7 +249,7 @@ void Game::CLIN(){
 
     cont->musicaJuegoStop();
     cont->musicaMenuPlay();
-    cont->play_snap_menu();
+    soundSys->snapPlay("snapshot:/Pause");
     Engine2D->stopVida();
 
     //Engine2D->CLINNormal();
@@ -262,7 +262,8 @@ void Game::CLIN(){
 }
 void Game::Pause(){
     cont->musicaJuegoPause(true);
-    cont->play_snap_menu();
+    soundSys->snapPlay("snapshot:/Pause");
+    
     Engine2D->pauseVida(true);
 
 }
