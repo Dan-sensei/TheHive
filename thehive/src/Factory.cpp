@@ -36,9 +36,6 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 
     uint16_t hero = Manager->createEntity();
     CTransform* Transform               = new CTransform(glm::vec3(Position.x, Position.y, Position.z), glm::vec3(0, 0, 0));
-    std::cout << Position.x << '\n';
-    std::cout << Position.y << '\n';
-    std::cout << Position.z << '\n';
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
 
     ZStaticMesh::setPlayerPtr(&(Transform->Position));
