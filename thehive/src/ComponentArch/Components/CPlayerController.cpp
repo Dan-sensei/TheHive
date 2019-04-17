@@ -191,7 +191,10 @@ void CPlayerController::FixedUpdate(){
 
 
     glm::vec3 Direction = cRigidBody->getVirtualRotation() * glm::vec3(0,0,1);
-    cRigidBody->setVirtualRotation(RotationBetween(Direction, cV));
+    glm::vec3 Velocity = cRigidBody->getVelocity() * glm::vec3(-1, 0,-1);
+
+    if(Velocity.x || Velocity.z)
+    cRigidBody->setVirtualRotation(RotationBetween(Direction, Velocity));
 
     // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
     cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
@@ -222,11 +225,9 @@ glm::quat CPlayerController::RotationBetween(glm::vec3 &V1, glm::vec3 &V2){
 	glm::vec3 rotationAxis;
 
 	if (cosTheta < -1 + 0.001f){
-		// special case when vectors in opposite directions:
-		// there is no "ideal" rotation axis
-		// So guess one; any will do as long as it's perpendicular to start
+
 		rotationAxis = cross(glm::vec3(0.0f, 0.0f, 1.0f), V1);
-		if (glm::length2(rotationAxis) < 0.01 ) // bad luck, they were parallel, try again!
+		if (glm::length2(rotationAxis) < 0.01 )
 			rotationAxis = cross(glm::vec3(1.0f, 0.0f, 0.0f), V1);
 
 		rotationAxis = normalize(rotationAxis);
@@ -508,18 +509,18 @@ void CPlayerController::invocasionhorda(){
 }
 void CPlayerController::invocasionwander(){
     glm::vec3 hola[]={
-        glm::vec3(463.316,0.684987,-23.9962),
-        glm::vec3(496.804,0.684987,-21.1747),
-        glm::vec3(443.705,0.684986,-26.6188),
-        glm::vec3(454.321,0.684986,-18.0602),
-        glm::vec3(514.321,0.684986,-20.0602),
-        glm::vec3(520.321,0.684986,-25.0602),
-        glm::vec3(603.705,0.684986,-20.6188),
-        glm::vec3(553.705,0.684986,-18.6188)
+        glm::vec3(-15,0.684987,11),
+        glm::vec3(-18,0.684987,12),
+        glm::vec3(22,0.684986,14),
+        glm::vec3(30,0.684986,20),
+        glm::vec3(40,0.684986,25),
+        glm::vec3(50,0.684986,28),
+        glm::vec3(60,0.684986,35),
+        glm::vec3(70,0.684986,40)
     };
     //wandering
     for (int i = 0; i < 8; i++) {
-        factory->createSoldierWandering(hola[i], 200);
+        factory->createSoldierWandering(hola[i], 1);
     }
 }
 void CPlayerController::ToggleFreeCamera(){

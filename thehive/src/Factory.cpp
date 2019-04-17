@@ -36,6 +36,9 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 
     uint16_t hero = Manager->createEntity();
     CTransform* Transform               = new CTransform(glm::vec3(Position.x, Position.y, Position.z), glm::vec3(0, 0, 0));
+    std::cout << Position.x << '\n';
+    std::cout << Position.y << '\n';
+    std::cout << Position.z << '\n';
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
 
     ZStaticMesh::setPlayerPtr(&(Transform->Position));
@@ -133,8 +136,8 @@ uint16_t Factory::createSoldier(const glm::vec3 &Position,const float &health){
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Running"));
     DynamicModel->ToggleAnimation(0, 2);
 
-    // CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Hero.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
-    // Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
+     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Hero.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
+     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);

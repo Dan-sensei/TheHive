@@ -103,6 +103,8 @@ class Motor2D{
         float perc3;
         float ancho;
         float alto;
+        std::string imgarmaP;
+        std::string imgarmaS;
 
 
 

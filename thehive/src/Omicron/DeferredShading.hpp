@@ -18,8 +18,13 @@ class DeferredShading{
         void DrawQuad();
 
         Shader* DEFERRED_SHADER;
+        unsigned char * buffer;
+
 
         unsigned int G_BUFFER;
+        unsigned int ubo;
+        unsigned int block_index;
+        unsigned int binding_point_index;
         unsigned int gPosition, gNormal, gDiffuseSpec;
         unsigned int G_DepthBuffer;
 

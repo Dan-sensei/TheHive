@@ -93,7 +93,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
     switch (_type){
         case 0:
             // Rifle
-            dmg = 0.7;
+            dmg = 0.34;
             cdc = 7;
             cb  = 30;
             tb  = 150;
@@ -108,7 +108,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             break;
         case 1:
             // Escopeta
-            dmg = 0.8;
+            dmg = 1;
             cdc = 0.8;
             cb  = 10;
             tb  = 70;
@@ -124,7 +124,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             break;
         case 2:
             // Ametralladora
-            dmg = 0.3;
+            dmg = 0.2;
             cdc = 9;
             cb  = 100;
             tb  = 300;
@@ -140,7 +140,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             break;
         case 3:
             // Pistola
-            dmg = 0.4;
+            dmg = 0.17;
             cdc = 2.5;
             cb  = 15;
             tb  = 150;

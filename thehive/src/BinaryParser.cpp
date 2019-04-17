@@ -136,175 +136,11 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             //nave
             case 1: Dark = _AssetManager->getMaterial("White");
                     break;
-            //casa inglesa
-            case 2: Dark = _AssetManager->getMaterial("Model2");
-                    break;
-            case 3: Dark = _AssetManager->getMaterial("Model3");
-                    break;
-            //container
-            case 4: rand = gg::genIntRandom(0,2);
-                    if (rand == 0)
-                        Dark = _AssetManager->getMaterial("Model4");
-                    if (rand == 1)
-                        Dark = _AssetManager->getMaterial("Model4_2");
-                    if (rand == 2)
-                        Dark = _AssetManager->getMaterial("Model4_3");
-
-                    break;
-            //farola
-            case 5: Dark = _AssetManager->getMaterial("Model5");
-                    break;
-            //Separador
-            case 6: rand = gg::genIntRandom(0,1);
-                    if(rand == 0)
-                        Dark = _AssetManager->getMaterial("Model6");
-                    if(rand == 1)
-                        Dark = _AssetManager->getMaterial("Model6_2");
-                    break;
-            case 7: Dark = _AssetManager->getMaterial("Model7");
-                    break;
-            case 8: Dark = _AssetManager->getMaterial("Model8");
-                    break;
-            //basura1
-            case 9: Dark = _AssetManager->getMaterial("Model9");
-                    break;
-            case 10: Dark = _AssetManager->getMaterial("Model10");
-                    break;
-            case 11: Dark = _AssetManager->getMaterial("Model11");
-                    break;
-            case 12: Dark = _AssetManager->getMaterial("Model12");
-                    break;
-            //coche
-            case 13://rand = gg::genIntRandom(0,2);
-                    //if(rand == 0)
-                    //Dark = _AssetManager->getMaterial("Car1");
-                    //if(rand == 1)
-                    //Dark = _AssetManager->getMaterial("Car2");
-                    //if(rand == 2)
-                    //Dark = _AssetManager->getMaterial("Car3");
-                    Dark = _AssetManager->getMaterial("Model13");
-                    break;
-            case 14: Dark = _AssetManager->getMaterial("Model14");
-                    break;
-
             case 29: Dark = _AssetManager->getMaterial("Door");
                     break;
-            case 30: Dark = _AssetManager->getMaterial("Model30");
-                    break;
-            case 31: Dark = _AssetManager->getMaterial("Model31");
-                    break;
-            case 32: Dark = _AssetManager->getMaterial("Model32");
-                    break;
-            case 33: Dark = _AssetManager->getMaterial("Model33");
-                    break;
-            case 34: Dark = _AssetManager->getMaterial("Model34");
-                    break;
-            case 35: Dark = _AssetManager->getMaterial("Model35");
-                    break;
-            case 36: Dark = _AssetManager->getMaterial("Model36");
-                    break;
-            case 37: Dark = _AssetManager->getMaterial("Model37");
-                    break;
-            case 38: Dark = _AssetManager->getMaterial("Model38");
-                    break;
-            case 39: Dark = _AssetManager->getMaterial("Model39");
-                    break;
-            case 40: Dark = _AssetManager->getMaterial("Model40");
-                    break;
-            case 41: Dark = _AssetManager->getMaterial("Model41");
-                    break;
-            case 42: Dark = _AssetManager->getMaterial("Model42");
-                    break;
-            case 43: Dark = _AssetManager->getMaterial("Model43");
-                    break;
-            case 44: Dark = _AssetManager->getMaterial("Model44");
-                    break;
-            case 45: Dark = _AssetManager->getMaterial("Model45");
-                    break;
-            case 46: Dark = _AssetManager->getMaterial("Model46");
-                    break;
-            case 47: Dark = _AssetManager->getMaterial("Model47");
-                    break;
-            case 48: Dark = _AssetManager->getMaterial("Model48");
-                    break;
-            case 49: Dark = _AssetManager->getMaterial("Model49");
-                    break;
-            case 50: Dark = _AssetManager->getMaterial("Model50");
-                    break;
-            case 51: Dark = _AssetManager->getMaterial("Model51");
-                    break;
-            case 52: Dark = _AssetManager->getMaterial("Model52");
-                    break;
-            case 53: Dark = _AssetManager->getMaterial("Model53");
-                    break;
-            case 54: Dark = _AssetManager->getMaterial("Model54");
-                    break;
-            case 55: Dark = _AssetManager->getMaterial("Model55");
-                    break;
-            case 57: Dark = _AssetManager->getMaterial("Model57");
-                    break;
-            case 101: Dark = _AssetManager->getMaterial("Model101");
-                    break;
-            case 103: Dark = _AssetManager->getMaterial("Model103");
-                    break;
-            case 104: Dark = _AssetManager->getMaterial("Model104");
-                    break;
-            case 105: Dark = _AssetManager->getMaterial("Model105");
-                    break;
-            case 106: Dark = _AssetManager->getMaterial("Model106");
-                    break;
-
-            case 107: Dark = _AssetManager->getMaterial("Model106");
-                    break;
-            case 108: Dark = _AssetManager->getMaterial("Model106");
-                    break;
-            case 109: Dark = _AssetManager->getMaterial("Model109");
-                    break;
-            case 110: Dark = _AssetManager->getMaterial("Model110");
-                    break;
-            case 111: Dark = _AssetManager->getMaterial("Model106");
-                    break;
-            case 112: Dark = _AssetManager->getMaterial("Model112");
-                    break;
-            case 113: Dark = _AssetManager->getMaterial("Model113");
-                    break;
-            case 114: Dark = _AssetManager->getMaterial("Model114");
-                    break;
-            case 115: Dark = _AssetManager->getMaterial("Model115");
-                    break;
-            case 116: Dark = _AssetManager->getMaterial("Model116");
-                    break;
-            case 117: Dark = _AssetManager->getMaterial("Model117");
-                    break;
-            case 118: Dark = _AssetManager->getMaterial("Model118");
-                    break;
-            case 119: Dark = _AssetManager->getMaterial("Model119");
-                    break;
-            case 120: Dark = _AssetManager->getMaterial("Model120");
-                    break;
-            case 121: Dark = _AssetManager->getMaterial("Model121");
-                    break;
-            case 122: Dark = _AssetManager->getMaterial("Model122");
-                    break;
-            case 123: Dark = _AssetManager->getMaterial("Model123");
-                    break;
-            case 124: Dark = _AssetManager->getMaterial("Model124");
-                    break;
-            case 125: Dark = _AssetManager->getMaterial("Model125");
-                    break;
-            case 126: Dark = _AssetManager->getMaterial("Model126");
-                    break;
-            case 127: Dark = _AssetManager->getMaterial("Model127");
-                    break;
-            case 128: Dark = _AssetManager->getMaterial("Model128");
-                    break;
-            case 129: Dark = _AssetManager->getMaterial("Model128");
-                    break;
-
-            //suelo inicio
             case 144: Dark = _AssetManager->getMaterial("Ground");
                     break;
-            default: Dark = _AssetManager->getMaterial("Default");
+            default: Dark = _AssetManager->getMaterial("Model"+std::to_string(MODEL));
                     break;
         }
         //Dark = AssetManager::getMaterial("Default");
@@ -514,6 +350,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             if(hasCollider){
                 CRigidBody* RIGID = new CRigidBody(cx, cy, cz, crx,cry,crz,crw, csx/2, csy/2, csz/2);
                 Manager->addComponentToEntity(RIGID, gg::RIGID_BODY, NewEntity);
+                RIGID->setVirtualRotation(Rotation);
             }
 
             // LLAVE
