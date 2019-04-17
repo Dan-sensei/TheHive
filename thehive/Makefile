@@ -26,11 +26,9 @@ $(EXE): $(OBJECTS)
 	$(call printInfo, "Generating")
 	$(call printWarning, $(EXE))
 	$(call printInfo,"...")
-<<<<<<< HEAD
-	@$(COMPILER) -o $@ $^ -L ./lib $(LIBRARIES) -Wl,-rpath,$(LIB)
-=======
+
 	@$(COMPILER) -o $@ $^ $(ADDITIONAL_LIB) $(LIBRARIES)
->>>>>>> 631f6232a2abeb04405aa707c4503ca6b4ed7cce
+
 	$(call printObj,  "Finished!")
 	$(call br)
 	$(call br)
