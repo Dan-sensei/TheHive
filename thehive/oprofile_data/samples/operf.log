@@ -1,0 +1,34 @@
+
+Profiling started at Thu Apr 18 09:26:09 2019
+Profiling stopped at Thu Apr 18 09:41:44 2019
+
+-- OProfile/operf Statistics --
+Nr. non-backtrace samples: 365017
+Nr. kernel samples: 91351
+Nr. user space samples: 273666
+Nr. samples lost due to sample address not in expected range for domain: 0
+Nr. lost kernel samples: 0
+Nr. samples lost due to sample file open failure: 0
+Nr. samples lost due to no permanent mapping: 4050
+Nr. user context kernel samples lost due to no app info available: 0
+Nr. user samples lost due to no app info available: 0
+Nr. backtraces skipped due to no file mapping: 1340
+Nr. hypervisor samples dropped due to address out-of-range: 0
+Nr. samples lost reported by perf_events kernel: 0
+
+Profiling started at Thu Apr 18 09:42:14 2019
+Profiling stopped at Thu Apr 18 09:56:33 2019
+
+-- OProfile/operf Statistics --
+Nr. non-backtrace samples: 238212
+Nr. kernel samples: 62027
+Nr. user space samples: 176185
+Nr. samples lost due to sample address not in expected range for domain: 0
+Nr. lost kernel samples: 0
+Nr. samples lost due to sample file open failure: 0
+Nr. samples lost due to no permanent mapping: 2023
+Nr. user context kernel samples lost due to no app info available: 0
+Nr. user samples lost due to no app info available: 0
+Nr. backtraces skipped due to no file mapping: 209
+Nr. hypervisor samples dropped due to address out-of-range: 0
+Nr. samples lost reported by perf_events kernel: 0
