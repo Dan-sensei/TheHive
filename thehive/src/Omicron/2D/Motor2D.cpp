@@ -35,6 +35,7 @@ Motor2D::~Motor2D(){
     //delete s_hover;
     CLINMenu();
 }
+
 void Motor2D::draw(){
 
     auto it=TEXT.begin();

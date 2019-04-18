@@ -6,7 +6,7 @@
 #define PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
 
 ggDynWorld::ggDynWorld(){
-    debugDrawer = Singleton<GLDebugDrawer>::Instance();
+    //debugDrawer = Singleton<GLDebugDrawer>::Instance();
     Factory *fac = Singleton<Factory>::Instance();
     //debugBullet = fac->createDebugBullet(glm::vec3());
 }
@@ -40,9 +40,9 @@ void ggDynWorld::stepSimulation(float timeStep, int maxSubSteps, float fixedTime
 
 void ggDynWorld::debugDrawWorld(){
     if(debug){
-        debugDrawer->setDebugMode(1);
-        dynamicsWorld->setDebugDrawer(debugDrawer);
-        dynamicsWorld->debugDrawWorld();
+        // debugDrawer->setDebugMode(1);
+        // dynamicsWorld->setDebugDrawer(debugDrawer);
+        // dynamicsWorld->debugDrawWorld();
     }
 }
 

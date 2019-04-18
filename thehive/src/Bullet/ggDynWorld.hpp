@@ -116,7 +116,7 @@ private:
     // Ademas, tiene una lista de TODOS los cuerpos
     btDiscreteDynamicsWorld* dynamicsWorld;
     btCollisionWorld* collisionWorld;
-    btIDebugDraw* debugDrawer;
+    //btIDebugDraw* debugDrawer;
 
     // ------------------------- //
     // IMPORTANTE: CUERPO!=FORMA //
