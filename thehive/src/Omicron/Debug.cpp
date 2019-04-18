@@ -1,4 +1,6 @@
 #include "Debug.hpp"
+#include <Singleton.hpp>
+
 /*
 //#include <iostream>
 

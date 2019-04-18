@@ -1,6 +1,5 @@
 #include "Motor2D.hpp"
-//#include <iostream>
-//#include <SMaterial>
+
 #include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
 #include <Omicron/2D/Imagen2D.hpp>

@@ -1,7 +1,7 @@
 #include "ZAnimationData.hpp"
 #include <Omicron/AssetManager.hpp>
 #include <iostream>
-
+#include <Singleton.hpp>
 #include <ShaderUniformMapping.hpp>
 
 ZAnimationData::ZAnimationData()

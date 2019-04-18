@@ -3,8 +3,7 @@
 
 #include <vector>
 #include <cstdint>
-#include <Omicron/ZMaterial.hpp>
-#include <Omicron/CORE/TNodo.hpp>
+
 #include <Omicron/2D/Imagen2D.hpp>
 #include <Omicron/2D/Texto2D.hpp>
 #include <Omicron/2D/EnumButtonType.hpp>

@@ -147,12 +147,12 @@ void Game::Init(){
     //Engine2D->prueba();
     // //std::cout << "\n -- INIT -- " << '\n';
 
-    ParticleSystem_Data PS;
-    PS.Texture = "assets/Textures/Particles/BlueQuad.png";
-    PS.SpawnTime = 0.05;
-    PS.MaxParticles = 20;
-
-    Engine->CreateParticleSystem(PS, 1);
+    // ParticleSystem_Data PS;
+    // PS.Texture = "assets/Textures/Particles/BlueQuad.png";
+    // PS.SpawnTime = 0.05;
+    // PS.MaxParticles = 20;
+    //
+    // Engine->CreateParticleSystem(PS, 1);
 }
 
 void Game::Update(){
@@ -184,7 +184,7 @@ void Game::Update(){
     }
 
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
-    EventSystem->Update();
+    //EventSystem->Update();
 
     //Director->update(DeltaTime);
 
@@ -201,22 +201,14 @@ void Game::Update(){
     glm::vec3 pos = playerpos->getPosition();
     pos.y += 10;
     Engine->setPosition(luz,pos);
-    // //std::cout << " - BEGIN DRAW" << '\n';
-    Engine->BeginDraw();
 
-    // //std::cout << "  - UPDATE ALL" << '\n';
+    Engine->BeginDraw();
     Manager->UpdateAll();
 
-    ////std::cout << "Update" << '\n';
     MainCamera->CameraUpdate();
-    //Engine->print();
-
-    // //std::cout << "  - DRAW" << '\n';
     Engine->draw();
     //sky.Draw();
-
     Engine->DisplayFPS();
-
     Engine2D->DisplayHUD();
 
     // Consola por pantalla

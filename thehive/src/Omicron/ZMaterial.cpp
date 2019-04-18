@@ -3,8 +3,11 @@
 //#include <iostream>
 //#include "vendor/stb_image.h"
 #include <Omicron/AssetManager.hpp>
+#include <Singleton.hpp>
+
 
 ZMaterial::ZMaterial()
+:shader(nullptr)
 {
 }
 

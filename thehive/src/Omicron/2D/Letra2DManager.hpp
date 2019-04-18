@@ -3,11 +3,10 @@
 
 #include <vector>
 #include <cstdint>
-#include <Omicron/ZMaterial.hpp>
-#include <Omicron/CORE/TNodo.hpp>
 #include "Letra2D.hpp"
-#include "Singleton.hpp"
 
+template <typename T>
+class Singleton;
 
 class Letra2DManager {
     friend class Singleton<Letra2DManager>;

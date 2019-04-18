@@ -35,7 +35,7 @@ ZPlayer::ZPlayer() {
 
     glGenTextures(1, &VideoBuffer);
     glBindTexture(GL_TEXTURE_2D, VideoBuffer);
-    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB16, 1280, 720);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, 1280, 720);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -65,8 +65,8 @@ void ZPlayer::PlayVideo(const std::string &PathToVideo) {
         Accumulator += THE_CLOCK.Restart().Seconds();
         if(Accumulator > I_FPS){
             Accumulator -= I_FPS;
-            ZVideo >> ZFrame;
             glTextureSubImage2D(VideoBuffer, 0,0,0, 1280, 720, GL_BGR, GL_UNSIGNED_BYTE, ZFrame.ptr());
+            ZVideo >> ZFrame;
         }
 
         glActiveTexture(GL_TEXTURE0);
@@ -84,4 +84,3 @@ void ZPlayer::PlayVideo(const std::string &PathToVideo) {
 
     ZVideo.release();
 }
-

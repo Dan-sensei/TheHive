@@ -2,6 +2,7 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <iostream>
 #include <Omicron/FX/ParticleSystem.hpp>
+#include <Singleton.hpp>
 
 
 bool* Omicron::KEYS = new bool[349];
@@ -316,6 +317,7 @@ bool Omicron::Initialize(){
 	    glfwTerminate();
 	    return false;
 	}
+
 
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);

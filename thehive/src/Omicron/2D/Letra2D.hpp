@@ -3,8 +3,7 @@
 
 #include <vector>
 #include <cstdint>
-#include <Omicron/ZMaterial.hpp>
-#include <Omicron/CORE/TNodo.hpp>
+#include <map>
 
 class Letra2D {
     public:

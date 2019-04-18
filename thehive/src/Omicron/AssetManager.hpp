@@ -9,11 +9,8 @@
 
 #include <Omicron/ZMESHES/ZMeshData.hpp>
 #include <Omicron/ZMESHES/ZAnimationData.hpp>
-#include <Omicron/ZMESHES/BoundingBox.hpp>
 #include <Omicron/ZMaterial.hpp>
 #include <Omicron/OpenGEnum.hpp>
-
-#include "Singleton.hpp"
 
 template <typename T>
 class Singleton;

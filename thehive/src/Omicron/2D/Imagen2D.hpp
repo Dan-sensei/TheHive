@@ -3,8 +3,9 @@
 
 #include <vector>
 #include <cstdint>
-#include <Omicron/ZMaterial.hpp>
-#include <Omicron/CORE/TNodo.hpp>
+#include <string>
+#include <glm/glm.hpp>
+
 class Shader;
 class Imagen2D {
     public:
@@ -32,7 +33,6 @@ class Imagen2D {
         std::string texturaURL;
         unsigned long inputColour;
         Shader* inicio;
-        Shader* fin;
 
             float index;
             glm::vec4 color;

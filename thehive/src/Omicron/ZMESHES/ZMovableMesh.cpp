@@ -1,7 +1,7 @@
 #include "ZMovableMesh.hpp"
 #include <Omicron/AssetManager.hpp>
 #include <iostream>
-
+#include <Singleton.hpp>
 
 #include <ShaderUniformMapping.hpp>
 

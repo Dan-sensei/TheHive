@@ -1,10 +1,8 @@
 #include "Imagen2D.hpp"
-#include <Omicron/ZMESHES/ZMeshData.hpp>
+
 #include <Omicron/AssetManager.hpp>
 #include <iostream>
-#include <SOIL2/SOIL2.h>
-
-
+#include <Singleton.hpp>
 
 float Imagen2D::getX(){
     return X;
@@ -55,11 +53,10 @@ void Imagen2D::setSesgado(float res){
 }
 
 Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(-0.9999),inicio(nullptr),fin(nullptr),texturaURL(Name)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(-0.9999),inicio(nullptr),texturaURL(Name)
 {
     auto sh=Singleton<AssetManager>::Instance();
     inicio=sh->getShader("2D");
-    fin=sh->getShader("Default");
     inputColour = inicio->getUniformLocation("inputColour");
     Zindex = inicio->getUniformLocation("Zindex");
     textura=inicio->getUniformLocation("DiffuseMap");
@@ -167,31 +164,29 @@ void Imagen2D::setImage(const std::string &Name){
 std::string Imagen2D::getImage(){
     return texturaURL;
 }
+
 void Imagen2D::setZindex(float res){
     index=res;
 }
+
 void Imagen2D::Draw(){
 
     inicio->Bind();
     //metemos el color
-    glUniform4fv(inputColour,1,&color[0]);
+    glUniform4f(inputColour,color.x, color.y, color.z, color.w);
     glUniform1f(Zindex,index);
     glUniform1i(textura, 0);
     glBindVertexArray(VAO);
 
-    glActiveTexture(GL_TEXTURE0 + 0);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
-
-    fin->Bind();
-
 }
 
 Imagen2D::~Imagen2D(){
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteVertexArrays(1, &VAO);
-
 }

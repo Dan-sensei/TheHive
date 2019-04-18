@@ -3,11 +3,12 @@
 
 #include <vector>
 #include <cstdint>
-#include <Omicron/ZMaterial.hpp>
-#include <Omicron/CORE/TNodo.hpp>
+#include <string>
+#include <glm/glm.hpp>
 
 class Letra2DManager;
 class Shader;
+
 class Texto2D {
     public:
         //Texto2D();

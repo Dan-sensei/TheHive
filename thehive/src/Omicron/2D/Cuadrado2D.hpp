@@ -3,8 +3,7 @@
 
 #include <vector>
 #include <cstdint>
-#include <Omicron/ZMaterial.hpp>
-#include <Omicron/CORE/TNodo.hpp>
+#include <glm/glm.hpp>
 
 class Shader;
 
@@ -16,7 +15,7 @@ class Cuadrado2D {
 
         void Draw();
         void setZindex(float res);
-        
+
         void setPos(float x,float y,float w,float h);
 
         void setColor(glm::vec4 _color);

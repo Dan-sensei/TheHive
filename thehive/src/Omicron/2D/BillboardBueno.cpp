@@ -1,11 +1,9 @@
 #include "BillboardBueno.hpp"
-#include <Omicron/ZMESHES/ZMeshData.hpp>
+
 #include <Omicron/AssetManager.hpp>
 //#include <iostream>
-#include <SOIL2/SOIL2.h>
 #include <Singleton.hpp>
 #include <Omicron/Omicron.hpp>
-
 
 
 

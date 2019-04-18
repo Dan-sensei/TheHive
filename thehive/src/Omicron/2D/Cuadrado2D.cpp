@@ -1,7 +1,8 @@
 #include "Cuadrado2D.hpp"
-#include <Omicron/ZMESHES/ZMeshData.hpp>
 #include <Omicron/AssetManager.hpp>
+#include <Singleton.hpp>
 #include <iostream>
+
 
 #define WIDTH          1080.0f
 #define HEIGTH         720.0f

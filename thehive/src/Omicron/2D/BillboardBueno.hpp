@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <cstdint>
-#include <Omicron/ZMaterial.hpp>
-#include <Omicron/CORE/TNodo.hpp>
+#include <string>
+#include <glm/glm.hpp>
+
 class Omicron;
+class Shader;
 
 class BillboardBueno {
     public:
