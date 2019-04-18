@@ -1,0 +1,130 @@
+WARNING: Lost samples detected! See /home/abp/abp/GammaGames/20190417/GammaGames/oprofile_data/samples/operf.log for details.
+CPU: Intel Silvermont microarchitecture, speed 2080 MHz (estimated)
+Counted CPU_CLK_UNHALTED events (Clock cycles when not halted) with a unit mask of 0x00 (No unit mask) count 2080000
+samples  %        app name                 symbol name
+1011     29.8054  main                     btIDebugDraw::drawCapsule(float, float, int, btTransform const&, btVector3 const&)
+474      13.9741  main                     TData::add(EnumDataType, float)
+189       5.5719  main                     FMOD_ErrorString(FMOD_RESULT)
+182       5.3656  main                     Motor2D::InitMenu()
+170       5.0118  main                     TData::clearData(EnumDataType)
+165       4.8644  main                     Motor2D::InitMenu4()
+159       4.6875  main                     ggDynWorld::ggDynWorld()
+125       3.6851  main                     btIDebugDraw::drawCylinder(float, float, int, btTransform const&, btVector3 const&)
+123       3.6262  main                     Motor2D::InitMenu6()
+95        2.8007  main                     Cuadrado2D::Cuadrado2D(float, float, float, float)
+48        1.4151  main                     ggDynWorld::~ggDynWorld()
+41        1.2087  main                     btIDebugDraw::drawCone(float, float, int, btTransform const&, btVector3 const&)
+39        1.1498  main                     Motor2D::InitMenu2()
+36        1.0613  main                     Motor2D::AddImage(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, float, float, float, float)
+32        0.9434  main                     std::_Rb_tree_node<std::pair<EnumDataType const, float> >* std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_M_copy<std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_Reuse_or_alloc_node>(std::_Rb_tree_node<std::pair<EnumDataType const, float> > const*, std::_Rb_tree_node_base*, std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_Reuse_or_alloc_node&)
+30        0.8844  main                     ggDynWorld::addShape(btCollisionShape*)
+20        0.5896  main                     BFloat::BFloat(float)
+18        0.5307  main                     Imagen2D::setPos(float, float, float, float)
+17        0.5012  main                     btTriangleInfoMap::serialize(void*, btSerializer*) const
+16        0.4717  main                     Motor2D::addText(float, float, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<4, float, (glm::qualifier)0>, float)
+16        0.4717  main                     btIDebugDraw::drawSpherePatch(btVector3 const&, btVector3 const&, btVector3 const&, float, float, float, float, float, btVector3 const&, float, bool)
+15        0.4422  main                     Motor2D::addText(float, float, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<4, float, (glm::qualifier)0>, float) [clone .constprop.196]
+15        0.4422  main                     stbi__hdr_load.isra.44
+14        0.4127  main                     BData::BData(BData const&)
+14        0.4127  main                     stbi__create_png_image_raw.isra.40
+12        0.3538  main                     BData::BData()
+12        0.3538  main                     BFloat::getFloat()
+12        0.3538  main                     GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&) [clone .constprop.6]
+12        0.3538  main                     Motor2D::addButton(float, float, float, float, EnumButtonType, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, glm::vec<4, float, (glm::qualifier)0>)
+12        0.3538  main                     Particle::Particle(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0>, gg::Color const&, float, float)
+11        0.3243  main                     BFloat::BFloat(BFloat const&)
+11        0.3243  main                     stbi__load_main
+10        0.2948  main                     TTransform::inverse()
+9         0.2653  main                     BData::~BData()
+9         0.2653  main                     ObjectManager::CallFunctionOfComponentes(gg::MessageType, void (IComponent::*)())
+8         0.2358  main                     CAIEnem::FixedUpdate()
+8         0.2358  main                     CAIEnem::enableVisualDebug()
+8         0.2358  main                     std::_Rb_tree_node<std::pair<unsigned short const, IComponent*> >* std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_M_copy<std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_Reuse_or_alloc_node>(std::_Rb_tree_node<std::pair<unsigned short const, IComponent*> > const*, std::_Rb_tree_node_base*, std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_Reuse_or_alloc_node&)
+7         0.2064  main                     CRigidBody::CRigidBody(bool, float, float, float, float, float, float)
+7         0.2064  main                     Game::Init()
+7         0.2064  main                     ggDynWorld::removeCollisionObject(btCollisionObject*)
+6         0.1769  main                     FMOD_ErrorString(FMOD_RESULT)
+6         0.1769  main                     ParticleSystem::ParticleCreationHandler()
+6         0.1769  main                     btIDebugDraw::drawSphere(float, btTransform const&, btVector3 const&)
+6         0.1769  main                     ggDynWorld::~ggDynWorld()
+6         0.1769  main                     std::_Deque_base<TNodo*, std::allocator<TNodo*> >::_M_initialize_map(unsigned long)
+5         0.1474  main                     AssetManager::loadInit() [clone .cold.218]
+5         0.1474  main                     GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&)
+4         0.1179  main                     GUIController::Init()
+4         0.1179  main                     Game::Game()
+4         0.1179  main                     TTransform::endDraw()
+4         0.1179  main                     std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_M_erase(std::_Rb_tree_node<std::pair<EnumDataType const, float> >*)
+3         0.0884  main                     Arena::Arena(unsigned long)
+3         0.0884  main                     CAgent::ENTER_func_kTrig_Senyuelo(TriggerRecordStruct*)
+3         0.0884  main                     CAgent::STAY_func_kTrig_Gunfire(TriggerRecordStruct*)
+3         0.0884  main                     Factory::createMatriuska(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&)
+3         0.0884  main                     Imagen2D::Draw()
+3         0.0884  main                     Motor2D::HUD_hability1()
+3         0.0884  main                     ObjectManager::addComponentToEntity(IComponent*, gg::EComponentType, unsigned short)
+3         0.0884  main                     Omicron::bindTransform(glm::vec<3, float, (glm::qualifier)0> const&, glm::qua<float, (glm::qualifier)0> const&, TNodo*)
+3         0.0884  main                     Pathfinding::DroNodes()
+3         0.0884  main                     TData::TData(TData const&)
+3         0.0884  main                     btIDebugDraw::getDefaultColors() const
+3         0.0884  main                     ggDynWorld::printObjects(int)
+3         0.0884  main                     void std::deque<glm::mat<4, 4, float, (glm::qualifier)0>, std::allocator<glm::mat<4, 4, float, (glm::qualifier)0> > >::_M_push_back_aux<glm::mat<4, 4, float, (glm::qualifier)0> const&>(glm::mat<4, 4, float, (glm::qualifier)0> const&)
+2         0.0590  main                     CAIEnem::CAIEnem(gg::EEnemyType, float, glm::vec<3, float, (glm::qualifier)0>, bool) [clone .cold.101]
+2         0.0590  main                     CMeshCollider::CMeshCollider(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, float, float, float)
+2         0.0590  main                     CRigidBody::getBodyPosition()
+2         0.0590  main                     Factory::Factory() [clone .cold.108]
+2         0.0590  main                     Factory::createTank(glm::vec<3, float, (glm::qualifier)0> const&, float const&) [clone .cold.114]
+2         0.0590  main                     GUIController::Close()
+2         0.0590  main                     Motor2D::InitHUD()
+2         0.0590  main                     Omicron::PointAt(TNodo*, glm::vec<3, float, (glm::qualifier)0> const&)
+2         0.0590  main                     OptionState::Update()
+2         0.0590  main                     Particle::Particle(Particle const&)
+2         0.0590  main                     ParticleSystem::Draw()
+2         0.0590  main                     TTransform::beginDraw()
+2         0.0590  main                     Treecontroller::Treecontroller(Blackboard*, gg::EEnemyType, CAIEnem*)
+2         0.0590  main                     Treecontroller::addAction(Hojas) [clone .cold.125]
+2         0.0590  main                     Treecontroller::arbolrusher()
+2         0.0590  main                     Treecontroller::arbolrusher() [clone .cold.131]
+2         0.0590  main                     stbi__decode_jpeg_header
+1         0.0295  bash                     /usr/bin/bash
+1         0.0295  main                     CAIEnem::getCloserAllyIsDead()
+1         0.0295  main                     CFlock::FastSeparation()
+1         0.0295  main                     CRigidBody::CRigidBody(bool, bool, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, float, float, float, float, float, float, float, float, float, float, float)
+1         0.0295  main                     CRigidBody::applyConstantVelocity(glm::vec<3, float, (glm::qualifier)0>, float, bool)
+1         0.0295  main                     FMOD_ErrorString(FMOD_RESULT)
+1         0.0295  main                     Factory::createHero(glm::vec<3, float, (glm::qualifier)0> const&, signed char) [clone .cold.109]
+1         0.0295  main                     Factory::createSenyuelo(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&) [clone .cold.117]
+1         0.0295  main                     Factory::createSingleSwarm(glm::vec<3, float, (glm::qualifier)0> const&, float const&) [clone .cold.115]
+1         0.0295  main                     Factory::createSoldier(glm::vec<3, float, (glm::qualifier)0> const&, float const&) [clone .cold.110]
+1         0.0295  main                     GLDebugDrawer::GLDebugDrawer()
+1         0.0295  main                     GLDebugDrawer::drawSphere(btVector3 const&, float, btVector3 const&)
+1         0.0295  main                     GLDebugDrawer::reportErrorWarning(char const*)
+1         0.0295  main                     GUIController::initOptions()
+1         0.0295  main                     GUIController::moreDialog()
+1         0.0295  main                     GUIController::moreMusic()
+1         0.0295  main                     GUIController::update()
+1         0.0295  main                     Game::Update()
+1         0.0295  main                     Motor2D::CLINNormal()
+1         0.0295  main                     Motor2D::addButton(float, float, float, float, EnumButtonType, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, glm::vec<4, float, (glm::qualifier)0>) [clone .constprop.199]
+1         0.0295  main                     Omicron::DisplayFPS() [clone .cold.69]
+1         0.0295  main                     Omicron::bindMaterialToDynamicMesh(TNodo*, ZMaterial*)
+1         0.0295  main                     Omicron::bindMaterialToMesh(TNodo*, ZMaterial*)
+1         0.0295  main                     Omicron::crearCamara(float const&, float const&, float const&, glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, float const&)
+1         0.0295  main                     Omicron::draw()
+1         0.0295  main                     ParticleSystem::Update()
+1         0.0295  main                     ParticleSystem::endDraw()
+1         0.0295  main                     Pathfinding::FindClosestNodeOfFace(glm::vec<3, float, (glm::qualifier)0> const&, unsigned short)
+1         0.0295  main                     Pathfinding::clear()
+1         0.0295  main                     SonidoNormal::~SonidoNormal()
+1         0.0295  main                     SoundSystem::SoundSystem()
+1         0.0295  main                     SoundSystem::setListenerPosition(glm::vec<3, float, (glm::qualifier)0>)
+1         0.0295  main                     TTransform::TTransform()
+1         0.0295  main                     Texto2D::ChangeChar(float&, char const&)
+1         0.0295  main                     Treecontroller::arbolsoldado()
+1         0.0295  main                     Treecontroller::arbolswarm() [clone .cold.129]
+1         0.0295  main                     Treecontroller::arboltank()
+1         0.0295  main                     Treecontroller::createInverso(Behavior*) [clone .cold.124]
+1         0.0295  main                     _GLOBAL__sub_I__ZN13SonidoImpactoC2Ev
+1         0.0295  main                     ggDynWorld::clear()
+1         0.0295  main                     stbi__jpeg_test
+1         0.0295  main                     stbi_test_main
+1         0.0295  main                     std::deque<TNodo*, std::allocator<TNodo*> >::_M_erase(std::_Deque_iterator<TNodo*, TNodo*&, TNodo**>)
+1         0.0295  main                     void std::deque<unsigned char*, std::allocator<unsigned char*> >::_M_push_back_aux<unsigned char* const&>(unsigned char* const&)

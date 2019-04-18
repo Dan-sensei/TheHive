@@ -1,0 +1,110 @@
+WARNING: Lost samples detected! See /home/abp/abp/GammaGames/20190417/GammaGames/oprofile_data/samples/operf.log for details.
+CPU: Intel Silvermont microarchitecture, speed 2080 MHz (estimated)
+Counted CPU_CLK_UNHALTED events (Clock cycles when not halted) with a unit mask of 0x00 (No unit mask) count 2080000
+samples  %        symbol name
+1002     30.4467  btIDebugDraw::drawCapsule(float, float, int, btTransform const&, btVector3 const&)
+496      15.0714  TData::add(EnumDataType, float)
+198       6.0164  Motor2D::InitMenu()
+170       5.1656  ggDynWorld::ggDynWorld()
+162       4.9225  TData::clearData(EnumDataType)
+158       4.8010  FMOD_ErrorString(FMOD_RESULT)
+123       3.7375  Motor2D::InitMenu6()
+116       3.5248  btIDebugDraw::drawCylinder(float, float, int, btTransform const&, btVector3 const&)
+110       3.3424  Motor2D::InitMenu4()
+84        2.5524  Cuadrado2D::Cuadrado2D(float, float, float, float)
+75        2.2789  ggDynWorld::~ggDynWorld()
+40        1.2154  btIDebugDraw::drawCone(float, float, int, btTransform const&, btVector3 const&)
+32        0.9723  Motor2D::InitMenu2()
+30        0.9116  std::_Rb_tree_node<std::pair<EnumDataType const, float> >* std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_M_copy<std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_Reuse_or_alloc_node>(std::_Rb_tree_node<std::pair<EnumDataType const, float> > const*, std::_Rb_tree_node_base*, std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_Reuse_or_alloc_node&)
+29        0.8812  ggDynWorld::addShape(btCollisionShape*)
+28        0.8508  Motor2D::AddImage(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, float, float, float, float)
+26        0.7900  BFloat::BFloat(float)
+24        0.7293  stbi__create_png_image_raw.isra.40
+22        0.6685  Motor2D::addText(float, float, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<4, float, (glm::qualifier)0>, float)
+19        0.5773  btIDebugDraw::drawSpherePatch(btVector3 const&, btVector3 const&, btVector3 const&, float, float, float, float, float, btVector3 const&, float, bool)
+16        0.4862  Motor2D::addText(float, float, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, glm::vec<4, float, (glm::qualifier)0>, float) [clone .constprop.196]
+15        0.4558  stbi__hdr_load.isra.44
+15        0.4558  std::_Rb_tree_node<std::pair<unsigned short const, IComponent*> >* std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_M_copy<std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_Reuse_or_alloc_node>(std::_Rb_tree_node<std::pair<unsigned short const, IComponent*> > const*, std::_Rb_tree_node_base*, std::_Rb_tree<unsigned short, std::pair<unsigned short const, IComponent*>, std::_Select1st<std::pair<unsigned short const, IComponent*> >, std::less<unsigned short>, std::allocator<std::pair<unsigned short const, IComponent*> > >::_Reuse_or_alloc_node&)
+14        0.4254  Motor2D::addButton(float, float, float, float, EnumButtonType, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, glm::vec<4, float, (glm::qualifier)0>)
+13        0.3950  BFloat::getFloat()
+12        0.3646  BFloat::BFloat(BFloat const&)
+12        0.3646  CAIEnem::enableVisualDebug()
+12        0.3646  ObjectManager::CallFunctionOfComponentes(gg::MessageType, void (IComponent::*)())
+11        0.3342  CAIEnem::FixedUpdate()
+11        0.3342  Imagen2D::setPos(float, float, float, float)
+11        0.3342  ggDynWorld::removeCollisionObject(btCollisionObject*)
+11        0.3342  stbi__load_main
+10        0.3039  GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&)
+9         0.2735  AssetManager::loadInit() [clone .cold.218]
+9         0.2735  FMOD_ErrorString(FMOD_RESULT)
+9         0.2735  ggDynWorld::printObjects(int)
+8         0.2431  Motor2D::addButton(float, float, float, float, EnumButtonType, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, glm::vec<4, float, (glm::qualifier)0>) [clone .constprop.199]
+8         0.2431  btTriangleInfoMap::serialize(void*, btSerializer*) const
+7         0.2127  BData::~BData()
+6         0.1823  BData::BData(BData const&)
+6         0.1823  BData::getString[abi:cxx11]()
+5         0.1519  BData::BData()
+5         0.1519  CRigidBody::CRigidBody(bool, float, float, float, float, float, float)
+5         0.1519  GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&) [clone .constprop.6]
+5         0.1519  btIDebugDraw::drawSphere(float, btTransform const&, btVector3 const&)
+4         0.1215  CAgent::STAY_func_kTrig_Gunfire(TriggerRecordStruct*)
+4         0.1215  GUIController::Init()
+4         0.1215  SoundSystem::SoundSystem()
+4         0.1215  Treecontroller::createInverso(Behavior*) [clone .cold.124]
+4         0.1215  ggDynWorld::~ggDynWorld()
+4         0.1215  stbi__decode_jpeg_header
+3         0.0912  Treecontroller::arbolsoldado()
+3         0.0912  btIDebugDraw::getDefaultColors() const
+3         0.0912  void std::deque<unsigned char*, std::allocator<unsigned char*> >::_M_push_back_aux<unsigned char* const&>(unsigned char* const&)
+2         0.0608  CRigidBody::setBodyPosition(glm::vec<3, float, (glm::qualifier)0>&)
+2         0.0608  Factory::createTank(glm::vec<3, float, (glm::qualifier)0> const&, float const&) [clone .cold.114]
+2         0.0608  GLDebugDrawer::drawLine(btVector3 const&, btVector3 const&, btVector3 const&, btVector3 const&)
+2         0.0608  GUIController::lessEffect()
+2         0.0608  Imagen2D::setColor(glm::vec<4, float, (glm::qualifier)0>)
+2         0.0608  Motor2D::HUD_hability1()
+2         0.0608  ObjectManager::UpdateAll()
+2         0.0608  ObjectManager::swapComponents(gg::EComponentType, unsigned short, IComponent**)
+2         0.0608  ParticleSystem::ParticleCreationHandler()
+2         0.0608  Pathfinding::DroNodes()
+2         0.0608  Pathfinding::Pathfinding()
+2         0.0608  SoundSystem::setVolume(float, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+2         0.0608  TData::TData(TData const&)
+2         0.0608  Treecontroller::arbolrusher() [clone .cold.131]
+2         0.0608  Treecontroller::arbolswarm()
+2         0.0608  _GLOBAL__sub_I__ZN13SonidoImpactoC2Ev
+2         0.0608  std::_Rb_tree<EnumDataType, std::pair<EnumDataType const, float>, std::_Select1st<std::pair<EnumDataType const, float> >, std::less<EnumDataType>, std::allocator<std::pair<EnumDataType const, float> > >::_M_erase(std::_Rb_tree_node<std::pair<EnumDataType const, float> >*)
+1         0.0304  AIDirector::invocartank(AINode*)
+1         0.0304  Arena::allocate(unsigned long)
+1         0.0304  CAIEnem::getCloserAllyIsDead()
+1         0.0304  CAIEnem::setCloserAllyIsDead(bool)
+1         0.0304  CAIEnem::~CAIEnem()
+1         0.0304  CFlock::FastSeparation()
+1         0.0304  CGranade2::CGranade2()
+1         0.0304  CMeshCollider::CMeshCollider(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, float, float, float)
+1         0.0304  CRenderable_3D::CRenderable_3D(CRenderable_3D const&)
+1         0.0304  CRigidBody::~CRigidBody()
+1         0.0304  FMOD_ErrorString(FMOD_RESULT)
+1         0.0304  Factory::Factory() [clone .cold.108]
+1         0.0304  Factory::createHolyBomb(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&) [clone .cold.119]
+1         0.0304  GLDebugDrawer::GLDebugDrawer()
+1         0.0304  GUIController::StartGame()
+1         0.0304  GUIController::gotoMusic()
+1         0.0304  GUIController::gotoOptions()
+1         0.0304  GUIController::lessMusic()
+1         0.0304  GUIController::moreDialog()
+1         0.0304  GUIController::musicaJuegoPause(bool)
+1         0.0304  Game::Update()
+1         0.0304  Omicron::Draw3DLine(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0> const&, gg::Color const&)
+1         0.0304  Omicron::Omicron()
+1         0.0304  Omicron::bindTransform(glm::vec<3, float, (glm::qualifier)0> const&, glm::qua<float, (glm::qualifier)0> const&, TNodo*) [clone .constprop.57]
+1         0.0304  OptionState::OptionState()
+1         0.0304  Particle::Particle(glm::vec<3, float, (glm::qualifier)0> const&, glm::vec<3, float, (glm::qualifier)0>, gg::Color const&, float, float)
+1         0.0304  ParticleSystem::Update()
+1         0.0304  Treecontroller::Treecontroller(Blackboard*, gg::EEnemyType, CAIEnem*)
+1         0.0304  Treecontroller::arboltank()
+1         0.0304  Treecontroller::createParallel(Behavior*) [clone .cold.127]
+1         0.0304  Treecontroller::createSelector() [clone .cold.126]
+1         0.0304  btIDebugDraw::clearLines()
+1         0.0304  stbi__jpeg_test
+1         0.0304  stbi__mad4sizes_valid.constprop.71
+1         0.0304  std::_Hashtable<int, std::pair<int const, float>, std::allocator<std::pair<int const, float> >, std::__detail::_Select1st, std::equal_to<int>, std::hash<int>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<std::pair<int const, float>, false>*, unsigned long)

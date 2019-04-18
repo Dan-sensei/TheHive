@@ -7,9 +7,9 @@
 ZPlayer::ZPlayer() {
 
     float RENDER_QUAD[] = {
-        -1.0f,  1.0f, 0.0f, 1.0f,
+        -1.0f,  1.0f, 0.0f, -1.0f,
         -1.0f, -1.0f, 0.0f, 0.0f,
-         1.0f,  1.0f, 1.0f, 1.0f,
+         1.0f,  1.0f, 1.0f, -1.0f,
          1.0f, -1.0f, 1.0f, 0.0f,
     };
 
@@ -66,7 +66,6 @@ void ZPlayer::PlayVideo(const std::string &PathToVideo) {
         if(Accumulator > I_FPS){
             Accumulator -= I_FPS;
             ZVideo >> ZFrame;
-            cv::flip(ZFrame, ZFrame, 0);
             glTextureSubImage2D(VideoBuffer, 0,0,0, 1280, 720, GL_BGR, GL_UNSIGNED_BYTE, ZFrame.ptr());
         }
 
@@ -81,7 +80,7 @@ void ZPlayer::PlayVideo(const std::string &PathToVideo) {
         Engine->PollEvents();
         Engine->EndDraw();
 
-    } while(!ZFrame.empty() && !Engine->key(gg::X));
+    } while(!ZFrame.empty() && !Engine->key(gg::X, true));
 
     ZVideo.release();
 }

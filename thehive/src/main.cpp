@@ -19,6 +19,7 @@ int main(int argc, char const *argv[]) {
     Omicron *Engine = Singleton<Omicron>::Instance();
 
     {
+        Singleton<AssetManager>::Instance()->loadInit();
         ZPlayer Player;
         Player.PlayVideo("assets/Video/LOGO.mp4");
         Player.PlayVideo("assets/Video/TheHiveLogoAnimation.mp4");
@@ -34,7 +35,6 @@ int main(int argc, char const *argv[]) {
     ggDynWorld *world = Singleton<ggDynWorld>::Instance();
     world->inito();
 
-    Singleton<AssetManager>::Instance()->loadInit();
 
     //singleton StateMachine
     //new GameState();
