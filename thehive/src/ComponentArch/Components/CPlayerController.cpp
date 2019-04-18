@@ -503,7 +503,7 @@ void CPlayerController::JUMP(){
     }
 }
 
-void CPlayerController::TogglePause(){
+void CPlayerController::TogglePause() {
     Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
 }
 

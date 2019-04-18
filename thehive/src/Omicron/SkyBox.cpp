@@ -1,5 +1,6 @@
 #include "SkyBox.hpp"
 #include <stb_image.h>
+#include <iostream>
 
 SkyBox::SkyBox()
 :engine(nullptr)
@@ -11,7 +12,7 @@ SkyBox::SkyBox()
     view=inicio->getUniformLocation("view");
     text=inicio->getUniformLocation("skybox");
 
-    skyboxtype = 0;
+    //skyboxtype = 0;
 
      //otro forma de cargar el cubemap
     // std::vector<std::string> auxfaces // Cargamos las imagenes que forman la skybox
@@ -26,8 +27,6 @@ SkyBox::SkyBox()
 
     //cubemapTexture = this->loadCubemap(auxfaces);
 
-
-
     std::vector<const GLchar*> faces;
     faces.reserve(6);
     faces.resize(6);
@@ -38,31 +37,31 @@ SkyBox::SkyBox()
     faces[3] = ( "assets/skybox/skyboxDN.png" );
     faces[4] = ( "assets/skybox/skyboxFT.png" );
     faces[5] = ( "assets/skybox/skyboxBK.png" );
-    cubemapTexture[0] = loadCubemap(faces);
+    cubemapTexture = loadCubemap(faces);
 
-    faces[0] = ( "assets/skybox/skybox2RT.png" );
-    faces[1] = ( "assets/skybox/skybox2LF.png" );
-    faces[2] = ( "assets/skybox/skybox2UP.png" );
-    faces[3] = ( "assets/skybox/skybox2DN.png" );
-    faces[4] = ( "assets/skybox/skybox2FT.png" );
-    faces[5] = ( "assets/skybox/skybox2BK.png" );
-    cubemapTexture[1] = loadCubemap(faces);
-
-    faces[0] = ( "assets/skybox/skybox3RT.png" );
-    faces[1] = ( "assets/skybox/skybox3LF.png" );
-    faces[2] = ( "assets/skybox/skybox3UP.png" );
-    faces[3] = ( "assets/skybox/skybox3DN.png" );
-    faces[4] = ( "assets/skybox/skybox3FT.png" );
-    faces[5] = ( "assets/skybox/skybox3BK.png" );
-    cubemapTexture[2] = loadCubemap(faces);
-
-    faces[0] = ( "assets/skybox/skybox4RT.png" );
-    faces[1] = ( "assets/skybox/skybox4LF.png" );
-    faces[2] = ( "assets/skybox/skybox4UP.png" );
-    faces[3] = ( "assets/skybox/skybox4DN.png" );
-    faces[4] = ( "assets/skybox/skybox4FT.png" );
-    faces[5] = ( "assets/skybox/skybox4BK.png" );
-    cubemapTexture[3] = loadCubemap(faces);
+    // faces[0] = ( "assets/skybox/skybox2RT.png" );
+    // faces[1] = ( "assets/skybox/skybox2LF.png" );
+    // faces[2] = ( "assets/skybox/skybox2UP.png" );
+    // faces[3] = ( "assets/skybox/skybox2DN.png" );
+    // faces[4] = ( "assets/skybox/skybox2FT.png" );
+    // faces[5] = ( "assets/skybox/skybox2BK.png" );
+    // cubemapTexture[1] = loadCubemap(faces);
+    //
+    // faces[0] = ( "assets/skybox/skybox3RT.png" );
+    // faces[1] = ( "assets/skybox/skybox3LF.png" );
+    // faces[2] = ( "assets/skybox/skybox3UP.png" );
+    // faces[3] = ( "assets/skybox/skybox3DN.png" );
+    // faces[4] = ( "assets/skybox/skybox3FT.png" );
+    // faces[5] = ( "assets/skybox/skybox3BK.png" );
+    // cubemapTexture[2] = loadCubemap(faces);
+    //
+    // faces[0] = ( "assets/skybox/skybox4RT.png" );
+    // faces[1] = ( "assets/skybox/skybox4LF.png" );
+    // faces[2] = ( "assets/skybox/skybox4UP.png" );
+    // faces[3] = ( "assets/skybox/skybox4DN.png" );
+    // faces[4] = ( "assets/skybox/skybox4FT.png" );
+    // faces[5] = ( "assets/skybox/skybox4BK.png" );
+    // cubemapTexture[3] = loadCubemap(faces);
 }
 
 
@@ -236,7 +235,7 @@ void SkyBox::Draw(){
     //glUniformMatrix4fv( glGetUniformLocation( inicio.Program, "view" ), 1, GL_FALSE, glm::value_ptr( viewt ) );
     glBindVertexArray( skyboxVAO );
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture[skyboxtype] );
+    glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture );
 
     glUniform1i(text, 0);
     glDrawArrays( GL_TRIANGLES, 0, 36 );

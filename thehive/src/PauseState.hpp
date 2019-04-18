@@ -13,7 +13,7 @@ class ggDynWorld;
 #include <Omicron/2D/GUIController.hpp>
 #include <FMOD/SoundSystem.hpp>
 
-class PauseState : public State{
+class PauseState : public State {
 public:
     PauseState();
     PauseState(const PauseState &orig) = delete;
@@ -42,7 +42,6 @@ private:
     ObjectManager* Manager;
     ggDynWorld* world;
     GUIController* _GUIController;
-    SkyBox sky;
 
     SoundSystem* SS;
 

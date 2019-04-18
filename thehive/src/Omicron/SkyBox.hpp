@@ -22,13 +22,13 @@ class SkyBox{
     private:
 		Shader* inicio;
 		Omicron* engine;
-        unsigned int cubemapTexture[4];
+        unsigned int cubemapTexture;
         unsigned int skyboxVBO;
         unsigned int skyboxVAO;
 		unsigned int view;
 		unsigned int text;
 
-		int skyboxtype;
+		//int skyboxtype;
 
 };
 
