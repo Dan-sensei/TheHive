@@ -36,8 +36,18 @@ void Omicron::createZones(uint8_t NumberOfZones){
     ZONES.resize(NumberOfZones);
     for(uint8_t i = 0; i < NumberOfZones; ++i)
         ZONES[i] = new TNodo(BUFFERS_LAYER, nullptr);
-
 }
+
+void Omicron::resetSceneGraph() {
+    ZONES.clear();
+    delete ESCENA;
+    
+    ESCENA = new TNodo();
+    OKAMERAS_LAYER  = new TNodo(ESCENA, nullptr);
+      LIGHTS_LAYER  = new TNodo(ESCENA, nullptr);
+     BUFFERS_LAYER  = new TNodo(ESCENA, nullptr);
+}
+
 
 void Omicron::clean(){
     //std::cout << "DeleTAG..." << '\n';
@@ -222,15 +232,6 @@ void Omicron::EndDraw(){
     glfwSwapBuffers(window);
 }
 
-// void Omicron::move(TNodo *_node, const glm::vec3& _offpos){
-//     static_cast<TTransform*>(_node->getPadre()->getEntidad())->translate(_offpos);
-// }
-//
-// void Omicron::rotate(TNodo *_node,const float& _angle,const glm::vec3& _offrot){
-//     static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->rotate(_angle,_offrot);
-// }
-
-
 void Omicron::setPosition(TNodo* _node, const glm::vec3& _offpos){
     static_cast<TTransform*>(_node->getPadre()->getEntidad())->setPosition(_offpos);
 }
@@ -263,26 +264,26 @@ glm::mat4  Omicron::getM(){
 TCamara* Omicron::getCam(){
     return cam_;
 }
-void Omicron::PointAt(TNodo *_node, const glm::vec3& _offpos){
-    auto trans =static_cast<TTransform*>(_node->getPadre()->getEntidad());
-    auto dir=glm::normalize(glm::vec3(_offpos.x,_offpos.y,_offpos.z)-trans->getDatos());
 
-    auto x=glm::degrees(glm::acos(dir.x));
-    auto y=glm::degrees(glm::acos(dir.y));
-    auto z=glm::degrees(glm::acos(dir.z));
-    //la condicion puede invertirse
-    if(dir.x<0){
-        x=360-x;
-    }
-    if(dir.y<0){
-        y=360-y;
-    }
-    if(dir.z<0){
-        z=360-z;
-    }
-    setRotation(_node, glm::vec3(x,y,z));
-
-}
+// void Omicron::PointAt(TNodo *_node, const glm::vec3& _offpos){
+//     auto trans =static_cast<TTransform*>(_node->getPadre()->getEntidad());
+//     auto dir=glm::normalize(glm::vec3(_offpos.x,_offpos.y,_offpos.z)-trans->getDatos());
+//
+//     auto x=glm::degrees(glm::acos(dir.x));
+//     auto y=glm::degrees(glm::acos(dir.y));
+//     auto z=glm::degrees(glm::acos(dir.z));
+//     //la condicion puede invertirse
+//     if(dir.x<0){
+//         x=360-x;
+//     }
+//     if(dir.y<0){
+//         y=360-y;
+//     }
+//     if(dir.z<0){
+//         z=360-z;
+//     }
+//     setRotation(_node, glm::vec3(x,y,z));
+// }
 
 
 void Omicron::HideCursor(bool t){
@@ -292,9 +293,11 @@ void Omicron::HideCursor(bool t){
         glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
+
 void Omicron::close(){
     glfwSetWindowShouldClose(window, GL_TRUE);
 }
+
 bool Omicron::Initialize(){
 	//INICIALIZAMOS GLFW
 	if( !glfwInit() ){

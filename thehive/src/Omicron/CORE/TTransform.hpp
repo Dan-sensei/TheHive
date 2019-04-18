@@ -27,7 +27,7 @@ class TTransform : public TEntidad {
         void scale(glm::vec3);
         void identity();
         void transpose();
-        void inverse();
+        //void inverse();
 
         virtual void beginDraw();
         virtual void endDraw();
@@ -36,9 +36,9 @@ class TTransform : public TEntidad {
         void setRotation(glm::quat _vec);
 
         glm::mat4 matrix;
-        glm::vec3 getDatos();
+        //glm::vec3 getDatos();
     private:
-        glm::vec3 datos;
+        //glm::vec3 datos;
 
 };
 

@@ -2,7 +2,9 @@
 #define _STATE_MACHINE
 #include "State.hpp"
 #include <stack>
+#include <cstdint>
 //#include <memory>
+
 template <typename T>
 class Singleton;
 
@@ -12,19 +14,23 @@ class StateMachine{
 		StateMachine();
 		~StateMachine();
 
-		void AddState(State* newState, bool isReplacing = true);
-		void RemoveState(int cantidad=1);
+		void AddState(State* newState, bool _isReplacing = false);
+		void RemoveStates(uint8_t cantidad = 1);
 		// Run at start of each loop in Game.cpp
-		void ProcessStateChanges();
-		State* GetActiveState();
+		void UpdateStateMachine();
 		void clin();
 	private:
-		int cantidad;
+		uint8_t cantidad;
 		std::stack<State*> states;
 		State* newState;
 
+		void UpdateTop();
+		void ProcessStateChanges();
+
 		bool isRemoving;
 		bool isAdding, isReplacing;
+
+		void (StateMachine::*CurrentUpd)();
 	};
 
 #endif

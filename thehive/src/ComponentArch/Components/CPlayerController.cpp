@@ -502,9 +502,11 @@ void CPlayerController::JUMP(){
         }
     }
 }
+
 void CPlayerController::TogglePause(){
     Singleton<StateMachine>::Instance()->AddState(new PauseState(),false);
 }
+
 void CPlayerController::MostrarTexto(){
     std::string texto[]{
         "German es muy muy gay",

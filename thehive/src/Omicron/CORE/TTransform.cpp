@@ -17,18 +17,18 @@ TTransform::TTransform(glm::mat4 _m){
 void TTransform::load(glm::mat4 _m){
     matrix = _m;
 }
-glm::vec3 TTransform::getDatos(){
-    return datos;
-}
+// glm::vec3 TTransform::getDatos(){
+//     return datos;
+// }
 
 void TTransform::translate(glm::vec3 _vec){
     matrix = glm::translate(matrix,_vec);
-    datos+=_vec;
+    //datos+=_vec;
 }
 
 void TTransform::rotate(float _angle, glm::vec3 _axis){
     matrix = glm::rotate(matrix,glm::radians(_angle),_axis);
-    datos+=_axis*_angle;
+    //datos+=_axis*_angle;
 }
 
 void TTransform::scale(glm::vec3 _vec){
@@ -43,9 +43,9 @@ void TTransform::transpose(){
     matrix = glm::transpose(matrix);
 }
 
-void TTransform::inverse(){
-    matrix = glm::inverse(matrix);
-}
+// void TTransform::inverse(){
+//     matrix = glm::inverse(matrix);
+// }
 
 void TTransform::beginDraw(){
     // Apilar matriz y aplicar transformacion a la matriz actual
@@ -65,13 +65,13 @@ void TTransform::beginDraw(){
 
 void TTransform::setPosition(glm::vec3 _vec){
     identity();
-    datos=glm::vec3(0,0,0);
+    //datos=glm::vec3(0,0,0);
     translate( _vec);
 }
 
 void TTransform::setRotation(glm::quat _vec){
     identity();
-    datos=glm::vec3(0,0,0);
+    //datos=glm::vec3(0,0,0);
     matrix = glm::toMat4(_vec);
     // rotate(_vec.y, glm::vec3(0,1,0));
     // rotate(_vec.x, glm::vec3(1,0,0));

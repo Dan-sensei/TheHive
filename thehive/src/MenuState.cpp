@@ -80,7 +80,6 @@ void MenuState::Update(){
     Engine->PollEvents();
 
     Engine->BeginDraw();
-    Engine->draw();
     cont->update();
     SS->update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();

@@ -1,82 +1,78 @@
 #include "StateMachine.hpp"
 #include <iostream>
-StateMachine::StateMachine():cantidad(0) { }
-StateMachine::~StateMachine() {
+StateMachine::StateMachine():cantidad(0), isAdding(false), isRemoving(false) { }
+StateMachine::~StateMachine() {}
 
-	//for (size_t i = 0; i < states.size(); i++) {
-	//	/* code */
-	//	delete states.top();
-	//	states.pop();
-	//}
-
-}
-void StateMachine::AddState(State* _newState, bool _isReplacing)
-{
+void StateMachine::AddState(State* _newState, bool _isReplacing) {
 	isAdding = true;
 	isReplacing = _isReplacing;
-
 	newState = _newState;
+
+	CurrentUpd = &StateMachine::ProcessStateChanges;
 }
 
-void StateMachine::RemoveState(int _cantidad)
-{
-	cantidad=_cantidad;
+void StateMachine::RemoveStates(uint8_t _cantidad) {
 	isRemoving = true;
+	cantidad = _cantidad;
+
+	CurrentUpd = &StateMachine::ProcessStateChanges;
 }
 
 void StateMachine::ProcessStateChanges()
 {
 	if (isRemoving && !states.empty())
 	{
-		int i=0;
-		while(cantidad!=0){
+		while(cantidad && !states.empty()){
 			states.top()->CLIN();
 			delete states.top();
 			states.pop();
-			cantidad--;
-			if(cantidad<0){
-				cantidad=0;
-			}
-
-			if (!states.empty())
-			{
-				states.top()->Resume();
-			}
+			--cantidad;
 		}
+
+		if (!states.empty()) states.top()->Resume();
 
 		isRemoving = false;
 	}
 
-	if (isAdding)
-	{
-		if (!states.empty())
-		{
-			if (isReplacing)
-			{
+	if (isAdding) {
+		if (!states.empty()) {
+			if (isReplacing) {
 				states.top()->CLIN();
 				delete states.top();
 				states.pop();
+				isReplacing = false;
 			}
-			else
-			{
+			else {
 				states.top()->Pause();
 			}
 		}
+
 		states.push(newState);
 		states.top()->Init();
 		isAdding = false;
+		newState = nullptr;
 	}
 
+	CurrentUpd = &StateMachine::UpdateTop;
+	UpdateTop();
 }
+
+void StateMachine::UpdateStateMachine(){
+	(this->*CurrentUpd)();
+}
+
+void StateMachine::UpdateTop(){
+	states.top()->Update();
+};
+
+
 void StateMachine::clin(){
 	while(!states.empty()){
 		delete states.top();
 		states.pop();
-
 	}
+}
 
-}
-State* StateMachine::GetActiveState()
-{
-	return states.top();
-}
+// State* StateMachine::GetActiveState() {
+// 	return states.top();
+// }

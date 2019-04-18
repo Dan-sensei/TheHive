@@ -161,13 +161,13 @@ void GUIController::dif3(){
 //but12
 void GUIController::Continue(){
     Engine->resetClickVariable();
-    Singleton<StateMachine>::Instance()->RemoveState();
+    Singleton<StateMachine>::Instance()->RemoveStates();
     sonido_accion(1);
     // s_musica_basica->pause(false);
 }
 //but13
 void GUIController::ReturnMain(){
-    Singleton<StateMachine>::Instance()->RemoveState(2);
+    Singleton<StateMachine>::Instance()->RemoveStates(2);
     sonido_accion(0);
     // s_musica_basica->stop();
 }

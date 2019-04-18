@@ -23,7 +23,7 @@ TNodo::TNodo(TNodo *P,TEntidad *_ent)
 
 TNodo::~TNodo(){
     auto it = hijos.begin();
-    while(it!=hijos.end()){
+    while(it != hijos.end()){
         delete *it;
         ++it;
     }

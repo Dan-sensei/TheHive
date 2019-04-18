@@ -45,8 +45,7 @@ int main(int argc, char const *argv[]) {
     mainstates->AddState(new MenuState());
 
     while(Engine->isWindowOpen()) {
-        mainstates->ProcessStateChanges();
-        mainstates->GetActiveState()->Update();
+        mainstates->UpdateStateMachine();
     }
 
     Blackboard::ClearGlobalBlackboard();

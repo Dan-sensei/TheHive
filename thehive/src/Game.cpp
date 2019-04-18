@@ -243,7 +243,7 @@ void Game::CLIN(){
 
     cont->musicaJuegoStop();
     cont->musicaMenuPlay();
-
+    Engine->resetSceneGraph();
     //Engine2D->CLINNormal();
     //EventSystem->clin();
 
@@ -254,5 +254,4 @@ void Game::CLIN(){
 }
 void Game::Pause(){
     cont->musicaJuegoPause(true);
-
 }

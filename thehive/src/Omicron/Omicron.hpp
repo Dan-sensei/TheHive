@@ -50,8 +50,6 @@ class Omicron {
 
         void DisplayFPS();
 
-        // void move(TNodo*,const glm::vec3&);
-        // void rotate(TNodo*,const float&,const glm::vec3&);
         void setPosition(TNodo* _node, const glm::vec3&);
         void setRotation(TNodo* _node,const glm::quat&);
 
@@ -72,7 +70,7 @@ class Omicron {
         TCamara* getCam();
         void PollEvents();
 
-        void PointAt(TNodo *_node, const glm::vec3& _offpos);
+        //void PointAt(TNodo *_node, const glm::vec3& _offpos);
         inline bool isLClickPressed(){ return LCLICK; };
         inline int getWheelState(){return wheel;};
         inline bool isWindowOpen(){ return !glfwWindowShouldClose(window);};
@@ -82,6 +80,7 @@ class Omicron {
 
         void getCursorPosition(double &posX, double &posY);
         void clean();
+        void resetSceneGraph();
 
         void Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c);
 
