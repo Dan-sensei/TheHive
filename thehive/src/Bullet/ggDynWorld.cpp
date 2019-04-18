@@ -213,7 +213,6 @@ glm::vec3 ggDynWorld::getRaycastHitPosition(){
 }
 
 bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult){
-
     btVector3 Starto = btVector3(Start.x,Start.y,Start.z);
     btVector3 Endo = btVector3(End.x,End.y,End.z);
 
@@ -226,6 +225,27 @@ bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::
     }
     return false;
 }
+
+bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult, CRigidBody *Exclude){
+    btVector3 Starto = btVector3(Start.x,Start.y,Start.z);
+    btVector3 Endo = btVector3(End.x,End.y,End.z);
+
+    btCollisionWorld::ClosestRayResultCallback callBack(Starto,Endo);
+    dynamicsWorld->rayTest(Starto, Endo, callBack);
+
+    if(Exclude && callBack.m_collisionObject){
+        if(callBack.m_collisionObject == Exclude->getBody()){
+            return false;
+        }
+    }
+
+    if(callBack.hasHit()){
+        CollisionResult = glm::vec3(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
+        return true;
+    }
+    return false;
+}
+
 
 bool ggDynWorld::DoesItHitSomething(const glm::vec3 &Start, const glm::vec3 &End){
     btVector3 Starto = btVector3(Start.x,Start.y,Start.z);

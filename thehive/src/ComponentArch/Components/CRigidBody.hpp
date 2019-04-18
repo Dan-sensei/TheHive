@@ -15,7 +15,6 @@
 #include <btBulletCollisionCommon.h>
 #include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
 #include <BulletWorldImporter/btBulletWorldImporter.h>
-#include <Bullet/ggDynWorld.hpp>
 
 #include <EventSystem/Blackboard.hpp>
 #include <EventSystem/BRbData.hpp>
@@ -23,6 +22,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#include <Bullet/ggDynWorld.hpp>
 class ggDynWorld;
 
 //  Forward declaration de otras componentes que incluyas
@@ -140,6 +140,7 @@ class CRigidBody : public IComponent {
         using pFunc = void (CRigidBody::*)();
         std::map<EnumActionType, pFunc> mapaFuncUpdate;
         pFunc actualUpd;
+
 };
 
 #endif

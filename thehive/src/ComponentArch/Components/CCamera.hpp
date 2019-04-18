@@ -10,6 +10,7 @@
 #include <Singleton.hpp>
 
 #include "CTransform.hpp"
+#include "CRigidBody.hpp"
 #include <ComponentArch/ObjectManager.hpp>
 
 class ggDynWorld;
@@ -26,6 +27,7 @@ public:
     glm::vec3 getTargetPosition();
     void resetMouse();
     void setTarget(CTransform* T);
+    void setExcludingBody(CRigidBody* R);
     void CameraUpdate();
 
     glm::vec3 getCameraPosition();
@@ -40,10 +42,12 @@ public:
     void FreeCamera();
 
 private:
-    Omicron       *Engine;
+    Omicron         *Engine;
     TNodo           *cam;
     CTransform      *Target;
+    CRigidBody      *ExcludingBody;
     ggDynWorld      *dynWorld;
+    CRigidBody      *collider;
 
     glm::vec3 pos_on_collision;
     glm::vec3 CameraTarget;
@@ -56,8 +60,8 @@ private:
     int8_t InvertCamera;
     bool collision;
 
-    void fixCameraPositionOnCollision   (glm::vec3&);
-    void setPerpendicularOffsetVector   (glm::vec3&);
+    void fixCameraPositionOnCollision(const glm::vec3 &Target, const glm::vec3 &CameraPosition);
+    void setPerpendicularOffsetVector(glm::vec3&);
 
     double prevX, prevY;
     float t, p;

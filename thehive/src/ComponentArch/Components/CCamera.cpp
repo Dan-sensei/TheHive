@@ -16,15 +16,20 @@
 #define X_OFF cos(-VERT_ANG_LIM_RAD)
 
 CCamera::CCamera(int8_t _b)
-:Target(nullptr), Engine(nullptr), cam(nullptr),
+:Target(nullptr), Engine(nullptr), cam(nullptr), collider(nullptr), ExcludingBody(nullptr),
 InvertCamera(_b)
 {
     CurrentUpdate = &CCamera::FollowTarget;
-    LastFreeCameraPosition = glm::vec3(150, 30, -60);
+    LastFreeCameraPosition = glm::vec3(0,0,0);
+    float size = 0.4;
+    // collider = new CRigidBody(false,false,"", 0,0,0, size,size,size, 1, 0,0,0);
+
+    collider = new CRigidBody(true, 0,0,0, size,size,size);
 }
 
 
 CCamera::~CCamera(){
+    delete collider;
 }
 
 void CCamera::Init(){
@@ -42,10 +47,15 @@ void CCamera::Init(){
     t = 0;
     p = 0;
 }
-//
+
 void CCamera::setTarget(CTransform *T) {
     Target = T;
 }
+
+void CCamera::setExcludingBody(CRigidBody* R){
+    ExcludingBody = R;
+}
+
 void CCamera::resetMouse() {
     double x, y;
     Engine->getCursorPosition(x, y);
@@ -74,6 +84,7 @@ void CCamera::FollowTarget(){
     else if(p > 0.204999) p = 0.204999;
 
     CameraTarget = Target->getPosition();
+    const glm::vec3 TARGET_POSITION = CameraTarget;
 
     float cos_ = X_OFF;
     float sin_ = Y_OFF;
@@ -90,19 +101,16 @@ void CCamera::FollowTarget(){
     CameraTarget.z -= sin(t)*0.75;
     CameraTarget.y -= sin(p)*1.5;
 
-
     Engine->setPosition(cam, CurrentPosition);
     static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
+
+    fixCameraPositionOnCollision(TARGET_POSITION,CurrentPosition);
 }
 
-
-void CCamera::fixCameraPositionOnCollision(glm::vec3 &nextPosition){
-    glm::vec3 camPosition = CurrentPosition;
-    // Las dos mejores lineas que he escrito en mi vida
-    glm::vec3 FIXED_NEXT_POSITION = nextPosition+(camPosition-nextPosition)*0.2f;
-    if(dynWorld->RayCastTest(FIXED_NEXT_POSITION,camPosition,pos_on_collision)){
+void CCamera::fixCameraPositionOnCollision(const glm::vec3 &Target, const glm::vec3 &CameraPosition){
+    glm::vec3 pos_on_collision;
+    if(dynWorld->RayCastTest(Target,CameraPosition,pos_on_collision,ExcludingBody)){
         Engine->setPosition(cam, pos_on_collision);
-        CurrentPosition = pos_on_collision;
     }
 }
 
@@ -180,4 +188,3 @@ void CCamera::FreeCamera(){
     Engine->setPosition(cam, LastFreeCameraPosition);
     static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
 }
-

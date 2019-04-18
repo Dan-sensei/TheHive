@@ -15,7 +15,8 @@
 
 #include <Bullet/GLDebugDrawer.h>
 
-class CTransform;
+#include <ComponentArch/Components/CRigidBody.hpp>
+class CRigidBody;
 
 struct SimulationContactResultCallback : public btCollisionWorld::ContactResultCallback{
     bool bCollision;
@@ -80,6 +81,7 @@ public:
     //  parameter, if not, it will return false, an it'll leave CollisionResult untouched
     //===================================================================================================
     bool RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult);
+    bool RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult, CRigidBody *Exclude);
 
     //  ---
     //  Do a ray cast test! And just returns true or false
