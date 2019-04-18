@@ -507,7 +507,7 @@ gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
 
     cTransform->setPosition(glm::mix(Previous.Position, Current.Position, static_cast<float>(Tick)));
     cTransform->setRotation(glm::slerp(Previous.Rotation, Current.Rotation, static_cast<float>(Tick)));
-    
+
     return gg::ST_TRUE;
 }
 
