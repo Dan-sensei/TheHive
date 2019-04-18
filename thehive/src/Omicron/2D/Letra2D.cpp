@@ -1,8 +1,6 @@
 #include "Letra2D.hpp"
-#include <Omicron/ZMESHES/ZMeshData.hpp>
-#include <Omicron/AssetManager.hpp>
+
 //#include <iostream>
-#include <SOIL2/SOIL2.h>
 
 #define HEIGTH 64.0f
 #define THEIGTH 800.0f

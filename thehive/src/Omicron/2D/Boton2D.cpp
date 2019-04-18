@@ -1,8 +1,5 @@
 #include "Boton2D.hpp"
-#include <Omicron/ZMESHES/ZMeshData.hpp>
-#include <Omicron/AssetManager.hpp>
-//#include <iostream>
-#include <SOIL2/SOIL2.h>
+#include <GLFW/glfw3.h>
 
 Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std::string &imgP,const std::string &imgS,const std::string &texto,bool focus,glm::vec4 color,float tam)
 :Imagen(x,y,w,h,imgP),selected(focus),imgPrincipal(imgP),imgHover_Selected(imgS),hov(false),tipo(_tipo),text(x,y,w,h,texto,color,tam)//text(0,0,texto,color,tam)

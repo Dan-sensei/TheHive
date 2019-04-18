@@ -1,8 +1,6 @@
 #include "Letra2DManager.hpp"
-#include <Omicron/ZMESHES/ZMeshData.hpp>
-#include <Omicron/AssetManager.hpp>
-//#include <iostream>
-#include <SOIL2/SOIL2.h>
+#include <GLFW/glfw3.h>
+
 
 /*
 

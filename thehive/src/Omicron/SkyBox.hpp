@@ -1,16 +1,12 @@
-#ifndef _SKYBOX
-#define _SKYBOX
+#ifndef _SKYBOX_H
+#define _SKYBOX_H
 
-//#include <iostream>
 #include <Omicron/AssetManager.hpp>
-#include <SOIL2/SOIL2.h>
-#include <SOIL2/stb_image.h>
 #include <Singleton.hpp>
 #include <Omicron/Omicron.hpp>
-//#include "GameEngine/Camera.hpp"
-#include "Shader.hpp"
 #include <vector>
 #include <string>
+
 class Omicron;
 
 class SkyBox{
@@ -19,13 +15,12 @@ class SkyBox{
 		~SkyBox();
 
         //unsigned int loadCubemap(std::vector<std::string>);  //otro forma de cargar el cubemap
-		unsigned int loadCubemap(std::vector<const GLchar * >);
+		unsigned int loadCubemap(std::vector<const char * >);
         void init();
         void Draw();
 
     private:
 		Shader* inicio;
-		Shader* fin;
 		Omicron* engine;
         unsigned int cubemapTexture[4];
         unsigned int skyboxVBO;

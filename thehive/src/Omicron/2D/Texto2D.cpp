@@ -1,8 +1,7 @@
 #include "Texto2D.hpp"
-#include <Omicron/ZMESHES/ZMeshData.hpp>
+
 #include <Omicron/AssetManager.hpp>
-//#include <iostream>
-#include <SOIL2/SOIL2.h>
+
 #include "Singleton.hpp"
 #include "Letra2DManager.hpp"
 

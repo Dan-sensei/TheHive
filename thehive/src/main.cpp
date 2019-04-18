@@ -17,9 +17,9 @@ int main(int argc, char const *argv[]) {
 
 
     Omicron *Engine = Singleton<Omicron>::Instance();
+    Singleton<AssetManager>::Instance()->loadInit();
 
     {
-        Singleton<AssetManager>::Instance()->loadInit();
         ZPlayer Player;
         Player.PlayVideo("assets/Video/LOGO.mp4");
         Player.PlayVideo("assets/Video/TheHiveLogoAnimation.mp4");

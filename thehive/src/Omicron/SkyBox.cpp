@@ -1,4 +1,5 @@
 #include "SkyBox.hpp"
+#include <stb_image.h>
 
 SkyBox::SkyBox()
 :engine(nullptr)
@@ -6,7 +7,6 @@ SkyBox::SkyBox()
     engine=Singleton<Omicron>::Instance();
     auto manager =Singleton<AssetManager>::Instance();
     inicio=manager->getShader("skyboxShader");
-    fin=manager->getShader("Default");
 
     view=inicio->getUniformLocation("view");
     text=inicio->getUniformLocation("skybox");
@@ -108,21 +108,21 @@ SkyBox::~SkyBox(){
 // }
 
 
-unsigned int SkyBox::loadCubemap( std::vector<const GLchar * > faces)
+unsigned int SkyBox::loadCubemap( std::vector<const char * > faces)
     {
         unsigned int textureID;
         glGenTextures( 1, &textureID );
 
-        int imageWidth, imageHeight;
+        int imageWidth, imageHeight, nrChannels;
         unsigned char *image;
 
         glBindTexture( GL_TEXTURE_CUBE_MAP, textureID );
 
         for ( GLuint i = 0; i < faces.size( ); i++ )
         {
-            image = SOIL_load_image( faces[i], &imageWidth, &imageHeight, 0, SOIL_LOAD_RGB );
+            image = stbi_load( faces[i], &imageWidth, &imageHeight, &nrChannels, 0);
             glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
-            SOIL_free_image_data( image );
+            stbi_image_free( image );
         }
         glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
         glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
@@ -214,18 +214,18 @@ void SkyBox::init(){
 }
 
 void SkyBox::Draw(){
-    if(engine->key(gg::_6) && skyboxtype !=0){
-        skyboxtype = 0;
-    }
-    if(engine->key(gg::_7) && skyboxtype !=1){
-        skyboxtype = 1;
-    }
-    if(engine->key(gg::_8) && skyboxtype !=2){
-        skyboxtype = 2;
-    }
-    if(engine->key(gg::_9) && skyboxtype !=3){
-        skyboxtype = 3;
-    }
+    // if(engine->key(gg::_6) && skyboxtype !=0){
+    //     skyboxtype = 0;
+    // }
+    // if(engine->key(gg::_7) && skyboxtype !=1){
+    //     skyboxtype = 1;
+    // }
+    // if(engine->key(gg::_8) && skyboxtype !=2){
+    //     skyboxtype = 2;
+    // }
+    // if(engine->key(gg::_9) && skyboxtype !=3){
+    //     skyboxtype = 3;
+    // }
 
     auto viewt = engine->getVP();
     glDepthMask(GL_FALSE);
@@ -244,5 +244,4 @@ void SkyBox::Draw(){
     glDepthFunc( GL_LESS );
     glDepthMask(GL_TRUE);
 
-    fin->Bind();
 }

@@ -339,7 +339,6 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             glm::vec3 Position(x,y,z);
             glm::quat Rotation(rw,rx,ry,rz);
 
-
             // PUERTA
             CTransform* T = new CTransform(Position, Rotation);
             Manager->addComponentToEntity(T, gg::TRANSFORM, NewEntity);
