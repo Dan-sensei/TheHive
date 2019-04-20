@@ -20,6 +20,9 @@ void BinaryParser::ReadNavmeshData(
     std::vector<std::vector<Connection>> &Connections,
     std::vector<Face> &SQUARE_FACES
 ){
+    std::cout << "sizeof(CMeshCollider) " << sizeof(CMeshCollider) << '\n';
+    std::cout << " sizeof(CBoxCollider) " << sizeof(CBoxCollider) << '\n';
+    std::cout << "   sizeof(CRigidBody) " << sizeof(CRigidBody) << '\n';
 
     std::ifstream Navmesh(BinaryFile, std::ios::binary);
 

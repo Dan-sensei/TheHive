@@ -108,7 +108,7 @@ void CTriggerSystem::Update()
   TriggerRecordStruct* pRec;
   TRIGGER_MAP::iterator it;
   //unsigned long nCurTime = Time::timeGetTime();
-  std::chrono::high_resolution_clock::time_point nCurTime = std::chrono::high_resolution_clock::now();
+  std::chrono::steady_clock::time_point nCurTime = std::chrono::steady_clock::now();
 
   //unsigned long nCurTime = 0;
   //Delete expired trigger records. For records tha are not
@@ -120,7 +120,7 @@ void CTriggerSystem::Update()
     pRec = it->second;
 
 
-    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(nCurTime - pRec->nTimeStamp).count();
+    auto ms = std::chrono::duration_cast<std::chrono::duration<double>>(nCurTime - pRec->nTimeStamp).count();
     if( (pRec->nExpirationTime!=0)&&
         (pRec->nExpirationTime < ms))
         {
@@ -212,10 +212,10 @@ TriggerRecordStruct::TriggerRecordStruct(
     vPos=_vPos;
     fRadius=_fRadius;
 
-    std::chrono::high_resolution_clock::time_point  begin = std::chrono::high_resolution_clock::now();
+    std::chrono::steady_clock::time_point  begin = std::chrono::steady_clock::now();
 
 
-    nTimeStamp=std::chrono::high_resolution_clock::now();// eso o sucedaneo
+    nTimeStamp=std::chrono::steady_clock::now();// eso o sucedaneo
     nExpirationTime=_fDuration;
     bDynamicSourcePos=_bDynamicSourcePos;
 }
@@ -239,12 +239,3 @@ void CTriggerSystem::clin(){
         ++it;
     }
 }
-
-
-//Pruebas
-//unsigned long CTriggerSystem::RegisterTriger(
-//  EnumTriggerType _eTriggerType, unsigned long _nPriority,
-//  unsigned long _idSource,const Vector& _vPos, float _fRadius,
-//  float _fDuration,bool _bDynamicSourcePos){return 0;}
-//void CTriggerSystem::RemoveTrigger(unsigned long nTriggerID){}
-//void CTriggerSystem::Update(){}

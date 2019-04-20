@@ -184,7 +184,7 @@ void Game::Update(){
     }
 
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
-    //EventSystem->Update();
+    EventSystem->Update();
 
     //Director->update(DeltaTime);
 

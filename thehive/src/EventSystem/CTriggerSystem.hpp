@@ -35,7 +35,7 @@ struct TriggerRecordStruct
     TriggerRecordStruct(const TriggerRecordStruct &orig);
     glm::vec3 vPos;
     TData data;
-    std::chrono::high_resolution_clock::time_point nTimeStamp;
+    std::chrono::steady_clock::time_point nTimeStamp;
     unsigned long nTriggerID;
     unsigned long idSource;
     unsigned long nExpirationTime;//milliseconds

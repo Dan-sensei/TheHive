@@ -2,11 +2,11 @@
 #define _CMESHCOLLIDER_H
 
 #include <ComponentArch/IComponent.hpp>
-#include "Collider.hpp"
+#include "ColliderHelpers.hpp"
 #include <BulletWorldImporter/btBulletWorldImporter.h>
 #include <string>
 
-class CMeshCollider : public IComponent, public Collider {
+class CMeshCollider : public IComponent, public MeshColliderHelper {
     public:
         CMeshCollider(const std::string &BulletFile, float x, float y, float z);
 
@@ -17,7 +17,8 @@ class CMeshCollider : public IComponent, public Collider {
         ~CMeshCollider();
 
     private:
-        btBulletWorldImporter*      fileLoader;
+        btDefaultMotionState       myMotionState;
+
 };
 
 #endif

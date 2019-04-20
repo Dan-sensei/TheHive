@@ -95,29 +95,33 @@ public:
     void debugDrawWorld();
     void debugRaycast();
 
-    void printObjects(int);
+    //void printObjects(int);
     void clean();
     void clear();
-private:
-    bool debug;
 
+private:
     // Contiene la configuracion por defecto para las colisiones
     // Es modificable arrobaDani
-    btDefaultCollisionConfiguration* collisionConfiguration;
-
+    btDefaultCollisionConfiguration collisionConfiguration;
     //
-    btCollisionDispatcher* dispatcher;
-
+    btCollisionDispatcher dispatcher;
     // Algo parecido al SAT pero mucho mejor
-    btBroadphaseInterface* overlappingPairCache;
-
+    // btBroadphaseInterface overlappingPairCache;
+    btDbvtBroadphase overlappingPairCache;
     //
-    btSequentialImpulseConstraintSolver* solver;
-
+    btSequentialImpulseConstraintSolver solver;
     // El mundo donde pasan los eventos
     // Ademas, tiene una lista de TODOS los cuerpos
-    btDiscreteDynamicsWorld* dynamicsWorld;
-    btCollisionWorld* collisionWorld;
+    btDiscreteDynamicsWorld dynamicsWorld;
+
+private:
+    btCollisionWorld collisionWorld;
+    bool debug;
+
+
+
+
+
     //btIDebugDraw* debugDrawer;
 
     // ------------------------- //

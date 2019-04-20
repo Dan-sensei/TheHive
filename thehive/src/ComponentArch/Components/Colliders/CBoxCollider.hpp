@@ -2,9 +2,9 @@
 #define _CBOXCOLLIDER_H
 
 #include <ComponentArch/IComponent.hpp>
-#include "Collider.hpp"
+#include "ColliderHelpers.hpp"
 
-class CBoxCollider : public IComponent, public Collider {
+class CBoxCollider : public IComponent, public BoxColliderHelper {
     public:
         CBoxCollider(
             float x, float y, float z,
@@ -19,6 +19,11 @@ class CBoxCollider : public IComponent, public Collider {
         ~CBoxCollider();
 
     private:
+        btBoxShape shape;
+        btDefaultMotionState  myMotionState;
+        btRigidBody body;
+
+
 };
 
 #endif

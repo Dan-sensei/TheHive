@@ -5,26 +5,40 @@
 #define CLOSE_RANGE_FACTOR  1.f
 #define PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
 
-ggDynWorld::ggDynWorld(){
+ggDynWorld::ggDynWorld()
+:collisionConfiguration(),
+ dispatcher(&collisionConfiguration),
+ overlappingPairCache(),
+ solver(),
+ dynamicsWorld(&dispatcher, &overlappingPairCache, &solver, &collisionConfiguration),
+ collisionWorld(&dispatcher, &overlappingPairCache, &collisionConfiguration)
+{
     //debugDrawer = Singleton<GLDebugDrawer>::Instance();
     Factory *fac = Singleton<Factory>::Instance();
-    //debugBullet = fac->createDebugBullet(glm::vec3());
+
+    //collisionConfiguration  = new btDefaultCollisionConfiguration();
+    //dispatcher              = new btCollisionDispatcher(collisionConfiguration);
+    //overlappingPairCache    = new btDbvtBroadphase();
+    //solver                  = new btSequentialImpulseConstraintSolver;
+    //dynamicsWorld           = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+    //collisionWorld          = new btCollisionWorld(dispatcher, overlappingPairCache, collisionConfiguration);
+
 }
 ggDynWorld::~ggDynWorld(){}
 
 void ggDynWorld::addRigidBody(btRigidBody* body){
 //void ggDynWorld::addRigidBody(btRigidBody* body,unsigned int Group,unsigned int Mask){
-    //dynamicsWorld->addRigidBody(body,Group,Mask);
-    dynamicsWorld->addRigidBody(body);
+    //dynamicsWorld.addRigidBody(body,Group,Mask);
+    dynamicsWorld.addRigidBody(body);
     ////std::cout << body->getFlags() << '\n';
 }
 
 void ggDynWorld::removeRigidBody(btRigidBody *body){
-    dynamicsWorld->removeRigidBody(body);
+    dynamicsWorld.removeRigidBody(body);
 }
 
 void ggDynWorld::removeCollisionObject(btCollisionObject *obj){
-    dynamicsWorld->removeCollisionObject(obj);
+    dynamicsWorld.removeCollisionObject(obj);
 }
 
 void ggDynWorld::addShape(btCollisionShape* shape){
@@ -32,17 +46,17 @@ void ggDynWorld::addShape(btCollisionShape* shape){
 }
 
 void ggDynWorld::stepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep){
-    dynamicsWorld->stepSimulation(timeStep,maxSubSteps,fixedTimeStep);
+    dynamicsWorld.stepSimulation(timeStep,maxSubSteps,fixedTimeStep);
 
-    // dynamicsWorld->updateAabbs();
-    // dynamicsWorld->computeOverlappingPairs();
+    // dynamicsWorld.updateAabbs();
+    // dynamicsWorld.computeOverlappingPairs();
 }
 
 void ggDynWorld::debugDrawWorld(){
     if(debug){
         // debugDrawer->setDebugMode(1);
-        // dynamicsWorld->setDebugDrawer(debugDrawer);
-        // dynamicsWorld->debugDrawWorld();
+        // dynamicsWorld.setDebugDrawer(debugDrawer);
+        // dynamicsWorld.debugDrawWorld();
     }
 }
 
@@ -55,44 +69,38 @@ void ggDynWorld::debugRaycast(){
     Singleton<Omicron>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color);
 }
 
-void ggDynWorld::printObjects(int _end){
-	for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= _end; j--){
-		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
-		btRigidBody* body = btRigidBody::upcast(obj);
-		btTransform trans;
-
-		if (body && body->getMotionState())
-			body->getMotionState()->getWorldTransform(trans);
-		else
-			trans = obj->getWorldTransform();
-
-		printf("OBJETO %d | POSICION = %f,%f,%f\n", j, float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
-	}
-}
+// void ggDynWorld::printObjects(int _end){
+// 	for (int j = dynamicsWorld.getNumCollisionObjects() - 1; j >= _end; j--){
+// 		btCollisionObject* obj = dynamicsWorld.getCollisionObjectArray()[j];
+// 		btRigidBody* body = btRigidBody::upcast(obj);
+// 		btTransform trans;
+//
+// 		if (body && body->getMotionState())
+// 			body->getMotionState()->getWorldTransform(trans);
+// 		else
+// 			trans = obj->getWorldTransform();
+//
+// 		printf("OBJETO %d | POSICION = %f,%f,%f\n", j, float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
+// 	}
+// }
 
 void ggDynWorld::inito(float _gX, float _gY, float _gZ){
-    collisionConfiguration  = new btDefaultCollisionConfiguration();
-    dispatcher              = new btCollisionDispatcher(collisionConfiguration);
-    overlappingPairCache    = new btDbvtBroadphase();
-    solver                  = new btSequentialImpulseConstraintSolver;
-    dynamicsWorld           = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-    collisionWorld          = new btCollisionWorld(dispatcher, overlappingPairCache, collisionConfiguration);
 
-    dynamicsWorld->setGravity(btVector3(_gX, _gY, _gZ));
+    dynamicsWorld.setGravity(btVector3(_gX, _gY, _gZ));
 }
 
 void ggDynWorld::clear(){
     //remove the rigidbodies from the dynamics world and delete them
-	for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+	for (int i = dynamicsWorld.getNumCollisionObjects() - 1; i >= 0; i--)
 	{
-		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
+		btCollisionObject* obj = dynamicsWorld.getCollisionObjectArray()[i];
 		btRigidBody* body = btRigidBody::upcast(obj);
 		if (body && body->getMotionState())
 		{
             // Al borrar los propios CRigidBody se hace delete de esto
 			// delete body->getMotionState();
 		}
-		dynamicsWorld->removeCollisionObject(obj);
+		dynamicsWorld.removeCollisionObject(obj);
 		delete obj;
 	}
     collisionShapes.clear();
@@ -101,16 +109,16 @@ void ggDynWorld::clear(){
 }
 void ggDynWorld::clean(){
     //remove the rigidbodies from the dynamics world and delete them
-	for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+	for (int i = dynamicsWorld.getNumCollisionObjects() - 1; i >= 0; i--)
 	{
-		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
+		btCollisionObject* obj = dynamicsWorld.getCollisionObjectArray()[i];
 		btRigidBody* body = btRigidBody::upcast(obj);
 		if (body && body->getMotionState())
 		{
             // Al borrar los propios CRigidBody se hace delete de esto
 			// delete body->getMotionState();
 		}
-		dynamicsWorld->removeCollisionObject(obj);
+		dynamicsWorld.removeCollisionObject(obj);
 		delete obj;
 	}
 
@@ -122,19 +130,19 @@ void ggDynWorld::clean(){
 	// 	delete shape;
 	// }
 
-	//delete dynamics world
-	delete dynamicsWorld;
-
-	//delete solver
-	delete solver;
-
-	//delete broadphase
-	delete overlappingPairCache;
-
-	//delete dispatcher
-	delete dispatcher;
-
-	delete collisionConfiguration;
+	// //delete dynamics world
+	// delete dynamicsWorld;
+    //
+	// //delete solver
+	// delete solver;
+    //
+	// //delete broadphase
+	// delete overlappingPairCache;
+    //
+	// //delete dispatcher
+	// delete dispatcher;
+    //
+	// delete collisionConfiguration;
 
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	collisionShapes.clear();
@@ -145,11 +153,11 @@ void ggDynWorld::clean(){
 }
 
 void ggDynWorld::setGravity(float x, float y, float z){
-    dynamicsWorld->setGravity(btVector3(x,y,z));
+    dynamicsWorld.setGravity(btVector3(x,y,z));
 }
 
 btDiscreteDynamicsWorld* ggDynWorld::getDynamicsWorld() {
-    return dynamicsWorld;
+    return &dynamicsWorld;
 }
 
 
@@ -164,7 +172,7 @@ glm::vec3 ggDynWorld::handleRayCastTo(glm::vec3 from, glm::vec3 to,float _weapon
 
     btCollisionWorld::ClosestRayResultCallback callBack(btVector3(from.x,from.y,from.z),btVector3(to.x,to.y,to.z));
 
-    dynamicsWorld->rayTest(btVector3(from.x,from.y,from.z),btVector3(to.x,to.y,to.z),callBack);
+    dynamicsWorld.rayTest(btVector3(from.x,from.y,from.z),btVector3(to.x,to.y,to.z),callBack);
 
     if(callBack.hasHit()){
         ret = glm::vec3(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
@@ -217,7 +225,7 @@ bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::
     btVector3 Endo = btVector3(End.x,End.y,End.z);
 
     btCollisionWorld::ClosestRayResultCallback callBack(Starto, Endo);
-    dynamicsWorld->rayTest(Starto, Endo, callBack);
+    dynamicsWorld.rayTest(Starto, Endo, callBack);
 
     if(callBack.hasHit()){
         CollisionResult = glm::vec3(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
@@ -231,7 +239,7 @@ bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::
     btVector3 Endo = btVector3(End.x,End.y,End.z);
 
     btCollisionWorld::ClosestRayResultCallback callBack(Starto,Endo);
-    dynamicsWorld->rayTest(Starto, Endo, callBack);
+    dynamicsWorld.rayTest(Starto, Endo, callBack);
 
     if(Exclude && callBack.m_collisionObject){
         if(callBack.m_collisionObject == Exclude->getBody()){
@@ -252,7 +260,7 @@ bool ggDynWorld::DoesItHitSomething(const glm::vec3 &Start, const glm::vec3 &End
     btVector3 Endo = btVector3(End.x,End.y,End.z);
 
     btCollisionWorld::ClosestRayResultCallback callBack(Starto, Endo);
-    dynamicsWorld->rayTest(Starto, Endo, callBack);
+    dynamicsWorld.rayTest(Starto, Endo, callBack);
 
     if(callBack.hasHit())   return true;
 
@@ -261,6 +269,6 @@ bool ggDynWorld::DoesItHitSomething(const glm::vec3 &Start, const glm::vec3 &End
 
 bool ggDynWorld::contactTest(btCollisionObject *_obj){
     SimulationContactResultCallback callback;
-    collisionWorld->contactTest(_obj,callback);
+    collisionWorld.contactTest(_obj,callback);
     return callback.bCollision;
 }
