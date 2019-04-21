@@ -42,9 +42,11 @@ void ZMovableMesh::beginDraw(){
     glUniformMatrix3fv(_U_MODEL,1,GL_FALSE,&VP[0][0]);
 
     // MODELO*VISTA*PERSPECTIVA
-    glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
+    glUniformMatrix4fv(12,1,GL_FALSE,&MVP[0][0]);
+
+    MVP = projMatrix * viewMatrix * modelMatrix;
     //GLuint MVP = sh->getUniformLocation("MVP");
-    glUniformMatrix4fv(_U_MVP,1,GL_FALSE,&MVP_L[0][0]);
+    glUniformMatrix4fv(_U_MVP,1,GL_FALSE,&MVP[0][0]);
 
     // LA FINALE
     MeshLODs[LOD]->draw();

@@ -21,7 +21,7 @@ layout (std140) uniform light
 }luces;
 
 
-out vec4 FragColor;
+layout (location = 0) out vec4 gRender;
 
 in vec2 UV;
 in vec2 half_ndc_position;
@@ -50,7 +50,7 @@ void main()
     vec4 DiffuseTexture = texture(gDiffuseSpec, UV);
     float SpecularTex = DiffuseTexture.a;
     if(SpecularTex == 1){
-        FragColor = vec4(60.f/255, 87.f/255, 106.f/255, 1.0f);
+        gRender = vec4(60.f/255, 87.f/255, 106.f/255, 1.0);
         return;
     }
 
@@ -190,10 +190,7 @@ for(int i = 0;  i< NLUCESF; i++)
     //float FogBlendFactor = exp(-pow(Base, FOG_GRADIENT));
     FogBlendFactor = clamp(FogBlendFactor, 0.0, 1.0);
 
-    FragColor = vec4(
-        FinalPixelColor, 1.0
-    );
-
-    FragColor = mix(vec4(60.f/255, 87.f/255, 106.f/255, 1.0f), FragColor, FogBlendFactor);
+    gRender = vec4(FinalPixelColor, 1.0);
+    gRender = mix(vec4(60.f/255, 87.f/255, 106.f/255, 1.0), gRender, FogBlendFactor);
 
 }

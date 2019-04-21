@@ -12,7 +12,6 @@
 class ZMesh : public TEntidad {
 
     public:
-
         void assignMaterial(ZMaterial* material_);
         void loadBoundingBox(const std::string& BoundingBoxPath);
 
@@ -24,6 +23,7 @@ class ZMesh : public TEntidad {
         bool LODTest(const glm::vec3 Position, uint8_t &LOD);
 
         BoundingBox VOX;
+        glm::mat4 MVP;
 
         static glm::vec3* PlayerPosition;
         static glm::vec3* CameraPosition;

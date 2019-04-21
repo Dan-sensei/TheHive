@@ -39,10 +39,6 @@ void CCamera::Init(){
 
     collision = false;
 
-
-    screenW = Engine->getScreenWidth();
-    screenH = Engine->getScreenHeight();
-
     Engine->getCursorPosition(prevX, prevY);
     t = 0;
     p = 0;

@@ -41,7 +41,7 @@ void Omicron::createZones(uint8_t NumberOfZones){
 void Omicron::resetSceneGraph() {
     ZONES.clear();
     delete ESCENA;
-    
+
     ESCENA = new TNodo();
     OKAMERAS_LAYER  = new TNodo(ESCENA, nullptr);
       LIGHTS_LAYER  = new TNodo(ESCENA, nullptr);
@@ -61,6 +61,7 @@ void Omicron::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
         std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS);
         glfwSetWindowTitle(window, TEXT.c_str());
+        //std::cout << "FPS: " << FPS << '\n';
         FPS = 0;
         FPS_Clock.Restart();
     }
@@ -226,6 +227,8 @@ void Omicron::draw(){
     _DeferredShading.Bind_G_Buffer();
     ESCENA->drawRoot_M();
     _DeferredShading.DrawQuad();
+    glUniform1f(7, FPS/60.f);
+    _DeferredShading.DrawPostProcessing();
 }
 
 void Omicron::EndDraw(){
@@ -345,12 +348,9 @@ bool Omicron::Initialize(){
     glCullFace (GL_BACK);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    glfwSetInputMode(window,  GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window,      GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glClearColor(0, 0, 0, 1.0f);
-
-    Half_Window_Width = ancho/2;
-    Half_Window_Height = alto/2;
 
 	return true;
 }

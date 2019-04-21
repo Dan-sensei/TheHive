@@ -54,9 +54,6 @@ private:
     glm::vec3 CurrentPosition;
     glm::vec3 LastFreeCameraPosition;
 
-    float screenW;
-    float screenH;
-
     int8_t InvertCamera;
     bool collision;
 

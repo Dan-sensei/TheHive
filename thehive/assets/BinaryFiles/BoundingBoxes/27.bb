@@ -1,1 +1,1 @@
-oI┴┴iка└мcA┴iка└мcAЭнAiка└oI┴ЭнAiка└oI┴ЭнAW7LAмcAЭнAW7LAмcA┴W7LAoI┴┴W7LA
+oI┴┴iка@мcA┴iка@мcAЭнAiка@oI┴ЭнAiка@oI┴ЭнAW7L┴мcAЭнAW7L┴мcA┴W7L┴oI┴┴W7L┴

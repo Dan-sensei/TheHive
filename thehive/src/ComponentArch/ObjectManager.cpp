@@ -111,8 +111,6 @@ return 0;
     //  If exists
     //if(found != TypeToComponentMap[cType].end())
     //    return found->second;   // <- We return the pointer to it
-
-
 }
 
 uint16_t ObjectManager::createEntity() {

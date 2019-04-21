@@ -16,7 +16,7 @@ ZDynamicMesh::ZDynamicMesh(const ZDynamicMesh &orig)
 }
 
 ZDynamicMesh::~ZDynamicMesh(){}
-// 
+//
 // void ZDynamicMesh::assignMaterial(ZMaterial* material_){
 //     zmat = material_;
 //     shader = zmat->getShader();
@@ -50,8 +50,10 @@ void ZDynamicMesh::beginDraw(){
     glUniformMatrix3fv(_U_MODEL,1,GL_FALSE,&VP[0][0]);
 
     // MODELO*VISTA*PERSPECTIVA
-    glm::mat4 MVP_L = projMatrix * viewMatrix * modelMatrix;
-    glUniformMatrix4fv(_U_MVP,1,GL_FALSE,&MVP_L[0][0]);
+    glUniformMatrix4fv(12,1,GL_FALSE,&MVP[0][0]);
+
+    glm::mat4 MVP = projMatrix * viewMatrix * modelMatrix;
+    glUniformMatrix4fv(_U_MVP,1,GL_FALSE,&MVP[0][0]);
 
     Timer += DeltaTime.Restart().Seconds();
     if(Timer > TimeBetweenAnimations){

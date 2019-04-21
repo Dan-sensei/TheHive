@@ -34,7 +34,7 @@ void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
     Material->attachShader(Shader);
     Material->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Nature/plant.png",       		GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Material->addTexture(GN::NORMAL_MAP,       "assets/Textures/COMOUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-    Material->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpeg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+    Material->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
     // ZMaterial* Material = Manager->getMaterial("Blue");
 

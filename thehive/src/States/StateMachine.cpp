@@ -18,8 +18,7 @@ void StateMachine::RemoveStates(uint8_t _cantidad) {
 	CurrentUpd = &StateMachine::ProcessStateChanges;
 }
 
-void StateMachine::ProcessStateChanges()
-{
+void StateMachine::ProcessStateChanges() {
 	if (isRemoving && !states.empty())
 	{
 		while(cantidad && !states.empty()){

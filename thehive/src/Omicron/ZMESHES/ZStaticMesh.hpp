@@ -20,7 +20,6 @@ class ZStaticMesh : public ZMesh {
         void addLOD(std::string Name);
 
     private:
-
         glm::mat4 localModelMatrix;
 };
 
