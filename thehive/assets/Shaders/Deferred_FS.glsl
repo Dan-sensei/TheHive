@@ -49,10 +49,6 @@ void main()
 {
     vec4 DiffuseTexture = texture(gDiffuseSpec, UV);
     float SpecularTex = DiffuseTexture.a;
-    if(SpecularTex == 1){
-        gRender = vec4(60.f/255, 87.f/255, 106.f/255, 1.0);
-        return;
-    }
 
     float dist;
     float attenuation;

@@ -52,7 +52,7 @@ void ZDynamicMesh::beginDraw(){
     // MODELO*VISTA*PERSPECTIVA
     glUniformMatrix4fv(12,1,GL_FALSE,&MVP[0][0]);
 
-    glm::mat4 MVP = projMatrix * viewMatrix * modelMatrix;
+    MVP = projMatrix * viewMatrix * modelMatrix;
     glUniformMatrix4fv(_U_MVP,1,GL_FALSE,&MVP[0][0]);
 
     Timer += DeltaTime.Restart().Seconds();

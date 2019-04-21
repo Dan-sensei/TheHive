@@ -74,8 +74,6 @@ class Omicron {
         inline bool isLClickPressed(){ return LCLICK; };
         inline int getWheelState(){return wheel;};
         inline bool isWindowOpen(){ return !glfwWindowShouldClose(window);};
-        inline int getScreenWidth(){ return Half_Window_Width; };
-        inline int getScreenHeight(){ return Half_Window_Height; };
         inline TNodo* getCamera(){return main_camera;};
 
         void getCursorPosition(double &posX, double &posY);
@@ -137,8 +135,8 @@ class Omicron {
         static int wheel;
         static int IdButon;
 
-        static int Half_Window_Width;
-        static int Half_Window_Height;
+        uint16_t WINDOW_WIDTH;
+        uint16_t WINDOW_HEIGHT;
 
 };
 

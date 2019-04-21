@@ -10,11 +10,8 @@ bool Omicron::LCLICK = false;
 int Omicron::wheel;
 int Omicron::IdButon;
 
-int Omicron::Half_Window_Width;
-int Omicron::Half_Window_Height;
-
 Omicron::Omicron()
-:main_camera(nullptr), FPS(0), _DeferredShading()
+:main_camera(nullptr), FPS(0), _DeferredShading(), WINDOW_WIDTH(0), WINDOW_HEIGHT(0)
 {
     ESCENA = new TNodo();
     Initialize();
@@ -225,9 +222,11 @@ void Omicron::draw(){
 
     // Ahora bindeamos nuestro G-Búffer y renderizamos a las texturas
     _DeferredShading.Bind_G_Buffer();
+    glViewport(0,0,1360, 768);
     ESCENA->drawRoot_M();
     _DeferredShading.DrawQuad();
     glUniform1f(7, FPS/60.f);
+    glViewport(0,0,WINDOW_WIDTH, WINDOW_HEIGHT);
     _DeferredShading.DrawPostProcessing();
 }
 
@@ -314,12 +313,11 @@ bool Omicron::Initialize(){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //No queremos el viejo OpenGL
 
     auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    float ancho = mode->width;
-    float alto = mode->height;
+    WINDOW_WIDTH = mode->width;
+    WINDOW_HEIGHT = mode->height;
 
-	window = glfwCreateWindow( ancho, alto, "The Hive - ALPHA", NULL, NULL);
+	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", NULL, NULL);
 	if( window == NULL ){
-	    //fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, está no es compatible con 3.3. Intente con la versión 2.1 de los tutoriales.\n" );
 	    glfwTerminate();
 	    return false;
 	}
@@ -336,7 +334,7 @@ bool Omicron::Initialize(){
 	    return false;
 	}
 
-    _DeferredShading.init(ancho, alto);
+    _DeferredShading.init(1360, 768);
 
     glDepthRange(0.f,1.f);
 
