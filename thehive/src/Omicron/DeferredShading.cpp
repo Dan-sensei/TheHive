@@ -304,15 +304,12 @@ void DeferredShading::DrawQuad(){
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, gPosition);
-    glUniform1i(5, 0);
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, gNormal);
-    glUniform1i(6, 1);
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, gDiffuseSpec);
-    glUniform1i(7, 2);
 
     glBindVertexArray(QUAD);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -329,11 +326,10 @@ void DeferredShading::DrawQuad(){
 void DeferredShading::DrawPostProcessing(){
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, gRender);
-    glUniform1i(5, 0);
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, gVelocity);
-    glUniform1i(6, 1);
+
 
     glBindVertexArray(QUAD);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

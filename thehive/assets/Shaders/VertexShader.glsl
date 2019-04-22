@@ -7,7 +7,7 @@ layout(location = 3) in vec3 vertexTangent_modelspace;
 layout(location = 4) in vec3 vertexBitangent_modelspace;
 
 
-layout(location =  9) uniform mat4 M;
+layout(location =  9) uniform mat4 MV;
 layout(location = 10) uniform mat3 NormalMatrix;
 layout(location = 11) uniform mat4 MVP;
 layout(location = 12) uniform mat4 Pre_MVP;
@@ -21,7 +21,7 @@ out vec4 CurrentPos;
 
 void main() {
 
-    vec4 Pos = M * vec4(vertexPosition_modelspace, 1);
+    vec4 Pos = MV * vec4(vertexPosition_modelspace, 1);
     Z = Pos.z;
 
     PreviousPos = Pre_MVP*vec4(vertexPosition_modelspace, 1);

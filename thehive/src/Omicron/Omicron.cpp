@@ -65,8 +65,8 @@ void Omicron::DisplayFPS(){
 }
 
 void Omicron::Draw3DLine(const glm::vec3 &From, const glm::vec3 &To, const gg::Color &c){
-    glm::mat4 MVP = ESCENA->getEntidad()->projMatrix * ESCENA->getEntidad()->viewMatrix;
-    Singleton<Debug>::Instance()->DroLine(From, To, c, MVP);
+    // glm::mat4 MVP = ESCENA->getEntidad()->projMatrix * ESCENA->getEntidad()->viewMatrix;
+    // Singleton<Debug>::Instance()->DroLine(From, To, c, MVP);
 }
 
 
@@ -75,7 +75,6 @@ void Omicron::key_callback(GLFWwindow* window, int key, int scancode, int action
         KEYS[key] = true;
     else if(action == GLFW_RELEASE)
         KEYS[key] = false;
-
 }
 
 // void Omicron::resetClicked(){
@@ -222,7 +221,7 @@ void Omicron::draw(){
 
     // Ahora bindeamos nuestro G-Búffer y renderizamos a las texturas
     _DeferredShading.Bind_G_Buffer();
-    glViewport(0,0,1360, 768);
+    glViewport(0,0,1280, 720);
     ESCENA->drawRoot_M();
     _DeferredShading.DrawQuad();
     glUniform1f(7, FPS/60.f);
@@ -334,7 +333,7 @@ bool Omicron::Initialize(){
 	    return false;
 	}
 
-    _DeferredShading.init(1360, 768);
+    _DeferredShading.init(1280, 720);
 
     glDepthRange(0.f,1.f);
 

@@ -2,27 +2,20 @@
 
 //#include <iostream>
 #include <cstdint>
-#include <string>
-#include <stack>
 
 #include "ComponentArch/ObjectManager.hpp"
 #include "Singleton.hpp"
-#include "GameAI/Pathfinding.hpp"
 #include "GameAI/AIDirector.hpp"
 
 #include <Omicron/2D/Motor2D.hpp>
 
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
-#include <EventSystem/Blackboard.hpp>
 #include "BinaryParser.hpp"
 #include <Omicron/Omicron.hpp>
-
 #include <Omicron/2D/Motor2D.hpp>
-
 #include <Bullet/ggDynWorld.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
-
 
 #define MOVEMENT_SPEED 1.f
 
@@ -92,7 +85,7 @@ void Game::Init(){
 
 
     //BinaryParser::LoadSounds();
-    BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
+    //BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
 
 
 
@@ -143,12 +136,12 @@ void Game::Init(){
     MasterClock.Restart();
     Engine2D->InitHUD();
 
-    sky.init();
+    //sky.init();
     //Engine2D->prueba();
     // //std::cout << "\n -- INIT -- " << '\n';
 
     // ParticleSystem_Data PS;
-    // PS.Texture = "assets/Textures/Particles/BlueQuad.png";
+    // PS.Texture = "assets/Textures/boxtexure.jpeg";
     // PS.SpawnTime = 0.05;
     // PS.MaxParticles = 20;
     //
@@ -218,7 +211,6 @@ void Game::Update(){
 
     // //std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();
-
 }
 
 void Game::Resume(){

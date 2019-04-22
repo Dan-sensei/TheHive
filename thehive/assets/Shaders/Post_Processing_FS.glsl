@@ -4,8 +4,8 @@ out vec4 FragColor;
 
 in vec2 UV;
 
-layout(location = 5) uniform sampler2D RenderTexture;
-layout(location = 6) uniform sampler2D VelocityTexture;
+layout(binding = 0) uniform sampler2D RenderTexture;
+layout(binding = 1) uniform sampler2D VelocityTexture;
 
 layout(location = 7) uniform float BlurFactor;
 

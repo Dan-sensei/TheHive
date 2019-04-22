@@ -109,7 +109,7 @@ void ParticleSystem::Update(){
 
         Particle &CurrentParticle = Particles[i];
         CurrentParticle.Life -= ElapsedTime;
-        if(CurrentParticle.Life > 0){
+        if(CurrentParticle.Life > 0) {
             CurrentParticle.Position += CurrentParticle.Velocity * ElapsedTime;
             GL_Position_Size_Buffer[4*ActiveParticles+0] = CurrentParticle.Position.x;
             GL_Position_Size_Buffer[4*ActiveParticles+1] = CurrentParticle.Position.y;
@@ -117,10 +117,10 @@ void ParticleSystem::Update(){
 
             GL_Position_Size_Buffer[4*ActiveParticles+3] = CurrentParticle.Size;
 
-            GL_Color_Buffer[4*ActiveParticles+0] = CurrentParticle.Color.R;
-            GL_Color_Buffer[4*ActiveParticles+1] = CurrentParticle.Color.G;
-            GL_Color_Buffer[4*ActiveParticles+2] = CurrentParticle.Color.B;
-            GL_Color_Buffer[4*ActiveParticles+3] = CurrentParticle.Color.Alpha;
+            GL_Color_Buffer[4*ActiveParticles+0] = (GLubyte)CurrentParticle.Color.R;
+            GL_Color_Buffer[4*ActiveParticles+1] = (GLubyte)CurrentParticle.Color.G;
+            GL_Color_Buffer[4*ActiveParticles+2] = (GLubyte)CurrentParticle.Color.B;
+            GL_Color_Buffer[4*ActiveParticles+3] = (GLubyte)CurrentParticle.Color.Alpha;
 
             ++ActiveParticles;
         }
@@ -133,7 +133,6 @@ void ParticleSystem::Update(){
     glBindBuffer(GL_ARRAY_BUFFER, VBO_COLORS);
     glBufferData(GL_ARRAY_BUFFER, Particles.size() * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, ActiveParticles * sizeof(GLubyte) * 4, GL_Color_Buffer.data());
-
 }
 
 void ParticleSystem::ParticleCreationHandler(){
@@ -145,9 +144,9 @@ void ParticleSystem::ParticleCreationHandler(){
 
         FreePos = getFreePosition();
 
-        #define SPEED 5
+        #define SPEED 0.5f
 
-        Particles[FreePos].Position = glm::vec3(125, 5, -50);
+        Particles[FreePos].Position = glm::vec3(-2.723060, 1.565783, -9.310295);
         Particles[FreePos].Velocity = glm::vec3(
             gg::genFloatRandom(-1, 1) * SPEED,
             gg::genFloatRandom(-1, 1) * SPEED,
@@ -159,8 +158,9 @@ void ParticleSystem::ParticleCreationHandler(){
             gg::genIntRandom(0, 255),
             gg::genIntRandom(0, 255)
         );
+        std::cout << "Color " << (uint16_t)Particles[FreePos].Color.R << ", " << (uint16_t)Particles[FreePos].Color.G << ", " << (uint16_t)Particles[FreePos].Color.B << ", " << (uint16_t)Particles[FreePos].Color.Alpha << '\n';
 
-        Particles[FreePos].Life = 1.f;
+        Particles[FreePos].Life = 4.f;
         Particles[FreePos].Size = gg::genFloatRandom(0.2f, 1);
     }
 }
@@ -185,15 +185,15 @@ uint16_t ParticleSystem::getFreePosition(){
 
 void ParticleSystem::Draw(){
     Particles_Shader->Bind();
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glDisable(GL_BLEND);
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, Texture);
-    glUniform1i(_U_DIFFUSE_MAP, 0);
 
-    glm::mat4 VP = projMatrix * viewMatrix;
+    glm::mat4 VP = projMatrix*viewMatrix;
+    glm::mat4 MV = viewMatrix*modelMatrix;
 
     glUniformMatrix4fv(_U_VP, 1, GL_FALSE, &VP[0][0]);
+    glUniformMatrix4fv(9, 1, GL_FALSE, &MV[0][0]);
     glUniform3f(_U_CAM_UP   , viewMatrix[0][1], viewMatrix[1][1], viewMatrix[2][1]);
     glUniform3f(_U_CAM_RIGHT, viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
 

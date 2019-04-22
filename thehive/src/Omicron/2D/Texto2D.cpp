@@ -186,7 +186,7 @@ Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,flo
 
             //activamos transparencias
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glEnable( GL_BLEND );
+            //glEnable( GL_BLEND );
             //glDisable(GL_BLEND);
 
 

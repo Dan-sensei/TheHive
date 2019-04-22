@@ -1,8 +1,6 @@
 #ifndef OPENGENUM_H
 #define OPENGENUM_H
 
-#include <ShaderUniformMapping.hpp>
-
 namespace GN{
 
     //BODY
@@ -28,9 +26,9 @@ namespace GN{
 
     // SHADERS
     enum ShadersIDs{
-        DIFFUSE_MAP = _U_DIFFUSE_MAP,
-        NORMAL_MAP = _U_NORMAL_MAP,
-        SPECULAR_MAP = _U_SPECULAR_MAP,
+        DIFFUSE_MAP = 0,
+        NORMAL_MAP = 1,
+        SPECULAR_MAP = 2,
         BLEND1 = 19,
         BLEND2 = 20,
     };

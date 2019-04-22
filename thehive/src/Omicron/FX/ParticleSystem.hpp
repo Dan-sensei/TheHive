@@ -36,7 +36,7 @@ class ParticleSystem : public TEntidad {
 
         std::vector<Particle> Particles;
         std::vector<float> GL_Position_Size_Buffer;
-        std::vector<float> GL_Color_Buffer;
+        std::vector<GLubyte> GL_Color_Buffer;
         uint16_t LastAvailablePosition;
 
         gg::Clock Timer;

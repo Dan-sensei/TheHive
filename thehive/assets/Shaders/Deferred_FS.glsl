@@ -27,9 +27,9 @@ in vec2 UV;
 in vec2 half_ndc_position;
 
 
-layout(location = 5) uniform sampler2D depthTex;
-layout(location = 6) uniform sampler2D gNormal;
-layout(location = 7) uniform sampler2D gDiffuseSpec;
+layout(binding = 0) uniform sampler2D depthTex;
+layout(binding = 1) uniform sampler2D gNormal;
+layout(binding = 2) uniform sampler2D gDiffuseSpec;
 
 layout(location = 12) uniform vec3 LightPosition_worldspace;
 
@@ -172,10 +172,6 @@ for(int i = 0;  i< NLUCESF; i++)
 }
 */
     FinalPixelColor += diffuse + FinalSpecular;
-
-
-
-
 
 
 

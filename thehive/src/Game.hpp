@@ -64,7 +64,7 @@ private:
     TNodo* luz;
     CTransform* playerpos;
 
-    SkyBox sky;
+    //SkyBox sky;
     NatureGenerator nat;
 };
 

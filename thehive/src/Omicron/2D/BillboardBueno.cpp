@@ -72,7 +72,7 @@ BillboardBueno::BillboardBueno(float x,float y,float z,const std::string &Name)
 
         //activamos transparencias
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable( GL_BLEND );
+        //glEnable( GL_BLEND );
 
     	//habilitamos in
 

@@ -55,7 +55,7 @@ Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
 
         //activamos transparencias
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable( GL_BLEND );
+        //glEnable( GL_BLEND );
 
         //habilitamos in
         glEnableVertexAttribArray(0);

@@ -2,6 +2,7 @@
 #include <glm/gtx/norm.hpp>
 #include <BinaryParser.hpp>
 #include <glm/gtx/fast_square_root.hpp>
+#include <glm/gtx/normalize_dot.hpp>
 
 #define LOD1 10000
 #define KILL 100
@@ -40,8 +41,8 @@ void ZMesh::FrustrumTest(const glm::vec3 &Position, bool &dib){
 
         dirobj = Position+vectores[i]-campos;
         dirobj.y = 0;
-        dirobj       = glm::normalize(dirobj);
-        float sol         = glm::dot(dirobj,dircam);
+        //dirobj   = glm::normalize(dirobj);
+        float sol         = glm::fastNormalizeDot(dirobj,dircam);
         if(GRADOVISION < sol) {
             dib=true;
             break;

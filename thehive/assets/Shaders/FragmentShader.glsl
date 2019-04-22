@@ -12,16 +12,18 @@ in vec2 UV;
 in vec4 PreviousPos;
 in vec4 CurrentPos;
 
-layout(location = 14) uniform sampler2D DiffuseMap;
-layout(location = 15) uniform sampler2D NormalMap;
-layout(location = 16) uniform sampler2D SpecularMap;
+layout(binding = 0) uniform sampler2D DiffuseMap;
+layout(binding = 1) uniform sampler2D NormalMap;
+layout(binding = 2) uniform sampler2D SpecularMap;
 
 void main() {
+    vec4 DifusseTexture = texture(DiffuseMap, UV);
+    if(DifusseTexture.a < 0.1) discard;
 
     vec3 NormalMapTexture = texture(NormalMap, UV).rgb * 2.0 - 1.0;
     NormalMapTexture.xy *= 2;
     gNormal = normalize(NormalMapTexture * TBN);
-    gAlbedoSpec.rgb = texture(DiffuseMap, UV).rgb;
+    gAlbedoSpec.rgb = DifusseTexture.rgb;
     gAlbedoSpec.a = texture(SpecularMap, UV).r;
 
     gPosition.r = Z;
