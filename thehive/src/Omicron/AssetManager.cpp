@@ -137,6 +137,7 @@ void AssetManager::loadInit(){
     Door->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg");
     Door->addTexture(GN::SPECULAR_MAP,     "assets/Textures/Asfalto_Gloss.jpg");
 
+/*
     // Las buenas funciones lambda
     auto getTextureFromPath = [](const std::string &LINE, const std::string &SEPARATOR) -> std::string{
         size_t found = LINE.find_last_of(SEPARATOR);
@@ -194,6 +195,7 @@ void AssetManager::loadInit(){
             MAT->addTexture(GN::SPECULAR_MAP,   "assets/Textures/DefaultSpecular.jpg");
         }
     }
+*/
 
     shader = getShader("Blend");
 
