@@ -106,6 +106,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
     GG_Read(inStream, NUMBER_OF_OBJECTS);
 
     ////std::cout << "NUM " << (uint16_t)NUMBER_OF_OBJECTS << '\n';
+    AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
+    Shader* DEFAULT_SHADER = _AssetManager->getShader("Default");
 
     for(uint16_t i = 0; i < NUMBER_OF_OBJECTS; ++i){
         uint8_t MODEL = 0;
@@ -130,28 +132,6 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
 
         uint8_t HasCollider;
         GG_Read(inStream, HasCollider);
-        ZMaterial* Dark;
-
-        AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
-        int rand;
-
-        switch(MODEL){
-            //nave
-            case 1: Dark = _AssetManager->getMaterial("White");
-                    break;
-            case 29: Dark = _AssetManager->getMaterial("Door");
-                    break;
-            case 144: Dark = _AssetManager->getMaterial("Ground");
-                    break;
-            default: Dark = _AssetManager->getMaterial("Model"+std::to_string(MODEL));
-                    break;
-        }
-        //Dark = AssetManager::getMaterial("Default");
-
-        std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
-        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Dark, Position, Rotation, map_zone, B);
-        Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
-        Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
 
         if(HasCollider){
             // std::cout << str << " | HasCollider: " << static_cast<int>(HasCollider) << '\n';
@@ -159,7 +139,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
                 CMeshCollider* RIGID = new CMeshCollider("assets/BulletBoundingBoxes/"+str+".bullet", Position.x,Position.y,Position.z);
                 Manager->addComponentToEntity(RIGID, gg::MESHCOLLIDER, NewEntity);
 
-                continue;
+                // continue;
+                goto readMaterial;
             }
             GG_Read(inStream, x);
             GG_Read(inStream, y);
@@ -179,6 +160,74 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             CBoxCollider* RIGID = new CBoxCollider(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
             Manager->addComponentToEntity(RIGID, gg::BOXCOLLIDER, NewEntity);
         }
+
+        readMaterial:
+
+        auto checkExtension = [](std::string &PATH){
+            std::array<std::string,2> EXT = {".png",".jpg"};
+            for(uint8_t i = 0 ; i<2 ; i++){
+                struct stat buffer;
+                if(stat ((PATH+EXT[i]).c_str(), &buffer) == 0) {
+                    PATH = PATH+EXT[i];
+                    break;
+                }
+            }
+        };
+
+        // Materiales
+        ZMaterial* Material;
+        uint8_t hasDifuseT, difuseT;
+        uint8_t hasNormalT, normalT;
+        uint8_t hasSpecularT, specularT;
+        difuseT = normalT = specularT = 0;
+
+        std::string difusePath = "assets/Textures/DefaultDiffuse.jpg";
+        std::string normalPath = "assets/Textures/DefaultNormal.jpg";
+        std::string specularPath = "assets/Textures/DefaultSpecular.jpeg";
+        unsigned int NORMAL_FLAG = GN::INVERT_Y;
+
+        GG_Read(inStream, hasDifuseT);
+        if(hasDifuseT){
+            GG_Read(inStream, difuseT);
+            difusePath = "assets/Textures/UINT8_T_TEXTURES/"+std::to_string(difuseT)+"_t";
+            checkExtension(difusePath);
+        }
+
+        GG_Read(inStream, hasNormalT);
+        if(hasNormalT){
+            GG_Read(inStream, normalT);
+            normalPath = "assets/Textures/UINT8_T_NORMALS/"+std::to_string(normalT)+"_n";
+            NORMAL_FLAG = 0;
+            checkExtension(normalPath);
+        }
+
+        GG_Read(inStream, hasSpecularT);
+        if(hasSpecularT){
+            GG_Read(inStream, specularT);
+            // -- Como no se usa por ahora, pues comentado
+            
+            // if(specularT){
+            //     specularPath = "assets/Textures/UINT8_T_SPECULAR/"+std::to_string(specularT);
+            //     checkExtension(specularPath);
+            // }
+        }
+
+        if(!hasDifuseT && !hasNormalT && !hasSpecularT){
+            Material = _AssetManager->getMaterial("Default");
+        }
+        else{
+            Material = _AssetManager->getMaterial("M_"+std::to_string(difuseT)+"_"+std::to_string(normalT)+"_"+std::to_string(specularT));
+            Material->attachShader(DEFAULT_SHADER);
+            Material->addTexture(GN::DIFFUSE_MAP,    difusePath,     GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+            Material->addTexture(GN::NORMAL_MAP,     normalPath,     GN::RGBA, NORMAL_FLAG | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+            Material->addTexture(GN::SPECULAR_MAP,   specularPath,   GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+        }
+
+
+        std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
+        CStaticModel* Transform = new CStaticModel("assets/BinaryFiles/BinaryModels/"+str+".modelgg", Material, Position, Rotation, map_zone, B);
+        Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
+        Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
     }
 
     // ------------------------------------------------------------------------------------ //

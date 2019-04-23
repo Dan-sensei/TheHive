@@ -137,6 +137,7 @@ void AssetManager::loadInit(){
     Door->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg",         GN::RGBA, GN::INVERT_Y | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
     Door->addTexture(GN::SPECULAR_MAP,     "assets/Textures/Asfalto_Gloss.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
 
+/*
     // Las buenas funciones lambda
     auto getTextureFromPath = [](const std::string &LINE, const std::string &SEPARATOR) -> std::string{
         size_t found = LINE.find_last_of(SEPARATOR);
@@ -194,6 +195,7 @@ void AssetManager::loadInit(){
             MAT->addTexture(GN::SPECULAR_MAP,   "assets/Textures/DefaultSpecular.jpg",     GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
         }
     }
+*/
 
     shader = getShader("Blend");
 
