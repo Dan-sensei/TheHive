@@ -68,7 +68,7 @@ BillboardBueno::BillboardBueno(float x,float y,float z,const std::string &Name)
     	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
         auto Manager = Singleton<AssetManager>::Instance();
-        textureID = Manager->getTexture(Name,   GN::RGBA,0);
+        textureID = Manager->getTexture(Name);
 
         //activamos transparencias
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -102,7 +102,7 @@ void BillboardBueno::setColor(glm::vec4 _color){
 
 void BillboardBueno::setImage(const std::string &Name){
     auto Manager = Singleton<AssetManager>::Instance();
-    textureID=Manager->getTexture(Name,   GN::RGBA,0);
+    textureID=Manager->getTexture(Name);
 }
 
 void BillboardBueno::Draw(){

@@ -127,9 +127,9 @@ int main(int argc, char const *argv[]) {
 // 	Shader* Def = AssetManager::getShader("Default");
 // 	ZMaterial* 		MAT = AssetManager::getMaterial("Morado");
 // 	MAT->attachShader(Def);
-// 	MAT->addTexture("DiffuseMap",      "assets/Textures/prueba1.png",       		GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-// 	MAT->addTexture("NormalMap",       "assets/Textures/COMOUNPUTOPRO3.png",        GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-// 	MAT->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+// 	MAT->addTexture("DiffuseMap",      "assets/Textures/prueba1.png");
+// 	MAT->addTexture("NormalMap",       "assets/Textures/COMOUNPUTOPRO3.png");
+// 	MAT->addTexture("SpecularMap",     "assets/Textures/DefaultSpecular.jpg");
 //
 //
 // 	gg::Color color_luz;

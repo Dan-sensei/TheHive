@@ -25,10 +25,8 @@ class AssetManager {
         ZMeshData*      getMeshData(const std::string &Name);
         ZAnimationData* getAnimation(const std::string &Name);
         ZMaterial*      getMaterial(const std::string &Name);
-        unsigned int    getTexture(const std::string &Name, unsigned int mode = 0, unsigned int flags = 0);
+        unsigned int    getTexture(const std::string &Name);
         Shader*         getShader(const std::string& Name);
-
-        Shader*     createShader(std::string Name);
 
     private:
 

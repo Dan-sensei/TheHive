@@ -104,7 +104,7 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
     	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
         auto Manager = Singleton<AssetManager>::Instance();
-        textureID = Manager->getTexture(Name,   GN::RGBA,0);
+        textureID = Manager->getTexture(Name);
 
         //activamos transparencias
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -159,7 +159,7 @@ void Imagen2D::setColor(glm::vec4 _color){
 void Imagen2D::setImage(const std::string &Name){
     texturaURL=Name;
     auto Manager = Singleton<AssetManager>::Instance();
-    textureID=Manager->getTexture(Name,   GN::RGBA,0);
+    textureID=Manager->getTexture(Name);
 }
 std::string Imagen2D::getImage(){
     return texturaURL;

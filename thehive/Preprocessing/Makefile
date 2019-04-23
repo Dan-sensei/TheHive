@@ -33,6 +33,8 @@ clean:
 	$(call printWarning,"..." )
 	@rm -rf $(BUILD)
 	@rm -rf ./BinaryFiles
+	@rm -rf ../assets/BinaryFiles/BinaryModels/*.modelgg
+	@rm -rf ../assets/BinaryFiles/BoundingBoxes/*.bb
 	$(call br)
 
 

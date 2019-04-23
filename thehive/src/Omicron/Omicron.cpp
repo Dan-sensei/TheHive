@@ -49,7 +49,7 @@ void Omicron::resetSceneGraph() {
 void Omicron::clean(){
     //std::cout << "DeleTAG..." << '\n';
     ZONES.clear();
-    delete Omicron::KEYS;
+    delete[] Omicron::KEYS;
     delete ESCENA;
     glfwTerminate();
 }

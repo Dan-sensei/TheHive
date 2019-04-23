@@ -29,8 +29,8 @@ namespace GN{
         DIFFUSE_MAP = 0,
         NORMAL_MAP = 1,
         SPECULAR_MAP = 2,
-        BLEND1 = 19,
-        BLEND2 = 20,
+        BLEND1 = 0,
+        BLEND2 = 1
     };
 
 }

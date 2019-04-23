@@ -4,29 +4,21 @@
 
 //Constructor para el nodo raiz
 TNodo::TNodo()
-:Visibility(true)
-{
-    padre = nullptr;
-    entidad = nullptr;
-}
+:Visibility(true), entidad(nullptr), padre(nullptr)
+{}
 
 //Constructor para el resto de nodos
-TNodo::TNodo(TNodo *P,TEntidad *_ent)
-:Visibility(true)
+TNodo::TNodo(TNodo *P, TEntidad *_ent)
+:Visibility(true), padre(P), entidad(_ent)
 {
-    !P ? padre = nullptr : padre = P;
-    !_ent?  entidad = nullptr : entidad = _ent;
-
     P->addHijo(this);
-
 }
 
 TNodo::~TNodo(){
-    auto it = hijos.begin();
-    while(it != hijos.end()){
-        delete *it;
-        ++it;
-    }
+
+    for(uint16_t i = 0; i < hijos.size(); ++i)
+        delete hijos[i];
+
     hijos.clear();
 
     delete entidad;

@@ -171,7 +171,7 @@ Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,flo
             //textura
 
             ////std::cout <<"textura"<< HUDtext << '\n';
-            //newMat->addTexture("DiffuseMap", "assets/Textures/DefaultDiffuse.jpg",      GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+            //newMat->addTexture("DiffuseMap", "assets/Textures/DefaultDiffuse.jpg");
 
 
             //glGenTextures(1, &textureID);
@@ -182,7 +182,7 @@ Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,flo
             //SOIL_free_image_data(image);
 
             auto Manager = Singleton<AssetManager>::Instance();
-            textureID=Manager->getTexture("assets/Fonts/letras.png",   GN::RGBA,0);
+            textureID=Manager->getTexture("assets/Fonts/letras.png");
 
             //activamos transparencias
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -218,7 +218,7 @@ void Texto2D::setColor(glm::vec4 _color){
 }
 void Texto2D::setImage(const std::string &Name){
     auto Manager = Singleton<AssetManager>::Instance();
-    textureID=Manager->getTexture(Name,   GN::RGBA,0);
+    textureID=Manager->getTexture(Name);
 
 }
 float  Texto2D::getWid(char car){
