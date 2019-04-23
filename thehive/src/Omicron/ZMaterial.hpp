@@ -14,7 +14,7 @@ class ZMaterial{
         ~ZMaterial();
 
         void attachShader(Shader* s);
-        void addTexture(GN::ShadersIDs ID, const std::string &path);
+        void addTexture(GN::ShadersIDs ID, const unsigned int &TextureID);
         void Bind();
 
         inline Shader* getShader(){ return shader; };

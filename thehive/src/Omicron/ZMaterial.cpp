@@ -36,8 +36,7 @@ void ZMaterial::attachShader(Shader *s){
     shader = s;
 }
 
-void ZMaterial::addTexture(GN::ShadersIDs ID, const std::string &path){
-    unsigned int TextureID = Singleton<AssetManager>::Instance()->getTexture(path);
+void ZMaterial::addTexture(GN::ShadersIDs ID, const unsigned int &TextureID){
     Textures[ID] = TextureID;
 }
 

@@ -32,9 +32,9 @@ void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
     Shader* Shader = Manager->getShader("Default");
     ZMaterial* Material = Manager->getMaterial("Nature");
     Material->attachShader(Shader);
-    Material->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/Nature/plant.png");
-    Material->addTexture(GN::NORMAL_MAP,       "assets/Textures/COMOUNPUTOPRO3.png");
-    Material->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpg");
+    Material->addTexture(GN::DIFFUSE_MAP,      Manager->getTexture("assets/Textures/Nature/plant.png", 3));
+    Material->addTexture(GN::NORMAL_MAP,       Manager->getTexture("assets/Textures/COMOUNPUTOPRO3.png", 3));
+    Material->addTexture(GN::SPECULAR_MAP,     Manager->getTexture("assets/Textures/DefaultSpecular.jpg", 1));
 
     // ZMaterial* Material = Manager->getMaterial("Blue");
 

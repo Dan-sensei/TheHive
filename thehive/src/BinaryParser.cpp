@@ -184,7 +184,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         std::string difusePath = "assets/Textures/DefaultDiffuse.jpg";
         std::string normalPath = "assets/Textures/DefaultNormal.jpg";
         std::string specularPath = "assets/Textures/DefaultSpecular.jpeg";
-        unsigned int NORMAL_FLAG = GN::INVERT_Y;
+        //unsigned int NORMAL_FLAG = GN::INVERT_Y;
 
         GG_Read(inStream, hasDifuseT);
         if(hasDifuseT){
@@ -197,7 +197,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         if(hasNormalT){
             GG_Read(inStream, normalT);
             normalPath = "assets/Textures/UINT8_T_NORMALS/"+std::to_string(normalT)+"_n";
-            NORMAL_FLAG = 0;
+            //NORMAL_FLAG = 0;
             checkExtension(normalPath);
         }
 
@@ -205,7 +205,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         if(hasSpecularT){
             GG_Read(inStream, specularT);
             // -- Como no se usa por ahora, pues comentado
-            
+
             // if(specularT){
             //     specularPath = "assets/Textures/UINT8_T_SPECULAR/"+std::to_string(specularT);
             //     checkExtension(specularPath);
@@ -218,9 +218,9 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         else{
             Material = _AssetManager->getMaterial("M_"+std::to_string(difuseT)+"_"+std::to_string(normalT)+"_"+std::to_string(specularT));
             Material->attachShader(DEFAULT_SHADER);
-            Material->addTexture(GN::DIFFUSE_MAP,    difusePath,     GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-            Material->addTexture(GN::NORMAL_MAP,     normalPath,     GN::RGBA, NORMAL_FLAG | GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
-            Material->addTexture(GN::SPECULAR_MAP,   specularPath,   GN::RGBA, GN::REPEAT_TEXTURE | GN::GEN_MIPMAPS);
+            Material->addTexture(GN::DIFFUSE_MAP,    _AssetManager->getTexture(difusePath, 3));
+            Material->addTexture(GN::NORMAL_MAP,     _AssetManager->getTexture(normalPath, 3));
+            Material->addTexture(GN::SPECULAR_MAP,   _AssetManager->getTexture(specularPath, 1));
         }
 
 
