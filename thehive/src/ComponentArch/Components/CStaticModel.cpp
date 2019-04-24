@@ -7,7 +7,7 @@ CStaticModel::CStaticModel(const std::string &pathToModel, ZMaterial* material, 
 }
 
 CStaticModel::~CStaticModel(){
-    Surreal->deleteLeafNode(_3DModel);
+    Surreal->deleteZStaticMeshLeafNode(_3DModel);
 }
 
 void CStaticModel::setVisibility(bool flag){

@@ -15,7 +15,6 @@ TNodo::TNodo(TNodo *P, TEntidad *_ent)
 }
 
 TNodo::~TNodo(){
-
     for(uint16_t i = 0; i < hijos.size(); ++i)
         delete hijos[i];
 
@@ -30,14 +29,12 @@ void TNodo::addHijo(TNodo* nodo){
 
 void TNodo::remHijo(TNodo* nodo){
 
-    auto it = hijos.begin();
-    while(it != hijos.end()){
-        if(*it == nodo){
-            delete *it;
-            hijos.erase(it);
+    for(uint16_t i = 0; i < hijos.size(); ++i){
+        if(hijos[i] == nodo){
+            hijos.erase(hijos.begin() + i);
+            delete nodo;
             break;
         }
-        ++it;
     }
 }
 

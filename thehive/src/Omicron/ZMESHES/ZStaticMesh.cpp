@@ -13,6 +13,7 @@ ZStaticMesh::ZStaticMesh(const glm::mat4 TheModelMatrix){
     localModelMatrix = TheModelMatrix;
     zmat = nullptr;
     Radius = 0;
+    MVP = glm::mat4();
 }
 
 bool ZStaticMesh::load(const std::string& Name){

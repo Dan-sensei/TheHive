@@ -44,6 +44,7 @@ class Omicron {
         void createZones(uint8_t NumberOfZones);
 
         void deleteLeafNode(TNodo *node);
+        void deleteZStaticMeshLeafNode(TNodo *node);
 
         bool bindMaterialToMesh(TNodo*,ZMaterial*);
         bool bindMaterialToDynamicMesh(TNodo*,ZMaterial*);

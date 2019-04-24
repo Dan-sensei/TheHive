@@ -8,7 +8,7 @@ class TNodo {
     public:
         TNodo();
         TNodo(TNodo*,TEntidad*);
-        ~TNodo();
+        virtual ~TNodo();
 
         void addHijo(TNodo*);
         void remHijo(TNodo*);

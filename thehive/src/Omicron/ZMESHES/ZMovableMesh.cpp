@@ -9,6 +9,7 @@
 ZMovableMesh::ZMovableMesh() {
     zmat = nullptr;
     Radius = 0;
+    MVP = glm::mat4();
 }
 
 bool ZMovableMesh::load(const std::string& Name){

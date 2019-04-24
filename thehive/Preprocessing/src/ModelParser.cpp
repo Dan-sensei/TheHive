@@ -169,41 +169,41 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
     // MIN
     GG_Write(BB, minX);
     GG_Write(BB, minY);
-    GG_Write(BB, -minZ);      // .
+    GG_Write(BB, minZ);      // .
 
     //Derecha
     GG_Write(BB, maxX);
     GG_Write(BB, minY);
-    GG_Write(BB, -minZ);      // . _____
+    GG_Write(BB, minZ);      // . _____
 
     //Arriba
     GG_Write(BB, maxX);      //       .
     GG_Write(BB, maxY);      //       |
-    GG_Write(BB, -minZ);      // ._____|
+    GG_Write(BB, minZ);      // ._____|
 
     //Izquierda
     GG_Write(BB, minX);      // ._____.
     GG_Write(BB, maxY);      //       |
-    GG_Write(BB, -minZ);      // ._____|
+    GG_Write(BB, minZ);      // ._____|
 
     //-----------------------
     //Al fondo
     GG_Write(BB, minX);      // ./_____.
     GG_Write(BB, maxY);      //       |
-    GG_Write(BB, -maxZ);      // ._____|
+    GG_Write(BB, maxZ);      // ._____|
 
     //Derecha
     GG_Write(BB, maxX);      //./====:
     GG_Write(BB, maxY);      //      |
-    GG_Write(BB, -maxZ);      //._____|
+    GG_Write(BB, maxZ);      //._____|
 
     //Abajo
     GG_Write(BB, maxX);
     GG_Write(BB, minY);
-    GG_Write(BB, -maxZ);
+    GG_Write(BB, maxZ);
 
     //Izquierda
     GG_Write(BB, minX);
     GG_Write(BB, minY);
-    GG_Write(BB, -maxZ);
+    GG_Write(BB, maxZ);
 }

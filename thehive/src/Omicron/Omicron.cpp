@@ -358,6 +358,11 @@ void Omicron::deleteLeafNode(TNodo *node){
     FATHER->remHijo(tmp);
 }
 
+void Omicron::deleteZStaticMeshLeafNode(TNodo *node){
+    TNodo *FATHER = node->getPadre();
+    FATHER->remHijo(node);
+}
+
 void Omicron::SetMapZoneVisibility(const int8_t &zone,const bool &flag){
     ZONES[zone]->setVisibility(flag);
 }

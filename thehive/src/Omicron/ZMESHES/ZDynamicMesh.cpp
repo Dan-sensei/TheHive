@@ -7,6 +7,7 @@ ZDynamicMesh::ZDynamicMesh()
 {
     Animations.reserve(5);
     zmat = nullptr;
+    MVP = glm::mat4();
 }
 
 ZDynamicMesh::ZDynamicMesh(const ZDynamicMesh &orig)
