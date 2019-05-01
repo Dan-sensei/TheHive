@@ -1,5 +1,6 @@
 #ifndef _CRIGIDBODY_H
 #define _CRIGIDBODY_H
+#define GLM_ENABLE_EXPERIMENTAL
 
 #include <vector>
 
