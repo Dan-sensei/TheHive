@@ -16,7 +16,7 @@ Pathfinding::Pathfinding()
 {
 
     //bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
-    BinaryParser::ReadNavmeshData("assets/BinaryFiles/NavmeshCITY.gg", GRAPH, GConnections, FACES);
+    BinaryParser::ReadNavmeshData("assets/BinaryFiles/NAV/NavmeshCITY.nav", GRAPH, GConnections, FACES);
     //// //std::cout << "GRAPH CREATED!" << '\n';
 }
 
@@ -216,7 +216,7 @@ void Pathfinding::DroNodes(){
     Omicron* Engine = Singleton<Omicron>::Instance();
 
     while(i--){
-        length = 50;
+        length = 15;
 
         if(GRAPH[i].Status == Type::UNVISITED){
             color.Alpha = 1;
@@ -237,15 +237,15 @@ void Pathfinding::DroNodes(){
             color.B = 204;
         }
 
-        //Engine->Draw3DLine(GRAPH[i].Position, glm::vec3(GRAPH[i].Position.x, GRAPH[i].Position.y + length, GRAPH[i].Position.z), color);
+        Engine->Draw3DLine(GRAPH[i].Position, glm::vec3(GRAPH[i].Position.x, GRAPH[i].Position.y + length, GRAPH[i].Position.z), color);
 
         if(Goal.x && Goal.y && Goal.z){
-            length = 100;
+            length = 20;
             color.Alpha = 1;
             color.R = 212;
             color.G = 175;
             color.B = 55;
-            //Engine->Draw3DLine(Goal, Goal + glm::vec3(0,length,0), color);
+            Engine->Draw3DLine(Goal, Goal + glm::vec3(0,length,0), color);
         }
     }
 
@@ -256,7 +256,7 @@ void Pathfinding::DroNodes(){
     color.B = 153;
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            //Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 40, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 40, 0), color);
+            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 15, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 15, 0), color);
         }
     }
 

@@ -21,16 +21,9 @@ struct Edge{
 
 std::ostream& operator<<(std::ostream& os, const Edge &E);
 
-class NavmeshParser{
-    public:
-
-        NavmeshParser();
-        static void generateBinaryGG_Navmesh(const std::string& _File, const std::string &FileName);
-
-    private:
-        NavmeshParser(const NavmeshParser& orig) = delete;
-        void operator=(NavmeshParser const& orig) = delete;
-
+namespace NavmeshParser{
+    void generateBinaryGG_Navmesh(const std::string& _File, const std::string &FileName);
+    void generateBinaryGG_NavmeshZone(const std::string& _File, const std::string &FileName);
 };
 
 #endif

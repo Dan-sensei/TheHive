@@ -21,6 +21,13 @@ struct Face{
     glm::vec3 TL, BR;
 };
 
+struct SimpleFace{
+    SimpleFace(const glm::vec3 _TL, const glm::vec3 _BR);
+    SimpleFace(const Face &orig);
+
+    glm::vec3 TL, BR;
+};
+
 struct Connection{
     Connection(float _Value = 0, uint16_t _From = 0, uint16_t _To = 0/*, const glm::vec3 &_Vertex1 = glm::vec3(), const glm::vec3 &_Vertex2 = glm::vec3()*/);
     Connection(const Connection &orig);

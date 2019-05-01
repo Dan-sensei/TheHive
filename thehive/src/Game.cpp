@@ -16,6 +16,7 @@
 #include <Omicron/2D/Motor2D.hpp>
 #include <Bullet/ggDynWorld.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
+#include <GameAI/Pathfinding.hpp>
 
 #define MOVEMENT_SPEED 1.f
 
@@ -116,9 +117,6 @@ void Game::Init(){
     //sF->createRusher(glm::vec3(0, 6, 0), 10);
     //sF->createRusher(glm::vec3(5,3,65),200);
 
-
-    // Director->init();   // IADIRECTOR
-
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
     //sF->createSoldierWandering(playerpos->getPosition(), 1000);
@@ -131,8 +129,8 @@ void Game::Init(){
 
     Accumulator = 0;
 
-    //Singleton<Pathfinding>::Instance()->SetDebug(true);
-    world->setDebug(true);
+    Singleton<Pathfinding>::Instance()->SetDebug(true);
+    //world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
@@ -201,13 +199,20 @@ void Game::Update(){
     MainCamera->CameraUpdate();
     Engine->draw();
     //sky.Draw();
+
+    // DEBUG PATHFINDING
+    glClear(GL_DEPTH_BUFFER_BIT);
+    //Singleton<Pathfinding>::Instance()->DroNodes();
+
     Engine->DisplayFPS();
     Engine2D->DisplayHUD();
 
-    // Consola por pantalla
-    // glClear(GL_DEPTH_BUFFER_BIT);
+    // ======================= Debug =======================
+    glClear(GL_DEPTH_BUFFER_BIT);
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
-    //Singleton<Pathfinding>::Instance()->DroNodes();
+    Director->DrawZones();
+    // =====================================================
+
 
     // //std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();

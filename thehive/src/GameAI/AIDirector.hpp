@@ -12,6 +12,7 @@
 #include <ComponentArch/Components/CCamera.hpp>
 #include <ComponentArch/Components/CRenderable_3D.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
+#include "NavmeshStructs.hpp"
 
 class ObjectManager;
 class Factory;
@@ -57,13 +58,23 @@ class AIDirector {
         void clipingEnemigos();
         void removeEnemy(CTransform* nodo);
 
+        void DrawZones();
+
     private:
-        AINode* Njugador;
-        CTransform* Pjugador;
         std::vector<AINode* > nodos;
         std::vector<CTransform*> enemigos;
 
+        std::vector<SimpleFace> ZONE_1;
+        std::vector<SimpleFace> ZONE_2;
+        std::vector<SimpleFace> ZONE_3;
+        std::vector<SimpleFace> ZONE_4;
+        std::vector<SimpleFace> ZONE_5;
+        std::vector<SimpleFace> ZONE_6;
+        std::vector<SimpleFace> ZONE_7;
+
         //std::chrono::high_resolution_clock::time_point nTimeStamp;
+        AINode* Njugador;
+        CTransform* Pjugador;
         ObjectManager* Manager;
         Factory* fac;
         float estres;//1-100
@@ -82,7 +93,6 @@ class AIDirector {
 
 
         CCamera* camera;
-
 };
 
 class AINode {

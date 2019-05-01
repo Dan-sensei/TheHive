@@ -302,7 +302,8 @@ void CPlayerController::check_WASD(glm::vec3 &force, bool &flag_pressed){
         // Vector perpendicular al vector direccion
         if(A_D) force += glm::vec3(-cV.z*A_D, 0, cV.x*A_D);
 
-        force = glm::normalize(force);
+        if(force.x || force.z)
+            force = glm::normalize(force);
     }
 }
 

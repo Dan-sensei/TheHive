@@ -98,6 +98,29 @@ void BinaryParser::ReadNavmeshData(
 
 }
 
+void BinaryParser::ReadNavmeshDataZone(
+    const std::string &BinaryFile,
+    std::vector<SimpleFace> &SQUARE_FACES
+)
+{
+    uint16_t SQUARE_FACES_SIZE;
+    std::ifstream NavmeshZone(BinaryFile, std::ios::binary);
+
+    if(!NavmeshZone.is_open()) std::cout << "Can't open " << BinaryFile << '\n';
+
+    GG_Read(NavmeshZone, SQUARE_FACES_SIZE);
+    SQUARE_FACES.reserve(SQUARE_FACES_SIZE);
+    for(uint16_t i = 0; i < SQUARE_FACES_SIZE; ++i){
+        glm::vec3 TL;
+        GG_Read(NavmeshZone, TL);
+
+        glm::vec3 BR;
+        GG_Read(NavmeshZone, BR);
+
+        SQUARE_FACES.emplace_back(TL, BR);
+    }
+}
+
 
 void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
     Factory *fac = Singleton<Factory>::Instance();
@@ -563,7 +586,7 @@ void BinaryParser::ReadLoadZonesData(const std::string &BinaryFile){
 
         TData mes;
         mes.add(kDat_LoadThatZone,ZONE);
-        TS->RegisterTriger(kTrig_LoadZone,1,0,Position, 8, 0, false, mes);
+        TS->RegisterTriger(kTrig_LoadZone,1,0,Position, 15, 0, false, mes);
         //std::cout << " - LOAD ZONE " << static_cast<int>(ZONE) << " ON " << glm::to_string(Position) << '\n';
     }
 }

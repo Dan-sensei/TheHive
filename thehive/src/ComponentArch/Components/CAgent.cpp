@@ -112,17 +112,17 @@ void CAgent::Init(){
     // mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Plantilla,    &CAgent::EXIT_func_kTrig_Plantilla));
 
 
-    zonesMap.insert(std::make_pair(1,"INICIO"));
-    zonesMap.insert(std::make_pair(2,"PASILLOS"));
-    zonesMap.insert(std::make_pair(3,"TUNELES"));
-    zonesMap.insert(std::make_pair(4,"INICIO_CIUDAD"));
-    zonesMap.insert(std::make_pair(5,"CALLE_PRINCIPAL"));
+    zonesArray[0] = "INICIO";
+    zonesArray[1] = "PASILLOS";
+    zonesArray[2] = "TUNELES";
+    zonesArray[3] = "INICIO_CIUDAD";
+    zonesArray[4] = "CALLE_PRINCIPAL";
+    zonesArray[5] = "CENTRO";
+    zonesArray[6] = "FINAL";
 
 
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
-
-
 }
 
 //std::list  <TriggerRecordStruct*>  AgentList;
@@ -177,7 +177,7 @@ void CAgent::ENTER_func_kTrig_Gunfire       (TriggerRecordStruct *_pRec){}
 
 void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
-    std::string name = zonesMap[id];
+    std::string name = zonesArray[id-1];
     BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+".data", id);
 
     // //std::cout << " -["+std::to_string(id)+"]- LOADING ZONE: " << name << '\n';

@@ -28,7 +28,6 @@ void TNodo::addHijo(TNodo* nodo){
 }
 
 void TNodo::remHijo(TNodo* nodo){
-
     for(uint16_t i = 0; i < hijos.size(); ++i){
         if(hijos[i] == nodo){
             hijos.erase(hijos.begin() + i);

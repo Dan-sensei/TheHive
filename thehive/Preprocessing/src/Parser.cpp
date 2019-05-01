@@ -5,7 +5,7 @@
 int main(int argc, char const *argv[]) {
 
 
-    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/Aux2_Exported_NavMeshFlipped.obj",   "NavmeshCITY");
+    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/FINALNAV.obj",   "NavmeshCITY");
     ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/TEST.obj",                           "TEST");
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/WEAPONS/pistola.obj",                   "pistola");
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/WEAPONS/escopeta.obj",                  "escopeta");
@@ -52,12 +52,20 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking3.obj",                        "Jumping_Walking3");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking4.obj",                        "Jumping_Walking4");
 
-    NavmeshParser::generateBinaryGG_Navmesh("../assets/NavMeshes/THE_HIVE.obj",             "NavmeshCITY.gg");
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature_test1.obj",                "nature_test1");
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/flor.obj",                        "flor");
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature1.obj",                     "nature1");
 
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/arbol.obj",                     "arbol");
+
+    NavmeshParser::generateBinaryGG_Navmesh("../assets/NavMeshes/FINALNAV.obj",             "NavmeshCITY.nav");
+    NavmeshParser::generateBinaryGG_NavmeshZone("../assets/NavMeshes/ZONA_1.obj",             "ZONA_1.nav_z");
+    NavmeshParser::generateBinaryGG_NavmeshZone("../assets/NavMeshes/ZONA_2.obj",             "ZONA_2.nav_z");
+    NavmeshParser::generateBinaryGG_NavmeshZone("../assets/NavMeshes/ZONA_3.obj",             "ZONA_3.nav_z");
+    NavmeshParser::generateBinaryGG_NavmeshZone("../assets/NavMeshes/ZONA_4.obj",             "ZONA_4.nav_z");
+    NavmeshParser::generateBinaryGG_NavmeshZone("../assets/NavMeshes/ZONA_5.obj",             "ZONA_5.nav_z");
+    NavmeshParser::generateBinaryGG_NavmeshZone("../assets/NavMeshes/ZONA_6.obj",             "ZONA_6.nav_z");
+    NavmeshParser::generateBinaryGG_NavmeshZone("../assets/NavMeshes/ZONA_7.obj",             "ZONA_7.nav_z");
 
     return 0;
 }

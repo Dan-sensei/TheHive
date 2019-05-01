@@ -1,5 +1,5 @@
 #include "NavmeshParser.hpp"
-//#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
@@ -12,8 +12,6 @@
 #include "BinaryHelper.hpp"
 
 #include "FILE_DIRECTORIES.hpp"
-
-NavmeshParser::NavmeshParser(){}
 
 void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const std::string& FileOutput) {
 
@@ -185,6 +183,92 @@ void NavmeshParser::generateBinaryGG_Navmesh(const std::string &FileInput, const
         GG_Write(CITY, PORTALS_SIZE);
         for(auto j : i.Portals)
             GG_Write(CITY, j);
+    }
+}
+
+void NavmeshParser::generateBinaryGG_NavmeshZone(const std::string &FileInput, const std::string& FileOutput) {
+
+    std::vector<Face> SQUARE_FACES;
+    std::vector<glm::vec3> vertex;
+
+    Assimp::Importer importer;
+
+    const aiScene* scene = importer.ReadFile(FileInput,0);
+
+
+    if( !scene){
+        //std::cout << "Couldn't open file" << '\n';
+        return;
+    }
+
+    //std::cout << "Loading model '" << FileInput << "'" << '\n';
+
+    aiMesh **meshes = scene->mMeshes;
+    aiVector3D* vertices;
+    aiFace* faces;
+
+    vertices   =   meshes[0]->mVertices;
+       faces   =   meshes[0]->mFaces;
+
+    for(uint16_t j = 0; j < meshes[0]->mNumVertices; ++j){
+        vertex.emplace_back(vertices[j].x, vertices[j].y, vertices[j].z);
+    }
+
+    // //std::cout << "mNumFaces " << meshes[0]->mNumFaces << '\n';
+
+    uint16_t ID_Counter = 0;
+
+    std::vector<std::vector<Edge>> FACES(meshes[0]->mNumFaces);
+
+    for(uint16_t j = 0; j < meshes[0]->mNumFaces; ++j) {
+        const aiFace& Face = faces[j];
+
+        std::vector<glm::vec3> minX;
+        std::vector<glm::vec3> maxX;
+
+        for(uint16_t i = 0; i < Face.mNumIndices; ++i){
+            if(!minX.empty() && minX.front().x - vertex[Face.mIndices[i]].x > 0.001) {
+                minX.clear();
+                minX.push_back(vertex[Face.mIndices[i]]);
+            }
+            else if(minX.empty() || abs(vertex[Face.mIndices[i]].x - minX.front().x) < 0.001) {
+                minX.push_back(vertex[Face.mIndices[i]]);
+            }
+
+            if(!maxX.empty() && vertex[Face.mIndices[i]].x - maxX.front().x > 0.001) {
+                maxX.clear();
+                maxX.push_back(vertex[Face.mIndices[i]]);
+            }
+            else if(maxX.empty() || abs(vertex[Face.mIndices[i]].x - maxX.front().x) < 0.001) {
+                maxX.push_back(vertex[Face.mIndices[i]]);
+            }
+        }
+
+        glm::vec3 TL = minX.front();
+        glm::vec3 BL = minX.front();
+        for(uint16_t i = 1; i < minX.size(); ++i){
+            if(minX[i].z > TL.z)
+                TL = minX[i];
+        }
+
+        glm::vec3 TR = maxX.front();
+        glm::vec3 BR = maxX.front();
+        for(uint16_t i = 1; i < maxX.size(); ++i){
+            if(maxX[i].z < BR.z)
+                BR = maxX[i];
+        }
+
+        SQUARE_FACES.emplace_back(TL, BR);
+    }
+
+    std::ofstream CITY(NAVMESH_BINARYFILES_OUTPUT_DIR+FileOutput, std::ios::binary);
+
+    std::cout << FileOutput << ": " << SQUARE_FACES.size() << '\n';
+    uint16_t SQUARE_FACES_SIZE = SQUARE_FACES.size();
+    GG_Write(CITY, SQUARE_FACES_SIZE);
+    for(auto i : SQUARE_FACES){
+        GG_Write(CITY, i.TL);
+        GG_Write(CITY, i.BR);
     }
 }
 

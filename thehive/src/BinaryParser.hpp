@@ -19,6 +19,10 @@ namespace BinaryParser{
         std::vector<std::vector<Connection>> &Connections,
         std::vector<Face> &SQUARE_FACES
     );
+    void ReadNavmeshDataZone(
+        const std::string &BinaryFile,
+        std::vector<SimpleFace> &SQUARE_FACES
+    );
 
     bool ImportMesh(
         const std::string& BinaryFile,

@@ -1,7 +1,7 @@
 #include "AIDirector.hpp"
 //#include "Enum.hpp"
 #include <ComponentArch/Components/CFlock.hpp>
-
+#include <BinaryParser.hpp>
 /*
 RECORDATORIO
 poner mas nodos
@@ -73,6 +73,14 @@ void AIDirector::init(){
 
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
     camera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, Manager->getHeroID()));
+
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_1.nav_z", ZONE_1);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_2.nav_z", ZONE_2);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_3.nav_z", ZONE_3);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_4.nav_z", ZONE_4);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_5.nav_z", ZONE_5);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_6.nav_z", ZONE_6);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_7.nav_z", ZONE_7);
 }
 
 AIDirector::AIDirector ():AcumulatorBusqueda(0),AcumulatorHorda(0),AcumulatorPico(11),TimeBusqueda(1),TimeHorda(300),TimePico(10),
@@ -399,3 +407,61 @@ void AINode::addNode(AINode* nuevo){
     nodosProximos.push_back(nuevo);
 }
 AINode::~AINode(){}
+
+
+// Comenta de aquí pabajo cuando lo tengas todo listo
+#include <Omicron/Omicron.hpp>
+#include <Singleton.hpp>
+void AIDirector::DrawZones(){
+    gg::Color color;
+    color.Alpha = 1;
+    color.R = 60;
+    color.G = 216;
+    color.B = 32;
+    for(uint16_t i = 0; i < ZONE_1.size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_1[i].TL, ZONE_1[i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_1[i].BR, ZONE_1[i].BR + glm::vec3(0, 100, 0), color);
+    }
+    color.R = 255;
+    color.G = 64;
+    color.B = 43;
+    for(uint16_t i = 0; i < ZONE_2.size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_2[i].TL, ZONE_2[i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_2[i].BR, ZONE_2[i].BR + glm::vec3(0, 100, 0), color);
+    }
+    color.R = 255;
+    color.G = 244;
+    color.B = 43;
+    for(uint16_t i = 0; i < ZONE_3.size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_3[i].TL, ZONE_3[i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_3[i].BR, ZONE_3[i].BR + glm::vec3(0, 100, 0), color);
+    }
+    color.R = 230;
+    color.G = 43;
+    color.B = 255;
+    for(uint16_t i = 0; i < ZONE_4.size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_4[i].TL, ZONE_4[i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_4[i].BR, ZONE_4[i].BR + glm::vec3(0, 100, 0), color);
+    }
+    color.R = 43;
+    color.G = 135;
+    color.B = 255;
+    for(uint16_t i = 0; i < ZONE_5.size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_5[i].TL, ZONE_5[i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_5[i].BR, ZONE_5[i].BR + glm::vec3(0, 100, 0), color);
+    }
+    color.R = 255;
+    color.G = 142;
+    color.B = 43;
+    for(uint16_t i = 0; i < ZONE_6.size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_6[i].TL, ZONE_6[i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_6[i].BR, ZONE_6[i].BR + glm::vec3(0, 100, 0), color);
+    }
+    color.R = 43;
+    color.G = 244;
+    color.B = 255;
+    for(uint16_t i = 0; i < ZONE_7.size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_7[i].TL, ZONE_7[i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_7[i].BR, ZONE_7[i].BR + glm::vec3(0, 100, 0), color);
+    }
+};

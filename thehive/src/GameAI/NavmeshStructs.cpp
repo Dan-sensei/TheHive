@@ -11,6 +11,15 @@ Face::Face(const Face &orig){
     BR      =   orig.BR;
 }
 
+SimpleFace::SimpleFace(const glm::vec3 _TL, const glm::vec3 _BR)
+:TL(_TL), BR(_BR)
+{}
+
+SimpleFace::SimpleFace(const Face &orig){
+    TL      =   orig.TL;
+    BR      =   orig.BR;
+}
+
 
 
 //  CONNECTION  --
