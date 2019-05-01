@@ -6,7 +6,7 @@
 class SonidoNormal : public SoundEvent {
     public:
         SonidoNormal();
-        void newSoundEvent(FMOD::Studio::EventInstance*);
+        void newSoundEvent(FMOD_STUDIO_EVENTINSTANCE*);
         ~SonidoNormal();
 };
 

@@ -15,7 +15,6 @@
 
 int main(int argc, char const *argv[]) {
 
-
     Omicron *Engine = Singleton<Omicron>::Instance();
     Singleton<AssetManager>::Instance()->loadInit();
 

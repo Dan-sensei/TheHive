@@ -83,3 +83,21 @@ info:
 	$(call noColor)
 
 	$(call br)
+
+# WINDOWS
+clcmake:
+	rm -f TheHive-cmake.exe
+	cd CMake_Files && rm -rf CMakeFiles && rm -f cmake_install.cmake && rm -f CMakeCache.txt && rm -f Makefile
+	cd Preprocessing && rm -f WINBinaryFiles.exe
+	cd Preprocessing/CMake_Files && rm -rf CMakeFiles && rm -f cmake_install.cmake && rm -f CMakeCache.txt && rm -f Makefile
+	make clean
+
+cmake:
+	cd CMake_Files && cmake . -G "MSYS Makefiles"
+	cd Preprocessing/CMake_Files && cmake . -G "MSYS Makefiles"
+
+win:
+	cd Preprocessing/CMake_Files && make -j4
+	cd Preprocessing && ./WINBinaryFiles
+	cd CMake_Files && make -j4
+	./TheHive-cmake

@@ -131,11 +131,12 @@ void AssetManager::loadInit(){
     House2->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
     House2->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
-    ZMaterial* 		Door = getMaterial("Door");
-    Door->attachShader(shader);
-    Door->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/door.jpg",3));
-    Door->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Door->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/Asfalto_Gloss.jpg",1));
+    // En Windows peta este Material
+    // ZMaterial* 		Door = getMaterial("Door");
+    // Door->attachShader(shader);
+    // Door->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/door.jpg",3));           // Esta linea en concreto
+    // Door->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
+    // Door->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/Asfalto_Gloss.jpg",1));
 
 /*
     // Las buenas funciones lambda

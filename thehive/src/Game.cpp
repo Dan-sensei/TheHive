@@ -74,6 +74,7 @@ Game::~Game(){
 }
 
 void Game::Init(){
+    
     Engine->createZones(8);
 
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");

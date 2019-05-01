@@ -2,6 +2,9 @@
 #define SOUND_EVENT_H
 
 #include <FMOD/fmod_extra.hpp>
+#include <FMOD/fmod_studio_common.h>
+#include <FMOD/fmod_studio.h>
+
 #include <Util.hpp>
 
 class SoundEvent {
@@ -21,7 +24,7 @@ class SoundEvent {
         bool isPlaying();
 
     protected:
-        FMOD::Studio::EventInstance* soundInstance;
-        virtual void newSoundEvent(FMOD::Studio::EventInstance*) = 0;
+        FMOD_STUDIO_EVENTINSTANCE* soundInstance;
+        virtual void newSoundEvent(FMOD_STUDIO_EVENTINSTANCE*) = 0;
 };
 #endif

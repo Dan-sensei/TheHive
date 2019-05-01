@@ -3,11 +3,12 @@
 SonidoImpacto::SonidoImpacto(){}
 
 
-void SonidoImpacto::newSoundEvent(FMOD::Studio::EventInstance *_instance){
+void SonidoImpacto::newSoundEvent(FMOD_STUDIO_EVENTINSTANCE *_instance){
     soundInstance = _instance;
 }
 
 
 SonidoImpacto::~SonidoImpacto(){
-    soundInstance->release();
+    // soundInstance->release();
+    FMOD_Studio_EventInstance_Release(soundInstance);
 }

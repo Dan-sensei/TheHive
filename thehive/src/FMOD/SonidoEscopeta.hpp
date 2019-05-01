@@ -3,11 +3,10 @@
 
 #include "SoundEvent.hpp"
 
-
 class SonidoEscopeta : public SoundEvent {
     public:
         SonidoEscopeta();
-        void newSoundEvent(FMOD::Studio::EventInstance*);
+        void newSoundEvent(FMOD_STUDIO_EVENTINSTANCE*);
         ~SonidoEscopeta();
 };
 
