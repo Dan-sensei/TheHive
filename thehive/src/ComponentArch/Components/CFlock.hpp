@@ -1,5 +1,6 @@
 #ifndef _CFLOCK_H
 #define _CFLOCK_H
+#define GLM_ENABLE_EXPERIMENTAL
 
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <list>

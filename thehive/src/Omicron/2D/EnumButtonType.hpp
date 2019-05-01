@@ -20,10 +20,13 @@ enum EnumButtonType{
     GOPAUSE,
     MOREDIALOD,
     LESSDIALOD,
+    MUTEDIALOD,
     MOREMUSIC,
     LESSMUSIC,
+    MUTEMUSIC,
     MOREEFFECT,
     LESSEFFECT,
+    MUTEEFFECT,
     Butn
 };
 
