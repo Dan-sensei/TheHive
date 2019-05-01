@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <FMOD/fmod_extra.hpp>
+#include <FMOD/fmod_studio_common.h>
 #include <Util.hpp>
 
 #include "SoundEvent.hpp"
@@ -27,17 +28,17 @@ class SoundSystem {
 		float getVolume(const std::string&);
 		void CLIN();
 	private:
-		FMOD::Studio::System	*system;
-		FMOD::System			*lowLevelSystem;
+		FMOD_STUDIO_SYSTEM	*system;
+		FMOD_SYSTEM			*lowLevelSystem;
 
-		FMOD::Studio::Bank		*masterBank;
-		FMOD::Studio::Bank		*stringsBank;
-		FMOD::Studio::Bank		*ambienteBank;
-		FMOD::Studio::Bank		*sfxBank;
-		FMOD::Studio::Bank		*musicaBank;
-		FMOD::Studio::Bank		*vocesBank;
+		FMOD_STUDIO_BANK	*masterBank;
+		FMOD_STUDIO_BANK	*stringsBank;
+		FMOD_STUDIO_BANK	*ambienteBank;
+		FMOD_STUDIO_BANK	*sfxBank;
+		FMOD_STUDIO_BANK	*musicaBank;
+		FMOD_STUDIO_BANK	*vocesBank;
 
-	    std::map<std::string, FMOD::Studio::EventDescription*> eventDescriptions;
+	    std::map<std::string, FMOD_STUDIO_EVENTDESCRIPTION*> eventDescriptions;
 		std::map<std::string, SoundEvent*> soundEvents;
 
 		// using pFunc = SoundEvent*(SoundSystem::*)(const std::string &);

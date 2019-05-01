@@ -6,7 +6,7 @@
 class SonidoImpacto : public SoundEvent {
     public:
         SonidoImpacto();
-        void newSoundEvent(FMOD::Studio::EventInstance*);
+        void newSoundEvent(FMOD_STUDIO_EVENTINSTANCE*);
         ~SonidoImpacto();
 };
 

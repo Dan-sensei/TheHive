@@ -1,0 +1,15 @@
+COMO COMPILAR PARA WINDOWS:
+	1. Instalarse MinGW y la compatibilidad con MSYS
+	2. Bajo el directorio C:\MinGW\mingw32\lib pegar las librerias que se encuentran en MINGW_WIN_LIBRARIES
+	3. Abrir la consola de MSYS
+	4. Colocarse en el directorio thehive
+	    $ cd /C/Users/SLM/.../The-Hive/thehive
+	5. A comandear:
+	    $ make cmake
+	    $ make win
+
+(También se puede ejecutar con doble click el .exe al hacer make cmake)
+
+PARA LIMPIAR LOS ARCHIVOS QUE UTILIZA CMAKE:
+    $ make clcmake
+

@@ -2,10 +2,11 @@
 
 SonidoSuperficie::SonidoSuperficie(){}
 
-void SonidoSuperficie::newSoundEvent(FMOD::Studio::EventInstance *_instance){
+void SonidoSuperficie::newSoundEvent(FMOD_STUDIO_EVENTINSTANCE *_instance){
     soundInstance = _instance;
 }
 
 SonidoSuperficie::~SonidoSuperficie(){
-    soundInstance->release();
+    // soundInstance->release();
+    FMOD_Studio_EventInstance_Release(soundInstance);
 }

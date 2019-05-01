@@ -58,7 +58,6 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
     block_index=DEFERRED_SHADER->getUniformBlockLocation("light");
 
 
-    int tam=10;
     static const GLchar * uniformNames[10] =
     {
         "light.dirluzD",
@@ -72,16 +71,16 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
         "light.colorluzP",
         "light.intluzP"
     };
-    GLuint uniformIndices[tam];
-    glGetUniformIndices(DEFERRED_SHADER->getID(), tam, uniformNames, uniformIndices);
-    GLint uniformOffsets[tam];
-    GLint arrayStrides[tam];
-    GLint matrixStrides[tam];
-    glGetActiveUniformsiv(DEFERRED_SHADER->getID(), tam, uniformIndices,
+    GLuint uniformIndices[10];
+    glGetUniformIndices(DEFERRED_SHADER->getID(), 10, uniformNames, uniformIndices);
+    GLint uniformOffsets[10];
+    GLint arrayStrides[10];
+    GLint matrixStrides[10];
+    glGetActiveUniformsiv(DEFERRED_SHADER->getID(), 10, uniformIndices,
     GL_UNIFORM_OFFSET, uniformOffsets);
-    glGetActiveUniformsiv(DEFERRED_SHADER->getID(), tam, uniformIndices,
+    glGetActiveUniformsiv(DEFERRED_SHADER->getID(), 10, uniformIndices,
     GL_UNIFORM_ARRAY_STRIDE, arrayStrides);
-    glGetActiveUniformsiv(DEFERRED_SHADER->getID(), tam, uniformIndices,
+    glGetActiveUniformsiv(DEFERRED_SHADER->getID(), 10, uniformIndices,
     GL_UNIFORM_MATRIX_STRIDE, matrixStrides);
 
 

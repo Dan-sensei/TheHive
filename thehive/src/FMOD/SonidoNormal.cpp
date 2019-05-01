@@ -2,11 +2,12 @@
 
 SonidoNormal::SonidoNormal(){}
 
-void SonidoNormal::newSoundEvent(FMOD::Studio::EventInstance *_instance){
+void SonidoNormal::newSoundEvent(FMOD_STUDIO_EVENTINSTANCE *_instance){
     soundInstance = _instance;
 }
 
 
 SonidoNormal::~SonidoNormal(){
-    ERRCHECK(soundInstance->release());
+    // ERRCHECK(soundInstance->release());
+    FMOD_Studio_EventInstance_Release(soundInstance);
 }

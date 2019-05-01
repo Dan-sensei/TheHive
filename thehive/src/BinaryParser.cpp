@@ -1,6 +1,6 @@
 #include "BinaryParser.hpp"
 #include <fstream>
-#include <experimental/filesystem>
+// #include <experimental/filesystem>
 #include <ComponentArch/Components/CRigidBody.hpp>
 #include <ComponentArch/Components/Colliders/CBoxCollider.hpp>
 #include <ComponentArch/Components/Colliders/CMeshCollider.hpp>
@@ -407,7 +407,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
             }
 
             auto Manager = Singleton<ObjectManager>::Instance();
-            ZMaterial* Dark = Singleton<AssetManager>::Instance()->getMaterial("Door");
+            // ZMaterial* Dark = Singleton<AssetManager>::Instance()->getMaterial("Door");
+            ZMaterial* Dark = Singleton<AssetManager>::Instance()->getMaterial("Default");
             uint16_t NewEntity = Manager->createEntity();
 
             std::string str = "assets/BinaryFiles/BinaryModels/"+std::to_string(obj)+".modelgg";
