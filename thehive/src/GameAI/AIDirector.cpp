@@ -45,7 +45,8 @@ void AIDirector::clean(){
 }
 
 void AIDirector::init(){
-
+//if(START.x >= FACES[i].TL.x && START.z <= FACES[i].TL.z && START.x <= FACES[i].BR.x && START.z >= FACES[i].BR.z){
+//void Pathfinding::FindPath
     activado=true;
     numEnemigos=0;
     estres=1;

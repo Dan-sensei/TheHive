@@ -10,6 +10,7 @@
 #include "States/StateMachine.hpp"
 #include "Game.hpp"
 #include "MenuState.hpp"
+#include "CreditState.hpp"
 #include <FMOD/SoundSystem.hpp>
 #include <Omicron/ZPlayer.hpp>
 
@@ -41,8 +42,9 @@ int main(int argc, char const *argv[]) {
     StateMachine *mainstates = Singleton<StateMachine>::Instance();
     //mainstates->AddState(new GameState());
     //mainstates->AddState(new GameState());
-    //mainstates->AddState(new Game());
-    mainstates->AddState(new MenuState());
+    mainstates->AddState(new Game());
+    //mainstates->AddState(new MenuState());
+    //mainstates->AddState(new CreditState());
 
     while(Engine->isWindowOpen()) {
         mainstates->UpdateStateMachine();

@@ -4,6 +4,9 @@
 #include <Singleton.hpp>
 #include <iostream>
 #include <Omicron/AssetManager.hpp>
+#include <Omicron/TLuz.hpp>
+
+#define tamanyo 8192
 
 struct LUZF
 {
@@ -57,13 +60,14 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
     ///UBO ligth
     block_index=DEFERRED_SHADER->getUniformBlockLocation("light");
 
-
-    int tam=10;
-    static const GLchar * uniformNames[10] =
+    int tam=12;
+    static const GLchar * uniformNames[12] =
     {
         "light.dirluzD",
         "light.colorluzD",
         "light.intluzD",
+        "light.NNlucesF",
+        "light.NNlucesP",
         "light.posluzF",
         "light.posfocoluzF",
         "light.colorluzF",
@@ -85,22 +89,30 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
     GL_UNIFORM_MATRIX_STRIDE, matrixStrides);
 
 
-    buffer = (unsigned char *)malloc(8096);
+    //int tamanyo=2048;
+    buffer = (unsigned char *)malloc(tamanyo);
+    TLuz::buffer=buffer;
 
     //dir
+    //0
     ((float*)(buffer + uniformOffsets[0]))[0] = 0.0f;
     ((float*)(buffer + uniformOffsets[0]))[1] = 1.0f;
     ((float*)(buffer + uniformOffsets[0]))[2] = 0.0f;
-    //((float*)(buffer + uniformOffsets[0]))[0] = 10.0f;
-    //((float*)(buffer + uniformOffsets[0]))[1] = 4.82238f;
-    //((float*)(buffer + uniformOffsets[0]))[2] = -39.5693f;
     //color
+    //16
     ((float*)(buffer + uniformOffsets[1]))[0] = 1.0f;
     ((float*)(buffer + uniformOffsets[1]))[1] = 1.0f;
     ((float*)(buffer + uniformOffsets[1]))[2] = 1.0f;
 
     //ints dire
+    //28
     *((float *)(buffer + uniformOffsets[2])) = 0.1f;
+    //numero de luces focales actvas
+    //32
+    *((float *)(buffer + uniformOffsets[3])) = 8;
+    //numero de luces puntuales actvas
+    //36
+    *((float *)(buffer + uniformOffsets[4])) = 8;
 
 
 
@@ -119,10 +131,15 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
     };
     uint8_t nluces=8;
     LUZF aux;
-    unsigned int offset = uniformOffsets[3];
-    unsigned int offset2 = uniformOffsets[4];
-    unsigned int offset3 = uniformOffsets[5];
-    unsigned int offset4 = uniformOffsets[6];
+    unsigned int offset = uniformOffsets[5];
+    unsigned int offset2 = uniformOffsets[6];
+    unsigned int offset3 = uniformOffsets[7];
+    unsigned int offset4 = uniformOffsets[8];
+    //std::cout << "Luz de foco" << '\n';
+    //std::cout << "offset" <<offset<< '\n';
+    //std::cout << "offset2" <<offset2<< '\n';
+    //std::cout << "offset3" <<offset3<< '\n';
+    //std::cout << "offset4" <<offset4<< '\n';
     for (uint8_t n = 0; n < nluces; n++)
     {
         aux=lucesf[n];
@@ -130,25 +147,30 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
         ((float*)(buffer + offset))[0] = aux.pos[0];
         ((float*)(buffer + offset))[1] = aux.pos[1];
         ((float*)(buffer + offset))[2] = aux.pos[2];
-        offset += arrayStrides[3];
+        offset += arrayStrides[5];
 
         ((float*)(buffer + offset2))[0] = aux.posfoco[0];
         ((float*)(buffer + offset2))[1] = aux.posfoco[1];
         ((float*)(buffer + offset2))[2] = aux.posfoco[2];
-        offset2 += arrayStrides[4];
+        offset2 += arrayStrides[6];
 
         ((float*)(buffer + offset3))[0] = aux.color[0];
         ((float*)(buffer + offset3))[1] = aux.color[1];
         ((float*)(buffer + offset3))[2] = aux.color[2];
-        offset3 += arrayStrides[5];
+        offset3 += arrayStrides[7];
 
         *((float *)(buffer + offset4)) = aux.intensidad;
-        offset4 += arrayStrides[6];
+        offset4 += arrayStrides[8];
     }
+    //std::cout << "final" <<offset4<< '\n';
+    offset = uniformOffsets[9];
+    offset2 = uniformOffsets[10];
+    offset3 = uniformOffsets[11];
+    //std::cout << "Luz puntuales" << '\n';
+    //std::cout << "offset" <<offset<< '\n';
+    //std::cout << "offset2" <<offset2<< '\n';
+    //std::cout << "offset3" <<offset3<< '\n';
     /*
-    unsigned int offset = uniformOffsets[7];
-    unsigned int offset2 = uniformOffsets[8];
-    unsigned int offset3 = uniformOffsets[9];
 
     for (int n = 0; n < nluces; n++)
     {
@@ -157,15 +179,15 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
         ((float*)(buffer +offset))[0] = aux.pos[0];
         ((float*)(buffer +offset))[1] = aux.pos[1];
         ((float*)(buffer +offset))[2] = aux.pos[2];
-        offset += arrayStrides[7];
+        offset += arrayStrides[9];
 
         ((float*)(buffer +offset2))[0] = aux.posfoco[0];
         ((float*)(buffer +offset2))[1] = aux.posfoco[1];
         ((float*)(buffer +offset2))[2] = aux.posfoco[2];
-        offset2 += arrayStrides[8];
+        offset2 += arrayStrides[10];
 
         *((float *)(buffer + offset3)) = aux.intensidad;
-        offset3 += arrayStrides[9];
+        offset3 += arrayStrides[11];
 
     }
     */
@@ -173,7 +195,7 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
 
     glGenBuffers(1, &ubo);
     glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-    glBufferData(GL_UNIFORM_BUFFER, 8096, buffer, GL_DYNAMIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, tamanyo, buffer, GL_DYNAMIC_DRAW);
     //glBufferData(GL_UNIFORM_BUFFER, sizeof(luces), &luces, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
@@ -298,9 +320,12 @@ void DeferredShading::DrawQuad(){
     glClear(GL_COLOR_BUFFER_BIT);
 
     DEFERRED_SHADER->Bind();
+    //((float*)(buffer ))[1] = 150.0f;
 
     glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-    glUniformBlockBinding(DEFERRED_SHADER->getID(), block_index, binding_point_index);
+    glBufferData(GL_UNIFORM_BUFFER, tamanyo, buffer, GL_DYNAMIC_DRAW);
+    // no hace falta esto
+    //glUniformBlockBinding(DEFERRED_SHADER->getID(), block_index, binding_point_index);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, gPosition);

@@ -17,6 +17,9 @@ float Texto2D::getW(){
 float Texto2D::getY(){
     return Y;
 }
+void Texto2D::setY(float y){
+    Y=y;
+}
 float Texto2D::getH(){
     return H;
 }

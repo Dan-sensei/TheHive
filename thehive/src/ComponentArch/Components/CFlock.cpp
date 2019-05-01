@@ -1,3 +1,4 @@
+#define GLM_ENABLE_EXPERIMENTAL
 #include "CFlock.hpp"
 //#include "CRigidBody.hpp"
 //#include <iostream>

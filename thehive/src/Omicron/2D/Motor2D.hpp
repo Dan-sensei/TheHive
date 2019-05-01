@@ -28,6 +28,8 @@ class Motor2D{
     friend class GameEngine;
     public:
         ~Motor2D();
+
+        void pintarCredito(int nlineas,std::string texto[]);
         void pintarTexto(int nlineas,std::string texto[]);
         void CLINTexto();
         void setprogress(int hab,float _prog);
@@ -65,7 +67,7 @@ class Motor2D{
         //void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
         Imagen2D* AddImage(std::string source  ,float _posx,float _posy,float _width,float _height);
         Boton2D* addButton(float x, float y, float w,float h,EnumButtonType id,std::string imagenP,std::string imagenS,std::string texto,bool focus=false,glm::vec4 _color=glm::vec4(0,0.0,0,1));
-        void addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(0,0,0,1),float tam=20);
+        Texto2D* addText(float x, float y,const std::string &Name,glm::vec4 _color=glm::vec4(0,0,0,1),float tam=20);
         Cuadrado2D* addRect(float x, float y,float w, float h);
         int checkbuton();
         void aplyhover();

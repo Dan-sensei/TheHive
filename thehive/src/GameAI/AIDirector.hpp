@@ -84,7 +84,7 @@ class AIDirector {
         CCamera* camera;
 
 };
-
+//nodos
 class AINode {
     public:
         AINode();
@@ -101,9 +101,10 @@ class AINode {
         void setonRange(bool);
         float getRange();
     private:
-        glm::vec3 pos;
+        //faces
+        glm::vec3 pos;//ya no hace falta
         bool onRange;
-        float range;
+        float range;//ya no hace falta
 
 };
 #endif

@@ -101,7 +101,7 @@ void Game::Init(){
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 
 
-    Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
+    Engine->setPosition(luz, glm::vec3(-12.845795, 11.565783, 11.663330));
 
     // Pos init del heroe normal
     // 360, 0, 350
@@ -190,10 +190,10 @@ void Game::Update(){
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
-    // std::cout << " - " << glm::to_string(pos) << '\n';
-    glm::vec3 pos = playerpos->getPosition();
-    pos.y += 10;
-    Engine->setPosition(luz,pos);
+    //glm::vec3 pos = playerpos->getPosition();
+    //pos.y += 10;
+    //std::cout << " - " << glm::to_string(pos) << '\n';
+    //Engine->setPosition(luz,pos);
 
     Engine->BeginDraw();
     Manager->UpdateAll();

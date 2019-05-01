@@ -124,11 +124,12 @@ Boton2D* Motor2D::addButton(float x, float y, float w,float h,EnumButtonType id,
     return nuevo;
 }
 
-void Motor2D::addText(float x, float y,const std::string &Name,glm::vec4 _color,float tam){
+Texto2D* Motor2D::addText(float x, float y,const std::string &Name,glm::vec4 _color,float tam){
     x=x/100.0;
     y=y/100.0;
     auto nuevo=new Texto2D( x, y,Name,_color,tam);
     TEXT.push_back(nuevo);//
+    return nuevo;
 }
 
 void Motor2D::setprogress(int hab,float prog){
@@ -554,8 +555,33 @@ void Motor2D::pintarTexto(int nlineas,std::string texto[]){
         addText(x_parrafo,y_parrafo+interliniado*i,texto[i],color,tam);
     }
 }
+void Motor2D::pintarCredito(int nlineas,std::string texto[]){
+    //texto
+    // valores porcentuales (0--100)
+    int tam=30;
+    //int nlineas=4;
+    int x_parrafo=25;
+    int y_parrafo=25;
+    int interliniado=5;
+    glm::vec4 color =glm::vec4(1,0,0,1);
+    //std::string texto[]{
+    //    "German es muy muy gay",
+    //    "Effects",
+    //    "Effects",
+    //    "Effects"
+    //};
+    //incluimos cada liena
+    for (size_t i = 0; i < nlineas; i++) {
+        /* code */
+        addText(x_parrafo,y_parrafo+interliniado*i,texto[i],color,tam);
+    }
+}
 void Motor2D::CLINTexto(){
     auto it=TEXT.begin();
+    //TEXT.size();
+    delete *it;
+    TEXT.erase(it);
+    /*
     it++;
     if(TEXT.size()>2){
         for (size_t i = 2; i < TEXT.size(); i++) {
@@ -570,11 +596,12 @@ void Motor2D::CLINTexto(){
 
     auto it2=RECTANGULOS.begin();
     for (size_t e = 0; e < 8; e++) {
-        /* code */
+
         it2++;
     }
     //delete (RECTANGULOS[7]);
     RECTANGULOS.erase(it2);
+    */
 
 
 }

@@ -7,30 +7,38 @@
 #include <glm/glm.hpp>
 #include <string>
 
-
-TLuz::TLuz():light_shader(nullptr),intensidad(0,0,0){}
+unsigned char * TLuz::buffer=nullptr;
+//TLuz::buffer=nullptr;
+TLuz::TLuz():light_shader(nullptr),color(0,0,0){}
 TLuz::~TLuz(){}
 
-TLuz::TLuz(gg::Color &_color):light_shader(nullptr){
-    intensidad = _color;
+TLuz::TLuz(gg::Color &_color){//,unsigned char * buff):light_shader(nullptr){
+    //buffer=buff;
+    color = _color;
 }
 
 TLuz::TLuz(gg::Color &_color,Shader *_shader){
-    intensidad = _color;
+    color = _color;
     light_shader = _shader;
 }
 
 TLuz::TLuz(Shader *_shader){
-    intensidad = gg::Color();
+    color = gg::Color();
     light_shader = _shader;
 }
 
-void TLuz::setIntensidad(gg::Color &_color){
-    intensidad = _color;
+void TLuz::setIntensidad(float &_color){
+    intensidad=_color;
+}
+float TLuz::getIntensidad(){
+    return intensidad;
+}
+void TLuz::setColor(gg::Color &_color){
+    color = _color;
 }
 
-gg::Color TLuz::getIntensidad(){
-    return intensidad;
+gg::Color TLuz::getColor(){
+    return color;
 }
 
 // Se quedan vacios
@@ -38,7 +46,6 @@ void TLuz::beginDraw(){
     // Mandar como uniform
     if(light_shader){
         glm::vec4 pos = viewMatrix * modelMatrix[3];
-        //glm::vec3 pos = glm::vec3(asd[3]);
 
         glUniform3f(_U_LIGHT_POS, pos.x,pos.y,pos.z);
     }

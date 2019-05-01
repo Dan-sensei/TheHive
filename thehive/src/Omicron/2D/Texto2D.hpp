@@ -17,7 +17,7 @@ class Texto2D {
         void getSize(float &_w,float &_h);
         float getSizeX();
         float getSizeY();
-
+        void setY(float y);
         Texto2D(const Texto2D &orig) = delete;
         ~Texto2D();
 

@@ -9,6 +9,8 @@ layout (std140) uniform light
   vec3 dirluzD;
   vec3 colorluzD;
   float intluzD;
+  float NNlucesF;
+  float NNlucesP;
 
   vec3 posluzF      [NLUCESF];
   vec3 posfocoluzF  [NLUCESF];
