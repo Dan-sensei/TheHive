@@ -380,19 +380,23 @@ int Motor2D::InitMenu6(){
 
 
     //addText(45,10,"Audio"    );
-    addText(30,51,"Dialogues"    );
-    addText(40,51, std::to_string(VolDialogo));
+    addText(35,41,"Dialogues"    );
+    addText(45,41, std::to_string(VolDialogo));
+    addButton(55,40,2,5,MOREDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
+    addButton(58,40,2,5,LESSDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
+    addButton(61,40,2,5,MUTEDIALOD,"assets/HUD/mute.png","assets/HUD/mute.png","");
 
-    addButton(50,50,2,5,MOREDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
-    addButton(53,50,2,5,LESSDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
-    addText(30,57,"Music"  );
-    addText(40,57,std::to_string(VolMusic));
-    addButton(50,56,2,5,MOREMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
-    addButton(53,56,2,5,LESSMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
-    addText(30,63,"Effects"    );
-    addText(40,63, std::to_string(VolEffect) );
-    addButton(50,62,2,5,MOREEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
-    addButton(53,62,2,5,LESSEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
+    addText(35,47,"Music"  );
+    addText(45,47,std::to_string(VolMusic));
+    addButton(55,46,2,5,MOREMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
+    addButton(58,46,2,5,LESSMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
+    addButton(61,46,2,5,MUTEMUSIC,"assets/HUD/mute.png","assets/HUD/mute.png","");
+
+    addText(35,53,"Effects"    );
+    addText(45,53, std::to_string(VolEffect) );
+    addButton(55,52,2,5,MOREEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
+    addButton(58,52,2,5,LESSEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
+    addButton(61,52,2,5,MUTEEFFECT,"assets/HUD/mute.png","assets/HUD/mute.png","");
 
     addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
 

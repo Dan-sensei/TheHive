@@ -70,6 +70,7 @@ void GUIController::Init(){
     VectorAcciones[GOPAUSE] =   &GUIController::gotoPause;
     VectorAcciones[MOREDIALOD] = &GUIController::moreDialog;
     VectorAcciones[LESSDIALOD] = &GUIController::lessDialog;
+    VectorAcciones[MUTEDIALOD] = &GUIController::muteDialog;
     VectorAcciones[MOREMUSIC] = &GUIController::moreMusic;
     VectorAcciones[LESSMUSIC] = &GUIController::lessMusic;
     VectorAcciones[MOREEFFECT] = &GUIController::moreEffect;
@@ -222,6 +223,10 @@ void GUIController::lessDialog(){
     SS->setVolume(music, "bus:/Voces");
     Engine2D->InitMenu6();
 }
+
+void GUIController::muteDialog(){
+
+}
 //but 20
 void GUIController::moreMusic(){
     if(music!=music_max){
@@ -242,6 +247,10 @@ void GUIController::lessMusic(){
 
     Engine2D->InitMenu6();
 }
+
+void GUIController::muteMusic(){
+
+}
 //but 22
 void GUIController::moreEffect(){
     if(effect!=effect_max){
@@ -259,6 +268,10 @@ void GUIController::lessEffect(){
     Engine2D->setVolEffect(effect);
     Engine2D->InitMenu6();
     SS->setVolume(music, "bus:/SFX");
+}
+
+void GUIController::muteEffect(){
+
 }
 
 

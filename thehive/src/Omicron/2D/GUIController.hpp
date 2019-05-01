@@ -68,10 +68,13 @@ void PgotoControlls();
 void gotoPause();
 void moreDialog();
 void lessDialog();
+void muteDialog();
 void moreMusic();
 void lessMusic();
+void muteMusic();
 void moreEffect();
 void lessEffect();
+void muteEffect();
 void initOptions();
 void sonido_accion(float);
 
