@@ -1,5 +1,5 @@
-# WINDOWS COMPILATION ->	cmake . -G "MSYS Makefiles" -DWIN_COMPILATION=ON 
-# MANJARO COMPILATION ->	cmake . -G "MSYS Makefiles" 
+# WINDOWS COMPILATION ->	cmake . -G "MSYS Makefiles" -DWIN_COMPILATION=ON
+# MANJARO COMPILATION ->	cmake . -G "MSYS Makefiles"
 
 cmake_minimum_required(VERSION 2.8)
 
@@ -17,7 +17,7 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++17")
 project(${PROJECT_NAME})
 
 # Seleccionar todos los CPP
-FILE(GLOB_RECURSE SRCS 
+FILE(GLOB_RECURSE SRCS
 	"../src/*.cpp"
 	"../src/BT/*.cpp"
 	"../src/Bullet/*.cpp"
@@ -90,6 +90,7 @@ add_executable(${PROJECT_NAME} ${SRCS})
 include_directories(
 	../src
 	../include
+	../include/WIN
 	../include/BULLET
 	${OPENGL_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIRS}
@@ -116,7 +117,7 @@ target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${GLEW_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${GLFW_LIBRARIES})
 
-set(BULLET_LIBRARIES 
+set(BULLET_LIBRARIES
 	libBulletWorldImporter.a
 # 	libBullet2FileLoader.a
 	libBulletFileLoader.a
