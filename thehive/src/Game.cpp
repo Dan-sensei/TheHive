@@ -75,7 +75,7 @@ Game::~Game(){
 }
 
 void Game::Init(){
-    
+
     Engine->createZones(8);
 
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
@@ -131,7 +131,7 @@ void Game::Init(){
     Accumulator = 0;
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
-    //world->setDebug(true);
+    // world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
