@@ -1,7 +1,6 @@
 #ifndef ZSTATICMESH_H
 #define ZSTATICMESH_H
 
-#include <Omicron/CORE/TNodo.hpp>
 #include <glm/glm.hpp>
 #include "ZMesh.hpp"
 

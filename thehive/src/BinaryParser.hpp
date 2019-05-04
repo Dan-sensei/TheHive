@@ -50,6 +50,7 @@ namespace BinaryParser{
     uint16_t ReadRespawnNodesData(const std::string &BinaryFile);
 
     void LoadLevelData(const std::string &DARTA, int8_t map_zone = 0);
+    void LoadLevelDataEvents(const std::string &DARTA, int8_t map_zone = 0);
 };
 
 #endif

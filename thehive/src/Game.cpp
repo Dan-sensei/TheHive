@@ -82,7 +82,8 @@ void Game::Init(){
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
     // Los eventos son propios de cada zona!
-    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO.data", 1);
+    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
     // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
 
 
@@ -202,16 +203,16 @@ void Game::Update(){
     //sky.Draw();
 
     // DEBUG PATHFINDING
-    glClear(GL_DEPTH_BUFFER_BIT);
+    //glClear(GL_DEPTH_BUFFER_BIT);
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     Engine->DisplayFPS();
     Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-    glClear(GL_DEPTH_BUFFER_BIT);
+    // glClear(GL_DEPTH_BUFFER_BIT);
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
-    Director->DrawZones();
+    // Director->DrawZones();
     // =====================================================
 
 

@@ -31,7 +31,7 @@ class CRenderable_3D : public IComponent {
 
 
     private:
-        TNodo* _3DModel;
+        StandardNode* _3DModel;
         Omicron* Surreal;
 
         CTransform* cTransform;

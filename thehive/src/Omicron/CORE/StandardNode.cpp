@@ -1,20 +1,20 @@
-#include "TNodo.hpp"
+#include "StandardNode.hpp"
 #include <cstdint>
 #include <iostream>
 
 //Constructor para el nodo raiz
-TNodo::TNodo()
-:Visibility(true), entidad(nullptr), padre(nullptr)
+StandardNode::StandardNode()
+:Visibility(true), entidad(nullptr)
 {}
 
 //Constructor para el resto de nodos
-TNodo::TNodo(TNodo *P, TEntidad *_ent)
-:Visibility(true), padre(P), entidad(_ent)
+StandardNode::StandardNode(ZNode *P, TEntidad *_ent)
+:ZNode(P), Visibility(true), entidad(_ent)
 {
-    P->addHijo(this);
+    static_cast<StandardNode*>(P)->addHijo(this);
 }
 
-TNodo::~TNodo(){
+StandardNode::~StandardNode(){
     for(uint16_t i = 0; i < hijos.size(); ++i)
         delete hijos[i];
 
@@ -23,11 +23,11 @@ TNodo::~TNodo(){
     delete entidad;
 }
 
-void TNodo::addHijo(TNodo* nodo){
+void StandardNode::addHijo(ZNode* nodo){
     hijos.push_back(nodo);
 }
 
-void TNodo::remHijo(TNodo* nodo){
+void StandardNode::remHijo(ZNode* nodo){
     for(uint16_t i = 0; i < hijos.size(); ++i){
         if(hijos[i] == nodo){
             hijos.erase(hijos.begin() + i);
@@ -37,7 +37,7 @@ void TNodo::remHijo(TNodo* nodo){
     }
 }
 
-bool TNodo::setEntidad(TEntidad *_ent){
+bool StandardNode::setEntidad(TEntidad *_ent){
     if(_ent){
         entidad = _ent;
         return true;
@@ -45,23 +45,19 @@ bool TNodo::setEntidad(TEntidad *_ent){
     return false;
 }
 
-TEntidad* TNodo::getEntidad(){
+TEntidad* StandardNode::getEntidad(){
     return entidad;
 }
 
-bool TNodo::setPadre(TNodo *P){
+bool StandardNode::setPadre(ZNode *P){
     if(P){
-        padre = P;
+        Padre = P;
         return true;
     }
     return false;
 }
 
-TNodo* TNodo::getPadre(){
-    return padre;
-}
-
-void TNodo::draw(){
+void StandardNode::draw(){
     if(entidad){
         entidad->beginDraw();
 
@@ -74,13 +70,13 @@ void TNodo::draw(){
     }
 }
 
-void TNodo::setVisibility(bool Flag){
+void StandardNode::setVisibility(bool Flag){
     Visibility = Flag;
 }
 
 
 // Este para los demas
-void TNodo::drawRoot(){
+void StandardNode::drawRoot(){
     if(!Visibility) return;
     auto it = hijos.begin();
     while(it != hijos.end()){
@@ -89,16 +85,19 @@ void TNodo::drawRoot(){
     }
 }
 
+bool StandardNode::isLeaf(){
+    return false;
+}
 
-void TNodo::ROOT_OkameraUpdate(){
+void StandardNode::ROOT_OkameraUpdate(){
     hijos[0]->draw();
 }
 
-void TNodo::ROOT_LightsUpdate(){
+void StandardNode::ROOT_LightsUpdate(){
     hijos[1]->draw();
 }
 
 // Este es llamado desde el main (PURE ROOT)
-void TNodo::drawRoot_M(){
+void StandardNode::ROOT_ObjectsUpdate(){
     hijos[2]->draw();
 }

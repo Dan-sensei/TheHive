@@ -6,7 +6,8 @@
 #include <string>
 #include <Util.hpp>
 
-#include <Omicron/CORE/TNodo.hpp>
+//
+#include <Omicron/CORE/StandardNode.hpp>
 #include <Omicron/CORE/TEntidad.hpp>
 #include "TLuz.hpp"
 #include <Omicron/CORE/TTransform.hpp>
@@ -33,26 +34,26 @@ class Omicron {
         ~Omicron();
         void HideCursor(bool t);
 
-        TNodo* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
-        TNodo* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
-        TNodo* createStaticMesh(const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
-        TNodo* createMovableMesh(const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
-        TNodo* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
-        TNodo* CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone = 0);
+        StandardNode* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
+        StandardNode* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
+        StandardNode* createStaticMesh(const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        StandardNode* createMovableMesh(const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        StandardNode* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
+        StandardNode* CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone = 0);
 
         // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
         void createZones(uint8_t NumberOfZones);
 
-        void deleteLeafNode(TNodo *node);
-        void deleteZStaticMeshLeafNode(TNodo *node);
+        void deleteLeafNode(ZNode *node);
+        void deleteZStaticMeshLeafNode(ZNode *node);
 
-        bool bindMaterialToMesh(TNodo*,ZMaterial*);
-        bool bindMaterialToDynamicMesh(TNodo*,ZMaterial*);
+        bool bindMaterialToMesh(StandardNode*,ZMaterial*);
+        bool bindMaterialToDynamicMesh(StandardNode*,ZMaterial*);
 
         void DisplayFPS();
 
-        void setPosition(TNodo* _node, const glm::vec3&);
-        void setRotation(TNodo* _node,const glm::quat&);
+        void setPosition(StandardNode* _node, const glm::vec3&);
+        void setRotation(StandardNode* _node,const glm::quat&);
 
         void BeginDraw();
         void draw();
@@ -75,7 +76,7 @@ class Omicron {
         inline bool isLClickPressed(){ return LCLICK; };
         inline int getWheelState(){return wheel;};
         inline bool isWindowOpen(){ return !glfwWindowShouldClose(window);};
-        inline TNodo* getCamera(){return main_camera;};
+        inline StandardNode* getCamera(){return main_camera;};
 
         void getCursorPosition(double &posX, double &posY);
         void clean();
@@ -107,24 +108,24 @@ class Omicron {
 
         DeferredShading _DeferredShading;
 
-        TNodo* ESCENA;
-        TNodo* OKAMERAS_LAYER;
-        TNodo* LIGHTS_LAYER;
-        TNodo* BUFFERS_LAYER;
+        StandardNode* ESCENA;
+        StandardNode* OKAMERAS_LAYER;
+        StandardNode* LIGHTS_LAYER;
+        StandardNode* BUFFERS_LAYER;
 
         GLFWwindow* window;
         AssetManager* gestorRecursos;
         Debug* Debugger;
 
-        TNodo* main_camera;
+        StandardNode* main_camera;
         TCamara* cam_;
 
         uint16_t FPS;
 
 
-        std::vector<TNodo*> ZONES;
+        std::vector<StandardNode*> ZONES;
 
-        TNodo* bindTransform(const glm::vec3& pos, const glm::quat& rot, TNodo* FATHER);
+        StandardNode* bindTransform(const glm::vec3& pos, const glm::quat& rot, StandardNode* FATHER);
 
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);

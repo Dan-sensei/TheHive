@@ -20,7 +20,7 @@ class CStaticModel : public IComponent {
 
     private:
         Omicron* Surreal;
-        TNodo* _3DModel;
+        StandardNode* _3DModel;
 
 };
 

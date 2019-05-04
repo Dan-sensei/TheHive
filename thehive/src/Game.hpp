@@ -61,7 +61,7 @@ private:
     float Accumulator;
 
     gg::Color col;
-    TNodo* luz;
+    StandardNode* luz;
     CTransform* playerpos;
 
     //SkyBox sky;

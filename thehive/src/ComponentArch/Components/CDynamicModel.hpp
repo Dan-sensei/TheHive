@@ -38,7 +38,7 @@ class CDynamicModel : public IComponent {
 
 
     private:
-        TNodo* DynamicModel;
+        StandardNode* DynamicModel;
         Omicron* Surreal;
 
         CTransform* cTransform;

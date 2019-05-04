@@ -102,7 +102,7 @@ int main(int argc, char const *argv[]) {
 //
 // #include <Util.hpp>
 //
-// #include <Omicron/CORE/TNodo.hpp>
+// 
 // #include <Omicron/TEntidad.hpp>
 // #include <Omicron/TLuz.hpp>
 // #include <Omicron/TCamara.hpp>

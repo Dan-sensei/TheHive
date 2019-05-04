@@ -1,7 +1,7 @@
 #ifndef ZMOVABLEMESH_H
 #define ZMOVABLEMESH_H
 
-#include <Omicron/CORE/TNodo.hpp>
+
 #include <glm/glm.hpp>
 #include "ZMesh.hpp"
 

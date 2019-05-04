@@ -13,13 +13,13 @@ int Omicron::IdButon;
 Omicron::Omicron()
 :main_camera(nullptr), FPS(0), _DeferredShading(), WINDOW_WIDTH(0), WINDOW_HEIGHT(0)
 {
-    ESCENA = new TNodo();
+    ESCENA = new StandardNode();
     Initialize();
     gestorRecursos = Singleton<AssetManager>::Instance();
 
-    OKAMERAS_LAYER  = new TNodo(ESCENA, nullptr);
-      LIGHTS_LAYER  = new TNodo(ESCENA, nullptr);
-     BUFFERS_LAYER  = new TNodo(ESCENA, nullptr);
+    OKAMERAS_LAYER  = new StandardNode(ESCENA, nullptr);
+      LIGHTS_LAYER  = new StandardNode(ESCENA, nullptr);
+     BUFFERS_LAYER  = new StandardNode(ESCENA, nullptr);
 
     for(uint16_t i = 0; i < 349; ++i)
         Omicron::KEYS[i] = false;
@@ -32,17 +32,17 @@ void Omicron::createZones(uint8_t NumberOfZones){
     ZONES.reserve(NumberOfZones);
     ZONES.resize(NumberOfZones);
     for(uint8_t i = 0; i < NumberOfZones; ++i)
-        ZONES[i] = new TNodo(BUFFERS_LAYER, nullptr);
+        ZONES[i] = new StandardNode(BUFFERS_LAYER, nullptr);
 }
 
 void Omicron::resetSceneGraph() {
     ZONES.clear();
     delete ESCENA;
 
-    ESCENA = new TNodo();
-    OKAMERAS_LAYER  = new TNodo(ESCENA, nullptr);
-      LIGHTS_LAYER  = new TNodo(ESCENA, nullptr);
-     BUFFERS_LAYER  = new TNodo(ESCENA, nullptr);
+    ESCENA = new StandardNode();
+    OKAMERAS_LAYER  = new StandardNode(ESCENA, nullptr);
+      LIGHTS_LAYER  = new StandardNode(ESCENA, nullptr);
+     BUFFERS_LAYER  = new StandardNode(ESCENA, nullptr);
 }
 
 
@@ -105,25 +105,25 @@ void Omicron::PollEvents()     {   glfwPollEvents();  }
 
 void Omicron::getCursorPosition(double &posX, double &posY) {  glfwGetCursorPos(window, &posX, &posY); }
 
-TNodo* Omicron::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::vec3& rot, const float& _ppv){
+StandardNode* Omicron::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::vec3& rot, const float& _ppv){
     TCamara* C = new TCamara(_fov,_near,_far);
     C->setPerspectiva(_ppv);
 
-    TNodo* Cam = new TNodo(bindTransform(pos,rot, OKAMERAS_LAYER),C);
+    StandardNode* Cam = new StandardNode(bindTransform(pos,rot, OKAMERAS_LAYER),C);
 
     main_camera = Cam;
     cam_ = C;
     return Cam;
 }
 
-TNodo* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec3& rot, Shader* sh){
+StandardNode* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec3& rot, Shader* sh){
     TLuz* L = new TLuz(_color,sh);
-    TNodo* Luz = new TNodo(bindTransform(pos,rot, LIGHTS_LAYER),L);
+    StandardNode* Luz = new StandardNode(bindTransform(pos,rot, LIGHTS_LAYER),L);
 
     return Luz;
 }
 
-TNodo* Omicron::createStaticMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+StandardNode* Omicron::createStaticMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
 
     TTransform T_Position;
     TTransform T_Rotation;
@@ -136,69 +136,69 @@ TNodo* Omicron::createStaticMesh(const char* _path, const glm::vec3& pos, const 
     M->load(_path);
     M->loadBoundingBox(BoundingBoxPath);
 
-    TNodo* PADRE = ZONES[map_zone];
-    TNodo* Malla = new TNodo(PADRE, M);
+    StandardNode* PADRE = ZONES[map_zone];
+    StandardNode* Malla = new StandardNode(PADRE, M);
 
     return Malla;
 }
 
-TNodo* Omicron::createMovableMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+StandardNode* Omicron::createMovableMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
     ZMovableMesh* M = new ZMovableMesh();
     M->load(_path);
     M->loadBoundingBox(BoundingBoxPath);
 
-    TNodo* PADRE = ZONES[map_zone];
-    TNodo* Malla = new TNodo(bindTransform(pos,Rotation, PADRE),M);
+    StandardNode* PADRE = ZONES[map_zone];
+    StandardNode* Malla = new StandardNode(bindTransform(pos,Rotation, PADRE),M);
 
     return Malla;
 }
 
-TNodo* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::quat& Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+StandardNode* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::quat& Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
     ZDynamicMesh* M = new ZDynamicMesh();
 
-    TNodo* PADRE = ZONES[map_zone];
-    TNodo* Malla = new TNodo(bindTransform(Position, Rotation, PADRE), M);
+    StandardNode* PADRE = ZONES[map_zone];
+    StandardNode* Malla = new StandardNode(bindTransform(Position, Rotation, PADRE), M);
 
     return Malla;
 }
 
-TNodo* Omicron::CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone){
+StandardNode* Omicron::CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone){
     ParticleSystem* P = new ParticleSystem();
 
     P->Init(Data.MaxParticles);
     P->setGenerationTime(Data.SpawnTime);
     P->setTexture(Data.Texture);
 
-    TNodo* PADRE = ZONES[map_zone];
-    TNodo* ParticleNode = new TNodo(PADRE, P);
+    StandardNode* PADRE = ZONES[map_zone];
+    StandardNode* ParticleNode = new StandardNode(PADRE, P);
 
     return ParticleNode;
 }
 
 
 
-TNodo* Omicron::bindTransform(const glm::vec3& pos, const glm::quat& rot, TNodo* FATHER){
+StandardNode* Omicron::bindTransform(const glm::vec3& pos, const glm::quat& rot, StandardNode* FATHER){
     TTransform* Rotate = new TTransform();
     TTransform* Translate = new TTransform();
 
     Rotate->setRotation(rot);
     Translate->setPosition(pos);
 
-    TNodo* NodoRot = new TNodo(FATHER,Rotate);
-    TNodo* NodoTrans = new TNodo(NodoRot,Translate);
+    StandardNode* NodoRot = new StandardNode(FATHER,Rotate);
+    StandardNode* NodoTrans = new StandardNode(NodoRot,Translate);
 
     return NodoTrans;
 }
 
 
-bool Omicron::bindMaterialToMesh(TNodo *_mesh, ZMaterial* Material){
+bool Omicron::bindMaterialToMesh(StandardNode *_mesh, ZMaterial* Material){
     ZStaticMesh*    O   = static_cast<ZStaticMesh*>(_mesh->getEntidad());
 	O->assignMaterial(Material);
 
     return true;
 }
 
-bool Omicron::bindMaterialToDynamicMesh(TNodo *_mesh, ZMaterial* Material){
+bool Omicron::bindMaterialToDynamicMesh(StandardNode *_mesh, ZMaterial* Material){
     ZDynamicMesh*    O   = static_cast<ZDynamicMesh*>(_mesh->getEntidad());
 	O->assignMaterial(Material);
 
@@ -222,7 +222,7 @@ void Omicron::draw(){
     // Ahora bindeamos nuestro G-Búffer y renderizamos a las texturas
     _DeferredShading.Bind_G_Buffer();
     glViewport(0,0,1280, 720);
-    ESCENA->drawRoot_M();
+    ESCENA->ROOT_ObjectsUpdate();
     _DeferredShading.DrawQuad();
     glUniform1f(7, FPS/60.f);
     glViewport(0,0,WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -233,12 +233,12 @@ void Omicron::EndDraw(){
     glfwSwapBuffers(window);
 }
 
-void Omicron::setPosition(TNodo* _node, const glm::vec3& _offpos){
-    static_cast<TTransform*>(_node->getPadre()->getEntidad())->setPosition(_offpos);
+void Omicron::setPosition(StandardNode* _node, const glm::vec3& _offpos){
+    static_cast<TTransform*>(static_cast<StandardNode*>(_node->getPadre())->getEntidad())->setPosition(_offpos);
 }
 
-void Omicron::setRotation(TNodo* _node,const glm::quat& _offrot){
-    static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
+void Omicron::setRotation(StandardNode* _node,const glm::quat& _offrot){
+    static_cast<TTransform*>(static_cast<StandardNode*>(_node->getPadre()->getPadre())->getEntidad())->setRotation(_offrot);
 }
 glm::vec3 Omicron::vectorUp(){
     auto v=ESCENA->getEntidad()->viewMatrix;
@@ -352,14 +352,14 @@ bool Omicron::Initialize(){
 	return true;
 }
 
-void Omicron::deleteLeafNode(TNodo *node){
-    TNodo *tmp = node->getPadre()->getPadre();
-    TNodo *FATHER = tmp->getPadre();
+void Omicron::deleteLeafNode(ZNode *node){
+    ZNode *tmp = node->getPadre()->getPadre();
+    StandardNode *FATHER = static_cast<StandardNode*>(tmp->getPadre());
     FATHER->remHijo(tmp);
 }
 
-void Omicron::deleteZStaticMeshLeafNode(TNodo *node){
-    TNodo *FATHER = node->getPadre();
+void Omicron::deleteZStaticMeshLeafNode(ZNode *node){
+    StandardNode *FATHER = static_cast<StandardNode*>(node->getPadre());
     FATHER->remHijo(node);
 }
 

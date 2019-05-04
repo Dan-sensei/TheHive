@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <Omicron/ZMaterial.hpp>
 #include <Omicron/ZMESHES/ZMeshData.hpp>
-#include <Omicron/CORE/TNodo.hpp>
+#include <Omicron/CORE/TEntidad.hpp>
 #include <glm/glm.hpp>
 #include "BoundingBox.hpp"
 

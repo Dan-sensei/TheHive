@@ -253,8 +253,16 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
     }
 
-    // ------------------------------------------------------------------------------------ //
+}
 
+void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone){
+
+    // ------------------------------------------------------------------------------------ //
+    Factory *fac = Singleton<Factory>::Instance();
+    AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
+
+    std::ifstream inStream(DATA, std::ios::binary);
+    
     uint8_t TOTAL = 0;
     uint8_t EVENT = 0;
     GG_Read(inStream,TOTAL);

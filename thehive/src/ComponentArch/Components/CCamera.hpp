@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <cmath>
 #include <Omicron/Omicron.hpp>
-#include <Omicron/CORE/TNodo.hpp>
+
 #include <Singleton.hpp>
 
 #include "CTransform.hpp"
@@ -43,7 +43,7 @@ public:
 
 private:
     Omicron         *Engine;
-    TNodo           *cam;
+    StandardNode    *cam;
     CTransform      *Target;
     CRigidBody      *ExcludingBody;
     ggDynWorld      *dynWorld;
