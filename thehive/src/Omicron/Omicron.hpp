@@ -36,10 +36,11 @@ class Omicron {
 
         StandardNode* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
         StandardNode* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
-        StandardNode* createStaticMesh(const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
-        StandardNode* createMovableMesh(const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
-        StandardNode* CreateDynamicMesh(const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), int8_t map_zone = 0, const std::string& BoundingBoxPath = "");
-        StandardNode* CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone = 0);
+
+        ZNode* createStaticMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), const std::string& BoundingBoxPath = "");
+        ZNode* createMovableMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), const std::string& BoundingBoxPath = "");
+        ZNode* CreateDynamicMesh(StandardNode* FATHER, const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), const std::string& BoundingBoxPath = "");
+        ZNode* CreateParticleSystem(StandardNode* FATHER, const ParticleSystem_Data &Data);
 
         // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
         void createZones(uint8_t NumberOfZones);
@@ -47,13 +48,13 @@ class Omicron {
         void deleteLeafNode(ZNode *node);
         void deleteZStaticMeshLeafNode(ZNode *node);
 
-        bool bindMaterialToMesh(StandardNode*,ZMaterial*);
-        bool bindMaterialToDynamicMesh(StandardNode*,ZMaterial*);
+        bool bindMaterialToMesh(ZNode*,ZMaterial*);
+        bool bindMaterialToDynamicMesh(ZNode*,ZMaterial*);
 
         void DisplayFPS();
 
-        void setPosition(StandardNode* _node, const glm::vec3&);
-        void setRotation(StandardNode* _node,const glm::quat&);
+        void setPosition(ZNode* _node, const glm::vec3&);
+        void setRotation(ZNode* _node,const glm::quat&);
 
         void BeginDraw();
         void draw();
@@ -99,14 +100,16 @@ class Omicron {
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
         void resetClickVariable();
+        void DrawZero();
 
+        std::vector<StandardNode*> ZONES;
     private:
 
         Omicron();
 
         gg::Clock FPS_Clock;
-
         DeferredShading _DeferredShading;
+
 
         StandardNode* ESCENA;
         StandardNode* OKAMERAS_LAYER;
@@ -123,7 +126,6 @@ class Omicron {
         uint16_t FPS;
 
 
-        std::vector<StandardNode*> ZONES;
 
         StandardNode* bindTransform(const glm::vec3& pos, const glm::quat& rot, StandardNode* FATHER);
 

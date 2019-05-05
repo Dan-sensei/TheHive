@@ -9,13 +9,11 @@ class StandardNode : public ZNode {
     public:
         StandardNode();
         StandardNode(ZNode* P, TEntidad* _ent);
+        StandardNode(const StandardNode &orig);
         virtual ~StandardNode();
 
         void addHijo(ZNode*);
         void remHijo(ZNode*);
-
-        bool setEntidad(TEntidad*);
-        TEntidad* getEntidad();
 
         bool setPadre(ZNode*);
 
@@ -30,7 +28,7 @@ class StandardNode : public ZNode {
         void ROOT_ObjectsUpdate();
 
     private:
-        TEntidad* entidad;
+
         std::deque<ZNode*> hijos;
         bool Visibility;
 };

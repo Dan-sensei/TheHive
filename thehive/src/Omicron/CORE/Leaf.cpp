@@ -1,32 +1,28 @@
 #include "Leaf.hpp"
 
 Leaf::Leaf()
-:entidad(nullptr){
-
-}
+{}
 
 Leaf::Leaf(StandardNode* P, TEntidad* Ent)
-:ZNode(P), entidad(Ent)
+:ZNode(static_cast<ZNode*>(P), Ent)
 {
-
+    static_cast<StandardNode*>(P)->addHijo(this);
 }
 
 
 Leaf::Leaf(const Leaf &orig)
-:ZNode(orig), entidad(orig.entidad)
+:ZNode(orig.Padre, orig.Entidad)
 {
 
 }
 
-Leaf::~Leaf(){
-    delete entidad;
-}
+Leaf::~Leaf(){}
 
 
 void Leaf::draw(){
-    if(entidad){
-        entidad->beginDraw();
-        entidad->endDraw();
+    if(Entidad){
+        Entidad->beginDraw();
+        Entidad->endDraw();
     }
 }
 

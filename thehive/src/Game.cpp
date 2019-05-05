@@ -78,12 +78,12 @@ void Game::Init(){
 
     Engine->createZones(8);
 
-    BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
-    BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
+    // BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
+    // BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
     // Los eventos son propios de cada zona!
-    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
+    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
+    //BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
     // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
 
 
@@ -132,7 +132,7 @@ void Game::Init(){
     Accumulator = 0;
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
-    // world->setDebug(true);
+    world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
@@ -190,8 +190,8 @@ void Game::Update(){
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
-    // std::cout << " - " << glm::to_string(pos) << '\n';
     glm::vec3 pos = playerpos->getPosition();
+    //std::cout << " - " << glm::to_string(pos) << '\n';
     pos.y += 10;
     Engine->setPosition(luz,pos);
 
@@ -210,8 +210,9 @@ void Game::Update(){
     Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-    // glClear(GL_DEPTH_BUFFER_BIT);
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    glClear(GL_DEPTH_BUFFER_BIT);
+    Engine->DrawZero();
+    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
 

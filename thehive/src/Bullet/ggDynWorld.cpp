@@ -13,7 +13,7 @@ ggDynWorld::ggDynWorld()
  dynamicsWorld(&dispatcher, &overlappingPairCache, &solver, &collisionConfiguration),
  collisionWorld(&dispatcher, &overlappingPairCache, &collisionConfiguration)
 {
-    //debugDrawer = Singleton<GLDebugDrawer>::Instance();
+    debugDrawer = Singleton<GLDebugDrawer>::Instance();
     Factory *fac = Singleton<Factory>::Instance();
 
     //collisionConfiguration  = new btDefaultCollisionConfiguration();
@@ -54,9 +54,9 @@ void ggDynWorld::stepSimulation(float timeStep, int maxSubSteps, float fixedTime
 
 void ggDynWorld::debugDrawWorld(){
     if(debug){
-        // debugDrawer->setDebugMode(1);
-        // dynamicsWorld.setDebugDrawer(debugDrawer);
-        // dynamicsWorld.debugDrawWorld();
+        debugDrawer->setDebugMode(1);
+        dynamicsWorld.setDebugDrawer(debugDrawer);
+        dynamicsWorld.debugDrawWorld();
     }
 }
 

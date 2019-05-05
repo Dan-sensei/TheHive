@@ -10,7 +10,7 @@
 
 class CStaticModel : public IComponent {
     public:
-        CStaticModel(const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::quat &Rotation, int8_t map_zone = 0,const std::string& BoundingBoxPath = "");
+        CStaticModel(StandardNode* FATHER, const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::quat &Rotation, const std::string& BoundingBoxPath = "");
         CStaticModel(const CStaticModel &orig);
         virtual ~CStaticModel();
 
@@ -20,7 +20,7 @@ class CStaticModel : public IComponent {
 
     private:
         Omicron* Surreal;
-        StandardNode* _3DModel;
+        ZNode* _3DModel;
 
 };
 
