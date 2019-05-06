@@ -641,6 +641,7 @@ void Motor2D::CLINNormal(){
 
 void Motor2D::DisplayHUD(){
     if(true){
+        glEnable( GL_BLEND );
 
         auto it=IMAGENES.begin();
         Imagen2D*img;
@@ -668,6 +669,7 @@ void Motor2D::DisplayHUD(){
             }
             RECTANGULOS[7]->Draw();
         }
+        glDisable( GL_BLEND );
     }
 }
 
