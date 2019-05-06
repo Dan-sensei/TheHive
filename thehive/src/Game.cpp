@@ -132,7 +132,7 @@ void Game::Init(){
     Accumulator = 0;
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
-    world->setDebug(true);
+    //world->setDebug(true);
     MasterClock.Restart();
     Engine2D->InitHUD();
 
@@ -210,9 +210,9 @@ void Game::Update(){
     Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-    glClear(GL_DEPTH_BUFFER_BIT);
-    Engine->DrawZero();
-    Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    //glClear(GL_DEPTH_BUFFER_BIT);
+    //Engine->DrawZero();
+    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
 

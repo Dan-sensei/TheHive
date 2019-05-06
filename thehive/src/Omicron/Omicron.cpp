@@ -28,6 +28,10 @@ Omicron::Omicron()
 
 Omicron::~Omicron(){}
 
+void Omicron::Bind_G_Buffer(){
+    _DeferredShading.Bind_G_Buffer();
+}
+
 void Omicron::createZones(uint8_t NumberOfZones){
     NumberOfZones += 1;
     ZONES.reserve(NumberOfZones);
@@ -57,7 +61,7 @@ void Omicron::clean(){
 
 void Omicron::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
-        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS);
+        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS) + "DRAWN OBJECTS: " + std::to_string(DRAW_OBJECTS);
         glfwSetWindowTitle(window, TEXT.c_str());
         //std::cout << "FPS: " << FPS << '\n';
         FPS = 0;
@@ -206,7 +210,7 @@ void Omicron::BeginDraw(){
 
 void Omicron::draw(){
     ++FPS;
-
+    DRAW_OBJECTS = 0;
     glDisable( GL_BLEND );
 
     // Bindeamos el shader que recibe la info de luces y cámara

@@ -309,6 +309,9 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
 
         uint8_t FIRST_CHILD;
         GG_Read(inStream, FIRST_CHILD);
+        FIRST_CHILD--;
+        //std::cout << (uint16_t)i << ": Father = " << (uint16_t)FATHER << " | FirstChild = " << (uint16_t)FIRST_CHILD << '\n';
+
         BoundingBox B(ULF, URF, BLF, BRF, ULB, URB, BLB, BRB);
         BVH_ROOT->Hierarchy.emplace_back(FATHER, FIRST_CHILD, B, nullptr);
         NODE = &BVH_ROOT->Hierarchy.back();
@@ -437,6 +440,7 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
             Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
             Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
         }
+
     }
 }
 

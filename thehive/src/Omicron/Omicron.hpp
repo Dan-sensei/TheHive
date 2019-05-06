@@ -101,7 +101,8 @@ class Omicron {
 
         void resetClickVariable();
         void DrawZero();
-
+        void Bind_G_Buffer();
+        int DRAW_OBJECTS;
         std::vector<StandardNode*> ZONES;
     private:
 

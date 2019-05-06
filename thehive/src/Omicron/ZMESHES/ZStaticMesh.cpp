@@ -36,9 +36,9 @@ void ZStaticMesh::beginDraw(){
 
     glm::vec3 ObjectPos(localModelMatrix[3][0], localModelMatrix[3][1], localModelMatrix[3][2]);
 
-    bool dib = false;
-    FrustrumTest(ObjectPos, dib);
-    if(!dib) return;
+    // bool dib = false;
+    // FrustrumTest(ObjectPos, dib);
+    // if(!dib) return;
     //terminar frustrum
 
     uint8_t LOD = 0;
@@ -63,6 +63,7 @@ void ZStaticMesh::beginDraw(){
     //GLuint MVP = sh->getUniformLocation("MVP");
     glUniformMatrix4fv(_U_MVP,1,GL_FALSE,&MVP[0][0]);
 
+    Singleton<Omicron>::Instance()->DRAW_OBJECTS++;
     // LA FINALE
     MeshLODs[LOD]->draw();
 }

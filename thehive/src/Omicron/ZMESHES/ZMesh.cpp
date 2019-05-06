@@ -26,9 +26,9 @@ void ZMesh::FrustrumTest(const glm::vec3 &Position, bool &dib){
     };
     //frustrum
     glm::vec3 dircam(viewMatrix[0][2], viewMatrix[1][2], viewMatrix[2][2]);
-    dircam.y=0;
-    dircam       *=-1;
-    dircam       = glm::normalize(dircam);
+    dircam.y = 0;
+    dircam *= -1;
+    dircam = glm::normalize(dircam);
 
     glm::vec3 dirobj;
     glm::vec3 campos = *CameraPosition;

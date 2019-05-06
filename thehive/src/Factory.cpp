@@ -21,6 +21,7 @@
 #include <ComponentArch/Components/CRenderable_3D.hpp>
 #include <ComponentArch/Components/CStaticModel.hpp>
 #include <ComponentArch/Components/CFlock.hpp>
+#include <Omicron/CORE/BVH_Node.hpp>
 
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
@@ -39,12 +40,14 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
 
     ZStaticMesh::setPlayerPtr(&(Transform->Position));
+    BVH_Node::setPlayerPtr(&(Transform->Position));
     CAIEnem::PlayerTransform=Transform;
 
     CCamera* Camera                     = new CCamera(_b);
     Camera->setTarget(Transform);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
     ZStaticMesh::setCameraPtr(&(Camera->CurrentPosition));
+    BVH_Node::setCameraPtr(&(Camera->CurrentPosition));
 
     CVida* Vida                         = new CVida(1000);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
