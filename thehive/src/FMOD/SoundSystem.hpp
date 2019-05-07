@@ -26,6 +26,7 @@ class SoundSystem {
 		void setListenerPosition(glm::vec3);
 		void update();
 		float getVolume(const std::string&);
+		void setMute(const std::string&);
 		void CLIN();
 	private:
 		FMOD_STUDIO_SYSTEM	*system;

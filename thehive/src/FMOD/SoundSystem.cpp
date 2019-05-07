@@ -4,7 +4,7 @@ SoundSystem::SoundSystem(){
 	system 	= nullptr;
 	// FMOD::Studio::System::create		(&system);
 	FMOD_Studio_System_Create(&system, FMOD_VERSION);
-	
+
 	lowLevelSystem = nullptr;
 	// system->getLowLevelSystem			(&lowLevelSystem);
 	FMOD_Studio_System_GetLowLevelSystem(system,&lowLevelSystem);
@@ -132,6 +132,26 @@ float SoundSystem::getVolume(const std::string& busPath){
 
 }
 
+
+void SoundSystem::setMute(const std::string& busPath){
+	// FMOD::Studio::Bus *bus;
+	FMOD_STUDIO_BUS *bus;
+	FMOD_BOOL mute = false;
+	FMOD_Studio_System_GetBus(system,busPath.c_str(), &bus);
+	FMOD_Studio_Bus_GetMute(bus,&mute);
+
+	if(mute){
+		mute = false;
+	}
+	else{
+		mute = true;
+	}
+
+	FMOD_Studio_Bus_SetMute(bus, mute);
+
+
+}
+
 void SoundSystem::CLIN(){
 
 	// A clinear!
@@ -148,7 +168,7 @@ void SoundSystem::CLIN(){
 	// 	delete (it->second);
 	// 	it++;
 	// }
-	
+
 
 	eventDescriptions.clear();
 
