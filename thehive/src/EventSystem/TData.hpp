@@ -20,6 +20,6 @@ public:
     bool clearData(EnumDataType type);
     void clin();
 private:
-    std::map <EnumDataType,float>m_dataMap;
+    std::map <EnumDataType,float> m_dataMap;
 };
 #endif

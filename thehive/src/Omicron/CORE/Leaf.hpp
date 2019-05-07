@@ -7,15 +7,15 @@
 #include <deque>
 
 class Leaf : public ZNode {
-    Leaf();
-    Leaf(StandardNode* P, TEntidad* Ent);
-    Leaf(const Leaf &orig);
-    virtual ~Leaf();
+    public:
+        Leaf();
+        Leaf(StandardNode* P, TEntidad* Ent);
+        Leaf(const Leaf &orig);
+        virtual ~Leaf();
 
-    virtual void draw();
-    virtual bool isLeaf();
+        virtual void draw();
+        virtual bool isLeaf();
 
-    TEntidad* entidad;
 };
 
 #endif

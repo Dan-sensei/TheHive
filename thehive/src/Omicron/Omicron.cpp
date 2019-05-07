@@ -3,7 +3,8 @@
 #include <iostream>
 #include <Omicron/FX/ParticleSystem.hpp>
 #include <Singleton.hpp>
-
+#include <Omicron/CORE/BVH_ROOT_Node.hpp>
+#include <Omicron/CORE/Leaf.hpp>
 
 bool* Omicron::KEYS = new bool[349];
 bool Omicron::LCLICK = false;
@@ -56,7 +57,7 @@ void Omicron::clean(){
 
 void Omicron::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
-        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS);
+        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS) + "DRAWN OBJECTS: " + std::to_string(DRAW_OBJECTS);
         glfwSetWindowTitle(window, TEXT.c_str());
         //std::cout << "FPS: " << FPS << '\n';
         FPS = 0;
@@ -123,7 +124,7 @@ StandardNode* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const g
     return Luz;
 }
 
-StandardNode* Omicron::createStaticMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+ZNode* Omicron::createStaticMesh(StandardNode* FATHER, const char* _path, const glm::vec3& pos, const glm::quat &Rotation, const std::string& BoundingBoxPath){
 
     TTransform T_Position;
     TTransform T_Rotation;
@@ -136,46 +137,40 @@ StandardNode* Omicron::createStaticMesh(const char* _path, const glm::vec3& pos,
     M->load(_path);
     M->loadBoundingBox(BoundingBoxPath);
 
-    StandardNode* PADRE = ZONES[map_zone];
-    StandardNode* Malla = new StandardNode(PADRE, M);
+    Leaf* Malla = new Leaf(FATHER, M);
 
     return Malla;
 }
 
-StandardNode* Omicron::createMovableMesh(const char* _path, const glm::vec3& pos, const glm::quat &Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+ZNode* Omicron::createMovableMesh(StandardNode* FATHER, const char* _path, const glm::vec3& pos, const glm::quat &Rotation, const std::string& BoundingBoxPath){
     ZMovableMesh* M = new ZMovableMesh();
     M->load(_path);
     M->loadBoundingBox(BoundingBoxPath);
 
-    StandardNode* PADRE = ZONES[map_zone];
-    StandardNode* Malla = new StandardNode(bindTransform(pos,Rotation, PADRE),M);
+    Leaf* Malla = new Leaf(bindTransform(pos,Rotation, FATHER), M);
 
     return Malla;
 }
 
-StandardNode* Omicron::CreateDynamicMesh(const glm::vec3& Position, const glm::quat& Rotation, int8_t map_zone, const std::string& BoundingBoxPath){
+ZNode* Omicron::CreateDynamicMesh(StandardNode* FATHER, const glm::vec3& Position, const glm::quat& Rotation, const std::string& BoundingBoxPath){
     ZDynamicMesh* M = new ZDynamicMesh();
 
-    StandardNode* PADRE = ZONES[map_zone];
-    StandardNode* Malla = new StandardNode(bindTransform(Position, Rotation, PADRE), M);
+    Leaf* Malla = new Leaf(bindTransform(Position, Rotation, FATHER), M);
 
     return Malla;
 }
 
-StandardNode* Omicron::CreateParticleSystem(const ParticleSystem_Data &Data, int8_t map_zone){
+ZNode* Omicron::CreateParticleSystem(StandardNode* FATHER, const ParticleSystem_Data &Data){
     ParticleSystem* P = new ParticleSystem();
 
     P->Init(Data.MaxParticles);
     P->setGenerationTime(Data.SpawnTime);
     P->setTexture(Data.Texture);
 
-    StandardNode* PADRE = ZONES[map_zone];
-    StandardNode* ParticleNode = new StandardNode(PADRE, P);
+    Leaf* ParticleNode = new Leaf(FATHER, P);
 
     return ParticleNode;
 }
-
-
 
 StandardNode* Omicron::bindTransform(const glm::vec3& pos, const glm::quat& rot, StandardNode* FATHER){
     TTransform* Rotate = new TTransform();
@@ -184,21 +179,21 @@ StandardNode* Omicron::bindTransform(const glm::vec3& pos, const glm::quat& rot,
     Rotate->setRotation(rot);
     Translate->setPosition(pos);
 
-    StandardNode* NodoRot = new StandardNode(FATHER,Rotate);
-    StandardNode* NodoTrans = new StandardNode(NodoRot,Translate);
+    StandardNode* NodoRot = new StandardNode(FATHER, Rotate);
+    StandardNode* NodoTrans = new StandardNode(NodoRot, Translate);
 
     return NodoTrans;
 }
 
 
-bool Omicron::bindMaterialToMesh(StandardNode *_mesh, ZMaterial* Material){
+bool Omicron::bindMaterialToMesh(ZNode *_mesh, ZMaterial* Material){
     ZStaticMesh*    O   = static_cast<ZStaticMesh*>(_mesh->getEntidad());
 	O->assignMaterial(Material);
 
     return true;
 }
 
-bool Omicron::bindMaterialToDynamicMesh(StandardNode *_mesh, ZMaterial* Material){
+bool Omicron::bindMaterialToDynamicMesh(ZNode *_mesh, ZMaterial* Material){
     ZDynamicMesh*    O   = static_cast<ZDynamicMesh*>(_mesh->getEntidad());
 	O->assignMaterial(Material);
 
@@ -209,9 +204,13 @@ void Omicron::BeginDraw(){
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
+
+#define VIEWPORT_X 1280
+#define VIEWPORT_Y 720
+
 void Omicron::draw(){
     ++FPS;
-
+    DRAW_OBJECTS = 0;
     glDisable( GL_BLEND );
 
     // Bindeamos el shader que recibe la info de luces y cámara
@@ -221,7 +220,7 @@ void Omicron::draw(){
 
     // Ahora bindeamos nuestro G-Búffer y renderizamos a las texturas
     _DeferredShading.Bind_G_Buffer();
-    glViewport(0,0,1280, 720);
+    glViewport(0,0, VIEWPORT_X, VIEWPORT_Y);
     ESCENA->ROOT_ObjectsUpdate();
     _DeferredShading.DrawQuad();
     glUniform1f(7, FPS/60.f);
@@ -233,12 +232,12 @@ void Omicron::EndDraw(){
     glfwSwapBuffers(window);
 }
 
-void Omicron::setPosition(StandardNode* _node, const glm::vec3& _offpos){
-    static_cast<TTransform*>(static_cast<StandardNode*>(_node->getPadre())->getEntidad())->setPosition(_offpos);
+void Omicron::setPosition(ZNode* _node, const glm::vec3& _offpos){
+    static_cast<TTransform*>(_node->getPadre()->getEntidad())->setPosition(_offpos);
 }
 
-void Omicron::setRotation(StandardNode* _node,const glm::quat& _offrot){
-    static_cast<TTransform*>(static_cast<StandardNode*>(_node->getPadre()->getPadre())->getEntidad())->setRotation(_offrot);
+void Omicron::setRotation(ZNode* _node,const glm::quat& _offrot){
+    static_cast<TTransform*>(_node->getPadre()->getPadre()->getEntidad())->setRotation(_offrot);
 }
 glm::vec3 Omicron::vectorUp(){
     auto v=ESCENA->getEntidad()->viewMatrix;
@@ -299,6 +298,13 @@ void Omicron::close(){
     glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
+void Omicron::DrawZero(){
+    ZONES[1]->drawRoot();
+    ZONES[4]->drawRoot();
+    ZONES[6]->drawRoot();
+}
+
+
 bool Omicron::Initialize(){
 	//INICIALIZAMOS GLFW
 	if( !glfwInit() ){
@@ -315,7 +321,7 @@ bool Omicron::Initialize(){
     WINDOW_WIDTH = mode->width;
     WINDOW_HEIGHT = mode->height;
 
-	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", NULL, NULL);
+	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", nullptr, NULL);
 	if( window == NULL ){
 	    glfwTerminate();
 	    return false;
@@ -333,7 +339,7 @@ bool Omicron::Initialize(){
 	    return false;
 	}
 
-    _DeferredShading.init(1280, 720);
+    _DeferredShading.init(VIEWPORT_X, VIEWPORT_Y);
 
     glDepthRange(0.f,1.f);
 

@@ -39,6 +39,7 @@ void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
     // ZMaterial* Material = Manager->getMaterial("Blue");
 
     // fabrik->createNatureMesh(Path2,Pos,glm::vec3(),Material,map_zone);
+    StandardNode* Node = Singleton<Omicron>::Instance()->ZONES[map_zone];
 
     for (size_t i = 0; i < PositionsNormals.size(); i+=6) {
         if(dist2(gen)>8){
@@ -49,7 +50,7 @@ void NatureGenerator::init(const uint8_t &map_zone, const glm::vec3 &Pos){
             );
             tmp_rot = glm::vec3(0,dist1(gen),0);
 
-            fabrik->createNatureMesh(Path2,tmp_pos,tmp_rot,Material,map_zone+1);
+            fabrik->createNatureMesh(Node, Path2,tmp_pos,tmp_rot,Material);
         }
     }
 

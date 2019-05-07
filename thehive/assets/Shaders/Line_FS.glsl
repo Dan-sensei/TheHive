@@ -1,8 +1,8 @@
-#version 400
+#version 450
 
 out vec4 frag_colour;
 
-uniform vec3 Color;
+layout(location = 2) uniform vec3 Color;
 
 void main() {
 

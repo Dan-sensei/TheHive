@@ -1,8 +1,8 @@
-#version 400
+#version 450
 
 layout(location = 0) in vec3 vertexPosition_modelspace;
 
-uniform mat4 MVP;
+layout(location = 1) uniform mat4 MVP;
 
 void main() {
 

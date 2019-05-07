@@ -12,6 +12,9 @@
 #include <Omicron/ZMESHES/BoundingBox.hpp>
 #include "Util.hpp"
 
+#include <Omicron/CORE/BVH_Node.hpp>
+
+
 namespace BinaryParser{
     void ReadNavmeshData(
         const std::string &BinaryFile,
@@ -50,6 +53,10 @@ namespace BinaryParser{
     uint16_t ReadRespawnNodesData(const std::string &BinaryFile);
 
     void LoadLevelData(const std::string &DARTA, int8_t map_zone = 0);
+    void LoadBVHLevelData(const std::string &DARTA, int8_t map_zone);
+
+    void CreateMesh(std::ifstream &inStream, AssetManager* _AssetManager, Shader* DEFAULT_SHADER, BVH_Node* NODE);
+
     void LoadLevelDataEvents(const std::string &DARTA, int8_t map_zone = 0);
 };
 

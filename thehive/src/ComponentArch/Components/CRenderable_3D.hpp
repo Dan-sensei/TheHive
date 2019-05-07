@@ -15,7 +15,7 @@ class CTransform;
 
 class CRenderable_3D : public IComponent {
     public:
-        CRenderable_3D(const std::string &pathToModel, ZMaterial* material);
+        CRenderable_3D(StandardNode* FATHER, const std::string &pathToModel, ZMaterial* material);
         CRenderable_3D(const CRenderable_3D &orig);
         virtual ~CRenderable_3D();
 
@@ -31,7 +31,7 @@ class CRenderable_3D : public IComponent {
 
 
     private:
-        StandardNode* _3DModel;
+        ZNode* _3DModel;
         Omicron* Surreal;
 
         CTransform* cTransform;

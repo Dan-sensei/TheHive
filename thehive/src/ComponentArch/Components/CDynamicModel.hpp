@@ -17,7 +17,7 @@ class CTransform;
 
 class CDynamicModel : public IComponent {
     public:
-        CDynamicModel(ZMaterial* material);
+        CDynamicModel(StandardNode* FATHER, ZMaterial* material);
         CDynamicModel(const CDynamicModel &orig);
         virtual ~CDynamicModel();
 
@@ -38,7 +38,7 @@ class CDynamicModel : public IComponent {
 
 
     private:
-        StandardNode* DynamicModel;
+        ZNode* DynamicModel;
         Omicron* Surreal;
 
         CTransform* cTransform;

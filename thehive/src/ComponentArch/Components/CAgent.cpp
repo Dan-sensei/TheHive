@@ -112,13 +112,16 @@ void CAgent::Init(){
     // mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Plantilla,    &CAgent::EXIT_func_kTrig_Plantilla));
 
 
-    zonesArray[0] = "INICIO";
-    zonesArray[1] = "PASILLOS";
-    zonesArray[2] = "TUNELES";
-    zonesArray[3] = "INICIO_CIUDAD";
-    zonesArray[4] = "CALLE_PRINCIPAL";
-    zonesArray[5] = "CENTRO";
-    zonesArray[6] = "FINAL";
+    // void (*)(std::__cxx11::basic_string<char>&, signed char)
+    // void (*)(std::__cxx11::basic_string<char>, signed char)
+
+    zonesArray[0] = std::make_pair("INICIO", BinaryParser::LoadBVHLevelData);
+    zonesArray[1] = std::make_pair("PASILLOS", BinaryParser::LoadLevelData);
+    zonesArray[2] = std::make_pair("TUNELES", BinaryParser::LoadLevelData);
+    zonesArray[3] = std::make_pair("INICIO_CIUDAD", BinaryParser::LoadBVHLevelData);
+    zonesArray[4] = std::make_pair("CALLE_PRINCIPAL", BinaryParser::LoadLevelData);
+    zonesArray[5] = std::make_pair("CENTRO", BinaryParser::LoadBVHLevelData);
+    zonesArray[6] = std::make_pair("FINAL", BinaryParser::LoadLevelData);
 
 
     //  Inicializar punteros a otras compnentes
@@ -143,7 +146,7 @@ void CAgent::updatetrig(){
     glm::vec3 TF_POS = cTransform->getPosition();
 
     std::vector<std::list<TriggerRecordStruct*>::iterator> vec;
-    std::vector<std::list<TriggerRecordStruct*>::iterator>::iterator it2 = vec.begin();
+    //std::vector<std::list<TriggerRecordStruct*>::iterator>::iterator it2 = vec.begin();
 
     std::list<TriggerRecordStruct*>::iterator it = TriggerList.begin();
     while(it != TriggerList.end()){
@@ -177,8 +180,10 @@ void CAgent::ENTER_func_kTrig_Gunfire       (TriggerRecordStruct *_pRec){}
 
 void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
-    std::string name = zonesArray[id-1];
-    BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+"_MODELS.data", id);
+    // std::cout << " --LOAD " << (uint16_t)id << '\n';
+    std::string name = zonesArray[id-1].first;
+    zonesArray[id-1].second("assets/BinaryFiles/"+name+"_MODELS.data", id);
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+"_MODELS.data", id);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/"+name+"_EVENTS.data", id);
 
     // //std::cout << " -["+std::to_string(id)+"]- LOADING ZONE: " << name << '\n';
@@ -187,7 +192,7 @@ void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
 void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     // std::string name = zonesMap[id];
-
+    // std::cout << "UNLOAD " << (uint16_t)id << '\n';
     Engine->SetMapZoneVisibility(id,false);
 
     // //std::cout << " -["+std::to_string(id)+"]- UNLOADING ZONE: " << name << '\n';

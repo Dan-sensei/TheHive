@@ -4,23 +4,25 @@
 
 //Constructor para el nodo raiz
 StandardNode::StandardNode()
-:Visibility(true), entidad(nullptr)
+:Visibility(true)
 {}
 
 //Constructor para el resto de nodos
 StandardNode::StandardNode(ZNode *P, TEntidad *_ent)
-:ZNode(P), Visibility(true), entidad(_ent)
+:ZNode(P, _ent), Visibility(true)
 {
     static_cast<StandardNode*>(P)->addHijo(this);
 }
+
+StandardNode::StandardNode(const StandardNode &orig)
+:ZNode(orig.Padre, orig.Entidad)
+{}
 
 StandardNode::~StandardNode(){
     for(uint16_t i = 0; i < hijos.size(); ++i)
         delete hijos[i];
 
     hijos.clear();
-
-    delete entidad;
 }
 
 void StandardNode::addHijo(ZNode* nodo){
@@ -37,18 +39,6 @@ void StandardNode::remHijo(ZNode* nodo){
     }
 }
 
-bool StandardNode::setEntidad(TEntidad *_ent){
-    if(_ent){
-        entidad = _ent;
-        return true;
-    }
-    return false;
-}
-
-TEntidad* StandardNode::getEntidad(){
-    return entidad;
-}
-
 bool StandardNode::setPadre(ZNode *P){
     if(P){
         Padre = P;
@@ -58,12 +48,12 @@ bool StandardNode::setPadre(ZNode *P){
 }
 
 void StandardNode::draw(){
-    if(entidad){
-        entidad->beginDraw();
+    if(Entidad){
+        Entidad->beginDraw();
 
         drawRoot();
 
-        entidad->endDraw();
+        Entidad->endDraw();
     }
     else{
         drawRoot();

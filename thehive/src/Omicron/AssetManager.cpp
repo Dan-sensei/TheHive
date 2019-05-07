@@ -17,6 +17,7 @@ AssetManager::AssetManager(){
     ShaderMap["DEFERRED"].loadFiles("assets/Shaders/Deferred_VS.glsl", nullptr, "assets/Shaders/Deferred_FS.glsl");
     ShaderMap["Video"].loadFiles("assets/Shaders/VIDEO_VS.glsl", nullptr, "assets/Shaders/VIDEO_FS.glsl");
     ShaderMap["PostProcessing"].loadFiles("assets/Shaders/Post_Processing_VS.glsl", nullptr, "assets/Shaders/Post_Processing_FS.glsl");
+    ShaderMap["Query"].loadFiles("assets/Shaders/Line_VS.glsl", nullptr, nullptr);
 }
 
 void AssetManager::loadInit(){
@@ -45,14 +46,6 @@ void AssetManager::loadInit(){
     Nav->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
     Nav->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
-
-
-    ZMaterial* 		Metal = getMaterial("Metal");
-    Metal->attachShader(shader);
-    Metal->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/metal.jpg",3));
-    Metal->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Metal->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
     ZMaterial* 		Grey = getMaterial("Grey");
     Grey->attachShader(shader);
     Grey->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/grey.jpg",3));
@@ -64,146 +57,6 @@ void AssetManager::loadInit(){
     Red->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/red.jpg",3));
     Red->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
     Red->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		White = getMaterial("White");
-    White->attachShader(shader);
-    White->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/white.png",3));
-    White->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    White->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		Ground = getMaterial("Ground");
-    Ground->attachShader(shader);
-    Ground->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/Asfalto_Diffuse.jpg",3));
-    Ground->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/Asfalto_Normal.jpg",3));
-    Ground->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/Asfalto_Gloss.jpg",1));
-
-    ZMaterial* 		Farola = getMaterial("Farola");
-    Farola->attachShader(shader);
-    Farola->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/farola1.png",3));
-    Farola->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Farola->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		Car1 = getMaterial("Car1");
-    Car1->attachShader(shader);
-    Car1->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/car1.png",3));
-    Car1->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg", 3));
-    Car1->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg", 3));
-
-    ZMaterial* 		Car2 = getMaterial("Car2");
-    Car2->attachShader(shader);
-    Car2->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/car2.png",3));
-    Car2->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Car2->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		Car3 = getMaterial("Car3");
-    Car3->attachShader(shader);
-    Car3->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/car3.png",3));
-    Car3->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Car3->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		Container = getMaterial("Container");
-    Container->attachShader(shader);
-    Container->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/Container.png",3));
-    Container->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Container->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		Separador = getMaterial("Separador");
-    Separador->attachShader(shader);
-    Separador->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/Separador.jpg",3));
-    Separador->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Separador->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		Trash = getMaterial("Trash");
-    Trash->attachShader(shader);
-    Trash->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/Trash.png",3));
-    Trash->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Trash->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		House = getMaterial("House");
-    House->attachShader(shader);
-    House->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/house.jpg",3));
-    House->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    House->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		House2 = getMaterial("House2");
-    House2->attachShader(shader);
-    House2->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/brown.jpg",3));
-    House2->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    House2->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    // En Windows peta este Material
-    // ZMaterial* 		Door = getMaterial("Door");
-    // Door->attachShader(shader);
-    // Door->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/door.jpg",3));           // Esta linea en concreto
-    // Door->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    // Door->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/Asfalto_Gloss.jpg",1));
-
-/*
-    // Las buenas funciones lambda
-    auto getTextureFromPath = [](const std::string &LINE, const std::string &SEPARATOR) -> std::string{
-        size_t found = LINE.find_last_of(SEPARATOR);
-        return LINE.substr(found+1);
-    };
-
-    // Lectura de materiales desde disco
-    std::string line,type;
-    std::string TEXTURE_PATH,NORMAL_PATH;
-    std::string PATH;
-
-#define OBJECTS 151
-
-    for(uint8_t i=1 ; i < OBJECTS ; ++i){
-        struct stat buffer;
-        PATH = "assets/Textures/Materials/"+std::to_string(i)+".mtl";
-        if(stat (PATH.c_str(), &buffer) == 0) {
-            // std::cout << "[LOADED] MATERIAL " << PATH << '\n';
-
-            std::ifstream infile(PATH);
-            bool found = false;
-            NORMAL_PATH = "";
-            while (std::getline(infile, line)){
-                found = false;
-                std::istringstream iss(line);
-                iss >> type;
-
-                if(type == "map_Bump"){
-                    found = true;
-                    NORMAL_PATH = getTextureFromPath(line,"/");
-                }
-                else if(type == "map_Kd"){
-                    found = true;
-                    TEXTURE_PATH = getTextureFromPath(line,"/");
-                }
-            }
-            if(found){
-                // std::cout << "  NORMAL TEXTURE: " << NORMAL_PATH << '\n';
-                // std::cout << "  TEXTURE:        " << TEXTURE_PATH << '\n';
-
-                ZMaterial* MAT = getMaterial("Model"+std::to_string(i));
-                                        MAT->attachShader(shader);
-                                        MAT->addTexture(GN::DIFFUSE_MAP,      "assets/Textures/UINT8_T_TEXTURES/"+TEXTURE_PATH);
-                if(NORMAL_PATH != "")   MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/UINT8_T_NORMALS/"+NORMAL_PATH);
-                else                    MAT->addTexture(GN::NORMAL_MAP,       "assets/Textures/DefaultNormal.jpg");
-                                        MAT->addTexture(GN::SPECULAR_MAP,     "assets/Textures/DefaultSpecular.jpg");
-            }
-        }
-        else{
-            // std::cout << " [ERROR] MATERIAL " << PATH << '\n';
-            ZMaterial* 		MAT = getMaterial("Model"+std::to_string(i));
-            MAT->attachShader(shader);
-            MAT->addTexture(GN::DIFFUSE_MAP,    "assets/Textures/DefaultDiffuse.jpg");
-            MAT->addTexture(GN::NORMAL_MAP,     "assets/Textures/DefaultNormal.jpg");
-            MAT->addTexture(GN::SPECULAR_MAP,   "assets/Textures/DefaultSpecular.jpg");
-        }
-    }
-*/
-
-    shader = getShader("Blend");
-
-    ZMaterial* 		Build = getMaterial("building");
-    Build->attachShader(shader);
-    Build->addTexture(GN::BLEND1,      getTexture("assets/Textures/edif.png",3));
-    Build->addTexture(GN::BLEND2,      getTexture("assets/Textures/edifluz.png",3));
 
     shader = getShader("AnimationShader");
     ZMaterial* Sold = getMaterial("Soldier");
@@ -217,8 +70,6 @@ void AssetManager::loadInit(){
     Hero->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/HERO/HERO_t.png",3));
     Hero->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/HERO/HERO_n.png",3));
     Hero->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-
 
     ZAnimationData* AnimationData = getAnimation("Soldier_Running");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov5.modelgg");
@@ -257,7 +108,6 @@ void AssetManager::loadInit(){
 }
 
 ZMaterial* AssetManager::getMaterial(const std::string &Name) {
-
     auto it = MaterialMap.find(Name);
     if(it != MaterialMap.end()){
         return &it->second;

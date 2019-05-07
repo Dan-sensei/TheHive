@@ -2,11 +2,11 @@
 #include <ComponentArch/ObjectManager.hpp>
 #include "CTransform.hpp"
 
-CDynamicModel::CDynamicModel(ZMaterial* material)
+CDynamicModel::CDynamicModel(StandardNode* FATHER, ZMaterial* material)
 :DynamicModel(nullptr), cTransform(nullptr), CurrentAnimation(0)
 {
     Surreal = Singleton<Omicron>::Instance();
-    DynamicModel = Surreal->CreateDynamicMesh();
+    DynamicModel = Surreal->CreateDynamicMesh(FATHER);
     Surreal->bindMaterialToDynamicMesh(DynamicModel, material);
 }
 
