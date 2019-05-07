@@ -7,7 +7,6 @@
 #include <ComponentArch/Components/CStaticModel.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <Omicron/CORE/BVH_ROOT_Node.hpp>
-#include <Omicron/CORE/BVH_Node.hpp>
 
 bool aux_separator = false;
 
@@ -134,6 +133,8 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
     AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
 
     Shader* DEFAULT_SHADER = _AssetManager->getShader("Default");
+    StandardNode* Node = Singleton<Omicron>::Instance()->ZONES[map_zone];
+
 
     for(uint16_t i = 0; i < NUMBER_OF_OBJECTS; ++i){
         uint8_t MODEL = 0;
@@ -252,7 +253,6 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
 
         std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
 
-        StandardNode* Node = Singleton<Omicron>::Instance()->ZONES[map_zone];
         CStaticModel* Transform = new CStaticModel(Node, "assets/BinaryFiles/BinaryModels/"+str+".modelgg", Material, Position, Rotation, B);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
         Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
@@ -278,31 +278,34 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
     for(uint8_t i = 0; i < NUMBER_OF_NODES; ++i) {
         BVH_Node* NODE = nullptr;
 
-        float x, y, z;
+        //float x, y, z;
 
-        GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        glm::vec3 ULF(x,y,z);
+        // glm::vec3 ULF(x,y,z);
+        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
+        //
+        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
+        // glm::vec3 URF(x,y,z);
+        //
+        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
+        // glm::vec3 BLF(x,y,z);
+        //
+        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
+        // glm::vec3 BRF(x,y,z);
+        //
+        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
+        // glm::vec3 ULB(x,y,z);
+        //
+        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
+        // glm::vec3 URB(x,y,z);
+        //
+        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
+        // glm::vec3 BLB(x,y,z);
+        //
+        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
+        // glm::vec3 BRB(x,y,z);
 
-        GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        glm::vec3 URF(x,y,z);
-
-        GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        glm::vec3 BLF(x,y,z);
-
-        GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        glm::vec3 BRF(x,y,z);
-
-        GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        glm::vec3 ULB(x,y,z);
-
-        GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        glm::vec3 URB(x,y,z);
-
-        GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        glm::vec3 BLB(x,y,z);
-
-        GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        glm::vec3 BRB(x,y,z);
+        BoundingBox B;
+        GG_Read(inStream, B);
 
         uint8_t FATHER;
         GG_Read(inStream, FATHER);
@@ -311,7 +314,7 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
         GG_Read(inStream, FIRST_CHILD);
         //FIRST_CHILD--;
 
-        BoundingBox B(ULF, URF, BLF, BRF, ULB, URB, BLB, BRB);
+        //BoundingBox B(ULF, URF, BLF, BRF, ULB, URB, BLB, BRB);
         BVH_ROOT->Hierarchy.emplace_back(FATHER, FIRST_CHILD, B, nullptr);
         NODE = &BVH_ROOT->Hierarchy.back();
 
@@ -321,128 +324,134 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
         GG_Read(inStream, isLeaf);
 
         //std::cout << (uint16_t)i << ": Father = " << (uint16_t)FATHER << " | FirstChild = " << (uint16_t)FIRST_CHILD << '\n';
-
+        //std::cout << "sizeof() " << sizeof(glm::vec3) << '\n';
         if(isLeaf) {
             NODE->Leaf = new StandardNode();
-
-            uint8_t MODEL = 0;
-            GG_Read(inStream, MODEL);
-            std::string str = std::to_string(MODEL);
-            std::string lod = str + "_LOD1.modelgg";
-            auto Manager = Singleton<ObjectManager>::Instance();
-            uint16_t NewEntity = Manager->createEntity();
-
-            float x,y,z;
-            GG_Read(inStream, x);
-            GG_Read(inStream, y);
-            GG_Read(inStream, z);
-            glm::vec3 Position(x,y,z);
-
-            float w;
-            GG_Read(inStream, x);
-            GG_Read(inStream, y);
-            GG_Read(inStream, z);
-            GG_Read(inStream, w);
-            glm::quat Rotation(w,x,y,z);
-
-            uint8_t HasCollider;
-            GG_Read(inStream, HasCollider);
-
-            if(HasCollider){
-                // std::cout << str << " | HasCollider: " << static_cast<int>(HasCollider) << '\n';
-                if(HasCollider == 2){
-                    CMeshCollider* RIGID = new CMeshCollider("assets/BulletBoundingBoxes/"+str+".bullet", Position.x,Position.y,Position.z);
-                    Manager->addComponentToEntity(RIGID, gg::MESHCOLLIDER, NewEntity);
-
-                    // continue;
-                    goto readMaterial;
-                }
-                GG_Read(inStream, x);
-                GG_Read(inStream, y);
-                GG_Read(inStream, z);
-
-                float rx, ry, rz, rw;
-                GG_Read(inStream, rx);
-                GG_Read(inStream, ry);
-                GG_Read(inStream, rz);
-                GG_Read(inStream, rw);
-
-                float sx,sz,sy;
-                GG_Read(inStream, sx);
-                GG_Read(inStream, sy);
-                GG_Read(inStream, sz);
-
-                CBoxCollider* RIGID = new CBoxCollider(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
-                Manager->addComponentToEntity(RIGID, gg::BOXCOLLIDER, NewEntity);
-            }
-
-            readMaterial:
-
-            auto checkExtension = [](std::string &PATH){
-                std::array<std::string,2> EXT = {".png",".jpg"};
-                for(uint8_t i = 0 ; i<2 ; i++){
-                    struct stat buffer;
-                    if(stat ((PATH+EXT[i]).c_str(), &buffer) == 0) {
-                        PATH = PATH+EXT[i];
-                        break;
-                    }
-                }
-            };
-
-            // Materiales
-            ZMaterial* Material;
-            uint8_t hasDifuseT, difuseT;
-            uint8_t hasNormalT, normalT;
-            uint8_t hasSpecularT, specularT;
-            difuseT = normalT = specularT = 0;
-
-            std::string difusePath = "assets/Textures/DefaultDiffuse.jpg";
-            std::string normalPath = "assets/Textures/DefaultNormal.jpg";
-            std::string specularPath = "assets/Textures/DefaultSpecular.jpeg";
-            //unsigned int NORMAL_FLAG = GN::INVERT_Y;
-
-            GG_Read(inStream, hasDifuseT);
-            if(hasDifuseT){
-                GG_Read(inStream, difuseT);
-                difusePath = "assets/Textures/UINT8_T_TEXTURES/"+std::to_string(difuseT)+"_t";
-                checkExtension(difusePath);
-            }
-
-            GG_Read(inStream, hasNormalT);
-            if(hasNormalT){
-                GG_Read(inStream, normalT);
-                normalPath = "assets/Textures/UINT8_T_NORMALS/"+std::to_string(normalT)+"_n";
-                //NORMAL_FLAG = 0;
-                checkExtension(normalPath);
-            }
-
-            GG_Read(inStream, hasSpecularT);
-            if(hasSpecularT){
-                GG_Read(inStream, specularT);
-                // if(specularT){
-                //     specularPath = "assets/Textures/UINT8_T_SPECULAR/"+std::to_string(specularT);
-                //     checkExtension(specularPath);
-                // }
-            }
-
-            if(!hasDifuseT && !hasNormalT && !hasSpecularT){
-                Material = _AssetManager->getMaterial("Default");
-            }
-            else{
-                Material = _AssetManager->getMaterial("M_"+std::to_string(difuseT)+"_"+std::to_string(normalT)+"_"+std::to_string(specularT));
-                Material->attachShader(DEFAULT_SHADER);
-                Material->addTexture(GN::DIFFUSE_MAP,    _AssetManager->getTexture(difusePath, 3));
-                Material->addTexture(GN::NORMAL_MAP,     _AssetManager->getTexture(normalPath, 3));
-                Material->addTexture(GN::SPECULAR_MAP,   _AssetManager->getTexture(specularPath, 1));
-            }
-
-            CStaticModel* Transform = new CStaticModel(NODE->Leaf, "assets/BinaryFiles/BinaryModels/"+str+".modelgg", Material, Position, Rotation);
-            Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
-            Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
+            CreateMesh(inStream, _AssetManager, DEFAULT_SHADER, NODE);
         }
 
     }
 }
+
+void BinaryParser::CreateMesh(std::ifstream &inStream, AssetManager* _AssetManager, Shader* DEFAULT_SHADER, BVH_Node* NODE){
+
+    uint8_t MODEL = 0;
+    GG_Read(inStream, MODEL);
+    std::string str = std::to_string(MODEL);
+    std::string lod = str + "_LOD1.modelgg";
+    auto Manager = Singleton<ObjectManager>::Instance();
+    uint16_t NewEntity = Manager->createEntity();
+
+    float x,y,z;
+    GG_Read(inStream, x);
+    GG_Read(inStream, y);
+    GG_Read(inStream, z);
+    glm::vec3 Position(x,y,z);
+
+    float w;
+    GG_Read(inStream, x);
+    GG_Read(inStream, y);
+    GG_Read(inStream, z);
+    GG_Read(inStream, w);
+    glm::quat Rotation(w,x,y,z);
+
+    uint8_t HasCollider;
+    GG_Read(inStream, HasCollider);
+
+    if(HasCollider){
+        // std::cout << str << " | HasCollider: " << static_cast<int>(HasCollider) << '\n';
+        if(HasCollider == 2){
+            CMeshCollider* RIGID = new CMeshCollider("assets/BulletBoundingBoxes/"+str+".bullet", Position.x,Position.y,Position.z);
+            Manager->addComponentToEntity(RIGID, gg::MESHCOLLIDER, NewEntity);
+
+            // continue;
+            goto readMaterial;
+        }
+        GG_Read(inStream, x);
+        GG_Read(inStream, y);
+        GG_Read(inStream, z);
+
+        float rx, ry, rz, rw;
+        GG_Read(inStream, rx);
+        GG_Read(inStream, ry);
+        GG_Read(inStream, rz);
+        GG_Read(inStream, rw);
+
+        float sx,sz,sy;
+        GG_Read(inStream, sx);
+        GG_Read(inStream, sy);
+        GG_Read(inStream, sz);
+
+        CBoxCollider* RIGID = new CBoxCollider(x, y, z, rx,ry,rz,rw, sx/2, sy/2, sz/2);
+        Manager->addComponentToEntity(RIGID, gg::BOXCOLLIDER, NewEntity);
+    }
+
+    readMaterial:
+
+    auto checkExtension = [](std::string &PATH){
+        std::array<std::string,2> EXT = {".png",".jpg"};
+        for(uint8_t i = 0 ; i<2 ; i++){
+            struct stat buffer;
+            if(stat ((PATH+EXT[i]).c_str(), &buffer) == 0) {
+                PATH = PATH+EXT[i];
+                break;
+            }
+        }
+    };
+
+    // Materiales
+    ZMaterial* Material;
+    uint8_t hasDifuseT, difuseT;
+    uint8_t hasNormalT, normalT;
+    uint8_t hasSpecularT, specularT;
+    difuseT = normalT = specularT = 0;
+
+    std::string difusePath = "assets/Textures/DefaultDiffuse.jpg";
+    std::string normalPath = "assets/Textures/DefaultNormal.jpg";
+    std::string specularPath = "assets/Textures/DefaultSpecular.jpeg";
+    //unsigned int NORMAL_FLAG = GN::INVERT_Y;
+
+    GG_Read(inStream, hasDifuseT);
+    if(hasDifuseT){
+        GG_Read(inStream, difuseT);
+        difusePath = "assets/Textures/UINT8_T_TEXTURES/"+std::to_string(difuseT)+"_t";
+        checkExtension(difusePath);
+    }
+
+    GG_Read(inStream, hasNormalT);
+    if(hasNormalT){
+        GG_Read(inStream, normalT);
+        normalPath = "assets/Textures/UINT8_T_NORMALS/"+std::to_string(normalT)+"_n";
+        //NORMAL_FLAG = 0;
+        checkExtension(normalPath);
+    }
+
+    GG_Read(inStream, hasSpecularT);
+    if(hasSpecularT){
+        GG_Read(inStream, specularT);
+        // if(specularT){
+        //     specularPath = "assets/Textures/UINT8_T_SPECULAR/"+std::to_string(specularT);
+        //     checkExtension(specularPath);
+        // }
+    }
+
+    if(!hasDifuseT && !hasNormalT && !hasSpecularT){
+        Material = _AssetManager->getMaterial("Default");
+    }
+    else{
+        Material = _AssetManager->getMaterial("M_"+std::to_string(difuseT)+"_"+std::to_string(normalT)+"_"+std::to_string(specularT));
+        Material->attachShader(DEFAULT_SHADER);
+        Material->addTexture(GN::DIFFUSE_MAP,    _AssetManager->getTexture(difusePath, 3));
+        Material->addTexture(GN::NORMAL_MAP,     _AssetManager->getTexture(normalPath, 3));
+        Material->addTexture(GN::SPECULAR_MAP,   _AssetManager->getTexture(specularPath, 1));
+    }
+
+    CStaticModel* Transform = new CStaticModel(NODE->Leaf, "assets/BinaryFiles/BinaryModels/"+str+".modelgg", Material, Position, Rotation);
+    Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
+    Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
+
+}
+
 
 void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone){
 

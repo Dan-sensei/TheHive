@@ -93,7 +93,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CGun *gun = new CGun(dmg,cdc,cb,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
-    Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+    //Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
     Singleton<Motor2D>::Instance()->setbullet(0,gun->getBullets(),gun->getTotalBullets());
 
     CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);

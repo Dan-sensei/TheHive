@@ -21,11 +21,13 @@ class BVH_Node {
         static void setPlayerPtr(glm::vec3* _PlayerPosition);
         static void setCameraPtr(glm::vec3* _PlayerPosition);
 
-        BoundingBox AABB;
         StandardNode* Leaf;
         Shader* QueryShader;
         static glm::vec3* PlayerPosition;
         static glm::vec3* CameraPosition;
+        
+        glm::vec3 Min;
+        glm::vec3 Max;
 
 
         glm::vec3 CORNERS[4];
@@ -40,6 +42,7 @@ class BVH_Node {
         bool ToRender;
         bool Visible;
 
+        int8_t LastFailedFrustrumCorner;
         gg::Color col;
 };
 

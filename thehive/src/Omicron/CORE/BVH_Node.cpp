@@ -15,7 +15,7 @@ glm::vec3* BVH_Node::CameraPosition;
 #define GRADOVISION -0.17364817766
 int v = 0;
 BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, StandardNode* _Leaf)
-:AABB(_AABB), Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false)
+:Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false), LastFailedFrustrumCorner(-1)
 {
     glGenQueries(1, &QueryID);
 
@@ -49,6 +49,8 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
         std::cout << cube_strip[21] << ", "<< cube_strip[22] << ", " << cube_strip[23] << '\n';
     }
 
+    Min = _AABB.BRB;
+    Max = _AABB.ULF;
 
     uint16_t indices []=
     {
@@ -111,8 +113,8 @@ bool BVH_Node::isInsideFrustrum(const glm::vec3 &ViewDirection){
     glm::vec3 dirobj;
     glm::vec3 campos = *CameraPosition;
 
-    for (uint8_t i = 0; i < 4; ++i) {
-        dirobj = CORNERS[i] - campos;
+    if(LastFailedFrustrumCorner != -1){
+        dirobj = CORNERS[LastFailedFrustrumCorner] - campos;
         dirobj.y = 0;
         float sol         = glm::fastNormalizeDot(dirobj, ViewDirection);
         if(GRADOVISION < sol) {
@@ -120,13 +122,26 @@ bool BVH_Node::isInsideFrustrum(const glm::vec3 &ViewDirection){
         }
     }
 
+    for (uint8_t i = 0; i < 4; ++i) {
+        if(i == LastFailedFrustrumCorner) continue;
+
+        dirobj = CORNERS[i] - campos;
+        dirobj.y = 0;
+        float sol         = glm::fastNormalizeDot(dirobj, ViewDirection);
+        if(GRADOVISION < sol) {
+            LastFailedFrustrumCorner = i;
+            return true;
+        }
+    }
+
+    LastFailedFrustrumCorner = -1;
     return false;
 }
 
 
 bool BVH_Node::isCameraInside() {
     glm::vec3 CameraPos = *CameraPosition;
-    if(CameraPos.x >= AABB.BRB.x && CameraPos.x <= AABB.ULF.x  && CameraPos.y >= AABB.BRB.y && CameraPos.y <= AABB.ULF.y && CameraPos.z < AABB.BRB.z && CameraPos.z > AABB.ULF.z){
+    if(CameraPos.x >= Min.x && CameraPos.x <= Max.x  && CameraPos.y >= Min.y && CameraPos.y <= Max.y && CameraPos.z < Min.z && CameraPos.z > Max.z){
         return true;
     }
     return false;

@@ -11,14 +11,14 @@ struct BoundingBox{
         );
         BoundingBox(const BoundingBox &origin);
 
-        glm::vec3 BRB;  // Bottom Right Back
-        glm::vec3 BLB;  // Bottom Left Back
-        glm::vec3 ULB;  // Upper Left Back
-        glm::vec3 URB;  // Upper Right Back
-        glm::vec3 BRF;  // Bottom Right Front
-        glm::vec3 BLF;  // Bottom Left Front
         glm::vec3 ULF;  // Upper Left Front
         glm::vec3 URF;  // Upper Right Front
+        glm::vec3 BLF;  // Bottom Left Front
+        glm::vec3 BRF;  // Bottom Right Front
+        glm::vec3 ULB;  // Upper Left Back
+        glm::vec3 URB;  // Upper Right Back
+        glm::vec3 BLB;  // Bottom Left Back
+        glm::vec3 BRB;  // Bottom Right Back
 
 };
 

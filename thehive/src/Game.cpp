@@ -78,18 +78,17 @@ void Game::Init(){
 
     Engine->createZones(8);
 
-    // BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
-    // BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
+    BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
+    BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
-    // Los eventos son propios de cada zona!
+    //Los eventos son propios de cada zona!
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
-    //BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
-
-
-    //BinaryParser::LoadSounds();
-    //BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
-
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
+    //
+    //
+    // BinaryParser::LoadSounds();
+    // BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
 
 
     Engine2D->InitHUD();
@@ -113,32 +112,24 @@ void Game::Init(){
     uint16_t h = BinaryParser::ReadRespawnNodesData("assets/BinaryFiles/RESPAWN.data");
     // uint16_t h = sF->createHero(glm::vec3(0,30,10),-1);
     // uint16_t h = sF->createHero(glm::vec3(436.704,4.06207,-36.0146),-1);
-
-    //for (size_t i = 0; i < 50; i++) {
-    //}
-    //sF->createRusher(glm::vec3(0, 6, 0), 10);
-    //sF->createRusher(glm::vec3(5,3,65),200);
-
+    //
+    // for (size_t i = 0; i < 50; i++) {
+    // }
+    // sF->createRusher(glm::vec3(0, 6, 0), 10);
+    // sF->createRusher(glm::vec3(5,3,65),200);
+    //
     MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
     playerpos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, h));
-    //sF->createSoldierWandering(playerpos->getPosition(), 1000);
-
-
-    // uint16_t n = Manager->createEntity();
-    // CStaticModel* m = new CStaticModel("assets/BinaryFiles/BinaryModels/NavmeshCITY.modelgg", AssetManager::getMaterial("Nav"), glm::vec3(0,3,0), glm::vec3());
-    // Manager->addComponentToEntity(m,gg::STATICMODEL,n);
-
+    // sF->createSoldierWandering(playerpos->getPosition(), 1000);
 
     Accumulator = 0;
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
     //world->setDebug(true);
     MasterClock.Restart();
-    Engine2D->InitHUD();
 
     //sky.init();
     //Engine2D->prueba();
-    // //std::cout << "\n -- INIT -- " << '\n';
 
     // ParticleSystem_Data PS;
     // PS.Texture = "assets/Textures/boxtexure.jpeg";
@@ -154,16 +145,15 @@ void Game::Update(){
 
     DeltaTime = MasterClock.Restart().Seconds();
 
-    // //std::cout << " - POLL EVENTS" << '\n';
+
     Engine->PollEvents();
 
 
     if(DeltaTime > 0.25) DeltaTime = 0.25;
 
-    // //std::cout << " - WHILE" << '\n';
+
     Accumulator += DeltaTime;
 
-    // //std::cout << "  - Delta time1 : " << DeltaTime << '\n';
     // if(DeltaTime > 10000) throw std::exception();
     while(Accumulator >= 1/UPDATE_STEP){
         // FIXED UPDATE//
@@ -191,7 +181,7 @@ void Game::Update(){
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
-    //std::cout << " - " << glm::to_string(pos) << '\n';
+    // //std::cout << " - " << glm::to_string(pos) << '\n';
     pos.y += 10;
     Engine->setPosition(luz,pos);
 
@@ -207,7 +197,7 @@ void Game::Update(){
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     Engine->DisplayFPS();
-    Engine2D->DisplayHUD();
+    //Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
     // glClear(GL_DEPTH_BUFFER_BIT);
@@ -217,7 +207,6 @@ void Game::Update(){
     // =====================================================
 
 
-    // //std::cout << " - END DRAW" << '\n';
     Engine->EndDraw();
 }
 
