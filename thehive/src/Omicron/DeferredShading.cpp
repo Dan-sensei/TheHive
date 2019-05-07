@@ -259,7 +259,7 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
 
         // DEPTH BUFFER PARA NUESTRO G-BUFFER
         glBindRenderbuffer(GL_RENDERBUFFER, G_DepthBuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, SCREEN_WIDTH, SCREEN_HEIGHT);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, SCREEN_WIDTH, SCREEN_HEIGHT);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, G_DepthBuffer);
 
     //glBindFramebuffer(GL_FRAMEBUFFER, 0);

@@ -143,7 +143,7 @@ void CAgent::updatetrig(){
     glm::vec3 TF_POS = cTransform->getPosition();
 
     std::vector<std::list<TriggerRecordStruct*>::iterator> vec;
-    std::vector<std::list<TriggerRecordStruct*>::iterator>::iterator it2 = vec.begin();
+    //std::vector<std::list<TriggerRecordStruct*>::iterator>::iterator it2 = vec.begin();
 
     std::list<TriggerRecordStruct*>::iterator it = TriggerList.begin();
     while(it != TriggerList.end()){

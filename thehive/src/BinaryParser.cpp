@@ -277,7 +277,7 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
     std::cout << "NUMBER OF NODES " << (uint16_t)NUMBER_OF_NODES << '\n';
     for(uint8_t i = 0; i < NUMBER_OF_NODES; ++i) {
         BVH_Node* NODE = nullptr;
-        {
+
         float x, y, z;
 
         GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
@@ -309,18 +309,18 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
 
         uint8_t FIRST_CHILD;
         GG_Read(inStream, FIRST_CHILD);
-        FIRST_CHILD--;
-        //std::cout << (uint16_t)i << ": Father = " << (uint16_t)FATHER << " | FirstChild = " << (uint16_t)FIRST_CHILD << '\n';
+        //FIRST_CHILD--;
 
         BoundingBox B(ULF, URF, BLF, BRF, ULB, URB, BLB, BRB);
         BVH_ROOT->Hierarchy.emplace_back(FATHER, FIRST_CHILD, B, nullptr);
         NODE = &BVH_ROOT->Hierarchy.back();
-        }
+
 
 
         bool isLeaf = false;
         GG_Read(inStream, isLeaf);
 
+        //std::cout << (uint16_t)i << ": Father = " << (uint16_t)FATHER << " | FirstChild = " << (uint16_t)FIRST_CHILD << '\n';
 
         if(isLeaf) {
             NODE->Leaf = new StandardNode();

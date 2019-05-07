@@ -20,6 +20,8 @@ class BVH_ROOT_Node : public ZNode, public TEntidad {
         virtual void beginDraw();
         virtual void endDraw();
 
+        static void setCameraPtr(glm::vec3* _PlayerPosition);
+
         std::vector<BVH_Node> Hierarchy;
 
     private:
@@ -32,6 +34,8 @@ class BVH_ROOT_Node : public ZNode, public TEntidad {
 
         std::stack<BVH_Node*> TraversalStack;
         std::queue<BVH_Node*> QueryQueue;
+        static glm::vec3* CameraPosition;
+
 
 
         uint8_t FrameID;

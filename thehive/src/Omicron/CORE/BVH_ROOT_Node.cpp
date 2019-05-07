@@ -1,4 +1,7 @@
 #include "BVH_ROOT_Node.hpp"
+#include <glm/gtx/norm.hpp>
+
+glm::vec3* BVH_ROOT_Node::CameraPosition;
 
 
 BVH_ROOT_Node::BVH_ROOT_Node(ZNode* P)
@@ -21,16 +24,14 @@ BVH_ROOT_Node::~BVH_ROOT_Node(){
 bool BVH_ROOT_Node::isLeaf(){
     return false;
 }
-#include <Singleton.hpp>
-#include <Omicron/Omicron.hpp>
+// #include <Singleton.hpp>
+// #include <Omicron/Omicron.hpp>
 #include <iostream>
+
 void BVH_ROOT_Node::draw(){
     // Coherent Hierarchical Culling
-
     glm::vec3 ViewDirection = glm::vec3(-viewMatrix[0][2], 0, -viewMatrix[2][2]);
     TraversalStack.push(&Hierarchy[0]);
-    TraversalStack.push(&Hierarchy[1]);
-
     while(!TraversalStack.empty() || !QueryQueue.empty()){
         while ( !QueryQueue.empty() && (QueryResultAvailable(QueryQueue.front()) || TraversalStack.empty()) ) {
             BVH_Node* N = QueryQueue.front();
@@ -38,8 +39,7 @@ void BVH_ROOT_Node::draw(){
 
             unsigned int visiblePixels = 0;
             glGetQueryObjectuiv(N->QueryID, GL_QUERY_RESULT, &visiblePixels);
-            std::cout << "Visible pixels " << visiblePixels << '\n';
-            if ( visiblePixels > 5000 ) {
+            if ( visiblePixels > 15 ) {
                 PullUpVisibility(N);
                 TraverseNode(N);
             }
@@ -49,28 +49,35 @@ void BVH_ROOT_Node::draw(){
             BVH_Node* N = TraversalStack.top();
             TraversalStack.pop();
             if ( N->isInsideFrustrum( ViewDirection ) ) {
-                // identify previously visible nodes
+
                 bool wasVisible = N->Visible && (N->LastVisited == FrameID - 1);
-                // identify previously opened nodes
                 bool opened = wasVisible && !(N->isLeaf());
-                // reset node’s visibility classification
                 N->Visible = false;
-                // update node’s visited flag
                 N->LastVisited = FrameID;
                 N->ToRender = true;
-                // skip testing all previously opened nodes
                 if ( !opened ) {
-                    IssueOcclusionQuery(N);
-                    QueryQueue.push(N);
+                    if(N->isCameraInside()){
+                        PullUpVisibility(N);
+                        TraverseNode(N);
+                    }
+                    else{
+                        IssueOcclusionQuery(N);
+                        QueryQueue.push(N);
+                    }
                 }
-                // traverse a node unless it was invisible
+
                 if ( wasVisible )
                     TraverseNode(N);
             }
         }
-
     }
     ++FrameID;
+
+    // glm::mat4 VP = projMatrix * viewMatrix;
+    // for(uint8_t i = 0; i < Hierarchy.size(); ++i){
+    //     if(Hierarchy[i].isLeaf())
+    //         Hierarchy[i].DrawBounding(VP);
+    // }
 }
 
 bool BVH_ROOT_Node::QueryResultAvailable(BVH_Node* N) {
@@ -83,13 +90,37 @@ void BVH_ROOT_Node::TraverseNode(BVH_Node* N) {
     if ( N->isLeaf() )
         Render(N);
     else{
-        TraversalStack.push(&Hierarchy[N->FirstChild]);
-        TraversalStack.push(&Hierarchy[N->FirstChild+1]);
+        glm::vec3 LocalCameraPosition = *CameraPosition;
+
+        float minA = glm::length2(Hierarchy[N->FirstChild].CORNERS[0] - LocalCameraPosition);
+        for(uint8_t i = 1; i < 4; ++i){
+            float corner = glm::length2(Hierarchy[N->FirstChild].CORNERS[i] - LocalCameraPosition);
+            if(corner < minA){
+                minA = corner;
+            }
+        }
+
+        float minB = glm::length2(Hierarchy[N->FirstChild+1].CORNERS[0] - LocalCameraPosition);
+        for(uint8_t i = 1; i < 4; ++i){
+            float corner = glm::length2(Hierarchy[N->FirstChild+1].CORNERS[i] - LocalCameraPosition);
+            if(corner < minB){
+                minB = corner;
+            }
+        }
+
+        if(minA < minB){
+            TraversalStack.push(&Hierarchy[N->FirstChild+1]);
+            TraversalStack.push(&Hierarchy[N->FirstChild]);
+        }
+        else{
+            TraversalStack.push(&Hierarchy[N->FirstChild]);
+            TraversalStack.push(&Hierarchy[N->FirstChild+1]);
+        }
     }
 }
 
 void BVH_ROOT_Node::PullUpVisibility(BVH_Node* N) {
-    while (!N->Visible && (N->Father != 0 && N->Father != 1)) {
+    while (!N->Visible) {
         N->Visible = true;
         N = &Hierarchy[N->Father];
     }
@@ -104,10 +135,20 @@ void BVH_ROOT_Node::Render(BVH_Node* N) {
 
 void BVH_ROOT_Node::IssueOcclusionQuery(BVH_Node* N) {
     glm::mat4 VP = projMatrix * viewMatrix;
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    glDepthMask(GL_FALSE);
+
     glBeginQuery(GL_SAMPLES_PASSED, N->QueryID);
     N->DrawBounding(VP);
     glEndQuery(GL_SAMPLES_PASSED);
+
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glDepthMask(GL_TRUE);
 }
 
 void BVH_ROOT_Node::beginDraw(){};
 void BVH_ROOT_Node::endDraw(){};
+
+void BVH_ROOT_Node::setCameraPtr(glm::vec3* _PlayerPosition){
+    CameraPosition = _PlayerPosition;
+}

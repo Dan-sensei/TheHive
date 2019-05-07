@@ -100,7 +100,7 @@ void Game::Init(){
 
 
     auto sF = Singleton<Factory>::Instance();
-    Engine->crearCamara(90,0.15f,300.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
+    Engine->crearCamara(90,0.15f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 
 
@@ -210,8 +210,8 @@ void Game::Update(){
     Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-    //glClear(GL_DEPTH_BUFFER_BIT);
-    //Engine->DrawZero();
+    // glClear(GL_DEPTH_BUFFER_BIT);
+    // Engine->DrawZero();
     //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================

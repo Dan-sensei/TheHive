@@ -28,10 +28,6 @@ Omicron::Omicron()
 
 Omicron::~Omicron(){}
 
-void Omicron::Bind_G_Buffer(){
-    _DeferredShading.Bind_G_Buffer();
-}
-
 void Omicron::createZones(uint8_t NumberOfZones){
     NumberOfZones += 1;
     ZONES.reserve(NumberOfZones);
@@ -208,6 +204,10 @@ void Omicron::BeginDraw(){
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
+
+#define VIEWPORT_X 1280
+#define VIEWPORT_Y 720
+
 void Omicron::draw(){
     ++FPS;
     DRAW_OBJECTS = 0;
@@ -220,7 +220,7 @@ void Omicron::draw(){
 
     // Ahora bindeamos nuestro G-Búffer y renderizamos a las texturas
     _DeferredShading.Bind_G_Buffer();
-    glViewport(0,0,1280, 720);
+    glViewport(0,0, VIEWPORT_X, VIEWPORT_Y);
     ESCENA->ROOT_ObjectsUpdate();
     _DeferredShading.DrawQuad();
     glUniform1f(7, FPS/60.f);
@@ -319,7 +319,7 @@ bool Omicron::Initialize(){
     WINDOW_WIDTH = mode->width;
     WINDOW_HEIGHT = mode->height;
 
-	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", NULL, NULL);
+	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", nullptr, NULL);
 	if( window == NULL ){
 	    glfwTerminate();
 	    return false;
@@ -337,16 +337,16 @@ bool Omicron::Initialize(){
 	    return false;
 	}
 
-    _DeferredShading.init(1280, 720);
+    _DeferredShading.init(VIEWPORT_X, VIEWPORT_Y);
 
     glDepthRange(0.f,1.f);
 
 	glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    // glFrontFace(GL_CCW);
-    // glEnable(GL_CULL_FACE);
-    // glCullFace (GL_BACK);
+    glFrontFace(GL_CCW);
+    glEnable(GL_CULL_FACE);
+    glCullFace (GL_BACK);
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetInputMode(window,      GLFW_CURSOR, GLFW_CURSOR_DISABLED);

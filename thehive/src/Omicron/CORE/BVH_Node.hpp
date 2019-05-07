@@ -16,10 +16,12 @@ class BVH_Node {
         virtual bool isLeaf();
         void DrawBounding(const glm::mat4 &VP);
         bool isInsideFrustrum(const glm::vec3 &ViewDirection);
+        bool isCameraInside();
 
         static void setPlayerPtr(glm::vec3* _PlayerPosition);
         static void setCameraPtr(glm::vec3* _PlayerPosition);
 
+        BoundingBox AABB;
         StandardNode* Leaf;
         Shader* QueryShader;
         static glm::vec3* PlayerPosition;

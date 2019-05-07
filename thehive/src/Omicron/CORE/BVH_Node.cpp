@@ -13,9 +13,9 @@ glm::vec3* BVH_Node::CameraPosition;
 
 #include <iostream>
 #define GRADOVISION -0.17364817766
-
+int v = 0;
 BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, StandardNode* _Leaf)
-:Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false)
+:AABB(_AABB), Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false)
 {
     glGenQueries(1, &QueryID);
 
@@ -38,16 +38,16 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
     CORNERS[2] = _AABB.BRF;
     CORNERS[3] = _AABB.BLF;
 
-    // if(v == 0 || v == 81){
-    //     std::cout << cube_strip[0] << ", "<< cube_strip[1] << ", " << cube_strip[2] << '\n';
-    //     std::cout << cube_strip[3] << ", "<< cube_strip[4] << ", " << cube_strip[5] << '\n';
-    //     std::cout << cube_strip[6] << ", "<< cube_strip[7] << ", " << cube_strip[8] << '\n';
-    //     std::cout << cube_strip[9] << ", "<< cube_strip[10] << ", " << cube_strip[11] << '\n';
-    //     std::cout << cube_strip[12] << ", "<< cube_strip[13] << ", " << cube_strip[14] << '\n';
-    //     std::cout << cube_strip[15] << ", "<< cube_strip[16] << ", " << cube_strip[17] << '\n';
-    //     std::cout << cube_strip[18] << ", "<< cube_strip[19] << ", " << cube_strip[20] << '\n';
-    //     std::cout << cube_strip[21] << ", "<< cube_strip[22] << ", " << cube_strip[23] << '\n';
-    // }
+    if(v == 81){
+        std::cout << cube_strip[0] << ", "<< cube_strip[1] << ", " << cube_strip[2] << '\n';
+        std::cout << cube_strip[3] << ", "<< cube_strip[4] << ", " << cube_strip[5] << '\n';
+        std::cout << cube_strip[6] << ", "<< cube_strip[7] << ", " << cube_strip[8] << '\n';
+        std::cout << cube_strip[9] << ", "<< cube_strip[10] << ", " << cube_strip[11] << '\n';
+        std::cout << cube_strip[12] << ", "<< cube_strip[13] << ", " << cube_strip[14] << '\n';
+        std::cout << cube_strip[15] << ", "<< cube_strip[16] << ", " << cube_strip[17] << '\n';
+        std::cout << cube_strip[18] << ", "<< cube_strip[19] << ", " << cube_strip[20] << '\n';
+        std::cout << cube_strip[21] << ", "<< cube_strip[22] << ", " << cube_strip[23] << '\n';
+    }
 
 
     uint16_t indices []=
@@ -80,6 +80,7 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
 
     QueryShader = Singleton<AssetManager>::Instance()->getShader("Query");
     col = gg::Color(gg::genIntRandom(0,255), gg::genIntRandom(0,255), gg::genIntRandom(0,255));
+    ++v;
 }
 
 bool BVH_Node::isLeaf(){
@@ -95,17 +96,13 @@ BVH_Node::~BVH_Node(){
 }
 
 void BVH_Node::DrawBounding(const glm::mat4 &VP){
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    glDepthMask(GL_FALSE);
+
     QueryShader->Bind();
     glBindVertexArray(VAO_Bounding);
     glUniformMatrix4fv(1,1,GL_FALSE,&VP[0][0]);
     glUniform3f(2, col.R, col.G, col.B);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, nullptr);
-    Singleton<Omicron>::Instance()->Bind_G_Buffer();
-    glDepthMask(GL_TRUE);
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
 }
 
 bool BVH_Node::isInsideFrustrum(const glm::vec3 &ViewDirection){
@@ -123,6 +120,15 @@ bool BVH_Node::isInsideFrustrum(const glm::vec3 &ViewDirection){
         }
     }
 
+    return false;
+}
+
+
+bool BVH_Node::isCameraInside() {
+    glm::vec3 CameraPos = *CameraPosition;
+    if(CameraPos.x >= AABB.BRB.x && CameraPos.x <= AABB.ULF.x  && CameraPos.y >= AABB.BRB.y && CameraPos.y <= AABB.ULF.y && CameraPos.z < AABB.BRB.z && CameraPos.z > AABB.ULF.z){
+        return true;
+    }
     return false;
 }
 

@@ -43,12 +43,17 @@ vec3 getViewPosition(float Depth) {
 #define FOG_GRADIENT 0.8f * 0.8f
 
 
-
+#define FOG_COLOR vec4(57,35,22, 1)
+#define NormFogColor vec4(FOG_COLOR.x/255.f, FOG_COLOR.y/255.f, FOG_COLOR.z/255.f, 1.f)
 
 void main()
 {
     vec4 DiffuseTexture = texture(gDiffuseSpec, UV);
     float SpecularTex = DiffuseTexture.a;
+    if(SpecularTex == 1){
+        gRender = NormFogColor;
+        return;
+    }
 
     float dist;
     float attenuation;
@@ -183,6 +188,6 @@ for(int i = 0;  i< NLUCESF; i++)
     FogBlendFactor = clamp(FogBlendFactor, 0.0, 1.0);
 
     gRender = vec4(FinalPixelColor, 1.0);
-    gRender = mix(vec4(60.f/255, 87.f/255, 106.f/255, 1.0), gRender, FogBlendFactor);
+    gRender = mix(NormFogColor, gRender, FogBlendFactor);
 
 }
