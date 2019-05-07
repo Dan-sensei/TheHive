@@ -26,13 +26,64 @@ Motor2D::Motor2D(){
 
     s_hover = new SonidoNormal();
     SS->createSound("event:/SFX/Menu/Seleccionar",s_hover);
-
+    muteEffect = false;
+    muteMusic = false;
+    muteDialog = false;
 }
 
 
 Motor2D::~Motor2D(){
     //delete s_hover;
     CLINMenu();
+}
+
+void Motor2D::colorMute(EnumButtonType tipo){
+    auto it=BOTONES.begin();
+    while(it!=BOTONES.end()){
+        if((*it)->getType() == tipo){
+            if (tipo == MUTEEFFECT){
+                if(muteEffect==true){
+                    (*it)->setColorInicial(glm::vec4 (0,0,0,1));
+                    (*it)->setColor(glm::vec4 (0,0,0,1));
+                    muteEffect = false;
+                }
+                else{
+                    (*it)->setColorInicial(glm::vec4 (1,0,0,1));
+                    (*it)->setColor(glm::vec4 (1,0,0,1));
+                    muteEffect = true;
+                }
+            }
+
+            if (tipo == MUTEMUSIC){
+                if(muteMusic==true){
+                    (*it)->setColorInicial(glm::vec4 (0,0,0,1));
+                    (*it)->setColor(glm::vec4 (0,0,0,1));
+                    muteMusic = false;
+                }
+                else{
+                    (*it)->setColorInicial(glm::vec4 (1,0,0,1));
+                    (*it)->setColor(glm::vec4 (1,0,0,1));
+                    muteMusic = true;
+                }
+            }
+
+            if (tipo == MUTEDIALOD){
+                if(muteDialog==true){
+                    (*it)->setColorInicial(glm::vec4 (0,0,0,1));
+                    (*it)->setColor(glm::vec4 (0,0,0,1));
+                    muteDialog = false;
+                }
+                else{
+                    (*it)->setColorInicial(glm::vec4 (1,0,0,1));
+                    (*it)->setColor(glm::vec4 (1,0,0,1));
+                    muteDialog = true;
+                }
+            }
+
+
+        }
+        it++;
+    }
 }
 
 void Motor2D::draw(){
@@ -386,18 +437,31 @@ int Motor2D::InitMenu6(){
     addButton(55,40,2,5,MOREDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
     addButton(58,40,2,5,LESSDIALOD,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
     addButton(61,40,2,5,MUTEDIALOD,"assets/HUD/mute.png","assets/HUD/mute.png","");
+    if(muteDialog){
+        muteDialog = false;
+        colorMute(MUTEDIALOD);
+    };
+
 
     addText(35,47,"Music"  );
     addText(45,47,std::to_string(VolMusic));
     addButton(55,46,2,5,MOREMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
     addButton(58,46,2,5,LESSMUSIC,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
     addButton(61,46,2,5,MUTEMUSIC,"assets/HUD/mute.png","assets/HUD/mute.png","");
+    if(muteMusic){
+        muteMusic = false;
+        colorMute(MUTEMUSIC);
+    };
 
     addText(35,53,"Effects"    );
     addText(45,53, std::to_string(VolEffect) );
     addButton(55,52,2,5,MOREEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","+");
     addButton(58,52,2,5,LESSEFFECT,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","-");
     addButton(61,52,2,5,MUTEEFFECT,"assets/HUD/mute.png","assets/HUD/mute.png","");
+    if(muteEffect){
+        muteEffect = false;
+        colorMute(MUTEEFFECT);
+    };
 
     addButton(20,20,5,9,GOINITOPTIONS,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
 
@@ -524,6 +588,7 @@ void Motor2D::InitHUD(){
     VolMusic    =   50;
 
 }
+
 
 
 

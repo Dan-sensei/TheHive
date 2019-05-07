@@ -228,7 +228,7 @@ void GUIController::lessDialog(){
 
 void GUIController::muteDialog(){
     SS->setMute("bus:/Voces");
-
+    Engine2D->colorMute(MUTEDIALOD);
 }
 //but 20
 void GUIController::moreMusic(){
@@ -251,6 +251,7 @@ void GUIController::lessMusic(){
 
 void GUIController::muteMusic(){
     SS->setMute("bus:/Musica");
+    Engine2D->colorMute(MUTEMUSIC);
 }
 //but 22
 void GUIController::moreEffect(){
@@ -273,6 +274,7 @@ void GUIController::lessEffect(){
 
 void GUIController::muteEffect(){
     SS->setMute("bus:/SFX");
+    Engine2D->colorMute(MUTEEFFECT);
 }
 
 

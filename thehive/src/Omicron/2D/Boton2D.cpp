@@ -37,13 +37,16 @@ void Boton2D::hover(bool dato){
         hov=dato;
         Imagen.setImage(imgHover_Selected);
         //setColor(glm::vec4(0,111/250.0,0,1));
-        setColor(glm::vec4(0.1,0.1,0.1,1));
+        Imagen.setColor(glm::vec4(0.1,0.1,0.1,1));
+        text.setColor(glm::vec4(0.1,0.1,0.1,1));
     }else if(dato!=hov){
         //princ
-        setColor(glm::vec4(0,0,0,1));
+        Imagen.assignColor();
+        text.setColor(Imagen.getColor());
         //setColor(glm::vec4(0,75/250.0,0,1));
         hov=dato;
         Imagen.setImage(imgPrincipal);
+
 
     }
 }
@@ -62,6 +65,12 @@ void Boton2D::setColor(glm::vec4 _color){
     Imagen.setColor(_color);
     text.setColor(_color);
 }
+
+void Boton2D::setColorInicial(glm::vec4 _color){
+    Imagen.setColorInicial(_color);
+    text.setColor(_color);
+}
+
 void Boton2D::setImage(const std::string &Name){
     Imagen.setImage(Name);
 

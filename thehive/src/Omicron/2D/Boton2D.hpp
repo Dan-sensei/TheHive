@@ -25,6 +25,7 @@ class Boton2D {
         void setImage(const std::string &Name);
 
         void setColor(glm::vec4 _color);
+        void setColorInicial(glm::vec4 _color);
         bool checkOn(float x,float y);
         void hover(bool dato);
         int getType();

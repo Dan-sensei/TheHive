@@ -53,7 +53,7 @@ void Imagen2D::setSesgado(float res){
 }
 
 Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(-0.9999),inicio(nullptr),texturaURL(Name)
+:VAO(0),VBO(0),EBO(0),color(1,1,1,1), colorInicial(0,0,0,1),textureID(0),index(-0.9999),inicio(nullptr),texturaURL(Name)
 {
     auto sh=Singleton<AssetManager>::Instance();
     inicio=sh->getShader("2D");
@@ -154,6 +154,18 @@ void Imagen2D::setPos(float x,float y,float w,float h){
 
 void Imagen2D::setColor(glm::vec4 _color){
     color=_color;
+}
+
+void Imagen2D::setColorInicial(glm::vec4 _color){
+    colorInicial=_color;
+}
+
+void Imagen2D::assignColor(){
+    color = colorInicial;
+}
+
+glm::vec4 Imagen2D::getColor(){
+    return color;
 }
 
 void Imagen2D::setImage(const std::string &Name){

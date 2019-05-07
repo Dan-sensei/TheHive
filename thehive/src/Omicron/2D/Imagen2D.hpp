@@ -22,6 +22,10 @@ class Imagen2D {
         std::string getImage();
 
         void setColor(glm::vec4 _color);
+        void setColorInicial(glm::vec4 _color);
+        void assignColor();
+        glm::vec4 getColor();
+
         float getX();
         float getW();
         float getY();
@@ -36,6 +40,7 @@ class Imagen2D {
 
             float index;
             glm::vec4 color;
+            glm::vec4 colorInicial;
             unsigned int VAO;
             unsigned int VBO;
             unsigned int EBO;
