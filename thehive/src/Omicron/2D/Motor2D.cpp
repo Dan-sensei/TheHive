@@ -312,7 +312,8 @@ int Motor2D::InitMenu(){
     AddImage("assets/HUD/menu.png",0,0,100,100);
     //addText(45,10,"Menu principal");
 
-    auto but1=addButton(39,57,9,12,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Play");
+    // auto but1=addButton(39,57,9,12,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Play");
+    auto but1=addButton(39,57,9,12,START,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Play");
     but1->setSesgo(-0.015);
     but1=addButton(37,70,10,14,GOCREDITS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Credits");
     but1->setSesgo(-0.02);
