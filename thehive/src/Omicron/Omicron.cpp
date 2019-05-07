@@ -300,6 +300,8 @@ void Omicron::close(){
 
 void Omicron::DrawZero(){
     ZONES[1]->drawRoot();
+    ZONES[4]->drawRoot();
+    ZONES[6]->drawRoot();
 }
 
 

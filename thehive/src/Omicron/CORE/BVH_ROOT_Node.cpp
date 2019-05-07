@@ -30,6 +30,8 @@ bool BVH_ROOT_Node::isLeaf(){
 
 void BVH_ROOT_Node::draw(){
     // Coherent Hierarchical Culling
+
+    // std::cout << "BEGINDRAW" << '\n';
     glm::vec3 ViewDirection = glm::vec3(-viewMatrix[0][2], 0, -viewMatrix[2][2]);
     TraversalStack.push(&Hierarchy[0]);
     while(!TraversalStack.empty() || !QueryQueue.empty()){
@@ -39,6 +41,7 @@ void BVH_ROOT_Node::draw(){
 
             unsigned int visiblePixels = 0;
             glGetQueryObjectuiv(N->QueryID, GL_QUERY_RESULT, &visiblePixels);
+            //std::cout << "VISIBLE PIXELS IN " << N   << " " << visiblePixels << '\n';
             if ( visiblePixels > 15 ) {
                 PullUpVisibility(N);
                 TraverseNode(N);
@@ -48,15 +51,19 @@ void BVH_ROOT_Node::draw(){
         if ( !TraversalStack.empty() ) {
             BVH_Node* N = TraversalStack.top();
             TraversalStack.pop();
+            //std::cout << "Node = " << N << '\n';
             if ( N->isInsideFrustrum( ViewDirection ) ) {
 
-                bool wasVisible = N->Visible && (N->LastVisited == FrameID - 1);
+                uint8_t PREV_FRAMEID = FrameID - 1;
+                //std::cout << "CHECKING NODE " << N << " N->Visible = " << N->Visible << " | N->LastVisited = " << (uint16_t)N->LastVisited << '\n';
+                bool wasVisible = N->Visible && (N->LastVisited == PREV_FRAMEID);
                 bool opened = wasVisible && !(N->isLeaf());
                 N->Visible = false;
                 N->LastVisited = FrameID;
                 N->ToRender = true;
                 if ( !opened ) {
                     if(N->isCameraInside()){
+                        //std::cout << " --INSIDE" << '\n';
                         PullUpVisibility(N);
                         TraverseNode(N);
                     }
@@ -72,6 +79,7 @@ void BVH_ROOT_Node::draw(){
         }
     }
     ++FrameID;
+    // std::cout << "ENDDRAW" << '\n' << '\n';
 
     // glm::mat4 VP = projMatrix * viewMatrix;
     // for(uint8_t i = 0; i < Hierarchy.size(); ++i){
@@ -109,10 +117,12 @@ void BVH_ROOT_Node::TraverseNode(BVH_Node* N) {
         }
 
         if(minA < minB){
+            //std::cout << &Hierarchy[N->FirstChild] << " -> " << &Hierarchy[N->FirstChild+1] << '\n';
             TraversalStack.push(&Hierarchy[N->FirstChild+1]);
             TraversalStack.push(&Hierarchy[N->FirstChild]);
         }
         else{
+            //std::cout << &Hierarchy[N->FirstChild+1] << " -> " << &Hierarchy[N->FirstChild] << '\n';
             TraversalStack.push(&Hierarchy[N->FirstChild]);
             TraversalStack.push(&Hierarchy[N->FirstChild+1]);
         }
@@ -128,6 +138,7 @@ void BVH_ROOT_Node::PullUpVisibility(BVH_Node* N) {
 
 void BVH_ROOT_Node::Render(BVH_Node* N) {
     if(N->ToRender) {
+        //std::cout << "DRAW " << N << '\n';
         N->Leaf->draw();
         N->ToRender = false;
     }

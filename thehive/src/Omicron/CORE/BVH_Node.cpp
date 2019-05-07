@@ -11,9 +11,9 @@ glm::vec3* BVH_Node::CameraPosition;
 // :BVH_Node(P, 0, BoundingBox(), nullptr)
 // {}
 
-#include <iostream>
+//#include <iostream>
 #define GRADOVISION -0.17364817766
-int v = 0;
+//int v = 0;
 BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, StandardNode* _Leaf)
 :Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false), LastFailedFrustrumCorner(-1)
 {
@@ -38,16 +38,16 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
     CORNERS[2] = _AABB.BRF;
     CORNERS[3] = _AABB.BLF;
 
-    if(v == 81){
-        std::cout << cube_strip[0] << ", "<< cube_strip[1] << ", " << cube_strip[2] << '\n';
-        std::cout << cube_strip[3] << ", "<< cube_strip[4] << ", " << cube_strip[5] << '\n';
-        std::cout << cube_strip[6] << ", "<< cube_strip[7] << ", " << cube_strip[8] << '\n';
-        std::cout << cube_strip[9] << ", "<< cube_strip[10] << ", " << cube_strip[11] << '\n';
-        std::cout << cube_strip[12] << ", "<< cube_strip[13] << ", " << cube_strip[14] << '\n';
-        std::cout << cube_strip[15] << ", "<< cube_strip[16] << ", " << cube_strip[17] << '\n';
-        std::cout << cube_strip[18] << ", "<< cube_strip[19] << ", " << cube_strip[20] << '\n';
-        std::cout << cube_strip[21] << ", "<< cube_strip[22] << ", " << cube_strip[23] << '\n';
-    }
+    // if(v == 82){
+    //     std::cout << cube_strip[0] << ", "<< cube_strip[1] << ", " << cube_strip[2] << '\n';
+    //     std::cout << cube_strip[3] << ", "<< cube_strip[4] << ", " << cube_strip[5] << '\n';
+    //     std::cout << cube_strip[6] << ", "<< cube_strip[7] << ", " << cube_strip[8] << '\n';
+    //     std::cout << cube_strip[9] << ", "<< cube_strip[10] << ", " << cube_strip[11] << '\n';
+    //     std::cout << cube_strip[12] << ", "<< cube_strip[13] << ", " << cube_strip[14] << '\n';
+    //     std::cout << cube_strip[15] << ", "<< cube_strip[16] << ", " << cube_strip[17] << '\n';
+    //     std::cout << cube_strip[18] << ", "<< cube_strip[19] << ", " << cube_strip[20] << '\n';
+    //     std::cout << cube_strip[21] << ", "<< cube_strip[22] << ", " << cube_strip[23] << '\n';
+    // }
 
     Min = _AABB.BRB;
     Max = _AABB.ULF;
@@ -80,9 +80,9 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
 
     glBindVertexArray(0);
 
-    QueryShader = Singleton<AssetManager>::Instance()->getShader("Query");
+    QueryShader = Singleton<AssetManager>::Instance()->getShader("Lines");
     col = gg::Color(gg::genIntRandom(0,255), gg::genIntRandom(0,255), gg::genIntRandom(0,255));
-    ++v;
+    //++v;
 }
 
 bool BVH_Node::isLeaf(){

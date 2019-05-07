@@ -82,7 +82,9 @@ class CAgent : public IComponent {
 
 
         // void getWeaponInformation(float&, float&, float&, float&, int&, int);
-        std::array<std::string, 7> zonesArray;
+        //const std::string &DARTA, int8_t map_zone
+        using pLoad = void (*)(const std::string &, int8_t);
+        std::array<std::pair<std::string, pLoad>, 7> zonesArray;
 
         // ---------------------------
         // Lo chido

@@ -93,7 +93,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CGun *gun = new CGun(dmg,cdc,cb,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
-    //Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+    Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
     Singleton<Motor2D>::Instance()->setbullet(0,gun->getBullets(),gun->getTotalBullets());
 
     CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
@@ -158,7 +158,7 @@ uint16_t Factory::createSoldier(StandardNode* FATHER, const glm::vec3 &Position,
 
 uint16_t Factory::createRusher(const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Morado");
+    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
 
     CTransform* Transform               = new CTransform(Position, glm::vec3(0, 0, 0));
@@ -188,7 +188,7 @@ uint16_t Factory::createRusher(const glm::vec3 &Position,const float &health){
 
 uint16_t Factory::createTank(const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Morado");
+    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
 
     CTransform* Transform               = new CTransform(Position, glm::vec3(0, 0, 0));
@@ -218,7 +218,7 @@ uint16_t Factory::createTank(const glm::vec3 &Position,const float &health){
 
 uint16_t Factory::createSingleSwarm(StandardNode* FATHER, const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
-    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Morado");
+    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
     //Material moradoDeLos80("assets/Models/obradearte/prueba1.png");
 
@@ -327,7 +327,7 @@ uint16_t Factory::createSwarm(const glm::vec3 &Position,const float &health) {
 
 uint16_t Factory::createSenyuelo(const glm::vec3 &Position, const glm::vec3 &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Blue");
+    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
 
     CTransform* Transform = new CTransform(Position, glm::vec3(0,0,0));
@@ -349,7 +349,7 @@ uint16_t Factory::createSenyuelo(const glm::vec3 &Position, const glm::vec3 &Imp
 }
 uint16_t Factory::createMatriuska(const glm::vec3 &Position, const glm::vec3 &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Blue");
+    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
     CTransform* Transform = new CTransform(Position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
@@ -371,7 +371,7 @@ uint16_t Factory::createMatriuska(const glm::vec3 &Position, const glm::vec3 &Im
 
 uint16_t Factory::createHolyBomb(const glm::vec3 &Position, const glm::vec3 &Impulse) {
     uint16_t holyBomb = Manager->createEntity();
-    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Blue");
+    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
     CTransform* Transform = new CTransform(Position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
@@ -393,7 +393,7 @@ uint16_t Factory::createHolyBomb(const glm::vec3 &Position, const glm::vec3 &Imp
 
 uint16_t Factory::createCollectableWeapon(const glm::vec3 &_position, int _weaponType){
     uint16_t weapon = Manager->createEntity();
-    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Blue");
+    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
     CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, weapon);
@@ -415,7 +415,7 @@ uint16_t Factory::createCollectableWeapon(const glm::vec3 &_position, int _weapo
 
 uint16_t Factory::createPickableItem(StandardNode* FATHER, const glm::vec3 &_position){
     uint16_t item = Manager->createEntity();
-    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Morado");
+    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
 
     CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
@@ -438,13 +438,13 @@ uint16_t Factory::createPickableItem(StandardNode* FATHER, const glm::vec3 &_pos
 
 uint16_t Factory::createTouchableObject(StandardNode* FATHER, const std::string &_path, const glm::vec3 &_position, const glm::quat &_rotation, const uint16_t &_id, const glm::vec3 &vel, const int &_dur, int type, uint16_t _item){
     uint16_t t_obj = Manager->createEntity();
-    ZMaterial* moradoDeLos80=Singleton<AssetManager>::Instance()->getMaterial("Grey");
+    ZMaterial* moradoDeLos80=Singleton<AssetManager>::Instance()->getMaterial("Default");
 
     if (type==1)
-    moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Grey");
+    moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
     else
-    moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Red");
+    moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Default");
 
     // t_obj    : Objeto que va a disparar el evento
     // _position: Posicion del interruptor
