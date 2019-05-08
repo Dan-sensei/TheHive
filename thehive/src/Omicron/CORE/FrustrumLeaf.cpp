@@ -50,7 +50,6 @@ bool FrustrumLeaf::isInsideFrustrum(const glm::vec2 &ViewDirection){
 
     if(LastFailedFrustrumCorner != -1){
         dirobj = CORNERS[LastFailedFrustrumCorner] - campos;
-        dirobj.y = 0;
         float sol         = glm::fastNormalizeDot(dirobj, ViewDirection);
         if(GRADOVISION < sol) {
             return true;
@@ -61,7 +60,6 @@ bool FrustrumLeaf::isInsideFrustrum(const glm::vec2 &ViewDirection){
         if(i == LastFailedFrustrumCorner) continue;
 
         dirobj = CORNERS[i] - campos;
-        dirobj.y = 0;
         float sol         = glm::fastNormalizeDot(dirobj, ViewDirection);
         if(GRADOVISION < sol) {
             LastFailedFrustrumCorner = i;

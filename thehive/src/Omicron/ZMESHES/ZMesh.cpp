@@ -7,7 +7,6 @@
 #define LOD1 10000
 #define KILL 100
 //#define GRADOVISION cos(30*3.14159265359/180.f)
-#define GRADOVISION -0.17364817766
 
 
 glm::vec3* ZMesh::PlayerPosition;
