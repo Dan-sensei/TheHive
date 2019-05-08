@@ -124,7 +124,7 @@ StandardNode* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const g
     return Luz;
 }
 
-ZNode* Omicron::createStaticMesh(StandardNode* FATHER, const char* _path, const glm::vec3& pos, const glm::quat &Rotation, const std::string& BoundingBoxPath){
+ZNode* Omicron::createStaticMesh(StandardNode* FATHER, const char* _path, const glm::vec3& pos, const glm::quat &Rotation){
 
     TTransform T_Position;
     TTransform T_Rotation;
@@ -135,24 +135,22 @@ ZNode* Omicron::createStaticMesh(StandardNode* FATHER, const char* _path, const 
 
     ZStaticMesh* M = new ZStaticMesh(Model);
     M->load(_path);
-    M->loadBoundingBox(BoundingBoxPath);
 
     Leaf* Malla = new Leaf(FATHER, M);
 
     return Malla;
 }
 
-ZNode* Omicron::createMovableMesh(StandardNode* FATHER, const char* _path, const glm::vec3& pos, const glm::quat &Rotation, const std::string& BoundingBoxPath){
+ZNode* Omicron::createMovableMesh(StandardNode* FATHER, const char* _path, const glm::vec3& pos, const glm::quat &Rotation){
     ZMovableMesh* M = new ZMovableMesh();
     M->load(_path);
-    M->loadBoundingBox(BoundingBoxPath);
 
     Leaf* Malla = new Leaf(bindTransform(pos,Rotation, FATHER), M);
 
     return Malla;
 }
 
-ZNode* Omicron::CreateDynamicMesh(StandardNode* FATHER, const glm::vec3& Position, const glm::quat& Rotation, const std::string& BoundingBoxPath){
+ZNode* Omicron::CreateDynamicMesh(StandardNode* FATHER, const glm::vec3& Position, const glm::quat& Rotation){
     ZDynamicMesh* M = new ZDynamicMesh();
 
     Leaf* Malla = new Leaf(bindTransform(Position, Rotation, FATHER), M);
@@ -362,11 +360,6 @@ void Omicron::deleteLeafNode(ZNode *node){
     ZNode *tmp = node->getPadre()->getPadre();
     StandardNode *FATHER = static_cast<StandardNode*>(tmp->getPadre());
     FATHER->remHijo(tmp);
-}
-
-void Omicron::deleteZStaticMeshLeafNode(ZNode *node){
-    StandardNode *FATHER = static_cast<StandardNode*>(node->getPadre());
-    FATHER->remHijo(node);
 }
 
 void Omicron::SetMapZoneVisibility(const int8_t &zone,const bool &flag){

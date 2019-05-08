@@ -36,8 +36,6 @@ class BVH_ROOT_Node : public ZNode, public TEntidad {
         std::queue<BVH_Node*> QueryQueue;
         static glm::vec3* CameraPosition;
 
-
-
         uint8_t FrameID;
 
 };

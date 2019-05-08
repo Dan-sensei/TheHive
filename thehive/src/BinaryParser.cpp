@@ -7,6 +7,7 @@
 #include <ComponentArch/Components/CStaticModel.hpp>
 #include <ComponentArch/ObjectManager.hpp>
 #include <Omicron/CORE/BVH_ROOT_Node.hpp>
+#include <Omicron/CORE/FrustrumLeaf.hpp>
 
 bool aux_separator = false;
 
@@ -137,7 +138,11 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
     StandardNode* Node = Singleton<Omicron>::Instance()->ZONES[map_zone];
 
 
-    for(uint16_t i = 0; i < NUMBER_OF_OBJECTS; ++i){
+    for(uint16_t i = 0; i < NUMBER_OF_OBJECTS; ++i) {
+
+        glm::vec2 CORNERS[4];
+        GG_Read(inStream, CORNERS);
+
         uint8_t MODEL = 0;
         GG_Read(inStream, MODEL);
         std::string str = std::to_string(MODEL);
@@ -252,9 +257,23 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         }
 
 
-        std::string B = "assets/BinaryFiles/BoundingBoxes/"+str+".bb";
+        TTransform T_Position;
+        TTransform T_Rotation;
+        T_Position.setPosition(Position);
+        T_Rotation.setRotation(Rotation);
 
-        CStaticModel* Transform = new CStaticModel(Node, "assets/BinaryFiles/BinaryModels/"+str+".modelgg", Material, Position, Rotation, B);
+        glm::mat4 Model = T_Position.matrix * T_Rotation.matrix;
+
+        ZStaticMesh* M = new ZStaticMesh(Model);
+        M->load("assets/BinaryFiles/BinaryModels/"+str+".modelgg");
+
+        FrustrumLeaf* Malla = new FrustrumLeaf(Node, M);
+        Malla->CORNERS[0] = CORNERS[0];
+        Malla->CORNERS[1] = CORNERS[1];
+        Malla->CORNERS[2] = CORNERS[2];
+        Malla->CORNERS[3] = CORNERS[3];
+;
+        CStaticModel* Transform = new CStaticModel(Malla, Material);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
         Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
     }
@@ -279,32 +298,6 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
     for(uint8_t i = 0; i < NUMBER_OF_NODES; ++i) {
         BVH_Node* NODE = nullptr;
 
-        //float x, y, z;
-
-        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        // glm::vec3 ULF(x,y,z);
-        //
-        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        // glm::vec3 URF(x,y,z);
-        //
-        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        // glm::vec3 BLF(x,y,z);
-        //
-        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        // glm::vec3 BRF(x,y,z);
-        //
-        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        // glm::vec3 ULB(x,y,z);
-        //
-        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        // glm::vec3 URB(x,y,z);
-        //
-        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        // glm::vec3 BLB(x,y,z);
-        //
-        // GG_Read(inStream, x); GG_Read(inStream, y); GG_Read(inStream, z);
-        // glm::vec3 BRB(x,y,z);
-
         BoundingBox B;
         GG_Read(inStream, B);
 
@@ -313,17 +306,12 @@ void BinaryParser::LoadBVHLevelData(const std::string &DATA, int8_t map_zone){
 
         uint8_t FIRST_CHILD;
         GG_Read(inStream, FIRST_CHILD);
-        //FIRST_CHILD--;
-
-        //BoundingBox B(ULF, URF, BLF, BRF, ULB, URB, BLB, BRB);
         BVH_ROOT->Hierarchy.emplace_back(FATHER, FIRST_CHILD, B, nullptr);
         NODE = &BVH_ROOT->Hierarchy.back();
-        //std::cout << (uint16_t)i << " " << NODE << ": Father = " << (uint16_t)FATHER << " | FirstChild = " << (uint16_t)FIRST_CHILD << '\n';
 
         bool isLeaf = false;
         GG_Read(inStream, isLeaf);
 
-        //std::cout << "sizeof() " << sizeof(glm::vec3) << '\n';
         if(isLeaf) {
             NODE->Leaf = new StandardNode();
             CreateMesh(inStream, _AssetManager, DEFAULT_SHADER, NODE);
@@ -755,23 +743,6 @@ bool BinaryParser::FillBuffers(
 
     return true;
 }
-
-bool BinaryParser::ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX){
-    std::ifstream Model(BinaryFile, std::ios::binary);
-    if (!Model.is_open()) return false;
-
-    GG_Read(Model, THE_BOX->BLF.x); GG_Read(Model, THE_BOX->BLF.y); GG_Read(Model, THE_BOX->BLF.z);
-    GG_Read(Model, THE_BOX->BRF.x); GG_Read(Model, THE_BOX->BRF.y); GG_Read(Model, THE_BOX->BRF.z);
-    GG_Read(Model, THE_BOX->URF.x); GG_Read(Model, THE_BOX->URF.y); GG_Read(Model, THE_BOX->URF.z);
-    GG_Read(Model, THE_BOX->ULF.x); GG_Read(Model, THE_BOX->ULF.y); GG_Read(Model, THE_BOX->ULF.z);
-    GG_Read(Model, THE_BOX->ULB.x); GG_Read(Model, THE_BOX->ULB.y); GG_Read(Model, THE_BOX->ULB.z);
-    GG_Read(Model, THE_BOX->URB.x); GG_Read(Model, THE_BOX->URB.y); GG_Read(Model, THE_BOX->URB.z);
-    GG_Read(Model, THE_BOX->BRB.x); GG_Read(Model, THE_BOX->BRB.y); GG_Read(Model, THE_BOX->BRB.z);
-    GG_Read(Model, THE_BOX->BLB.x); GG_Read(Model, THE_BOX->BLB.y); GG_Read(Model, THE_BOX->BLB.z);
-
-    return true;
-}
-
 
 void BinaryParser::ReadLoadZonesData(const std::string &BinaryFile){
     std::ifstream inStream(BinaryFile, std::ios::binary);

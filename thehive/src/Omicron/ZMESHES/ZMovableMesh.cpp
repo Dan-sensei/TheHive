@@ -23,11 +23,6 @@ void ZMovableMesh::beginDraw(){
 
     glm::vec3 ObjectPos(modelMatrix[3][0], modelMatrix[3][1], modelMatrix[3][2]);
 
-    bool dib = false;
-    FrustrumTest(ObjectPos, dib);
-    if(!dib) return;
-    //terminar frustrum
-
     uint8_t LOD = 0;
     if(LODTest(ObjectPos, LOD)) return;
 

@@ -78,12 +78,12 @@ void Game::Init(){
 
     Engine->createZones(8);
 
-    BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
-    BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
+    // BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
+    // BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
     //Los eventos son propios de cada zona!
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
+    // BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
     //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
     //
     //

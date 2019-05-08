@@ -32,7 +32,8 @@ void BVH_ROOT_Node::draw(){
     // Coherent Hierarchical Culling
 
     // std::cout << "BEGINDRAW" << '\n';
-    glm::vec3 ViewDirection = glm::vec3(-viewMatrix[0][2], 0, -viewMatrix[2][2]);
+    glm::vec2 ViewDirection = glm::vec2(-viewMatrix[0][2], -viewMatrix[2][2]);
+    glm::vec2 CameraPos = glm::vec2((*CameraPosition).x, (*CameraPosition).z);
     TraversalStack.push(&Hierarchy[0]);
     while(!TraversalStack.empty() || !QueryQueue.empty()){
         while ( !QueryQueue.empty() && (QueryResultAvailable(QueryQueue.front()) || TraversalStack.empty()) ) {
@@ -52,7 +53,7 @@ void BVH_ROOT_Node::draw(){
             BVH_Node* N = TraversalStack.top();
             TraversalStack.pop();
             //std::cout << "Node = " << N << '\n';
-            if ( N->isInsideFrustrum( ViewDirection ) ) {
+            if ( N->isInsideFrustrum( CameraPos, ViewDirection ) ) {
 
                 uint8_t PREV_FRAMEID = FrameID - 1;
                 //std::cout << "CHECKING NODE " << N << " N->Visible = " << N->Visible << " | N->LastVisited = " << (uint16_t)N->LastVisited << '\n';
@@ -62,7 +63,7 @@ void BVH_ROOT_Node::draw(){
                 N->LastVisited = FrameID;
                 N->ToRender = true;
                 if ( !opened ) {
-                    if(N->isCameraInside()){
+                    if(N->isCameraInside(*CameraPosition)){
                         //std::cout << " --INSIDE" << '\n';
                         PullUpVisibility(N);
                         TraverseNode(N);
@@ -79,7 +80,7 @@ void BVH_ROOT_Node::draw(){
         }
     }
     ++FrameID;
-    // std::cout << "ENDDRAW" << '\n' << '\n';
+    //std::cout << "ENDDRAW" << '\n' << '\n';
 
     // glm::mat4 VP = projMatrix * viewMatrix;
     // for(uint8_t i = 0; i < Hierarchy.size(); ++i){
@@ -100,17 +101,17 @@ void BVH_ROOT_Node::TraverseNode(BVH_Node* N) {
     else{
         glm::vec3 LocalCameraPosition = *CameraPosition;
 
-        float minA = glm::length2(Hierarchy[N->FirstChild].CORNERS[0] - LocalCameraPosition);
-        for(uint8_t i = 1; i < 4; ++i){
-            float corner = glm::length2(Hierarchy[N->FirstChild].CORNERS[i] - LocalCameraPosition);
+        float minA = glm::length2(Hierarchy[N->FirstChild].AABB.AABB[0] - LocalCameraPosition);
+        for(uint8_t i = 1; i < 8; ++i){
+            float corner = glm::length2(Hierarchy[N->FirstChild].AABB.AABB[i] - LocalCameraPosition);
             if(corner < minA){
                 minA = corner;
             }
         }
 
-        float minB = glm::length2(Hierarchy[N->FirstChild+1].CORNERS[0] - LocalCameraPosition);
-        for(uint8_t i = 1; i < 4; ++i){
-            float corner = glm::length2(Hierarchy[N->FirstChild+1].CORNERS[i] - LocalCameraPosition);
+        float minB = glm::length2(Hierarchy[N->FirstChild+1].AABB.AABB[0] - LocalCameraPosition);
+        for(uint8_t i = 1; i < 8; ++i){
+            float corner = glm::length2(Hierarchy[N->FirstChild+1].AABB.AABB[i] - LocalCameraPosition);
             if(corner < minB){
                 minB = corner;
             }

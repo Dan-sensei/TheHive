@@ -44,7 +44,6 @@ namespace BinaryParser{
         unsigned int &IndexSize
     );
 
-    bool ReadBoundingBox(const std::string &BinaryFile, BoundingBox* THE_BOX);
 
     void ReadNatureData(const std::string &BinaryFile);
 

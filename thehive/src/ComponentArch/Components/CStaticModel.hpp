@@ -10,7 +10,8 @@
 
 class CStaticModel : public IComponent {
     public:
-        CStaticModel(StandardNode* FATHER, const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::quat &Rotation, const std::string& BoundingBoxPath = "");
+        CStaticModel(StandardNode* FATHER, const std::string &pathToModel, ZMaterial* material, const glm::vec3 &Position, const glm::quat &Rotation);
+        CStaticModel(ZNode* NODE, ZMaterial* material);
         CStaticModel(const CStaticModel &orig);
         virtual ~CStaticModel();
 

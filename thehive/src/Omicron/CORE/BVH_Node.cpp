@@ -4,39 +4,40 @@
 #include <glm/gtx/normalize_dot.hpp>
 #include <Omicron/Omicron.hpp>
 
-glm::vec3* BVH_Node::PlayerPosition;
-glm::vec3* BVH_Node::CameraPosition;
 
 // BVH_Node::BVH_Node(uint16_t P)
 // :BVH_Node(P, 0, BoundingBox(), nullptr)
 // {}
 
-//#include <iostream>
-#define GRADOVISION -0.17364817766
-//int v = 0;
+#include <iostream>
+#define GRADOVISION 0
+int v = 0;
 BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, StandardNode* _Leaf)
-:Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false), LastFailedFrustrumCorner(-1)
+:AABB(_AABB), Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false), LastFailedFrustrumCorner(-1)
 {
     glGenQueries(1, &QueryID);
 
     glGenVertexArrays(1, &VAO_Bounding);
 
-    float cube_strip[] = {
-        _AABB.BRB.x, _AABB.BRB.y, _AABB.BRB.z,     // Back-bottom-right
-        _AABB.BLB.x, _AABB.BLB.y, _AABB.BLB.z,     // Back-bottom-left
-        _AABB.ULB.x, _AABB.ULB.y, _AABB.ULB.z,     // Back-top-left
-        _AABB.URB.x, _AABB.URB.y, _AABB.URB.z,     // Back-top-right
 
-        _AABB.BRF.x, _AABB.BRF.y, _AABB.BRF.z,     // Front-bottom-right
-        _AABB.BLF.x, _AABB.BLF.y, _AABB.BLF.z,     // Front-bottom-left
-        _AABB.ULF.x, _AABB.ULF.y, _AABB.ULF.z,     // Front-top-left
-        _AABB.URF.x, _AABB.URF.y, _AABB.URF.z,     // Front-top-right
+
+    float cube_strip[] = {
+        _AABB.AABB[0].x, _AABB.AABB[0].y, _AABB.AABB[0].z,     // Back-bottom-right
+        _AABB.AABB[2].x, _AABB.AABB[2].y, _AABB.AABB[2].z,     // Back-bottom-left
+        _AABB.AABB[4].x, _AABB.AABB[4].y, _AABB.AABB[4].z,     // Back-top-left
+        _AABB.AABB[5].x, _AABB.AABB[5].y, _AABB.AABB[5].z,     // Back-top-right
+
+        _AABB.AABB[3].x, _AABB.AABB[3].y, _AABB.AABB[3].z,     // Front-bottom-right
+        _AABB.AABB[1].x, _AABB.AABB[1].y, _AABB.AABB[1].z,     // Front-bottom-left
+        _AABB.AABB[6].x, _AABB.AABB[6].y, _AABB.AABB[6].z,     // Front-top-left
+        _AABB.AABB[7].x, _AABB.AABB[7].y, _AABB.AABB[7].z,     // Front-top-right
     };
 
-    CORNERS[0] = _AABB.BRB;
-    CORNERS[1] = _AABB.BLB;
-    CORNERS[2] = _AABB.BRF;
-    CORNERS[3] = _AABB.BLF;
+
+    CORNERS[0] = glm::vec2(_AABB.AABB[0].x, _AABB.AABB[0].z);
+    CORNERS[1] = glm::vec2(_AABB.AABB[1].x, _AABB.AABB[1].z);
+    CORNERS[2] = glm::vec2(_AABB.AABB[2].x, _AABB.AABB[2].z);
+    CORNERS[3] = glm::vec2(_AABB.AABB[3].x, _AABB.AABB[3].z);
 
     // if(v == 82){
     //     std::cout << cube_strip[0] << ", "<< cube_strip[1] << ", " << cube_strip[2] << '\n';
@@ -49,8 +50,8 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
     //     std::cout << cube_strip[21] << ", "<< cube_strip[22] << ", " << cube_strip[23] << '\n';
     // }
 
-    Min = _AABB.BRB;
-    Max = _AABB.ULF;
+    Min = _AABB.AABB[0];
+    Max = _AABB.AABB[6];
 
     uint16_t indices []=
     {
@@ -82,7 +83,7 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
 
     QueryShader = Singleton<AssetManager>::Instance()->getShader("Lines");
     col = gg::Color(gg::genIntRandom(0,255), gg::genIntRandom(0,255), gg::genIntRandom(0,255));
-    //++v;
+    ++v;
 }
 
 bool BVH_Node::isLeaf(){
@@ -107,15 +108,13 @@ void BVH_Node::DrawBounding(const glm::mat4 &VP){
 
 }
 
-bool BVH_Node::isInsideFrustrum(const glm::vec3 &ViewDirection){
+bool BVH_Node::isInsideFrustrum(const glm::vec2 &CameraPosition, const glm::vec2 &ViewDirection){
 
     //frustrum
-    glm::vec3 dirobj;
-    glm::vec3 campos = *CameraPosition;
+    glm::vec2 dirobj;
 
     if(LastFailedFrustrumCorner != -1){
-        dirobj = CORNERS[LastFailedFrustrumCorner] - campos;
-        dirobj.y = 0;
+        dirobj = CORNERS[LastFailedFrustrumCorner] - CameraPosition;
         float sol         = glm::fastNormalizeDot(dirobj, ViewDirection);
         if(GRADOVISION < sol) {
             return true;
@@ -125,8 +124,7 @@ bool BVH_Node::isInsideFrustrum(const glm::vec3 &ViewDirection){
     for (uint8_t i = 0; i < 4; ++i) {
         if(i == LastFailedFrustrumCorner) continue;
 
-        dirobj = CORNERS[i] - campos;
-        dirobj.y = 0;
+        dirobj = CORNERS[i] - CameraPosition;
         float sol         = glm::fastNormalizeDot(dirobj, ViewDirection);
         if(GRADOVISION < sol) {
             LastFailedFrustrumCorner = i;
@@ -139,19 +137,10 @@ bool BVH_Node::isInsideFrustrum(const glm::vec3 &ViewDirection){
 }
 
 
-bool BVH_Node::isCameraInside() {
-    glm::vec3 CameraPos = *CameraPosition;
+bool BVH_Node::isCameraInside(const glm::vec3 CameraPos) {
     if(CameraPos.x >= Min.x && CameraPos.x <= Max.x  && CameraPos.y >= Min.y && CameraPos.y <= Max.y && CameraPos.z < Min.z && CameraPos.z > Max.z){
         return true;
     }
     return false;
 }
 
-
-void BVH_Node::setPlayerPtr(glm::vec3* _PlayerPosition){
-    PlayerPosition = _PlayerPosition;
-}
-
-void BVH_Node::setCameraPtr(glm::vec3* _PlayerPosition){
-    CameraPosition = _PlayerPosition;
-}

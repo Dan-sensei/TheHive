@@ -3,6 +3,7 @@
 
 #include <Omicron/CORE/StandardNode.hpp>
 #include <Omicron/ZMESHES/BoundingBox.hpp>
+#include <Omicron/ZMESHES/ZMesh.hpp>
 #include <cstdint>
 #include <Util.hpp>
 
@@ -15,22 +16,17 @@ class BVH_Node {
 
         virtual bool isLeaf();
         void DrawBounding(const glm::mat4 &VP);
-        bool isInsideFrustrum(const glm::vec3 &ViewDirection);
-        bool isCameraInside();
-
-        static void setPlayerPtr(glm::vec3* _PlayerPosition);
-        static void setCameraPtr(glm::vec3* _PlayerPosition);
+        bool isInsideFrustrum(const glm::vec2 &CameraPosition, const glm::vec2 &ViewDirection);
+        bool isCameraInside(const glm::vec3 CameraPos);
 
         StandardNode* Leaf;
         Shader* QueryShader;
-        static glm::vec3* PlayerPosition;
-        static glm::vec3* CameraPosition;
-        
+
         glm::vec3 Min;
         glm::vec3 Max;
 
-
-        glm::vec3 CORNERS[4];
+        BoundingBox AABB;
+        glm::vec2 CORNERS[4];
         unsigned int QueryID;
         unsigned int VAO_Bounding;
         unsigned int VBO_BoundingVertices;
@@ -41,8 +37,8 @@ class BVH_Node {
         uint8_t LastVisited;
         bool ToRender;
         bool Visible;
-
         int8_t LastFailedFrustrumCorner;
+
         gg::Color col;
 };
 

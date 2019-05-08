@@ -37,16 +37,15 @@ class Omicron {
         StandardNode* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
         StandardNode* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
 
-        ZNode* createStaticMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), const std::string& BoundingBoxPath = "");
-        ZNode* createMovableMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3(), const std::string& BoundingBoxPath = "");
-        ZNode* CreateDynamicMesh(StandardNode* FATHER, const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3(), const std::string& BoundingBoxPath = "");
+        ZNode* createStaticMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3());
+        ZNode* createMovableMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3());
+        ZNode* CreateDynamicMesh(StandardNode* FATHER, const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3());
         ZNode* CreateParticleSystem(StandardNode* FATHER, const ParticleSystem_Data &Data);
 
         // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
         void createZones(uint8_t NumberOfZones);
 
         void deleteLeafNode(ZNode *node);
-        void deleteZStaticMeshLeafNode(ZNode *node);
 
         bool bindMaterialToMesh(ZNode*,ZMaterial*);
         bool bindMaterialToDynamicMesh(ZNode*,ZMaterial*);
