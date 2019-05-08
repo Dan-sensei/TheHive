@@ -15,7 +15,8 @@ SoundSystem::SoundSystem(){
 	FMOD_System_SetOutput(lowLevelSystem,FMOD_OUTPUTTYPE_AUTODETECT);
 
 	// system->initialize	(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0);
-	FMOD_Studio_System_Initialize(system, 512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0);
+	// FMOD_Studio_System_Initialize(system, 512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0);
+		FMOD_Studio_System_Initialize(system, 512, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_NORMAL, 0);
 
 	masterBank 	= nullptr;
 	// system->loadBankFile("assets/FMOD/Master_Bank.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&masterBank);
