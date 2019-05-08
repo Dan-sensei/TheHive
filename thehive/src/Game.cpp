@@ -87,6 +87,13 @@ void Game::Init(){
     //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
     //
     //
+
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
+    //BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
+    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
+
+    ///BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 1);
+    // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
     // BinaryParser::LoadSounds();
     // BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
 
@@ -137,6 +144,7 @@ void Game::Init(){
     // PS.MaxParticles = 20;
     //
     // Engine->CreateParticleSystem(PS, 1);
+    Director->init();
 }
 
 void Game::Update(){
@@ -156,6 +164,7 @@ void Game::Update(){
 
     // if(DeltaTime > 10000) throw std::exception();
     while(Accumulator >= 1/UPDATE_STEP){
+        //Director->getposzona(1);
         // FIXED UPDATE//
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
