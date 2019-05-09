@@ -625,7 +625,8 @@ void Action::move_player(){
     yo->destino = cTransform2->getPosition();
 
     ////std::cout << "move player" << '\n';
-    move_too(5);
+
+    move_too(yo->getArange());//rango de ataque
     if(s!=BH_RUNNING){
         ////std::cout << "move player final" << '\n';
         //gg::cout("move player");

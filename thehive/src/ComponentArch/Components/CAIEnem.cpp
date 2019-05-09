@@ -127,7 +127,7 @@ void CAIEnem::Init(){
     arbol = new Treecontroller(data,type,this);
 
     Vrange          = 30;
-    Arange          = 5;
+    Arange          = 1;
     enfado          = 1;
     gradovision     = cos(45*3.14159265359/180.f);
 
@@ -145,7 +145,9 @@ gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
 
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-
+float CAIEnem::getArange(){
+    return Arange;
+}
 gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));

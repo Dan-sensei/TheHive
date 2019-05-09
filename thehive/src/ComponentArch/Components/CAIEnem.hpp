@@ -61,6 +61,7 @@ class CAIEnem : public IComponent {
 
         void setCloserAllyIsDead(bool);
         bool getCloserAllyIsDead();
+        float getArange();
 
         void setImAttacking(bool);
         bool getImAttacking();

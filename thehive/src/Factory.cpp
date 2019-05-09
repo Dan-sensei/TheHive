@@ -51,7 +51,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     BVH_Node::setCameraPtr(&(Camera->CurrentPosition));
     BVH_ROOT_Node::setCameraPtr(&(Camera->CurrentPosition));
 
-    CVida* Vida                         = new CVida(1000);
+    CVida* Vida                         = new CVida(10);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
 
     CHabilityController* Hab                         = new CHabilityController();

@@ -276,7 +276,7 @@ void AIDirector::createWandering(int nodo){
     for (int i = 0; i < enemigosint; i++) {
         //zonarand=navmesh punto zona
         zonarand=getposzona(nodo);
-        id = fac->createSoldierWandering(zonarand, 2000);
+        id = fac->createSoldierWandering(zonarand, 1);
 
         enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
         enemigos.emplace_back(enemypos);
