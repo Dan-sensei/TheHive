@@ -14,8 +14,9 @@ std::string imgarmaS;
 Motor2D::Motor2D():POUP(nullptr){
     motor = Singleton<Omicron>::Instance();
 
-    imgarmaP="assets/HUD/cf_hud_b.jpg";
-    imgarmaS="assets/HUD/cf_hud_b.jpg";
+
+    imgarmaP="assets/HUD/cf_hud_d.png";
+    imgarmaS="assets/HUD/cf_hud_d.png";
     //font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
     //irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
 
@@ -194,9 +195,11 @@ void Motor2D::setbullet(int tipo,int b_act, int b_tot){
 
 void Motor2D::setWeaponImg(int tipo,std::string img){
     if(tipo==0){//P
+            IMAGENES[4]->setShader("2D_im");
             IMAGENES[4]->setImage(img);
             imgarmaP=img;
     }else {//S
+        IMAGENES[3]->setShader("2D_im");
         IMAGENES[3]->setImage(img);
         imgarmaS=img;
     }
@@ -450,6 +453,7 @@ void Motor2D::InitHUD(){
     _x= x+w*0.65;
     _y= y+h*0.7;
     auto yep=AddImage(imgarmaS,75,85,20,15);//secundaria
+    yep->setShader("2D_im");
     yep->setZindex(-0.9997);
     addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
     x=70;
@@ -460,6 +464,7 @@ void Motor2D::InitHUD(){
     _y= y+h*0.7;
     //AddImage("1arma","assets/HUD/AMETRALLADORA_HUD.png",70,80,20,15); // Principal
     yep=AddImage(imgarmaP,70,80,20,15); // Principal
+    yep->setShader("2D_im");
     yep->setZindex(-0.9998);
     addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 

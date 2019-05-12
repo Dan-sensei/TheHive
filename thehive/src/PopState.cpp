@@ -84,7 +84,7 @@ void PopState::Update(){
 }
 
 void PopState::CLIN(){
-    clinpopup
+    // clinpopup
     Singleton<Motor2D>::Instance()->clinpopup();
     Singleton<Motor2D>::Instance()->CLINMenu();
     //_GUIController->musicaMenuStop();
