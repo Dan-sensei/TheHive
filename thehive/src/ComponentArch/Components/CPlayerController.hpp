@@ -75,8 +75,10 @@ class CPlayerController : public IComponent {
         CPlayerController();
         CPlayerController(const CPlayerController &orig) = delete;
 
-
-
+        CRigidBody* ghostCollider;      //  Kinematico y ghost
+        CRigidBody* collider;           //  "Gravedad 0" y colisionable
+        glm::vec3 GH_PREV;
+        bool isColliderGravitySet;
 
         gg::Clock clocker;
         glm::vec3 Target;
@@ -86,7 +88,6 @@ class CPlayerController : public IComponent {
         Omicron* Engine;
         ggDynWorld* world;
         CTransform* cTransform;
-        CRigidBody* cRigidBody;
         CCamera* camera;
         CDynamicModel* cDynamicModel;
         CHabilityController* hab;
@@ -120,6 +121,7 @@ class CPlayerController : public IComponent {
         void showDebug();
         void changeWeaponIfPossible(CGun*);
 
+        void autoStepping();
 
         struct Key2Func{
             gg::KEYCODE KEY;

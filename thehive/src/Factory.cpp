@@ -66,10 +66,10 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Jumping_Walking"));
     DynamicModel->ToggleAnimation(0, 2);
 
-    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BulletBoundingBoxes/hero_final.bullet", Position.x, Position.y, Position.z, 0,0,0, 50, 0,0,0);
+    CRigidBody* RigidBody               = new CRigidBody(true, true,"assets/BulletBoundingBoxes/hero_final.bullet", Position.x, Position.y, Position.z, 0,0,0, 50, 0,0,0);
     Manager->addComponentToEntity(RigidBody,        gg::RIGID_BODY, hero);
 
-    Camera->setExcludingBody(RigidBody);
+    // Camera->setExcludingBodyA(RigidBody);
 
     CPlayerController* PlayerController = new CPlayerController();
     Manager->addComponentToEntity(PlayerController, gg::PLAYERCONTROLLER, hero);
