@@ -246,6 +246,8 @@ void Action::rond(bool _b){
     V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
     //cTransform->setRotation(V_AI_DEST);
+    cRigidBody->setRotY(180+V_AI_DEST.y);
+
 
     cRigidBody->applyConstantVelocityNormal(V_FINAL,yo->getVelocity()-(yo->getEnemyType()*VEL_ATENUATION));
 }
@@ -370,6 +372,8 @@ void Action::predash(){
         V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
         //cTransform->setRotation(V_AI_DEST);
+        cRigidBody->setRotY(180+V_AI_DEST.y);
+
         //inicializamos variables
         cont_hit = 0;
     }
@@ -427,6 +431,8 @@ void Action::hit(){
 
     //cTransform->setRotation(V_AI_DEST);
     //cTransform->setRotation(pru);
+    cRigidBody->setRotY(180+V_AI_DEST.y);
+
 
     if(s!=BH_RUNNING){
         cRigidBody->setLinearVelocity(glm::vec3());
@@ -575,6 +581,8 @@ void Action::move_leader(){
                 direccion       = glm::normalize(direccion);
                 direccion       = gg::Direccion2D_to_rot(direccion);
                 //cTransform->setRotation(direccion);
+                cRigidBody->setRotY(180+direccion.y);
+
             }
 
 
@@ -673,6 +681,8 @@ void Action::move_last(){
                 V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
                 //cTransform->setRotation(V_AI_DEST);
+                cRigidBody->setRotY(180+V_AI_DEST.y);
+
 
                 yo->destino = cTransform->getPosition();
             }
@@ -717,7 +727,7 @@ void Action::move_around(){
                 V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
 
-                cRigidBody->setRotY(V_AI_DEST.y);
+                cRigidBody->setRotY(180+V_AI_DEST.y);
                 yo->destino = cTransform->getPosition();
             }
             if(!nvAgent->HasDestination()){
@@ -764,6 +774,8 @@ void Action::move_too(int min){
         mio       = gg::Direccion2D_to_rot(mio);
 
         //cTransform->setRotation(mio);
+        cRigidBody->setRotY(180+mio.y);
+
 
         direccion       = glm::normalize(direccion);
         //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());

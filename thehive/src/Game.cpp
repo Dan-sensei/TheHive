@@ -91,6 +91,9 @@ void Game::Init(){
     //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
     //BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 5);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 6);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/FINAL_MODELS.data", 7);
 
     ///BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 1);
     // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);

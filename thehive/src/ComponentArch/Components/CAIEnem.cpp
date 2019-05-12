@@ -126,7 +126,7 @@ void CAIEnem::Init(){
 
     arbol = new Treecontroller(data,type,this);
 
-    Vrange          = 80;
+    Vrange          = 10;
     Arange          = 1;
     enfado          = 1;
     gradovision     = cos(45*3.14159265359/180.f);
@@ -186,6 +186,7 @@ void CAIEnem::FixedUpdate(){
         // glm::vec3 cTF_ROT    = cTransform->getRotation();
         // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
         glm::vec3 dir        = cTransform->getRotation() * glm::vec3(0,0,1);
+        dir *=-1;
         glm::vec3 diren      = pTF-cTF_POS;
 
         diren       = glm::normalize(diren);
@@ -283,9 +284,12 @@ void CAIEnem::enableVisualDebug(){
 
 
     glm::vec3 dir    = cTransform->getRotation() * glm::vec3(0,0,1);
+    dir *=-1;
     glm::vec3 dir1   = cTransform->rotate(res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
+    dir1 *=-1;
     cTransform->rotate(-res, glm::vec3(0,1,0));
     glm::vec3 dir2   = cTransform->rotate(-res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
+    dir2 *=-1;
     cTransform->rotate(res, glm::vec3(0,1,0));
 
 
