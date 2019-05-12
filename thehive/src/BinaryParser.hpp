@@ -37,9 +37,7 @@ namespace BinaryParser{
 
     bool FillBuffers(
         const std::string& BinaryFile,
-        unsigned int PositionsNormalsBuffer,
-        unsigned int UVBuffer,
-        unsigned int TangentsBitangentsBuffer,
+        unsigned int THE_BUFFER,
         unsigned int IndexBuffer,
         unsigned int &IndexSize
     );

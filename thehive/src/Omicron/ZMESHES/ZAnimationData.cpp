@@ -12,33 +12,27 @@ ZAnimationData::ZAnimationData()
 
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(2);   // UV
         glEnableVertexAttribArray(3);
-        glEnableVertexAttribArray(4);
         glEnableVertexAttribArray(5);
         glEnableVertexAttribArray(6);
         glEnableVertexAttribArray(7);
-        glEnableVertexAttribArray(8);
 
         glVertexAttribFormat(0, 3, GL_FLOAT, false, 0);
         glVertexAttribFormat(1, 3, GL_FLOAT, false, 12);
-        glVertexAttribFormat(2, 2, GL_FLOAT, false, 0);
-        glVertexAttribFormat(3, 3, GL_FLOAT, false, 0);
-        glVertexAttribFormat(4, 3, GL_FLOAT, false, 12);
+        glVertexAttribFormat(2, 2, GL_FLOAT, false, 24);
+        glVertexAttribFormat(3, 3, GL_FLOAT, false, 32);
         glVertexAttribFormat(5, 3, GL_FLOAT, false, 0);
         glVertexAttribFormat(6, 3, GL_FLOAT, false, 12);
-        glVertexAttribFormat(7, 3, GL_FLOAT, false, 0);
-        glVertexAttribFormat(8, 3, GL_FLOAT, false, 12);
+        glVertexAttribFormat(7, 3, GL_FLOAT, false, 32);
 
         glVertexAttribBinding(0, 0);
         glVertexAttribBinding(1, 0);
-        glVertexAttribBinding(2, 1);
-        glVertexAttribBinding(3, 2);
-        glVertexAttribBinding(4, 2);
-        glVertexAttribBinding(5, 3);
-        glVertexAttribBinding(6, 3);
-        glVertexAttribBinding(7, 4);
-        glVertexAttribBinding(8, 4);
+        glVertexAttribBinding(2, 0);
+        glVertexAttribBinding(3, 0);
+        glVertexAttribBinding(5, 1);
+        glVertexAttribBinding(6, 1);
+        glVertexAttribBinding(7, 1);
 
     glBindVertexArray(0);
     Keyframes.reserve(5);
@@ -62,11 +56,8 @@ void ZAnimationData::addKeyframe(const std::string &PathToKeyframeModel){
 
 void ZAnimationData::draw(uint8_t CurrentFrame, uint8_t NextFrame){
     glBindVertexArray(VAO);
-        glBindVertexBuffer(0, Keyframes[CurrentFrame]->VBOs[0], 0, 24);
-        glBindVertexBuffer(1, Keyframes[CurrentFrame]->VBOs[1], 0, 8);
-        glBindVertexBuffer(2, Keyframes[CurrentFrame]->VBOs[2], 0, 24);
-        glBindVertexBuffer(3, Keyframes[NextFrame]->VBOs[0], 0, 24);
-        glBindVertexBuffer(4, Keyframes[NextFrame]->VBOs[2], 0, 24);
+        glBindVertexBuffer(0, Keyframes[CurrentFrame]->VBO, 0, 44);
+        glBindVertexBuffer(1, Keyframes[NextFrame]->VBO, 0, 44);
 
         glDrawElements(GL_TRIANGLES, IndexSize, GL_UNSIGNED_SHORT, nullptr);
     glBindVertexArray(0);

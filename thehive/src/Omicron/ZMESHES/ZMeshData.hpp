@@ -19,7 +19,7 @@ friend class ZAnimationData;
     private:
         unsigned int IndexSize;
         unsigned int IndexBuffer;
-        std::vector<unsigned int> VBOs;
+        unsigned int VBO;
 
 
         //void addVertexBuffer(std::vector<float>& data, unsigned int DataLength);

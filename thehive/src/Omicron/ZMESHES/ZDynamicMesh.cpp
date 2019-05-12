@@ -29,6 +29,7 @@ void ZDynamicMesh::SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes
     TimeBetweenAnimations = TimeBetweenKeyframes;
     Timer = 0;
     CurrentFrame = 0;
+    NextFrame = 1;
     animationPlayed = false;
     NFrames = Animations[Animation]->Keyframes.size() - 1;
 }
