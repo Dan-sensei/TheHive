@@ -65,6 +65,9 @@ void PopState::Update(){
 
     Engine->PollEvents();
 
+    if(Engine->key(gg::X, true))  {
+        siguiente();
+    }
     Engine->BeginDraw();
     Engine->draw();
     _GUIController->update();
