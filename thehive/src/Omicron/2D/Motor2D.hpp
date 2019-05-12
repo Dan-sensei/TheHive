@@ -38,6 +38,7 @@ class Motor2D{
         void setVolMusic(int _vol);
         //void DisplayDebug();
         void DisplayHUD();
+        void clinpopup();
 
         void CLINNormal();
         void CLINMenu();
@@ -60,7 +61,7 @@ class Motor2D{
         //int InitPause5();
         void draw();
 
-
+        void pintarImagen(std::string im);
         //void AddTextToBuffer(const std::string &Text, const gg::Color &color);
         //void AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color);
         Imagen2D* AddImage(std::string source  ,float _posx,float _posy,float _width,float _height);
@@ -70,7 +71,7 @@ class Motor2D{
         int checkbuton();
         void aplyhover();
     private:
-
+        Imagen2D* POUP;
         SoundSystem* SS;
 
         SoundEvent* s_hover;

@@ -102,6 +102,7 @@ class CRigidBody : public IComponent {
         glm::vec3 getLinearVelocity();
         void setBodyPosition(glm::vec3&);
         void setOffsetBodyPosition(glm::vec3&);
+        void setRotY(float y);
 
         bool checkContactResponse();
 

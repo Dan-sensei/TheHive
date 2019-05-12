@@ -245,7 +245,7 @@ void Action::rond(bool _b){
     V_FINAL         =(V_FINAL+V_AI_DEST*0.1f);
     V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
-    cTransform->setRotation(V_AI_DEST);
+    //cTransform->setRotation(V_AI_DEST);
 
     cRigidBody->applyConstantVelocityNormal(V_FINAL,yo->getVelocity()-(yo->getEnemyType()*VEL_ATENUATION));
 }
@@ -369,7 +369,7 @@ void Action::predash(){
         V_AI_DEST       = glm::normalize(V_AI_DEST);
         V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
-        cTransform->setRotation(V_AI_DEST);
+        //cTransform->setRotation(V_AI_DEST);
         //inicializamos variables
         cont_hit = 0;
     }
@@ -419,12 +419,14 @@ void Action::hit(){
     glm::vec3 dest           = yo->playerPos;
 
     glm::vec3 V_AI_DEST      = dest-mio;
+    //glm::vec3 pru(1,0,0);
 
     V_AI_DEST.y     = 0;
     V_AI_DEST       = glm::normalize(V_AI_DEST);
     V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
-    cTransform->setRotation(V_AI_DEST);
+    //cTransform->setRotation(V_AI_DEST);
+    //cTransform->setRotation(pru);
 
     if(s!=BH_RUNNING){
         cRigidBody->setLinearVelocity(glm::vec3());
@@ -572,7 +574,7 @@ void Action::move_leader(){
                 direccion.y     = 0;
                 direccion       = glm::normalize(direccion);
                 direccion       = gg::Direccion2D_to_rot(direccion);
-                cTransform->setRotation(direccion);
+                //cTransform->setRotation(direccion);
             }
 
 
@@ -645,14 +647,12 @@ void Action::move_last(){
     if(nvAgent){
         if(s!=BH_RUNNING){
             nvAgent->ResetDestination();
-            std::cout << "empieza" << '\n';
             s=BH_RUNNING;
             // Obligatorio
             //glm::vec3 dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
             yo->destino = cTransform->getPosition();
             nvAgent->SetDestination(yo->playerPos);
             if(!nvAgent->HasDestination()){
-                std::cout << "falla esto" << '\n';
             }
             return;
         }
@@ -672,13 +672,12 @@ void Action::move_last(){
                 V_AI_DEST       = glm::normalize(V_AI_DEST);
                 V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
-                cTransform->setRotation(V_AI_DEST);
+                //cTransform->setRotation(V_AI_DEST);
 
                 yo->destino = cTransform->getPosition();
             }
 
             if(!nvAgent->HasDestination()){
-                std::cout << "acaba1" << '\n';
 
                 nvAgent->ResetDestination();
                 s = BH_SUCCESS;
@@ -687,7 +686,6 @@ void Action::move_last(){
         }
     }
     else{
-        std::cout << "acaba2" << '\n';
 
         yo->playerSeen=false;
         s = BH_SUCCESS;
@@ -700,7 +698,8 @@ void Action::move_around(){
             nvAgent->ResetDestination();
             s=BH_RUNNING;
             // Obligatorio
-            glm::vec3 dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
+            //glm::vec3 dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
+            glm::vec3 dest = Singleton<Pathfinding>::Instance()->getrandomnode(1);
             yo->destino = cTransform->getPosition();
             nvAgent->SetDestination(dest);
             return;
@@ -710,8 +709,6 @@ void Action::move_around(){
             glm::vec3 dest           = cTransform->getPosition();    // A donde voy
             glm::vec3 mio            = yo->destino;                  // Donde estaba
 
-            ////std::cout << "dest" <<dest<< '\n';
-            ////std::cout << "mio" <<mio<< '\n';
 
             glm::vec3 V_AI_DEST      = dest-mio;
             if(!(dest==mio)){
@@ -719,8 +716,8 @@ void Action::move_around(){
                 V_AI_DEST       = glm::normalize(V_AI_DEST);
                 V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
-                cTransform->setRotation(V_AI_DEST);
 
+                cRigidBody->setRotY(V_AI_DEST.y);
                 yo->destino = cTransform->getPosition();
             }
             if(!nvAgent->HasDestination()){
@@ -766,7 +763,7 @@ void Action::move_too(int min){
         mio       = glm::normalize(mio);
         mio       = gg::Direccion2D_to_rot(mio);
 
-        cTransform->setRotation(mio);
+        //cTransform->setRotation(mio);
 
         direccion       = glm::normalize(direccion);
         //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());

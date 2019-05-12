@@ -189,23 +189,43 @@ void AIDirector::changeNode(int nodo){
     }
 }
 //sacamos pos aleatoria de una zona
-glm::vec3 AIDirector::getposzona(int){
-    //std::vector<SimpleFace> ZONE_1;
-    //std::vector<SimpleFace> ZONE_2;
-    //std::vector<SimpleFace> ZONE_3;
-    //std::vector<SimpleFace> ZONE_4;
-    //std::vector<SimpleFace> ZONE_5;
-    //std::vector<SimpleFace> ZONE_6;
-    //std::vector<SimpleFace> ZONE_7;
-    //ZONE_1[0].BR;
-    //ZONE_1[0].TL;
-    //std::cout << "tam" <<ZONE_1.size()<< '\n';
-    int rand=gg::genIntRandom(0, ZONE_1.size()-1);
+glm::vec3 AIDirector::getposzona(int nodo){
+    int rand;
+    SimpleFace posbuena=ZONE_1[rand];
+    switch(nodo){
+        case 1:
+             rand=gg::genIntRandom(0, ZONE_1.size()-1);
+             //posbuena=ZONE_1[rand];
+        break;
+        case 2:
+             rand=gg::genIntRandom(0, ZONE_2.size()-1);
+             posbuena=ZONE_2[rand];
+        break;
+        case 3:
+             rand=gg::genIntRandom(0, ZONE_3.size()-1);
+             posbuena=ZONE_3[rand];
+        break;
+        case 4:
+             rand=gg::genIntRandom(0, ZONE_4.size()-1);
+             posbuena=ZONE_4[rand];
+        break;
+        case 5:
+             rand=gg::genIntRandom(0, ZONE_5.size()-1);
+             posbuena=ZONE_5[rand];
+        break;
+        case 6:
+             rand=gg::genIntRandom(0, ZONE_6.size()-1);
+             posbuena=ZONE_6[rand];
+        break;
+        case 7:
+             rand=gg::genIntRandom(0, ZONE_7.size()-1);
+             posbuena=ZONE_7[rand];
+        break;
+    }
     //auto pos=ZONE_1[0].BR;
     //std::cout << "BR (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
     //pos=ZONE_1[0].TL;
     //std::cout << "TL (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
-    auto posbuena=ZONE_1[rand];
 
     //TL (308.207,-44.6235,78.7451)
     //BR (337.45,-44.6235,67.7644)
@@ -219,7 +239,7 @@ glm::vec3 AIDirector::getposzona(int){
     float dz=zmas-zmenos;
 
     glm::vec3 res=glm::vec3(xmenos+gg::genFloatRandom(0, dx),y,zmenos+gg::genFloatRandom(0, dz));
-    std::cout << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
+    //std::cout << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
     //float randx=gg::genIntRandom(0, dx);
     //float randz=gg::genIntRandom(0, dz);
 
@@ -270,7 +290,8 @@ void AIDirector::createWandering(int nodo){
 
     glm::vec3 zonarand;
 
-    int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+    //int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+    int enemigosint = 1;
     int id;
 
     for (int i = 0; i < enemigosint; i++) {

@@ -97,7 +97,6 @@ void Game::Init(){
     // BinaryParser::LoadSounds();
     // BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
 
-
     Engine2D->InitHUD();
 
 
@@ -209,8 +208,10 @@ void Game::Update(){
     Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-    // glClear(GL_DEPTH_BUFFER_BIT);
+     glClear(GL_DEPTH_BUFFER_BIT);
     // Engine->DrawZero();
+    Manager->DibLineas();
+
     //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
