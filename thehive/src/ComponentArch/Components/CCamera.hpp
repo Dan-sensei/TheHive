@@ -27,7 +27,8 @@ public:
     glm::vec3 getTargetPosition();
     void resetMouse();
     void setTarget(CTransform* T);
-    void setExcludingBody(CRigidBody* R);
+    void setExcludingBodyA(CRigidBody* R);
+    void setExcludingBodyB(CRigidBody* R);
     void CameraUpdate();
 
     glm::vec3 getCameraPosition();
@@ -45,9 +46,12 @@ private:
     Omicron         *Engine;
     StandardNode    *cam;
     CTransform      *Target;
-    CRigidBody      *ExcludingBody;
     ggDynWorld      *dynWorld;
     CRigidBody      *collider;
+
+    CRigidBody      *ExcludingBodyA;
+    CRigidBody      *ExcludingBodyB;
+
 
     glm::vec3 pos_on_collision;
     glm::vec3 CameraTarget;

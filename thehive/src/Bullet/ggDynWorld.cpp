@@ -234,15 +234,21 @@ bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::
     return false;
 }
 
-bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult, CRigidBody *Exclude){
+bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult, CRigidBody *ExcludeA, CRigidBody *ExcludeB){
     btVector3 Starto = btVector3(Start.x,Start.y,Start.z);
     btVector3 Endo = btVector3(End.x,End.y,End.z);
 
     btCollisionWorld::ClosestRayResultCallback callBack(Starto,Endo);
     dynamicsWorld.rayTest(Starto, Endo, callBack);
 
-    if(Exclude && callBack.m_collisionObject){
-        if(callBack.m_collisionObject == Exclude->getBody()){
+    if(ExcludeA && callBack.m_collisionObject){
+        if(callBack.m_collisionObject == ExcludeA->getBody()){
+            return false;
+        }
+    }
+
+    if(ExcludeB && callBack.m_collisionObject){
+        if(callBack.m_collisionObject == ExcludeB->getBody()){
             return false;
         }
     }
@@ -250,6 +256,33 @@ bool ggDynWorld::RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::
     if(callBack.hasHit()){
         CollisionResult = glm::vec3(callBack.m_hitPointWorld.getX(),callBack.m_hitPointWorld.getY(),callBack.m_hitPointWorld.getZ());
         return true;
+    }
+    return false;
+}
+
+// A diferencia del otro, este metodo itera sobre TODOS los objetos
+// que han colisionado con el rayo y excluye los dos de parámetro
+// Devuelve la posicion de la colision mas cercana, excluyendo los dos de parametro
+bool ggDynWorld::CompleteRayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult, CRigidBody *ExcludeA, CRigidBody *ExcludeB){
+    btVector3 Starto = btVector3(Start.x,Start.y,Start.z);
+    btVector3 Endo = btVector3(End.x,End.y,End.z);
+
+    btCollisionWorld::AllHitsRayResultCallback callBack(Starto,Endo);
+    dynamicsWorld.rayTest(Starto, Endo, callBack);
+
+    btAlignedObjectArray<const btCollisionObject*>  OBJS = callBack.m_collisionObjects;
+    btAlignedObjectArray<btVector3>                 HITS = callBack.m_hitPointWorld;
+    
+    for(int i=0 ; i<OBJS.size() ; i++){
+        if(OBJS[i] != ExcludeA->getBody() && OBJS[i] != ExcludeB->getBody()){
+            CollisionResult = glm::vec3(
+                (HITS[i]).getX(),
+                (HITS[i]).getY(),
+                (HITS[i]).getZ()
+            );
+
+            return true;
+        }
     }
     return false;
 }
@@ -270,5 +303,11 @@ bool ggDynWorld::DoesItHitSomething(const glm::vec3 &Start, const glm::vec3 &End
 bool ggDynWorld::contactTest(btCollisionObject *_obj){
     SimulationContactResultCallback callback;
     collisionWorld.contactTest(_obj,callback);
+    return callback.bCollision;
+}
+
+bool ggDynWorld::contactTest(btCollisionObject *objA, btCollisionObject *exclude){
+    SimulationContactResultCallback callback(exclude);
+    collisionWorld.contactTest(objA,callback);
     return callback.bCollision;
 }
