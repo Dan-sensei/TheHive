@@ -8,6 +8,20 @@
 #include <glm/glm.hpp>
 #include <string>
 
+
+
+
+#define U5    48
+#define S5    16
+#define U6    176
+#define S6    16
+#define U7    304
+#define S7    16
+#define U8    432
+#define S8    16
+
+
+
 TLuzDirigida::TLuzDirigida(){}
 TLuzDirigida::~TLuzDirigida(){}
 
@@ -28,17 +42,17 @@ glm::vec3 TLuzDirigida::getDireccion(){
 void TLuzDirigida::beginDraw(){
     //std::cout << "Luz Dirigida" << '\n';
 
-    int n=0;//
+    //
     //unsigned int offsetpos = uniformOffsets[5] +arrayStrides[5]*n;
     //unsigned int offsetdir = uniformOffsets[6] +arrayStrides[6]*n;
     //unsigned int offsetcolor = uniformOffsets[7] +arrayStrides[7]*n;
     //unsigned int offsetintensidad = uniformOffsets[8] +arrayStrides[8]*n;
-    unsigned int offsetpos          =0;
-    unsigned int offsetdir          =0;
-    unsigned int offsetcolor        =0;
-    unsigned int offsetintensidad   =0;
 
-    //if(light_shader){
+        int offsetpos =        U5 +S5*N;
+        int offsetdir =        U6 +S6*N;
+        int offsetcolor =      U7 +S7*N;
+        int offsetintensidad = U8 +S8*N;
+
         glm::vec4 pos = viewMatrix * modelMatrix[3];
 
         ((float*)(buffer + offsetpos))[0] = pos[0];
@@ -56,7 +70,5 @@ void TLuzDirigida::beginDraw(){
         *((float *)(buffer + offsetintensidad)) = intensidad;
 
 
-        glUniform3f(_U_LIGHT_POS, pos.x,pos.y,pos.z);
-    //}
 }
 void TLuzDirigida::endDraw(){}

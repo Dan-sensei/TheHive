@@ -15,11 +15,15 @@ TLuz::~TLuz(){}
 TLuz::TLuz(gg::Color &_color){//,unsigned char * buff):light_shader(nullptr){
     //buffer=buff;
     color = _color;
+    N=0;
 }
 
 TLuz::TLuz(gg::Color &_color,Shader *_shader){
     color = _color;
     light_shader = _shader;
+}
+void TLuz::setN(int ene){
+    N=ene;
 }
 
 TLuz::TLuz(Shader *_shader){

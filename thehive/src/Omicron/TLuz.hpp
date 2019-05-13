@@ -22,8 +22,10 @@ class TLuz : public TEntidad {
 
         void  setIntensidad(float &_color);
         float getIntensidad();
+        void setN(int ene);
 
     protected:
+        int N;
         gg::Color color;
         float intensidad;
         Shader* light_shader;

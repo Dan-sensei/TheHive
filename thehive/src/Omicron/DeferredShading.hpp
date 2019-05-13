@@ -7,6 +7,8 @@
 class DeferredShading{
     friend class Omicron;
 
+        void setnluces(int nluces_F,int nluces_p);
+
         DeferredShading();
         DeferredShading(const DeferredShading &origin) = delete;
         void operator=(const DeferredShading &origin) = delete;

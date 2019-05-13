@@ -7,6 +7,13 @@
 #include <glm/glm.hpp>
 #include <string>
 
+#define U9    560
+#define S9    16
+#define U10    688
+#define S10    16
+#define U11    816
+#define S11    16
+
 TLuzPuntual::TLuzPuntual(){}
 TLuzPuntual::~TLuzPuntual(){}
 
@@ -27,15 +34,15 @@ glm::vec3 TLuzPuntual::getPosicion(){
 void TLuzPuntual::beginDraw(){
     //std::cout << "Luz Puntual" << '\n';
 
-    int n=0;//
     //unsigned int offsetpos = uniformOffsets[9] +arrayStrides[9]*n;
     //unsigned int offsetcolor = uniformOffsets[10] +arrayStrides[10]*n;
     //unsigned int offsetintensidad = uniformOffsets[11] +arrayStrides[11]*n;
-    unsigned int offsetpos          =0;
-    unsigned int offsetcolor        =0;
-    unsigned int offsetintensidad   =0;
 
-    //if(light_shader){
+
+        int offsetpos =        U9 +S9*N;
+        int offsetcolor =      U10 +S10*N;
+        int offsetintensidad = U11 +S11*N;
+
         glm::vec4 pos = viewMatrix * modelMatrix[3];
 
         ((float*)(buffer + offsetpos))[0] = pos[0];
@@ -49,7 +56,5 @@ void TLuzPuntual::beginDraw(){
 
         *((float *)(buffer + offsetintensidad)) = intensidad;
 
-
-        glUniform3f(_U_LIGHT_POS, pos.x,pos.y,pos.z);
 }
 void TLuzPuntual::endDraw(){}

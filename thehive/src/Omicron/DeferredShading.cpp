@@ -6,7 +6,10 @@
 #include <Omicron/AssetManager.hpp>
 #include <Omicron/TLuz.hpp>
 
-#define tamanyo 8192
+#define tamanyo 1024
+#define Nfocales   32
+#define Npuntuales   36
+
 
 struct LUZF
 {
@@ -52,7 +55,10 @@ DeferredShading::~DeferredShading(){
     glDeleteTextures(1, &gDiffuseSpec);
     glDeleteRenderbuffers(1, &G_DepthBuffer);
 };
-
+void DeferredShading::setnluces(int nluces_F,int nluces_p){
+    *((float *)(buffer + Nfocales)) = nluces_F;
+    *((float *)(buffer + Npuntuales)) = nluces_p;
+}
 void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
 
     DEFERRED_SHADER = Singleton<AssetManager>::Instance()->getShader("DEFERRED");
@@ -135,11 +141,14 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
     unsigned int offset2 = uniformOffsets[6];
     unsigned int offset3 = uniformOffsets[7];
     unsigned int offset4 = uniformOffsets[8];
-    //std::cout << "Luz de foco" << '\n';
-    //std::cout << "offset" <<offset<< '\n';
-    //std::cout << "offset2" <<offset2<< '\n';
-    //std::cout << "offset3" <<offset3<< '\n';
-    //std::cout << "offset4" <<offset4<< '\n';
+    std::cout << "#define Nfocales   " <<uniformOffsets[3]<< '\n';
+    std::cout << "#define Npuntuales   " <<uniformOffsets[4]<< '\n';
+    std::cout << "Luz dirigida" << '\n';
+    for (size_t i = 5; i < 9; i++) {
+        std::cout << "#define U"<<i<<"    " <<uniformOffsets[i]<< '\n';
+        std::cout << "#define S"<<i<<"    " <<arrayStrides[i]<< '\n';
+    }
+
     for (uint8_t n = 0; n < nluces; n++)
     {
         aux=lucesf[n];
@@ -163,6 +172,13 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
         offset4 += arrayStrides[8];
     }
     //std::cout << "final" <<offset4<< '\n';
+    std::cout << "Luz puntuales" << '\n';
+    for (size_t i = 9; i < 12; i++) {
+        std::cout << "#define U"<<i<<"    " <<uniformOffsets[i]<< '\n';
+        std::cout << "#define S"<<i<<"    " <<arrayStrides[i]<< '\n';
+    }
+
+    std::cout << "/* max */" << uniformOffsets[11]+arrayStrides[11]*9<<'\n';
     offset = uniformOffsets[9];
     offset2 = uniformOffsets[10];
     offset3 = uniformOffsets[11];
