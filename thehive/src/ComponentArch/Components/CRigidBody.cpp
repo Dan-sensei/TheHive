@@ -5,8 +5,9 @@
 #include "CClock.hpp"
 #include <ComponentArch/Components/CStaticModel.hpp>
 
-#define PI 3.14159265359
-#define FORCE_FACTOR    400.f
+#define PI                  3.14159265359f
+#define FORCE_FACTOR        400.f
+#define GRAVITY             -15.f
 
 std::vector<const char*> names;
 
@@ -154,7 +155,7 @@ CRigidBody::CRigidBody(
         body->setCollisionFlags(2);
     }
 
-    // CF_NO_CONTACT_RESPONSE
+    // CF_NO_CONTACT_RESPONSE = 4
     body->setCollisionFlags( body->getCollisionFlags() | 4);
 
     // Add the body to the dynamics world
@@ -220,7 +221,7 @@ CRigidBody::~CRigidBody() {
 }
 
 void CRigidBody::Init(){
-    world->setGravity(0,-15,0);
+    world->setGravity(0,GRAVITY,0);
 
     // Hacer set del mapa de punteros a funcion
     mapaFuncUpdate.insert(std::make_pair(Action_AbrirPuerta,&CRigidBody::Upd_MoverObjeto));
@@ -324,12 +325,22 @@ void CRigidBody::applyConstantVelocity(glm::vec3 _force,float _max_speed,bool _k
         return;
 
     if(_keyPressed && currentSpeed < _max_speed) {    // If a key is pressed and we haven't reached max speed yet
-        _force *= FORCE_FACTOR;
-        applyCentralForce(_force);                       // Accelerate!
+        if(!body->isKinematicObject()){
+            _force *= FORCE_FACTOR;
+            applyCentralForce(_force);                       // Accelerate!
+        }
+        else{
+            setOffsetBodyPosition(_force);
+        }
     }
     else if (currentSpeed > 2) {                                    // Any key is pressed, but the speed is higher than 2! We're moving
-        _force = getVelocity() * glm::vec3(-0.2, 0, -0.2) * FORCE_FACTOR;
-        applyCentralForce(_force);                       // Stopping!
+        if(!body->isKinematicObject()) {
+            applyCentralForce(_force);                       // Stopping!
+            _force = getVelocity() * glm::vec3(-0.2, 0, -0.2) * FORCE_FACTOR;
+        }
+        else{
+            setOffsetBodyPosition(_force);
+        }
     }
     else {                                                          // If we reach here, any key is pressed and the speed is below 2
         // Set it to 0
@@ -365,6 +376,13 @@ void CRigidBody::setBodyPosition(glm::vec3 &_pos){
         _pos.z
     ));
     body->getMotionState()->setWorldTransform(trans);
+
+    // btVector3 pos = body->getWorldTransform().getOrigin();
+    // body->getWorldTransform().setOrigin(btVector3(_pos.x,_pos.y,_pos.z));
+}
+
+void CRigidBody::setNotKinematicBodyPosition(glm::vec3 &_pos){
+    body->getWorldTransform().setOrigin(btVector3(_pos.x,_pos.y,_pos.z));
 }
 
 void CRigidBody::setOffsetBodyPosition(glm::vec3 &_off){
@@ -377,7 +395,49 @@ void CRigidBody::setOffsetBodyPosition(glm::vec3 &_off){
         trans.getOrigin().getZ()+_off.z
     ));
     body->getMotionState()->setWorldTransform(trans);
+
+    // btVector3 pos = body->getWorldTransform().getOrigin();
+    // body->getWorldTransform().setOrigin(pos + btVector3(_off.x,_off.y,_off.z));
 }
+
+void CRigidBody::setYPosition(const float &Y){
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+    btVector3 _pos = body->getWorldTransform().getOrigin();
+
+    trans.setOrigin(btVector3(
+        _pos.getX(),
+        Y,
+        _pos.getZ()
+    ));
+    body->getMotionState()->setWorldTransform(trans);
+}
+
+void CRigidBody::setXZPosition(const float &X, const float &Z){
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+    btVector3 _pos = body->getWorldTransform().getOrigin();
+
+    trans.setOrigin(btVector3(
+        X,
+        _pos.getY(),
+        Z
+    ));
+    body->getMotionState()->setWorldTransform(trans);
+}
+
+void CRigidBody::setGhostObject(){
+    body->setCollisionFlags( body->getCollisionFlags() | 4);
+}
+
+void CRigidBody::deactivateGravity(){
+    body->setGravity(btVector3(0,0,0));
+}
+
+void CRigidBody::activateGravity(){
+    body->setGravity(btVector3(0,GRAVITY,0));
+}
+
 
 glm::vec3 CRigidBody::getLinearVelocity(){
     return glm::vec3(
@@ -396,6 +456,10 @@ glm::vec2 CRigidBody::getXZVelocity(){
 
 bool CRigidBody::checkContactResponse(){
     return world->contactTest(body);
+}
+
+bool CRigidBody::checkContactResponse(CRigidBody *objB){
+    return world->contactTest(body,objB->body);
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------

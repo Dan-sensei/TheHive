@@ -20,7 +20,12 @@ class CRigidBody;
 
 struct SimulationContactResultCallback : public btCollisionWorld::ContactResultCallback{
     bool bCollision;
-    SimulationContactResultCallback():bCollision(false){}
+    btCollisionObject *exclude;
+
+    SimulationContactResultCallback():bCollision(false),exclude(nullptr){}
+    SimulationContactResultCallback(btCollisionObject *obj):bCollision(false),exclude(nullptr){
+        if(obj) exclude = obj;
+    }
 
     btScalar addSingleResult(
         btManifoldPoint& cp,
@@ -31,7 +36,6 @@ struct SimulationContactResultCallback : public btCollisionWorld::ContactResultC
         int partId1,
         int index1)
     {
-
         glm::vec3 vecA(
             cp.m_localPointA.getX(),
             cp.m_localPointA.getY(),
@@ -44,7 +48,14 @@ struct SimulationContactResultCallback : public btCollisionWorld::ContactResultC
         );
         if(cp.getDistance()<glm::distance(vecA,vecB)){
             //If cp distance less than threshold
-            bCollision = true;
+            if(exclude){
+                if(exclude != colObj1Wrap->m_collisionObject){
+                    bCollision = true;
+                }
+            }
+            else{
+                bCollision = true;
+            }
         }
         return 0;
     }
@@ -75,13 +86,15 @@ public:
     void applyForceToRaycastCollisionBody(glm::vec3);
 
     bool contactTest(btCollisionObject*);
+    bool contactTest(btCollisionObject *objA, btCollisionObject *objB);
 
     //  ---
     //  Do a ray cast test! If it hits something it will return true, and the collision point on te 3rd
     //  parameter, if not, it will return false, an it'll leave CollisionResult untouched
     //===================================================================================================
     bool RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult);
-    bool RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult, CRigidBody *Exclude);
+    bool RayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult, CRigidBody *ExcludeA = nullptr, CRigidBody *ExcludeB = nullptr);
+    bool CompleteRayCastTest(const glm::vec3 &Start, const glm::vec3 &End, glm::vec3 &CollisionResult, CRigidBody *ExcludeA = nullptr, CRigidBody *ExcludeB = nullptr);
 
     //  ---
     //  Do a ray cast test! And just returns true or false

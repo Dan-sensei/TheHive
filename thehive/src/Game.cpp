@@ -126,7 +126,7 @@ void Game::Init(){
     Accumulator = 0;
 
     Singleton<Pathfinding>::Instance()->SetDebug(true);
-    //world->setDebug(true);
+    // world->setDebug(true);
     MasterClock.Restart();
 
     //sky.init();
@@ -203,7 +203,7 @@ void Game::Update(){
     // ======================= Debug =======================
     // glClear(GL_DEPTH_BUFFER_BIT);
     // Engine->DrawZero();
-    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
 

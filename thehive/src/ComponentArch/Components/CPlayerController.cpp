@@ -25,22 +25,20 @@
 #define WEAPON_KEY          gg::Q
 
 #define FORCE_FACTOR        500.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*6.2f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*2.5f
 #define DASH_FORCE_FACTOR   FORCE_FACTOR/35.f
 
 #define MULT_RUN_FACTOR     1.5
 #define MULT_DASH_FACTOR    3
-//int CPlayerController::cont_enemigos=2;
 
 CPlayerController::CPlayerController()
-:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), cRigidBody(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
+:Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), ghostCollider(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
 ,ToggleFreeCameraKey(true), FreeCamera(false), PlayerMovement(true), cV(0,0,1)
-{
-
-}
+{}
 
 CPlayerController::~CPlayerController() {
-    if(secondWeapon) delete secondWeapon;
+    if(secondWeapon)    delete secondWeapon;
+    if(collider)           delete collider;
     delete s_dash;
     delete s_pasos;
 }
@@ -67,8 +65,18 @@ void CPlayerController::Init(){
     currentrusher  = 1;
     currenttank    = 1;
 
-    //pulsacion_enemigos=false;
+    // AUTO-STEPPING
+    glm::vec3 c_pos = ghostCollider->getBodyPosition();
+    collider = new CRigidBody(false, false,"", c_pos.x,c_pos.y,c_pos.z, 0.4,0.4,0.4, 50, 0,0,0);
+    collider->deactivateGravity();
+    ghostCollider->setGhostObject();
 
+    isColliderGravitySet = true;
+    GH_PREV = glm::vec3(0);
+
+    camera->setExcludingBodyA(ghostCollider);
+    camera->setExcludingBodyB(collider);
+    // -----------------------------
 
     // El heroe siempre empezara con un arma secundaria
     // Pistola por defecto
@@ -122,7 +130,7 @@ gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
 
 gg::EMessageStatus CPlayerController::MHandler_SETPTRS(){
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
-    cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()));
+    ghostCollider = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()));
     cDynamicModel = static_cast<CDynamicModel*>(Manager->getComponent(gg::DYNAMICMODEL, getEntityID()));
     // //std::cout << "llega" << '\n';
     hab = static_cast<CHabilityController*>(Manager->getComponent(gg::HAB, getEntityID()));
@@ -145,11 +153,12 @@ void CPlayerController::Update(){
     //if(clocker.ElapsedTime().Seconds() < 0.1){
         //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 0.5, 0), Target, gg::Color(255, 0, 0));
     //}
+
 }
 
 void CPlayerController::FixedUpdate(){
 
-    if(!cTransform || !camera || !cRigidBody)  return;
+    if(!cTransform || !camera || !ghostCollider)  return;
 
     // Vector que tendrá el impulso para aplicar al body
     force.x = 0;
@@ -159,16 +168,15 @@ void CPlayerController::FixedUpdate(){
 
     pressed = false;
     check_WASD(force, pressed);
+    force *= 2;
 
-    if(!s_pasos->isPlaying() && pressed)
-      s_pasos->play();
-
+    if(!s_pasos->isPlaying() && pressed) s_pasos->play();
 
     for(uint8_t i = 0; i < KEYMAP.size(); ++i){
         if(Engine->key(KEYMAP[i].KEY, true))  (this->*KEYMAP[i].Target)();
     }
 
-    if(!PlayerMovement) return;
+    if(!PlayerMovement)     return;
 
     if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING && cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
         if( !pressed){
@@ -192,16 +200,18 @@ void CPlayerController::FixedUpdate(){
         }
     }
 
+    glm::vec3 Direction = ghostCollider->getVirtualRotation() * glm::vec3(0,0,1);
+    glm::vec3 Velocity = ghostCollider->getVelocity() * glm::vec3(-1, 0,-1);
+    if(Velocity.x || Velocity.z) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
 
-    glm::vec3 Direction = cRigidBody->getVirtualRotation() * glm::vec3(0,0,1);
-    glm::vec3 Velocity = cRigidBody->getVelocity() * glm::vec3(-1, 0,-1);
+    collider->activate(true);
+    if(pressed) collider->setLinearVelocity(glm::vec3(force.x, collider->getVelocity().y, force.z));
+    else        collider->setLinearVelocity(glm::vec3(0      , collider->getVelocity().y, 0      ));
 
-    if(Velocity.x || Velocity.z)
-    cRigidBody->setVirtualRotation(RotationBetween(Direction, Velocity));
+    glm::vec3 tmp = collider->getBodyPosition();
+    ghostCollider->setBodyPosition(tmp);            // Para captar la fuerza del salto
 
-    // Se aplican fuerzas       FORCE-----| |------------MAX_SPEED-------------| |------SOME_KEY_PRESSED?
-    cRigidBody->applyConstantVelocity(force,MAX_HERO_SPEED*MULT_FACTOR*MULT_BASE,pressed);
-
+    autoStepping();
 
     // DISPARO
     if(Engine->isLClickPressed()){
@@ -211,7 +221,6 @@ void CPlayerController::FixedUpdate(){
         clocker.Restart();
         if(gun) gun->shoot(Target);
     }
-
     if(secondWeapon) secondWeapon->fullDeBalas(1);
 
     // <DEBUG>
@@ -305,6 +314,41 @@ void CPlayerController::check_WASD(glm::vec3 &force, bool &flag_pressed){
         if(force.x || force.z)
             force = glm::normalize(force);
     }
+}
+
+#define RC_OFFSET           1.6f                // Max offset del auto-stepping
+void CPlayerController::autoStepping(){
+    // Auto-stepping
+    glm::vec3 start = ghostCollider->getBodyPosition();
+    start.y -= 0.4;
+    glm::vec3 end = glm::vec3(start.x,start.y-(RC_OFFSET),start.z);
+    glm::vec3 result;
+
+    // bool hit = world->RayCastTest(start,end,result,ghostCollider,collider);
+    bool hit = world->CompleteRayCastTest(start,end,result,ghostCollider,collider);
+
+    if(hit){
+        result.y += RC_OFFSET/1.3;
+        ghostCollider->setBodyPosition(result);
+
+        start = collider->getLinearVelocity();
+
+        collider->deactivateGravity();
+        collider->setLinearVelocity(glm::vec3(start.x,0,start.z));
+
+        if(isColliderGravitySet || GH_PREV != result){
+            result.y += 0.5;
+            collider->setNotKinematicBodyPosition(result);
+            isColliderGravitySet = false;
+            GH_PREV = result;
+        }
+    }
+    else{
+        collider->activateGravity();
+        isColliderGravitySet = true;
+        GH_PREV = glm::vec3(0);
+    }
+
 }
 
 void CPlayerController::showDebug(){
@@ -491,7 +535,7 @@ void CPlayerController::DASH(){
 }
 
 void CPlayerController::JUMP(){
-    cRigidBody->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
+    collider->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
     if(pressed){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
             cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.6);
@@ -510,7 +554,7 @@ void CPlayerController::TogglePause() {
 
 void CPlayerController::MostrarTexto(){
     std::string texto[]{
-        "German es muy muy gay",
+        // "German es muy muy gay",
         "Effects",
         "Effects",
         "Effects"

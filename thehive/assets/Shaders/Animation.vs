@@ -4,13 +4,13 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec3 vertexNormal_modelspace;
 layout(location = 2) in vec2 vertexUV;
 layout(location = 3) in vec3 vertexTangent_modelspace;
-layout(location = 4) in vec3 vertexBitangent_modelspace;
+//layout(location = 4) in vec3 vertexBitangent_modelspace;
 
 
 layout(location = 5) in vec3 vertexPosition_modelspace1;
 layout(location = 6) in vec3 vertexNormal_modelspace1;
 layout(location = 7) in vec3 vertexTangent_modelspace1;
-layout(location = 8) in vec3 vertexBitangent_modelspace1;
+//layout(location = 8) in vec3 vertexBitangent_modelspace1;
 
 layout(location = 9) uniform mat4 M;
 layout(location = 10) uniform mat3 NormalMatrix;
@@ -38,6 +38,9 @@ void main() {
     UV = vertexUV;
     //mat3 normalMatrix = transpose(inverse(M));
     //Normal = M * vertexNormal_modelspace;
+
+    vec3 vertexBitangent_modelspace = cross(vertexTangent_modelspace, vertexNormal_modelspace);
+    vec3 vertexBitangent_modelspace1 = cross(vertexTangent_modelspace1, vertexNormal_modelspace1);
 
 	vec3 T = normalize(NormalMatrix * mix(vertexTangent_modelspace, vertexTangent_modelspace1, TweenFactor));
 	vec3 B = normalize(NormalMatrix * mix(vertexBitangent_modelspace, vertexBitangent_modelspace1, TweenFactor));

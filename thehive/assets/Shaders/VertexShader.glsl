@@ -4,7 +4,7 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec3 vertexNormal_modelspace;
 layout(location = 2) in vec2 vertexUV;
 layout(location = 3) in vec3 vertexTangent_modelspace;
-layout(location = 4) in vec3 vertexBitangent_modelspace;
+//layout(location = 4) in vec3 vertexBitangent_modelspace;
 
 
 layout(location =  9) uniform mat4 MV;
@@ -30,6 +30,7 @@ void main() {
 
     UV = vertexUV;
 
+    vec3 vertexBitangent_modelspace = cross(vertexTangent_modelspace, vertexNormal_modelspace);
 	vec3 T = normalize(NormalMatrix * vertexTangent_modelspace);
 	vec3 B = normalize(NormalMatrix * vertexBitangent_modelspace);
 	vec3 N = normalize(NormalMatrix * vertexNormal_modelspace);

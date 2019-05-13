@@ -101,9 +101,16 @@ class CRigidBody : public IComponent {
         glm::vec3 getBodyPosition();
         glm::vec3 getLinearVelocity();
         void setBodyPosition(glm::vec3&);
+        void setNotKinematicBodyPosition(glm::vec3&);
         void setOffsetBodyPosition(glm::vec3&);
 
         bool checkContactResponse();
+        bool checkContactResponse(CRigidBody *objB);
+        void setXZPosition(const float &X, const float &Z);
+        void setYPosition(const float &Y);
+        void setGhostObject();
+        void deactivateGravity();
+        void activateGravity();
 
         // Funciones del mapa
         void updateCTransformPosition();

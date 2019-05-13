@@ -106,7 +106,7 @@ diffuse = clamp( dot( Normal, LightDir ), 0, 1 ) * Diffuse * LightPower;
 E = normalize(-VertexPos);
 halfwayDir = normalize(LightDir + E);
 cosAlpha = max(dot(Normal, halfwayDir), 0.0);
-// Optimización a pow(cosAlpha, n) = cosAlpha / (n - n*cosAlpha + cosAlpha)
+// Optimización a pow(base, e) = base / (e - e*base + base)
 spec = cosAlpha/(16 - 16 * cosAlpha + cosAlpha);
 FinalSpecular = LightColor * spec * SpecularTex * LightPower;
 

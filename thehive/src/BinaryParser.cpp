@@ -706,9 +706,7 @@ bool BinaryParser::ImportMesh(
 
 bool BinaryParser::FillBuffers(
     const std::string& BinaryFile,
-    unsigned int PositionsNormalsBuffer,
-    unsigned int UVBuffer,
-    unsigned int TangentsBitangentsBuffer,
+    unsigned int THE_BUFFER,
     unsigned int IndexBuffer,
     unsigned int &IndexSize
 ){
@@ -716,23 +714,12 @@ bool BinaryParser::FillBuffers(
     if (!Model.is_open()) return false;
 
     uint16_t i = 0;
-    GG_Read(Model, i);  // POSITIONS_AND_NORMALS_SIZE
-    glNamedBufferStorage(PositionsNormalsBuffer, i*sizeof(float), nullptr, GL_MAP_WRITE_BIT);
-    char* ptr = (char*)glMapNamedBuffer(PositionsNormalsBuffer, GL_WRITE_ONLY);
+    GG_Read(Model, i);  // POSITIONS / NORMALS / UV / TANGENTS
+                        //     X Y Z | X Y Z | U V | X Y Z
+    glNamedBufferStorage(THE_BUFFER, i*sizeof(float), nullptr, GL_MAP_WRITE_BIT);
+    char* ptr = (char*)glMapNamedBuffer(THE_BUFFER, GL_WRITE_ONLY);
     Model.read(ptr, i*sizeof(float));
-    glUnmapNamedBuffer(PositionsNormalsBuffer);
-
-    GG_Read(Model, i);  // UV_COORDS_SIZE
-    glNamedBufferStorage(UVBuffer, i*sizeof(float), nullptr, GL_MAP_WRITE_BIT);
-    ptr = (char*)glMapNamedBuffer(UVBuffer, GL_WRITE_ONLY);
-    Model.read(ptr, i*sizeof(float));
-    glUnmapNamedBuffer(UVBuffer);
-
-    GG_Read(Model, i);  // TANGENTS_AND_BITANGENTS_SIZE
-    glNamedBufferStorage(TangentsBitangentsBuffer, i*sizeof(float), nullptr, GL_MAP_WRITE_BIT);
-    ptr = (char*)glMapNamedBuffer(TangentsBitangentsBuffer, GL_WRITE_ONLY);
-    Model.read(ptr, i*sizeof(float));
-    glUnmapNamedBuffer(TangentsBitangentsBuffer);
+    glUnmapNamedBuffer(THE_BUFFER);
 
     GG_Read(Model, i);  // INDEX_SIZE
     IndexSize = i;

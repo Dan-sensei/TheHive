@@ -16,7 +16,7 @@
 #define X_OFF cos(-VERT_ANG_LIM_RAD)
 
 CCamera::CCamera(int8_t _b)
-:Target(nullptr), Engine(nullptr), cam(nullptr), collider(nullptr), ExcludingBody(nullptr),
+:Target(nullptr), Engine(nullptr), cam(nullptr), collider(nullptr), ExcludingBodyA(nullptr),ExcludingBodyB(nullptr),
 InvertCamera(_b)
 {
     CurrentUpdate = &CCamera::FollowTarget;
@@ -48,8 +48,12 @@ void CCamera::setTarget(CTransform *T) {
     Target = T;
 }
 
-void CCamera::setExcludingBody(CRigidBody* R){
-    ExcludingBody = R;
+void CCamera::setExcludingBodyA(CRigidBody* R){
+    ExcludingBodyA = R;
+}
+
+void CCamera::setExcludingBodyB(CRigidBody* R){
+    ExcludingBodyB = R;
 }
 
 void CCamera::resetMouse() {
@@ -105,7 +109,7 @@ void CCamera::FollowTarget(){
 
 void CCamera::fixCameraPositionOnCollision(const glm::vec3 &Target, const glm::vec3 &CameraPosition){
     glm::vec3 pos_on_collision;
-    if(dynWorld->RayCastTest(Target,CameraPosition,pos_on_collision,ExcludingBody)){
+    if(dynWorld->CompleteRayCastTest(Target,CameraPosition,pos_on_collision,ExcludingBodyA,ExcludingBodyB)){
         Engine->setPosition(cam, pos_on_collision);
     }
 }

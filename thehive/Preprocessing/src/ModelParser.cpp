@@ -15,18 +15,16 @@
 
 ModelParser::ModelParser(){}
 
-void ModelParser::generateBinaryGG_StaticModel(const std::string &FileInput, const std::string& FileOutput, bool generateBoundingBox){
-    parser(FileInput, FileOutput, 0, generateBoundingBox);
+void ModelParser::generateBinaryGG_StaticModel(const std::string &FileInput, const std::string& FileOutput){
+    parser(FileInput, FileOutput, 0);
 }
 
-void ModelParser::generateBinaryGG_DynamicModel(const std::string &FileInput, const std::string& FileOutput, bool generateBoundingBox){
-    parser(FileInput, FileOutput, 1, generateBoundingBox);
+void ModelParser::generateBinaryGG_DynamicModel(const std::string &FileInput, const std::string& FileOutput){
+    parser(FileInput, FileOutput, 1);
 }
 
-void ModelParser::parser(const std::string &FileInput, const std::string& FileOutput, unsigned int dyn, bool generateBoundingBox){
-    std::vector<float> PositionsNormals;
-    std::vector<float> uv;
-    std::vector<float> TangentsBitangents;
+void ModelParser::parser(const std::string &FileInput, const std::string& FileOutput, unsigned int dyn){
+    std::vector<float> THE_BUFFER;
     std::vector<unsigned short> index;
 
     Assimp::Importer importer;
@@ -60,9 +58,6 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
         return;
     }
 
-    float minX, minY, minZ, maxX, maxY, maxZ;
-    minX = minY = minZ = maxX = maxY = maxZ = 0;
-
     std::cout << "Hacking " << FileInput << " --> " << FileOutput << '\n';
 
     aiMesh **meshes = scene->mMeshes;
@@ -75,10 +70,6 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
 
     if(scene->mNumMeshes > 0 && meshes[0]->mNumVertices > 0){
         vertices   =   meshes[0]->mVertices;
-
-        minX = maxX = vertices[0].x;
-        minY = maxY = vertices[0].y;
-        minZ = maxZ = vertices[0].z;
     }
 
     for(uint16_t i = 0; i < scene->mNumMeshes; ++i){
@@ -90,40 +81,29 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
            bitangents   =   meshes[i]->mBitangents;
                 faces   =   meshes[i]->mFaces;
 
-            PositionsNormals.reserve(meshes[i]->mNumVertices*6);
-            uv.reserve(meshes[i]->mNumVertices*2);
-            TangentsBitangents.reserve(meshes[i]->mNumVertices*6);
+            THE_BUFFER.reserve(meshes[i]->mNumVertices*6 + meshes[i]->mNumVertices*2 + meshes[i]->mNumVertices*3);
 
 
         for(uint16_t j = 0; j < meshes[i]->mNumVertices; ++j){
 
-            if(vertices[j].x < minX) minX = vertices[j].x;
-            if(vertices[j].x > maxX) maxX = vertices[j].x;
+            THE_BUFFER.emplace_back(vertices[j].x);
+            THE_BUFFER.emplace_back(vertices[j].y);
+            THE_BUFFER.emplace_back(vertices[j].z);
 
-            if(vertices[j].y < minY) minY = vertices[j].y;
-            if(vertices[j].y > maxY) maxY = vertices[j].y;
+            THE_BUFFER.emplace_back(normales[j].x);
+            THE_BUFFER.emplace_back(normales[j].y);
+            THE_BUFFER.emplace_back(normales[j].z);
 
-            if(vertices[j].z < minZ) minZ = vertices[j].z;
-            if(vertices[j].z > maxZ) maxZ = vertices[j].z;
+            THE_BUFFER.emplace_back(textureCoords[j].x);
+            THE_BUFFER.emplace_back(textureCoords[j].y);
 
-            PositionsNormals.emplace_back(vertices[j].x);
-            PositionsNormals.emplace_back(vertices[j].y);
-            PositionsNormals.emplace_back(vertices[j].z);
+            THE_BUFFER.emplace_back(tangents[j].x);
+            THE_BUFFER.emplace_back(tangents[j].y);
+            THE_BUFFER.emplace_back(tangents[j].z);
 
-            PositionsNormals.emplace_back(normales[j].x);
-            PositionsNormals.emplace_back(normales[j].y);
-            PositionsNormals.emplace_back(normales[j].z);
-
-            uv.emplace_back(textureCoords[j].x);
-            uv.emplace_back(textureCoords[j].y);
-
-            TangentsBitangents.emplace_back(tangents[j].x);
-            TangentsBitangents.emplace_back(tangents[j].y);
-            TangentsBitangents.emplace_back(tangents[j].z);
-
-            TangentsBitangents.emplace_back(bitangents[j].x);
-            TangentsBitangents.emplace_back(bitangents[j].y);
-            TangentsBitangents.emplace_back(bitangents[j].z);
+            // TangentsBitangents.emplace_back(bitangents[j].x);
+            // TangentsBitangents.emplace_back(bitangents[j].y);
+            // TangentsBitangents.emplace_back(bitangents[j].z);
         }
 
         index.reserve(meshes[i]->mNumFaces*3);
@@ -138,72 +118,27 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
 
     std::ofstream MODEL(MODELS_BINARYFILES_OUTPUT_DIR+FileOutput+".modelgg", std::ios::binary);
 
-    uint16_t POSITIONS_AND_NORMALS_SIZE = PositionsNormals.size();
+    uint16_t POSITIONS_AND_NORMALS_SIZE = THE_BUFFER.size();
     GG_Write(MODEL, POSITIONS_AND_NORMALS_SIZE);
     for(uint16_t i = 0; i < POSITIONS_AND_NORMALS_SIZE; ++i){
-        GG_Write(MODEL, PositionsNormals[i]);
+        GG_Write(MODEL, THE_BUFFER[i]);
     }
-
-    uint16_t UV_COORDS_SIZE = uv.size();
-    GG_Write(MODEL, UV_COORDS_SIZE);
-    for(uint16_t i = 0; i < UV_COORDS_SIZE; ++i){
-        GG_Write(MODEL, uv[i]);
-    }
-
-    uint16_t TANGENTS_AND_BITANGENTS_SIZE = TangentsBitangents.size();
-    GG_Write(MODEL, TANGENTS_AND_BITANGENTS_SIZE);
-    for(uint16_t i = 0; i < TANGENTS_AND_BITANGENTS_SIZE; ++i){
-        GG_Write(MODEL, TangentsBitangents[i]);
-    }
-
+    //
+    // uint16_t UV_COORDS_SIZE = uv.size();
+    // GG_Write(MODEL, UV_COORDS_SIZE);
+    // for(uint16_t i = 0; i < UV_COORDS_SIZE; ++i){
+    //     GG_Write(MODEL, uv[i]);
+    // }
+    //
+    // uint16_t TANGENTS_AND_BITANGENTS_SIZE = TangentsBitangents.size();
+    // GG_Write(MODEL, TANGENTS_AND_BITANGENTS_SIZE);
+    // for(uint16_t i = 0; i < TANGENTS_AND_BITANGENTS_SIZE; ++i){
+    //     GG_Write(MODEL, TangentsBitangents[i]);
+    // }
+    //
     uint16_t INDEX_SIZE = index.size();
     GG_Write(MODEL, INDEX_SIZE);
     for(uint16_t i = 0; i < INDEX_SIZE; ++i){
         GG_Write(MODEL, index[i]);
     }
-
-    if(!generateBoundingBox) return;
-
-    std::ofstream BB(BB_BINARYFILES_OUTPUT_DIR+FileOutput+".bb", std::ios::binary);
-
-    // MIN
-    GG_Write(BB, minX);
-    GG_Write(BB, minY);
-    GG_Write(BB, -minZ);      // .
-
-    //Derecha
-    GG_Write(BB, maxX);
-    GG_Write(BB, minY);
-    GG_Write(BB, -minZ);      // . _____
-
-    //Arriba
-    GG_Write(BB, maxX);      //       .
-    GG_Write(BB, maxY);      //       |
-    GG_Write(BB, -minZ);      // ._____|
-
-    //Izquierda
-    GG_Write(BB, minX);      // ._____.
-    GG_Write(BB, maxY);      //       |
-    GG_Write(BB, -minZ);      // ._____|
-
-    //-----------------------
-    //Al fondo
-    GG_Write(BB, minX);      // ./_____.
-    GG_Write(BB, maxY);      //       |
-    GG_Write(BB, -maxZ);      // ._____|
-
-    //Derecha
-    GG_Write(BB, maxX);      //./====:
-    GG_Write(BB, maxY);      //      |
-    GG_Write(BB, -maxZ);      //._____|
-
-    //Abajo
-    GG_Write(BB, maxX);
-    GG_Write(BB, minY);
-    GG_Write(BB, -maxZ);
-
-    //Izquierda
-    GG_Write(BB, minX);
-    GG_Write(BB, minY);
-    GG_Write(BB, -maxZ);
 }
