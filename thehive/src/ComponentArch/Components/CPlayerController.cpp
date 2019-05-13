@@ -3,6 +3,7 @@
 #include <States/StateMachine.hpp>
 #include <PauseState.hpp>
 #include <IAState.hpp>
+#include <PopState.hpp>
 #include "CDynamicModel.hpp"
 #include <AnimationLUT.hpp>
 #include <ComponentArch/Components/CCamera.hpp>
@@ -553,14 +554,20 @@ void CPlayerController::TogglePause() {
 }
 
 void CPlayerController::MostrarTexto(){
-    std::string texto[]{
-        // "German es muy muy gay",
-        "Effects",
-        "Effects",
-        "Effects"
-    };
-    int nlineas=4;
-    Singleton<Motor2D>::Instance()->pintarTexto(nlineas,texto);
+    //std::string texto[]{
+    //    "Effects",
+    //    "Effects",
+    //    "Effects"
+    //};
+    //int nlineas=4;
+    //Singleton<Motor2D>::Instance()->pintarTexto(nlineas,texto);
+    auto estado = new PopState();
+    estado->Addim("assets/HUD/asdw_esp.png");
+    estado->Addim("assets/HUD/camara_esp.png");
+    estado->Addim("assets/HUD/dash_esp.png");
+    Singleton<StateMachine>::Instance()->AddState(estado,false);
+
+    //Singleton<Motor2D>::Instance()->pintarImagen("assets/HUD/ultrasonido_esp.png");
 }
 void CPlayerController::QuitarTexto(){
     Singleton<Motor2D>::Instance()->InitHUD();

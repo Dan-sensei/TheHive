@@ -128,6 +128,10 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
 
 }
 
+void Imagen2D::setShader(std::string sha){
+    auto sh=Singleton<AssetManager>::Instance();
+    inicio=sh->getShader(sha);
+}
 void Imagen2D::setPos(float x,float y,float w,float h){
     //glDeleteVertexArrays(1, &VBO);
     float _x,_y,_w,_h;

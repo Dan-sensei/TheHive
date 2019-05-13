@@ -1,5 +1,5 @@
 #include "CTransform.hpp"
-//#include <iostream>
+#include <iostream>
 #include <ComponentArch/ObjectManager.hpp>
 
 

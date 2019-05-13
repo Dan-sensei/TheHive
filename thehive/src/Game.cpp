@@ -87,9 +87,18 @@ void Game::Init(){
     //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
     //
     //
+
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
+    //BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 5);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 6);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/FINAL_MODELS.data", 7);
+
+    ///BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 1);
+    // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
     // BinaryParser::LoadSounds();
     // BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
-
 
     Engine2D->InitHUD();
 
@@ -138,6 +147,7 @@ void Game::Init(){
     // PS.MaxParticles = 20;
     //
     // Engine->CreateParticleSystem(PS, 1);
+    Director->init();
 }
 
 void Game::Update(){
@@ -157,6 +167,7 @@ void Game::Update(){
 
     // if(DeltaTime > 10000) throw std::exception();
     while(Accumulator >= 1/UPDATE_STEP){
+        //Director->getposzona(1);
         // FIXED UPDATE//
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
@@ -201,9 +212,11 @@ void Game::Update(){
     Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-    // glClear(GL_DEPTH_BUFFER_BIT);
+     glClear(GL_DEPTH_BUFFER_BIT);
     // Engine->DrawZero();
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    Manager->DibLineas();
+
+    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
 

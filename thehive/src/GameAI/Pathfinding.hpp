@@ -35,7 +35,15 @@ class Pathfinding {
         bool isDebugging();
 
         void clear();   //  Provisional
+        glm::vec3 getrandomnode(int);
     private:
+        std::vector<SimpleFace> ZONE_1;
+        std::vector<SimpleFace> ZONE_2;
+        std::vector<SimpleFace> ZONE_3;
+        std::vector<SimpleFace> ZONE_4;
+        std::vector<SimpleFace> ZONE_5;
+        std::vector<SimpleFace> ZONE_6;
+        std::vector<SimpleFace> ZONE_7;
         Pathfinding();
         Pathfinding(const Pathfinding &orig) = delete;
         Pathfinding operator=(const Pathfinding &orig) = delete;

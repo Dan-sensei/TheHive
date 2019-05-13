@@ -96,10 +96,10 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             dmg = 0.34;
             cdc = 7;
             cb  = 30;
-            tb  = 30;
+            tb  = 150;
             relDT = 1;
             rng = 0.7;
-            imagen="assets/HUD/AMETRALLADORA_HUD.png";//ametralladora y rifle
+            imagen="assets/HUD/AMETRALLADORA_HUD2.png";//ametralladora y rifle
             sonido_disparo = "event:/SFX/Armas/Rifle/RifleDisparo";
             sonido_recarga = "event:/SFX/Armas/Rifle/RifleRecarga";
             sonido_desenfundado ="event:/SFX/Armas/Rifle/RifleDesenfundado";
@@ -115,7 +115,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             relDT = 0.3;
             rng = 0.4;
 
-            imagen="assets/HUD/ESCOPETA_HUD.png";
+            imagen="assets/HUD/ESCOPETA_HUD2.png";
             sonido_disparo = "event:/SFX/Armas/Escopeta/EscopetaDisparo";
             sonido_recarga = "event:/SFX/Armas/Escopeta/EscopetaRecarga";
             sonido_desenfundado ="event:/SFX/Armas/Escopeta/EscopetaDesenfundado";
@@ -131,7 +131,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             relDT = 6;
             rng = 0.7;
 
-            imagen="assets/HUD/AMETRALLADORA_HUD.png";//ametralladora y rifle
+            imagen="assets/HUD/AMETRALLADORA_HUD2.png";//ametralladora y rifle
             sonido_disparo = "event:/SFX/Armas/Ametralladora/AmetralladoraDisparo";
             sonido_recarga = "event:/SFX/Armas/Ametralladora/AmetralladoraRecarga";
             sonido_desenfundado ="event:/SFX/Armas/Ametralladora/AmetralladoraDesenfundado";
@@ -147,7 +147,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             relDT = 1.8;
             rng = 0.5;
 
-            imagen="assets/HUD/PISTOLA_HUD.png";
+            imagen="assets/HUD/PISTOLA_HUD2.png";
             sonido_disparo = "event:/SFX/Armas/Pistola/PistolaDisparo";
             sonido_recarga = "event:/SFX/Armas/Pistola/PistolaRecarga";
             sonido_desenfundado ="event:/SFX/Armas/Pistola/PistolaDesenfundado";

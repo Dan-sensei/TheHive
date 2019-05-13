@@ -41,8 +41,9 @@ bool CVida::quitarvida(const float &_factor){
 
 
     bool ret = false;
-
     vida -= _factor;
+    //std::cout << "QUITANDO VIDA " <<_factor<< '\n';
+    //std::cout << "QUITANDO VIDA " <<vida<< '\n';
     if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
         hud->setvida(vida/vida_max);
     }

@@ -126,8 +126,8 @@ void CAIEnem::Init(){
 
     arbol = new Treecontroller(data,type,this);
 
-    Vrange          = 30;
-    Arange          = 5;
+    Vrange          = 10;
+    Arange          = 1;
     enfado          = 1;
     gradovision     = cos(45*3.14159265359/180.f);
 
@@ -145,7 +145,9 @@ gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
 
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-
+float CAIEnem::getArange(){
+    return Arange;
+}
 gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
@@ -184,6 +186,7 @@ void CAIEnem::FixedUpdate(){
         // glm::vec3 cTF_ROT    = cTransform->getRotation();
         // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
         glm::vec3 dir        = cTransform->getRotation() * glm::vec3(0,0,1);
+        dir *=-1;
         glm::vec3 diren      = pTF-cTF_POS;
 
         diren       = glm::normalize(diren);
@@ -219,7 +222,7 @@ void CAIEnem::FixedUpdate(){
             resetHabilityUpdateCounter();
         }
 
-        if(dist<Arange){
+        if((dist-0.1)<=Arange){
             //lo tengo encima
             playerSeen      = true;
             playerSeeing    = true;
@@ -267,22 +270,33 @@ void CAIEnem::resetMyOwnTree(){
 }
 
 void CAIEnem::enableVisualDebug(){
+    //std::cout << "entra" << '\n';
+
+
+
+
     float res = acos(gradovision)*180.f/3.14159265359;
 
     // glm::vec3 dir    = gg::Direccion2D( cTransform->getRotation());
     // glm::vec3 dir1   = gg::Direccion2D( cTransform->getRotation()+glm::vec3(0,res,0));
     // glm::vec3 dir2   = gg::Direccion2D( cTransform->getRotation()-glm::vec3(0,res,0));
 
-    glm::vec3 dir    = cTransform->getRotation() * glm::vec3(0,0,1);
-    glm::vec3 dir1   = cTransform->rotate(res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
-    glm::vec3 dir2   = cTransform->rotate(-res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
 
+
+    glm::vec3 dir    = cTransform->getRotation() * glm::vec3(0,0,1);
+    dir *=-1;
+    glm::vec3 dir1   = cTransform->rotate(res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
+    dir1 *=-1;
+    cTransform->rotate(-res, glm::vec3(0,1,0));
+    glm::vec3 dir2   = cTransform->rotate(-res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
+    dir2 *=-1;
+    cTransform->rotate(res, glm::vec3(0,1,0));
 
 
     glm::vec3 inicio = cTransform->getPosition();
-    glm::vec3 fin    = dir*Vrange+cTransform->getPosition();
-    glm::vec3 fin2   = dir1*Vrange+cTransform->getPosition();
-    glm::vec3 fin3   = dir2*Vrange+cTransform->getPosition();
+    glm::vec3 fin    = dir*Vrange+inicio;
+    glm::vec3 fin2   = dir1*Vrange+inicio;
+    glm::vec3 fin3   = dir2*Vrange+inicio;
 
     Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
     Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
