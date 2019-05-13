@@ -38,8 +38,13 @@ void GUIController::Init(){
     dif=1;
 
     dialogue = SS->getVolume("bus:/Voces") + 49;
+    SS->setVolume(dialogue/40,"bus:/Voces");
+
     music = SS->getVolume("bus:/Musica") + 49;
+    SS->setVolume(music/40,"bus:/Musica");
+
     effect = SS->getVolume("bus:/SFX") + 49;
+    SS->setVolume(effect/40,"bus:/SFX");
 
     cursorpos=0;
     music_max=100;
@@ -190,10 +195,12 @@ void GUIController::musicaMenuPlay(){
 
 void GUIController::musicaMenuStop(){
   s_musica_menu->stop();
+
 }
 
 void GUIController::musicaJuegoStop(){
   s_musica_basica->stop();
+
 }
 void GUIController::musicaMenuPause(bool b){
   s_musica_menu->pause(b);
@@ -201,9 +208,11 @@ void GUIController::musicaMenuPause(bool b){
 
 void GUIController::musicaJuegoPlay(){
   s_musica_basica->play();
+
 }
 void GUIController::musicaJuegoPause(bool b){
   s_musica_basica->pause(b);
+
 }
 
 
@@ -214,7 +223,7 @@ void GUIController::moreDialog(){
     }
     Engine2D->setVolDialogo(dialogue);
     Engine2D->InitMenu6();
-    SS->setVolume(dialogue/10, "bus:/Voces");
+    SS->setVolume(dialogue/40, "bus:/Voces");
 }
 //but 19
 void GUIController::lessDialog(){
@@ -223,7 +232,7 @@ void GUIController::lessDialog(){
     }
     Engine2D->setVolDialogo(dialogue);
     Engine2D->InitMenu6();
-    SS->setVolume(dialogue/10, "bus:/Voces");
+    SS->setVolume(dialogue/40, "bus:/Voces");
 }
 
 void GUIController::muteDialog(){
@@ -237,7 +246,7 @@ void GUIController::moreMusic(){
     }
     Engine2D->setVolMusic(music);
     Engine2D->InitMenu6();
-    SS->setVolume(music/10, "bus:/Musica");
+    SS->setVolume(music/40, "bus:/Musica");
 }
 //but 21
 void GUIController::lessMusic(){
@@ -246,12 +255,13 @@ void GUIController::lessMusic(){
     }
     Engine2D->setVolMusic(music);
     Engine2D->InitMenu6();
-    SS->setVolume(music/10, "bus:/Musica");
+    SS->setVolume(music/40, "bus:/Musica");
 }
 
 void GUIController::muteMusic(){
     SS->setMute("bus:/Musica");
     Engine2D->colorMute(MUTEMUSIC);
+
 }
 //but 22
 void GUIController::moreEffect(){
@@ -260,7 +270,7 @@ void GUIController::moreEffect(){
     }
     Engine2D->setVolEffect(effect);
     Engine2D->InitMenu6();
-    SS->setVolume(effect/10, "bus:/SFX");
+    SS->setVolume(effect/40, "bus:/SFX");
 }
 //but 23
 void GUIController::lessEffect(){
@@ -269,7 +279,7 @@ void GUIController::lessEffect(){
     }
     Engine2D->setVolEffect(effect);
     Engine2D->InitMenu6();
-    SS->setVolume(effect/10, "bus:/SFX");
+    SS->setVolume(effect/40, "bus:/SFX");
 }
 
 void GUIController::muteEffect(){
