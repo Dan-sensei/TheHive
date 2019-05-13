@@ -21,13 +21,13 @@ CVida::CVida(int _vida)
     Manager         = Singleton<ObjectManager>::Instance();
     hud             = Singleton<Motor2D>::Instance();
     triggerSystem   = Singleton<CTriggerSystem>::Instance();
-    SS = Singleton<SoundSystem>::Instance();
-    s_vida = new SonidoNormal();
-    s_muerte = new SonidoNormal();
-
-    SS->createSound("event:/Voces/Jugador/Golpe", s_vida);
-    SS->createSound("event:/SFX/Jugador/PocaVida", s_muerte);
-}
+    // SS = Singleton<SoundSystem>::Instance();
+    // s_vida = new SonidoNormal();
+    // s_muerte = new SonidoNormal();
+    //
+    // // SS->createSound("event:/Voces/Jugador/Golpe", s_vida);
+    // // SS->createSound("event:/SFX/Jugador/PocaVida", s_muerte);
+ }
 
 CVida::~CVida() {}
 
