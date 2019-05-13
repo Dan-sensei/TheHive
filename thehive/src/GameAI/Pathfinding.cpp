@@ -80,7 +80,7 @@ glm::vec3 Pathfinding::getrandomnode(int nodo){
     float dz=zmas-zmenos;
 
     glm::vec3 res=glm::vec3(xmenos+gg::genFloatRandom(0, dx),y,zmenos+gg::genFloatRandom(0, dz));
-    std::cout << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
+    //std::cout << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
     //float randx=gg::genIntRandom(0, dx);
     //float randz=gg::genIntRandom(0, dz);
 

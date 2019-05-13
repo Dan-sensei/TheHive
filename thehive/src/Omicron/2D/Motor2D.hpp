@@ -71,6 +71,7 @@ class Motor2D{
         int checkbuton();
         void aplyhover();
     private:
+        bool pop;
         Imagen2D* POUP;
         SoundSystem* SS;
 

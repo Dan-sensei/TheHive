@@ -64,9 +64,9 @@ void PopState::Resume(){
 void PopState::Update(){
 
     Engine->PollEvents();
-
     if(Engine->key(gg::X, true))  {
         siguiente();
+
     }
     Engine->BeginDraw();
     Engine->draw();
@@ -87,7 +87,7 @@ void PopState::Update(){
 }
 
 void PopState::CLIN(){
-    // clinpopup
+
     Singleton<Motor2D>::Instance()->clinpopup();
     Singleton<Motor2D>::Instance()->CLINMenu();
     //_GUIController->musicaMenuStop();

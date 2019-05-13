@@ -13,7 +13,7 @@ std::string imgarmaS;
 */
 Motor2D::Motor2D():POUP(nullptr){
     motor = Singleton<Omicron>::Instance();
-
+    pop=false;
 
     imgarmaP="assets/HUD/cf_hud_d.png";
     imgarmaS="assets/HUD/cf_hud_d.png";
@@ -542,15 +542,18 @@ void Motor2D::InitHUD(){
 //    TEXT_BUFFER.emplace_back(x,y,Text, color);
 //}
 void Motor2D::clinpopup(){
-    if(POUP!=nullptr){
+    if(pop){
         delete POUP;
+        pop=false;
     }
 }
 void Motor2D::pintarImagen(std::string im){
 
-    if(POUP!=nullptr){
-        delete POUP;
-    }
+    //javi que mierdas era esto?
+    if(pop){
+         delete POUP;
+     }
+    pop=true;
     POUP = new Imagen2D(0,0,1,1,im);
 
     //auto yep=AddImage(im,0,0,100,100); // Principal
@@ -677,7 +680,7 @@ void Motor2D::DisplayHUD(){
         HUD_hability1();
 
 
-        if(POUP==nullptr){
+        if(!pop){
             RECTANGULOS[7]->Draw();
             RECTANGULOS[8]->Draw();
             RECTANGULOS[5]->Draw();
@@ -691,7 +694,7 @@ void Motor2D::DisplayHUD(){
         HUD_arma0(     );
         HUD_arma1(     );
 
-        if(POUP!=nullptr){
+        if(pop){
             POUP->Draw();
         }
         if(TEXT.size()>2){

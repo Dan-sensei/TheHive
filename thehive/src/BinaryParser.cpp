@@ -838,8 +838,8 @@ uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
     GG_Read(inStream,y);
     GG_Read(inStream,z);
 
-    //glm::vec3 Position(x,y,z);
-    glm::vec3 Position(331.092,-43.1192,70.0263);
+    glm::vec3 Position(x,y,z);
+    //glm::vec3 Position(331.092,-43.1192,70.0263);
     uint16_t HERO = fac->createHero(Position,-1);
 /*
     std::vector<AINode*> nodes;

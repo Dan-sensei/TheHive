@@ -511,7 +511,6 @@ void CPlayerController::TogglePause() {
 
 void CPlayerController::MostrarTexto(){
     //std::string texto[]{
-    //    "German es muy muy gay",
     //    "Effects",
     //    "Effects",
     //    "Effects"
