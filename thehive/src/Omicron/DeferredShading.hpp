@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <Omicron/Shader.hpp>
+#include <glm/glm.hpp>
 
 class DeferredShading{
     friend class Omicron;
@@ -17,6 +18,10 @@ class DeferredShading{
         void Bind_D_Shader();
         void DrawQuad();
         void DrawPostProcessing();
+
+        void setnluces(int nluces_F,int nluces_p);
+        void setDirLuz(glm::vec3 dir,glm::vec3 color,float inten);
+        void info();
 
         Shader* DEFERRED_SHADER;
         Shader* POSTPROCESSING_SHADER;
