@@ -3,6 +3,8 @@
 
 #include <cstdint>
 #include <Omicron/Shader.hpp>
+#include <glm/glm.hpp>
+
 
 class DeferredShading{
     friend class Omicron;
@@ -34,6 +36,8 @@ class DeferredShading{
 
         unsigned int QUAD;
         unsigned int QUAD_POS_UV;
+        void setDirLuz(glm::vec3 dir,glm::vec3 color,float inten);
+        void info();
 
 
 };
