@@ -46,8 +46,10 @@ void StateMachine::ProcessStateChanges() {
 			}
 		}
 
-		states.push(newState);
-		states.top()->Init();
+		while(states.top()!=newState){
+			states.push(newState);
+			states.top()->Init();
+		}
 		isAdding = false;
 		newState = nullptr;
 	}

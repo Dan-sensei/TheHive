@@ -9,6 +9,7 @@
 
 #include <Omicron/2D/Motor2D.hpp>
 
+#include "PopState.hpp"
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include "BinaryParser.hpp"
@@ -147,7 +148,27 @@ void Game::Init(){
     // PS.MaxParticles = 20;
     //
     // Engine->CreateParticleSystem(PS, 1);
+    // unsigned long CTriggerSystem::RegisterTriger(
+    //     EnumTriggerType _eTriggerType,
+    //     unsigned long _nPriority,
+    //     unsigned long _idSource,
+    //     const glm::vec3& _vPos,
+    //     float _fRadius,
+    //     float _fDuration,
+    //     bool _bDynamicSourcePos,
+    //     TData _data)
+    TData mes;
+    //mes.add(kDat_EntId,weapon);
+        Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes);
+
+
+    Update();
     Director->init();
+    auto estado = new PopState();
+    estado->Addim("assets/HUD/asdw_esp.png");
+    estado->Addim("assets/HUD/camara_esp.png");
+    estado->Addim("assets/HUD/dash_esp.png");
+    Singleton<StateMachine>::Instance()->AddState(estado);
 }
 
 void Game::Update(){

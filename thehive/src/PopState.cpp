@@ -35,7 +35,7 @@ void PopState::Addim(std::string im){
 }
 
 void PopState::Init(){
-
+std::cout << "pop init" << '\n';
     Engine->HideCursor(false);
     //Singleton<Motor2D>::Instance()->InitPause();
     //Singleton<Motor2D>::Instance()->InitPause();
