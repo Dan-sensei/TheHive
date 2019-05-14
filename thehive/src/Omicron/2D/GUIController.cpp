@@ -149,7 +149,7 @@ void GUIController::StartGame(){
 void GUIController::gotoMain(){
     Engine2D->InitMenu();
     sonido_accion(1);
-    if(s_musica_cred->isPlaying()){
+    if(s_musica_cred->isPaused()){
       s_musica_cred->stop();
       s_musica_menu->pause(false);
     }

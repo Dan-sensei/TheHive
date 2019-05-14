@@ -171,7 +171,13 @@ void CPlayerController::FixedUpdate(){
     check_WASD(force, pressed);
     force *= 2;
 
-    if(!s_pasos->isPlaying() && pressed) s_pasos->play();
+
+
+
+    if(!s_pasos->isPlaying() && pressed){
+      s_pasos->play();
+    }
+
 
     for(uint8_t i = 0; i < KEYMAP.size(); ++i){
         if(Engine->key(KEYMAP[i].KEY, true))  (this->*KEYMAP[i].Target)();
@@ -325,8 +331,8 @@ void CPlayerController::autoStepping(){
     glm::vec3 end = glm::vec3(start.x,start.y-(RC_OFFSET),start.z);
     glm::vec3 result;
 
-    // bool hit = world->RayCastTest(start,end,result,ghostCollider,collider);
-    bool hit = world->CompleteRayCastTest(start,end,result,ghostCollider,collider);
+    bool hit = world->RayCastTest(start,end,result,ghostCollider,collider);
+    // bool hit = world->CompleteRayCastTest(start,end,result,ghostCollider,collider);
 
     if(hit){
         result.y += RC_OFFSET/1.3;
