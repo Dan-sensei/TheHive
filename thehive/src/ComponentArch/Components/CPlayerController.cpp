@@ -42,6 +42,7 @@ CPlayerController::~CPlayerController() {
     if(collider)           delete collider;
     delete s_dash;
     delete s_pasos;
+    delete s_saltar;
 }
 
 void CPlayerController::Init(){
@@ -97,6 +98,9 @@ void CPlayerController::Init(){
 
     s_pasos = new SonidoSuperficie();
     SS->createSound("event:/SFX/Jugador/Pasos", s_pasos);
+
+    s_saltar = new SonidoSuperficie();
+    SS->createSound("event:/SFX/Jugador/Saltar", s_saltar);
 
     KEYMAP[0] = {gg::_1, &CPlayerController::ToggleSkill1};
     KEYMAP[1] = {gg::_2, &CPlayerController::ToggleSkill2};
@@ -343,6 +347,10 @@ void CPlayerController::autoStepping(){
         collider->deactivateGravity();
         collider->setLinearVelocity(glm::vec3(start.x,0,start.z));
 
+        if(isColliderGravitySet && GH_PREV != result){
+          s_saltar->play();
+        }
+
         if(isColliderGravitySet || GH_PREV != result){
             result.y += 0.5;
             collider->setNotKinematicBodyPosition(result);
@@ -546,6 +554,7 @@ void CPlayerController::JUMP(){
     if(pressed){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
             cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.6);
+
         }
     }
     else{
