@@ -44,6 +44,9 @@ void StateMachine::ProcessStateChanges() {
 			else {
 				states.top()->Pause();
 			}
+		}else{
+			states.push(newState);
+			states.top()->Init();
 		}
 
 		while(states.top()!=newState){
