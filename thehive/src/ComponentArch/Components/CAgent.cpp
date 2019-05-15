@@ -209,6 +209,9 @@ void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     std::string name = zonesArray[id].first;
     zonesArray[id].second("assets/BinaryFiles/"+name+"_MODELS.data", id);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/"+name+"_EVENTS.data", id);
+    if(id == 3){
+        Singleton<AIDirector>::Instance()->init();
+    }
 }
 
 void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){

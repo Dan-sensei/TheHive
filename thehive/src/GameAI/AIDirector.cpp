@@ -231,7 +231,7 @@ glm::vec3 AIDirector::getposzona(int nodo){
     //BR (337.45,-44.6235,67.7644)
     float xmenos=posbuena.TL.x;
     float xmas  =posbuena.BR.x;
-    float y     =posbuena.BR.y;
+    float y     =posbuena.BR.y + 20;
     float zmenos=posbuena.BR.z;
     float zmas  =posbuena.TL.z;
 
@@ -290,8 +290,8 @@ void AIDirector::createWandering(int nodo){
 
     glm::vec3 zonarand;
 
-    //int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
-    int enemigosint = 1;
+    int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+    // int enemigosint = 1;
     int id;
 
     for (int i = 0; i < enemigosint; i++) {

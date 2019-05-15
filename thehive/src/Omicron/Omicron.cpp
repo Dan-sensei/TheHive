@@ -59,8 +59,8 @@ void Omicron::clean(){
 
 void Omicron::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
-        std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS) + "DRAWN OBJECTS: " + std::to_string(DRAW_OBJECTS);
-        glfwSetWindowTitle(window, TEXT.c_str());
+        // std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS) + "DRAWN OBJECTS: " + std::to_string(DRAW_OBJECTS);
+        // glfwSetWindowTitle(window, TEXT.c_str());
         //std::cout << "FPS: " << FPS << '\n';
         FPS = 0;
         FPS_Clock.Restart();
