@@ -158,12 +158,17 @@ void Game::Init(){
     //     bool _bDynamicSourcePos,
     //     TData _data)
     TData mes;
-    mes.add(kDat_total_img,3);
+    mes.add(kDat_total_img,1);
     mes.add(kDat_img1,0);
-    mes.add(kDat_img2,1);
-    mes.add(kDat_img3,2);
-    mes.add(kDat_img3,3);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes);
+    TData mes1;
+    mes1.add(kDat_total_img,1);
+    mes1.add(kDat_img1,1);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(173.648,-0.649231,17.4254), 5, 0, false, mes1);
+    TData mes2;
+    mes2.add(kDat_total_img,1);
+    mes2.add(kDat_img1,2);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(330.681,-42.8137,79.0592 ), 5, 0, false, mes2);
 
     //TData mes1;
     //mes1.add(kDat_total_img,1);
