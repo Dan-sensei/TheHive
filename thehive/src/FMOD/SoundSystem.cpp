@@ -61,11 +61,11 @@ SoundEvent* SoundSystem::createSound(const std::string &_str, SoundEvent* ret){
 		// FMOD::Studio::EventDescription 	*event 	= nullptr;
 		FMOD_STUDIO_EVENTDESCRIPTION 		*event 	= nullptr;
 		// ERRCHECK(system->getEvent(_str.c_str(), &event));
-		ERRCHECK(FMOD_Studio_System_GetEvent(system,_str.c_str(), &event));
+		FMOD_Studio_System_GetEvent(system,_str.c_str(), &event);
 
 
 		// ERRCHECK(event->createInstance(&instance));
-		ERRCHECK(FMOD_Studio_EventDescription_CreateInstance(event,&instance));
+		FMOD_Studio_EventDescription_CreateInstance(event,&instance);
 
 		ret->newSoundEvent(instance);
 

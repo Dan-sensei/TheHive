@@ -61,6 +61,7 @@ class CAIEnem : public IComponent {
 
         void setCloserAllyIsDead(bool);
         bool getCloserAllyIsDead();
+        float getArange();
 
         void setImAttacking(bool);
         bool getImAttacking();
@@ -143,7 +144,7 @@ class CAIEnem : public IComponent {
 
         SoundEvent* s_caminar;
         SoundEvent* s_atacar;
-        SoundEvent* s_atacar2;
+        SoundEvent* s_grito;
         //bool            CanIReset;
 
         void enableVisualDebug();

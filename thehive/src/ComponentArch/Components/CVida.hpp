@@ -6,6 +6,8 @@
 #include <ComponentArch/Message.hpp>
 #include <ComponentArch/Components/CTransform.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
 
 #include <Omicron/2D/HUD.hpp>
 
@@ -45,6 +47,10 @@ class CVida : public IComponent {
 
         float vida;
         float vida_max;
+        SoundSystem* SS;
+
+        SoundEvent* s_vida;
+        SoundEvent* s_muerte;
         //CRigidBody* cRigidBody;
 };
 

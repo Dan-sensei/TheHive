@@ -21,6 +21,7 @@ Omicron::Omicron()
     OKAMERAS_LAYER  = new StandardNode(ESCENA, nullptr);
       LIGHTS_LAYER  = new StandardNode(ESCENA, nullptr);
      BUFFERS_LAYER  = new StandardNode(ESCENA, nullptr);
+     FORWARD_LAYER  = new StandardNode(ESCENA, nullptr);
 
     for(uint16_t i = 0; i < 349; ++i)
         Omicron::KEYS[i] = false;
@@ -44,6 +45,7 @@ void Omicron::resetSceneGraph() {
     OKAMERAS_LAYER  = new StandardNode(ESCENA, nullptr);
       LIGHTS_LAYER  = new StandardNode(ESCENA, nullptr);
      BUFFERS_LAYER  = new StandardNode(ESCENA, nullptr);
+     FORWARD_LAYER  = new StandardNode(ESCENA, nullptr);
 }
 
 
@@ -165,16 +167,19 @@ ZNode* Omicron::CreateDynamicMesh(StandardNode* FATHER, const glm::vec3& Positio
     return Malla;
 }
 
-ZNode* Omicron::CreateParticleSystem(StandardNode* FATHER, const ParticleSystem_Data &Data){
+ParticleSystem* Omicron::CreateParticleSystem(StandardNode* FATHER, const ParticleSystem_Data &Data){
     ParticleSystem* P = new ParticleSystem();
 
     P->Init(Data.MaxParticles);
     P->setGenerationTime(Data.SpawnTime);
     P->setTexture(Data.Texture);
+    P->setParticleLifeTime(Data.ParticleLifeTime);
+    P->setPosition(Data.Position);
+    P->setSize(Data.Size);
 
     Leaf* ParticleNode = new Leaf(FATHER, P);
 
-    return ParticleNode;
+    return P;
 }
 
 StandardNode* Omicron::bindTransform(const glm::vec3& pos, const glm::quat& rot, StandardNode* FATHER){
@@ -210,8 +215,8 @@ void Omicron::BeginDraw(){
 }
 
 
-#define VIEWPORT_X 1280
-#define VIEWPORT_Y 720
+#define VIEWPORT_X 720
+#define VIEWPORT_Y 480
 
 void Omicron::draw(){
     ++FPS;
@@ -229,8 +234,14 @@ void Omicron::draw(){
     ESCENA->ROOT_ObjectsUpdate();
     _DeferredShading.DrawQuad();
     glUniform1f(7, FPS/60.f);
-    glViewport(0,0,WINDOW_WIDTH, WINDOW_HEIGHT);
+    glViewport(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
     _DeferredShading.DrawPostProcessing();
+
+    glEnable (GL_BLEND);
+    glDepthMask(GL_FALSE);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    ESCENA->ROOT_ForwardRendering();
+    glDepthMask(GL_TRUE);
 
     hud->draw();
 }
@@ -346,7 +357,7 @@ bool Omicron::Initialize(){
 	    return false;
 	}
 
-    _DeferredShading.init(VIEWPORT_X, VIEWPORT_Y);
+    _DeferredShading.init(VIEWPORT_X, VIEWPORT_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     gestorRecursos = Singleton<AssetManager>::Instance();
     hud = Singleton<HUD>::Instance();

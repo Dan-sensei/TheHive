@@ -6,10 +6,9 @@ in vec4 ParticleColor;
 
 out vec4 frag_colour;
 
-layout(binding = 0) uniform sampler2D ParticleTexture;
+layout(binding = 0) uniform sampler2D ZBuffer;
+layout(binding = 1) uniform sampler2D ParticleTexture;
 
-void main(){
-	vec4 ParticleTexture = texture( ParticleTexture, UV );
-
-	frag_colour = ParticleColor;
+void main() {
+	frag_colour = texture( ParticleTexture, UV ) * ParticleColor;
 }

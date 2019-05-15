@@ -106,6 +106,7 @@ class CAgent : public IComponent {
         void ENTER_func_kTrig_EnemyNear     (TriggerRecordStruct*);
         void ENTER_func_kTrig_LoadZone      (TriggerRecordStruct*);
         void ENTER_func_kTrig_UnLoadZone    (TriggerRecordStruct*);
+        void ENTER_func_kTrig_InteractMess     (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerStay;
         void STAY_func_kTrig_none           (TriggerRecordStruct*);
@@ -122,6 +123,7 @@ class CAgent : public IComponent {
         void STAY_func_kTrig_EnemyNear      (TriggerRecordStruct*);
         void STAY_func_kTrig_LoadZone       (TriggerRecordStruct*);
         void STAY_func_kTrig_UnLoadZone     (TriggerRecordStruct*);
+        void STAY_func_kTrig_InteractMess      (TriggerRecordStruct*);
 
         std::map<EnumTriggerType, void (CAgent::*)(TriggerRecordStruct*)> mapFuncOnTriggerExit;
         void EXIT_func_kTrig_none           (TriggerRecordStruct*);
@@ -138,6 +140,7 @@ class CAgent : public IComponent {
         void EXIT_func_kTrig_EnemyNear      (TriggerRecordStruct*);
         void EXIT_func_kTrig_LoadZone       (TriggerRecordStruct*);
         void EXIT_func_kTrig_UnLoadZone     (TriggerRecordStruct*);
+        void EXIT_func_kTrig_InteractMess      (TriggerRecordStruct*);
 
 };
 

@@ -9,6 +9,8 @@ layout (std140) uniform light
   vec3 dirluzD;
   vec3 colorluzD;
   float intluzD;
+  float NNlucesF;
+  float NNlucesP;
 
   vec3 posluzF      [NLUCESF];
   vec3 posfocoluzF  [NLUCESF];
@@ -106,7 +108,7 @@ diffuse = clamp( dot( Normal, LightDir ), 0, 1 ) * Diffuse * LightPower;
 E = normalize(-VertexPos);
 halfwayDir = normalize(LightDir + E);
 cosAlpha = max(dot(Normal, halfwayDir), 0.0);
-// Optimización a pow(cosAlpha, n) = cosAlpha / (n - n*cosAlpha + cosAlpha)
+// Optimización a pow(base, e) = base / (e - e*base + base)
 spec = cosAlpha/(16 - 16 * cosAlpha + cosAlpha);
 FinalSpecular = LightColor * spec * SpecularTex * LightPower;
 
@@ -120,7 +122,7 @@ FinalSpecular *= attenuation;
 ////////////////////////////////
 /*
 //luz puntual real
-for(int i = 0;  i< NLUCESP; i++)
+for(int i = 0;  i< luces.NNLUCESP; i++)
 {
 
 
@@ -135,7 +137,7 @@ vec3 diffuse2;
 vec3 FinalSpecular2;
 float att2;
 //att2=(0.1-(1-eff))/0.1;//0.1-->0//0-->1
-for(int i = 0;  i< NLUCESF; i++)
+for(int i = 0;  i< luces.NNlucesF; i++)
 {
      luzp1=luces.posluzF[i];
      luzp2=luces.posfocoluzF[i];

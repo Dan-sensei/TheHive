@@ -49,7 +49,7 @@ void AIDirector::init(){
     activado=true;
     numEnemigos=0;
     estres=1;
-
+    zona_actual=1;
 
     TimeBusqueda=200;
     TimeHorda=50;//300
@@ -64,15 +64,9 @@ void AIDirector::init(){
     canWander=true;
     canHorde=true;
 
-    //Njugador=createNode(glm::vec3(10,3.04,-30.9067),5);
-    //std::cout << nodos.size() << '\n';
-    //for (size_t i = 0; i < 15; i++) {
-    //    auto pos=nodos[i]->getPos();
-    //    std::cout << "pos: " <<i<<"(" <<pos.x<<","<<pos.y<<","<<pos.z<<")" <<'\n';
-    //}
+
 
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
-    camera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, Manager->getHeroID()));
 
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_1.nav_z", ZONE_1);
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_2.nav_z", ZONE_2);
@@ -81,22 +75,19 @@ void AIDirector::init(){
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_5.nav_z", ZONE_5);
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_6.nav_z", ZONE_6);
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_7.nav_z", ZONE_7);
+    createWandering(1);
 }
 
 AIDirector::AIDirector ():AcumulatorBusqueda(0),AcumulatorHorda(0),AcumulatorPico(11),TimeBusqueda(1),TimeHorda(300),TimePico(10),
 estres(1),numEnemigos(0),activado(true),canWander(true),canHorde(true),
-Pjugador(nullptr),Njugador(nullptr){
+Pjugador(nullptr){
     Manager = Singleton<ObjectManager>::Instance();
     fac = Singleton<Factory>::Instance();
     enemigos.reserve(50);
 }
 
 AIDirector::~AIDirector (){
-    auto it = nodos.begin();
-    for(int i=0 ; i<nodos.size() ; ++i){
-        delete (*it);
-        ++it;
-    }
+
 
 }
 
@@ -126,42 +117,7 @@ void AIDirector::update (float delta){
     }
 }
 
-void AIDirector::clipingEnemigos(){
-    CRenderable_3D* render;
-    glm::vec3 cTF_POS    = camera->getCameraPosition();//camara
-    cTF_POS.y = 0;
-    // glm::vec3 cTF_ROT    = camera->getCameraRotation();
-    // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
 
-    glm::vec3 pTF;
-    glm::vec3 diren;
-
-    glm::vec3 dir   = Pjugador->getPosition() - cTF_POS;//esto ya no me vale
-    dir = glm::normalize(dir);
-    dir.y = 0;
-
-    float sol;
-
-    auto it = enemigos.begin();
-    while(it!=enemigos.end()){
-        pTF         = (*it)->getPosition(); //Enemigo
-        pTF.y       = 0;
-
-        //float dist = gg::DIST(pTF,cTF_POS);
-        diren       = pTF-cTF_POS;
-        diren       = glm::normalize(diren);
-        sol         = glm::dot(diren,dir);
-        render  = static_cast<CRenderable_3D*>(Manager->getComponent(gg::RENDERABLE_3D, (*it)->getEntityID()));
-
-        if(GRADOVISION<sol){
-            render->setVisibility(true);
-        }
-        else{
-            render->setVisibility(false);
-        }
-        it++;
-    }
-}
 
 void AIDirector::comprobar(){
     if(!activado) return;
@@ -197,8 +153,9 @@ void AIDirector::comprobar(){
     if(estres < 1) estres = 1;
 
 }
-
+//funcion comprieba si hemos cambiado de zona
 void AIDirector::busquedaCerca(){
+    /*
     float dist  = gg::FastDIST(Njugador->getPos(),Pjugador->getPosition());
     float dist2;
 
@@ -214,49 +171,108 @@ void AIDirector::busquedaCerca(){
         }
         it++;
     }
+*/
+}
+//cambiamos de zona
+void AIDirector::changeNode(int nodo){
+    int dif=nodo -zona_actual;
+
+    int crear=nodo +dif;
+    int destruir=zona_actual-dif;
+    zona_actual=nodo;
+
+    if(crear>0 && crear<8){
+
+    }
+    if(destruir>0 && destruir<8){
+
+    }
+}
+//sacamos pos aleatoria de una zona
+glm::vec3 AIDirector::getposzona(int nodo){
+    int rand;
+    SimpleFace posbuena=ZONE_1[rand];
+    switch(nodo){
+        case 1:
+             rand=gg::genIntRandom(0, ZONE_1.size()-1);
+             //posbuena=ZONE_1[rand];
+        break;
+        case 2:
+             rand=gg::genIntRandom(0, ZONE_2.size()-1);
+             posbuena=ZONE_2[rand];
+        break;
+        case 3:
+             rand=gg::genIntRandom(0, ZONE_3.size()-1);
+             posbuena=ZONE_3[rand];
+        break;
+        case 4:
+             rand=gg::genIntRandom(0, ZONE_4.size()-1);
+             posbuena=ZONE_4[rand];
+        break;
+        case 5:
+             rand=gg::genIntRandom(0, ZONE_5.size()-1);
+             posbuena=ZONE_5[rand];
+        break;
+        case 6:
+             rand=gg::genIntRandom(0, ZONE_6.size()-1);
+             posbuena=ZONE_6[rand];
+        break;
+        case 7:
+             rand=gg::genIntRandom(0, ZONE_7.size()-1);
+             posbuena=ZONE_7[rand];
+        break;
+    }
+    //auto pos=ZONE_1[0].BR;
+    //std::cout << "BR (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
+    //pos=ZONE_1[0].TL;
+    //std::cout << "TL (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
+
+    //TL (308.207,-44.6235,78.7451)
+    //BR (337.45,-44.6235,67.7644)
+    float xmenos=posbuena.TL.x;
+    float xmas  =posbuena.BR.x;
+    float y     =posbuena.BR.y;
+    float zmenos=posbuena.BR.z;
+    float zmas  =posbuena.TL.z;
+
+    float dx=xmas-xmenos;
+    float dz=zmas-zmenos;
+
+    glm::vec3 res=glm::vec3(xmenos+gg::genFloatRandom(0, dx),y,zmenos+gg::genFloatRandom(0, dz));
+    //std::cout << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
+    //float randx=gg::genIntRandom(0, dx);
+    //float randz=gg::genIntRandom(0, dz);
+
+    //auto it =ZONE_1.begin();
+    //while (it!=ZONE_1.end()) {
+    //    std::cout << "dentro" << '\n';
+    //}
+    return res;
+
 
 }
 
-void AIDirector::changeNode(AINode* nodo){
-    auto nodosP     = Njugador->nodosProximos;
-    auto nodosTMP   = nodo->nodosProximos;
-
-    auto it         = nodosP.begin();
-    auto it2        = nodosTMP.begin();
-
-    while(it != nodosP.end()){
-        while(it2 != nodosP.end()){
-            if(*it==*it2)       break;
-            it2++;
-        }
-
-        if(it2!=nodosP.end())   removePos(*it);
-        it++;
-
-    }
-
-    while(it2!=nodosP.end()){
-        if(!(*it2)->getonRange()){
-            if(canWander){
-                createWandering(*it2);
-            }
-            (*it2)->setonRange(true);
-        }
-        it2++;
-    }
-    Njugador = nodo;
-}
-
+//creamos horda delante o atras
 void AIDirector::invocar(){
-    //int tam =Njugador->nodosProximos.size()-1;
-    //int enemigosint = gg::genIntRandom(0, tam);
-    //auto nodo=Njugador->nodosProximos[enemigosint];
-    //createHorda(Njugador);
 
+    int nodo=1;
+    if(zona_actual==1){
+        nodo=2;
+    }else if(zona_actual==7){
+        nodo=6;
+    }else{
+
+        int enemigosint = gg::genIntRandom(0, 1);
+        if(enemigosint=0){
+
+            nodo=zona_actual+1;
+        }
+        else{
+
+            nodo=zona_actual-1;
+        }
+    }
     //esto funciona para todos los nodos
-    int tam         = nodos.size()-1;
-    int enemigosint = gg::genIntRandom(0, tam);
-    auto nodo       = nodos[enemigosint];
     createHorda(nodo);
 }
 
@@ -268,19 +284,20 @@ void AIDirector::subida(){}
 void AIDirector::pico(){}
 void AIDirector::bajada(){}
 
-void AIDirector::createWandering(AINode* nodo){
+void AIDirector::createWandering(int nodo){
+
     CTransform* enemypos;
-    glm::vec3 deltapos;
 
-    float rango = nodo->getRange();
+    glm::vec3 zonarand;
 
-    int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+    //int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+    int enemigosint = 1;
     int id;
 
     for (int i = 0; i < enemigosint; i++) {
-        deltapos = glm::vec3(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
-
-        id = fac->createSoldierWandering(nodo->getPos()+deltapos, 2000);
+        //zonarand=navmesh punto zona
+        zonarand=getposzona(nodo);
+        id = fac->createSoldierWandering(zonarand, 1);
 
         enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
         enemigos.emplace_back(enemypos);
@@ -288,25 +305,26 @@ void AIDirector::createWandering(AINode* nodo){
     }
 }
 
-void AIDirector::createHorda(AINode* nodo){
+void AIDirector::createHorda(int nodo){
 
 
     CTransform* enemypos;
     glm::vec3 dest = Pjugador->getPosition();
-    float rango = nodo->getRange();
+    float rango =0;// nodo->getRange();
     int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+    glm::vec3 zonarand;
 
     int id;
 
     glm::vec3 deltapos;
-    glm::vec3 posibuena = nodo->getPos();
+    //glm::vec3 posibuena = nodo->getPos();
 
     for (int i = 0; i < enemigosint; i++) {
         deltapos = glm::vec3(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
 
-        posibuena = posibuena+deltapos;
+        //posibuena = posibuena+deltapos;
 
-        id = fac->createSoldierHorda(nodo->getPos()+deltapos, 10, dest);
+        id = fac->createSoldierHorda(zonarand+deltapos, 10, dest);
         enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
         enemigos.push_back(enemypos);
         numEnemigos++;
@@ -314,11 +332,7 @@ void AIDirector::createHorda(AINode* nodo){
 
 }
 
-AINode* AIDirector::createNode(glm::vec3 _pos,float _range){
-    auto puntero = new AINode(_pos,_range);
-    nodos.push_back(puntero);
-    return puntero;
-}
+
 
 void AIDirector::removeEnemy(CTransform* nodo){
     //enemigos
@@ -331,8 +345,9 @@ void AIDirector::removeEnemy(CTransform* nodo){
         it++;
     }
 }
-
-void AIDirector::removePos(AINode* nodo){
+//eliminamos todos los enemigos de una zona
+void AIDirector::removePos(int nodo){
+    /*
     glm::vec3 posicion = nodo->getPos();
     glm::vec3 pos;
 
@@ -351,8 +366,9 @@ void AIDirector::removePos(AINode* nodo){
         it++;
     }
     nodo->setonRange(false);
-
+*/
 }
+/*
 void AIDirector::invocarswarm(AINode* nodo){
     //std::cout << "nodo" <<nodo->getPos().x<<";"<<nodo->getPos().y<<";"<<nodo->getPos().z<< '\n';
 
@@ -383,30 +399,10 @@ void AIDirector::invocarrusher(AINode* nodo){
 
 
 }
+*/
 
 
-//codigo de nodo
-AINode::AINode(){}
-AINode::AINode(glm::vec3 _pos,float _range):pos(_pos),onRange(false),range(_range){}
-AINode::AINode(const AINode &orig):pos(orig.pos),onRange(orig.onRange),range(orig.range){}
-glm::vec3 AINode::getPos(){
-    return pos;
-}
-bool AINode::getonRange(){
-    return onRange;
-}
-void  AINode::setonRange(bool nuevo){
-    onRange=nuevo;
-}
-float AINode::getRange(){
-    return range;
-}
-void AINode::addNode(AINode* nuevo){
-    //comprobar que esto funciona
-    nuevo->nodosProximos.push_back(this);
-    nodosProximos.push_back(nuevo);
-}
-AINode::~AINode(){}
+
 
 
 // Comenta de aquí pabajo cuando lo tengas todo listo

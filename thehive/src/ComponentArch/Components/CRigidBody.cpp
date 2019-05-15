@@ -547,9 +547,15 @@ glm::quat CRigidBody::getVirtualRotation(){
 }
 
 
+void CRigidBody::setRotY(float _y){
+    glm::vec3 y      = glm::vec3(0,1,0);
+    auto res= glm::angleAxis(glm::radians(_y), y);
+
+    Current.Rotation=res;
+
+}
 gg::EMessageStatus CRigidBody::SavePreviousStatus(){
     Previous = Current;
-
     return gg::ST_TRUE;
 }
 gg::EMessageStatus CRigidBody::SaveCurrentStatus(){
@@ -562,7 +568,6 @@ gg::EMessageStatus CRigidBody::SaveCurrentStatus(){
 }
 gg::EMessageStatus CRigidBody::Interpolate(const Message &_Tick) {
     if(!cTransform) return gg::ST_TRUE;
-
     double Tick = *static_cast<double*>(_Tick.mData);
 
     // float X = Previous.Position.x *(1-Tick) + Current.Position.x*Tick;

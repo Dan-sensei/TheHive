@@ -11,11 +11,12 @@
 std::string imgarmaP;
 std::string imgarmaS;
 */
-Motor2D::Motor2D(){
+Motor2D::Motor2D():POUP(nullptr){
     motor = Singleton<Omicron>::Instance();
+    pop=false;
 
-    imgarmaP="assets/HUD/cf_hud_b.jpg";
-    imgarmaS="assets/HUD/cf_hud_b.jpg";
+    imgarmaP="assets/HUD/cf_hud_d.png";
+    imgarmaS="assets/HUD/cf_hud_d.png";
     //font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
     //irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
 
@@ -245,9 +246,11 @@ void Motor2D::setbullet(int tipo,int b_act, int b_tot){
 
 void Motor2D::setWeaponImg(int tipo,std::string img){
     if(tipo==0){//P
+            IMAGENES[4]->setShader("2D_im");
             IMAGENES[4]->setImage(img);
             imgarmaP=img;
     }else {//S
+        IMAGENES[3]->setShader("2D_im");
         IMAGENES[3]->setImage(img);
         imgarmaS=img;
     }
@@ -490,78 +493,80 @@ int Motor2D::InitMenu7(){
 void Motor2D::InitHUD(){
     CLINMenu();
 
-    AddImage("assets/HUD/hab1.png",  2, 90,7,10);
-    auto boton=addRect(                     2, 90,7,10);
-    boton->setColor(glm::vec4(1,1,1,0.25));
+    // AddImage("assets/HUD/hab1.png",  2, 90,7,10);
+    // auto boton=addRect(                     2, 90,7,10);
+    // boton->setColor(glm::vec4(1,1,1,0.25));
+    //
+    //
+    // AddImage("assets/HUD/hab2.png",  12, 90,7,10);
+    // boton=addRect(                          12, 90,7,10);
+    // boton->setColor(glm::vec4(1,1,1,0.25));
+    //
+    //
+    // AddImage("assets/HUD/hab3.png",  22,90,7,10);
+    // //AddImage("hab3","assets/HUD/AMETRALLADORA_HUD.png",  22,90,7,10);
+    // boton=addRect(                          22,90,7,10);
+    // boton->setColor(glm::vec4(1,1,1,0.25));
 
-
-    AddImage("assets/HUD/hab2.png",  12, 90,7,10);
-    boton=addRect(                          12, 90,7,10);
-    boton->setColor(glm::vec4(1,1,1,0.25));
-
-
-    AddImage("assets/HUD/hab3.png",  22,90,7,10);
-    //AddImage("hab3","assets/HUD/AMETRALLADORA_HUD.png",  22,90,7,10);
-    boton=addRect(                          22,90,7,10);
-    boton->setColor(glm::vec4(1,1,1,0.25));
-
-
-    float _x,_y,x,y,w,h;
-    x=75;
-    y=85;
-    w=20;
-    h=15;
-    _x= x+w*0.65;
-    _y= y+h*0.7;
-    auto yep=AddImage(imgarmaS,75,85,20,15);//secundaria
-    yep->setZindex(-0.9997);
-    addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
-    x=70;
-    y=80;
-    w=20;
-    h=15;
-    _x= x+w*0.65;
-    _y= y+h*0.7;
-    //AddImage("1arma","assets/HUD/AMETRALLADORA_HUD.png",70,80,20,15); // Principal
-    yep=AddImage(imgarmaP,70,80,20,15); // Principal
-    yep->setZindex(-0.9998);
-    addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
-
-
-    AddImage("assets/HUD/Vida.png",  60,3.77,35,7);
-    boton=addRect(                          60,2,35,7);
-    boton->setColor(glm::vec4(0,0.5,0,1));
-    boton->setZindex(-0.9998);
-    boton=addRect(                          0.665,0.0377,0.95,0.1047);
-    boton->setColor(glm::vec4(0.4,0.4,0.4,1));
-    boton->setZindex(-0.9997);
-    //cruceta
-    float anchura,longitud,c;
-
-    //cruceta negra
-    anchura=0.002;
-    longitud=0.011;
-    c=0.5;
-    boton=addRect(c-longitud,c-anchura,c+longitud,c+anchura);
-    boton->setColor(glm::vec4(0,0,0,1));
-    //ratio d epantalla para tenerlo exacto :D
-    anchura=0.0012;
-    longitud=0.0185;
-    boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
-    boton->setColor(glm::vec4(0,0,0,1));
-
-    //cruceta blanca
-
-    anchura=0.001;
-    longitud=0.01;
-    c=0.5;
-    boton=addRect(c-longitud,c-anchura,c+longitud,c+anchura);
-    boton->setColor(glm::vec4(100,100,100,1));
-    //ratio d epantalla para tenerlo exacto :D
-    anchura=0.001;
-    longitud=0.0165;
-    boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
-    boton->setColor(glm::vec4(100,100,100,1));
+    //
+    // float _x,_y,x,y,w,h;
+    // x=75;
+    // y=85;
+    // w=20;
+    // h=15;
+    // _x= x+w*0.65;
+    // _y= y+h*0.7;
+    // auto yep=AddImage(imgarmaS,75,85,20,15);//secundaria
+    // yep->setShader("2D_im");
+    // yep->setZindex(-0.9997);
+    // addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
+    // x=70;
+    // y=80;
+    // w=20;
+    // h=15;
+    // _x= x+w*0.65;
+    // _y= y+h*0.7;
+    // //AddImage("1arma","assets/HUD/AMETRALLADORA_HUD.png",70,80,20,15); // Principal
+    // yep=AddImage(imgarmaP,70,80,20,15); // Principal
+    // yep->setShader("2D_im");
+    // yep->setZindex(-0.9998);
+    // addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
+    //
+    //
+    // AddImage("assets/HUD/Vida.png",  60,3.77,35,7);
+    // boton=addRect(                          60,2,35,7);
+    // boton->setColor(glm::vec4(0,0.5,0,1));
+    // boton->setZindex(-0.9998);
+    // boton=addRect(                          0.665,0.0377,0.95,0.1047);
+    // boton->setColor(glm::vec4(0.4,0.4,0.4,1));
+    // boton->setZindex(-0.9997);
+    // //cruceta
+    // float anchura,longitud,c;
+    //
+    // //cruceta negra
+    // anchura=0.002;
+    // longitud=0.011;
+    // c=0.5;
+    // boton=addRect(c-longitud,c-anchura,c+longitud,c+anchura);
+    // boton->setColor(glm::vec4(0,0,0,1));
+    // //ratio d epantalla para tenerlo exacto :D
+    // anchura=0.0012;
+    // longitud=0.0185;
+    // boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
+    // boton->setColor(glm::vec4(0,0,0,1));
+    //
+    // //cruceta blanca
+    //
+    // anchura=0.001;
+    // longitud=0.01;
+    // c=0.5;
+    // boton=addRect(c-longitud,c-anchura,c+longitud,c+anchura);
+    // boton->setColor(glm::vec4(100,100,100,1));
+    // //ratio d epantalla para tenerlo exacto :D
+    // anchura=0.001;
+    // longitud=0.0165;
+    // boton=addRect(c-anchura,c-longitud,c+anchura,c+longitud);
+    // boton->setColor(glm::vec4(100,100,100,1));
 
 
 
@@ -601,8 +606,29 @@ void Motor2D::InitHUD(){
 //void Motor2D::AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color){
 //    TEXT_BUFFER.emplace_back(x,y,Text, color);
 //}
+void Motor2D::clinpopup(){
+    if(pop){
+        delete POUP;
+        pop=false;
+    }
+}
+void Motor2D::pintarImagen(std::string im){
+
+    //javi que mierdas era esto?
+    if(pop){
+         delete POUP;
+     }
+    pop=true;
+    POUP = new Imagen2D(0,0,1,1,im);
+
+    //auto yep=AddImage(im,0,0,100,100); // Principal
+    POUP->setShader("2D_im");
+
+}
 void Motor2D::pintarTexto(int nlineas,std::string texto[]){
-    //fondo
+
+    //no se usa con el texto
+    /*//fondo
     auto boton=addRect(0.2,0.2,0.8,0.8);
     //texto
     // valores porcentuales (0--100)
@@ -620,9 +646,10 @@ void Motor2D::pintarTexto(int nlineas,std::string texto[]){
     //};
     //incluimos cada liena
     for (size_t i = 0; i < nlineas; i++) {
-        /* code */
         addText(x_parrafo,y_parrafo+interliniado*i,texto[i],color,tam);
     }
+    */
+
 }
 void Motor2D::CLINTexto(){
     auto it=TEXT.begin();
@@ -715,26 +742,24 @@ void Motor2D::DisplayHUD(){
             (*it)->Draw();
             it++;
         }
-        HUD_hability1();
 
-        RECTANGULOS[7]->Draw();
-        RECTANGULOS[8]->Draw();
-        RECTANGULOS[5]->Draw();
-        RECTANGULOS[6]->Draw();
+        // if(!pop){
+        //     RECTANGULOS[7]->Draw();
+        //     RECTANGULOS[8]->Draw();
+        //     RECTANGULOS[5]->Draw();
+        //     RECTANGULOS[6]->Draw();
+        // }
 
-        HUD_hability1( );
-        HUD_hability2( );
-        HUD_hability3( );
-        HUD_vida(      );
-        HUD_arma0(     );
-        HUD_arma1(     );
 
-        if(TEXT.size()>2){
-            for (size_t i = 2; i < TEXT.size(); i++) {
-                TEXT[i]->Draw();
-            }
-            RECTANGULOS[7]->Draw();
+        if(pop){
+            POUP->Draw();
         }
+        // if(TEXT.size()>2){
+        //     for (size_t i = 2; i < TEXT.size(); i++) {
+        //         TEXT[i]->Draw();
+        //     }
+        //     RECTANGULOS[7]->Draw();
+        // }
         glDisable( GL_BLEND );
     }
 }

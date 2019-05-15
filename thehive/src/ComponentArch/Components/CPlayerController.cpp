@@ -3,6 +3,7 @@
 #include <States/StateMachine.hpp>
 #include <PauseState.hpp>
 #include <IAState.hpp>
+#include <PopState.hpp>
 #include "CDynamicModel.hpp"
 #include <AnimationLUT.hpp>
 #include <ComponentArch/Components/CCamera.hpp>
@@ -41,6 +42,7 @@ CPlayerController::~CPlayerController() {
     if(collider)           delete collider;
     delete s_dash;
     delete s_pasos;
+    delete s_saltar;
 }
 
 void CPlayerController::Init(){
@@ -97,6 +99,9 @@ void CPlayerController::Init(){
 
     s_pasos = new SonidoSuperficie();
     SS->createSound("event:/SFX/Jugador/Pasos", s_pasos);
+
+    s_saltar = new SonidoSuperficie();
+    SS->createSound("event:/SFX/Jugador/Saltar", s_saltar);
 
     KEYMAP[0] = {gg::_1, &CPlayerController::ToggleSkill1};
     KEYMAP[1] = {gg::_2, &CPlayerController::ToggleSkill2};
@@ -160,6 +165,10 @@ void CPlayerController::Update(){
 void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !ghostCollider)  return;
+    // auto posJ=cTransform->getPosition();
+    //
+    // std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
+    // //81.9019,2.11054,41.7012
 
     // Vector que tendrá el impulso para aplicar al body
     force.x = 0;
@@ -171,7 +180,13 @@ void CPlayerController::FixedUpdate(){
     check_WASD(force, pressed);
     force *= 2;
 
-    if(!s_pasos->isPlaying() && pressed) s_pasos->play();
+
+
+
+    if(!s_pasos->isPlaying() && pressed){
+      s_pasos->play();
+    }
+
 
     for(uint8_t i = 0; i < KEYMAP.size(); ++i){
         if(Engine->key(KEYMAP[i].KEY, true))  (this->*KEYMAP[i].Target)();
@@ -348,6 +363,10 @@ void CPlayerController::autoStepping(){
 
         collider->deactivateGravity();
         collider->setLinearVelocity(glm::vec3(start.x,0,start.z));
+
+        if(isColliderGravitySet && GH_PREV != result){
+          s_saltar->play();
+        }
 
         if(isColliderGravitySet || GH_PREV != result){
             result.y += 0.5;
@@ -555,6 +574,7 @@ void CPlayerController::JUMP(){
     if(pressed){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
             cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.6);
+
         }
     }
     else{
@@ -569,14 +589,20 @@ void CPlayerController::TogglePause() {
 }
 
 void CPlayerController::MostrarTexto(){
-    std::string texto[]{
-        // "German es muy muy gay",
-        "Effects",
-        "Effects",
-        "Effects"
-    };
-    int nlineas=4;
-    Singleton<Motor2D>::Instance()->pintarTexto(nlineas,texto);
+    //std::string texto[]{
+    //    "Effects",
+    //    "Effects",
+    //    "Effects"
+    //};
+    //int nlineas=4;
+    //Singleton<Motor2D>::Instance()->pintarTexto(nlineas,texto);
+    auto estado = new PopState();
+    estado->Addim("assets/HUD/asdw_esp.png");
+    estado->Addim("assets/HUD/camara_esp.png");
+    estado->Addim("assets/HUD/dash_esp.png");
+    Singleton<StateMachine>::Instance()->AddState(estado,false);
+
+    //Singleton<Motor2D>::Instance()->pintarImagen("assets/HUD/ultrasonido_esp.png");
 }
 void CPlayerController::QuitarTexto(){
     Singleton<Motor2D>::Instance()->InitHUD();

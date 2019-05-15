@@ -91,3 +91,7 @@ void StandardNode::ROOT_LightsUpdate(){
 void StandardNode::ROOT_ObjectsUpdate(){
     hijos[2]->draw();
 }
+
+void StandardNode::ROOT_ForwardRendering(){
+    hijos[3]->draw();
+}

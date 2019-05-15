@@ -7,11 +7,14 @@
 
 struct ParticleSystem_Data{
     ParticleSystem_Data()
-    :Texture(""),SpawnTime(0),MaxParticles(0)
+    :Position(glm::vec3()), Size(glm::vec3()), Texture(0), SpawnTime(0),MaxParticles(0)
     {}
 
-    std::string Texture;
+    glm::vec3 Position;
+    glm::vec3 Size;
+    unsigned int Texture;
     float SpawnTime;
+    float ParticleLifeTime;
     uint16_t MaxParticles;
 };
 

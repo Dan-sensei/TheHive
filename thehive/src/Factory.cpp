@@ -24,6 +24,7 @@
 #include <Omicron/CORE/BVH_Node.hpp>
 #include <Omicron/CORE/BVH_ROOT_Node.hpp>
 #include <Omicron/CORE/FrustrumLeaf.hpp>
+#include <Omicron/FX/ParticleSystem.hpp>
 
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
@@ -52,13 +53,13 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     BVH_ROOT_Node::setCameraPtr(&(Camera->CurrentPosition));
     FrustrumLeaf::setCameraPtr(&(Camera->CurrentPosition));
 
-    CVida* Vida                         = new CVida(1000);
+    CVida* Vida                         = new CVida(10);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
 
     CHabilityController* Hab                         = new CHabilityController();
     Manager->addComponentToEntity(Hab,             gg::HAB, hero);
 
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     CDynamicModel* DynamicModel       = new CDynamicModel(FATHER, moradoDeLos80);
     Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, hero);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Standing"));
@@ -99,7 +100,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     hud->setPrimaryChamber(gun->getTotalBullets());
     // ------------------------------------------------------
 
-    CAgent* Agent = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
+    CAgent* Agent = new CAgent(kTrig_InteractMess |kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
     Manager->setHeroID(hero);
@@ -108,7 +109,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 }
 
 uint16_t Factory::createSoldierWandering(const glm::vec3 &Position,const float &health){
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     uint16_t Enemy =createSoldier(FATHER, Position,health);
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position,false);
@@ -121,7 +122,7 @@ uint16_t Factory::createSoldierWandering(const glm::vec3 &Position,const float &
 
 }
 uint16_t Factory::createSoldierHorda(const glm::vec3 &Position,const float &health,const glm::vec3 &Position2){
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     uint16_t Enemy =createSoldier(FATHER, Position,health);
 
     CAIEnem* AIEnem                     = new CAIEnem(gg::SOLDIER,30,Position2,true);
@@ -167,7 +168,7 @@ uint16_t Factory::createRusher(const glm::vec3 &Position,const float &health){
     CTransform* Transform               = new CTransform(Position, glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
 
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     CRenderable_3D* Renderable_3D       = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/SOLDIER.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
 
@@ -197,7 +198,7 @@ uint16_t Factory::createTank(const glm::vec3 &Position,const float &health){
     CTransform* Transform               = new CTransform(Position, glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
 
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     CRenderable_3D* Renderable_3D       = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/Cube.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
 
@@ -250,7 +251,7 @@ uint16_t Factory::createSingleSwarm(StandardNode* FATHER, const glm::vec3 &Posit
     return Enemy;
 }
 uint16_t Factory::createSwarm(const glm::vec3 &Position,const float &health) {
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     uint16_t holyBomb = createSingleSwarm(FATHER, Position,health);
 
     CFlock* cFlock = new CFlock(true,holyBomb);
@@ -336,7 +337,7 @@ uint16_t Factory::createSenyuelo(const glm::vec3 &Position, const glm::vec3 &Imp
     CTransform* Transform = new CTransform(Position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     CRenderable_3D* Renderable_3D = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/Cube.modelgg", Blue);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
@@ -357,7 +358,7 @@ uint16_t Factory::createMatriuska(const glm::vec3 &Position, const glm::vec3 &Im
     CTransform* Transform = new CTransform(Position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     CRenderable_3D* Renderable_3D = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/Cube.modelgg", Blue);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
@@ -379,7 +380,7 @@ uint16_t Factory::createHolyBomb(const glm::vec3 &Position, const glm::vec3 &Imp
     CTransform* Transform = new CTransform(Position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(Transform, gg::TRANSFORM, holyBomb);
 
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     CRenderable_3D* Renderable_3D = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/Cube.modelgg", Blue);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, holyBomb);
 
@@ -401,7 +402,7 @@ uint16_t Factory::createCollectableWeapon(const glm::vec3 &_position, int _weapo
     CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, weapon);
 
-    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES[0];
+    StandardNode* FATHER = Singleton<Omicron>::Instance()->ZONES.back();
     CRenderable_3D *renderable = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/escopeta.modelgg", Blue);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, weapon);
 

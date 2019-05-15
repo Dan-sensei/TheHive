@@ -13,6 +13,7 @@
 #include "Util.hpp"
 
 #include <Omicron/CORE/BVH_Node.hpp>
+#include <Omicron/FX/ParticleSystem.hpp>
 
 
 namespace BinaryParser{
@@ -37,9 +38,7 @@ namespace BinaryParser{
 
     bool FillBuffers(
         const std::string& BinaryFile,
-        unsigned int PositionsNormalsBuffer,
-        unsigned int UVBuffer,
-        unsigned int TangentsBitangentsBuffer,
+        unsigned int THE_BUFFER,
         unsigned int IndexBuffer,
         unsigned int &IndexSize
     );
@@ -57,6 +56,7 @@ namespace BinaryParser{
     void CreateMesh(std::ifstream &inStream, AssetManager* _AssetManager, Shader* DEFAULT_SHADER, BVH_Node* NODE);
 
     void LoadLevelDataEvents(const std::string &DARTA, int8_t map_zone = 0);
+    void LoadParticleSystem(ParticleSystem_Data &PS, const std::string BinaryFile);
 };
 
 #endif

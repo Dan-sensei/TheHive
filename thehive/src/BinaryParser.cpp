@@ -445,7 +445,7 @@ void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone)
     // ------------------------------------------------------------------------------------ //
     Factory *fac = Singleton<Factory>::Instance();
     AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
-    StandardNode* Node = Singleton<Omicron>::Instance()->ZONES[map_zone];
+    StandardNode* Node = Singleton<Omicron>::Instance()->ZONES.back();
 
     std::ifstream inStream(DATA, std::ios::binary);
 
@@ -706,9 +706,7 @@ bool BinaryParser::ImportMesh(
 
 bool BinaryParser::FillBuffers(
     const std::string& BinaryFile,
-    unsigned int PositionsNormalsBuffer,
-    unsigned int UVBuffer,
-    unsigned int TangentsBitangentsBuffer,
+    unsigned int THE_BUFFER,
     unsigned int IndexBuffer,
     unsigned int &IndexSize
 ){
@@ -716,23 +714,12 @@ bool BinaryParser::FillBuffers(
     if (!Model.is_open()) return false;
 
     uint16_t i = 0;
-    GG_Read(Model, i);  // POSITIONS_AND_NORMALS_SIZE
-    glNamedBufferStorage(PositionsNormalsBuffer, i*sizeof(float), nullptr, GL_MAP_WRITE_BIT);
-    char* ptr = (char*)glMapNamedBuffer(PositionsNormalsBuffer, GL_WRITE_ONLY);
+    GG_Read(Model, i);  // POSITIONS / NORMALS / UV / TANGENTS
+                        //     X Y Z | X Y Z | U V | X Y Z
+    glNamedBufferStorage(THE_BUFFER, i*sizeof(float), nullptr, GL_MAP_WRITE_BIT);
+    char* ptr = (char*)glMapNamedBuffer(THE_BUFFER, GL_WRITE_ONLY);
     Model.read(ptr, i*sizeof(float));
-    glUnmapNamedBuffer(PositionsNormalsBuffer);
-
-    GG_Read(Model, i);  // UV_COORDS_SIZE
-    glNamedBufferStorage(UVBuffer, i*sizeof(float), nullptr, GL_MAP_WRITE_BIT);
-    ptr = (char*)glMapNamedBuffer(UVBuffer, GL_WRITE_ONLY);
-    Model.read(ptr, i*sizeof(float));
-    glUnmapNamedBuffer(UVBuffer);
-
-    GG_Read(Model, i);  // TANGENTS_AND_BITANGENTS_SIZE
-    glNamedBufferStorage(TangentsBitangentsBuffer, i*sizeof(float), nullptr, GL_MAP_WRITE_BIT);
-    ptr = (char*)glMapNamedBuffer(TangentsBitangentsBuffer, GL_WRITE_ONLY);
-    Model.read(ptr, i*sizeof(float));
-    glUnmapNamedBuffer(TangentsBitangentsBuffer);
+    glUnmapNamedBuffer(THE_BUFFER);
 
     GG_Read(Model, i);  // INDEX_SIZE
     IndexSize = i;
@@ -808,10 +795,11 @@ uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
     GG_Read(inStream,x);
     GG_Read(inStream,y);
     GG_Read(inStream,z);
+
     glm::vec3 Position(x,y,z);
-
+    //glm::vec3 Position(331.092,-43.1192,70.0263);
     uint16_t HERO = fac->createHero(Position,-1);
-
+/*
     std::vector<AINode*> nodes;
     nodes.reserve(TOTAL);
 
@@ -837,6 +825,7 @@ uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
 
     Director->init();
     nodes.clear();
+    */
 
     return HERO;
 }
@@ -870,4 +859,18 @@ void BinaryParser::ReadNatureData(const std::string &BinaryFile){
 
         }
     }
+}
+
+
+void BinaryParser::LoadParticleSystem(ParticleSystem_Data &PS, const std::string BinaryFile){
+    std::ifstream inStream(BinaryFile, std::ios::binary);
+
+    glm::vec3 Position;
+    GG_Read(inStream, Position);
+    glm::vec3 Size;
+    GG_Read(inStream, Size);
+
+    PS.Position = Position;
+    PS.Size = Size;
+
 }

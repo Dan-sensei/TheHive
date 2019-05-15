@@ -22,6 +22,7 @@ class SoundEvent {
         void setPosition(glm::vec3);
         SoundEvent* getEvent();
         bool isPlaying();
+        bool isPaused();
 
     protected:
         FMOD_STUDIO_EVENTINSTANCE* soundInstance;
