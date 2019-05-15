@@ -1,7 +1,8 @@
 #include "CAgent.hpp"
 #include "ComponentArch/Components/CAgent.hpp"
 
-
+#include "PopState.hpp"
+#include <States/StateMachine.hpp>
 #include <list>
 #include "ComponentArch/Message.hpp"
 #include "CGun.hpp"
@@ -75,6 +76,7 @@ void CAgent::Init(){
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_ExpansiveForce,&CAgent::ENTER_func_kTrig_ExpansiveForce));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_LoadZone,     &CAgent::ENTER_func_kTrig_LoadZone));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_UnLoadZone,   &CAgent::ENTER_func_kTrig_UnLoadZone));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_InteractMess,   &CAgent::ENTER_func_kTrig_InteractMess));
     // mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Plantilla,    &CAgent::ENTER_func_kTrig_Plantilla));
 
     // Mapa a funcion de los trigger ON STAY
@@ -92,6 +94,7 @@ void CAgent::Init(){
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_ExpansiveForce,&CAgent::STAY_func_kTrig_ExpansiveForce));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_LoadZone,      &CAgent::STAY_func_kTrig_LoadZone));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_UnLoadZone,    &CAgent::STAY_func_kTrig_UnLoadZone));
+    mapFuncOnTriggerStay.insert(std::make_pair(kTrig_InteractMess,    &CAgent::STAY_func_kTrig_InteractMess));
     // mapFuncOnTriggerStay.insert(std::make_pair(kTrig_Plantilla,    &CAgent::STAY_func_kTrig_Plantilla));
 
     // Mapa a funcion de los trigger ON STAY
@@ -109,6 +112,7 @@ void CAgent::Init(){
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_ExpansiveForce,&CAgent::EXIT_func_kTrig_ExpansiveForce));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_LoadZone,      &CAgent::EXIT_func_kTrig_LoadZone));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_UnLoadZone,    &CAgent::EXIT_func_kTrig_UnLoadZone));
+    mapFuncOnTriggerExit.insert(std::make_pair(kTrig_InteractMess,    &CAgent::EXIT_func_kTrig_InteractMess));
     // mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Plantilla,    &CAgent::EXIT_func_kTrig_Plantilla));
 
 
@@ -173,6 +177,19 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
     return true;
 }
 
+void CAgent::ENTER_func_kTrig_InteractMess          (TriggerRecordStruct *_pRec){
+
+    auto estado = new PopState();
+    estado->Addim("assets/HUD/asdw_esp.png");
+    estado->Addim("assets/HUD/camara_esp.png");
+    estado->Addim("assets/HUD/dash_esp.png");
+    Singleton<StateMachine>::Instance()->AddState(estado);
+
+    std::cout << "/* message */" <<_pRec->nTriggerID<< '\n';
+    //CAgent::deletetrig(_pRec);
+    //Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec->nTriggerID);
+
+}
 void CAgent::ENTER_func_kTrig_none          (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_Touchable     (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_Pickable      (TriggerRecordStruct *_pRec){}
@@ -287,7 +304,7 @@ void CAgent::ENTER_func_kTrig_Aturd       (TriggerRecordStruct *_pRec){
 void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
     (this->*mapFuncOnTriggerStay[_pRec->eTriggerType])(_pRec);
 }
-
+void CAgent::STAY_func_kTrig_InteractMess           (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_none           (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_EnemyNear      (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Shoot          (TriggerRecordStruct *_pRec){}
@@ -461,6 +478,7 @@ void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
     (this->*mapFuncOnTriggerExit[_pRec->eTriggerType])(_pRec);
 }
 
+void CAgent::EXIT_func_kTrig_InteractMess        (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_none        (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_EnemyNear   (TriggerRecordStruct *_pRec){}

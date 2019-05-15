@@ -164,6 +164,10 @@ void CPlayerController::Update(){
 void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !ghostCollider)  return;
+    // auto posJ=cTransform->getPosition();
+    //
+    // std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
+    // //81.9019,2.11054,41.7012
 
     // Vector que tendrá el impulso para aplicar al body
     force.x = 0;
