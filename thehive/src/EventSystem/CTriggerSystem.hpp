@@ -75,7 +75,7 @@ public:
 
 
 
-    void RemoveTrigger(unsigned long nTriggerID);
+    void RemoveTrigger(TriggerRecordStruct *_pRec);
     void Update();
 
 private:

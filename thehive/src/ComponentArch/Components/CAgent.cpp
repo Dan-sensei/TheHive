@@ -16,7 +16,7 @@
 #include <ComponentArch/Components/CPlayerController.hpp>
 
 std::list <CAgent*>  CAgent::AgentList;
-
+//
 CAgent::CAgent(const unsigned long &_flags)
 :cTransform(nullptr), Engine(nullptr)
 {
@@ -179,16 +179,23 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
 
 void CAgent::ENTER_func_kTrig_InteractMess          (TriggerRecordStruct *_pRec){
 
+    //inicializaciones necesarias
+    EnumDataType tipos[3]={kDat_img1,kDat_img2,kDat_img3};
+    std::string  imagenes[4]={"assets/HUD/asdw_esp.png","assets/HUD/camara_esp.png","assets/HUD/dash_esp.png","assets/HUD/dash_esp.png"};
+
+    auto mes=_pRec->data;
+
     auto estado = new PopState();
-    estado->Addim("assets/HUD/asdw_esp.png");
-    estado->Addim("assets/HUD/camara_esp.png");
-    estado->Addim("assets/HUD/dash_esp.png");
+
+    int total=mes.find(kDat_total_img);
+    for (size_t i = 0; i < total; i++) {
+        estado->Addim(imagenes[(int)mes.find(tipos[i])]);
+    }
+
+    //estado->Addim("assets/HUD/asdw_esp.png");
+    //estado->Addim("assets/HUD/camara_esp.png");
+    //estado->Addim("assets/HUD/dash_esp.png");
     Singleton<StateMachine>::Instance()->AddState(estado);
-
-    std::cout << "/* message */" <<_pRec->nTriggerID<< '\n';
-    //CAgent::deletetrig(_pRec);
-    //Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec->nTriggerID);
-
 }
 void CAgent::ENTER_func_kTrig_none          (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_Touchable     (TriggerRecordStruct *_pRec){}
@@ -478,7 +485,9 @@ void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
     (this->*mapFuncOnTriggerExit[_pRec->eTriggerType])(_pRec);
 }
 
-void CAgent::EXIT_func_kTrig_InteractMess        (TriggerRecordStruct *_pRec){}
+void CAgent::EXIT_func_kTrig_InteractMess        (TriggerRecordStruct *_pRec){
+    Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
+}
 void CAgent::EXIT_func_kTrig_none        (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_EnemyNear   (TriggerRecordStruct *_pRec){}

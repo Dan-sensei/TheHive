@@ -86,12 +86,13 @@ unsigned long CTriggerSystem::RegisterTriger(
 }
 
 
-void CTriggerSystem::RemoveTrigger(unsigned long nTriggerID)
+void CTriggerSystem::RemoveTrigger(TriggerRecordStruct *_pRec)
 {
   TRIGGER_MAP::iterator it=m_mapTriggerMap.begin();
   while(it!=m_mapTriggerMap.end()){
-    if(it->second->nTriggerID == nTriggerID){
+    if(it->second == _pRec){
       delete(it->second);
+      m_mapTriggerMap.erase(it);
       return;
     }
     else ++it;
