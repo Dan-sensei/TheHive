@@ -66,6 +66,7 @@ private:
 
     //SkyBox sky;
     NatureGenerator nat;
+    ParticleSystem* PS;
 };
 
 

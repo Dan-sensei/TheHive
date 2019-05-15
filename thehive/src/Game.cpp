@@ -131,12 +131,14 @@ void Game::Init(){
     //sky.init();
     //Engine2D->prueba();
 
-    // ParticleSystem_Data PS;
-    // PS.Texture = "assets/Textures/boxtexure.jpeg";
-    // PS.SpawnTime = 0.05;
-    // PS.MaxParticles = 20;
-    //
-    // Engine->CreateParticleSystem(PS, 1);
+    ParticleSystem_Data PS_D;
+    PS_D.Texture = Singleton<AssetManager>::Instance()->getTexture("assets/Textures/Particles/Smoke.png");
+    PS_D.SpawnTime = 0.5;
+    PS_D.ParticleLifeTime = 5;
+    PS_D.MaxParticles = 1/PS_D.SpawnTime * PS_D.ParticleLifeTime;
+
+    BinaryParser::LoadParticleSystem(PS_D, "assets/BinaryFiles/ParticleTest.ps");
+    PS = Engine->CreateParticleSystem(Singleton<Omicron>::Instance()->FORWARD_LAYER, PS_D);
 }
 
 void Game::Update(){
@@ -181,9 +183,12 @@ void Game::Update(){
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
-    // //std::cout << " - " << glm::to_string(pos) << '\n';
+    //std::cout << " - " << glm::to_string(pos) << '\n';
     pos.y += 10;
     Engine->setPosition(luz,pos);
+
+    pos.y -= 7;
+    PS->setPosition(pos);
 
     Engine->BeginDraw();
     Manager->UpdateAll();

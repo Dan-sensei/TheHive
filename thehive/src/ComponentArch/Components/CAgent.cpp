@@ -180,22 +180,14 @@ void CAgent::ENTER_func_kTrig_Gunfire       (TriggerRecordStruct *_pRec){}
 
 void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
-    // std::cout << " --LOAD " << (uint16_t)id << '\n';
-    std::string name = zonesArray[id-1].first;
-    zonesArray[id-1].second("assets/BinaryFiles/"+name+"_MODELS.data", id);
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/"+name+"_MODELS.data", id);
+    std::string name = zonesArray[id].first;
+    zonesArray[id].second("assets/BinaryFiles/"+name+"_MODELS.data", id);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/"+name+"_EVENTS.data", id);
-
-    // //std::cout << " -["+std::to_string(id)+"]- LOADING ZONE: " << name << '\n';
 }
 
 void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
-    // std::string name = zonesMap[id];
-    // std::cout << "UNLOAD " << (uint16_t)id << '\n';
     Engine->SetMapZoneVisibility(id,false);
-
-    // //std::cout << " -["+std::to_string(id)+"]- UNLOADING ZONE: " << name << '\n';
 }
 
 void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){

@@ -11,8 +11,6 @@ layout(location = 23) uniform vec3 CameraRIGHT;
 
 out vec2 UV;
 out vec4 ParticleColor;
-out float Z;
-
 void main() {
 
     vec3 CenterPosition = Position_Size.xyz;
@@ -24,7 +22,6 @@ void main() {
         + CameraUP * SQUARE.y * ParticleSize;
 
     vec4 Pos = MV * vec4(VertexPosition, 1.0f);
-    Z = Pos.z;
     gl_Position = VP * vec4(VertexPosition, 1.0f);
 
     UV = SQUARE.xy + vec2(0.5, 0.5);

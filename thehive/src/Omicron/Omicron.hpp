@@ -22,6 +22,7 @@
 #include "Debug.hpp"
 #include <Omicron/Clock.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
+#include <Omicron/FX/ParticleSystem.hpp>
 #include <Omicron/DeferredShading.hpp>
 
 template <typename T>
@@ -40,7 +41,7 @@ class Omicron {
         ZNode* createStaticMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3());
         ZNode* createMovableMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3());
         ZNode* CreateDynamicMesh(StandardNode* FATHER, const glm::vec3& Position = glm::vec3(), const glm::quat& Rotation = glm::vec3());
-        ZNode* CreateParticleSystem(StandardNode* FATHER, const ParticleSystem_Data &Data);
+        ParticleSystem* CreateParticleSystem(StandardNode* FATHER, const ParticleSystem_Data &Data);
 
         // Define cuantas zonas habrán en el juego, para manejar la visibilidad de múltiples objetos a la vez
         void createZones(uint8_t NumberOfZones);
@@ -102,6 +103,7 @@ class Omicron {
         void DrawZero();
         int DRAW_OBJECTS;
         std::vector<StandardNode*> ZONES;
+        StandardNode* FORWARD_LAYER;
     private:
 
         Omicron();

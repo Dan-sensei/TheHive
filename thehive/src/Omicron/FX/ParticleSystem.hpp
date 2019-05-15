@@ -24,7 +24,10 @@ class ParticleSystem : public TEntidad {
         void Draw();
 
         void setGenerationTime(float TIME_SECONDS);
-        void setTexture(const std::string &_Texture);
+        void setTexture(unsigned int _Texture);
+        void setParticleLifeTime(float Life);
+        void setPosition(const glm::vec3 &_Position);
+        void setSize(const glm::vec3 &_Size);
 
         virtual void beginDraw();
         virtual void endDraw();
@@ -37,14 +40,18 @@ class ParticleSystem : public TEntidad {
         std::vector<Particle> Particles;
         std::vector<float> GL_Position_Size_Buffer;
         std::vector<GLubyte> GL_Color_Buffer;
-        uint16_t LastAvailablePosition;
 
         gg::Clock Timer;
+
+        glm::vec3 Position;
+        glm::vec3 Size;
 
         Shader* Particles_Shader;
 
         float Accumulator;
         float DELAY;
+        float ParticleLifeTime;
+
         unsigned int PARTICLE_SYSTEM;
         unsigned int VBO_SHAPE;
         unsigned int VBO_POS_SIZE;
@@ -53,6 +60,7 @@ class ParticleSystem : public TEntidad {
         unsigned int Texture;
 
         uint16_t ActiveParticles;
+        uint16_t LastAvailablePosition;
 
         void (ParticleSystem::*CurrentUpdate)();
 

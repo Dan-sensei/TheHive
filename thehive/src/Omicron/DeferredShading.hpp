@@ -12,7 +12,7 @@ class DeferredShading{
         void operator=(const DeferredShading &origin) = delete;
         ~DeferredShading();
 
-        void init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT);
+        void init(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT, uint16_t _SCREEN_WIDTH, uint16_t _SCREEN_HEIGHT);
         void Bind_G_Buffer();
         void Bind_D_Shader();
         void DrawQuad();
@@ -33,6 +33,9 @@ class DeferredShading{
         unsigned int QUAD;
         unsigned int QUAD_POS_UV;
 
+
+        int WIDTH, HEIGHT;
+        int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 };
 

@@ -26,6 +26,7 @@ class StandardNode : public ZNode {
         void ROOT_OkameraUpdate();
         void ROOT_LightsUpdate();
         void ROOT_ObjectsUpdate();
+        void ROOT_ForwardRendering();
 
     private:
 

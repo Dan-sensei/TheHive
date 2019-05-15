@@ -6,12 +6,13 @@
 #include <Omicron/AssetManager.hpp>
 #include <ShaderUniformMapping.hpp>
 #include <iostream>
+#include <algorithm>
 
 ParticleSystem::ParticleSystem()
-:DELAY(0), Accumulator(0)
+:DELAY(0), Accumulator(0), ParticleLifeTime(0), Position(glm::vec3()), Size(glm::vec3())
 {
     Particles_Shader = Singleton<AssetManager>::Instance()->getShader("Particles");
-    CurrentUpdate = &ParticleSystem::ResetTimerAndToggleUpdate;
+    CurrentUpdate = &ParticleSystem::UpdateAndDraw;
 }
 
 ParticleSystem::~ParticleSystem(){
@@ -37,6 +38,7 @@ void ParticleSystem::Init(float MaxParticles){
        -0.5f,  0.5f, 0.0f,
         0.5f,  0.5f, 0.0f,
     };
+
     glGenBuffers(1, &VBO_SHAPE);
     glBindBuffer(GL_ARRAY_BUFFER, VBO_SHAPE);
     glBufferData(GL_ARRAY_BUFFER, sizeof(QUAD), QUAD, GL_STATIC_DRAW);
@@ -64,7 +66,7 @@ void ParticleSystem::Init(float MaxParticles){
 
         glBindVertexBuffer(0, VBO_SHAPE, 0, 12);
         glBindVertexBuffer(1, VBO_POS_SIZE, 0, 16);
-        glBindVertexBuffer(2, VBO_COLORS, 0, 16);
+        glBindVertexBuffer(2, VBO_COLORS, 0, 4);
 
         glVertexAttribDivisor(0, 0);
         glVertexAttribDivisor(1, 1);
@@ -76,8 +78,20 @@ void ParticleSystem::setGenerationTime(float TIME_SECONDS){
     DELAY = TIME_SECONDS;
 }
 
-void ParticleSystem::setTexture(const std::string &_Texture){
-    Texture = Singleton<AssetManager>::Instance()->getTexture(_Texture);
+void ParticleSystem::setTexture(unsigned int _Texture){
+    Texture = _Texture;
+}
+
+void ParticleSystem::setParticleLifeTime(float Life){
+    ParticleLifeTime = Life;
+}
+
+void ParticleSystem::setPosition(const glm::vec3 &_Position){
+    Position = _Position;
+}
+
+void ParticleSystem::setSize(const glm::vec3 &_Size){
+    Size = _Size;
 }
 
 void ParticleSystem::beginDraw(){
@@ -103,7 +117,7 @@ void ParticleSystem::Update(){
 
     ActiveParticles = 0;
 
-    //uint16_t i = Particles.size();
+    float BASE = (ParticleLifeTime/2) * (ParticleLifeTime/2);
     float ElapsedTime = Timer.Restart().Seconds();
     for(uint16_t i = 0; i < Particles.size(); ++i){
 
@@ -117,10 +131,14 @@ void ParticleSystem::Update(){
 
             GL_Position_Size_Buffer[4*ActiveParticles+3] = CurrentParticle.Size;
 
-            GL_Color_Buffer[4*ActiveParticles+0] = (GLubyte)CurrentParticle.Color.R;
-            GL_Color_Buffer[4*ActiveParticles+1] = (GLubyte)CurrentParticle.Color.G;
-            GL_Color_Buffer[4*ActiveParticles+2] = (GLubyte)CurrentParticle.Color.B;
-            GL_Color_Buffer[4*ActiveParticles+3] = (GLubyte)CurrentParticle.Color.Alpha;
+            GL_Color_Buffer[4*ActiveParticles+0] = (GLubyte)CurrentParticle.R;
+            GL_Color_Buffer[4*ActiveParticles+1] = (GLubyte)CurrentParticle.G;
+            GL_Color_Buffer[4*ActiveParticles+2] = (GLubyte)CurrentParticle.B;
+
+            float L = ((ParticleLifeTime-CurrentParticle.Life) - ParticleLifeTime/2);
+            float Alpha =   (1-((L*L)/BASE)) * 50;
+
+            GL_Color_Buffer[4*ActiveParticles+3] = (GLubyte)Alpha;
 
             ++ActiveParticles;
         }
@@ -144,24 +162,28 @@ void ParticleSystem::ParticleCreationHandler(){
 
         FreePos = getFreePosition();
 
-        #define SPEED 0.5f
+        #define SPEED 1.f
 
-        Particles[FreePos].Position = glm::vec3(-2.723060, 1.565783, -9.310295);
+        Particles[FreePos].Position = glm::vec3(
+            gg::genFloatRandom(Position.x - Size.x, Position.x + Size.x),
+            gg::genFloatRandom(Position.y - Size.y, Position.y + Size.y),
+            gg::genFloatRandom(Position.z - Size.z, Position.z + Size.z)
+        );
+
         Particles[FreePos].Velocity = glm::vec3(
             gg::genFloatRandom(-1, 1) * SPEED,
-            gg::genFloatRandom(-1, 1) * SPEED,
+            0,
             gg::genFloatRandom(-1, 1) * SPEED
         );
 
-        Particles[FreePos].Color = gg::Color(
-            gg::genIntRandom(0, 255),
-            gg::genIntRandom(0, 255),
-            gg::genIntRandom(0, 255)
-        );
-        std::cout << "Color " << (uint16_t)Particles[FreePos].Color.R << ", " << (uint16_t)Particles[FreePos].Color.G << ", " << (uint16_t)Particles[FreePos].Color.B << ", " << (uint16_t)Particles[FreePos].Color.Alpha << '\n';
+        Particles[FreePos].R = 207;
+        Particles[FreePos].G = 182;
+        Particles[FreePos].B = 172;
+        Particles[FreePos].A = 100;
+        //std::cout << "Color " << (uint16_t)Particles[FreePos].Color.R << ", " << (uint16_t)Particles[FreePos].Color.G << ", " << (uint16_t)Particles[FreePos].Color.B << ", " << (uint16_t)Particles[FreePos].Color.Alpha << '\n';
 
-        Particles[FreePos].Life = 4.f;
-        Particles[FreePos].Size = gg::genFloatRandom(0.2f, 1);
+        Particles[FreePos].Life = ParticleLifeTime;
+        Particles[FreePos].Size = gg::genFloatRandom(15, 25);
     }
 }
 
@@ -186,7 +208,7 @@ uint16_t ParticleSystem::getFreePosition(){
 void ParticleSystem::Draw(){
     Particles_Shader->Bind();
 
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, Texture);
 
     glm::mat4 VP = projMatrix*viewMatrix;

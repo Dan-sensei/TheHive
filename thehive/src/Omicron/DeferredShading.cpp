@@ -50,7 +50,12 @@ DeferredShading::~DeferredShading(){
     glDeleteRenderbuffers(1, &G_DepthBuffer);
 };
 
-void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
+void DeferredShading::init(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT, uint16_t _SCREEN_WIDTH, uint16_t _SCREEN_HEIGHT){
+
+    WIDTH = FRAMEBUFFER_WIDTH;
+    HEIGHT = FRAMEBUFFER_HEIGHT;
+    SCREEN_WIDTH = _SCREEN_WIDTH;
+    SCREEN_HEIGHT = _SCREEN_HEIGHT;
 
     DEFERRED_SHADER = Singleton<AssetManager>::Instance()->getShader("DEFERRED");
     POSTPROCESSING_SHADER = Singleton<AssetManager>::Instance()->getShader("PostProcessing");
@@ -228,28 +233,28 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
 
         // G-BUFFER DE POSICIONES
         glBindTexture(GL_TEXTURE_2D, gPosition);
-        glTexStorage2D(GL_TEXTURE_2D, 1, GL_R16F, SCREEN_WIDTH, SCREEN_HEIGHT);
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_R16F, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPosition, 0);
 
         // G-BUFFER DE NORMALES
         glBindTexture(GL_TEXTURE_2D, gNormal);
-        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8_SNORM, SCREEN_WIDTH, SCREEN_HEIGHT);
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8_SNORM, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
 
         // G-BUFFER DE TEXTURAS DIFUSA Y ESPECULAR
         glBindTexture(GL_TEXTURE_2D, gDiffuseSpec);
-        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, SCREEN_WIDTH, SCREEN_HEIGHT);
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gDiffuseSpec, 0);
 
         // G-BUFFER DE VELOCIDAD PARA EL MOTION BLUR
         glBindTexture(GL_TEXTURE_2D, gVelocity);
-        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RG16F, SCREEN_WIDTH, SCREEN_HEIGHT);
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RG16F, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gVelocity, 0);
@@ -259,7 +264,7 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
 
         // DEPTH BUFFER PARA NUESTRO G-BUFFER
         glBindRenderbuffer(GL_RENDERBUFFER, G_DepthBuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, SCREEN_WIDTH, SCREEN_HEIGHT);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, G_DepthBuffer);
 
     //glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -272,7 +277,7 @@ void DeferredShading::init(uint16_t SCREEN_WIDTH, uint16_t SCREEN_HEIGHT){
 
         // POST-BUFFER FINAL
         glBindTexture(GL_TEXTURE_2D, gRender);
-        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, SCREEN_WIDTH, SCREEN_HEIGHT);
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gRender, 0);
@@ -315,7 +320,6 @@ void DeferredShading::DrawQuad(){
     //glBindVertexArray(0);
 
 
-
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -323,14 +327,22 @@ void DeferredShading::DrawQuad(){
 }
 
 void DeferredShading::DrawPostProcessing(){
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, gRender);
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, gVelocity);
 
-
     glBindVertexArray(QUAD);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    // std::cout << " WIDTH " << WIDTH << '\n';
+    // std::cout << "HEIGHT " << HEIGHT << '\n';
+
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, G_BUFFER);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBlitFramebuffer(0, 0, WIDTH, HEIGHT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     //glBindVertexArray(0);
 }

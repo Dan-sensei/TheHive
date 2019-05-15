@@ -445,7 +445,7 @@ void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone)
     // ------------------------------------------------------------------------------------ //
     Factory *fac = Singleton<Factory>::Instance();
     AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
-    StandardNode* Node = Singleton<Omicron>::Instance()->ZONES[map_zone];
+    StandardNode* Node = Singleton<Omicron>::Instance()->ZONES.back();
 
     std::ifstream inStream(DATA, std::ios::binary);
 
@@ -857,4 +857,18 @@ void BinaryParser::ReadNatureData(const std::string &BinaryFile){
 
         }
     }
+}
+
+
+void BinaryParser::LoadParticleSystem(ParticleSystem_Data &PS, const std::string BinaryFile){
+    std::ifstream inStream(BinaryFile, std::ios::binary);
+
+    glm::vec3 Position;
+    GG_Read(inStream, Position);
+    glm::vec3 Size;
+    GG_Read(inStream, Size);
+
+    PS.Position = Position;
+    PS.Size = Size;
+
 }

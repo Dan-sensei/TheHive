@@ -212,4 +212,8 @@ AssetManager::~AssetManager(){
         glDeleteTextures(1, &iterator->second);
         ++iterator;
     }
+    AnimationMap.clear();
+    MeshDataMap.clear();
+    MaterialMap.clear();
+    TextureMap.clear();
 }
