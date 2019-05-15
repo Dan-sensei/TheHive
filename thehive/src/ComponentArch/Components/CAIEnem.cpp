@@ -38,6 +38,9 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 
             s_atacar = new SonidoNormal();
             SS->createSound("event:/SFX/Enemigos/Soldier/SoldierAtaque", s_atacar);
+
+            s_grito = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Soldier/SoldierGrito", s_atacar);
             break;
         case gg::TANK:
             velocity=2;
@@ -45,18 +48,39 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
             SS->createSound("event:/SFX/Enemigos/Tank/TankMovimiento", s_caminar);
 
             s_atacar = new SonidoNormal();
-            SS->createSound("event:/SFX/Enemigos/Tank/TankAtaque_Golpe", s_atacar);
+            SS->createSound("event:/SFX/Enemigos/Tank/TankAtaque", s_atacar);
 
-            s_atacar2 = new SonidoNormal();
-            SS->createSound("event:/SFX/Enemigos/Tank/TankAtaque_Acido", s_atacar2);
+            s_grito = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Tank/TankGrito", s_grito);
+
             break;
         case gg::RUSHER:
             velocity=8;
+
+            s_caminar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Rusher/RusherDash", s_caminar);
+
+            s_atacar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Rusher/RusherCarga", s_atacar);
+
+            s_grito = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Rusher/RusherGrito", s_grito);
+
 
             break;
         case gg::SWARM:
 
             velocity=1;
+
+            s_caminar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Swarm/SwarmMovimiento", s_caminar);
+
+            s_atacar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Swarm/SwarmAtaque", s_atacar);
+
+            s_grito = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Swarm/SwarmGrito", s_grito);
+
             break;
         case gg::TRACKER:
         velocity=2;
@@ -126,8 +150,8 @@ void CAIEnem::Init(){
 
     arbol = new Treecontroller(data,type,this);
 
-    Vrange          = 30;
-    Arange          = 5;
+    Vrange          = 10;
+    Arange          = 1;
     enfado          = 1;
     gradovision     = cos(45*3.14159265359/180.f);
 
@@ -145,7 +169,9 @@ gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
 
 //  Message handler functions_______________________________________________________________
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-
+float CAIEnem::getArange(){
+    return Arange;
+}
 gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
@@ -184,6 +210,7 @@ void CAIEnem::FixedUpdate(){
         // glm::vec3 cTF_ROT    = cTransform->getRotation();
         // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
         glm::vec3 dir        = cTransform->getRotation() * glm::vec3(0,0,1);
+        dir *=-1;
         glm::vec3 diren      = pTF-cTF_POS;
 
         diren       = glm::normalize(diren);
@@ -219,7 +246,7 @@ void CAIEnem::FixedUpdate(){
             resetHabilityUpdateCounter();
         }
 
-        if(dist<Arange){
+        if((dist-0.1)<=Arange){
             //lo tengo encima
             playerSeen      = true;
             playerSeeing    = true;
@@ -267,22 +294,33 @@ void CAIEnem::resetMyOwnTree(){
 }
 
 void CAIEnem::enableVisualDebug(){
+    //std::cout << "entra" << '\n';
+
+
+
+
     float res = acos(gradovision)*180.f/3.14159265359;
 
     // glm::vec3 dir    = gg::Direccion2D( cTransform->getRotation());
     // glm::vec3 dir1   = gg::Direccion2D( cTransform->getRotation()+glm::vec3(0,res,0));
     // glm::vec3 dir2   = gg::Direccion2D( cTransform->getRotation()-glm::vec3(0,res,0));
 
-    glm::vec3 dir    = cTransform->getRotation() * glm::vec3(0,0,1);
-    glm::vec3 dir1   = cTransform->rotate(res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
-    glm::vec3 dir2   = cTransform->rotate(-res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
 
+
+    glm::vec3 dir    = cTransform->getRotation() * glm::vec3(0,0,1);
+    dir *=-1;
+    glm::vec3 dir1   = cTransform->rotate(res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
+    dir1 *=-1;
+    cTransform->rotate(-res, glm::vec3(0,1,0));
+    glm::vec3 dir2   = cTransform->rotate(-res, glm::vec3(0,1,0)) * glm::vec3(0,0,1);
+    dir2 *=-1;
+    cTransform->rotate(res, glm::vec3(0,1,0));
 
 
     glm::vec3 inicio = cTransform->getPosition();
-    glm::vec3 fin    = dir*Vrange+cTransform->getPosition();
-    glm::vec3 fin2   = dir1*Vrange+cTransform->getPosition();
-    glm::vec3 fin3   = dir2*Vrange+cTransform->getPosition();
+    glm::vec3 fin    = dir*Vrange+inicio;
+    glm::vec3 fin2   = dir1*Vrange+inicio;
+    glm::vec3 fin3   = dir2*Vrange+inicio;
 
     Engine->Draw3DLine(inicio, fin, gg::Color(255,0,0,1));
     Engine->Draw3DLine(inicio, fin2, gg::Color(255,0,0,1));
@@ -376,5 +414,8 @@ void CAIEnem::playAttack(){
     s_atacar->play();
 }
 void CAIEnem::playAttack2(){
-    s_atacar2->play();
+
+    s_atacar->setParameter("Impacto", 0);
+    s_atacar->play();
+    // s_atacar2->play();
 }

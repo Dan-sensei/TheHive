@@ -95,6 +95,8 @@ class CPlayerController : public IComponent {
 
         SoundSystem* SS;
         SoundEvent* s_dash;
+        SoundEvent* s_pasos;
+        SoundEvent* s_saltar;
 
         glm::vec3    force;
         glm::vec3 cV;
@@ -111,7 +113,6 @@ class CPlayerController : public IComponent {
         float MULT_BASE;
 
 
-        SoundEvent* s_pasos;
 
         bool isPrincipal; // True -> PRINCIPAL | False -> SECUNDARIA
         std::array<uint16_t,NUMBER_OF_ITEMS> items;

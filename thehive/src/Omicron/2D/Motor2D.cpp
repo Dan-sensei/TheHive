@@ -11,11 +11,12 @@
 std::string imgarmaP;
 std::string imgarmaS;
 */
-Motor2D::Motor2D(){
+Motor2D::Motor2D():POUP(nullptr){
     motor = Singleton<Omicron>::Instance();
+    pop=false;
 
-    imgarmaP="assets/HUD/cf_hud_b.jpg";
-    imgarmaS="assets/HUD/cf_hud_b.jpg";
+    imgarmaP="assets/HUD/cf_hud_d.png";
+    imgarmaS="assets/HUD/cf_hud_d.png";
     //font = IrrlichtDevice->getGUIEnvironment()->getFont("assets/Fonts/Debug.png");
     //irr::video::IVideoDriver* driver = IrrlichtDevice->getVideoDriver();
 
@@ -245,9 +246,11 @@ void Motor2D::setbullet(int tipo,int b_act, int b_tot){
 
 void Motor2D::setWeaponImg(int tipo,std::string img){
     if(tipo==0){//P
+            IMAGENES[4]->setShader("2D_im");
             IMAGENES[4]->setImage(img);
             imgarmaP=img;
     }else {//S
+        IMAGENES[3]->setShader("2D_im");
         IMAGENES[3]->setImage(img);
         imgarmaS=img;
     }
@@ -514,6 +517,7 @@ void Motor2D::InitHUD(){
     _x= x+w*0.65;
     _y= y+h*0.7;
     auto yep=AddImage(imgarmaS,75,85,20,15);//secundaria
+    yep->setShader("2D_im");
     yep->setZindex(-0.9997);
     addText(_x, _y,"arma0",glm::vec4(1,1,1,1),30);
     x=70;
@@ -524,6 +528,7 @@ void Motor2D::InitHUD(){
     _y= y+h*0.7;
     //AddImage("1arma","assets/HUD/AMETRALLADORA_HUD.png",70,80,20,15); // Principal
     yep=AddImage(imgarmaP,70,80,20,15); // Principal
+    yep->setShader("2D_im");
     yep->setZindex(-0.9998);
     addText(_x, _y,"arma1",glm::vec4(1,1,1,1),30);
 
@@ -601,8 +606,29 @@ void Motor2D::InitHUD(){
 //void Motor2D::AddStaticTextToBuffer(int x,int y, std::string Text,  gg::Color color){
 //    TEXT_BUFFER.emplace_back(x,y,Text, color);
 //}
+void Motor2D::clinpopup(){
+    if(pop){
+        delete POUP;
+        pop=false;
+    }
+}
+void Motor2D::pintarImagen(std::string im){
+
+    //javi que mierdas era esto?
+    if(pop){
+         delete POUP;
+     }
+    pop=true;
+    POUP = new Imagen2D(0,0,1,1,im);
+
+    //auto yep=AddImage(im,0,0,100,100); // Principal
+    POUP->setShader("2D_im");
+
+}
 void Motor2D::pintarTexto(int nlineas,std::string texto[]){
-    //fondo
+
+    //no se usa con el texto
+    /*//fondo
     auto boton=addRect(0.2,0.2,0.8,0.8);
     //texto
     // valores porcentuales (0--100)
@@ -620,9 +646,10 @@ void Motor2D::pintarTexto(int nlineas,std::string texto[]){
     //};
     //incluimos cada liena
     for (size_t i = 0; i < nlineas; i++) {
-        /* code */
         addText(x_parrafo,y_parrafo+interliniado*i,texto[i],color,tam);
     }
+    */
+
 }
 void Motor2D::CLINTexto(){
     auto it=TEXT.begin();
@@ -717,10 +744,13 @@ void Motor2D::DisplayHUD(){
         }
         HUD_hability1();
 
-        RECTANGULOS[7]->Draw();
-        RECTANGULOS[8]->Draw();
-        RECTANGULOS[5]->Draw();
-        RECTANGULOS[6]->Draw();
+
+        if(!pop){
+            RECTANGULOS[7]->Draw();
+            RECTANGULOS[8]->Draw();
+            RECTANGULOS[5]->Draw();
+            RECTANGULOS[6]->Draw();
+        }
 
         HUD_hability1( );
         HUD_hability2( );
@@ -729,6 +759,9 @@ void Motor2D::DisplayHUD(){
         HUD_arma0(     );
         HUD_arma1(     );
 
+        if(pop){
+            POUP->Draw();
+        }
         if(TEXT.size()>2){
             for (size_t i = 2; i < TEXT.size(); i++) {
                 TEXT[i]->Draw();

@@ -21,9 +21,18 @@ CVida::CVida(int _vida)
     Manager         = Singleton<ObjectManager>::Instance();
     hud             = Singleton<Motor2D>::Instance();
     triggerSystem   = Singleton<CTriggerSystem>::Instance();
-}
+    SS = Singleton<SoundSystem>::Instance();
+    s_vida = new SonidoNormal();
+    s_muerte = new SonidoNormal();
 
-CVida::~CVida() {}
+    // SS->createSound("event:/Voces/Jugador/Golpe", s_vida);
+    // SS->createSound("event:/SFX/Jugador/PocaVida", s_muerte);
+ }
+
+CVida::~CVida() {
+  delete s_vida;
+  delete s_muerte;
+}
 
 void CVida::Muerte(){
     vida=0;
@@ -32,11 +41,18 @@ float CVida::getVida(){
     return vida;
 }
 bool CVida::quitarvida(const float &_factor){
-    bool ret = false;
 
+
+    bool ret = false;
     vida -= _factor;
+    //std::cout << "QUITANDO VIDA " <<_factor<< '\n';
+    //std::cout << "QUITANDO VIDA " <<vida<< '\n';
     if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
         hud->setvida(vida/vida_max);
+        s_vida->play();
+
+        if(vida<25)
+          s_muerte->play();
     }
     else{
         if(vida <= 0){

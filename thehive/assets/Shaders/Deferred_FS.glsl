@@ -9,6 +9,8 @@ layout (std140) uniform light
   vec3 dirluzD;
   vec3 colorluzD;
   float intluzD;
+  float NNlucesF;
+  float NNlucesP;
 
   vec3 posluzF      [NLUCESF];
   vec3 posfocoluzF  [NLUCESF];
@@ -120,7 +122,7 @@ FinalSpecular *= attenuation;
 ////////////////////////////////
 /*
 //luz puntual real
-for(int i = 0;  i< NLUCESP; i++)
+for(int i = 0;  i< luces.NNLUCESP; i++)
 {
 
 
@@ -135,7 +137,7 @@ vec3 diffuse2;
 vec3 FinalSpecular2;
 float att2;
 //att2=(0.1-(1-eff))/0.1;//0.1-->0//0-->1
-for(int i = 0;  i< NLUCESF; i++)
+for(int i = 0;  i< luces.NNlucesF; i++)
 {
      luzp1=luces.posluzF[i];
      luzp2=luces.posfocoluzF[i];

@@ -30,6 +30,7 @@ class Imagen2D {
         float getW();
         float getY();
         float getH();
+        void setShader(std::string sha);
         void setSesgado(float res);
     private:
         unsigned long Zindex;

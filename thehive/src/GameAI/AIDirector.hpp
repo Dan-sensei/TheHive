@@ -33,35 +33,37 @@ class AIDirector {
         void bajada();
 
         void invocar();
-        void invocarrusher(AINode* nodo);
-        void invocartank(AINode* nodo);
-        void invocarswarm(AINode* nodo);
+        //void invocarrusher(AINode* nodo);
+        //void invocartank(AINode* nodo);
+        //void invocarswarm(AINode* nodo);
 
+        glm::vec3 getposzona(int);
 
-
-        void createWandering(AINode* nodo);
-        void createHorda(AINode* nodo);
+        void createWandering(int nodo);
+        void createHorda(int nodo);
         void busquedaCerca();
 
-        void changeNode(AINode* nodo);
+        void changeNode(int nodo);
 
         void comprobar();
 
-        void removePos(AINode* nodo);
+        void removePos(int nodo);
 
-        AINode* createNode(glm::vec3 _pos,float _range);
+        //AINode* createNode(glm::vec3 _pos,float _range);
 
 
         void clean();
         void init();
 
-        void clipingEnemigos();
+
         void removeEnemy(CTransform* nodo);
 
         void DrawZones();
 
     private:
-        std::vector<AINode* > nodos;
+        int zona_actual;
+        //glm::vec3 ;
+        //std::vector<AINode* > nodos;
         std::vector<CTransform*> enemigos;
 
         std::vector<SimpleFace> ZONE_1;
@@ -73,7 +75,7 @@ class AIDirector {
         std::vector<SimpleFace> ZONE_7;
 
         //std::chrono::high_resolution_clock::time_point nTimeStamp;
-        AINode* Njugador;
+        //AINode* Njugador;
         CTransform* Pjugador;
         ObjectManager* Manager;
         Factory* fac;
@@ -92,9 +94,8 @@ class AIDirector {
         float AcumulatorPico;
 
 
-        CCamera* camera;
 };
-
+/*
 class AINode {
     public:
         AINode();
@@ -115,5 +116,5 @@ class AINode {
         bool onRange;
         float range;
 
-};
+};*/
 #endif

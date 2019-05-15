@@ -9,6 +9,7 @@
 
 #include <Omicron/2D/Motor2D.hpp>
 
+#include "PopState.hpp"
 #include "Factory.hpp"
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include "BinaryParser.hpp"
@@ -87,14 +88,24 @@ void Game::Init(){
     //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
     //
     //
+
+    //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
+    //BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 5);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 6);
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/FINAL_MODELS.data", 7);
+
+    ///BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 1);
+    // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
     // BinaryParser::LoadSounds();
     // BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
-
 
     Engine2D->InitHUD();
 
 
     cont->musicaJuegoPlay();
+    cont->musicaJuegoPause(false);
     cont->musicaMenuStop();
 
 
@@ -131,14 +142,43 @@ void Game::Init(){
     //sky.init();
     //Engine2D->prueba();
 
+
     ParticleSystem_Data PS_D;
     PS_D.Texture = Singleton<AssetManager>::Instance()->getTexture("assets/Textures/Particles/Smoke.png");
-    PS_D.SpawnTime = 0.5;
-    PS_D.ParticleLifeTime = 5;
+    PS_D.SpawnTime = 0.25;
+    PS_D.ParticleLifeTime = 3.5;
     PS_D.MaxParticles = 1/PS_D.SpawnTime * PS_D.ParticleLifeTime;
 
     BinaryParser::LoadParticleSystem(PS_D, "assets/BinaryFiles/ParticleTest.ps");
     PS = Engine->CreateParticleSystem(Singleton<Omicron>::Instance()->FORWARD_LAYER, PS_D);
+
+    TData mes;
+    mes.add(kDat_total_img,1);
+    mes.add(kDat_img1,0);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes);
+    TData mes1;
+    mes1.add(kDat_total_img,1);
+    mes1.add(kDat_img1,1);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(173.648,-0.649231,17.4254), 5, 0, false, mes1);
+    TData mes2;
+    mes2.add(kDat_total_img,1);
+    mes2.add(kDat_img1,2);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(330.681,-42.8137,79.0592 ), 5, 0, false, mes2);
+
+    //TData mes1;
+    //mes1.add(kDat_total_img,1);
+    //mes1.add(kDat_img1,3);
+    //Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes1);
+
+
+
+    Update();
+    Director->init();
+    auto estado = new PopState();
+    estado->Addim("assets/HUD/asdw_esp.png");
+    estado->Addim("assets/HUD/camara_esp.png");
+    estado->Addim("assets/HUD/dash_esp.png");
+    Singleton<StateMachine>::Instance()->AddState(estado);
 }
 
 void Game::Update(){
@@ -158,6 +198,7 @@ void Game::Update(){
 
     // if(DeltaTime > 10000) throw std::exception();
     while(Accumulator >= 1/UPDATE_STEP){
+        //Director->getposzona(1);
         // FIXED UPDATE//
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
@@ -201,13 +242,15 @@ void Game::Update(){
     //glClear(GL_DEPTH_BUFFER_BIT);
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
-    Engine->DisplayFPS();
+    //Engine->DisplayFPS();
     Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-    // glClear(GL_DEPTH_BUFFER_BIT);
+     glClear(GL_DEPTH_BUFFER_BIT);
     // Engine->DrawZero();
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    Manager->DibLineas();
+
+    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
 
@@ -235,7 +278,7 @@ void Game::CLIN(){
     Manager->clin();
     world->clear();
 
-    cont->musicaJuegoStop();
+    cont->musicaJuegoPause(true);
     cont->musicaMenuPlay();
     Engine->resetSceneGraph();
     //Engine2D->CLINNormal();

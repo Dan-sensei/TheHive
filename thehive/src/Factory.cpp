@@ -51,7 +51,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     BVH_ROOT_Node::setCameraPtr(&(Camera->CurrentPosition));
     FrustrumLeaf::setCameraPtr(&(Camera->CurrentPosition));
 
-    CVida* Vida                         = new CVida(1000);
+    CVida* Vida                         = new CVida(10);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
 
     CHabilityController* Hab                         = new CHabilityController();
@@ -93,7 +93,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
     Singleton<Motor2D>::Instance()->setbullet(0,gun->getBullets(),gun->getTotalBullets());
 
-    CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
+    CAgent* Agent                       = new CAgent(kTrig_InteractMess |kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
     Manager->setHeroID(hero);

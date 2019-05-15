@@ -18,7 +18,7 @@ class ObjectManager{
     friend class Singleton<ObjectManager>;
     public:
         ~ObjectManager();
-
+void DibLineas();
         //  ---
         //  Returns next available ID of the system
         //========================================================================

@@ -8,6 +8,23 @@
                      //  2^16
 #define MAX_ENTITIES 65536
 
+void ObjectManager::DibLineas() {
+    //sendMessageToEntity();
+    std::map<uint16_t, IComponent*>::iterator entitiesIterator;
+    // First we search for a component type that expects that message type
+
+    //  Found one!
+    entitiesIterator = TypeToComponentMap[gg::AIENEM].begin();
+    //  Now we iterate over every entity that contains that component type
+    while(entitiesIterator != TypeToComponentMap[gg::AIENEM].end()) {
+        auto current = entitiesIterator;
+        ++entitiesIterator;
+        //  We process the message
+        current->second->Update();
+        //current->second->processMessage(m);
+    }
+
+}
 ObjectManager::ObjectManager() {
     nextAvailableEntityID.push(1);//
 

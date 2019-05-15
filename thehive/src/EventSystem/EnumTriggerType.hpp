@@ -15,6 +15,7 @@ enum EnumTriggerType{
     kTrig_ExpansiveWave     =1<<9,
     kTrig_ExpansiveForce    =1<<10,
     kTrig_LoadZone          =1<<11,
-    kTrig_UnLoadZone        =1<<12
+    kTrig_UnLoadZone        =1<<12,
+    kTrig_InteractMess      =1<<13
 };
 #endif
