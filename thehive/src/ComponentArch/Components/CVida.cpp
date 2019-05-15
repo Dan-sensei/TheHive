@@ -19,7 +19,7 @@ CVida::CVida(int _vida)
 :Manager(nullptr),vida(_vida),vida_max(_vida)
 {
     Manager         = Singleton<ObjectManager>::Instance();
-    hud             = Singleton<Motor2D>::Instance();
+    hud             = Singleton<HUD>::Instance();
     triggerSystem   = Singleton<CTriggerSystem>::Instance();
 }
 
@@ -36,7 +36,8 @@ bool CVida::quitarvida(const float &_factor){
 
     vida -= _factor;
     if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
-        hud->setvida(vida/vida_max);
+        // hud->setvida(vida/vida_max);
+        hud->setHealthBarPc(vida/vida_max);
     }
     else{
         if(vida <= 0){

@@ -49,6 +49,7 @@ void CPlayerController::Init(){
     world   = Singleton<ggDynWorld>::Instance();
     Manager = Singleton<ObjectManager>::Instance();
     factory = Singleton<Factory>::Instance();
+    hud = Singleton<HUD>::Instance();
     camera  = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, getEntityID()));
     MHandler_SETPTRS();
 
@@ -221,11 +222,23 @@ void CPlayerController::FixedUpdate(){
         clocker.Restart();
         if(gun) gun->shoot(Target);
     }
+
+    if(Engine->isRClickPressed()){
+        aim(0);
+    }
+    else{
+        aim(1);
+    }
+
     if(secondWeapon) secondWeapon->fullDeBalas(1);
 
     // <DEBUG>
     //showDebug();
     // </DEBUG>
+}
+
+void CPlayerController::aim(const uint8_t &s){
+    hud->aim(s);
 }
 
 // Código de los tutoriales de OpengGL, a optimisar
@@ -324,8 +337,8 @@ void CPlayerController::autoStepping(){
     glm::vec3 end = glm::vec3(start.x,start.y-(RC_OFFSET),start.z);
     glm::vec3 result;
 
-    // bool hit = world->RayCastTest(start,end,result,ghostCollider,collider);
-    bool hit = world->CompleteRayCastTest(start,end,result,ghostCollider,collider);
+    bool hit = world->RayCastTest(start,end,result,ghostCollider,collider);
+    // bool hit = world->CompleteRayCastTest(start,end,result,ghostCollider,collider);
 
     if(hit){
         result.y += RC_OFFSET/1.3;
@@ -473,13 +486,16 @@ void CPlayerController::ChangeWeapon(){
     if(secondWeapon){
         CGun *gun = static_cast<CGun*>(Manager->getComponent(gg::GUN,getEntityID()));
         if(!gun->isReloading()){
-            Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
-            Singleton<Motor2D>::Instance()->changeWeapon();
+            // Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
+            // Singleton<Motor2D>::Instance()->changeWeapon();
 
             // std::cout << "PRIMARY:  " << Manager->getComponent(gg::GUN,getEntityID()) << '\n';
             // std::cout << "SECONDARY:" << secondWeapon << '\n';
             Manager->swapComponents(gg::GUN,getEntityID(),reinterpret_cast<IComponent**>(&secondWeapon));
             secondWeapon->desenfundado();
+
+            hud->changeHUDWeapon();
+            // hud.setSecondaryChamber(123);
 
             // std::cout << "PRIMARY:  " << Manager->getComponent(gg::GUN,getEntityID()) << '\n';
             // std::cout << "SECONDARY:" << secondWeapon << '\n';

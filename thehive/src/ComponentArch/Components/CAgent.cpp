@@ -24,6 +24,8 @@ CAgent::CAgent(const unsigned long &_flags)
     oManager = Singleton<ObjectManager>::Instance();
     _AssetManager = Singleton<AssetManager>::Instance();
     SS = Singleton<SoundSystem>::Instance();
+    hud = Singleton<HUD>::Instance();
+
 
 }
 
@@ -302,7 +304,7 @@ void CAgent::STAY_func_kTrig_UnLoadZone   (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_Gunfire){
         float   dmg, cdc, relDT, rng;
-        std::string sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia,img;
+        std::string sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia,imgP,imgS;
         int     cb,tb;
         CGun *gun = static_cast<CGun*>(oManager->getComponent(gg::GUN,nCAgentID));
         CPlayerController *cpc = static_cast<CPlayerController*>(oManager->getComponent(gg::PLAYERCONTROLLER,nCAgentID));
@@ -320,14 +322,16 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
+                gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,imgP,imgS);
 
                 // Le anyado la nueva
                 CGun* Gun = new CGun(dmg,cdc,cb,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
                 cpc->setSecondWeapon(Gun);
                 Gun->cogida();
-                Singleton<Motor2D>::Instance()->setbullet(1,Gun->getBullets(),Gun->getTotalBullets());
-                Singleton<Motor2D>::Instance()->setWeaponImg(1,img);
+                // Singleton<Motor2D>::Instance()->setbullet(1,Gun->getBullets(),Gun->getTotalBullets());
+                // Singleton<Motor2D>::Instance()->setWeaponImg(1,img);
+
+                hud->setSecondaryImg(_AssetManager->getTexture(imgP),_AssetManager->getTexture(imgS));
             }
             else{
                 //cambiamos la principal
@@ -336,7 +340,7 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 int _wtype_floor = static_cast<int>(_pRec->data.find(kDat_WeaponType));
                 //gg::cout("PICKING: TYPE " + std::to_string(_wtype_floor) + " WEAPON");
 
-                gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
+                gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,imgP,imgS);
 
                 // Elimino el arma que tiene la entidad
                 oManager->removeComponentFromEntity(gg::GUN,nCAgentID);
@@ -364,8 +368,10 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
                 glm::vec3 to = Singleton<ggDynWorld>::Instance()->getRaycastVector();
                 glm::vec3 vec = (to-from)*30.f;
                 static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,weapon))->applyCentralForce(vec);
-                Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
-                Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+
+                // Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
+                // Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+                hud->setSecondaryImg(_AssetManager->getTexture(imgP),_AssetManager->getTexture(imgS));
             }
 
             // Destruyo el arma del suelo y su evento
@@ -375,13 +381,18 @@ void CAgent::STAY_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){
         }
         else{
             // NO TIENE ARMA
-            gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img);
+            gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,imgP,imgS);
 
             // Creo y anyado un arma a la entidad
             CGun* Gun = new CGun(dmg,cdc,cb,tb,relDT,rng,static_cast<int>(_pRec->data.find(kDat_WeaponType)),sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
             oManager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
-            Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
-            Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+
+            // ------------------
+            // Singleton<Motor2D>::Instance()->setbullet(0,Gun->getBullets(),Gun->getTotalBullets());
+            // Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+            // HUD hud;
+            // hud.setSecondaryImg(_AssetManager->getTexture(imgP),_AssetManager->getTexture(imgS));
+            // ------------------
 
 
             // Destruyo el arma del suelo y su evento

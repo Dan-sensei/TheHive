@@ -1,10 +1,14 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include <ComponentArch/ObjectManager.hpp>
-#include <Omicron/Omicron.hpp>
-#include <EventSystem/CTriggerSystem.hpp>
 #include <Util.hpp>
+
+#include <ComponentArch/ObjectManager.hpp>
+
+#include <Omicron/Omicron.hpp>
+#include <Omicron/2D/HUD.hpp>
+
+#include <EventSystem/CTriggerSystem.hpp>
 
 #include <EventSystem/Blackboard.hpp>
 #include <EventSystem/BRbData.hpp>
@@ -12,6 +16,8 @@
 
 #include <FMOD/SoundSystem.hpp>
 #include <FMOD/SonidoNormal.hpp>
+
+#include <Omicron/AssetManager.hpp>
 
 template <typename T>
 class Singleton;
@@ -46,19 +52,16 @@ class Factory{
         uint16_t createPickableItem(StandardNode* FATHER, const glm::vec3&);
         uint16_t createTouchableObject(StandardNode* FATHER, const std::string&, const glm::vec3&, const glm::quat &_rotation, const uint16_t&, const glm::vec3&, const int&, int, uint16_t=0);
         //uint16_t createDebugBullet(StandardNode* FATHER, const glm::vec3&);
-    private:
 
+    private:
         Factory();
         Factory(const Factory &orig) = delete;
         void operator=(const Factory &orig) = delete;
 
-        ObjectManager* Manager;
-        Omicron* Engine;
-
-        //SoundSystem* SS;
-
-        //SoundEvent* s_gotera;
-
+        HUD*            hud;
+        ObjectManager*  Manager;
+        AssetManager*   AManager;
+        Omicron*        Engine;
 };
 
 #endif

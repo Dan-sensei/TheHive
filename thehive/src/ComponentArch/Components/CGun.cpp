@@ -19,6 +19,7 @@ reloadDT(_reloadDT), range(_range), WEAPON_TYPE(_wType)
     generatorDT = 2;
 
     SS = Singleton<SoundSystem>::Instance();
+    hud = Singleton<HUD>::Instance();
 
     s_disparo = new SonidoNormal();
     SS->createSound(sonido_disparo, s_disparo);
@@ -74,7 +75,10 @@ void CGun::shoot(glm::vec3 to){
                 s_recarga->setParameter("Lleno",0);
         }
 
-        Singleton<Motor2D>::Instance()->setbullet(0,charger_bullets,total_bullets);
+        // Singleton<Motor2D>::Instance()->setbullet(0,charger_bullets,total_bullets);
+        // HUD hud;
+        // hud.setPrimaryBullets(charger_bullets);
+        // hud.setPrimaryChamber(total_bullets);
 
         // Comprobar destino
         if(to.x == -1){
@@ -132,6 +136,7 @@ void CGun::reload(){
         s_recarga->play();
     else
         recarga_escopeta();
+
 }
 
 void CGun::recarga_escopeta(){
@@ -236,7 +241,7 @@ void CGun::FixedUpdate(){
     fullDeBalas(0);
 }
 
-void CGun::fullDeBalas(uint8_t a){
+void CGun::fullDeBalas(int a){
     auto end         = std::chrono::high_resolution_clock::now();
     auto elapsedtime = end - dtBulletGenerator;
     auto ms          = std::chrono::duration_cast<std::chrono::milliseconds>(elapsedtime).count();
@@ -247,7 +252,17 @@ void CGun::fullDeBalas(uint8_t a){
         dtBulletGenerator = std::chrono::high_resolution_clock::now();
     }
 
-    Singleton<Motor2D>::Instance()->setbullet(a,charger_bullets,total_bullets);
+    // Singleton<Motor2D>::Instance()->setbullet(a,charger_bullets,total_bullets);
+    if(a == 0){
+        // Primaria
+        hud->setPrimaryBullets(charger_bullets);
+        hud->setPrimaryChamber(total_bullets);
+    }
+    else{
+        // Secundaria
+        hud->setSecondaryBullets(charger_bullets);
+        hud->setSecondaryChamber(total_bullets);
+    }
 }
 
 

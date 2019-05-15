@@ -6,18 +6,20 @@
 #include <string>
 
 #include <Util.hpp>
-
 #include <Singleton.hpp>
-#include <Omicron/Omicron.hpp>
-#include <ComponentArch/ObjectManager.hpp>
-#include <EventSystem/CTriggerSystem.hpp>
-#include <Bullet/ggDynWorld.hpp>
 #include "Factory.hpp"
 
-#include <Omicron/KEYCODES.hpp>
+#include <ComponentArch/ObjectManager.hpp>
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/Message.hpp>
+#include <EventSystem/CTriggerSystem.hpp>
+#include <Bullet/ggDynWorld.hpp>
+
+#include <Omicron/Omicron.hpp>
+#include <Omicron/2D/HUD.hpp>
+#include <Omicron/KEYCODES.hpp>
 #include <Omicron/Clock.hpp>
+
 #include <FMOD/SoundSystem.hpp>
 #include <FMOD/SonidoNormal.hpp>
 #include <FMOD/SonidoSuperficie.hpp>
@@ -83,6 +85,7 @@ class CPlayerController : public IComponent {
         gg::Clock clocker;
         glm::vec3 Target;
 
+        HUD* hud;
         ObjectManager* Manager;
         Factory* factory;
         Omicron* Engine;
@@ -146,6 +149,7 @@ class CPlayerController : public IComponent {
         void invocasionwander();
         void ToggleFreeCamera();
         void EnemyInfo();
+        void aim(const uint8_t &s);
 
         glm::quat GetQuaternionBetween_MaxAngle(glm::vec3 &V1, glm::vec3 &V2, glm::quat CurrentRotation, const float &MaxTurnAngle);
         glm::quat RotationBetween(glm::vec3 &V1, glm::vec3 &V2);

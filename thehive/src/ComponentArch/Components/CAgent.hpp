@@ -14,6 +14,7 @@
 
 #include <ComponentArch/Components/CAIEnem.hpp>
 #include <Omicron/Omicron.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
+#include <Omicron/2D/HUD.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <ComponentArch/ObjectManager.hpp>      // [OPCIONAL] Si necesitas acceder a algún método de ObjectManager
 #include <Omicron/AssetManager.hpp>
 #include <Singleton.hpp>
@@ -75,6 +76,7 @@ class CAgent : public IComponent {
         AssetManager    *_AssetManager;
 
         SoundSystem* SS;
+        HUD* hud;
 
         SoundEvent* s_puerta;
         SoundEvent* s_fusible;

@@ -4,6 +4,7 @@
 #include <vector>
 #include <chrono>
 
+#include <Omicron/2D/HUD.hpp>
 
 #include <ComponentArch/IComponent.hpp>         // [OBLIGATORIO]
 #include <ComponentArch/Message.hpp>            // [OPCIONAL] Si necesitas recibir mensajes o inicializar variables
@@ -33,7 +34,7 @@ class CGun : public IComponent {
         // Funciones propias de CGun
         void shoot(glm::vec3);
 
-        void fullDeBalas(uint8_t a);
+        void fullDeBalas(int a);
         void reload();
         void recarga_escopeta();
         bool isReloading();
@@ -63,6 +64,7 @@ class CGun : public IComponent {
         float   generatorDT;
         float   range;
 
+        HUD* hud;
         SoundSystem* SS;
 
         SoundEvent* s_disparo;

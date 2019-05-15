@@ -7,6 +7,42 @@
 #define WIDTH          1080.0f
 #define HEIGTH         720.0f
 
+Cuadrado2D::Cuadrado2D()
+:Zindex(0),inputColour(0),
+VAO(0),VBO(0),EBO(0),
+index(-1),
+color(1,1,1,1),
+inicio(nullptr),
+fin(nullptr)
+{}
+
+Cuadrado2D::Cuadrado2D(const Cuadrado2D &orig):
+Zindex(orig.Zindex),
+inputColour(orig.inputColour),
+VAO(orig.VAO),
+VBO(orig.VBO),
+EBO(orig.EBO),
+index(orig.index),
+color(orig.color),
+inicio(orig.inicio),
+fin(orig.fin)
+{}
+
+Cuadrado2D& Cuadrado2D::operator=(Cuadrado2D other){
+    std::swap(Zindex        ,other.Zindex);
+    std::swap(inputColour   ,other.inputColour);
+    std::swap(VAO           ,other.VAO);
+    std::swap(VBO           ,other.VBO);
+    std::swap(EBO           ,other.EBO);
+    std::swap(index         ,other.index);
+    std::swap(color         ,other.color);
+    std::swap(inicio        ,other.inicio);
+    std::swap(fin           ,other.fin);
+
+    return *this;
+}
+
+
 Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
 :VAO(0),VBO(0),EBO(0),color(1,1,1,1),index(-1),inicio(nullptr),fin(nullptr)
 {
@@ -106,7 +142,8 @@ void Cuadrado2D::Draw(){
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);glUniform1f(Zindex,index);
+    glBindVertexArray(0);
+    glUniform1f(Zindex,index);
 
     fin->Bind();
 

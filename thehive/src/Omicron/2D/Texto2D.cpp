@@ -5,8 +5,61 @@
 #include "Singleton.hpp"
 #include "Letra2DManager.hpp"
 
-#define SCREENW 1080.0f
-#define SCREENH 720.0f
+Texto2D::Texto2D()
+:Zindex(0),textura(0),inputColour(0),
+VAO(0),VBO(0),EBO(0),textureID(0),
+inicio(nullptr),fin(nullptr),
+index(-1),palabra(),color(1,1,1,1),
+X(0),Y(0),W(0),H(0),
+separacion(0),tamanyo(0)
+{}
+
+Texto2D::Texto2D(const Texto2D &orig){
+    Zindex = orig.Zindex;
+    textura = orig.textura;
+    inputColour = orig.inputColour;
+    inicio = orig.inicio;
+    fin = orig.fin;
+    index = orig.index;
+    palabra = orig.palabra;
+    color = orig.color;
+    VAO = orig.VAO;
+    VBO = orig.VBO;
+    EBO = orig.EBO;
+    textureID = orig.textureID;
+    X = orig.X;
+    Y = orig.Y;
+    W = orig.W;
+    H = orig.H;
+    separacion = orig.separacion;
+    tamanyo = orig.tamanyo;
+
+    Manager = Singleton<Letra2DManager>::Instance();
+}
+
+Texto2D& Texto2D::operator=(Texto2D other){
+    std::swap(Zindex,other.Zindex);
+    std::swap(textura,other.textura);
+    std::swap(inputColour,other.inputColour);
+    std::swap(inicio,other.inicio);
+    std::swap(fin,other.fin);
+    std::swap(index,other.index);
+    std::swap(palabra,other.palabra);
+    std::swap(color,other.color);
+    std::swap(VAO,other.VAO);
+    std::swap(VBO,other.VBO);
+    std::swap(EBO,other.EBO);
+    std::swap(textureID,other.textureID);
+    std::swap(X,other.X);
+    std::swap(Y,other.Y);
+    std::swap(W,other.W);
+    std::swap(H,other.H);
+    std::swap(separacion,other.separacion);
+    std::swap(tamanyo,other.tamanyo);
+    std::swap(Manager,other.Manager);
+
+    return *this;
+}
 
 float Texto2D::getX(){
     return X;
@@ -293,6 +346,10 @@ void Texto2D::Draw(){
     glBindVertexArray(0);
     fin->Bind();
 
+}
+
+void Texto2D::printString(){
+    std::cout << palabra << '\n';
 }
 
 Texto2D::~Texto2D(){

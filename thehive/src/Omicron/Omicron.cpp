@@ -8,6 +8,7 @@
 
 bool* Omicron::KEYS = new bool[349];
 bool Omicron::LCLICK = false;
+bool Omicron::RCLICK = false;
 int Omicron::wheel;
 int Omicron::IdButon;
 
@@ -16,7 +17,6 @@ Omicron::Omicron()
 {
     ESCENA = new StandardNode();
     Initialize();
-    gestorRecursos = Singleton<AssetManager>::Instance();
 
     OKAMERAS_LAYER  = new StandardNode(ESCENA, nullptr);
       LIGHTS_LAYER  = new StandardNode(ESCENA, nullptr);
@@ -95,6 +95,13 @@ void Omicron::mouse_button_callback(GLFWwindow* window, int button, int action, 
     }
     else if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
         LCLICK = false;
+    }
+
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
+        RCLICK = true;
+    }
+    else if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE){
+        RCLICK = false;
     }
 }
 
@@ -210,7 +217,7 @@ void Omicron::draw(){
     ++FPS;
     DRAW_OBJECTS = 0;
     glDisable( GL_BLEND );
-
+    //
     // Bindeamos el shader que recibe la info de luces y cámara
     _DeferredShading.Bind_D_Shader();
     ESCENA->ROOT_OkameraUpdate();   // Le enviamos la info
@@ -224,6 +231,8 @@ void Omicron::draw(){
     glUniform1f(7, FPS/60.f);
     glViewport(0,0,WINDOW_WIDTH, WINDOW_HEIGHT);
     _DeferredShading.DrawPostProcessing();
+
+    hud->draw();
 }
 
 void Omicron::EndDraw(){
@@ -319,7 +328,7 @@ bool Omicron::Initialize(){
     WINDOW_WIDTH = mode->width;
     WINDOW_HEIGHT = mode->height;
 
-	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", nullptr, NULL);
+	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA",nullptr, NULL);
 	if( window == NULL ){
 	    glfwTerminate();
 	    return false;
@@ -338,6 +347,15 @@ bool Omicron::Initialize(){
 	}
 
     _DeferredShading.init(VIEWPORT_X, VIEWPORT_Y);
+
+    gestorRecursos = Singleton<AssetManager>::Instance();
+    hud = Singleton<HUD>::Instance();
+    hud->initHUD(
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
+        gestorRecursos->getTexture("assets/HUD/NUEVO/plantilla.png",4),
+        gestorRecursos->getShader("HUD")
+    );
 
     glDepthRange(0.f,1.f);
 

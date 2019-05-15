@@ -7,6 +7,8 @@
 #include <ComponentArch/Components/CTransform.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
 
+#include <Omicron/2D/HUD.hpp>
+
 #include <GameAI/NavmeshStructs.hpp>
 #include <Util.hpp>
 #include <stack>
@@ -38,7 +40,7 @@ class CVida : public IComponent {
     private:
         CVida(const CVida &orig) = delete;
         ObjectManager   *Manager;
-        Motor2D   *hud;
+        HUD   *hud;
         CTriggerSystem  *triggerSystem;
 
         float vida;

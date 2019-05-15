@@ -18,6 +18,8 @@ AssetManager::AssetManager(){
     ShaderMap["Video"].loadFiles("assets/Shaders/VIDEO_VS.glsl", nullptr, "assets/Shaders/VIDEO_FS.glsl");
     ShaderMap["PostProcessing"].loadFiles("assets/Shaders/Post_Processing_VS.glsl", nullptr, "assets/Shaders/Post_Processing_FS.glsl");
     ShaderMap["Query"].loadFiles("assets/Shaders/Line_VS.glsl", nullptr, nullptr);
+
+    ShaderMap["HUD"].loadFiles("assets/Shaders/VertexShader2D.glsl", nullptr, "assets/Shaders/FragmentShader2DHUD.glsl");
 }
 
 void AssetManager::loadInit(){

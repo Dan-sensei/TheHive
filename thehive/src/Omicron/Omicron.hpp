@@ -24,6 +24,8 @@
 #include <Omicron/FX/Particle_System_DATA.hpp>
 #include <Omicron/DeferredShading.hpp>
 
+#include <Omicron/2D/HUD.hpp>
+
 template <typename T>
 class Singleton;
 
@@ -74,6 +76,7 @@ class Omicron {
 
         //void PointAt(TNodo *_node, const glm::vec3& _offpos);
         inline bool isLClickPressed(){ return LCLICK; };
+        inline bool isRClickPressed(){ return RCLICK; };
         inline int getWheelState(){return wheel;};
         inline bool isWindowOpen(){ return !glfwWindowShouldClose(window);};
         inline StandardNode* getCamera(){return main_camera;};
@@ -108,6 +111,7 @@ class Omicron {
 
         gg::Clock FPS_Clock;
         DeferredShading _DeferredShading;
+        HUD* hud;
 
 
         StandardNode* ESCENA;
@@ -134,6 +138,7 @@ class Omicron {
 
         static bool* KEYS;
         static bool LCLICK;
+        static bool RCLICK;
         //static bool clicked;
         static int wheel;
         static int IdButon;

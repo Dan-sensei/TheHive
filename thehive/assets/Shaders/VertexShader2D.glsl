@@ -1,8 +1,8 @@
-#version 400
+#version 450
 
 layout(location = 0) in vec2 position;
 layout(location = 1) in vec2 texcoord;
-uniform float Zindex;
+layout(location = 3) uniform float Zindex;
 
 out vec2 Texcoord;
 

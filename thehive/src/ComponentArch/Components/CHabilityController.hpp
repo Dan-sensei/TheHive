@@ -4,9 +4,10 @@
 #include <cmath>
 #include <map>
 
-
 #include <Bullet/ggDynWorld.hpp>
+
 #include <Omicron/KEYCODES.hpp>
+#include <Omicron/2D/HUD.hpp>
 
 #include <ComponentArch/IComponent.hpp>
 #include <ComponentArch/ObjectManager.hpp>
@@ -15,6 +16,7 @@
 #include <GameAI/Hability1.hpp>
 #include <GameAI/Hability2.hpp>
 #include <GameAI/Hability3.hpp>
+
 
 #include <Singleton.hpp>
 
@@ -45,9 +47,15 @@ class CHabilityController : public IComponent {
 
         void ToggleSkill(int HabilityID);
 
+
     private:
+        HUD* hud;
         CHabilityController(const CHabilityController &orig) = delete;
 
+        std::vector<void (CHabilityController::*)(const float&)> vHabs;
+        void updateHudCooldown_TR(const float &cd);
+        void updateHudCooldown_TL(const float &cd);
+        void updateHudCooldown_BM(const float &cd);
 
         Hability* Habilities[3];
         //Hability hab2;

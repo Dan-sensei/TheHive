@@ -28,6 +28,8 @@
 Factory::Factory() {
     Manager = Singleton<ObjectManager>::Instance();
     Engine = Singleton<Omicron>::Instance();
+    AManager = Singleton<AssetManager>::Instance();
+    hud = Singleton<HUD>::Instance();
     //SS = Singleton<SoundSystem>::Instance();
 
 }
@@ -79,23 +81,25 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     // std::string Desen_pistola = "event:/SFX/Armas/Pistola/PistolaDesenfundado";
     // std::string Vacia_pistola = "event:/SFX/Armas/Pistola/PistolaVacia";
 
-    std::string sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,img;
+    std::string sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,imgP,imgS;
     float dmg,cdc,relDT,rng;
     int cb,tb;
     int _type = 0;
-    gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_type,sonido_disparo,sonido_recarga,sonido_desenfundado, sonido_vacia,img);
-
-
-
-
+    gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_type,sonido_disparo,sonido_recarga,sonido_desenfundado, sonido_vacia,imgP,imgS);
 
     CGun *gun = new CGun(dmg,cdc,cb,tb,relDT,rng,_type, sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia);
     Manager->addComponentToEntity(gun, gg::GUN, hero);
 
-    Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
-    Singleton<Motor2D>::Instance()->setbullet(0,gun->getBullets(),gun->getTotalBullets());
+    // ------------------------------------------------------
+    // Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
+    // Singleton<Motor2D>::Instance()->setbullet(0,gun->getBullets(),gun->getTotalBullets());
 
-    CAgent* Agent                       = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
+    hud->setPrimaryImg(AManager->getTexture(imgP,4),AManager->getTexture(imgS,4));
+    hud->setPrimaryBullets(gun->getBullets());
+    hud->setPrimaryChamber(gun->getTotalBullets());
+    // ------------------------------------------------------
+
+    CAgent* Agent = new CAgent(kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
     Manager->setHeroID(hero);

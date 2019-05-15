@@ -7,12 +7,12 @@
 // #include <Omicron/2D/Motor2D.hpp>
 
 
-CHabilityController::CHabilityController()
-//,hab[0](0,2000,4000),hab[1](0,2000,4000),hab[2](0,2000,4000)
-{
-    //for (int i = 0; i < 3; i++) {
-    //    hab[i]=Hability(0,2000,4000);
-    //}
+CHabilityController::CHabilityController(){
+    hud = Singleton<HUD>::Instance();
+
+    vHabs.emplace_back(&CHabilityController::updateHudCooldown_TL); // Amarilio
+    vHabs.emplace_back(&CHabilityController::updateHudCooldown_TR); // Asur
+    vHabs.emplace_back(&CHabilityController::updateHudCooldown_BM); // Naranha
 }
 
 CHabilityController::~CHabilityController() {
@@ -46,9 +46,9 @@ gg::EMessageStatus CHabilityController::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CHabilityController::MHandler_SETPTRS(){
-    Habilities[0] = new Hability1(getEntityID());
-    Habilities[1] = new Hability2(getEntityID());
-    Habilities[2] = new Hability3(getEntityID());
+    Habilities[0] = new Hability1(getEntityID());   // Amarilio
+    Habilities[1] = new Hability2(getEntityID());   // Asur
+    Habilities[2] = new Hability3(getEntityID());   // Naranha
 
     return gg::ST_TRUE;
 }
@@ -57,6 +57,20 @@ void CHabilityController::FixedUpdate(){
     for (size_t i = 0; i < 3; i++) {
 
         Habilities[i]->update();
-        Singleton<Motor2D>::Instance()->setprogress(i, Habilities[i]->getProg());
+
+        // Singleton<Motor2D>::Instance()->setprogress(i, Habilities[i]->getProg());
+        (this->*vHabs[i])(Habilities[i]->getProg());
     }
+}
+
+void CHabilityController::updateHudCooldown_TR(const float &cd){
+    hud->set_TR_CD(cd);
+}
+
+void CHabilityController::updateHudCooldown_TL(const float &cd){
+    hud->set_TL_CD(cd);
+}
+
+void CHabilityController::updateHudCooldown_BM(const float &cd){
+    hud->set_BM_CD(cd);
 }

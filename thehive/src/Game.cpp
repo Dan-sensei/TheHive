@@ -197,7 +197,7 @@ void Game::Update(){
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     Engine->DisplayFPS();
-    Engine2D->DisplayHUD();
+    // Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
     // glClear(GL_DEPTH_BUFFER_BIT);

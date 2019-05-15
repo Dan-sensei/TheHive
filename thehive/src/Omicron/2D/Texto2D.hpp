@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <iostream>
 #include <string>
 #include <glm/glm.hpp>
 
@@ -11,14 +12,16 @@ class Shader;
 
 class Texto2D {
     public:
-        //Texto2D();
+        Texto2D();
+        Texto2D(const Texto2D &orig);
+        Texto2D& operator=(Texto2D other);
+
         Texto2D(float x,float y,float w,float h,const std::string &Name,glm::vec4 _color=glm::vec4(1,0,0,1),float tam=20);
         Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color=glm::vec4(1,0,0,1),float tam=20);
         void getSize(float &_w,float &_h);
         float getSizeX();
         float getSizeY();
 
-        Texto2D(const Texto2D &orig) = delete;
         ~Texto2D();
 
         void Draw();
@@ -36,6 +39,8 @@ class Texto2D {
         void ChangeChar(float &incx,const char &cha);
 
         float  getWid(char car);
+
+        void printString();
 
 
 
