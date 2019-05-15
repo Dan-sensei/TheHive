@@ -11,6 +11,7 @@
 #include "Game.hpp"
 #include "MenuState.hpp"
 #include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
 #include <Omicron/ZPlayer.hpp>
 
 int main(int argc, char const *argv[]) {
@@ -18,14 +19,17 @@ int main(int argc, char const *argv[]) {
     Omicron *Engine = Singleton<Omicron>::Instance();
     Singleton<AssetManager>::Instance()->loadInit();
 
-    // {
-    //     ZPlayer Player;
-    //     Player.PlayVideo("assets/Video/LOGO.mp4");
-    //     Player.PlayVideo("assets/Video/TheHiveLogoAnimation.mp4");
-    // }
+    SoundSystem *Sound = Singleton<SoundSystem>::Instance();
+
+
+
+    {
+        ZPlayer Player;
+        Player.PlayVideo("assets/Video/LOGO.mp4","event:/Musica/Videos/VideoLogoEmpresa");
+        Player.PlayVideo("assets/Video/TheHiveLogoAnimation.mp4","event:/Musica/Videos/VideoLogoJuego");
+    }
 
     CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
-    SoundSystem *Sound = Singleton<SoundSystem>::Instance();
     //Engine->Starto();
     //Engine->HideCursor(false);
 
@@ -60,7 +64,7 @@ int main(int argc, char const *argv[]) {
 
 
 
-    // PRUEBA DE LA FUNCION DIOS Y DE TRANSFORMACIONES VARIAS
+    // PRUEBA DE LA FUNCION DIOS Y DE TRANSFORMACI ONES VARIAS
     //
     //
     // #include <glm/glm.hpp>

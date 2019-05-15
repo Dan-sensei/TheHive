@@ -144,7 +144,7 @@ class CAIEnem : public IComponent {
 
         SoundEvent* s_caminar;
         SoundEvent* s_atacar;
-        SoundEvent* s_atacar2;
+        SoundEvent* s_grito;
         //bool            CanIReset;
 
         void enableVisualDebug();

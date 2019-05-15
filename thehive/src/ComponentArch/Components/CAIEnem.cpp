@@ -38,6 +38,9 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 
             s_atacar = new SonidoNormal();
             SS->createSound("event:/SFX/Enemigos/Soldier/SoldierAtaque", s_atacar);
+
+            s_grito = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Soldier/SoldierGrito", s_atacar);
             break;
         case gg::TANK:
             velocity=2;
@@ -45,18 +48,39 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
             SS->createSound("event:/SFX/Enemigos/Tank/TankMovimiento", s_caminar);
 
             s_atacar = new SonidoNormal();
-            SS->createSound("event:/SFX/Enemigos/Tank/TankAtaque_Golpe", s_atacar);
+            SS->createSound("event:/SFX/Enemigos/Tank/TankAtaque", s_atacar);
 
-            s_atacar2 = new SonidoNormal();
-            SS->createSound("event:/SFX/Enemigos/Tank/TankAtaque_Acido", s_atacar2);
+            s_grito = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Tank/TankGrito", s_grito);
+
             break;
         case gg::RUSHER:
             velocity=8;
+
+            s_caminar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Rusher/RusherDash", s_caminar);
+
+            s_atacar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Rusher/RusherCarga", s_atacar);
+
+            s_grito = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Rusher/RusherGrito", s_grito);
+
 
             break;
         case gg::SWARM:
 
             velocity=1;
+
+            s_caminar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Swarm/SwarmMovimiento", s_caminar);
+
+            s_atacar = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Swarm/SwarmAtaque", s_atacar);
+
+            s_grito = new SonidoNormal();
+            SS->createSound("event:/SFX/Enemigos/Swarm/SwarmGrito", s_grito);
+
             break;
         case gg::TRACKER:
         velocity=2;
@@ -390,5 +414,8 @@ void CAIEnem::playAttack(){
     s_atacar->play();
 }
 void CAIEnem::playAttack2(){
-    s_atacar2->play();
+
+    s_atacar->setParameter("Impacto", 0);
+    s_atacar->play();
+    // s_atacar2->play();
 }
