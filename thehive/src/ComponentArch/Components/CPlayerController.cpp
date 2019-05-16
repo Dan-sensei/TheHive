@@ -216,6 +216,8 @@ void CPlayerController::FixedUpdate(){
         }
     }
 
+    aim(Engine->isRClickPressed());
+
     glm::vec3 Direction = ghostCollider->getVirtualRotation() * glm::vec3(0,0,1);
     glm::vec3 Velocity = ghostCollider->getVelocity() * glm::vec3(-1, 0,-1);
     if(Velocity.x || Velocity.z) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
@@ -238,12 +240,6 @@ void CPlayerController::FixedUpdate(){
         if(gun) gun->shoot(Target);
     }
 
-    if(Engine->isRClickPressed()){
-        aim(0);
-    }
-    else{
-        aim(1);
-    }
 
     if(secondWeapon) secondWeapon->fullDeBalas(1);
 
@@ -253,6 +249,7 @@ void CPlayerController::FixedUpdate(){
 }
 
 void CPlayerController::aim(const uint8_t &s){
+    if(s) force *= 0.4;
     hud->aim(s);
 }
 

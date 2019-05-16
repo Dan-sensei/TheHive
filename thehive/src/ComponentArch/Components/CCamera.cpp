@@ -101,10 +101,15 @@ void CCamera::FollowTarget(){
     CameraTarget.z -= sin(t)*0.75;
     CameraTarget.y -= sin(p)*1.5;
 
+    if(Engine->isRClickPressed()){
+        CurrentPosition += (CameraTarget-CurrentPosition)*0.3f;
+    }
+
     Engine->setPosition(cam, CurrentPosition);
     static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
 
     fixCameraPositionOnCollision(TARGET_POSITION,CurrentPosition);
+
 }
 
 void CCamera::fixCameraPositionOnCollision(const glm::vec3 &Target, const glm::vec3 &CameraPosition){

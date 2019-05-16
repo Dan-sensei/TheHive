@@ -11,6 +11,11 @@
 #define X_PRIMARY_CHAMBER       0.88278388278f
 #define Y_PRIMARY_CHAMBER       0.83572359843f
 
+#define X_PRIMARY_BULLETS_AIM   0.53992673992f
+#define Y_PRIMARY_BULLETS_AIM   0.52542372881f
+#define X_PRIMARY_CHAMBER_AIM   0.43296703296f
+#define Y_PRIMARY_CHAMBER_AIM   0.52542372881f
+
 #define X_SECONDARY_BULLETS     0.94139194139f
 #define Y_SECONDARY_BULLETS     0.90482398957f
 #define X_SECONDARY_CHAMBER     0.90915750915f
@@ -64,6 +69,7 @@ HUD::~HUD(){
 
 void HUD::initHUD(unsigned int SW, unsigned int SH, unsigned int TEX, Shader* _SHADER){
     INIT = true;
+    ALPHA = 1.f;
 
     textureID = TEX;
     SHADER = _SHADER;
@@ -168,14 +174,14 @@ void HUD::initHUD(unsigned int SW, unsigned int SH, unsigned int TEX, Shader* _S
 }
 
 void HUD::draw(){
-    drawHUDItem(-0.995,textureID,VAO);
+    drawHUDItem(-0.995,textureID,VAO,ALPHA);
 
     if(IMG_Actual_P != -1)
-        drawHUDItem(-0.996,IMG_Actual_P,VAO);
+        drawHUDItem(-0.996,IMG_Actual_P,VAO,ALPHA);
     if(IMG_Actual_S != -1)
-        drawHUDItem(-0.997,IMG_Actual_S,VAO);
+        drawHUDItem(-0.997,IMG_Actual_S,VAO,ALPHA);
 
-    drawHUDItem(-0.996,actualCruceta,VAO_2);
+    drawHUDItem(-0.996,actualCruceta,VAO_2,1.f);
 
     // BALAS
     TEXT_PrimaryBullets.Draw();
@@ -193,10 +199,18 @@ void HUD::draw(){
 
 void HUD::aim(const uint8_t &s){
     if(s){
-        actualCruceta = crucetaG;
+        // APUNTANDO
+        actualCruceta = crucetaP;
+        ALPHA = 0.3f;
+        TEXT_PrimaryBullets.setPos(X_PRIMARY_BULLETS_AIM,Y_PRIMARY_BULLETS_AIM);
+        TEXT_PrimaryChamber.setPos(X_PRIMARY_CHAMBER_AIM,Y_PRIMARY_CHAMBER_AIM);
     }
     else{
-        actualCruceta = crucetaP;
+        // SIN APUNTAR
+        actualCruceta = crucetaG;
+        ALPHA = 1.f;
+        TEXT_PrimaryBullets.setPos(X_PRIMARY_BULLETS,Y_PRIMARY_BULLETS);
+        TEXT_PrimaryChamber.setPos(X_PRIMARY_CHAMBER,Y_PRIMARY_CHAMBER);
     }
 }
 
@@ -237,7 +251,7 @@ void HUD::setHealthBarPc(const float &pc){
     HEALTH_BAR.setPos(X_HEALTH+((W_HEALTH-X_HEALTH)*pc),Y_HEALTH+0.02,X_HEALTH,Y_HEALTH);
 }
 
-void HUD::drawHUDItem(const float &_ZINDEX, const unsigned int &_IMG, const unsigned int &_VAO){
+void HUD::drawHUDItem(const float &_ZINDEX, const unsigned int &_IMG, const unsigned int &_VAO, const float &_ALPHA){
     SHADER->Bind();
 
     glEnable (GL_BLEND);
@@ -246,6 +260,7 @@ void HUD::drawHUDItem(const float &_ZINDEX, const unsigned int &_IMG, const unsi
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _IMG);
 
+    glUniform1f(2,_ALPHA);
     glUniform1f(3,_ZINDEX);
 
     glBindVertexArray(_VAO);

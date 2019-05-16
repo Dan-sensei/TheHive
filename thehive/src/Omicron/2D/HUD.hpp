@@ -43,6 +43,7 @@ class HUD {
         HUD();
         HUD(const HUD &orig) = delete;
         bool INIT;
+        float ALPHA;
 
         unsigned int    VAO,VAO_2;
         unsigned int    VBO,VBO_2;
@@ -75,6 +76,6 @@ class HUD {
         unsigned int IMG_Actual_S;
 
 
-        void drawHUDItem(const float &_ZINDEX, const unsigned int &_IMG, const unsigned int &_VAO);
+        void drawHUDItem(const float &_ZINDEX, const unsigned int &_IMG, const unsigned int &_VAO, const float &_ALPHA);
 };
 #endif

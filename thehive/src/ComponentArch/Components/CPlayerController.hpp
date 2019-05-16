@@ -55,7 +55,6 @@ class CPlayerController : public IComponent {
         bool canPickWeapon();
 
 
-
         bool hasItem(const uint16_t&);
         bool pickItem(const uint16_t&);
         bool useItem(const uint16_t&);
