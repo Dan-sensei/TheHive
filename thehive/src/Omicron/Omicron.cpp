@@ -339,7 +339,7 @@ bool Omicron::Initialize(){
     INTERNAL_BUFFER_WIDTH = 1280;
     INTERNAL_BUFFER_HEIGHT = 720;
 
-	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA",nullptr, NULL);
+	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", glfwGetPrimaryMonitor(), NULL);
 	if( window == NULL ){
 	    glfwTerminate();
 	    return false;
