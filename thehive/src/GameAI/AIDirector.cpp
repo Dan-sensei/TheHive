@@ -4,7 +4,6 @@
 #include <BinaryParser.hpp>
 /*
 RECORDATORIO
-poner mas nodos
 poner y usar medidor de estres:
 -Special atacking(Maximun)
 depende del estres invocar unas cosas u otras
@@ -28,7 +27,6 @@ depende del estres invocar unas cosas u otras
 #define SUBIDARESTA 0.1f
 #define BAJADARESTA 0.3f
 
-#define GRADOVISION cos(90*3.14159265359/180.f)
 //no se usa
 AIDirector::AIDirector (int _id,float _duracion,int _cooldown)
 : Manager(nullptr),fac(nullptr)
@@ -47,11 +45,12 @@ void AIDirector::clean(){
 void AIDirector::init(){
 
     activado=true;
+    //activado=false;
     numEnemigos=0;
     estres=1;
     zona_actual=1;
 
-    TimeBusqueda=200;
+    TimeBusqueda=1;
     TimeHorda=50;//300
     TimePico=10;
 
@@ -68,14 +67,16 @@ void AIDirector::init(){
 
     Pjugador=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, Manager->getHeroID()));
 
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_1.nav_z", ZONE_1);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_2.nav_z", ZONE_2);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_3.nav_z", ZONE_3);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_4.nav_z", ZONE_4);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_5.nav_z", ZONE_5);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_6.nav_z", ZONE_6);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_7.nav_z", ZONE_7);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_1.nav_z", ZONAS[0]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_2.nav_z", ZONAS[1]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_3.nav_z", ZONAS[2]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_4.nav_z", ZONAS[3]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_5.nav_z", ZONAS[4]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_6.nav_z", ZONAS[5]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_7.nav_z", ZONAS[6]);
     createWandering(1);
+    createWandering(2);
+    checkzone(glm::vec3(0,0,0));
 }
 
 AIDirector::AIDirector ():AcumulatorBusqueda(0),AcumulatorHorda(0),AcumulatorPico(11),TimeBusqueda(1),TimeHorda(300),TimePico(10),
@@ -85,7 +86,29 @@ Pjugador(nullptr){
     fac = Singleton<Factory>::Instance();
     enemigos.reserve(50);
 }
+//que zona send//
+int AIDirector::checkzone(glm::vec3 pos){
+    int x=pos.x;
+    int z=pos.z;
+    int sice;
 
+    auto TL=ZONAS[0][0].TL;
+    auto BR=ZONAS[0][0].BR;
+    glm::vec3 TL_off(-2,0,2);
+    glm::vec3 BR_off(2,0,-2);
+    for (size_t i = 0; i < 7; i++) {
+        sice=ZONAS[i].size();
+        //std::cout << "tam" <<i<<"="<<sice<< '\n';
+        for (size_t e = 0; e < sice; e++) {
+            TL=ZONAS[i][e].TL+TL_off;
+            BR=ZONAS[i][e].BR+BR_off;
+            if(TL.x<x && x<BR.x && BR.z<z && z<TL.z){
+                return (i+1);
+            }
+        }
+    }
+    return -1;
+}
 AIDirector::~AIDirector (){
 
 
@@ -99,8 +122,9 @@ void AIDirector::update (float delta){
     //Acumulator+=(delta*(estres/10));
     if(AcumulatorBusqueda > TimeBusqueda){
         //creamos wandering si es necesario
+        comprobar();
         AcumulatorBusqueda=0;
-        //busquedaCerca();
+        busquedaCerca();
     }
     if(canHorde){
         //std::cout <<"A"<< AcumulatorHorda << '\n';
@@ -155,23 +179,14 @@ void AIDirector::comprobar(){
 }
 //funcion comprieba si hemos cambiado de zona
 void AIDirector::busquedaCerca(){
-    /*
-    float dist  = gg::FastDIST(Njugador->getPos(),Pjugador->getPosition());
-    float dist2;
-
-    glm::vec3 posJugador = Pjugador->getPosition();
-
-    auto nodosP = Njugador->nodosProximos;
-
-    auto it = nodosP.begin();
-    while(it!=nodosP.end()){
-        dist2 =gg::FastDIST((*it)->getPos(),posJugador);
-        if(dist<dist2){
-            changeNode(*it);
-        }
-        it++;
+    //std::cout << "buscamos cerca" << '\n';
+    int zona = checkzone(Pjugador->getPosition());
+    if(zona!=-1 && zona_actual!=zona){
+        changeNode(zona);
     }
-*/
+    if(zona!=-1 ){
+        //std::cout << "zona: " <<zona<< '\n';
+    }
 }
 //cambiamos de zona
 void AIDirector::changeNode(int nodo){
@@ -180,55 +195,25 @@ void AIDirector::changeNode(int nodo){
     int crear=nodo +dif;
     int destruir=zona_actual-dif;
     zona_actual=nodo;
+    //std::cout << "cambiamos" <<nodo<< '\n';
 
+    //std::cout << "creamos" <<crear<< '\n';
     if(crear>0 && crear<8){
-
+        createWandering(crear);
     }
+    //std::cout << "destruimos" <<destruir<< '\n';
     if(destruir>0 && destruir<8){
-
+        removePos(destruir);
     }
 }
 //sacamos pos aleatoria de una zona
 glm::vec3 AIDirector::getposzona(int nodo){
-    int rand;
-    SimpleFace posbuena=ZONE_1[rand];
-    switch(nodo){
-        case 1:
-             rand=gg::genIntRandom(0, ZONE_1.size()-1);
-             //posbuena=ZONE_1[rand];
-        break;
-        case 2:
-             rand=gg::genIntRandom(0, ZONE_2.size()-1);
-             posbuena=ZONE_2[rand];
-        break;
-        case 3:
-             rand=gg::genIntRandom(0, ZONE_3.size()-1);
-             posbuena=ZONE_3[rand];
-        break;
-        case 4:
-             rand=gg::genIntRandom(0, ZONE_4.size()-1);
-             posbuena=ZONE_4[rand];
-        break;
-        case 5:
-             rand=gg::genIntRandom(0, ZONE_5.size()-1);
-             posbuena=ZONE_5[rand];
-        break;
-        case 6:
-             rand=gg::genIntRandom(0, ZONE_6.size()-1);
-             posbuena=ZONE_6[rand];
-        break;
-        case 7:
-             rand=gg::genIntRandom(0, ZONE_7.size()-1);
-             posbuena=ZONE_7[rand];
-        break;
+    if(nodo==-1){
+        nodo=gg::genIntRandom(1, 7);
     }
-    //auto pos=ZONE_1[0].BR;
-    //std::cout << "BR (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
-    //pos=ZONE_1[0].TL;
-    //std::cout << "TL (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
+    int rand=gg::genIntRandom(0, ZONAS[nodo-1].size()-1);
 
-    //TL (308.207,-44.6235,78.7451)
-    //BR (337.45,-44.6235,67.7644)
+    SimpleFace posbuena=ZONAS[nodo-1][rand];
     float xmenos=posbuena.TL.x;
     float xmas  =posbuena.BR.x;
     float y     =posbuena.BR.y;
@@ -240,13 +225,6 @@ glm::vec3 AIDirector::getposzona(int nodo){
 
     glm::vec3 res=glm::vec3(xmenos+gg::genFloatRandom(0, dx),y,zmenos+gg::genFloatRandom(0, dz));
     //std::cout << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
-    //float randx=gg::genIntRandom(0, dx);
-    //float randz=gg::genIntRandom(0, dz);
-
-    //auto it =ZONE_1.begin();
-    //while (it!=ZONE_1.end()) {
-    //    std::cout << "dentro" << '\n';
-    //}
     return res;
 
 
@@ -255,23 +233,23 @@ glm::vec3 AIDirector::getposzona(int nodo){
 //creamos horda delante o atras
 void AIDirector::invocar(){
 
-    int nodo=1;
-    if(zona_actual==1){
-        nodo=2;
-    }else if(zona_actual==7){
-        nodo=6;
-    }else{
+    int enemigosint =1;
+    if(zona_actual<6&&zona_actual>2){
+        enemigosint = gg::genIntRandom(0, 1);
+    }else if(zona_actual>=6){
+        enemigosint=1;
 
-        int enemigosint = gg::genIntRandom(0, 1);
-        if(enemigosint=0){
-
-            nodo=zona_actual+1;
-        }
-        else{
-
-            nodo=zona_actual-1;
-        }
     }
+    int nodo=0;
+    if(enemigosint=0){
+
+        nodo=zona_actual+2;
+    }
+    else{
+
+        nodo=zona_actual-2;
+    }
+
     //esto funciona para todos los nodos
     createHorda(nodo);
 }
@@ -286,12 +264,11 @@ void AIDirector::bajada(){}
 
 void AIDirector::createWandering(int nodo){
 
+    //std::cout << "creamos en zona:" <<nodo<< '\n';
     CTransform* enemypos;
-
     glm::vec3 zonarand;
-
-    //int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
-    int enemigosint = 1;
+    int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
+    //int enemigosint = 1;
     int id;
 
     for (int i = 0; i < enemigosint; i++) {
@@ -307,24 +284,18 @@ void AIDirector::createWandering(int nodo){
 
 void AIDirector::createHorda(int nodo){
 
+    glm::vec3 dest = Pjugador->getPosition();
 
     CTransform* enemypos;
-    glm::vec3 dest = Pjugador->getPosition();
-    float rango =0;// nodo->getRange();
-    int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
     glm::vec3 zonarand;
-
+    int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
     int id;
 
-    glm::vec3 deltapos;
-    //glm::vec3 posibuena = nodo->getPos();
 
     for (int i = 0; i < enemigosint; i++) {
-        deltapos = glm::vec3(gg::genIntRandom(0, 2*rango)-rango,0,gg::genIntRandom(0, 2*rango)-rango);
+        zonarand=getposzona(nodo);
+        id = fac->createSoldierHorda(zonarand, 10, dest);
 
-        //posibuena = posibuena+deltapos;
-
-        id = fac->createSoldierHorda(zonarand+deltapos, 10, dest);
         enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
         enemigos.push_back(enemypos);
         numEnemigos++;
@@ -340,6 +311,7 @@ void AIDirector::removeEnemy(CTransform* nodo){
     while(it!=enemigos.end()){
         if(nodo==*it){
             enemigos.erase(it);
+            numEnemigos--;
             return;
         }
         it++;
@@ -347,26 +319,26 @@ void AIDirector::removeEnemy(CTransform* nodo){
 }
 //eliminamos todos los enemigos de una zona
 void AIDirector::removePos(int nodo){
-    /*
-    glm::vec3 posicion = nodo->getPos();
-    glm::vec3 pos;
 
-    float rango = nodo->getRange();
 
-    auto it = enemigos.begin();
+
+    int zona;
+    auto it=enemigos.begin();
     while(it!=enemigos.end()){
-        pos  = (*it)->getPosition();
-        pos -= posicion;
-
-        if( abs(pos.x) <= rango && abs(pos.z) <= rango ){
+        zona = checkzone((*it)->getPosition());
+        if(zona!=-1 && nodo==zona){
+            //std::cout << "eliminamos enemigo" << '\n';
+            //changeNode(zona);
+            int id=(*it)->getEntityID();
             enemigos.erase(it);
             numEnemigos--;
-            Manager->removeEntity((*it)->getEntityID());
+            Manager->removeEntity(id);
         }
-        it++;
+        else{
+            it++;
+
+        }
     }
-    nodo->setonRange(false);
-*/
 }
 /*
 void AIDirector::invocarswarm(AINode* nodo){
@@ -414,50 +386,50 @@ void AIDirector::DrawZones(){
     color.R = 60;
     color.G = 216;
     color.B = 32;
-    for(uint16_t i = 0; i < ZONE_1.size(); ++i){
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_1[i].TL, ZONE_1[i].TL + glm::vec3(0, 100, 0), color);
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_1[i].BR, ZONE_1[i].BR + glm::vec3(0, 100, 0), color);
+    for(uint16_t i = 0; i < ZONAS[0].size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[0][i].TL, ZONAS[0][i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[0][i].BR, ZONAS[0][i].BR + glm::vec3(0, 100, 0), color);
     }
     color.R = 255;
     color.G = 64;
     color.B = 43;
-    for(uint16_t i = 0; i < ZONE_2.size(); ++i){
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_2[i].TL, ZONE_2[i].TL + glm::vec3(0, 100, 0), color);
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_2[i].BR, ZONE_2[i].BR + glm::vec3(0, 100, 0), color);
+    for(uint16_t i = 0; i < ZONAS[1].size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[1][i].TL, ZONAS[1][i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[1][i].BR, ZONAS[1][i].BR + glm::vec3(0, 100, 0), color);
     }
     color.R = 255;
     color.G = 244;
     color.B = 43;
-    for(uint16_t i = 0; i < ZONE_3.size(); ++i){
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_3[i].TL, ZONE_3[i].TL + glm::vec3(0, 100, 0), color);
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_3[i].BR, ZONE_3[i].BR + glm::vec3(0, 100, 0), color);
+    for(uint16_t i = 0; i < ZONAS[2].size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[2][i].TL, ZONAS[2][i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[2][i].BR, ZONAS[2][i].BR + glm::vec3(0, 100, 0), color);
     }
     color.R = 230;
     color.G = 43;
     color.B = 255;
-    for(uint16_t i = 0; i < ZONE_4.size(); ++i){
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_4[i].TL, ZONE_4[i].TL + glm::vec3(0, 100, 0), color);
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_4[i].BR, ZONE_4[i].BR + glm::vec3(0, 100, 0), color);
+    for(uint16_t i = 0; i < ZONAS[3].size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[3][i].TL, ZONAS[3][i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[3][i].BR, ZONAS[3][i].BR + glm::vec3(0, 100, 0), color);
     }
     color.R = 43;
     color.G = 135;
     color.B = 255;
-    for(uint16_t i = 0; i < ZONE_5.size(); ++i){
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_5[i].TL, ZONE_5[i].TL + glm::vec3(0, 100, 0), color);
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_5[i].BR, ZONE_5[i].BR + glm::vec3(0, 100, 0), color);
+    for(uint16_t i = 0; i < ZONAS[4].size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[4][i].TL, ZONAS[4][i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[4][i].BR, ZONAS[4][i].BR + glm::vec3(0, 100, 0), color);
     }
     color.R = 255;
     color.G = 142;
     color.B = 43;
-    for(uint16_t i = 0; i < ZONE_6.size(); ++i){
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_6[i].TL, ZONE_6[i].TL + glm::vec3(0, 100, 0), color);
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_6[i].BR, ZONE_6[i].BR + glm::vec3(0, 100, 0), color);
+    for(uint16_t i = 0; i < ZONAS[5].size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[5][i].TL, ZONAS[5][i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[5][i].BR, ZONAS[5][i].BR + glm::vec3(0, 100, 0), color);
     }
     color.R = 43;
     color.G = 244;
     color.B = 255;
-    for(uint16_t i = 0; i < ZONE_7.size(); ++i){
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_7[i].TL, ZONE_7[i].TL + glm::vec3(0, 100, 0), color);
-        Singleton<Omicron>::Instance()->Draw3DLine(ZONE_7[i].BR, ZONE_7[i].BR + glm::vec3(0, 100, 0), color);
+    for(uint16_t i = 0; i < ZONAS[6].size(); ++i){
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[6][i].TL, ZONAS[6][i].TL + glm::vec3(0, 100, 0), color);
+        Singleton<Omicron>::Instance()->Draw3DLine(ZONAS[6][i].BR, ZONAS[6][i].BR + glm::vec3(0, 100, 0), color);
     }
 };

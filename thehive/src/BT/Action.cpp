@@ -13,7 +13,9 @@
 #include <ComponentArch/Components/CNavmeshAgent.hpp>
 #include <ComponentArch/Components/CFlock.hpp>
 
+
 #include <GameAI/Pathfinding.hpp>
+#include <GameAI/AIDirector.hpp>
 
 #define MAX_AI_SPEED            2.f
 #define VEL_ATENUATION          0.1
@@ -709,7 +711,7 @@ void Action::move_around(){
             s=BH_RUNNING;
             // Obligatorio
             //glm::vec3 dest = Singleton<Pathfinding>::Instance()->getRandomNodePosition();
-            glm::vec3 dest = Singleton<Pathfinding>::Instance()->getrandomnode(1);
+            glm::vec3 dest = Singleton<AIDirector>::Instance()->getposzona(yo->zona);
             yo->destino = cTransform->getPosition();
             nvAgent->SetDestination(dest);
             return;

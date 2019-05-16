@@ -37,7 +37,8 @@ class AIDirector {
         //void invocartank(AINode* nodo);
         //void invocarswarm(AINode* nodo);
 
-        glm::vec3 getposzona(int);
+         glm::vec3 getposzona(int);
+         int checkzone(glm::vec3 pos);
 
         void createWandering(int nodo);
         void createHorda(int nodo);
@@ -66,13 +67,9 @@ class AIDirector {
         //std::vector<AINode* > nodos;
         std::vector<CTransform*> enemigos;
 
-        std::vector<SimpleFace> ZONE_1;
-        std::vector<SimpleFace> ZONE_2;
-        std::vector<SimpleFace> ZONE_3;
-        std::vector<SimpleFace> ZONE_4;
-        std::vector<SimpleFace> ZONE_5;
-        std::vector<SimpleFace> ZONE_6;
-        std::vector<SimpleFace> ZONE_7;
+        std::vector<SimpleFace> ZONAS[7];
+
+
 
         //std::chrono::high_resolution_clock::time_point nTimeStamp;
         //AINode* Njugador;

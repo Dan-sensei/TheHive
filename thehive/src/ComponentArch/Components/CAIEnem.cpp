@@ -14,6 +14,8 @@
 #include "EventSystem/BFloat.hpp"
 #include "EventSystem/BVector3f.hpp"
 #include "EventSystem/BBool.hpp"
+#include "Singleton.hpp"
+#include "GameAI/AIDirector.hpp"
 #include "ComponentArch/Components/CPlayerController.hpp"
 
 #include <ComponentArch/Components/CRigidBody.hpp>
@@ -148,6 +150,8 @@ void CAIEnem::Init(){
     signo               = 1;
     maxAliensAttacking  = 2;
 
+    zona=-2;
+
     arbol = new Treecontroller(data,type,this);
 
     Vrange          = 10;
@@ -176,10 +180,23 @@ gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
     cAgent = static_cast<CAgent*>(Manager->getComponent(gg::AGENT, getEntityID()));
-    // nvAgent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT,getEntityID()));
+    //
 
+    // nvAgent = static_cast<CNavmeshAgent*>(Manager->getComponent(gg::NAVMESHAGENT,getEntityID()));
+    //std::cout << " res" <<res<< '\n';
+    checkzona();
 
     return gg::ST_TRUE;
+}
+
+void CAIEnem::checkzona(){
+    auto res=Singleton<AIDirector>::Instance()->checkzone(cTransform->getPosition());
+    if(res!=-1){
+        zona=res;
+    }
+    //std::cout << " res" <<res<< '\n';
+
+
 }
 
 void CAIEnem::Update(){
@@ -188,6 +205,7 @@ void CAIEnem::Update(){
 
 void CAIEnem::FixedUpdate(){
     ////std::cout << "entrando" << '\n';
+    checkzona();
 
     if(isPlayerAttacking){
         CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));

@@ -872,5 +872,4 @@ void BinaryParser::LoadParticleSystem(ParticleSystem_Data &PS, const std::string
 
     PS.Position = Position;
     PS.Size = Size;
-
 }

@@ -84,6 +84,7 @@ class CAIEnem : public IComponent {
 
         int getEnemyType();
         float getVelocity();
+        void checkzona();
 
         void playMovement();
         void playAttack();
@@ -95,7 +96,7 @@ class CAIEnem : public IComponent {
         static CTransform* PlayerTransform;     //  Punteros a otras componentes
         static CRigidBody* PlayerBody;     //  Punteros a otras componentes
         Treecontroller* arbol;
-
+        int zona;
         glm::vec3 playerPos;
         glm::vec3 senpos;
         glm::vec3 destino;

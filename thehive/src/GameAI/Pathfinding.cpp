@@ -15,13 +15,13 @@ Pathfinding::Pathfinding()
 :Debug(false)
 {
 
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_1.nav_z", ZONE_1);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_2.nav_z", ZONE_2);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_3.nav_z", ZONE_3);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_4.nav_z", ZONE_4);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_5.nav_z", ZONE_5);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_6.nav_z", ZONE_6);
-    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_7.nav_z", ZONE_7);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_1.nav_z", ZONAS[0]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_2.nav_z", ZONAS[1]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_3.nav_z", ZONAS[2]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_4.nav_z", ZONAS[3]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_5.nav_z", ZONAS[4]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_6.nav_z", ZONAS[5]);
+    BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_7.nav_z", ZONAS[6]);
     //bool loaded = Singleton<MeshImporter>::Instance()->importNavmeshV2("assets/NavMeshes/PROTOTIPO_CIUDAD.obj", GRAPH, GConnections, FACES);
     BinaryParser::ReadNavmeshData("assets/BinaryFiles/NAV/NavmeshCITY.nav", GRAPH, GConnections, FACES);
     //// //std::cout << "GRAPH CREATED!" << '\n';
@@ -31,45 +31,9 @@ Pathfinding::~Pathfinding(){
 
 }
 glm::vec3 Pathfinding::getrandomnode(int nodo){
-    int rand;
-    SimpleFace posbuena=ZONE_1[rand];
-    switch(nodo){
-        case 1:
-             rand=gg::genIntRandom(0, ZONE_1.size()-1);
-             //posbuena=ZONE_1[rand];
-        break;
-        case 2:
-             rand=gg::genIntRandom(0, ZONE_2.size()-1);
-             posbuena=ZONE_2[rand];
-        break;
-        case 3:
-             rand=gg::genIntRandom(0, ZONE_3.size()-1);
-             posbuena=ZONE_3[rand];
-        break;
-        case 4:
-             rand=gg::genIntRandom(0, ZONE_4.size()-1);
-             posbuena=ZONE_4[rand];
-        break;
-        case 5:
-             rand=gg::genIntRandom(0, ZONE_5.size()-1);
-             posbuena=ZONE_5[rand];
-        break;
-        case 6:
-             rand=gg::genIntRandom(0, ZONE_6.size()-1);
-             posbuena=ZONE_6[rand];
-        break;
-        case 7:
-             rand=gg::genIntRandom(0, ZONE_7.size()-1);
-             posbuena=ZONE_7[rand];
-        break;
-    }
-    //auto pos=ZONE_1[0].BR;
-    //std::cout << "BR (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
-    //pos=ZONE_1[0].TL;
-    //std::cout << "TL (" <<pos.x<<","<<pos.y<<","<<pos.z<<")"<< '\n';
+    int rand=gg::genIntRandom(0, ZONAS[nodo-1].size()-1);
 
-    //TL (308.207,-44.6235,78.7451)
-    //BR (337.45,-44.6235,67.7644)
+    SimpleFace posbuena=ZONAS[nodo-1][rand];
     float xmenos=posbuena.TL.x;
     float xmas  =posbuena.BR.x;
     float y     =posbuena.BR.y;
@@ -81,13 +45,6 @@ glm::vec3 Pathfinding::getrandomnode(int nodo){
 
     glm::vec3 res=glm::vec3(xmenos+gg::genFloatRandom(0, dx),y,zmenos+gg::genFloatRandom(0, dz));
     //std::cout << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
-    //float randx=gg::genIntRandom(0, dx);
-    //float randz=gg::genIntRandom(0, dz);
-
-    //auto it =ZONE_1.begin();
-    //while (it!=ZONE_1.end()) {
-    //    std::cout << "dentro" << '\n';
-    //}
     return res;
 
 

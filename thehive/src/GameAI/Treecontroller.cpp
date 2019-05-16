@@ -19,6 +19,7 @@ Treecontroller::Treecontroller(Blackboard *_data, gg::EEnemyType tipo, CAIEnem* 
     switch (tipo) {
         case gg::SOLDIER:
             arbolsoldado();
+            //arboltracker();
             break;
         case gg::TANK:
             arboltank();
@@ -78,7 +79,7 @@ void Treecontroller::update(){
 }
 
 void Treecontroller::arboltracker(){
-    BT= new BehaviorTree(addAction(GIRAR));
+    BT= new BehaviorTree(addAction(MOVE_AROUND));
 }
 void Treecontroller::arbolswarm(){
     Sequence* sec6= createSequence();//cargar dash random+
