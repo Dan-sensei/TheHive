@@ -60,7 +60,6 @@ private:
     double Tick; //PARA LA INTERPOLACION
     float Accumulator;
 
-    gg::Color col;
     StandardNode* luz;
     CTransform* playerpos;
 

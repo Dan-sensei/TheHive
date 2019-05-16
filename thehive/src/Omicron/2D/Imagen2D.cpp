@@ -56,7 +56,7 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
 :VAO(0),VBO(0),EBO(0),color(1,1,1,1), colorInicial(0,0,0,1),textureID(0),index(-0.9999),inicio(nullptr),texturaURL(Name)
 {
     auto sh=Singleton<AssetManager>::Instance();
-    inicio=sh->getShader("2D");
+    inicio=sh->getShader("HUD");
     inputColour = inicio->getUniformLocation("inputColour");
     Zindex = inicio->getUniformLocation("Zindex");
     textura=inicio->getUniformLocation("DiffuseMap");

@@ -7,6 +7,7 @@
 #include <queue>
 
 class BVH_ROOT_Node : public ZNode, public TEntidad {
+    friend class Omicron;
 
     public:
         BVH_ROOT_Node(ZNode* P);
@@ -19,8 +20,6 @@ class BVH_ROOT_Node : public ZNode, public TEntidad {
 
         virtual void beginDraw();
         virtual void endDraw();
-
-        static void setCameraPtr(glm::vec3* _PlayerPosition);
 
         std::vector<BVH_Node> Hierarchy;
 

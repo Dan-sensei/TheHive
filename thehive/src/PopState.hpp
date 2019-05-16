@@ -9,8 +9,6 @@ class ggDynWorld;
 
 //#include <iostream>
 #include "States/State.hpp"
-#include <Omicron/SkyBox.hpp>
-#include <Omicron/2D/GUIController.hpp>
 #include <FMOD/SoundSystem.hpp>
 
 class PopState : public State {
@@ -37,17 +35,18 @@ public:
     */
     void siguiente();
 
-    void Addim(std::string im);
+    void Addim(unsigned int im);
 private:
     Omicron* Engine;
     CTriggerSystem* EventSystem;
-    ObjectManager* Manager;
-    ggDynWorld* world;
-    GUIController* _GUIController;
+    Shader* SH;
 
     SoundSystem* SS;
+
+    unsigned int QUAD;
+    unsigned int QUAD_POS_UV;
     int cont;
-    std::vector<std::string> imagenes;
+    std::vector<unsigned int> imagenes;
 
 
 };

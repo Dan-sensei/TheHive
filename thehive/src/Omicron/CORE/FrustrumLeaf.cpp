@@ -1,7 +1,6 @@
 #include "FrustrumLeaf.hpp"
 #include <glm/gtx/normalize_dot.hpp>
 
-
 glm::vec3* FrustrumLeaf::CameraPosition;
 
 
@@ -41,13 +40,13 @@ bool FrustrumLeaf::isLeaf(){
 }
 
 #define GRADOVISION 0
+#include <iostream>
 
 bool FrustrumLeaf::isInsideFrustrum(const glm::vec2 &ViewDirection){
 
     //frustrum
     glm::vec2 dirobj;
     glm::vec2 campos = glm::vec2((*CameraPosition).x, (*CameraPosition).z);
-
     if(LastFailedFrustrumCorner != -1){
         dirobj = CORNERS[LastFailedFrustrumCorner] - campos;
         float sol         = glm::fastNormalizeDot(dirobj, ViewDirection);
@@ -69,10 +68,6 @@ bool FrustrumLeaf::isInsideFrustrum(const glm::vec2 &ViewDirection){
 
     LastFailedFrustrumCorner = -1;
     return false;
-}
-
-void FrustrumLeaf::setCameraPtr(glm::vec3* _PlayerPosition){
-    CameraPosition = _PlayerPosition;
 }
 
 void FrustrumLeaf::beginDraw(){};

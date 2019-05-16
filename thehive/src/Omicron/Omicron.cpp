@@ -5,6 +5,7 @@
 #include <Singleton.hpp>
 #include <Omicron/CORE/BVH_ROOT_Node.hpp>
 #include <Omicron/CORE/Leaf.hpp>
+#include <Omicron/CORE/FrustrumLeaf.hpp>
 
 bool* Omicron::KEYS = new bool[349];
 bool Omicron::LCLICK = false;
@@ -13,7 +14,7 @@ int Omicron::wheel;
 int Omicron::IdButon;
 
 Omicron::Omicron()
-:main_camera(nullptr), FPS(0), _DeferredShading(), WINDOW_WIDTH(0), WINDOW_HEIGHT(0)
+:MainCamera(nullptr), MainCameraNode(nullptr), FPS(0), _DeferredShading(), WINDOW_WIDTH(0), WINDOW_HEIGHT(0)
 {
     ESCENA = new StandardNode();
     Initialize();
@@ -115,14 +116,16 @@ void Omicron::PollEvents()     {   glfwPollEvents();  }
 
 void Omicron::getCursorPosition(double &posX, double &posY) {  glfwGetCursorPos(window, &posX, &posY); }
 
-StandardNode* Omicron::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::vec3& rot, const float& _ppv){
+StandardNode* Omicron::crearCamara(const float& _fov, const float& _near, const float& _far, const glm::vec3& pos, const glm::quat& rot, const float& _ppv){
     TCamara* C = new TCamara(_fov,_near,_far);
     C->setPerspectiva(_ppv);
 
     StandardNode* Cam = new StandardNode(bindTransform(pos,rot, OKAMERAS_LAYER),C);
-
-    main_camera = Cam;
-    cam_ = C;
+    MainCamera = C;
+    MainCameraNode = Cam;
+    ZMesh::CameraPosition = MainCamera->getPositionPtr();
+    BVH_ROOT_Node::CameraPosition = MainCamera->getPositionPtr();
+    FrustrumLeaf::CameraPosition = MainCamera->getPositionPtr();
     return Cam;
 }
 
@@ -214,10 +217,6 @@ void Omicron::BeginDraw(){
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
-
-#define VIEWPORT_X 720
-#define VIEWPORT_Y 480
-
 void Omicron::draw(){
     ++FPS;
     DRAW_OBJECTS = 0;
@@ -230,7 +229,7 @@ void Omicron::draw(){
 
     // Ahora bindeamos nuestro G-Búffer y renderizamos a las texturas
     _DeferredShading.Bind_G_Buffer();
-    glViewport(0,0, VIEWPORT_X, VIEWPORT_Y);
+    glViewport(0,0, INTERNAL_BUFFER_WIDTH, INTERNAL_BUFFER_HEIGHT);
     ESCENA->ROOT_ObjectsUpdate();
     _DeferredShading.DrawQuad();
     glUniform1f(7, FPS/60.f);
@@ -242,7 +241,9 @@ void Omicron::draw(){
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     ESCENA->ROOT_ForwardRendering();
     glDepthMask(GL_TRUE);
+}
 
+void Omicron::drawHUD(){
     hud->draw();
 }
 
@@ -278,9 +279,6 @@ glm::mat4  Omicron::getV(){
 }
 glm::mat4  Omicron::getM(){
     return ESCENA->getEntidad()->modelMatrix;
-}
-TCamara* Omicron::getCam(){
-    return cam_;
 }
 
 // void Omicron::PointAt(TNodo *_node, const glm::vec3& _offpos){
@@ -338,6 +336,8 @@ bool Omicron::Initialize(){
     auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     WINDOW_WIDTH = mode->width;
     WINDOW_HEIGHT = mode->height;
+    INTERNAL_BUFFER_WIDTH = 1280;
+    INTERNAL_BUFFER_HEIGHT = 720;
 
 	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA",nullptr, NULL);
 	if( window == NULL ){
@@ -357,7 +357,7 @@ bool Omicron::Initialize(){
 	    return false;
 	}
 
-    _DeferredShading.init(VIEWPORT_X, VIEWPORT_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
+    _DeferredShading.init(INTERNAL_BUFFER_WIDTH, INTERNAL_BUFFER_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     gestorRecursos = Singleton<AssetManager>::Instance();
     hud = Singleton<HUD>::Instance();
@@ -383,6 +383,12 @@ bool Omicron::Initialize(){
     glClearColor(0, 0, 0, 1.0f);
 
 	return true;
+}
+
+void Omicron::resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT) {
+    INTERNAL_BUFFER_WIDTH = FRAMEBUFFER_WIDTH;
+    INTERNAL_BUFFER_HEIGHT = FRAMEBUFFER_HEIGHT;
+    _DeferredShading.resizeFrameBuffers(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
 }
 
 void Omicron::deleteLeafNode(ZNode *node){

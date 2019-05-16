@@ -1,6 +1,6 @@
-#version 400
+#version 450
 
-uniform sampler2D DiffuseMap;
+layout(binding = 0) uniform sampler2D DiffuseMap;
 uniform vec4 inputColour;
 
 in vec2 Texcoord;

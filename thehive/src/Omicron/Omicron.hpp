@@ -37,7 +37,7 @@ class Omicron {
         ~Omicron();
         void HideCursor(bool t);
 
-        StandardNode* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::vec3&, const float&);
+        StandardNode* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::quat & Rotation, const float&);
         StandardNode* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
 
         ZNode* createStaticMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3());
@@ -60,6 +60,7 @@ class Omicron {
 
         void BeginDraw();
         void draw();
+        void drawHUD();
         void EndDraw();
 
         //bool isLClicked();
@@ -72,7 +73,6 @@ class Omicron {
         glm::mat4  getV();
         glm::mat4  getM();
 
-        TCamara* getCam();
         void PollEvents();
 
         //void PointAt(TNodo *_node, const glm::vec3& _offpos);
@@ -80,7 +80,11 @@ class Omicron {
         inline bool isRClickPressed(){ return RCLICK; };
         inline int getWheelState(){return wheel;};
         inline bool isWindowOpen(){ return !glfwWindowShouldClose(window);};
-        inline StandardNode* getCamera(){return main_camera;};
+        inline StandardNode* getCamera(){return MainCameraNode;};
+        inline TCamara* getMainCameraEntity(){return MainCamera;};
+        inline glm::vec3* getMainCameraPositionPtr(){return MainCamera->getPositionPtr();};
+        inline uint16_t getWindowsWidth(){ return WINDOW_WIDTH; };
+        inline uint16_t getWindowsHeight(){ return WINDOW_HEIGHT; };
 
         void getCursorPosition(double &posX, double &posY);
         void clean();
@@ -99,6 +103,7 @@ class Omicron {
         };
 
         bool Initialize();
+        void resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT);
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
@@ -121,12 +126,12 @@ class Omicron {
         StandardNode* LIGHTS_LAYER;
         StandardNode* BUFFERS_LAYER;
 
+        TCamara* MainCamera;
+        StandardNode* MainCameraNode;
+
         GLFWwindow* window;
         AssetManager* gestorRecursos;
         Debug* Debugger;
-
-        StandardNode* main_camera;
-        TCamara* cam_;
 
         uint16_t FPS;
 
@@ -144,9 +149,12 @@ class Omicron {
         //static bool clicked;
         static int wheel;
         static int IdButon;
-
         uint16_t WINDOW_WIDTH;
         uint16_t WINDOW_HEIGHT;
+
+        uint16_t INTERNAL_BUFFER_WIDTH;
+        uint16_t INTERNAL_BUFFER_HEIGHT;
+
 
 };
 

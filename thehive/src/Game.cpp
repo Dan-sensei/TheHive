@@ -25,28 +25,6 @@
 #define UPDATE_STEP 15.f
 #define BULLET_STEP 1.f/FRAMERATE
 
-//Funciones de Fran Gallego para imprimir memoria por consola ==============================¬
-//                                                                                          |
-//====================================================================================      |
-// Pretty print a 2-digits hexadecimal value                                                |
-//====================================================================================      |
-/*
-void printHexVal(uint16_t val) {
-}
-
-//====================================================================================
-// Print a memory slice as raw bytes
-//====================================================================================
-void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
-   for(uint16_t l=0; l < lines; ++l) {
-      for(uint16_t u=0; u < linebytes; ++u) {
-         printHexVal(*p);
-         ++p;
-      }
-   }
-}
-*/
-//============================================================================================
 
 #include <Omicron/ZPlayer.hpp>
 
@@ -83,8 +61,8 @@ void Game::Init(){
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
     //Los eventos son propios de cada zona!
-    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
+    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 0);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 0);
     //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
     //
     //
@@ -111,7 +89,8 @@ void Game::Init(){
 
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
-    luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
+    gg::Color c;
+    luz = Engine->crearLuz(c,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 
 
     Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
@@ -174,9 +153,9 @@ void Game::Init(){
 
     Update();
     auto estado = new PopState();
-    estado->Addim("assets/HUD/asdw_esp.png");
-    estado->Addim("assets/HUD/camara_esp.png");
-    estado->Addim("assets/HUD/dash_esp.png");
+    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/asdw_esp.png"));
+    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/camara_esp.png"));
+    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/dash_esp.png"));
     Singleton<StateMachine>::Instance()->AddState(estado);
 }
 
@@ -237,6 +216,7 @@ void Game::Update(){
 
     MainCamera->CameraUpdate();
     Engine->draw();
+    Engine->drawHUD();
     //sky.Draw();
 
     // DEBUG PATHFINDING

@@ -8,8 +8,6 @@ BVH_ROOT_Node::BVH_ROOT_Node(ZNode* P)
 :ZNode(P), FrameID(0)
 {
     static_cast<StandardNode*>(P)->addHijo(this);
-
-
 }
 
 
@@ -160,7 +158,3 @@ void BVH_ROOT_Node::IssueOcclusionQuery(BVH_Node* N) {
 
 void BVH_ROOT_Node::beginDraw(){};
 void BVH_ROOT_Node::endDraw(){};
-
-void BVH_ROOT_Node::setCameraPtr(glm::vec3* _PlayerPosition){
-    CameraPosition = _PlayerPosition;
-}

@@ -116,6 +116,7 @@ int Motor2D::checkbuton(){
     if(motor->isLClickPressed()==false){
         return -1;
     }
+
     double x,y;
 
     motor->getCursorPosition(x,y);
@@ -363,20 +364,26 @@ int Motor2D::InitPause(){
 //Main Menu
 int Motor2D::InitMenu(){
     CLINMenu();
-    AddImage("assets/HUD/menu.png",0,0,100,100);
     //addText(45,10,"Menu principal");
-
     // auto but1=addButton(39,57,9,12,GOPLAY,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Play");
-    auto but1=addButton(39,57,9,12,START,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Play");
-    but1->setSesgo(-0.015);
-    but1=addButton(37,70,10,14,GOCREDITS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Credits");
-    but1->setSesgo(-0.02);
-    but1=addButton(54,57,9,12,GOOPTIONS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Options");
-    but1->setSesgo(0.015);
-    but1=addButton(55,70,10,14,CLOSE,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Exit");
-    but1->setSesgo(0.02);
-    return 4;
+    BOTONES.push_back(new Boton2D(561/1280.f, 460/720.f, 723/1280.f, 569/720.f,START,"assets/HUD/PLAY.png","assets/HUD/PLAY_HOVER.png","Play"));
+    BOTONES.push_back(new Boton2D(142/1280.f, 601/720.f, 364/1280.f, 692/720.f,GOOPTIONS,"assets/HUD/OPTIONS.png","assets/HUD/OPTIONS_HOVER.png","Options"));
+    BOTONES.push_back(new Boton2D(552/1280.f, 601/720.f, 774/1280.f, 692/720.f,GOCREDITS,"assets/HUD/CREDITS.png","assets/HUD/CREDITS_HOVER.png","Credits"));
+    BOTONES.push_back(new Boton2D(964/1280.f, 601/720.f, 1141/1280.f, 692/720.f,CLOSE,"assets/HUD/EXIT.png","assets/HUD/EXIT_HOVER.png","EXIT"));
+    // BOTONES.push_back(new Boton2D(561/1280.f, 460/720.f, 723/1280.f, 569/720.f,START,"assets/HUD/PLAY.png","assets/HUD/PLAY_HOVER.png","Play"));
+
+
+    //auto but1=addButton(561/1280.f, 467/720.f, 723/1280.f, 569/720.f,START,"assets/HUD/PLAY.png","assets/HUD/PLAY_HOVER.png","Play");
+    //but1->setSesgo(-0.015);
+    // but1=addButton(37/1280.f, 70/720.f, 10/1280.f, 14/720.f,GOCREDITS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Credits");
+    // //but1->setSesgo(-0.02);
+    // but1=addButton(54/1280.f, 57/720.f, 9/1280.f, 12/720.f,GOOPTIONS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Options");
+    // //but1->setSesgo(0.015);
+    // but1=addButton(55/1280.f, 70/720.f, 10/1280.f, 14/720.f,CLOSE,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Exit");
+    //but1->setSesgo(0.02);
+    return 2;
 }
+
 //Jugar
 int Motor2D::InitMenu2(){
     CLINMenu();
@@ -733,35 +740,32 @@ void Motor2D::CLINNormal(){
 }
 
 void Motor2D::DisplayHUD(){
-    if(true){
-        glEnable( GL_BLEND );
+    glEnable( GL_BLEND );
 
-        auto it=IMAGENES.begin();
-        Imagen2D*img;
-        while(it!=IMAGENES.end()){
-            (*it)->Draw();
-            it++;
-        }
-
-        // if(!pop){
-        //     RECTANGULOS[7]->Draw();
-        //     RECTANGULOS[8]->Draw();
-        //     RECTANGULOS[5]->Draw();
-        //     RECTANGULOS[6]->Draw();
-        // }
-
-
-        if(pop){
-            POUP->Draw();
-        }
-        // if(TEXT.size()>2){
-        //     for (size_t i = 2; i < TEXT.size(); i++) {
-        //         TEXT[i]->Draw();
-        //     }
-        //     RECTANGULOS[7]->Draw();
-        // }
-        glDisable( GL_BLEND );
+    auto it=IMAGENES.begin();
+    Imagen2D*img;
+    while(it!=IMAGENES.end()){
+        (*it)->Draw();
+        it++;
     }
+
+    // if(!pop){
+    //     RECTANGULOS[7]->Draw();
+    //     RECTANGULOS[8]->Draw();
+    //     RECTANGULOS[5]->Draw();
+    //     RECTANGULOS[6]->Draw();
+    // }
+
+    if(pop){
+        POUP->Draw();
+    }
+    // if(TEXT.size()>2){
+    //     for (size_t i = 2; i < TEXT.size(); i++) {
+    //         TEXT[i]->Draw();
+    //     }
+    //     RECTANGULOS[7]->Draw();
+    // }
+    glDisable( GL_BLEND );
 }
 
 //////////////////////////////////////////////////////////////////////////////////////

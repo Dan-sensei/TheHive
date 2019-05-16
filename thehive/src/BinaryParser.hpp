@@ -57,6 +57,8 @@ namespace BinaryParser{
 
     void LoadLevelDataEvents(const std::string &DARTA, int8_t map_zone = 0);
     void LoadParticleSystem(ParticleSystem_Data &PS, const std::string BinaryFile);
+
+    void MENU_getCameraPositionRotation(const std::string &File, glm::vec3 &Position, glm::vec3 &Target);
 };
 
 #endif

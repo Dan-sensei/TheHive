@@ -14,8 +14,8 @@ Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std:
     X=x*ancho;
     W=w*ancho;
 
-    Y=y*alto-0.0377604*alto;
-    H=h*alto-0.0377604*alto;
+    Y=y*alto;
+    H=h*alto;
 
     if(texto==""){
         hasText=false;
@@ -25,12 +25,15 @@ Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std:
         text.setColor(color);
     }
 }
+
 void Boton2D::setSesgo(float res){
     Imagen.setSesgado(res);
 }
+
 int Boton2D::getType(){
     return tipo;
 }
+
 void Boton2D::hover(bool dato){
     if(dato&&dato!=hov){
         //sec
@@ -39,25 +42,25 @@ void Boton2D::hover(bool dato){
         //setColor(glm::vec4(0,111/250.0,0,1));
         Imagen.setColor(glm::vec4(0.1,0.1,0.1,1));
         text.setColor(glm::vec4(0.1,0.1,0.1,1));
-    }else if(dato!=hov){
+    }
+    else if(dato!=hov){
         //princ
         Imagen.assignColor();
         text.setColor(Imagen.getColor());
         //setColor(glm::vec4(0,75/250.0,0,1));
         hov=dato;
         Imagen.setImage(imgPrincipal);
-
-
     }
 }
+
 bool Boton2D::checkOn(float x,float y){
-if(X<x  &&  x<W &&  Y<y &&  y<H){
-    return true;
-}else{
-    return false;
+    if(X<x  &&  x<W &&  Y<y &&  y<H){
+        return true;
+    }else{
+        return false;
+    }
 }
 
-}
 void Boton2D::setPos(float x,float y,float w,float h){
     Imagen.setPos(x, y, w, h);
 }
@@ -82,7 +85,7 @@ bool Boton2D::getHov(){
 
 
 void Boton2D::Draw(){
-    text.Draw();
+    //text.Draw();
     Imagen.Draw();
 
 }

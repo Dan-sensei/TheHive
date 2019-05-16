@@ -874,3 +874,10 @@ void BinaryParser::LoadParticleSystem(ParticleSystem_Data &PS, const std::string
     PS.Size = Size;
 
 }
+
+void BinaryParser::MENU_getCameraPositionRotation(const std::string &File, glm::vec3 &Position, glm::vec3 &Target) {
+    std::ifstream inStream(File, std::ios::binary);
+
+    GG_Read(inStream, Position);
+    GG_Read(inStream, Target);
+}

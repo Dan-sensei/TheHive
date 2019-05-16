@@ -23,10 +23,12 @@ class TCamara : public TEntidad {
         virtual void beginDraw();
         virtual void endDraw();
 
+        inline glm::vec3* getPositionPtr(){ return &CameraPos; };
         //glm::mat4 GetViewMatrix();
 
     private:
         float cercano, lejano, fov;
+        glm::vec3 CameraPos;
         glm::vec3 target;
 
         bool inverted;
