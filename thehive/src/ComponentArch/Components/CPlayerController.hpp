@@ -55,7 +55,6 @@ class CPlayerController : public IComponent {
         bool canPickWeapon();
 
 
-
         bool hasItem(const uint16_t&);
         bool pickItem(const uint16_t&);
         bool useItem(const uint16_t&);
@@ -123,7 +122,6 @@ class CPlayerController : public IComponent {
         // std::map<int, void (CPlayerController::*)(glm::vec3&,bool&)> mapPlayerActions;
         void check_WASD(glm::vec3 &force, bool &flag_pressed);
         void showDebug();
-        void changeWeaponIfPossible(CGun*);
 
         void autoStepping();
 

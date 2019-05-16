@@ -19,8 +19,8 @@
 #define MAX_HERO_SPEED      2
 
 #define ROTATE_KEY          gg::LCONTROL
-#define DASH_KEY            gg::H
-#define RUN_KEY             gg::LSHIFT
+#define DASH_KEY            gg::LSHIFT
+#define RUN_KEY             gg::H
 #define JUMP_KEY            gg::SPACEBAR
 #define RELOAD_KEY          gg::R
 #define WEAPON_KEY          gg::Q
@@ -39,7 +39,7 @@ CPlayerController::CPlayerController()
 
 CPlayerController::~CPlayerController() {
     if(secondWeapon)    delete secondWeapon;
-    if(collider)           delete collider;
+    if(collider)        delete collider;
     delete s_dash;
     delete s_pasos;
     delete s_saltar;
@@ -216,6 +216,8 @@ void CPlayerController::FixedUpdate(){
         }
     }
 
+    aim(Engine->isRClickPressed());
+
     glm::vec3 Direction = ghostCollider->getVirtualRotation() * glm::vec3(0,0,1);
     glm::vec3 Velocity = ghostCollider->getVelocity() * glm::vec3(-1, 0,-1);
     if(Velocity.x || Velocity.z) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
@@ -238,12 +240,6 @@ void CPlayerController::FixedUpdate(){
         if(gun) gun->shoot(Target);
     }
 
-    if(Engine->isRClickPressed()){
-        aim(0);
-    }
-    else{
-        aim(1);
-    }
 
     if(secondWeapon) secondWeapon->fullDeBalas(1);
 
@@ -253,6 +249,7 @@ void CPlayerController::FixedUpdate(){
 }
 
 void CPlayerController::aim(const uint8_t &s){
+    if(s) force *= 0.4;
     hud->aim(s);
 }
 
@@ -521,41 +518,6 @@ void CPlayerController::ChangeWeapon(){
         }
     }
 }
-
-
-void CPlayerController::changeWeaponIfPossible(CGun *gun){
-    // Singleton<Motor2D>::Instance()->setbullet(1,gun->getBullets(),gun->getTotalBullets());
-    // Singleton<Motor2D>::Instance()->changeWeapon();
-    //
-    // if(isPrincipal){
-    //     isPrincipal = false;
-    //
-    //     Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
-    //     Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
-    //
-    //     secondWeapon->desenfundado();
-    //
-    //     //gg::cout("| -- PRINCIPAL TO SECONDARY -- ");
-    //     //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
-    //     secondWeapon = gun;
-    //     //gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
-    // }
-    // else{
-    //     // SIEMPRE entrara primero aqui
-    //     isPrincipal = true;
-    //
-    //     Manager->removeComponentFromEntityMAP(gg::GUN,getEntityID());
-    //     Manager->addComponentToEntity(secondWeapon,gg::GUN,getEntityID());
-    //
-    //     //secondWeapon->get
-    //     secondWeapon->desenfundado();
-    //     //gg::cout("| -- SECONDARY TO PRINCIPAL -- ");
-    //     //gg::cout("| -----> PRIMARY: "    +std::to_string(secondWeapon->getType()));
-    //     secondWeapon = gun;
-    //     //gg::cout("| -----> SECONDARY: "  +std::to_string(secondWeapon->getType()));
-    // }
-}
-
 
 void CPlayerController::Run(){
     MULT_FACTOR = MULT_RUN_FACTOR;

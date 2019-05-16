@@ -96,7 +96,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             dmg = 0.34;
             cdc = 7;
             cb  = 30;
-            tb  = 150;
+            tb  = 60;
             relDT = 1;
             rng = 0.7;
 
@@ -114,13 +114,13 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             dmg = 1;
             cdc = 0.8;
             cb  = 10;
-            tb  = 70;
+            tb  = 10;
             relDT = 0.3;
             rng = 0.4;
 
             // imagen="assets/HUD/ESCOPETA_HUD.png";
-            imagenP="assets/HUD/NUEVO/P_PISTOLA_HUD.png";
-            imagenS="assets/HUD/NUEVO/S_PISTOLA_HUD.png";
+            imagenP="assets/HUD/NUEVO/P_ESCOPETA_HUD.png";
+            imagenS="assets/HUD/NUEVO/S_ESCOPETA_HUD.png";
 
             sonido_disparo = "event:/SFX/Armas/Escopeta/EscopetaDisparo";
             sonido_recarga = "event:/SFX/Armas/Escopeta/EscopetaRecarga";
@@ -152,7 +152,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             dmg = 0.17;
             cdc = 2.5;
             cb  = 15;
-            tb  = 150;
+            tb  = 30;
             relDT = 1.8;
             rng = 0.5;
 
@@ -167,7 +167,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
 
             break;
         case 4:
-            // Katana
+            // Katana (AKA THE FORGOTTEN)
             dmg = 1;
             cdc = 0.5;
             cb  = -1;

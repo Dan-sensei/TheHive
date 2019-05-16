@@ -187,6 +187,12 @@ void CAgent::ENTER_func_kTrig_InteractMess          (TriggerRecordStruct *_pRec)
 
     auto mes=_pRec->data;
 
+    //std::cout << "entra" << '\n';
+    if((int)mes.find(kDat_img1)==2){
+        Singleton<AIDirector>::Instance()->setActive(true);
+        //std::cout << "activando" << '\n';
+    }
+
     auto estado = new PopState();
 
     int total=mes.find(kDat_total_img);
@@ -209,6 +215,9 @@ void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     std::string name = zonesArray[id].first;
     zonesArray[id].second("assets/BinaryFiles/"+name+"_MODELS.data", id);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/"+name+"_EVENTS.data", id);
+    if(id == 3){
+        Singleton<AIDirector>::Instance()->init();
+    }
 }
 
 void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){

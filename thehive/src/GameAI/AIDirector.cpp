@@ -44,14 +44,14 @@ void AIDirector::clean(){
 
 void AIDirector::init(){
 
-    activado=true;
-    //activado=false;
+    activado=false;
+    //activado=true;
     numEnemigos=0;
     estres=1;
     zona_actual=1;
 
     TimeBusqueda=1;
-    TimeHorda=50;//300
+    TimeHorda=10;//300
     TimePico=10;
 
     AcumulatorBusqueda=0;
@@ -74,9 +74,9 @@ void AIDirector::init(){
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_5.nav_z", ZONAS[4]);
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_6.nav_z", ZONAS[5]);
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_7.nav_z", ZONAS[6]);
-    createWandering(1);
-    createWandering(2);
-    checkzone(glm::vec3(0,0,0));
+    //createWandering(1);
+    //createWandering(2);
+    //checkzone(glm::vec3(0,0,0));
 }
 
 AIDirector::AIDirector ():AcumulatorBusqueda(0),AcumulatorHorda(0),AcumulatorPico(11),TimeBusqueda(1),TimeHorda(300),TimePico(10),
@@ -98,7 +98,7 @@ int AIDirector::checkzone(glm::vec3 pos){
     glm::vec3 BR_off(2,0,-2);
     for (size_t i = 0; i < 7; i++) {
         sice=ZONAS[i].size();
-        //std::cout << "tam" <<i<<"="<<sice<< '\n';
+        ////Director << "tam" <<i<<"="<<sice<< '\n';
         for (size_t e = 0; e < sice; e++) {
             TL=ZONAS[i][e].TL+TL_off;
             BR=ZONAS[i][e].BR+BR_off;
@@ -127,7 +127,7 @@ void AIDirector::update (float delta){
         busquedaCerca();
     }
     if(canHorde){
-        //std::cout <<"A"<< AcumulatorHorda << '\n';
+        ////Director <<"A"<< AcumulatorHorda << '\n';
         AcumulatorHorda += delta;
         if(AcumulatorHorda > TimeHorda){
             //invocamos horda
@@ -179,13 +179,13 @@ void AIDirector::comprobar(){
 }
 //funcion comprieba si hemos cambiado de zona
 void AIDirector::busquedaCerca(){
-    //std::cout << "buscamos cerca" << '\n';
+    ////Director << "buscamos cerca" << '\n';
     int zona = checkzone(Pjugador->getPosition());
     if(zona!=-1 && zona_actual!=zona){
         changeNode(zona);
     }
     if(zona!=-1 ){
-        //std::cout << "zona: " <<zona<< '\n';
+        ////Director << "zona: " <<zona<< '\n';
     }
 }
 //cambiamos de zona
@@ -195,36 +195,41 @@ void AIDirector::changeNode(int nodo){
     int crear=nodo +dif;
     int destruir=zona_actual-dif;
     zona_actual=nodo;
-    //std::cout << "cambiamos" <<nodo<< '\n';
+    ////Director << "cambiamos" <<nodo<< '\n';
 
-    //std::cout << "creamos" <<crear<< '\n';
+    ////Director << "creamos" <<crear<< '\n';
     if(crear>0 && crear<8){
         createWandering(crear);
     }
-    //std::cout << "destruimos" <<destruir<< '\n';
+    ////Director << "destruimos" <<destruir<< '\n';
     if(destruir>0 && destruir<8){
         removePos(destruir);
     }
 }
 //sacamos pos aleatoria de una zona
 glm::vec3 AIDirector::getposzona(int nodo){
+    //Director << "get pos" <<nodo<< '\n';
     if(nodo==-1){
         nodo=gg::genIntRandom(1, 7);
     }
+    //Director << "llega" <<ZONAS[nodo-1].size()<< '\n';
     int rand=gg::genIntRandom(0, ZONAS[nodo-1].size()-1);
+    //Director << "llega" <<rand<< '\n';
 
     SimpleFace posbuena=ZONAS[nodo-1][rand];
+    //Director << "llega" << '\n';
     float xmenos=posbuena.TL.x;
     float xmas  =posbuena.BR.x;
-    float y     =posbuena.BR.y;
+    float y     =posbuena.BR.y + 20;
     float zmenos=posbuena.BR.z;
     float zmas  =posbuena.TL.z;
+    //Director << "llegax" << '\n';
 
     float dx=xmas-xmenos;
     float dz=zmas-zmenos;
 
     glm::vec3 res=glm::vec3(xmenos+gg::genFloatRandom(0, dx),y,zmenos+gg::genFloatRandom(0, dz));
-    //std::cout << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
+    ////Director << "res (" <<res.x<<","<<res.y<<","<<res.z<<")"<< '\n';
     return res;
 
 
@@ -255,7 +260,14 @@ void AIDirector::invocar(){
 }
 
 void AIDirector::setActive(bool dato){
+    //Director << "entra2" << '\n';
     activado=dato;
+    if(activado){
+        //Director << "entra3" << '\n';
+        createWandering(1);
+        createWandering(2);
+    }
+    //Director << "entra4" << '\n';
 }
 
 void AIDirector::subida(){}
@@ -264,7 +276,7 @@ void AIDirector::bajada(){}
 
 void AIDirector::createWandering(int nodo){
 
-    //std::cout << "creamos en zona:" <<nodo<< '\n';
+    //Director << "creamos en zona:" <<nodo<< '\n';
     CTransform* enemypos;
     glm::vec3 zonarand;
     int enemigosint = gg::genIntRandom(MIN_WAN, MAX_WAN);
@@ -272,13 +284,19 @@ void AIDirector::createWandering(int nodo){
     int id;
 
     for (int i = 0; i < enemigosint; i++) {
+        //Director << "i" << '\n';
         //zonarand=navmesh punto zona
         zonarand=getposzona(nodo);
+        //Director << "i" << '\n';
         id = fac->createSoldierWandering(zonarand, 1);
+        //Director << "i" << '\n';
 
         enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
+        //Director << "i" << '\n';
         enemigos.emplace_back(enemypos);
+        //Director << "i" << '\n';
         numEnemigos++;
+        //Director << "i" << '\n';
     }
 }
 
@@ -327,7 +345,7 @@ void AIDirector::removePos(int nodo){
     while(it!=enemigos.end()){
         zona = checkzone((*it)->getPosition());
         if(zona!=-1 && nodo==zona){
-            //std::cout << "eliminamos enemigo" << '\n';
+            ////Director << "eliminamos enemigo" << '\n';
             //changeNode(zona);
             int id=(*it)->getEntityID();
             enemigos.erase(it);
@@ -342,7 +360,7 @@ void AIDirector::removePos(int nodo){
 }
 /*
 void AIDirector::invocarswarm(AINode* nodo){
-    //std::cout << "nodo" <<nodo->getPos().x<<";"<<nodo->getPos().y<<";"<<nodo->getPos().z<< '\n';
+    ////Director << "nodo" <<nodo->getPos().x<<";"<<nodo->getPos().y<<";"<<nodo->getPos().z<< '\n';
 
      int id2=fac->createSwarm(nodo->getPos(), 2000);
      //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));

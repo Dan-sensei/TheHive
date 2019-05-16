@@ -91,7 +91,7 @@ void Game::Init(){
 
     //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
     //BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
-    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
+    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 5);
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 6);
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/FINAL_MODELS.data", 7);
@@ -135,8 +135,8 @@ void Game::Init(){
 
     Accumulator = 0;
 
-    Singleton<Pathfinding>::Instance()->SetDebug(true);
-    // world->setDebug(true);
+    // Singleton<Pathfinding>::Instance()->SetDebug(true);
+    world->setDebug(true);
     MasterClock.Restart();
 
     //sky.init();
@@ -155,11 +155,11 @@ void Game::Init(){
     TData mes;
     mes.add(kDat_total_img,1);
     mes.add(kDat_img1,0);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(79.7904,-20.6495,59.8293), 5, 0, false, mes);
     TData mes1;
     mes1.add(kDat_total_img,1);
     mes1.add(kDat_img1,1);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(173.648,-0.649231,17.4254), 5, 0, false, mes1);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(171.164,-23.4092,35.5667), 5, 0, false, mes1);
     TData mes2;
     mes2.add(kDat_total_img,1);
     mes2.add(kDat_img1,2);
@@ -170,10 +170,9 @@ void Game::Init(){
     //mes1.add(kDat_img1,3);
     //Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes1);
 
-
+    Director->init();
 
     Update();
-    Director->init();
     auto estado = new PopState();
     estado->Addim("assets/HUD/asdw_esp.png");
     estado->Addim("assets/HUD/camara_esp.png");
@@ -198,21 +197,23 @@ void Game::Update(){
 
     // if(DeltaTime > 10000) throw std::exception();
     while(Accumulator >= 1/UPDATE_STEP){
-        //Director->getposzona(1);
+        // Director->getposzona(1);
         // FIXED UPDATE//
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
-        //Director->comprobar();
-        //Director->clipingEnemigos();
+
+        // Director->comprobar();
+
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
     }
 
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
+    // Director->update(DeltaTime);
 
-    Director->update(DeltaTime);
+    //Director->update(DeltaTime);
 
 
     soundSys->update();
@@ -224,7 +225,7 @@ void Game::Update(){
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
-    //std::cout << " - " << glm::to_string(pos) << '\n';
+    // std::cout << " - " << glm::to_string(pos) << '\n';
     pos.y += 10;
     Engine->setPosition(luz,pos);
 
@@ -233,6 +234,7 @@ void Game::Update(){
 
     Engine->BeginDraw();
     Manager->UpdateAll();
+
 
     MainCamera->CameraUpdate();
     Engine->draw();
@@ -246,11 +248,11 @@ void Game::Update(){
     // Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-     glClear(GL_DEPTH_BUFFER_BIT);
+     // glClear(GL_DEPTH_BUFFER_BIT);
     // Engine->DrawZero();
-    Manager->DibLineas();
+    // Manager->DibLineas();
 
-    //Singleton<ggDynWorld>::Instance()->debugDrawWorld();
+    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
 
