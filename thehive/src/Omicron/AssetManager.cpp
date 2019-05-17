@@ -79,6 +79,12 @@ void AssetManager::loadInit(){
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Walking2.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Walking1.modelgg");
 
+    AnimationData = getAnimation("Soldier_Attacking");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Attacking4.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Attacking3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Attacking2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Attacking1.modelgg");
+
     AnimationData = getAnimation("Hero_Standing");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing1.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing3.modelgg");

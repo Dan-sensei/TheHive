@@ -129,6 +129,7 @@ void CAIEnem::Init(){
     data            = new Blackboard();
     PlayerTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
     PlayerBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
+    cDynamicModel = static_cast<CDynamicModel*>(Manager->getComponent(gg::DYNAMICMODEL, getEntityID()));
 
     playerSeeing        = false;
     playerOnRange       = false;
@@ -200,7 +201,7 @@ void CAIEnem::checkzona(){
 }
 
 void CAIEnem::Update(){
-    enableVisualDebug();
+    // enableVisualDebug();
 }
 
 void CAIEnem::FixedUpdate(){
@@ -284,6 +285,10 @@ void CAIEnem::FixedUpdate(){
     ////std::cout << "mi pos?" <<playerPos<< '\n';
     ////std::cout << "atacando" <<imAttacking<< '\n';
     arbol->update();
+
+    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_WALKING && cDynamicModel->getAnimationPlayed()){
+        cDynamicModel->ToggleAnimation(A_ENEMIES::E_WALKING, 0.4);
+    }
 }
 
 void CAIEnem::MHandler_ATURD(){
@@ -428,11 +433,16 @@ void CAIEnem::playMovement(){
     s_caminar->play();
 }
 void CAIEnem::playAttack(){
+    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_ATTACKING && cDynamicModel->getAnimationPlayed()){
+        cDynamicModel->ToggleAnimation(A_ENEMIES::E_ATTACKING, 0.3);
+    }
     s_atacar->setParameter("Impacto", 1);
     s_atacar->play();
 }
 void CAIEnem::playAttack2(){
-
+    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_ATTACKING && cDynamicModel->getAnimationPlayed()){
+        cDynamicModel->ToggleAnimation(A_ENEMIES::E_ATTACKING, 0.3);
+    }
     s_atacar->setParameter("Impacto", 0);
     s_atacar->play();
     // s_atacar2->play();

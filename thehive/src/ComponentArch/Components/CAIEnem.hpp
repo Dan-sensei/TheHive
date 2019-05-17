@@ -17,6 +17,7 @@
 #include <Bullet/ggDynWorld.hpp>
 
 #include <ComponentArch/Components/CClock.hpp>
+#include <ComponentArch/Components/CDynamicModel.hpp>
 
 #include <Omicron/Omicron.hpp>            // [OPCIONAL] Si necesitas acceder a algún método de GameEngine
 #include <GameAI/Treecontroller.hpp>
@@ -24,13 +25,17 @@
 #include <FMOD/SoundSystem.hpp>
 #include <FMOD/SonidoNormal.hpp>
 
+#include <AnimationLUT.hpp>
+
+
 class Treecontroller;
-class ObjectManager;
 
 class CAgent;
 class CTransform;
 class CNavmeshAgent;
 class ggDynWorld;
+
+class ObjectManager;
 
 class CAIEnem : public IComponent {
     public:
@@ -128,7 +133,7 @@ class CAIEnem : public IComponent {
         CTransform      *cTransform;
         CAgent          *cAgent;
         ggDynWorld      *world;
-
+        CDynamicModel   *cDynamicModel;
         // CNavmeshAgent   *nvAgent;
 
         gg::EEnemyType type;

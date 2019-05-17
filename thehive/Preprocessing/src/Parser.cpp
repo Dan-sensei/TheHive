@@ -21,6 +21,11 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/HEROE/HERO_LOWLOWPOLY_FINAL.obj",                         "Hero");
     ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/TEST.obj",                           "TEST.modelgg");
 
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Attacking1_NT.obj",                        "Soldier_Attacking1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Attacking2_NT.obj",                        "Soldier_Attacking2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Attacking3_NT.obj",                        "Soldier_Attacking3");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Attacking4_NT.obj",                        "Soldier_Attacking4");
+
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking1_NT.obj",                        "Soldier_Walking1");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking2_NT.obj",                        "Soldier_Walking2");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking3_NT.obj",                        "Soldier_Walking3");

@@ -1,7 +1,6 @@
 #ifndef _ANIMATION_LOOK_UP_TABLE
 #define _ANIMATION_LOOK_UP_TABLE
 
-
 enum A_HERO{
     STANDING = 0,
     WALKING,
@@ -10,6 +9,9 @@ enum A_HERO{
     JUMPING_WALKING
 };
 
-
+enum A_ENEMIES{
+    E_WALKING = 0,
+    E_ATTACKING
+};
 
 #endif
