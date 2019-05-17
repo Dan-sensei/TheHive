@@ -64,8 +64,8 @@ void AssetManager::loadInit(){
     shader = getShader("AnimationShader");
     ZMaterial* Sold = getMaterial("Soldier");
     Sold->attachShader(shader);
-    Sold->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/DefaultDiffuse.jpg",3));
-    Sold->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/ALIEN.png",3));
+    Sold->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/Enemies/SOLDIER_1_t.png",3));
+    Sold->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/Enemies/SOLDIER_1_n.png",3));
     Sold->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
     ZMaterial* 		Hero = getMaterial("Hero");
@@ -74,18 +74,15 @@ void AssetManager::loadInit(){
     Hero->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/HERO/HERO_n.png",3));
     Hero->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
-    ZAnimationData* AnimationData = getAnimation("Soldier_Running");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov5.modelgg");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov4.modelgg");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov3.modelgg");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov2.modelgg");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov1.modelgg");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/SoldierMov0.modelgg");
+    ZAnimationData* AnimationData = getAnimation("Soldier_Walking");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Walking3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Walking2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Walking1.modelgg");
 
     AnimationData = getAnimation("Hero_Standing");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing1.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing3.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing2.modelgg");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing1.modelgg");
 
     AnimationData = getAnimation("Hero_Walking");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking3.modelgg");

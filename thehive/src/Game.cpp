@@ -114,6 +114,9 @@ void Game::Init(){
     luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 
 
+    glm::vec3 tmp(-19,-21,22);
+    sF->createSoldier(Engine->ZONES.back(),tmp,2000);
+
     Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
     // Pos init del heroe normal
