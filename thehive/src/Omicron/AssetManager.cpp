@@ -68,6 +68,12 @@ void AssetManager::loadInit(){
     Sold->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/Enemies/SOLDIER_1_n.png",3));
     Sold->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
+    ZMaterial* Tank = getMaterial("Tank");
+    Tank->attachShader(shader);
+    Tank->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/Enemies/TANK_t.png",3));
+    Tank->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/Enemies/TANK_n.png",3));
+    Tank->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
+
     ZMaterial* 		Hero = getMaterial("Hero");
     Hero->attachShader(shader);
     Hero->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/HERO/HERO_t.png",3));
@@ -78,6 +84,17 @@ void AssetManager::loadInit(){
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Walking3.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Walking2.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Walking1.modelgg");
+
+    AnimationData = getAnimation("Tank_Attacking");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Tank_Attacking4.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Tank_Attacking3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Tank_Attacking2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Tank_Attacking1.modelgg");
+
+    AnimationData = getAnimation("Tank_Walking");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Tank_Walking3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Tank_Walking2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Tank_Walking1.modelgg");
 
     AnimationData = getAnimation("Soldier_Attacking");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Soldier_Attacking4.modelgg");
