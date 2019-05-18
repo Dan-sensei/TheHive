@@ -1,7 +1,7 @@
 #include "BVH_ROOT_Node.hpp"
 #include <glm/gtx/norm.hpp>
 
-glm::vec3* BVH_ROOT_Node::CameraPosition;
+glm::vec3* BVH_ROOT_Node::CameraPosition = nullptr;
 
 
 BVH_ROOT_Node::BVH_ROOT_Node(ZNode* P)
@@ -14,7 +14,7 @@ BVH_ROOT_Node::BVH_ROOT_Node(ZNode* P)
 
 
 BVH_ROOT_Node::BVH_ROOT_Node(const BVH_ROOT_Node &orig)
-:ZNode(orig), Hierarchy(orig.Hierarchy)
+:ZNode(orig), Hierarchy(orig.Hierarchy), FrameID(orig.FrameID)
 {}
 
 BVH_ROOT_Node::~BVH_ROOT_Node(){
@@ -101,17 +101,20 @@ void BVH_ROOT_Node::TraverseNode(BVH_Node* N) {
     else{
         glm::vec3 LocalCameraPosition = *CameraPosition;
 
-        float minA = glm::length2(Hierarchy[N->FirstChild].AABB.AABB[0] - LocalCameraPosition);
+        BVH_Node* F_Child = &(Hierarchy[N->FirstChild]);
+        BVH_Node* S_Child = &(Hierarchy[N->FirstChild+1]);
+
+        float minA = glm::length2(F_Child->AABB.AABB[0] - LocalCameraPosition);
         for(uint8_t i = 1; i < 8; ++i){
-            float corner = glm::length2(Hierarchy[N->FirstChild].AABB.AABB[i] - LocalCameraPosition);
+            float corner = glm::length2(F_Child->AABB.AABB[i] - LocalCameraPosition);
             if(corner < minA){
                 minA = corner;
             }
         }
 
-        float minB = glm::length2(Hierarchy[N->FirstChild+1].AABB.AABB[0] - LocalCameraPosition);
+        float minB = glm::length2(S_Child->AABB.AABB[0] - LocalCameraPosition);
         for(uint8_t i = 1; i < 8; ++i){
-            float corner = glm::length2(Hierarchy[N->FirstChild+1].AABB.AABB[i] - LocalCameraPosition);
+            float corner = glm::length2(S_Child->AABB.AABB[i] - LocalCameraPosition);
             if(corner < minB){
                 minB = corner;
             }
@@ -119,13 +122,13 @@ void BVH_ROOT_Node::TraverseNode(BVH_Node* N) {
 
         if(minA < minB){
             //std::cout << &Hierarchy[N->FirstChild] << " -> " << &Hierarchy[N->FirstChild+1] << '\n';
-            TraversalStack.push(&Hierarchy[N->FirstChild+1]);
-            TraversalStack.push(&Hierarchy[N->FirstChild]);
+            TraversalStack.push(S_Child);
+            TraversalStack.push(F_Child);
         }
         else{
             //std::cout << &Hierarchy[N->FirstChild+1] << " -> " << &Hierarchy[N->FirstChild] << '\n';
-            TraversalStack.push(&Hierarchy[N->FirstChild]);
-            TraversalStack.push(&Hierarchy[N->FirstChild+1]);
+            TraversalStack.push(F_Child);
+            TraversalStack.push(S_Child);
         }
     }
 }

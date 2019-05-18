@@ -21,6 +21,7 @@ AssetManager::AssetManager(){
     ShaderMap["Query"].loadFiles("assets/Shaders/Line_VS.glsl", nullptr, nullptr);
 
     ShaderMap["HUD"].loadFiles("assets/Shaders/VertexShader2D.glsl", nullptr, "assets/Shaders/FragmentShader2DHUD.glsl");
+    ShaderMap["Image"].loadFiles("assets/Shaders/Image_vs.glsl", nullptr, "assets/Shaders/Image_fs.glsl");
 }
 
 void AssetManager::loadInit(){

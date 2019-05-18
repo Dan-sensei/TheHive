@@ -13,7 +13,7 @@ class State{
 
 		virtual void Pause() { }
 		virtual void Resume() { }
-
+        virtual ~State(){}
 
 
 };

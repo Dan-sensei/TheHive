@@ -21,13 +21,13 @@ int main(int argc, char const *argv[]) {
 
     SoundSystem *Sound = Singleton<SoundSystem>::Instance();
 
-
-
-    {
-        ZPlayer Player;
-        Player.PlayVideo("assets/Video/LOGO.mp4","event:/Musica/Videos/VideoLogoEmpresa");
-        Player.PlayVideo("assets/Video/TheHiveLogoAnimation.mp4","event:/Musica/Videos/VideoLogoJuego");
-    }
+    // 
+    //
+    // {
+    //     ZPlayer Player;
+    //     Player.PlayVideo("assets/Video/LOGO.mp4","event:/Musica/Videos/VideoLogoEmpresa");
+    //     Player.PlayVideo("assets/Video/TheHiveLogoAnimation.mp4","event:/Musica/Videos/VideoLogoJuego");
+    // }
 
     CTriggerSystem *EventSystem = Singleton<CTriggerSystem>::Instance();
     //Engine->Starto();
@@ -53,10 +53,10 @@ int main(int argc, char const *argv[]) {
 
     Blackboard::ClearGlobalBlackboard();
     Manager->clin();
-    Engine->clean();
     world->clean();
     EventSystem->clin();
     mainstates->clin();
+    Engine->clean();
 
 
 

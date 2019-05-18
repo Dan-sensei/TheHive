@@ -142,7 +142,7 @@ void GUIController::StartGame(){
     // s_musica_menu->stop();
     sonido_accion(0);
     Engine2D->CLINMenu();
-    Singleton<StateMachine>::Instance()->AddState(new Game(),false);
+    Singleton<StateMachine>::Instance()->AddState(new Game(), true);
     // s_musica_basica->play();
 }
 //but8

@@ -24,7 +24,7 @@ public:
     Game();
     // virtual void Pause() { }
     Game(const Game &orig) = delete;
-    ~Game();
+    virtual ~Game();
     //void update();
     //void RUN();
     virtual void CLIN();

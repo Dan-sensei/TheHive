@@ -17,7 +17,7 @@ class PopState : public State {
 public:
     PopState();
     PopState(const PopState &orig) = delete;
-    ~PopState();
+    virtual ~PopState();
     //void update();
     //void RUN();
     virtual void CLIN();

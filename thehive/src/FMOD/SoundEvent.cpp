@@ -1,6 +1,8 @@
 #include "SoundEvent.hpp"
 
-SoundEvent::SoundEvent(){}
+SoundEvent::SoundEvent()
+:soundInstance(nullptr)
+{}
 SoundEvent::~SoundEvent(){}
 
 void SoundEvent::play(){

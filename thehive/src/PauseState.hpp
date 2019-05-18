@@ -17,7 +17,7 @@ class PauseState : public State {
 public:
     PauseState();
     PauseState(const PauseState &orig) = delete;
-    ~PauseState();
+    virtual ~PauseState();
     //void update();
     //void RUN();
     virtual void CLIN();

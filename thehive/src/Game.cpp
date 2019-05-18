@@ -73,6 +73,7 @@ Game::Game()
 }
 
 Game::~Game(){
+    CLIN();
 }
 
 void Game::Init(){
@@ -85,21 +86,6 @@ void Game::Init(){
     //Los eventos son propios de cada zona!
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
-    //
-    //
-
-    //BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
-    //BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
-    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
-    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 5);
-    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 6);
-    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/FINAL_MODELS.data", 7);
-
-    ///BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 1);
-    // BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL.data", 4);
-    // BinaryParser::LoadSounds();
-    // BinaryParser::ReadNatureData("assets/BinaryFiles/NATURE.data");
 
     Engine2D->InitHUD();
 
@@ -174,7 +160,7 @@ void Game::Init(){
     //Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes1);
 
     Director->init();
-
+    
     Update();
     auto estado = new PopState();
     estado->Addim("assets/HUD/asdw_esp.png");
@@ -271,28 +257,17 @@ void Game::Resume(){
     cont->musicaJuegoPause(false);
     cont->musicaMenuStop();
 
-
-
     //Engine->HideCursor(true);
 }
 
 
 void Game::CLIN(){
-
-    //Blackboard::ClearGlobalBlackboard();
     Manager->clin();
     world->clear();
 
     cont->musicaJuegoPause(true);
     cont->musicaMenuPlay();
     Engine->resetSceneGraph();
-    //Engine2D->CLINNormal();
-    //EventSystem->clin();
-
-    // //std::cout << "1/60 = " << 1/60.F << '\n';
-    // //std::cout << "UPDTES " << UPDATE  << '\n';
-    // //std::cout << "DRO " << DRO  << '\n';
-
 }
 void Game::Pause(){
     cont->musicaJuegoPause(true);

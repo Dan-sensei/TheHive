@@ -19,6 +19,8 @@ void StateMachine::RemoveStates(uint8_t _cantidad) {
 }
 
 void StateMachine::ProcessStateChanges() {
+	CurrentUpd = &StateMachine::UpdateTop;
+
 	if (isRemoving && !states.empty())
 	{
 		while(cantidad && !states.empty()){
@@ -44,20 +46,14 @@ void StateMachine::ProcessStateChanges() {
 			else {
 				states.top()->Pause();
 			}
-		}else{
-			states.push(newState);
-			states.top()->Init();
 		}
 
-		while(states.top()!=newState){
-			states.push(newState);
-			states.top()->Init();
-		}
 		isAdding = false;
+		states.push(newState);
 		newState = nullptr;
-	}
+		states.top()->Init();
 
-	CurrentUpd = &StateMachine::UpdateTop;
+	}
 	UpdateTop();
 }
 

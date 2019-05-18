@@ -16,7 +16,7 @@ class MenuState : public State{
 public:
     MenuState();
     MenuState(const MenuState &orig) = delete;
-    ~MenuState();
+    virtual ~MenuState();
     //void update();
     //void RUN();
     virtual void CLIN();

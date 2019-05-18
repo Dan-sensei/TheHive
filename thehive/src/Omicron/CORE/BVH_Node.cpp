@@ -9,11 +9,11 @@
 // :BVH_Node(P, 0, BoundingBox(), nullptr)
 // {}
 
-#include <iostream>
+//#include <iostream>
 #define GRADOVISION 0
-int v = 0;
+//int v = 0;
 BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, StandardNode* _Leaf)
-:AABB(_AABB), Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false), LastFailedFrustrumCorner(-1)
+:AABB(_AABB), Father(P), FirstChild(_FirstChild), Leaf(_Leaf), LastVisited(0), ToRender(true), Visible(false), LastFailedFrustrumCorner(-1), QueryID(0)
 {
     glGenQueries(1, &QueryID);
 
@@ -81,14 +81,23 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
 
     glBindVertexArray(0);
 
-    QueryShader = Singleton<AssetManager>::Instance()->getShader("Lines");
-    col = gg::Color(gg::genIntRandom(0,255), gg::genIntRandom(0,255), gg::genIntRandom(0,255));
-    ++v;
+    QueryShader = Singleton<AssetManager>::Instance()->getShader("Query");
+    //col = gg::Color(gg::genIntRandom(0,255), gg::genIntRandom(0,255), gg::genIntRandom(0,255));
+    //++v;
 }
 
 bool BVH_Node::isLeaf(){
     return Leaf;
 };
+
+BVH_Node::BVH_Node(const BVH_Node &orig)
+:AABB(orig.AABB), Father(orig.Father), FirstChild(orig.FirstChild), Leaf(orig.Leaf), LastVisited(orig.LastVisited), ToRender(orig.ToRender),
+ Visible(orig.Visible), LastFailedFrustrumCorner(orig.LastFailedFrustrumCorner), QueryID(orig.QueryID), VAO_Bounding(orig.VAO_Bounding), VBO_BoundingVertices(orig.VBO_BoundingVertices),
+ IndexBuffer(orig.IndexBuffer)
+{
+
+}
+
 
 BVH_Node::~BVH_Node(){
     delete Leaf;
@@ -103,7 +112,7 @@ void BVH_Node::DrawBounding(const glm::mat4 &VP){
     QueryShader->Bind();
     glBindVertexArray(VAO_Bounding);
     glUniformMatrix4fv(1,1,GL_FALSE,&VP[0][0]);
-    glUniform3f(2, col.R, col.G, col.B);
+    //glUniform3f(2, col.R, col.G, col.B);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, nullptr);
 
 }
@@ -143,4 +152,3 @@ bool BVH_Node::isCameraInside(const glm::vec3 CameraPos) {
     }
     return false;
 }
-

@@ -9,7 +9,7 @@
 #include <algorithm>
 
 ParticleSystem::ParticleSystem()
-:DELAY(0), Accumulator(0), ParticleLifeTime(0), Position(glm::vec3()), Size(glm::vec3())
+:DELAY(0), Accumulator(0), ParticleLifeTime(0), Position(glm::vec3()), Size(glm::vec3()), LastAvailablePosition(0)
 {
     Particles_Shader = Singleton<AssetManager>::Instance()->getShader("Particles");
     CurrentUpdate = &ParticleSystem::UpdateAndDraw;

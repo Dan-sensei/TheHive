@@ -12,6 +12,7 @@ class BVH_Node {
     public:
         //BVH_Node(uint16_t P);
         BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, StandardNode* _Leaf = nullptr);
+        BVH_Node(const BVH_Node &orig);
         virtual ~BVH_Node();
 
         virtual bool isLeaf();
@@ -39,7 +40,7 @@ class BVH_Node {
         bool Visible;
         int8_t LastFailedFrustrumCorner;
 
-        gg::Color col;
+        //gg::Color col;
 };
 
 #endif
