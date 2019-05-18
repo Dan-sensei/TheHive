@@ -535,13 +535,13 @@ void CPlayerController::JUMP(){
     collider->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
     if(pressed){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
-            cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.6);
+            cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.2);
 
         }
     }
     else{
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING){
-            cDynamicModel->ToggleAnimation(A_HERO::JUMPING, 0.6);
+            cDynamicModel->ToggleAnimation(A_HERO::JUMPING, 0.2);
         }
     }
 }

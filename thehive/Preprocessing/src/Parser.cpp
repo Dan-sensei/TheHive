@@ -18,21 +18,30 @@ int main(int argc, char const *argv[]) {
             ModelParser::generateBinaryGG_StaticModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i));
     }
 
-    ModelParser::generateBinaryGG_StaticModel("../assets/Models/HEROE/HERO_LOWLOWPOLY_FINAL.obj",                         "Hero");
-    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/TEST.obj",                           "TEST.modelgg");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/HEROE/HERO_LOWLOWPOLY_FINAL.obj",                       "Hero");
+    ModelParser::generateBinaryGG_StaticModel("../assets/NavMeshes/TEST.obj",                                           "TEST.modelgg");
+
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/TANK/Attacking1_NT.obj",                        "Tank_Attacking1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/TANK/Attacking2_NT.obj",                        "Tank_Attacking2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/TANK/Attacking3_NT.obj",                        "Tank_Attacking3");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/TANK/Attacking4_NT.obj",                        "Tank_Attacking4");
+
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/TANK/Walking1_NT.obj",                             "Tank_Walking1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/TANK/Walking2_NT.obj",                             "Tank_Walking2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/TANK/Walking3_NT.obj",                             "Tank_Walking3");
 
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Attacking1_NT.obj",                        "Soldier_Attacking1");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Attacking2_NT.obj",                        "Soldier_Attacking2");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Attacking3_NT.obj",                        "Soldier_Attacking3");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Attacking4_NT.obj",                        "Soldier_Attacking4");
 
-    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking1_NT.obj",                        "Soldier_Walking1");
-    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking2_NT.obj",                        "Soldier_Walking2");
-    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking3_NT.obj",                        "Soldier_Walking3");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking1_NT.obj",                          "Soldier_Walking1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking2_NT.obj",                          "Soldier_Walking2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking3_NT.obj",                          "Soldier_Walking3");
 
-    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking1.obj",                        "Walking1");
-    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking2.obj",                        "Walking2");
-    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking3.obj",                        "Walking3");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking1.obj",                                "Walking1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking2.obj",                                "Walking2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking3.obj",                                "Walking3");
 
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking_Weapon1.obj",                        "Walking_Weapon1");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking_Weapon2.obj",                        "Walking_Weapon2");
