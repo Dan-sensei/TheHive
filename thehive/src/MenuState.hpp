@@ -11,6 +11,7 @@ class ggDynWorld;
 #include "States/State.hpp"
 #include <Omicron/2D/GUIController.hpp>
 #include <FMOD/SoundSystem.hpp>
+#include <Omicron/2D/Imagen2D.hpp>
 
 class MenuState : public State{
 public:
@@ -37,13 +38,17 @@ public:
 
 private:
     Omicron* Engine;
-    CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
     GUIController* cont;
 
+    gg::Clock MasterClock;
     SoundSystem* SS;
-
+    TCamara* Camera;
+    glm::vec3 OriginalTarget;
+    glm::vec3 CurrentTarget;
+    glm::vec3 RandomTarget;
+    Imagen2D Menu;
 };
 
 

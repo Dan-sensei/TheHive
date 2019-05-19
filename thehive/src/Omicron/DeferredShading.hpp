@@ -23,6 +23,8 @@ class DeferredShading{
         void setDirLuz(glm::vec3 dir,glm::vec3 color,float inten);
         void info();
 
+        void resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT);
+
         Shader* DEFERRED_SHADER;
         Shader* POSTPROCESSING_SHADER;
         unsigned char * buffer;
@@ -42,6 +44,7 @@ class DeferredShading{
         int WIDTH, HEIGHT;
         int SCREEN_WIDTH, SCREEN_HEIGHT;
 
+        void createFramebuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT);
 };
 
 #endif

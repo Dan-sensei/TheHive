@@ -12,5 +12,5 @@ void main() {
     Texcoord = texcoord;
     Alpha    = alpha;
 
-    gl_Position = vec4(position,Zindex, 1.0);
+    gl_Position = vec4(position, Zindex, 1.0);
 };

@@ -94,16 +94,16 @@ void HUD::initHUD(unsigned int SW, unsigned int SH, unsigned int TEX, Shader* _S
 
     auto manager = Singleton<AssetManager>::Instance();
 
-    crucetaG = manager->getTexture("assets/HUD/NUEVO/cruceta_g.png");
-    crucetaP = manager->getTexture("assets/HUD/NUEVO/cruceta_p.png");
+    crucetaG = manager->getConstantTexture("assets/HUD/NUEVO/cruceta_g.png");
+    crucetaP = manager->getConstantTexture("assets/HUD/NUEVO/cruceta_p.png");
     actualCruceta = crucetaG;
 
     // /////////////////////////////////////////////////
     // Plantilla de las armas
     // /////////////////////////////////////////////////
     float RENDER_QUAD[] = {
-        (0.78754578754f*2)-1,  -((0.32724902216f*2)-1), 0.0f, 0.0f, // TL
-        (0.98901098901f*2)-1,  -((0.32724902216f*2)-1), 1.0f, 0.0f, // TR
+        (0.78754578754f*2)-1,  -((0.32724902218f*2)-1), 0.0f, 0.0f, // TL
+        (0.98901098901f*2)-1,  -((0.32724902218f*2)-1), 1.0f, 0.0f, // TR
         (0.98901098901f*2)-1,  -((0.96610169491f*2)-1), 1.0f, 1.0f, // BR
         (0.78754578754f*2)-1,  -((0.96610169491f*2)-1), 0.0f, 1.0f, // BL
     };

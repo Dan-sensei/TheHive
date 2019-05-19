@@ -71,9 +71,5 @@ bool FrustrumLeaf::isInsideFrustrum(const glm::vec2 &ViewDirection){
     return false;
 }
 
-void FrustrumLeaf::setCameraPtr(glm::vec3* _PlayerPosition){
-    CameraPosition = _PlayerPosition;
-}
-
 void FrustrumLeaf::beginDraw(){};
 void FrustrumLeaf::endDraw(){};

@@ -52,14 +52,10 @@ void Imagen2D::setSesgado(float res){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1), colorInicial(0,0,0,1),textureID(0),index(-0.9999),inicio(nullptr),texturaURL(Name)
+Imagen2D::Imagen2D(float x,float y,float w,float h, unsigned int _TextureID)
+:VAO(0),VBO(0),EBO(0),index(-0.9999),inicio(nullptr),textureID(_TextureID)
 {
-    auto sh=Singleton<AssetManager>::Instance();
-    inicio=sh->getShader("2D");
-    inputColour = inicio->getUniformLocation("inputColour");
-    Zindex = inicio->getUniformLocation("Zindex");
-    textura=inicio->getUniformLocation("DiffuseMap");
+    inicio=Singleton<AssetManager>::Instance()->getShader("Image");
     X=x;
     W=w;
 
@@ -103,11 +99,8 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
     	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
-        auto Manager = Singleton<AssetManager>::Instance();
-        textureID = Manager->getTexture(Name);
-
         //activamos transparencias
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         //glEnable( GL_BLEND );
 
     	//habilitamos in
@@ -124,14 +117,18 @@ Imagen2D::Imagen2D(float x,float y,float w,float h,const std::string &Name)
         glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
 }
 
-void Imagen2D::setShader(std::string sha){
-    auto sh=Singleton<AssetManager>::Instance();
-    inicio=sh->getShader(sha);
+Imagen2D::Imagen2D(const Imagen2D &orig)
+:inicio(orig.inicio), index(orig.index), VAO(orig.VAO), VBO(orig.VBO), EBO(orig.EBO),
+ textureID(orig.textureID), X(orig.X), Y(orig.Y), W(orig.W), H(orig.H)
+{}
+
+void Imagen2D::setShader(Shader* S){
+    inicio = S;
 }
+
+
 void Imagen2D::setPos(float x,float y,float w,float h){
     //glDeleteVertexArrays(1, &VBO);
     float _x,_y,_w,_h;
@@ -156,29 +153,11 @@ void Imagen2D::setPos(float x,float y,float w,float h){
 
 }
 
-void Imagen2D::setColor(glm::vec4 _color){
-    color=_color;
+void Imagen2D::setImage(unsigned int _TextureID){
+    textureID = _TextureID;
 }
-
-void Imagen2D::setColorInicial(glm::vec4 _color){
-    colorInicial=_color;
-}
-
-void Imagen2D::assignColor(){
-    color = colorInicial;
-}
-
-glm::vec4 Imagen2D::getColor(){
-    return color;
-}
-
-void Imagen2D::setImage(const std::string &Name){
-    texturaURL=Name;
-    auto Manager = Singleton<AssetManager>::Instance();
-    textureID=Manager->getTexture(Name);
-}
-std::string Imagen2D::getImage(){
-    return texturaURL;
+unsigned int Imagen2D::getImage(){
+    return textureID;
 }
 
 void Imagen2D::setZindex(float res){
@@ -188,10 +167,9 @@ void Imagen2D::setZindex(float res){
 void Imagen2D::Draw(){
 
     inicio->Bind();
-    //metemos el color
-    glUniform4f(inputColour,color.x, color.y, color.z, color.w);
-    glUniform1f(Zindex,index);
-    glUniform1i(textura, 0);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glUniform1f(3,index);
     glBindVertexArray(VAO);
 
     glActiveTexture(GL_TEXTURE0);

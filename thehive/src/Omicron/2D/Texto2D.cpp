@@ -6,20 +6,15 @@
 #include "Letra2DManager.hpp"
 
 Texto2D::Texto2D()
-:Zindex(0),textura(0),inputColour(0),
-VAO(0),VBO(0),EBO(0),textureID(0),
-inicio(nullptr),fin(nullptr),
-index(-1),palabra(),color(1,1,1,1),
-X(0),Y(0),W(0),H(0),
-separacion(0),tamanyo(0)
+:VAO(0),VBO(0),EBO(0),textureID(0),
+ inicio(nullptr),
+ index(-1),palabra(),color(1,1,1,1),
+ X(0),Y(0),W(0),H(0),
+ separacion(0),tamanyo(0)
 {}
 
 Texto2D::Texto2D(const Texto2D &orig){
-    Zindex = orig.Zindex;
-    textura = orig.textura;
-    inputColour = orig.inputColour;
     inicio = orig.inicio;
-    fin = orig.fin;
     index = orig.index;
     palabra = orig.palabra;
     color = orig.color;
@@ -38,11 +33,7 @@ Texto2D::Texto2D(const Texto2D &orig){
 }
 
 Texto2D& Texto2D::operator=(Texto2D other){
-    std::swap(Zindex,other.Zindex);
-    std::swap(textura,other.textura);
-    std::swap(inputColour,other.inputColour);
     std::swap(inicio,other.inicio);
-    std::swap(fin,other.fin);
     std::swap(index,other.index);
     std::swap(palabra,other.palabra);
     std::swap(color,other.color);
@@ -140,15 +131,10 @@ Texto2D::Texto2D(float x,float y,float w,float h,const std::string &Palabra,glm:
 }
 
 Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,float tam)
-:VAO(0),VBO(0),EBO(0),color(_color),textureID(0),separacion(0.05),tamanyo(tam),palabra(Palabra),index(-1),inicio(nullptr),fin(nullptr)
+:VAO(0),VBO(0),EBO(0),color(_color),textureID(0),separacion(0.05),tamanyo(tam),palabra(Palabra),index(-1),inicio(nullptr)
 {
     auto sh=Singleton<AssetManager>::Instance();
     inicio=sh->getShader("2D");
-    fin=sh->getShader("Default");
-    inputColour = inicio->getUniformLocation("inputColour");
-    Zindex = inicio->getUniformLocation("Zindex");
-    textura=inicio->getUniformLocation("DiffuseMap");
-
 
 
     float _x,_y,_w,_h;
@@ -235,7 +221,7 @@ Texto2D::Texto2D(float x,float y,const std::string &Palabra,glm::vec4 _color,flo
             //SOIL_free_image_data(image);
 
             auto Manager = Singleton<AssetManager>::Instance();
-            textureID=Manager->getTexture("assets/Fonts/letras.png");
+            textureID=Manager->getConstantTexture("assets/Fonts/letras.png");
 
             //activamos transparencias
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -311,9 +297,8 @@ void Texto2D::Draw(){
 
     inicio->Bind();
     //metemos el color
-    glUniform4fv(inputColour,1,&color[0]);
-    glUniform1f(Zindex,index);
-    glUniform1i(textura, 0);
+    glUniform4fv(4,1,&color[0]);
+    glUniform1f(3,index);
 
 
 
@@ -344,8 +329,6 @@ void Texto2D::Draw(){
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    fin->Bind();
-
 }
 
 void Texto2D::printString(){

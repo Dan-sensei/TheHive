@@ -7,13 +7,14 @@
 
 
 class FrustrumLeaf : public ZNode, public TEntidad {
+    friend class Omicron;
+
     public:
         FrustrumLeaf();
         FrustrumLeaf(StandardNode* P, TEntidad* Ent);
         FrustrumLeaf(const FrustrumLeaf &orig);
         virtual ~FrustrumLeaf();
 
-        static void setCameraPtr(glm::vec3* _PlayerPosition);
         bool isInsideFrustrum(const glm::vec2 &ViewDirection);
 
         virtual void draw();

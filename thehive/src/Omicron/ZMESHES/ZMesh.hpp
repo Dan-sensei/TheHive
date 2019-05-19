@@ -10,18 +10,16 @@
 #include "BoundingBox.hpp"
 
 class ZMesh : public TEntidad {
-
+    friend class Omicron;
     public:
         void assignMaterial(ZMaterial* material_);
-
-        static void setPlayerPtr(glm::vec3* _PlayerPosition);
 
     protected:
         bool LODTest(const glm::vec3 Position, uint8_t &LOD);
 
         glm::mat4 MVP;
 
-        static glm::vec3* PlayerPosition;
+        static glm::vec3* CameraPosition;
         std::vector<ZMeshData*> MeshLODs;
 
         ZMaterial* zmat;

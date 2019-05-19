@@ -559,9 +559,10 @@ void CPlayerController::MostrarTexto(){
     //int nlineas=4;
     //Singleton<Motor2D>::Instance()->pintarTexto(nlineas,texto);
     auto estado = new PopState();
-    estado->Addim("assets/HUD/asdw_esp.png");
-    estado->Addim("assets/HUD/camara_esp.png");
-    estado->Addim("assets/HUD/dash_esp.png");
+    AssetManager* _AssetManager = Singleton<AssetManager>::Instance();
+    estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/asdw_esp.png"));
+    estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
+    estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/dash_esp.png"));
     Singleton<StateMachine>::Instance()->AddState(estado,false);
 
     //Singleton<Motor2D>::Instance()->pintarImagen("assets/HUD/ultrasonido_esp.png");

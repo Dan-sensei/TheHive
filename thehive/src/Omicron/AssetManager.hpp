@@ -26,7 +26,12 @@ class AssetManager {
         ZAnimationData* getAnimation(const std::string &Name);
         ZMaterial*      getMaterial(const std::string &Name);
         unsigned int    getTexture(const std::string &Name, int ForceChannels = 0);
+        unsigned int    getConstantTexture(const std::string &Name, int ForceChannels = 0);
         Shader*         getShader(const std::string& Name);
+
+        unsigned int getTextureWithoutSavingToMap(const char* TexturePath, int ForceChannels = 0);
+        void freeAssets();
+        void freeTexture(unsigned int TextureID);
 
     private:
 
@@ -35,6 +40,8 @@ class AssetManager {
         std::unordered_map<std::string, ZMaterial>       MaterialMap;
         std::unordered_map<std::string, Shader>          ShaderMap;
         std::unordered_map<std::string, unsigned int>    TextureMap;
+
+        std::unordered_map<std::string, unsigned int>    CommonTextures;
 
         AssetManager();
         AssetManager(const AssetManager &orig) = delete;

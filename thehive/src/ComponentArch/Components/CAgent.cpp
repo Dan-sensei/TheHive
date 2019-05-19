@@ -197,7 +197,7 @@ void CAgent::ENTER_func_kTrig_InteractMess          (TriggerRecordStruct *_pRec)
 
     int total=mes.find(kDat_total_img);
     for (size_t i = 0; i < total; i++) {
-        estado->Addim(imagenes[(int)mes.find(tipos[i])]);
+        estado->Addim(Singleton<AssetManager>::Instance()->getTextureWithoutSavingToMap( imagenes[(int)mes.find(tipos[i])].c_str() ));
     }
 
     //estado->Addim("assets/HUD/asdw_esp.png");
@@ -215,9 +215,6 @@ void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     std::string name = zonesArray[id].first;
     zonesArray[id].second("assets/BinaryFiles/"+name+"_MODELS.data", id);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/"+name+"_EVENTS.data", id);
-    if(id == 3){
-        Singleton<AIDirector>::Instance()->init();
-    }
 }
 
 void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){

@@ -29,16 +29,16 @@ void TCamara::setPerspectiva(float _aspect){
     );
 }
 
-void TCamara::setTarget(glm::vec3 &t_pos){
+void TCamara::setTarget(glm::vec3 &t_pos) {
     hasTarget   = true;
     target      = t_pos;
 }
-
+#include <iostream>
 void TCamara::beginDraw(){
     // Matriz VISTA
     // -------------------
     // Mirar la funcion Dios glm::decompose si la posicion de la camara no funciona
-    glm::vec3 CameraPos(modelMatrix[3]);
+    CameraPos = glm::vec3(modelMatrix[3]);
 
     double t = tan((fov * 3.14159265359f / 180.f) / 2.f) * 2;
     glUniform2f(2, t * 16.f/9.f, t);

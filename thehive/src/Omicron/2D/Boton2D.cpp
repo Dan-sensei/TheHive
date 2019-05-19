@@ -1,7 +1,7 @@
 #include "Boton2D.hpp"
 #include <GLFW/glfw3.h>
 
-Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std::string &imgP,const std::string &imgS,const std::string &texto,bool focus,glm::vec4 color,float tam)
+Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo, unsigned int imgP, unsigned int imgS, const std::string &texto,bool focus,glm::vec4 color,float tam)
 :Imagen(x,y,w,h,imgP),selected(focus),imgPrincipal(imgP),imgHover_Selected(imgS),hov(false),tipo(_tipo),text(x,y,w,h,texto,color,tam)//text(0,0,texto,color,tam)
 {
     //imagenes[0]=imgP;
@@ -14,8 +14,8 @@ Boton2D::Boton2D(float x,float y,float w,float h,EnumButtonType _tipo,const std:
     X=x*ancho;
     W=w*ancho;
 
-    Y=y*alto-0.0377604*alto;
-    H=h*alto-0.0377604*alto;
+    Y=y*alto;
+    H=h*alto;
 
     if(texto==""){
         hasText=false;
@@ -37,12 +37,12 @@ void Boton2D::hover(bool dato){
         hov=dato;
         Imagen.setImage(imgHover_Selected);
         //setColor(glm::vec4(0,111/250.0,0,1));
-        Imagen.setColor(glm::vec4(0.1,0.1,0.1,1));
+        //Imagen.setColor(glm::vec4(0.1,0.1,0.1,1));
         text.setColor(glm::vec4(0.1,0.1,0.1,1));
     }else if(dato!=hov){
         //princ
-        Imagen.assignColor();
-        text.setColor(Imagen.getColor());
+        //Imagen.assignColor();
+        //text.setColor(Imagen.getColor());
         //setColor(glm::vec4(0,75/250.0,0,1));
         hov=dato;
         Imagen.setImage(imgPrincipal);
@@ -51,27 +51,27 @@ void Boton2D::hover(bool dato){
     }
 }
 bool Boton2D::checkOn(float x,float y){
-if(X<x  &&  x<W &&  Y<y &&  y<H){
-    return true;
-}else{
+    if(X<x  &&  x<W &&  Y<y &&  y<H){
+        return true;
+    }
+
     return false;
-}
 
 }
 void Boton2D::setPos(float x,float y,float w,float h){
     Imagen.setPos(x, y, w, h);
 }
 void Boton2D::setColor(glm::vec4 _color){
-    Imagen.setColor(_color);
+    //Imagen.setColor(_color);
     text.setColor(_color);
 }
 
 void Boton2D::setColorInicial(glm::vec4 _color){
-    Imagen.setColorInicial(_color);
+    //Imagen.setColorInicial(_color);
     text.setColor(_color);
 }
 
-void Boton2D::setImage(const std::string &Name){
+void Boton2D::setImage(unsigned int Name){
     Imagen.setImage(Name);
 
 }

@@ -43,24 +43,18 @@ class Texto2D {
         void printString();
 
 
-
-
     private:
-            unsigned long Zindex;
-            unsigned long textura;
-            unsigned long inputColour;
-            Shader* inicio;
-            Shader* fin;
-            float index;
-            std::string palabra;
-            glm::vec4 color;
-            unsigned int VAO;
-            unsigned int VBO;
-            unsigned int EBO;
-            unsigned int textureID;
-            float X,Y,W,H;
-            float separacion;
-            float tamanyo;
+        Shader* inicio;
+        float index;
+        std::string palabra;
+        glm::vec4 color;
+        unsigned int VAO;
+        unsigned int VBO;
+        unsigned int EBO;
+        unsigned int textureID;
+        float X,Y,W,H;
+        float separacion;
+        float tamanyo;
 
 };
 

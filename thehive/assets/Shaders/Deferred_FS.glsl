@@ -45,7 +45,7 @@ vec3 getViewPosition(float Depth) {
 #define FOG_GRADIENT 0.8f * 0.8f
 
 
-#define FOG_COLOR vec4(57,35,22, 1)
+#define FOG_COLOR vec4(42,42,42, 1)
 #define NormFogColor vec4(FOG_COLOR.x/255.f, FOG_COLOR.y/255.f, FOG_COLOR.z/255.f, 1.f)
 
 void main()

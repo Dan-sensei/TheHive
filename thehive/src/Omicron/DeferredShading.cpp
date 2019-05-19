@@ -126,13 +126,30 @@ DeferredShading::~DeferredShading(){
     glDeleteTextures(1, &gPosition);
     glDeleteTextures(1, &gNormal);
     glDeleteTextures(1, &gDiffuseSpec);
+    glDeleteTextures(1, &gVelocity);
     glDeleteRenderbuffers(1, &G_DepthBuffer);
-};
+
+    glDeleteFramebuffers(1, &POST_BUFFER);
+    glDeleteTextures(1, &gRender);
+}
+
+void DeferredShading::resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT){
+    glDeleteFramebuffers(1, &G_BUFFER);
+    glDeleteTextures(1, &gPosition);
+    glDeleteTextures(1, &gNormal);
+    glDeleteTextures(1, &gDiffuseSpec);
+    glDeleteTextures(1, &gVelocity);
+    glDeleteRenderbuffers(1, &G_DepthBuffer);
+
+    glDeleteFramebuffers(1, &POST_BUFFER);
+    glDeleteTextures(1, &gRender);
+
+    createFramebuffers(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
+}
 
 void DeferredShading::init(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT, uint16_t _SCREEN_WIDTH, uint16_t _SCREEN_HEIGHT){
 
-    WIDTH = FRAMEBUFFER_WIDTH;
-    HEIGHT = FRAMEBUFFER_HEIGHT;
+
     SCREEN_WIDTH = _SCREEN_WIDTH;
     SCREEN_HEIGHT = _SCREEN_HEIGHT;
 
@@ -195,6 +212,12 @@ void DeferredShading::init(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIG
 
     glBindVertexArray(0);
 
+    createFramebuffers(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
+}
+
+void DeferredShading::createFramebuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT){
+    WIDTH = FRAMEBUFFER_WIDTH;
+    HEIGHT = FRAMEBUFFER_HEIGHT;
     glCreateFramebuffers(1, &G_BUFFER);
     glGenTextures(1, &gPosition);
     glGenTextures(1, &gNormal);

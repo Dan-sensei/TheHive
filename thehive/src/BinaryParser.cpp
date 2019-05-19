@@ -22,9 +22,6 @@ void BinaryParser::ReadNavmeshData(
     std::vector<std::vector<Connection>> &Connections,
     std::vector<Face> &SQUARE_FACES
 ){
-    std::cout << "sizeof(CMeshCollider) " << sizeof(CMeshCollider) << '\n';
-    std::cout << " sizeof(CBoxCollider) " << sizeof(CBoxCollider) << '\n';
-    std::cout << "   sizeof(CRigidBody) " << sizeof(CRigidBody) << '\n';
 
     std::ifstream Navmesh(BinaryFile, std::ios::binary);
 
@@ -872,4 +869,11 @@ void BinaryParser::LoadParticleSystem(ParticleSystem_Data &PS, const std::string
 
     PS.Position = Position;
     PS.Size = Size;
+}
+
+void BinaryParser::MENU_getCameraPositionRotation(const std::string &File, glm::vec3 &Position, glm::vec3 &Target) {
+    std::ifstream inStream(File, std::ios::binary);
+
+    GG_Read(inStream, Position);
+    GG_Read(inStream, Target);
 }

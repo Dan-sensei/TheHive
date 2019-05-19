@@ -90,7 +90,6 @@ void GUIController::update(){
 
     int id =Engine2D->checkbuton();
      if(id!=-1){
-
          if(VectorAcciones[id] != nullptr)
              (this->*VectorAcciones[id])();
      }
@@ -141,7 +140,6 @@ void GUIController::gotoControlls(){
 void GUIController::StartGame(){
     // s_musica_menu->stop();
     sonido_accion(0);
-    Engine2D->CLINMenu();
     Singleton<StateMachine>::Instance()->AddState(new Game(), true);
     // s_musica_basica->play();
 }
@@ -150,8 +148,8 @@ void GUIController::gotoMain(){
     Engine2D->InitMenu();
     sonido_accion(1);
     if(s_musica_cred->isPaused()){
-      s_musica_cred->stop();
-      s_musica_menu->pause(false);
+        s_musica_cred->stop();
+        s_musica_menu->pause(false);
     }
 }
 //but9

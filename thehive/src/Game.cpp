@@ -25,28 +25,6 @@
 #define UPDATE_STEP 15.f
 #define BULLET_STEP 1.f/FRAMERATE
 
-//Funciones de Fran Gallego para imprimir memoria por consola ==============================¬
-//                                                                                          |
-//====================================================================================      |
-// Pretty print a 2-digits hexadecimal value                                                |
-//====================================================================================      |
-/*
-void printHexVal(uint16_t val) {
-}
-
-//====================================================================================
-// Print a memory slice as raw bytes
-//====================================================================================
-void printRawMem(uint8_t* p, uint16_t linebytes, uint16_t lines) {
-   for(uint16_t l=0; l < lines; ++l) {
-      for(uint16_t u=0; u < linebytes; ++u) {
-         printHexVal(*p);
-         ++p;
-      }
-   }
-}
-*/
-//============================================================================================
 
 #include <Omicron/ZPlayer.hpp>
 
@@ -77,6 +55,8 @@ Game::~Game(){
 }
 
 void Game::Init(){
+    Singleton<AssetManager>::Instance()->loadInit();
+    Engine->resizeFrameBuffers(1280, 720);
 
     Engine->createZones(8);
 
@@ -160,12 +140,12 @@ void Game::Init(){
     //Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes1);
 
     Director->init();
-    
-    Update();
+
+
     auto estado = new PopState();
-    estado->Addim("assets/HUD/asdw_esp.png");
-    estado->Addim("assets/HUD/camara_esp.png");
-    estado->Addim("assets/HUD/dash_esp.png");
+    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/asdw_esp.png"));
+    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/camara_esp.png"));
+    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/dash_esp.png"));
     Singleton<StateMachine>::Instance()->AddState(estado);
 }
 
@@ -227,6 +207,7 @@ void Game::Update(){
 
     MainCamera->CameraUpdate();
     Engine->draw();
+    Engine->drawHUD();
     //sky.Draw();
 
     // DEBUG PATHFINDING

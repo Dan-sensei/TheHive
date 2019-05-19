@@ -52,7 +52,6 @@ void StateMachine::ProcessStateChanges() {
 		states.push(newState);
 		newState = nullptr;
 		states.top()->Init();
-
 	}
 	UpdateTop();
 }

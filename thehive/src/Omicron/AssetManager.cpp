@@ -38,6 +38,16 @@ void AssetManager::loadInit(){
     MAT->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/COMOUNPUTOPRO3.png",3));
     MAT->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
+    getConstantTexture("assets/HUD/NUEVO/plantilla.png");
+    getConstantTexture("assets/HUD/NUEVO/cruceta_g.png");
+    getConstantTexture("assets/HUD/NUEVO/cruceta_p.png");
+    getConstantTexture("assets/HUD/NUEVO/P_AMETRALLADORA_HUD.png");
+    getConstantTexture("assets/HUD/NUEVO/P_ESCOPETA_HUD.png");
+    getConstantTexture("assets/HUD/NUEVO/P_PISTOLA_HUD.png");
+    getConstantTexture("assets/HUD/NUEVO/S_AMETRALLADORA_HUD.png");
+    getConstantTexture("assets/HUD/NUEVO/S_ESCOPETA_HUD.png");
+    getConstantTexture("assets/HUD/NUEVO/S_PISTOLA_HUD.png");
+
     ZMaterial* 		Blue = getMaterial("Blue");
     Blue->attachShader(shader);
     Blue->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/Blue.png",3));
@@ -182,60 +192,97 @@ unsigned int AssetManager::getTexture(const std::string &Name, int ForceChannels
     }
     else {
 
-        unsigned int NewID = 0;
-        int width, height, nrChannels;
-        unsigned char *data = stbi_load(Name.c_str(), &width, &height, &nrChannels, ForceChannels);
-
-        if (data) {
-            if(ForceChannels == 0) ForceChannels = nrChannels;
-
-            glGenTextures(1, &NewID);
-            glBindTexture(GL_TEXTURE_2D, NewID);
-
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-            unsigned int INTERNAL_FORMAT = 0;
-            unsigned int     READ_FORMAT = 0;
-
-            if(ForceChannels == 1){
-                INTERNAL_FORMAT = GL_R8;
-                READ_FORMAT = GL_RED;
-            }
-            else if(ForceChannels == 2){
-                INTERNAL_FORMAT = GL_RG8;
-                READ_FORMAT = GL_RG;
-            }
-            else if(ForceChannels == 3){
-                INTERNAL_FORMAT = GL_RGB8;
-                READ_FORMAT = GL_RGB;
-            }
-            else {
-                INTERNAL_FORMAT = GL_RGBA8;
-                READ_FORMAT = GL_RGBA;
-            }
-
-            glTexStorage2D(GL_TEXTURE_2D, 1, INTERNAL_FORMAT, width, height);
-            glTextureSubImage2D(NewID, 0,0,0, width, height, READ_FORMAT, GL_UNSIGNED_BYTE, data);
-            glGenerateMipmap(GL_TEXTURE_2D);
-
-            stbi_image_free(data);
+        unsigned int NewID = getTextureWithoutSavingToMap(Name.c_str(), ForceChannels);
+        if(NewID){
+            TextureMap.insert(std::make_pair(Name, NewID));
         }
-
-        TextureMap.insert(std::make_pair(Name, NewID));
         return NewID;
     }
 }
 
+unsigned int AssetManager::getConstantTexture(const std::string &Name, int ForceChannels){
+    if(CommonTextures.find(Name) != CommonTextures.end()){
+        return CommonTextures[Name];
+    }
+    else {
+        unsigned int NewID = getTextureWithoutSavingToMap(Name.c_str(), ForceChannels);
+        if(NewID){
+            CommonTextures.insert(std::make_pair(Name, NewID));
+        }
+        return NewID;
+    }
+}
+
+unsigned int AssetManager::getTextureWithoutSavingToMap(const char* TexturePath, int ForceChannels){
+    unsigned int NewID = 0;
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load(TexturePath, &width, &height, &nrChannels, ForceChannels);
+
+    if (data) {
+        if(ForceChannels == 0) ForceChannels = nrChannels;
+
+        glGenTextures(1, &NewID);
+        glBindTexture(GL_TEXTURE_2D, NewID);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        unsigned int INTERNAL_FORMAT = 0;
+        unsigned int     READ_FORMAT = 0;
+
+        if(ForceChannels == 1){
+            INTERNAL_FORMAT = GL_R8;
+            READ_FORMAT = GL_RED;
+        }
+        else if(ForceChannels == 2){
+            INTERNAL_FORMAT = GL_RG8;
+            READ_FORMAT = GL_RG;
+        }
+        else if(ForceChannels == 3){
+            INTERNAL_FORMAT = GL_RGB8;
+            READ_FORMAT = GL_RGB;
+        }
+        else {
+            INTERNAL_FORMAT = GL_RGBA8;
+            READ_FORMAT = GL_RGBA;
+        }
+
+        glTexStorage2D(GL_TEXTURE_2D, 1, INTERNAL_FORMAT, width, height);
+        glTextureSubImage2D(NewID, 0,0,0, width, height, READ_FORMAT, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        stbi_image_free(data);
+    }
+    return NewID;
+}
+
+void AssetManager::freeTexture(unsigned int TextureID){
+    glDeleteTextures(1, &TextureID);
+}
+
+
 AssetManager::~AssetManager(){
-    //std::cout << "Deleting textures..." << '\n';
+    freeAssets();
+
+    auto iterator = CommonTextures.begin();
+    while(iterator != CommonTextures.end()){
+        glDeleteTextures(1, &iterator->second);
+        ++iterator;
+    }
+
+    CommonTextures.clear();
+}
+
+void AssetManager::freeAssets(){
+
     auto iterator = TextureMap.begin();
     while(iterator != TextureMap.end()){
         glDeleteTextures(1, &iterator->second);
         ++iterator;
     }
+
     AnimationMap.clear();
     MeshDataMap.clear();
     MaterialMap.clear();

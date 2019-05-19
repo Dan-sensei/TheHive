@@ -163,7 +163,3 @@ void BVH_ROOT_Node::IssueOcclusionQuery(BVH_Node* N) {
 
 void BVH_ROOT_Node::beginDraw(){};
 void BVH_ROOT_Node::endDraw(){};
-
-void BVH_ROOT_Node::setCameraPtr(glm::vec3* _PlayerPosition){
-    CameraPosition = _PlayerPosition;
-}

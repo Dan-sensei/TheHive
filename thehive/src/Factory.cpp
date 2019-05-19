@@ -44,14 +44,11 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     CTransform* Transform               = new CTransform(glm::vec3(Position.x, Position.y, Position.z), glm::vec3(0, 0, 0));
     Manager->addComponentToEntity(Transform,        gg::TRANSFORM, hero);
 
-    ZStaticMesh::setPlayerPtr(&(Transform->Position));
     CAIEnem::PlayerTransform=Transform;
 
     CCamera* Camera                     = new CCamera(_b);
     Camera->setTarget(Transform);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
-    BVH_ROOT_Node::setCameraPtr(&(Camera->CurrentPosition));
-    FrustrumLeaf::setCameraPtr(&(Camera->CurrentPosition));
 
     CVida* Vida                         = new CVida(10);
     Manager->addComponentToEntity(Vida,             gg::VIDA, hero);
@@ -95,7 +92,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     // Singleton<Motor2D>::Instance()->setWeaponImg(0,img);
     // Singleton<Motor2D>::Instance()->setbullet(0,gun->getBullets(),gun->getTotalBullets());
 
-    hud->setPrimaryImg(AManager->getTexture(imgP,4),AManager->getTexture(imgS,4));
+    hud->setPrimaryImg(AManager->getConstantTexture(imgP,4), AManager->getConstantTexture(imgS,4));
     hud->setPrimaryBullets(gun->getBullets());
     hud->setPrimaryChamber(gun->getTotalBullets());
     // ------------------------------------------------------
