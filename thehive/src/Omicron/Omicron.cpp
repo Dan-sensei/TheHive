@@ -392,6 +392,10 @@ void Omicron::setLights(int nluces_F, int nluces_p){
     _DeferredShading.setnluces(nluces_F, nluces_p);
 }
 
+void Omicron::resetLightsZone(uint8_t ZONE){
+    LIGHTS_LAYER->setOVERRIDE(ZONE);
+}
+
 
 void Omicron::resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT) {
     INTERNAL_BUFFER_WIDTH = FRAMEBUFFER_WIDTH;

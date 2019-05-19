@@ -109,7 +109,7 @@ class Omicron {
         bool Initialize();
         void resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT);
         void setLights(int nluces_F, int nluces_p);
-
+        void resetLightsZone(uint8_t ZONE);
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
         void resetClickVariable();

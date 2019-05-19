@@ -15,9 +15,7 @@ LightRoot::LightRoot(ZNode* P)
 
 LightRoot::LightRoot(const LightRoot &orig)
 :SPOT_LIGHTS(orig.SPOT_LIGHTS), POINT_LIGHTS(POINT_LIGHTS)
-{
-
-}
+{}
 
 LightRoot::~LightRoot(){
     SPOT_LIGHTS.clear();
@@ -40,7 +38,6 @@ void LightRoot::setOVERRIDE(uint8_t ZONE) {
 
         ++POINT_it;
     }
-
 }
 
 
@@ -49,7 +46,6 @@ ZStaticSpotLight* LightRoot::emplace_SpotLight(const glm::vec3 &MVP, const glm::
     while(SPOT_it != SPOT_LIGHTS.end()){
         if(SPOT_it->OVERRIDE){
             (*SPOT_it) = ZStaticSpotLight(MVP, Color, ZONE);
-            SPOT_it->OVERRIDE = false;
             return &(*SPOT_it);
         }
         ++SPOT_it;
@@ -64,7 +60,6 @@ ZStaticPointLight* LightRoot::emplace_PointLight(const glm::vec3 &MVP, const glm
     while(POINT_it != POINT_LIGHTS.end()){
         if(POINT_it->OVERRIDE){
             (*POINT_it) = ZStaticPointLight(MVP, Color, ZONE);
-            POINT_it->OVERRIDE = false;
             return &(*POINT_it);
         }
         ++POINT_it;
@@ -75,23 +70,17 @@ ZStaticPointLight* LightRoot::emplace_PointLight(const glm::vec3 &MVP, const glm
 }
 
 
-#define DISTANCE 40*40
+#define DISTANCE 60*60
 
 void LightRoot::draw() {
-    // std::cout << "    SPOT_LIGHTS " << SPOT_LIGHTS.size() << '\n';
-    // std::cout << "   POINT_LIGHTS " << POINT_LIGHTS.size() << '\n' << '\n';
 
     glm::vec3 CameraPos = *CameraPosition;
 
     std::vector<ZStaticSpotLight*> SPOTLIGHTS_PTR;
-    SPOTLIGHTS_PTR.reserve(20);
-
-    uint8_t SPOT = 0;
 
     auto SPOT_it = SPOT_LIGHTS.begin();
     while(SPOT_it != SPOT_LIGHTS.end()){
         if(glm::length2(SPOT_it->getPosition()-CameraPos) < DISTANCE) {
-            SPOT++;
             SPOTLIGHTS_PTR.push_back(&(*SPOT_it));
         }
         ++SPOT_it;
@@ -100,32 +89,26 @@ void LightRoot::draw() {
     std::vector<ZStaticPointLight*> POINTLIGHTS_PTR;
     POINTLIGHTS_PTR.reserve(20);
 
-    uint8_t POINT = 0;
-
     auto POINT_it = POINT_LIGHTS.begin();
     while(POINT_it != POINT_LIGHTS.end()){
         if(glm::length2(POINT_it->getPosition()-CameraPos)) {
-            POINT++;
             POINTLIGHTS_PTR.push_back(&(*POINT_it));
         }
         ++POINT_it;
     }
 
-    Engine->setLights(SPOT, POINT);
-
-    std::cout << " SPOT " << (uint16_t)SPOT << '\n';
-    std::cout << "POINT " << (uint16_t)POINT << '\n' << '\n';
-
-    for(uint8_t i = 0; i < POINTLIGHTS_PTR.size(); ++i){
-        POINTLIGHTS_PTR[i]->setN(i);
-        POINTLIGHTS_PTR[i]->beginDraw();
-        POINTLIGHTS_PTR[i]->endDraw();
-    }
+    Engine->setLights(SPOTLIGHTS_PTR.size(), POINTLIGHTS_PTR.size());
 
     for(uint8_t i = 0; i < SPOTLIGHTS_PTR.size(); ++i){
         SPOTLIGHTS_PTR[i]->setN(i);
         SPOTLIGHTS_PTR[i]->beginDraw();
         SPOTLIGHTS_PTR[i]->endDraw();
+    }
+
+    for(uint8_t i = 0; i < POINTLIGHTS_PTR.size(); ++i){
+        POINTLIGHTS_PTR[i]->setN(i);
+        POINTLIGHTS_PTR[i]->beginDraw();
+        POINTLIGHTS_PTR[i]->endDraw();
     }
 
 }

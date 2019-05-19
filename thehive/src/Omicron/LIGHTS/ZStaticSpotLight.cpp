@@ -23,6 +23,8 @@ ZStaticSpotLight::ZStaticSpotLight(const ZStaticSpotLight &orig) {
     N = orig.N;
     position = orig.position;
     direccion = orig.direccion;
+    ZONE = orig.ZONE;
+    OVERRIDE = orig.OVERRIDE;
 }
 
 

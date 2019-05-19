@@ -18,6 +18,8 @@ ZStaticPointLight::ZStaticPointLight(const ZStaticPointLight &orig){
     light_shader = orig.light_shader;
     N = orig.N;
     position = orig.position;
+    ZONE = orig.ZONE;
+    OVERRIDE = orig.OVERRIDE;
 }
 
 ZStaticPointLight::~ZStaticPointLight(){

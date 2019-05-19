@@ -653,6 +653,11 @@ void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone)
 void BinaryParser::LoadLevelLights(const std::string &DARTA, int8_t map_zone){
     std::ifstream inStream(DARTA, std::ios::binary);
 
+    if(!inStream.is_open()){
+        //std::cout << "No se pudo abrir " << DARTA << '\n';
+        return;
+    }
+
     Omicron* Engine = Singleton<Omicron>::Instance();
     uint8_t POINT_LIGHTS = 0;
     GG_Read(inStream, POINT_LIGHTS);
@@ -671,6 +676,7 @@ void BinaryParser::LoadLevelLights(const std::string &DARTA, int8_t map_zone){
     }
 
     uint8_t SPOT_LIGHTS = 0;
+
     GG_Read(inStream, SPOT_LIGHTS);
     for(uint8_t i = 0; i < SPOT_LIGHTS; ++i){
 
