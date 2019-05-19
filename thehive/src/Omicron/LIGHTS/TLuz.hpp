@@ -3,32 +3,32 @@
 
 #include <Util.hpp>
 #include <Omicron/CORE/TEntidad.hpp>
-#include "Shader.hpp"
+#include <Omicron/Shader.hpp>
 
 class TLuz : public TEntidad {
     public:
         static unsigned char * buffer;
         TLuz();
-        TLuz(gg::Color&);//,unsigned char * buff);
+        TLuz(const glm::vec3 &_color);//,unsigned char * buff);
         TLuz(Shader*);
-        TLuz(gg::Color&,Shader*);
+        TLuz(const glm::vec3 &_color, Shader*);
         virtual ~TLuz ();
 
-        virtual void setColor(gg::Color&);
-        virtual gg::Color getColor();
+        virtual void setColor(const glm::vec3 &_color);
+        virtual glm::vec3 getColor();
 
-        virtual void beginDraw();
-        virtual void endDraw();
+        virtual void beginDraw() = 0;
+        virtual void endDraw() = 0;
 
         void  setIntensidad(float &_color);
         float getIntensidad();
         void setN(int ene);
 
     protected:
-        int N;
-        gg::Color color;
-        float intensidad;
+        glm::vec3 Color;
         Shader* light_shader;
+        float intensidad;
+        int N;
 
 };
 

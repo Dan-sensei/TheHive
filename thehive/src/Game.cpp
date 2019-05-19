@@ -64,8 +64,10 @@ void Game::Init(){
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
     //Los eventos son propios de cada zona!
-    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 1);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 1);
+    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 0);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 0);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_LIGHTS.data", 0);
+
 
     Engine2D->InitHUD();
 
@@ -77,13 +79,13 @@ void Game::Init(){
 
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
-    luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
+    //luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 
 
     glm::vec3 tmp(-19,-21,22);
     sF->createTank(tmp,2000);
 
-    Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
+    //Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
     // Pos init del heroe normal
     // 360, 0, 350
@@ -194,11 +196,11 @@ void Game::Update(){
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
-    // std::cout << " - " << glm::to_string(pos) << '\n';
-    pos.y += 10;
-    Engine->setPosition(luz,pos);
+    // // std::cout << " - " << glm::to_string(pos) << '\n';
+    // pos.y += 10;
+    // Engine->setPosition(luz,pos);
 
-    pos.y -= 7;
+    pos.y += 3;
     PS->setPosition(pos);
 
     Engine->BeginDraw();

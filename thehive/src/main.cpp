@@ -17,11 +17,12 @@
 int main(int argc, char const *argv[]) {
 
     Omicron *Engine = Singleton<Omicron>::Instance();
+    Engine->resetSceneGraph();
     Singleton<AssetManager>::Instance()->loadInit();
 
     SoundSystem *Sound = Singleton<SoundSystem>::Instance();
 
-    // 
+    //
     //
     // {
     //     ZPlayer Player;

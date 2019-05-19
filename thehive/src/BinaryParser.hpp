@@ -50,12 +50,13 @@ namespace BinaryParser{
     void ReadUnLoadZonesData(const std::string &BinaryFile);
     uint16_t ReadRespawnNodesData(const std::string &BinaryFile);
 
-    void LoadLevelData(const std::string &DARTA, int8_t map_zone = 0);
+    void LoadLevelData(const std::string &DARTA, int8_t map_zone);
     void LoadBVHLevelData(const std::string &DARTA, int8_t map_zone);
+    void LoadLevelDataEvents(const std::string &DARTA, int8_t map_zone);
+    void LoadLevelLights(const std::string &DARTA, int8_t map_zone);
 
     void CreateMesh(std::ifstream &inStream, AssetManager* _AssetManager, Shader* DEFAULT_SHADER, BVH_Node* NODE);
 
-    void LoadLevelDataEvents(const std::string &DARTA, int8_t map_zone = 0);
     void LoadParticleSystem(ParticleSystem_Data &PS, const std::string BinaryFile);
 
     void MENU_getCameraPositionRotation(const std::string &File, glm::vec3 &Position, glm::vec3 &Target);

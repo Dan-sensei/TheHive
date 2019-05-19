@@ -33,8 +33,6 @@ layout(binding = 0) uniform sampler2D depthTex;
 layout(binding = 1) uniform sampler2D gNormal;
 layout(binding = 2) uniform sampler2D gDiffuseSpec;
 
-layout(location = 12) uniform vec3 LightPosition_worldspace;
-
 
 vec3 getViewPosition(float Depth) {
     vec3 Position = vec3(half_ndc_position * Depth, Depth);
@@ -69,117 +67,99 @@ void main()
     float LightPowerFo;// = 150.0f;
     //float LightPower = 25.0f;
 
-
     vec3 FinalPixelColor  = Diffuse * 0.18f;
 
-////////// Direccional
-
-vec3 LightDir=luces.dirluzD;//vec3(0,1,0);// la luz del sol
-//vec3 LightDir = normalize(luzdir);
-vec3 diffuse = clamp( dot( Normal, LightDir ), 0,1 ) * Diffuse *LightPowerDir;
-//diffuse =diffuse+ clamp( dot( Normal, LightDir ), 0,1 ) * Diffuse * LightPower;
-
-// Specular
-vec3 E = normalize(- VertexPos);
-vec3 halfwayDir = normalize(LightDir + E);
-float cosAlpha = max(dot(Normal, halfwayDir), 0.0);
-// Optimización a pow(cosAlpha, n) = cosAlpha / (n - n*cosAlpha + cosAlpha)
-float spec = cosAlpha/(16 - 16 * cosAlpha + cosAlpha);
-//FinalSpecular =FinalSpecular+ LightColor * spec * SpecularTex * LightPower;
-vec3 FinalSpecular = LightColor * spec * SpecularTex *LightPowerDir;
-////////
-////////////////////////////////////////////////////////////////
-
-//luz puntual de prueba
-
-LightColor = vec3(1,1,1);
-float LightPower = 150.0f;
-////////////////////////////////////////////////////////////
-vec3 posluz=LightPosition_worldspace;
-
-
-//FinalPixelColor  = Diffuse * 0.18f;
-
-// Diffuse
-LightDir = normalize(posluz - VertexPos);
-diffuse = clamp( dot( Normal, LightDir ), 0, 1 ) * Diffuse * LightPower;
-
-// Specular
-E = normalize(-VertexPos);
-halfwayDir = normalize(LightDir + E);
-cosAlpha = max(dot(Normal, halfwayDir), 0.0);
-// Optimización a pow(base, e) = base / (e - e*base + base)
-spec = cosAlpha/(16 - 16 * cosAlpha + cosAlpha);
-FinalSpecular = LightColor * spec * SpecularTex * LightPower;
-
-// Attenuation
-dist = length(posluz - VertexPos);
-attenuation = 1.0 / (dist * dist);
-
-diffuse *= attenuation;
-FinalSpecular *= attenuation;
-
-////////////////////////////////
-/*
-//luz puntual real
-for(int i = 0;  i< luces.NNLUCESP; i++)
-{
-
-
-}
-//luz focal
-vec3 luzp1;
-vec3 luzp2;
-vec3 dir;
-vec3 LightDir1;
-float eff;
-vec3 diffuse2;
-vec3 FinalSpecular2;
-float att2;
-//att2=(0.1-(1-eff))/0.1;//0.1-->0//0-->1
-for(int i = 0;  i< luces.NNlucesF; i++)
-{
-     luzp1=luces.posluzF[i];
-     luzp2=luces.posfocoluzF[i];
-     LightPowerFo=luces.intluzF[i];
-     LightColor=luces.colorluzF[i];
-
-    //dir=normalize(luzp2-luzp1);
-    dir=luzp2;
-    //vec3 dir=vec3(0,1,0);
-    LightDir1 = normalize( VertexPos-luzp1);
-    eff=dot(LightDir1,dir);
-    if(eff>0.9){
-        att2=(0.1-(1-eff))/0.1;//0.1-->0//0-->1
-        // Diffuse
-        LightDir = normalize(luzp1 - VertexPos);
-        diffuse2 = clamp( dot( Normal, LightDir ), 0,1 ) * Diffuse * LightPowerFo;
-         //diff = max(dot(normal, lightDir), 0.0);
+    // ================================== Direccional ==================================
+        vec3 LightDir=luces.dirluzD;//vec3(0,1,0);// la luz del sol
+        //vec3 LightDir = normalize(luzdir);
+        vec3 DIFFUSE = clamp( dot( Normal, LightDir ), 0,1 ) * Diffuse *LightPowerDir;
+        //diffuse =diffuse+ clamp( dot( Normal, LightDir ), 0,1 ) * Diffuse * LightPower;
 
         // Specular
-        //E = normalize(CameraPos - VertexPos);
+        vec3 E = normalize(- VertexPos);
+        vec3 halfwayDir = normalize(LightDir + E);
+        float cosAlpha = max(dot(Normal, halfwayDir), 0.0);
+        // Optimización a pow(cosAlpha, n) = cosAlpha / (n - n*cosAlpha + cosAlpha)
+        float spec = cosAlpha/(16 - 16 * cosAlpha + cosAlpha);
+        //FinalSpecular =FinalSpecular+ LightColor * spec * SpecularTex * LightPower;
+        vec3 SPECULAR = LightColor * spec * SpecularTex *LightPowerDir;
+    // ==================================================================================
+
+
+    // ================================== POINT LIGHTS ==================================
+    for(int i = 0;  i < luces.NNlucesP; i++) {
+
+        LightColor = luces.colorluzP[i];
+        float LightPower = luces.intluzP[i];
+        vec3 posluz = luces.posluzP[i];
+
+        // Diffuse
+        LightDir = normalize(posluz - VertexPos);
+        vec3 PointDiffuse = clamp( dot( Normal, LightDir ), 0, 1 ) * Diffuse * LightPower * LightColor;
+
+        // Specular
         halfwayDir = normalize(LightDir + E);
         cosAlpha = max(dot(Normal, halfwayDir), 0.0);
-        // Optimización a pow(cosAlpha, n) = cosAlpha / (n - n*cosAlpha + cosAlpha)
+        // Optimización a pow(base, e) = base / (e - e*base + base)
         spec = cosAlpha/(16 - 16 * cosAlpha + cosAlpha);
-        FinalSpecular2 = LightColor * spec * SpecularTex * LightPowerFo;
+        vec3 SpecularPoint = LightColor * spec * SpecularTex * LightPower;
 
         // Attenuation
-        dist = length(luzp1 - VertexPos);
+        dist = length(posluz - VertexPos);
         attenuation = 1.0 / (dist * dist);
 
-        diffuse2 *= attenuation*att2;
-        FinalSpecular2 *= attenuation*att2;
-
-        diffuse += diffuse2;
-        FinalSpecular += FinalSpecular2;
-
-    //FinalPixelColor += diffuse + FinalSpecular;
+        DIFFUSE += PointDiffuse * attenuation;
+        SPECULAR += SpecularPoint * attenuation;
     }
-}
-*/
-    FinalPixelColor += diffuse + FinalSpecular;
+    // ==================================================================================
 
+
+    // ================================== FOCAL LIGHTS ==================================
+    vec3 luzp1;
+    vec3 luzp2;
+    vec3 dir;
+    vec3 LightDir1;
+    float eff;
+    vec3 diffuse2;
+    vec3 FinalSpecular2;
+    float att2;
+    for(int i = 0;  i < luces.NNlucesF; i++)
+    {
+        luzp1 = luces.posluzF[i];
+        luzp2 = luces.posfocoluzF[i];
+        LightPowerFo = luces.intluzF[i];
+        LightColor=luces.colorluzF[i];
+
+        dir = normalize(luzp1 - luzp2);
+
+        LightDir1 = normalize(  luzp1 - VertexPos );
+        eff = dot(LightDir1,dir);
+        if(eff > 0.9) {
+            att2=(0.1-(1-eff))/0.1; //0.1-->0//0-->1
+            // Diffuse
+            diffuse2 = clamp( dot( Normal, LightDir1 ), 0,1 ) * Diffuse * LightPowerFo * LightColor;
+
+            // Specular
+            halfwayDir = normalize(LightDir1 + E);
+            cosAlpha = max(dot(Normal, halfwayDir), 0.0);
+            spec = cosAlpha/(16 - 16 * cosAlpha + cosAlpha);
+            FinalSpecular2 = LightColor * spec * SpecularTex * LightPowerFo;
+
+            // Attenuation
+            dist = length(luzp1 - VertexPos);
+            attenuation = 1.0 / (dist * dist);
+
+            diffuse2 *= attenuation*att2;
+            FinalSpecular2 *= attenuation*att2;
+
+            DIFFUSE += diffuse2;
+            SPECULAR += FinalSpecular2;
+        }
+    }
+    // ==================================================================================
+
+
+    FinalPixelColor += DIFFUSE + SPECULAR;
 
 
     // Niebla

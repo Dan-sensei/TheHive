@@ -14,15 +14,9 @@ int Omicron::wheel;
 int Omicron::IdButon;
 
 Omicron::Omicron()
-:MainCamera(nullptr), MainCameraNode(nullptr), FPS(0), _DeferredShading(), WINDOW_WIDTH(0), WINDOW_HEIGHT(0)
+:MainCamera(nullptr), MainCameraNode(nullptr), FPS(0), _DeferredShading(), WINDOW_WIDTH(0), WINDOW_HEIGHT(0), ESCENA(nullptr)
 {
-    ESCENA = new StandardNode();
     Initialize();
-
-    OKAMERAS_LAYER  = new StandardNode(ESCENA, nullptr);
-      LIGHTS_LAYER  = new StandardNode(ESCENA, nullptr);
-     BUFFERS_LAYER  = new StandardNode(ESCENA, nullptr);
-     FORWARD_LAYER  = new StandardNode(ESCENA, nullptr);
 
     for(uint16_t i = 0; i < 349; ++i)
         Omicron::KEYS[i] = false;
@@ -44,7 +38,7 @@ void Omicron::resetSceneGraph() {
 
     ESCENA = new StandardNode();
     OKAMERAS_LAYER  = new StandardNode(ESCENA, nullptr);
-      LIGHTS_LAYER  = new StandardNode(ESCENA, nullptr);
+      LIGHTS_LAYER  = new LightRoot(ESCENA);
      BUFFERS_LAYER  = new StandardNode(ESCENA, nullptr);
      FORWARD_LAYER  = new StandardNode(ESCENA, nullptr);
 }
@@ -126,14 +120,23 @@ StandardNode* Omicron::crearCamara(const float& _fov, const float& _near, const 
     ZMesh::CameraPosition = MainCamera->getPositionPtr();
     BVH_ROOT_Node::CameraPosition = MainCamera->getPositionPtr();
     FrustrumLeaf::CameraPosition = MainCamera->getPositionPtr();
+    LightRoot::CameraPosition = MainCamera->getPositionPtr();
     return Cam;
 }
 
-StandardNode* Omicron::crearLuz(gg::Color &_color, const glm::vec3& pos, const glm::vec3& rot, Shader* sh){
-    TLuz* L = new TLuz(_color,sh);
-    StandardNode* Luz = new StandardNode(bindTransform(pos,rot, LIGHTS_LAYER),L);
+ZStaticPointLight* Omicron::createStaticPointLight(const glm::vec3 &Color, const glm::vec3& pos, float Intensity, uint8_t ZONE){
+    ZStaticPointLight* NEW_LIGHT = LIGHTS_LAYER->emplace_PointLight(pos, Color, ZONE);
+    NEW_LIGHT->setIntensidad(Intensity);
+    return NEW_LIGHT;
+    //StandardNode* Luz = new StandardNode(bindTransform(pos,rot, LIGHTS_LAYER), L);
+}
 
-    return Luz;
+ZStaticSpotLight* Omicron::createStaticSpotLight(const glm::vec3 &Color, const glm::vec3& pos, const glm::vec3 & Direction, float Intensity, uint8_t ZONE){
+    ZStaticSpotLight* NEW_LIGHT = LIGHTS_LAYER->emplace_SpotLight(pos, Color, ZONE);
+    NEW_LIGHT->setDireccion(Direction);
+    NEW_LIGHT->setIntensidad(Intensity);
+
+    return NEW_LIGHT;
 }
 
 ZNode* Omicron::createStaticMesh(StandardNode* FATHER, const char* _path, const glm::vec3& pos, const glm::quat &Rotation){
@@ -384,6 +387,11 @@ bool Omicron::Initialize(){
 
 	return true;
 }
+
+void Omicron::setLights(int nluces_F, int nluces_p){
+    _DeferredShading.setnluces(nluces_F, nluces_p);
+}
+
 
 void Omicron::resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT) {
     INTERNAL_BUFFER_WIDTH = FRAMEBUFFER_WIDTH;

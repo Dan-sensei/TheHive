@@ -8,17 +8,17 @@
 class TLuzPuntual : public TLuz {
     public:
         TLuzPuntual();
-        TLuzPuntual(gg::Color&,glm::vec3&);
+        TLuzPuntual(const glm::vec3 &_color, glm::vec3&);
         virtual ~TLuzPuntual ();
 
-        void setPosicion(glm::vec3&);
-        glm::vec3 getPosicion();
+        // void setPosicion(glm::vec3&);
+        // glm::vec3 getPosicion();
 
         virtual void beginDraw();
         virtual void endDraw();
 
     private:
-        glm::vec3 posicion;
+        // glm::vec3 posicion;
 
 };
 

@@ -7,7 +7,7 @@
 class TLuzDirigida : public TLuz {
     public:
         TLuzDirigida();
-        TLuzDirigida(gg::Color&,glm::vec3&);
+        TLuzDirigida(const glm::vec3 &_color, glm::vec3&);
         virtual ~TLuzDirigida ();
 
         void setDireccion(glm::vec3&);

@@ -38,6 +38,7 @@ void MenuState::Init(){
 
     //Los eventos son propios de cada zona!
     BinaryParser::LoadLevelData("assets/BinaryFiles/MENU/MENU_MODELS.data", 0);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_LIGHTS.data", 0);
 
     glm::vec3 Position = glm::vec3();
 
@@ -46,9 +47,6 @@ void MenuState::Init(){
     auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,100.f, Position, glm::quat(), 16.f/9.f);
     Camera = Engine->getMainCameraEntity();
-    gg::Color c;
-    StandardNode* luz = Engine->crearLuz(c,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
-    Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
     //MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
 
     ParticleSystem_Data PS_D;

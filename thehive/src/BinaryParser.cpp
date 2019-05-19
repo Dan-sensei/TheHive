@@ -269,7 +269,7 @@ void BinaryParser::LoadLevelData(const std::string &DATA, int8_t map_zone){
         Malla->CORNERS[1] = CORNERS[1];
         Malla->CORNERS[2] = CORNERS[2];
         Malla->CORNERS[3] = CORNERS[3];
-;
+
         CStaticModel* Transform = new CStaticModel(Malla, Material);
         Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
         Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
@@ -649,6 +649,47 @@ void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone)
         }
     }
 }
+
+void BinaryParser::LoadLevelLights(const std::string &DARTA, int8_t map_zone){
+    std::ifstream inStream(DARTA, std::ios::binary);
+
+    Omicron* Engine = Singleton<Omicron>::Instance();
+    uint8_t POINT_LIGHTS = 0;
+    GG_Read(inStream, POINT_LIGHTS);
+    for(uint8_t i = 0; i < POINT_LIGHTS; ++i){
+
+        glm::vec3 Position = glm::vec3();
+        GG_Read(inStream, Position);
+
+        float Intensity;
+        GG_Read(inStream, Intensity);
+
+        glm::vec3 Color;
+        GG_Read(inStream, Color);
+
+        Engine->createStaticPointLight(Color, Position, Intensity, map_zone);
+    }
+
+    uint8_t SPOT_LIGHTS = 0;
+    GG_Read(inStream, SPOT_LIGHTS);
+    for(uint8_t i = 0; i < SPOT_LIGHTS; ++i){
+
+        glm::vec3 Position = glm::vec3();
+        GG_Read(inStream, Position);
+
+        glm::vec3 Direction = glm::vec3();
+        GG_Read(inStream, Direction);
+
+        float Intensity;
+        GG_Read(inStream, Intensity);
+
+        glm::vec3 Color;
+        GG_Read(inStream, Color);
+
+        Engine->createStaticSpotLight(Color, Position, Direction, Intensity, map_zone);
+    }
+}
+
 
 
 bool BinaryParser::ImportMesh(

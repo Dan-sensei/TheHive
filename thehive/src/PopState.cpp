@@ -25,6 +25,9 @@ PopState::PopState()
 }
 
 PopState::~PopState(){
+    glDeleteVertexArrays(1, &QUAD);
+    glDeleteBuffers(1, &QUAD_POS_UV);
+
     CLIN();
 }
 void PopState::Addim(unsigned int im){
@@ -66,6 +69,7 @@ void PopState::Init(){
     //_GUIController->musicaMenuPlay();
     //Engine->createCamera(glm::vec3(0, /* message */30, 30), glm::vec3(0, 0, 0));
 }
+
 void PopState::siguiente(){
     if(imagenes.size()){
         Singleton<AssetManager>::Instance()->freeTexture(imagenes.front());
@@ -76,6 +80,7 @@ void PopState::siguiente(){
         Singleton<StateMachine>::Instance()->RemoveStates();
     }
 }
+
 void PopState::Resume(){
     Init();
 }

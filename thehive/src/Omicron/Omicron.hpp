@@ -9,7 +9,7 @@
 //
 #include <Omicron/CORE/StandardNode.hpp>
 #include <Omicron/CORE/TEntidad.hpp>
-#include "TLuz.hpp"
+#include "LIGHTS/TLuz.hpp"
 #include <Omicron/CORE/TTransform.hpp>
 #include <Omicron/CORE/TCamara.hpp>
 #include "Shader.hpp"
@@ -24,6 +24,9 @@
 #include <Omicron/FX/Particle_System_DATA.hpp>
 #include <Omicron/FX/ParticleSystem.hpp>
 #include <Omicron/DeferredShading.hpp>
+#include <Omicron/CORE/LightRoot.hpp>
+#include <Omicron/LIGHTS/ZStaticPointLight.hpp>
+#include <Omicron/LIGHTS/ZStaticSpotLight.hpp>
 
 #include <Omicron/2D/HUD.hpp>
 
@@ -38,7 +41,8 @@ class Omicron {
         void HideCursor(bool t);
 
         StandardNode* crearCamara(const float&, const float&, const float&, const glm::vec3&, const glm::quat & Rotation, const float&);
-        StandardNode* crearLuz(gg::Color&, const glm::vec3&, const glm::vec3&, Shader* sh);
+        ZStaticPointLight* createStaticPointLight(const glm::vec3 &Color, const glm::vec3& pos, float Intensity, uint8_t ZONE);
+        ZStaticSpotLight* createStaticSpotLight(const glm::vec3 &Color, const glm::vec3& pos, const glm::vec3 &Direction, float Intensity, uint8_t ZONE);
 
         ZNode* createStaticMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3());
         ZNode* createMovableMesh(StandardNode* FATHER, const char*, const glm::vec3 &Position = glm::vec3(), const glm::quat &Rotation = glm::vec3());
@@ -104,6 +108,7 @@ class Omicron {
 
         bool Initialize();
         void resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT);
+        void setLights(int nluces_F, int nluces_p);
 
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
@@ -116,14 +121,14 @@ class Omicron {
 
         Omicron();
 
-        gg::Clock FPS_Clock;
         DeferredShading _DeferredShading;
+        gg::Clock FPS_Clock;
         HUD* hud;
 
 
         StandardNode* ESCENA;
         StandardNode* OKAMERAS_LAYER;
-        StandardNode* LIGHTS_LAYER;
+        LightRoot* LIGHTS_LAYER;
         StandardNode* BUFFERS_LAYER;
 
         TCamara* MainCamera;

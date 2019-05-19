@@ -4,7 +4,7 @@
 #include <Singleton.hpp>
 #include <iostream>
 #include <Omicron/AssetManager.hpp>
-#include <Omicron/TLuz.hpp>
+#include <Omicron/LIGHTS/TLuz.hpp>
 
 #define tamanyo 1024
 #define Ldirec   0
@@ -46,6 +46,7 @@ void DeferredShading::setnluces(int nluces_F,int nluces_p){
     *((float *)(buffer + Nfocales)) = nluces_F;
     *((float *)(buffer + Npuntuales)) = nluces_p;
 }
+
 void DeferredShading::setDirLuz(glm::vec3 dir,glm::vec3 color,float inten){
     ((float*)(buffer + Ldirec))[0] = dir.x;
     ((float*)(buffer + Ldirec))[1] = dir.y;
@@ -161,7 +162,7 @@ void DeferredShading::init(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIG
     buffer = (unsigned char *)malloc(tamanyo);
     TLuz::buffer=buffer;
 
-    setDirLuz(glm::vec3(0,1,0),glm::vec3(1,1,1),0.1);
+    setDirLuz(glm::vec3(0,1,0), glm::vec3(1,1,1), 0.1);
     setnluces(0,0);
 
 
