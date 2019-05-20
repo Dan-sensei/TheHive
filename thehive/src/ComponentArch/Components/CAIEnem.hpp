@@ -131,6 +131,7 @@ class CAIEnem : public IComponent {
         ObjectManager   *Manager;
         CTriggerSystem  *EventSystem;
         CTransform      *cTransform;
+        CRigidBody      *cRigidBody;
         CAgent          *cAgent;
         ggDynWorld      *world;
         CDynamicModel   *cDynamicModel;

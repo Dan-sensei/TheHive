@@ -97,7 +97,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     hud->setPrimaryChamber(gun->getTotalBullets());
     // ------------------------------------------------------
 
-    CAgent* Agent = new CAgent(kTrig_InteractMess |kTrig_Gunfire/*|kTrig_Explosion*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
+    CAgent* Agent = new CAgent(kTrig_InteractMess |kTrig_Gunfire/*|kTrig_Explosion|*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
     Manager->setHeroID(hero);
@@ -207,17 +207,17 @@ uint16_t Factory::createTank(const glm::vec3 &Position,const float &health){
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BulletBoundingBoxes/tank_final.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 50, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
-    // CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
-    // Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
+     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
+     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
-    // CAIEnem* AIEnem                     = new CAIEnem(gg::TANK,30,Position,false);
-    // Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+     CAIEnem* AIEnem                     = new CAIEnem(gg::TANK,30,Position,false);
+     Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
-    // CVida* Vida                         = new CVida(health);
-    // Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
+     CVida* Vida                         = new CVida(health);
+     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
 
-    // CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
-    // Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
+     CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
+     Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
 
     return Enemy;
 }

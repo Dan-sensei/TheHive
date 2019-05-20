@@ -27,13 +27,15 @@ CRigidBody* CAIEnem::PlayerBody;
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos, bool _playerSeen)
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr), world(nullptr),
- type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen)
+ type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen),cRigidBody(nullptr)
 {
 
     SS = Singleton<SoundSystem>::Instance();
 
     switch (_type) {
         case gg::SOLDIER:
+        Arange          = 1;
+
             velocity=2;
             s_caminar = new SonidoNormal();
             SS->createSound("event:/SFX/Enemigos/Soldier/SoldierMovimiento", s_caminar);
@@ -45,6 +47,8 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
             SS->createSound("event:/SFX/Enemigos/Soldier/SoldierGrito", s_grito);
             break;
         case gg::TANK:
+        Arange          = 2;
+
             velocity=2;
             s_caminar = new SonidoNormal();
             SS->createSound("event:/SFX/Enemigos/Tank/TankMovimiento", s_caminar);
@@ -57,6 +61,8 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 
             break;
         case gg::RUSHER:
+        Arange          = 1;
+
             velocity=8;
 
             s_caminar = new SonidoNormal();
@@ -71,6 +77,8 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 
             break;
         case gg::SWARM:
+        Arange          = 1;
+
 
             velocity=1;
 
@@ -85,6 +93,8 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 
             break;
         case gg::TRACKER:
+        Arange          = 1;
+
         velocity=2;
             break;
     }
@@ -132,6 +142,7 @@ void CAIEnem::Init(){
     data            = new Blackboard();
     PlayerTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
     PlayerBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
+    cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,getEntityID()));
     cDynamicModel = static_cast<CDynamicModel*>(Manager->getComponent(gg::DYNAMICMODEL, getEntityID()));
 
     playerSeeing        = false;
@@ -159,7 +170,7 @@ void CAIEnem::Init(){
     arbol = new Treecontroller(data,type,this);
 
     Vrange          = 10;
-    Arange          = 1;
+    //Arange          = 1;
     enfado          = 1;
     gradovision     = cos(45*3.14159265359/180.f);
 
@@ -226,6 +237,15 @@ void CAIEnem::FixedUpdate(){
 
     pTF.y =0;
     cTF_POS.y =0;
+    if(playerSeeing){
+        glm::vec3 diren      = pTF-cTF_POS;
+        diren       = glm::normalize(diren);
+        diren       = gg::Direccion2D_to_rot(diren);
+
+        //cTransform->setRotation(V_AI_DEST);
+        cRigidBody->setRotY(180+diren.y);
+
+    }
 
     float dist = glm::distance(pTF,cTF_POS);
     if(dist<15){
@@ -272,6 +292,11 @@ void CAIEnem::FixedUpdate(){
                 //resetHabilityUpdateCounter();
             }
             else if(playerSeeing){
+            CAIEnem* cAIEnem =  static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+                if(cAIEnem&&cAIEnem->playerSeeing){
+
+                }
+            }else{
                 //no lo veo
                 playerSeeing = false;
                 //playerSeen = true;
@@ -394,7 +419,14 @@ void CAIEnem::setPlayerIsAttacking(bool _b){
 
 void CAIEnem::explosiveWave(){
     // TODO
-    EventSystem->RegisterTriger(kTrig_ExpansiveWave,0,ID,cTransform->getPosition(), 10,50,false,TData());
+    //EventSystem
+    TData mes;
+    mes.add(kDat_Damage,1000000000);
+    //mes.add(kDat_img1,0);
+    //std::cout << "entra" << '\n';
+
+    //EventSystem->RegisterTriger(kTrig_ExpansiveWave,0,ID,cTransform->getPosition(), 10,50,false,mes);
+    EventSystem->PulsoTrigger(kTrig_ExpansiveWave,ID,cTransform->getPosition(),50,mes);
 }
 
 bool CAIEnem::getPlayerIsAttacking(){

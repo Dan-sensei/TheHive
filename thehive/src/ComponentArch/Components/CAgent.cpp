@@ -226,7 +226,10 @@ void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
 
 void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_ExpansiveWave){
-
+        //std::cout << "entra" <<nCAgentID<< '\n';
+        if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
+            static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
+        }
     }
 }
 

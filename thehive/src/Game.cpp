@@ -85,7 +85,7 @@ void Game::Init(){
 
 
     glm::vec3 tmp(-19,-21,22);
-    sF->createTank(tmp, 2000);
+    //->createTank(tmp, 2000);
 
     //Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
