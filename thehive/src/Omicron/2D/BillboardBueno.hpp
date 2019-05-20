@@ -5,11 +5,12 @@
 #include <cstdint>
 #include <string>
 #include <glm/glm.hpp>
+#include <Omicron/CORE/TEntidad.hpp>
 
 class Omicron;
 class Shader;
 
-class BillboardBueno {
+class BillboardBueno  : public TEntidad {
     public:
         //BillboardBueno();
         BillboardBueno(float x,float y,float z,const std::string &Name);
@@ -22,25 +23,18 @@ class BillboardBueno {
         void setPos(float x,float y,float z);
         void setImage(const std::string &Name);
 
-        void setColor(glm::vec4 _color);
         float getX();
         float getW();
         float getY();
         float getH();
 
+        virtual void beginDraw();
+        virtual void endDraw();
+
     private:
             Shader* inicio;
-            Shader* fin;
-            unsigned long MVP                      ;
-            unsigned long particleCenter_wordspace ;
-            unsigned long CameraRight_worldspace   ;
-            unsigned long CameraUp_worldspace      ;
-            unsigned long inputColour              ;
-            unsigned long loc              ;
             Omicron* engine;
             glm::vec3 centro;
-            float index;
-            glm::vec4 color;
             unsigned int VAO;
             unsigned int VBO;
             unsigned int EBO;

@@ -27,8 +27,12 @@ class LightRoot : public ZNode {
     private:
         std::vector<ZStaticSpotLight> SPOT_LIGHTS;
         std::vector<ZStaticPointLight> POINT_LIGHTS;
+        std::vector<StandardNode*> DynSPOT_LIGHTS;
+        std::vector<StandardNode*> DynPOINT_LIGHTS;
         Omicron* Engine;
         static glm::vec3* CameraPosition;
+        int SPOT;
+        int POINT;
 };
 
 #endif

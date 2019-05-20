@@ -18,6 +18,7 @@
 #include <Bullet/ggDynWorld.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
 #include <GameAI/Pathfinding.hpp>
+#include <Omicron/2D/BillboardBueno.hpp>
 
 #define MOVEMENT_SPEED 1.f
 
@@ -123,6 +124,9 @@ void Game::Init(){
     BinaryParser::LoadParticleSystem(PS_D, "assets/BinaryFiles/ParticleTest.ps");
     PS = Engine->CreateParticleSystem(Singleton<Omicron>::Instance()->FORWARD_LAYER, PS_D);
 
+    // BillboardBueno* B = new BillboardBueno(-26.074661, -21.048573, 30.194473,"assets/Textures/prueba1.png");
+    // Leaf* ParticleNode = new Leaf(Singleton<Omicron>::Instance()->FORWARD_LAYER, B);
+
     TData mes;
     mes.add(kDat_total_img,1);
     mes.add(kDat_img1,0);
@@ -196,7 +200,7 @@ void Game::Update(){
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
-    // // std::cout << " - " << glm::to_string(pos) << '\n';
+    // std::cout << " - " << glm::to_string(pos) << '\n';
     // pos.y += 10;
     // Engine->setPosition(luz,pos);
 
