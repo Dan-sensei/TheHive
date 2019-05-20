@@ -42,7 +42,7 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
             SS->createSound("event:/SFX/Enemigos/Soldier/SoldierAtaque", s_atacar);
 
             s_grito = new SonidoNormal();
-            SS->createSound("event:/SFX/Enemigos/Soldier/SoldierGrito", s_atacar);
+            SS->createSound("event:/SFX/Enemigos/Soldier/SoldierGrito", s_grito);
             break;
         case gg::TANK:
             velocity=2;
@@ -104,6 +104,9 @@ int CAIEnem::getSigno(){
 }
 
 CAIEnem::~CAIEnem() {
+    delete s_caminar  ;
+    delete s_atacar   ;
+    delete s_grito    ;
 
     //CPlayerController::
     //CPlayerController::cont_enemigos--;
@@ -225,6 +228,23 @@ void CAIEnem::FixedUpdate(){
     cTF_POS.y =0;
 
     float dist = glm::distance(pTF,cTF_POS);
+    if(dist<15){
+        if(!s_caminar->isPlaying()){
+            s_caminar->play();
+        }
+        s_caminar->setPosition(cTF_POS);
+
+        int ramstein=gg::genIntRandom(1, 400);
+        if(ramstein==66){
+            s_grito->play();
+        }
+
+    }
+    else{
+        if(s_caminar->isPlaying()){
+            s_caminar->stop_fadeout();
+        }
+    }
     if(dist<Vrange){
         // glm::vec3 cTF_ROT    = cTransform->getRotation();
         // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);

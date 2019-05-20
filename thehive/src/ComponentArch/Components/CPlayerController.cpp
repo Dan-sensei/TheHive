@@ -165,6 +165,7 @@ void CPlayerController::Update(){
 void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !ghostCollider)  return;
+    SS->setListenerPosition(cTransform->getPosition());
     // auto posJ=cTransform->getPosition();
     //
     // std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
