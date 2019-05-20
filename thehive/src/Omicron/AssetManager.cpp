@@ -288,3 +288,62 @@ void AssetManager::freeAssets(){
     MaterialMap.clear();
     TextureMap.clear();
 }
+
+// MaterialHelper::MaterialHelper(
+//     uint8_t HD, uint8_t ND, uint8_t ED,
+//     uint8_t HN, uint8_t NN, uint8_t EN,
+//     uint8_t HS, uint8_t NS, uint8_t ES
+// )
+// :HasDiffuse(HD), NameDiffuse(ND), ExtensionDiffuse(ED),
+//  HasNormal(HN), NameNormal(NN), ExtensionNormal(EN),
+//  HasSpecular(HS), NameSpecular(NS), ExtensionSpecular(ES)
+// {}
+//
+// Texture::Texture()
+// :TextureID(0), ZONE(0)
+// {}
+// Texture::Texture(unsigned int _TextureID, uint8_t _ZONE)
+// :TextureID(_TextureID), ZONE(_ZONE)
+// {}
+// Texture::Texture(const Texture &orig)
+// :TextureID(orig.TextureID), ZONE(orig.ZONE)
+// {}
+//
+//
+// void AssetManager::reserveMaterials(uint16_t SIZE){
+//     MATERIALS.reserve(SIZE);
+//     MATERIALS.resize(SIZE);
+// }
+//
+// void AssetManager::addMaterial(
+//     uint16_t ID,
+//     uint8_t HD, uint8_t ND, uint8_t ED,
+//     uint8_t HN, uint8_t NN, uint8_t EN,
+//     uint8_t HS, uint8_t NS, uint8_t ES
+// ){
+//     MATERIALS[ID].HasDiffuse = HD;
+//     MATERIALS[ID].NameDiffuse = ND;
+//     MATERIALS[ID].ExtensionDiffuse = ED;
+//
+//     MATERIALS[ID].HasNormal = HN;
+//     MATERIALS[ID].NameNormal = NN;
+//     MATERIALS[ID].ExtensionNormal = EN;
+//
+//     MATERIALS[ID].HasSpecular = HS;
+//     MATERIALS[ID].NameSpecular = NS;
+//     MATERIALS[ID].ExtensionSpecular = ES;
+//
+//     // for(uint16_t i = 0; i < MATERIALS.size(); ++i){
+//     //     std::cout << "       HasDiffuse " << (uint16_t)MATERIALS[i].HasDiffuse << '\n';
+//     //     std::cout << "      NameDiffuse " << (uint16_t)MATERIALS[i].NameDiffuse << '\n';
+//     //     std::cout << " ExtensionDiffuse " << (uint16_t)MATERIALS[i].ExtensionDiffuse << '\n' << '\n';
+//     //     std::cout << "        HasNormal " << (uint16_t)MATERIALS[i].HasNormal << '\n';
+//     //     std::cout << "       NameNormal " << (uint16_t)MATERIALS[i].NameNormal << '\n';
+//     //     std::cout << "  ExtensionNormal " << (uint16_t)MATERIALS[i].ExtensionNormal << '\n' << '\n';
+//     //     std::cout << "      HasSpecular " << (uint16_t)MATERIALS[i].HasSpecular << '\n';
+//     //     std::cout << "     NameSpecular " << (uint16_t)MATERIALS[i].NameSpecular << '\n';
+//     //     std::cout << "ExtensionSpecular " << (uint16_t)MATERIALS[i].ExtensionSpecular << '\n' << '\n';
+//     //     std::cout << "------" << '\n';
+//     // }
+//     // std::cout << "===================================================================" << '\n';
+// }

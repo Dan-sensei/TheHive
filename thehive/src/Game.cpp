@@ -83,7 +83,7 @@ void Game::Init(){
 
 
     glm::vec3 tmp(-19,-21,22);
-    sF->createTank(tmp,2000);
+    sF->createTank(tmp, 2000);
 
     //Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
@@ -116,8 +116,8 @@ void Game::Init(){
 
     ParticleSystem_Data PS_D;
     PS_D.Texture = Singleton<AssetManager>::Instance()->getTexture("assets/Textures/Particles/Smoke.png");
-    PS_D.SpawnTime = 0.25;
-    PS_D.ParticleLifeTime = 3.5;
+    PS_D.SpawnTime = 0.5;
+    PS_D.ParticleLifeTime = 4;
     PS_D.MaxParticles = 1/PS_D.SpawnTime * PS_D.ParticleLifeTime;
 
     BinaryParser::LoadParticleSystem(PS_D, "assets/BinaryFiles/ParticleTest.ps");

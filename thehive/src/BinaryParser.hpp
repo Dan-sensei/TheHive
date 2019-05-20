@@ -60,6 +60,7 @@ namespace BinaryParser{
     void LoadParticleSystem(ParticleSystem_Data &PS, const std::string BinaryFile);
 
     void MENU_getCameraPositionRotation(const std::string &File, glm::vec3 &Position, glm::vec3 &Target);
+    // void loadMaterials(std::string DATA);
 };
 
 #endif

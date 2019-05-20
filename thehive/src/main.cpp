@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]) {
     //mainstates->AddState(new GameState());
     //mainstates->AddState(new GameState());
     //mainstates->AddState(new Game());
-    mainstates->AddState(new MenuState());
+    mainstates->AddState(new Game());
 
     while(Engine->isWindowOpen()) {
         mainstates->UpdateStateMachine();

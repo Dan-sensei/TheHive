@@ -924,3 +924,41 @@ void BinaryParser::MENU_getCameraPositionRotation(const std::string &File, glm::
     GG_Read(inStream, Position);
     GG_Read(inStream, Target);
 }
+
+// void BinaryParser::loadMaterials(std::string DATA){
+//     std::ifstream inStream(DATA, std::ios::binary);
+//
+//     AssetManager* Manager = Singleton<AssetManager>::Instance();
+//
+//     uint8_t SIZE = 0;
+//     GG_Read(inStream, SIZE);
+//     Manager->reserveMaterials(SIZE);
+//
+//     for(uint16_t i = 0; i < SIZE; ++i){
+//         uint8_t HD, ND, ED, HN, NN, EN, HS, NS, ES;
+//         HD = ND = ED = HN = NN = EN = HS = NS = ES = 0;
+//         uint8_t ID = 0;
+//         GG_Read(inStream, ID);
+//
+//         GG_Read(inStream, HD);
+//         if(HD){
+//             GG_Read(inStream, ND);
+//             GG_Read(inStream, ED);
+//         }
+//         GG_Read(inStream, HN);
+//         if(HN){
+//             GG_Read(inStream, NN);
+//             GG_Read(inStream, EN);
+//         }
+//         GG_Read(inStream, HS);
+//         if(HS){
+//             GG_Read(inStream, NS);
+//             if(NS){
+//                 GG_Read(inStream, ES);
+//             }
+//         }
+//
+//         Manager->addMaterial(ID, HD, ND, ED, HN, NN, EN, HS, NS, ES);
+//     }
+//
+// }

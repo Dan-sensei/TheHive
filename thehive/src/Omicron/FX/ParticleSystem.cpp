@@ -136,7 +136,7 @@ void ParticleSystem::Update(){
             GL_Color_Buffer[4*ActiveParticles+2] = (GLubyte)CurrentParticle.B;
 
             float L = ((ParticleLifeTime-CurrentParticle.Life) - ParticleLifeTime/2);
-            float Alpha =   (1-((L*L)/BASE)) * 50;
+            float Alpha =   (1-((L*L)/BASE)) * 72;
 
             GL_Color_Buffer[4*ActiveParticles+3] = (GLubyte)Alpha;
 
@@ -183,7 +183,7 @@ void ParticleSystem::ParticleCreationHandler(){
         //std::cout << "Color " << (uint16_t)Particles[FreePos].Color.R << ", " << (uint16_t)Particles[FreePos].Color.G << ", " << (uint16_t)Particles[FreePos].Color.B << ", " << (uint16_t)Particles[FreePos].Color.Alpha << '\n';
 
         Particles[FreePos].Life = ParticleLifeTime;
-        Particles[FreePos].Size = gg::genFloatRandom(15, 25);
+        Particles[FreePos].Size = gg::genFloatRandom(40, 55);
     }
 }
 
