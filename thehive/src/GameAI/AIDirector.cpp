@@ -74,9 +74,11 @@ void AIDirector::init(){
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_5.nav_z", ZONAS[4]);
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_6.nav_z", ZONAS[5]);
     BinaryParser::ReadNavmeshDataZone("assets/BinaryFiles/NAV/ZONA_7.nav_z", ZONAS[6]);
-    //createWandering(1);
-    //createWandering(2);
+    createWandering(1);
+    createWandering(2);
     //checkzone(glm::vec3(0,0,0));
+    //invocarrusher(1);
+    //createWandering(1);
 }
 
 AIDirector::AIDirector ():AcumulatorBusqueda(0),AcumulatorHorda(0),AcumulatorPico(11),TimeBusqueda(1),TimeHorda(300),TimePico(10),
@@ -264,8 +266,11 @@ void AIDirector::setActive(bool dato){
     activado=dato;
     if(activado){
         //Director << "entra3" << '\n';
-        createWandering(1);
-        createWandering(2);
+        //createWandering(1);
+        //createWandering(2);
+        //invocartank(1);
+        //invocarswarm(1);
+        //invocarrusher(1);
     }
     //Director << "entra4" << '\n';
 }
@@ -358,11 +363,12 @@ void AIDirector::removePos(int nodo){
         }
     }
 }
-/*
-void AIDirector::invocarswarm(AINode* nodo){
-    ////Director << "nodo" <<nodo->getPos().x<<";"<<nodo->getPos().y<<";"<<nodo->getPos().z<< '\n';
 
-     int id2=fac->createSwarm(nodo->getPos(), 2000);
+void AIDirector::invocarswarm(int nodo){
+    ////Director << "nodo" <<nodo->getPos().x<<";"<<nodo->getPos().y<<";"<<nodo->getPos().z<< '\n';
+    glm::vec3 zonarand=getposzona(nodo);
+
+     int id2=fac->createSwarm(zonarand, 0.1);
      //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
      CFlock* enemyflock=static_cast<CFlock*>(Manager->getComponent(gg::FLOCK, id2));
      auto arr=enemyflock->getFlocked();
@@ -371,25 +377,36 @@ void AIDirector::invocarswarm(AINode* nodo){
          int id3=(*it)->getEntityID();
          CTransform* enemypos12=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id3));
          enemigos.push_back(enemypos12);//anayadir todo el flock
+         numEnemigos++;
          it++;
      }
 
 }
-void AIDirector::invocartank(AINode* nodo){
 
-    int id2=fac->createTank(nodo->getPos(), 2000);
-    CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    enemigos.push_back(enemypos1);
+void AIDirector::invocartank(int nodo){
+
+
+    //glm::vec3 dest = Pjugador->getPosition();
+
+        glm::vec3 zonarand=getposzona(nodo);
+        int id2=fac->createTank(zonarand, 5);
+        CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
+        enemigos.push_back(enemypos1);
+        numEnemigos++;
 
 }
-void AIDirector::invocarrusher(AINode* nodo){
-    int id2=fac->createRusher(nodo->getPos(), 2000);
-    CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
-    enemigos.push_back(enemypos1);
+void AIDirector::invocarrusher(int nodo){
+
+    //glm::vec3 zonarand=getposzona(nodo);
+    glm::vec3 zonarand=glm::vec3(0,0,0);
+    int id2=fac->createRusher(zonarand, 2);
+    //CTransform* enemypos1=static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id2));
+    //enemigos.push_back(enemypos1);
+    //numEnemigos++;
 
 
 }
-*/
+
 
 
 

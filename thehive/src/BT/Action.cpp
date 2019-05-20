@@ -120,7 +120,6 @@ Status Action::update() {
 
 void Action::abort(){
     Behavior::abort();
-    //modifyImAttacking(false);
 }
 
 void Action::setActive(std::string a, bool acierto){
@@ -242,13 +241,6 @@ void Action::rond(bool _b){
     glm::vec3 V_AI_DEST_PP   = glm::vec3(sign*V_AI_DEST.z,0,(-sign)*V_AI_DEST.x);
     glm::vec3 V_FINAL        = glm::normalize(V_AI_DEST_PP);
 
-    V_AI_DEST.y     = 0;
-    V_AI_DEST       = glm::normalize(V_AI_DEST);
-    V_FINAL         =(V_FINAL+V_AI_DEST*0.1f);
-    V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
-
-    //cTransform->setRotation(V_AI_DEST);
-    cRigidBody->setRotY(180+V_AI_DEST.y);
 
 
     cRigidBody->applyConstantVelocityNormal(V_FINAL,yo->getVelocity()-(yo->getEnemyType()*VEL_ATENUATION));
@@ -415,25 +407,7 @@ void Action::look_around(){
 
 }
 void Action::hit(){
-    ////std::cout << yo->playerOnRange << '\n';
-    //if(yo->playerOnRange){
-    //    //std::cout << "estoy a rango" << '\n';
-    //}else{
-    //    //std::cout << "no lo estoy" << '\n';
-    //}
-    glm::vec3 mio            = cTransform->getPosition();
-    glm::vec3 dest           = yo->playerPos;
 
-    glm::vec3 V_AI_DEST      = dest-mio;
-    //glm::vec3 pru(1,0,0);
-
-    V_AI_DEST.y     = 0;
-    V_AI_DEST       = glm::normalize(V_AI_DEST);
-    V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
-
-    //cTransform->setRotation(V_AI_DEST);
-    //cTransform->setRotation(pru);
-    cRigidBody->setRotY(180+V_AI_DEST.y);
 
 
     if(s!=BH_RUNNING){
@@ -455,8 +429,7 @@ void Action::hit(){
     }
 
     cont_hit++;
-    if(cont_hit > 50){
-        //modifyImAttacking(false);
+    if(cont_hit > 20){
         s = BH_SUCCESS;
     }
 }
@@ -495,13 +468,13 @@ void Action::moreRage(){
 }
 
 void Action::checkAliensAttacking(){
-    if(aliensAttacking <= yo->getMaxAliensAttackingAtOnce() && !yo->getImAttacking()){
-        modifyImAttacking(true);
+    //if(aliensAttacking <= yo->getMaxAliensAttackingAtOnce() && !yo->getImAttacking()){
+    //    modifyImAttacking(true);
         s = BH_FAILURE;
-    }
-    else{
-        s = BH_SUCCESS;
-    }
+    //}
+    //else{
+    //    s = BH_SUCCESS;
+    //}
 
 }
 
@@ -511,7 +484,7 @@ void Action::alienInPause(){
         s = BH_RUNNING;
     }
     cont_pause++;
-    if(cont_pause > 50){
+    if(cont_pause > 5){
         s = BH_SUCCESS;
     }
 
@@ -610,9 +583,6 @@ void Action::move_player_utilx(){
     //10-25
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
-        ////gg::cout("move player");
-
-        // //gg::cout(" --- MOVE TO PLAYER --- ");
     }
     CTransform* cTransform2 = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,manager->getHeroID()));
     yo->destino = cTransform2->getPosition();
@@ -707,6 +677,8 @@ void Action::move_around(){
     CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
     if(nvAgent){
         if(s!=BH_RUNNING){
+            modifyImAttacking(false);
+
             nvAgent->ResetDestination();
             s=BH_RUNNING;
             // Obligatorio
@@ -747,16 +719,6 @@ void Action::move_too(int min){
     glm::vec3 mio        = cTransform->getPosition();
     glm::vec3 dest       = yo->destino;
     glm::vec3 direccion  = dest-mio;
-
-    // direccion.y     = 0;
-    // direccion       = glm::normalize(direccion);
-    // direccion       = gg::Direccion2D_to_rot(direccion);
-    //
-    // cTransform->setRotation(direccion);
-    //
-    // direccion       = dest-mio;
-    // direccion       = glm::normalize(direccion);
-    // cRigidBody->applyConstantVelocity(direccion,MAX_AI_SPEED-(yo->getEnemyType()*VEL_ATENUATION));
 
     mio.y=0;
     dest.y=0;

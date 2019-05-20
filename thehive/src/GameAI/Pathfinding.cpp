@@ -282,7 +282,7 @@ void Pathfinding::DroNodes(){
     color.B = 153;
     for(uint16_t i = 0; i < GConnections.size(); ++i){
         for(uint16_t j = 0; j < GConnections[i].size(); ++j){
-            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 15, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 15, 0), color);
+            Engine->Draw3DLine(GRAPH[GConnections[i][j].From].Position + glm::vec3(0, 5, 0), GRAPH[GConnections[i][j].To].Position + glm::vec3(0, 5, 0), color);
         }
     }
 

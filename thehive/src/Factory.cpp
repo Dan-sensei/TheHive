@@ -160,7 +160,35 @@ uint16_t Factory::createSoldier(StandardNode* FATHER, const glm::vec3 &Position,
 
     return Enemy;
 }
+/*
+uint16_t Factory::createSoldier( const glm::vec3 &Position,const float &health){
+    uint16_t Enemy = Manager->createEntity();
+    ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Soldier");
 
+
+    CTransform* Transform               = new CTransform(Position, glm::vec3(0, 0, 0));
+    Manager->addComponentToEntity(Transform, gg::TRANSFORM, Enemy);
+
+    CDynamicModel* DynamicModel       = new CDynamicModel(FATHER, moradoDeLos80);
+    Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, Enemy);
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Walking"));   // 0.4
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Attacking")); // 0.2
+    DynamicModel->ToggleAnimation(0, 0.4);
+
+    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BulletBoundingBoxes/soldier_final.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
+    Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
+
+    CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
+    Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
+
+
+    CVida* Vida                         = new CVida(health);
+    Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
+
+    return Enemy;
+}
+
+*/
 uint16_t Factory::createRusher(const glm::vec3 &Position,const float &health){
     uint16_t Enemy = Manager->createEntity();
     ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Default");
@@ -173,20 +201,30 @@ uint16_t Factory::createRusher(const glm::vec3 &Position,const float &health){
     CRenderable_3D* Renderable_3D       = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/SOLDIER.modelgg", moradoDeLos80);
     Manager->addComponentToEntity(Renderable_3D, gg::RENDERABLE_3D, Enemy);
 
+
+    //CDynamicModel* DynamicModel       = new CDynamicModel(FATHER, moradoDeLos80);
+    //Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, Enemy);
+    //DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Walking"));   // 0.4
+    //DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Attacking")); // 0.2
+    //DynamicModel->ToggleAnimation(0, 0.4);
+
+
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
-    CAIEnem* AIEnem                     = new CAIEnem(gg::RUSHER,30,Position,false);
-    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
-
+    /*
     CVida* Vida                         = new CVida(health);
     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
 
+    CAIEnem* AIEnem                     = new CAIEnem(gg::RUSHER,30,Position,false);
+    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+
     CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
     Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
+*/
 
     return Enemy;
 }
@@ -210,17 +248,17 @@ uint16_t Factory::createTank(const glm::vec3 &Position,const float &health){
     CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BulletBoundingBoxes/tank_final.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 50, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
 
-    // CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
-    // Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
+     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
+     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
 
-    // CAIEnem* AIEnem                     = new CAIEnem(gg::TANK,30,Position,false);
-    // Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
+    CAIEnem* AIEnem                     = new CAIEnem(gg::TANK,30,Position,false);
+    Manager->addComponentToEntity(AIEnem, gg::AIENEM, Enemy);
 
-    // CVida* Vida                         = new CVida(health);
-    // Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
+     CVida* Vida                         = new CVida(health);
+     Manager->addComponentToEntity(Vida,   gg::VIDA, Enemy);
 
-    // CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
-    // Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
+     CNavmeshAgent* NavmeshAgent         = new CNavmeshAgent();
+     Manager->addComponentToEntity(NavmeshAgent, gg::NAVMESHAGENT, Enemy);
 
     return Enemy;
 }

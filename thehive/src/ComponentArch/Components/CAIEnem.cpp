@@ -34,6 +34,7 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 
     switch (_type) {
         case gg::SOLDIER:
+            Arange          = 1;
             velocity=2;
             s_caminar = new SonidoNormal();
             SS->createSound("event:/SFX/Enemigos/Soldier/SoldierMovimiento", s_caminar);
@@ -45,6 +46,7 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
             SS->createSound("event:/SFX/Enemigos/Soldier/SoldierGrito", s_atacar);
             break;
         case gg::TANK:
+            Arange          = 2;
             velocity=2;
             s_caminar = new SonidoNormal();
             SS->createSound("event:/SFX/Enemigos/Tank/TankMovimiento", s_caminar);
@@ -57,6 +59,7 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 
             break;
         case gg::RUSHER:
+            Arange          = 1;
             velocity=8;
 
             s_caminar = new SonidoNormal();
@@ -71,6 +74,7 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
 
             break;
         case gg::SWARM:
+            Arange          = 1;
 
             velocity=1;
 
@@ -155,8 +159,9 @@ void CAIEnem::Init(){
 
     arbol = new Treecontroller(data,type,this);
 
-    Vrange          = 10;
-    Arange          = 1;
+    Vrange          = 20;
+    //Arange          = 2;
+    //Arange          = 1;
     enfado          = 1;
     gradovision     = cos(45*3.14159265359/180.f);
 
@@ -180,6 +185,7 @@ float CAIEnem::getArange(){
 gg::EMessageStatus CAIEnem::MHandler_SETPTRS(){
     // Inicializando punteros
     cTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, getEntityID()));
+    cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, getEntityID()));
     cAgent = static_cast<CAgent*>(Manager->getComponent(gg::AGENT, getEntityID()));
     //
 
@@ -201,7 +207,7 @@ void CAIEnem::checkzona(){
 }
 
 void CAIEnem::Update(){
-    // enableVisualDebug();
+     enableVisualDebug();
 }
 
 void CAIEnem::FixedUpdate(){
@@ -223,6 +229,15 @@ void CAIEnem::FixedUpdate(){
 
     pTF.y =0;
     cTF_POS.y =0;
+    if(playerSeen){
+        glm::vec3 diren      = pTF-cTF_POS;
+        diren       = glm::normalize(diren);
+        diren       = gg::Direccion2D_to_rot(diren);
+
+        //cTransform->setRotation(V_AI_DEST);
+        cRigidBody->setRotY(180+diren.y);
+
+    }
 
     float dist = glm::distance(pTF,cTF_POS);
     if(dist<Vrange){
@@ -252,6 +267,11 @@ void CAIEnem::FixedUpdate(){
                 //resetHabilityUpdateCounter();
             }
             else if(playerSeeing){
+            CAIEnem* cAIEnem =  static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+                if(cAIEnem&&cAIEnem->playerSeeing){
+
+                }
+            }else{
                 //no lo veo
                 playerSeeing = false;
                 //playerSeen = true;
@@ -433,9 +453,9 @@ void CAIEnem::playMovement(){
     s_caminar->play();
 }
 void CAIEnem::playAttack(){
-    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_ATTACKING && cDynamicModel->getAnimationPlayed()){
-        cDynamicModel->ToggleAnimation(A_ENEMIES::E_ATTACKING, 0.3);
-    }
+    //if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_ATTACKING && cDynamicModel->getAnimationPlayed()){
+    //    cDynamicModel->ToggleAnimation(A_ENEMIES::E_ATTACKING, 0.3);
+    //}
     s_atacar->setParameter("Impacto", 1);
     s_atacar->play();
 }

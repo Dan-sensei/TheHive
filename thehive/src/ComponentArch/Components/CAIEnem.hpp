@@ -130,6 +130,7 @@ class CAIEnem : public IComponent {
         Omicron      *Engine;
         ObjectManager   *Manager;
         CTriggerSystem  *EventSystem;
+        CRigidBody      *cRigidBody;
         CTransform      *cTransform;
         CAgent          *cAgent;
         ggDynWorld      *world;

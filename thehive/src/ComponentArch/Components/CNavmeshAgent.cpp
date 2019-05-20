@@ -94,7 +94,7 @@ void CNavmeshAgent::FixedUpdate(){
     float modulo= glm::length(moveVector);
 
     // Check if we are close to the next destination node
-    if(modulo <= 2) {
+    if(modulo <= 7) {
         currentWaypointID = Waypoints.top().ID;
         Waypoints.pop();
 

@@ -115,7 +115,7 @@ void Game::Init(){
 
 
     glm::vec3 tmp(-19,-21,22);
-    sF->createTank(tmp,2000);
+    //sF->createTank(tmp,2000);
 
     Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
@@ -138,7 +138,7 @@ void Game::Init(){
 
     Accumulator = 0;
 
-    // Singleton<Pathfinding>::Instance()->SetDebug(true);
+     Singleton<Pathfinding>::Instance()->SetDebug(true);
     world->setDebug(true);
     MasterClock.Restart();
 
@@ -200,35 +200,26 @@ void Game::Update(){
 
     // if(DeltaTime > 10000) throw std::exception();
     while(Accumulator >= 1/UPDATE_STEP){
-        // Director->getposzona(1);
         // FIXED UPDATE//
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_PRESAVE));
         Manager->FixedUpdateAll();
         Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE_POSTSAVE));
-
-        // Director->comprobar();
-
         world->stepSimulation(1/UPDATE_STEP*2.5, 10);
         Accumulator -= 1/UPDATE_STEP;
     }
 
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
-    // Director->update(DeltaTime);
-
-    //Director->update(DeltaTime);
+    Director->update(DeltaTime);
 
 
     soundSys->update();
-    //Director->update(DeltaTime);
-    //Director->clipingEnemigos();
 
     //  Interpolation tick!
     Tick = std::min(1.f, static_cast<float>( Accumulator/(1/UPDATE_STEP) ));
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
-    // std::cout << " - " << glm::to_string(pos) << '\n';
     pos.y += 10;
     Engine->setPosition(luz,pos);
 
@@ -245,15 +236,15 @@ void Game::Update(){
 
     // DEBUG PATHFINDING
     //glClear(GL_DEPTH_BUFFER_BIT);
-    //Singleton<Pathfinding>::Instance()->DroNodes();
 
     Engine->DisplayFPS();
     // Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-     // glClear(GL_DEPTH_BUFFER_BIT);
+      glClear(GL_DEPTH_BUFFER_BIT);
     // Engine->DrawZero();
-    // Manager->DibLineas();
+     Manager->DibLineas();
+     Singleton<Pathfinding>::Instance()->DroNodes();
 
     // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
