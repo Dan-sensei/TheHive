@@ -162,7 +162,7 @@ void ParticleSystem::ParticleCreationHandler(){
 
         FreePos = getFreePosition();
 
-        #define SPEED 1.f
+        #define SPEED 2.f
 
         Particles[FreePos].Position = glm::vec3(
             gg::genFloatRandom(Position.x - Size.x, Position.x + Size.x),
@@ -183,7 +183,7 @@ void ParticleSystem::ParticleCreationHandler(){
         //std::cout << "Color " << (uint16_t)Particles[FreePos].Color.R << ", " << (uint16_t)Particles[FreePos].Color.G << ", " << (uint16_t)Particles[FreePos].Color.B << ", " << (uint16_t)Particles[FreePos].Color.Alpha << '\n';
 
         Particles[FreePos].Life = ParticleLifeTime;
-        Particles[FreePos].Size = gg::genFloatRandom(40, 55);
+        Particles[FreePos].Size = gg::genFloatRandom(35, 45);
     }
 }
 

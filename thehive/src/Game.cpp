@@ -150,9 +150,10 @@ void Game::Init(){
 
 
     auto estado = new PopState();
-    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/asdw_esp.png"));
-    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/camara_esp.png"));
-    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/dash_esp.png"));
+    AssetManager* Manager = Singleton<AssetManager>::Instance();
+    estado->Addim(Manager->getTexture("assets/HUD/asdw_esp.png"));
+    estado->Addim(Manager->getTexture("assets/HUD/camara_esp.png"));
+    estado->Addim(Manager->getTexture("assets/HUD/dash_esp.png"));
     Singleton<StateMachine>::Instance()->AddState(estado);
 }
 
