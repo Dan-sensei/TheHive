@@ -220,6 +220,9 @@ void Game::Update(){
 
 
     MainCamera->CameraUpdate();
+
+    soundSys->setListenerPosition(MainCamera->getCameraPosition(),MainCamera->getTargetPosition());
+
     Engine->draw();
     Engine->drawHUD();
     //sky.Draw();

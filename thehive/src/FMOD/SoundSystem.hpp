@@ -23,7 +23,7 @@ class SoundSystem {
 		SoundEvent* createSound(const std::string&, SoundEvent*);
 
 		void setVolume(float,const std::string&);
-		void setListenerPosition(glm::vec3);
+		void setListenerPosition(glm::vec3,glm::vec3);
 		void update();
 		float getVolume(const std::string&);
 		void setMute(const std::string&);
