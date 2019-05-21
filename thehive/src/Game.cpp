@@ -20,6 +20,7 @@
 #include <GameAI/Pathfinding.hpp>
 #include <Omicron/2D/BillboardBueno.hpp>
 
+
 #define MOVEMENT_SPEED 1.f
 
 #define FRAMERATE 60.f
@@ -155,12 +156,23 @@ void Game::Init(){
     estado->Addim(Manager->getTexture("assets/HUD/camara_esp.png"));
     estado->Addim(Manager->getTexture("assets/HUD/dash_esp.png"));
     Singleton<StateMachine>::Instance()->AddState(estado);
+
+    dialog1 = 0;
+    dialogoInicial = new SonidoNormal();
+    soundSys->createSound("event:/Voces/Dialogos/DialogoIntro", dialogoInicial);
 }
 
 void Game::Update(){
     //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
     ////std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
 
+    if(dialog1==1){
+        dialogoInicial->play();
+        dialog1=2;
+    }
+    if(dialog1==0){
+        dialog1=1;
+    }
     DeltaTime = MasterClock.Restart().Seconds();
 
 
@@ -260,6 +272,7 @@ void Game::CLIN(){
     cont->musicaJuegoPause(true);
     cont->musicaMenuPlay();
     Engine->resetSceneGraph();
+    delete dialogoInicial;
 }
 void Game::Pause(){
     cont->musicaJuegoPause(true);

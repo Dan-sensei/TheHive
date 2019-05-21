@@ -96,7 +96,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             dmg = 0.34;
             cdc = 7;
             cb  = 30;
-            tb  = 60;
+            tb  = 120;
             relDT = 1;
             rng = 0.7;
 
@@ -114,7 +114,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             dmg = 1;
             cdc = 0.8;
             cb  = 10;
-            tb  = 10;
+            tb  = 40;
             relDT = 0.3;
             rng = 0.4;
 
@@ -152,7 +152,7 @@ void gg::getWeaponInformation(float& dmg, float& cdc, float& relDT, float& rng, 
             dmg = 0.17;
             cdc = 2.5;
             cb  = 15;
-            tb  = 30;
+            tb  = 200;
             relDT = 1.8;
             rng = 0.5;
 
