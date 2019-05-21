@@ -144,7 +144,7 @@ void CAIEnem::Init(){
     PlayerBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
     cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,getEntityID()));
     cDynamicModel = static_cast<CDynamicModel*>(Manager->getComponent(gg::DYNAMICMODEL, getEntityID()));
-
+    cDynamicModel->setStepDistance(0.8f);
     playerSeeing        = false;
     playerOnRange       = false;
     //playerSeen          = false;
@@ -332,7 +332,7 @@ void CAIEnem::FixedUpdate(){
     arbol->update();
 
     if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_WALKING && cDynamicModel->getAnimationPlayed()){
-        cDynamicModel->ToggleAnimation(A_ENEMIES::E_WALKING, 0.4);
+        cDynamicModel->ToggleAnimation(A_ENEMIES::E_WALKING, 0.4, false);
     }
 }
 

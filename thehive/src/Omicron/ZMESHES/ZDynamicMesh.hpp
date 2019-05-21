@@ -12,8 +12,10 @@ class ZDynamicMesh : public ZMesh {
         ZDynamicMesh(const ZDynamicMesh &orig);
         virtual ~ZDynamicMesh();
 
-        void SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes);
+        void SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes, bool Auto);
         void AddAnimation(ZAnimationData* Anim);
+        void setPosForStep(const glm::vec2 &P);
+        void setStepDistance(float D);
 
         inline bool getAnimationPlayed(){ return animationPlayed; };
 
@@ -21,13 +23,21 @@ class ZDynamicMesh : public ZMesh {
         virtual void endDraw();
 
     private:
-        gg::Clock DeltaTime;
+        void Auto();
+        void Manual();
 
+        gg::Clock DeltaTime;
         std::vector<ZAnimationData*> Animations;
         Shader* shader;
 
+        void (ZDynamicMesh::*CurrentUpd)();
+
+        glm::vec2 LastPosition;
+        glm::vec2 CurrentPosition;
         double Timer;
         float TimeBetweenAnimations;
+        float AngleAccumulator;
+        float StepDistance;
 
         bool animationPlayed;
 

@@ -27,7 +27,8 @@ class CDynamicModel : public IComponent {
         virtual void Update();
 
         void AddAnimation(ZAnimationData* Anim);
-        void ToggleAnimation(uint8_t Anim, float Time);
+        void ToggleAnimation(uint8_t Anim, float Time, bool _Auto = true);
+        void setStepDistance(float D);
 
         inline uint8_t getCurrentAnimation(){ return CurrentAnimation; };
         inline bool getAnimationPlayed(){ return static_cast<ZDynamicMesh*>(DynamicModel->getEntidad())->getAnimationPlayed(); };
@@ -39,11 +40,12 @@ class CDynamicModel : public IComponent {
 
     private:
         ZNode* DynamicModel;
+        ZDynamicMesh* DynamicModelEntity;
         Omicron* Surreal;
 
         CTransform* cTransform;
         uint8_t CurrentAnimation;
-
+        bool Auto;
 };
 
 #endif

@@ -165,7 +165,7 @@ void CPlayerController::Update(){
 void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !ghostCollider)  return;
-    SS->setListenerPosition(cTransform->getPosition());
+
     // auto posJ=cTransform->getPosition();
     //
     // std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
@@ -210,7 +210,6 @@ void CPlayerController::FixedUpdate(){
     else if(cDynamicModel->getAnimationPlayed()){
         if(pressed){
             cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.5);
-
         }
         else{
             cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);

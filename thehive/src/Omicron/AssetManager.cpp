@@ -119,7 +119,7 @@ void AssetManager::loadInit(){
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing2.modelgg");
 
     AnimationData = getAnimation("Hero_Walking");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking3.modelgg");
+    // AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking3.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking2.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking1.modelgg");
 

@@ -17,6 +17,7 @@ ZMeshData::ZMeshData(const ZMeshData &orig)
 
 ZMeshData::~ZMeshData(){
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &IndexBuffer);
     glDeleteVertexArrays(1, &VAO);
 }
 
