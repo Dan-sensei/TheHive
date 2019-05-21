@@ -101,6 +101,7 @@ class CPlayerController : public IComponent {
         SoundEvent* s_dash;
         SoundEvent* s_pasos;
         SoundEvent* s_saltar;
+        SoundEvent* s_saltarVoz;
 
         glm::vec3    force;
         glm::vec3 cV;

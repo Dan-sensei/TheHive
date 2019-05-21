@@ -49,8 +49,9 @@ class CVida : public IComponent {
         float vida_max;
         SoundSystem* SS;
 
-        SoundEvent* s_vida;
+
         SoundEvent* s_muerte;
+        SoundEvent* s_muletillas;
         //CRigidBody* cRigidBody;
 };
 
