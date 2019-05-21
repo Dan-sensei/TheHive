@@ -60,6 +60,8 @@ void CAgent::Init(){
     s_fusible = new SonidoNormal();
     SS->createSound("event:/Voces/Companyera/FrasePuerta", s_fusible);
 
+
+
     nCAgentID=getEntityID();
     addAgent(this);
 
@@ -524,6 +526,7 @@ void CAgent::EXIT_func_kTrig_DeadAlien   (TriggerRecordStruct *_pRec){
             //gg::cout("ROMERO");
         }
     }
+
 }
 
 void CAgent::EXIT_func_kTrig_Senyuelo    (TriggerRecordStruct *_pRec){

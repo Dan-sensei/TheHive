@@ -43,6 +43,7 @@ CPlayerController::~CPlayerController() {
     delete s_dash;
     delete s_pasos;
     delete s_saltar;
+    delete s_saltarVoz;
 }
 
 void CPlayerController::Init(){
@@ -102,6 +103,9 @@ void CPlayerController::Init(){
 
     s_saltar = new SonidoSuperficie();
     SS->createSound("event:/SFX/Jugador/Saltar", s_saltar);
+
+    s_saltarVoz = new SonidoNormal();
+    SS->createSound("event:/Voces/Jugador/Golpe", s_saltarVoz);
 
     KEYMAP[0] = {gg::_1, &CPlayerController::ToggleSkill1};
     KEYMAP[1] = {gg::_2, &CPlayerController::ToggleSkill2};
@@ -542,12 +546,14 @@ void CPlayerController::JUMP(){
     collider->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
     if(pressed){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
+            s_saltarVoz->play();
             cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.2);
 
         }
     }
     else{
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING){
+            s_saltarVoz->play();
             cDynamicModel->ToggleAnimation(A_HERO::JUMPING, 0.2);
         }
     }
