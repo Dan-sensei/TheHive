@@ -16,7 +16,7 @@ SoundSystem::SoundSystem(){
 
 	// system->initialize	(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0);
 	// FMOD_Studio_System_Initialize(system, 512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0);
-		FMOD_Studio_System_Initialize(system, 512, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_NORMAL, 0);
+		FMOD_Studio_System_Initialize(system, 512, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_3D_RIGHTHANDED, 0);
 
 	masterBank 	= nullptr;
 	// system->loadBankFile("assets/FMOD/Master_Bank.bank",FMOD_STUDIO_LOAD_BANK_NORMAL,&masterBank);
@@ -44,6 +44,7 @@ SoundSystem::SoundSystem(){
 
 
 	FMOD_3D_ATTRIBUTES *attr;
+
 	//  system->setListenerAttributes(0, attr);
 	FMOD_Studio_System_SetListenerAttributes(system,0,attr);
 }
@@ -96,20 +97,40 @@ void SoundSystem::setVolume(float vol, const std::string& busPath){
 	FMOD_Studio_Bus_SetVolume(bus,vol);
 }
 
-void SoundSystem::setListenerPosition(glm::vec3 _pos){
+void SoundSystem::setListenerPosition(glm::vec3 _pos, glm::vec3 _or){
 	FMOD_3D_ATTRIBUTES *att;
 	// system->getListenerAttributes(0, att);
 	FMOD_Studio_System_GetListenerAttributes(system,0,att);
 
-	FMOD_VECTOR vec;
-	vec.x = _pos.x;
-	vec.y = _pos.y;
-	vec.z = _pos.z;
+	FMOD_VECTOR vec_pos;
+	vec_pos.x = _pos.x;
+	vec_pos.y = _pos.y;
+	vec_pos.z = _pos.z;
 
-	att->position = vec;
+
+	FMOD_VECTOR vec_up;
+	vec_up.x = 0;
+	vec_up.y = _or.y;
+	vec_up.z = 0;
+
+	FMOD_VECTOR vec_forward;
+	vec_forward.x = _or.x;
+	vec_forward.y = 0;
+	vec_forward.z = 0;
+
+	FMOD_VECTOR vec_vel;
+	vec_vel.x = 0;
+	vec_vel.y = 0;
+	vec_vel.z = 0;
+
+	att->position = vec_pos;
+	att->velocity = vec_vel;
+	att->forward = vec_forward;
+	att->up = vec_up;
 	// system->setListenerAttributes(0, att);
 	FMOD_Studio_System_SetListenerAttributes(system,0,att);
 }
+
 
 void SoundSystem::update(){
 	if(system){
