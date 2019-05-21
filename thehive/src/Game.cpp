@@ -58,7 +58,7 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
-    Engine->resizeFrameBuffers(1280, 720);
+    Engine->resizeFrameBuffers(848, 480);
 
     Engine->createZones(8);
 
