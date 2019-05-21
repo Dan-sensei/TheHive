@@ -429,9 +429,16 @@ void CPlayerController::SprintDebuf(){
 }
 
 bool CPlayerController::canPickWeapon(){
-    if(Engine->key(gg::F)){
+    if(Engine->key(gg::E)){
         if(!pulsacion_f){
             pulsacion_f = true;
+            if(!heroHasSecondWeapon()){
+                auto estado = new PopState();
+                AssetManager* Manager = Singleton<AssetManager>::Instance();
+                estado->Addim(Manager->getTexture("assets/HUD/armas_esp.png"));
+                estado->Addim(Manager->getTexture("assets/HUD/municion_esp.png"));
+                Singleton<StateMachine>::Instance()->AddState(estado);
+            }
             return true;
         }
     }
