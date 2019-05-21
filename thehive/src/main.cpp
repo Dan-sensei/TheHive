@@ -22,8 +22,6 @@ int main(int argc, char const *argv[]) {
 
     SoundSystem *Sound = Singleton<SoundSystem>::Instance();
 
-    //
-    //
     // {
     //     ZPlayer Player;
     //     Player.PlayVideo("assets/Video/LOGO.mp4","event:/Musica/Videos/VideoLogoEmpresa");
@@ -46,7 +44,7 @@ int main(int argc, char const *argv[]) {
     //mainstates->AddState(new GameState());
     //mainstates->AddState(new GameState());
     //mainstates->AddState(new Game());
-    mainstates->AddState(new Game());
+    mainstates->AddState(new MenuState());
 
     while(Engine->isWindowOpen()) {
         mainstates->UpdateStateMachine();

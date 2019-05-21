@@ -162,7 +162,7 @@ void ParticleSystem::ParticleCreationHandler(){
 
         FreePos = getFreePosition();
 
-        #define SPEED 1.f
+        #define SPEED 2.f
 
         Particles[FreePos].Position = glm::vec3(
             gg::genFloatRandom(Position.x - Size.x, Position.x + Size.x),
@@ -183,7 +183,7 @@ void ParticleSystem::ParticleCreationHandler(){
         //std::cout << "Color " << (uint16_t)Particles[FreePos].Color.R << ", " << (uint16_t)Particles[FreePos].Color.G << ", " << (uint16_t)Particles[FreePos].Color.B << ", " << (uint16_t)Particles[FreePos].Color.Alpha << '\n';
 
         Particles[FreePos].Life = ParticleLifeTime;
-        Particles[FreePos].Size = gg::genFloatRandom(40, 55);
+        Particles[FreePos].Size = gg::genFloatRandom(35, 45);
     }
 }
 
@@ -212,10 +212,8 @@ void ParticleSystem::Draw(){
     glBindTexture(GL_TEXTURE_2D, Texture);
 
     glm::mat4 VP = projMatrix*viewMatrix;
-    glm::mat4 MV = viewMatrix*modelMatrix;
 
     glUniformMatrix4fv(_U_VP, 1, GL_FALSE, &VP[0][0]);
-    glUniformMatrix4fv(9, 1, GL_FALSE, &MV[0][0]);
     glUniform3f(_U_CAM_UP   , viewMatrix[0][1], viewMatrix[1][1], viewMatrix[2][1]);
     glUniform3f(_U_CAM_RIGHT, viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
 

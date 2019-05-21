@@ -21,7 +21,7 @@ PopState::PopState()
 {
     Engine = Singleton<Omicron>::Instance();
     SS = Singleton<SoundSystem>::Instance();
-    SH = Singleton<AssetManager>::Instance()->getShader("HUD");
+    SH = Singleton<AssetManager>::Instance()->getShader("Image");
 }
 
 PopState::~PopState(){
@@ -91,10 +91,13 @@ void PopState::Resume(){
 
 void PopState::Update(){
 
+
     Engine->PollEvents();
     if(Engine->key(gg::X, true))  {
         siguiente();
     }
+
+    if(imagenes.empty()) return;
 
     Engine->BeginDraw();
     Engine->draw();

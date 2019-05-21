@@ -3,9 +3,8 @@
 #include <Singleton.hpp>
 
 glm::vec3* LightRoot::CameraPosition = nullptr;
-
 LightRoot::LightRoot(ZNode* P)
-:ZNode(P)
+:ZNode(P), SPOT(0), POINT(0)
 {
     static_cast<StandardNode*>(P)->addHijo(this);
     SPOT_LIGHTS.reserve(10);
@@ -14,7 +13,7 @@ LightRoot::LightRoot(ZNode* P)
 }
 
 LightRoot::LightRoot(const LightRoot &orig)
-:SPOT_LIGHTS(orig.SPOT_LIGHTS), POINT_LIGHTS(POINT_LIGHTS)
+:SPOT_LIGHTS(orig.SPOT_LIGHTS), POINT_LIGHTS(POINT_LIGHTS), SPOT(orig.SPOT), POINT(orig.POINT)
 {}
 
 LightRoot::~LightRoot(){
@@ -74,6 +73,9 @@ ZStaticPointLight* LightRoot::emplace_PointLight(const glm::vec3 &MVP, const glm
 
 void LightRoot::draw() {
 
+    SPOT = 0;
+    POINT = 0;
+
     glm::vec3 CameraPos = *CameraPosition;
 
     std::vector<ZStaticSpotLight*> SPOTLIGHTS_PTR;
@@ -81,6 +83,7 @@ void LightRoot::draw() {
     auto SPOT_it = SPOT_LIGHTS.begin();
     while(SPOT_it != SPOT_LIGHTS.end()){
         if(glm::length2(SPOT_it->getPosition()-CameraPos) < DISTANCE) {
+            ++SPOT;
             SPOTLIGHTS_PTR.push_back(&(*SPOT_it));
         }
         ++SPOT_it;
@@ -92,12 +95,13 @@ void LightRoot::draw() {
     auto POINT_it = POINT_LIGHTS.begin();
     while(POINT_it != POINT_LIGHTS.end()){
         if(glm::length2(POINT_it->getPosition()-CameraPos)) {
+            ++POINT;
             POINTLIGHTS_PTR.push_back(&(*POINT_it));
         }
         ++POINT_it;
     }
 
-    Engine->setLights(SPOTLIGHTS_PTR.size(), POINTLIGHTS_PTR.size());
+    Engine->setLights(SPOT, POINT);
 
     for(uint8_t i = 0; i < SPOTLIGHTS_PTR.size(); ++i){
         SPOTLIGHTS_PTR[i]->setN(i);

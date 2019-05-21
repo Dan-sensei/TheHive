@@ -33,9 +33,9 @@ class AIDirector {
         void bajada();
 
         void invocar();
-        //void invocarrusher(AINode* nodo);
-        //void invocartank(AINode* nodo);
-        //void invocarswarm(AINode* nodo);
+        void invocarrusher(int nodo);
+        void invocartank(int nodo);
+        void invocarswarm(int nodo);
 
          glm::vec3 getposzona(int);
          int checkzone(glm::vec3 pos);

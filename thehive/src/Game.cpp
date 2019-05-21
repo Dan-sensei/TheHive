@@ -18,6 +18,7 @@
 #include <Bullet/ggDynWorld.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
 #include <GameAI/Pathfinding.hpp>
+#include <Omicron/2D/BillboardBueno.hpp>
 
 #define MOVEMENT_SPEED 1.f
 
@@ -68,6 +69,7 @@ void Game::Init(){
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 0);
     BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_LIGHTS.data", 0);
 
+    //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
 
     Engine2D->InitHUD();
 
@@ -83,7 +85,7 @@ void Game::Init(){
 
 
     glm::vec3 tmp(-19,-21,22);
-    sF->createTank(tmp, 2000);
+    //->createTank(tmp, 2000);
 
     //Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
@@ -123,6 +125,9 @@ void Game::Init(){
     BinaryParser::LoadParticleSystem(PS_D, "assets/BinaryFiles/ParticleTest.ps");
     PS = Engine->CreateParticleSystem(Singleton<Omicron>::Instance()->FORWARD_LAYER, PS_D);
 
+    // BillboardBueno* B = new BillboardBueno(-26.074661, -21.048573, 30.194473,"assets/Textures/prueba1.png");
+    // Leaf* ParticleNode = new Leaf(Singleton<Omicron>::Instance()->FORWARD_LAYER, B);
+
     TData mes;
     mes.add(kDat_total_img,1);
     mes.add(kDat_img1,0);
@@ -145,9 +150,10 @@ void Game::Init(){
 
 
     auto estado = new PopState();
-    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/asdw_esp.png"));
-    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/camara_esp.png"));
-    estado->Addim(Singleton<AssetManager>::Instance()->getTexture("assets/HUD/dash_esp.png"));
+    AssetManager* Manager = Singleton<AssetManager>::Instance();
+    estado->Addim(Manager->getTexture("assets/HUD/asdw_esp.png"));
+    estado->Addim(Manager->getTexture("assets/HUD/camara_esp.png"));
+    estado->Addim(Manager->getTexture("assets/HUD/dash_esp.png"));
     Singleton<StateMachine>::Instance()->AddState(estado);
 }
 
@@ -196,7 +202,7 @@ void Game::Update(){
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
-    // // std::cout << " - " << glm::to_string(pos) << '\n';
+    // std::cout << " - " << glm::to_string(pos) << '\n';
     // pos.y += 10;
     // Engine->setPosition(luz,pos);
 

@@ -9,25 +9,10 @@
 
 
 BillboardBueno::BillboardBueno(float x,float y,float z,const std::string &Name)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),textureID(0),index(0),centro(x,y,z),inicio(nullptr),fin(nullptr)
+:VAO(0),VBO(0),EBO(0),textureID(0),centro(x,y,z),inicio(nullptr)
 {
     auto sh=Singleton<AssetManager>::Instance();
     inicio=sh->getShader("Bill");
-    fin=sh->getShader("Default");
-    ////std::cout << "centro:"  <<"("<<centro.x<<","<<centro.y<<","<<centro.z<<")"<< '\n';
-    ////std::cout << "up:"      <<"("<<up    .x<<","<<up    .y<<","<<up    .z<<")"<< '\n';
-    ////std::cout << "rigth:"   <<"("<<rigth .x<<","<<rigth .y<<","<<rigth .z<<")"<< '\n';
-    //auto MVP2=engine
-
-    MVP                      = inicio->getUniformLocation("MVP");
-    particleCenter_wordspace = inicio->getUniformLocation("particleCenter_wordspace");
-    CameraRight_worldspace   = inicio->getUniformLocation("CameraRight_worldspace");
-    CameraUp_worldspace      = inicio->getUniformLocation("CameraUp_worldspace");
-    inputColour              = inicio->getUniformLocation("inputColour");
-    loc                      = inicio->getUniformLocation("DiffuseMap");
-
-
-
 
     engine=Singleton<Omicron>::Instance();
     float _x,_y,_w,_h;
@@ -96,54 +81,39 @@ void BillboardBueno::setPos(float x,float y,float z){
     centro=glm::vec3(x,y,z);
 }
 
-void BillboardBueno::setColor(glm::vec4 _color){
-    color=_color;
-}
-
 void BillboardBueno::setImage(const std::string &Name){
     auto Manager = Singleton<AssetManager>::Instance();
     textureID=Manager->getTexture(Name);
 }
 
-void BillboardBueno::Draw(){
 
 
-
-
-    auto up=    engine->vectorUp();
-    auto MVP2=    engine->getMVP();
-    auto rigth= engine->vectorRigth();
-    rigth*=2;
-    up*=2;
+void BillboardBueno::beginDraw(){
 
     inicio->Bind();
-    ////std::cout << "centro:"  <<"("<<centro.x<<","<<centro.y<<","<<centro.z<<")"<< '\n';
-    ////std::cout << "up:"      <<"("<<up    .x<<","<<up    .y<<","<<up    .z<<")"<< '\n';
-    ////std::cout << "rigth:"   <<"("<<rigth .x<<","<<rigth .y<<","<<rigth .z<<")"<< '\n';
-    //auto MVP2=engine
 
-    glUniformMatrix4fv(MVP, 1, GL_FALSE, &(MVP2)[0][0]);
-    glUniform3fv(particleCenter_wordspace,1,&centro[0]);
-    glUniform3fv(CameraRight_worldspace,1,&rigth[0]);
-    glUniform3fv(CameraUp_worldspace,1,&up[0]);
-    glUniform4fv(inputColour,1,&color[0]);
-    glUniform1i(loc, 0);
+    glm::mat4 VP = projMatrix*viewMatrix;
 
+    glUniformMatrix4fv(6, 1, GL_FALSE, &VP[0][0]);
+    glUniform3f(3, centro.x, centro.y, centro.z);
+    glUniform3f(4, viewMatrix[0][1], viewMatrix[1][1], viewMatrix[2][1]);
+    glUniform3f(5, viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
 
-    glActiveTexture(GL_TEXTURE0 + 0);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
-
-    fin->Bind();
-
 }
+
+void BillboardBueno::endDraw(){}
 
 BillboardBueno::~BillboardBueno(){
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteVertexArrays(1, &VAO);
-
 }
+
+
+

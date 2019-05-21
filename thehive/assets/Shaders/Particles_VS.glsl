@@ -4,7 +4,6 @@ layout(location = 0) in vec3 SQUARE;
 layout(location = 1) in vec4 Position_Size;
 layout(location = 2) in vec4 Color;
 
-layout(location =  9) uniform mat4 MV;
 layout(location = 21) uniform mat4 VP;
 layout(location = 22) uniform vec3 CameraUP;
 layout(location = 23) uniform vec3 CameraRIGHT;
@@ -21,7 +20,6 @@ void main() {
         + CameraRIGHT * SQUARE.x * ParticleSize
         + CameraUP * SQUARE.y * ParticleSize;
 
-    vec4 Pos = MV * vec4(VertexPosition, 1.0f);
     gl_Position = VP * vec4(VertexPosition, 1.0f);
 
     UV = SQUARE.xy + vec2(0.5, 0.5);

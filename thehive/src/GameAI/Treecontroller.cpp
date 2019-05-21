@@ -25,7 +25,8 @@ Treecontroller::Treecontroller(Blackboard *_data, gg::EEnemyType tipo, CAIEnem* 
             arboltank();
             break;
         case gg::RUSHER:
-            arbolrusher();
+            //arbolrusher();
+            arboltracker();
             break;
         case gg::SWARM:
             arbolswarm();
@@ -79,10 +80,11 @@ void Treecontroller::update(){
 }
 
 void Treecontroller::arboltracker(){
-    BT= new BehaviorTree(addAction(MOVE_AROUND));
+    //BT= new BehaviorTree(addAction(MOVE_AROUND));
+    BT= new BehaviorTree(addAction(COMER));
 }
 void Treecontroller::arbolswarm(){
-    Sequence* sec6= createSequence();//cargar dash random+
+    Sequence* sec6= createSequence();
     sec6->addChild(addAction(ON_RANGE));
     sec6->addChild(addAction(KAMIKACE));
 
@@ -91,32 +93,43 @@ void Treecontroller::arbolswarm(){
     sel4->addChild(addAction(PLAYER_SEEING));
     Parallel* pal5=createParallel(sel4);
     pal5->addChild(addAction(MOVE_AROUND));//animal en rango
-    Inverso* inv3=createInverso(addAction(PLAYER_SEEING));
-    Parallel* pal1=createParallel(inv3);
-    pal1->addChild(addAction(MOVE_TO_PLAYER));//animal en rango
+
+    //miramos
     Parallel* pal4=createParallel(addAction(PLAYER_SEEING));
     pal4->addChild(addAction(LOOKAROUND));//animal en rango
+    //ult pos
     Parallel* pal3=createParallel(addAction(PLAYER_SEEING));
     pal3->addChild(addAction(MOVE_TO_LAST_POS_KWON));//animal en rango
+    //si he visto al jugador
     Sequence* sec5= createSequence();
     sec5->addChild(addAction(PLAYER_SEEN));
     sec5->addChild(pal3);
     sec5->addChild(pal4);
+
+    //mover hacia el jugador mientras lo vea
+    Inverso* inv3=createInverso(addAction(PLAYER_SEEING));
+    Parallel* pal1=createParallel(inv3);
+    pal1->addChild(addAction(MOVE_TO_PLAYER));//animal en rangoLOOKAROUND
+    //si veo al jugador
     Sequence* sec4= createSequence();
     sec4->addChild(addAction(PLAYER_SEEING));
     sec4->addChild(pal1);
+
     Sequence* sec3= createSequence();
     sec3->addChild(addAction(RANGO_SENYUELO));
     sec3->addChild(addAction(MOVER_SENYUELO));
+
     Sequence* sec2= createSequence();
     sec2->addChild(addAction(RANGO_ULTRASONIDO));
     sec2->addChild(addAction(ATURDIDO));
+
     Selector* sel1= createSelector();//random selector?
     sel1->addChild(sec2);
     sel1->addChild(sec3);
     sel1->addChild(sec4);
     sel1->addChild(sec5);
     sel1->addChild(pal5);
+    //si soy el lider
     Sequence* sec1= createSequence();//cargar dash random+
     sec1->addChild(addAction(IAMLEADER));
     sec1->addChild(sel1);
@@ -188,7 +201,7 @@ void Treecontroller::arbolrusher(){
     sec6->addChild(inv1);
     sec6->addChild(pal4);
 
-
+    //move arround
     Selector* sel5= createSelector();
     sel5->addChild(addAction(PLAYER_SEEN));
     sel5->addChild(addAction(PLAYER_SEEING));
@@ -229,29 +242,31 @@ void Treecontroller::arboltank(){
     sec2->addChild(addAction(MOVER_SENYUELO));
     sec2->addChild(addAction(RONDAR_SENYUELO));
 
-
+    //mover al jugador mientras lo este viendo
     Inverso* inv3=createInverso(addAction(PLAYER_SEEING));
     Parallel* pal1=createParallel(inv3);
     pal1->addChild(addAction(MOVE_TO_PLAYER));//animal en rango
 
-    Selector* sel2= createSelector();//random selector?
-    sel2->addChild(addAction(EXPANSIVE_WAVE));
-    sel2->addChild(addAction(SPIT));
+    //Selector* sel2= createSelector();//random selector?
+    //sel2->addChild(addAction(EXPANSIVE_WAVE));
+    //sel2->addChild(addAction(SPIT));
     Sequence* sec6= createSequence();
     sec6->addChild(addAction(FIVE_SINCELASTHABILITY));
-    sec6->addChild(sel2);
+    sec6->addChild(addAction(SPIT));
+    //si no estoy a rango 2-10M-- escupo/onda expansiva
     Sequence* sec5= createSequence();//eing?
     sec5->addChild(addAction(ENEMY_OVER_2_METERS));   // Por encima de 2 metros
     sec5->addChild(addAction(TEN_METROS));     // Por debajo de 10 metros
     sec5->addChild(sec6);
+    //si esta a rango ataco
     Sequence* sec4= createSequence();
     sec4->addChild(addAction(ON_RANGE));
-    sec4->addChild(addAction(HIT));
+    sec4->addChild(addAction(EXPANSIVE_WAVE));
     Selector* sel1= createSelector();
     sel1->addChild(sec4);
     sel1->addChild(sec5);
     sel1->addChild(pal1);
-    //sel1->addChild(addAction(MOVE_TO_PLAYER));//acabar cuando deje de verlo
+    //si veo al jugador
     Sequence* sec3= createSequence();
     sec3->addChild(addAction(PLAYER_SEEING));
     sec3->addChild(sel1);
@@ -301,18 +316,31 @@ void Treecontroller::arbolsoldado(){
     sec2->addChild(addAction(RONDAR_SENYUELO));
 
 
+
     Inverso* inv4=createInverso(addAction(PLAYER_SEEING));
-    Parallel* pal2=createParallel(inv4);
-    pal2->addChild(addAction(RONDAR_PLAYER));//animal en rango
+    Inverso* inv5=createInverso(addAction(NOT_ATTACKED));
+    Inverso* inv6=createInverso(addAction(X_ALIENS_ATTACKING));
+    Selector* sel444= createSelector();
+    sel444->addChild(inv4);
+    sel444->addChild(inv5);
+    sel444->addChild(inv6);
+    Parallel* pal2=createParallel(sel444);
+    pal2->addChild(addAction(RONDAR_PLAYER));
+    //si no es el caso 3 opciones aleatorias
+    //1-me quedo pausado
+    //2-rondo al jugador hasta que me ataque, deje de verlo o pueda atacar
+    //3-me acerco un poco a el-- eliminado
     RandomSelector* rsel1=createRandomSelector();
     rsel1->addChild(addAction(PAUSE));
     rsel1->addChild(pal2);//poner pal
-    rsel1->addChild(addAction(MOVEP_UNTILX));
+    //rsel1->addChild(addAction(MOVEP_UNTILX));
+    //me muevo hacia el jugador mientras lo veo
     Inverso* inv3=createInverso(addAction(PLAYER_SEEING));
     Parallel* pal1=createParallel(inv3);
-    pal1->addChild(addAction(MOVE_TO_PLAYER));//animal en rango
+    pal1->addChild(addAction(MOVE_TO_PLAYER));
     Inverso* inv1=createInverso(addAction(NOT_ATTACKED));
     Inverso* inv2=createInverso(addAction(X_ALIENS_ATTACKING));
+    //si estoy atanco o me han atacado o hay menos de x alien atacando
     Selector* sel3= createSelector();
     sel3->addChild(addAction(IAMATACKING));
     sel3->addChild(inv1);
@@ -323,12 +351,14 @@ void Treecontroller::arbolsoldado(){
     Selector* sel2= createSelector();
     sel2->addChild(sec5);
     sel2->addChild(rsel1);
+    //si estoy a rango ataco
     Sequence* sec4= createSequence();
     sec4->addChild(addAction(ON_RANGE));
     sec4->addChild(addAction(HIT));
     Selector* sel1= createSelector();
     sel1->addChild(sec4);
     sel1->addChild(sel2);
+    //veo al jugador sel1-sec4//
     Sequence* sec3= createSequence();
     sec3->addChild(addAction(PLAYER_SEEING));
     sec3->addChild(sel1);
@@ -343,14 +373,14 @@ void Treecontroller::arbolsoldado(){
     sec6->addChild(addAction(PLAYER_SEEN));
     sec6->addChild(pal3);
     sec6->addChild(pal4);
-
+    //si lo he visto y mientras no lo vea otra vez, primero voy  la ultima posicion y luego miro alrededor
 
     Selector* sel4= createSelector();
     sel4->addChild(addAction(PLAYER_SEEN));
     sel4->addChild(addAction(PLAYER_SEEING));
     Parallel* pal5=createParallel(sel4);
     pal5->addChild(addAction(MOVE_AROUND));//animal en rango
-
+    //mover aleatorio hasta que lo vea
 
     Selector* sel5= createSelector();
     sel5->addChild(sec1);

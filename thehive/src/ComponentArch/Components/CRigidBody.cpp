@@ -267,8 +267,9 @@ void CRigidBody::MHandler_XPLOTATO(TriggerRecordStruct* cdata){
     if(cTransform){
         float distancia=glm::distance(cTransform->getPosition(),cdata->vPos);
         float fuerzabomba=cdata->data.find(kDat_Damage);
+        //std::cout << "fuerza" <<fuerzabomba<< '\n';
         glm::vec3 sol =glm::normalize(cTransform->getPosition()-cdata->vPos)*fuerzabomba*(1-distancia/cdata->fRadius);
-
+        //std::cout << "VEC:(" <<sol.x<<","<<sol.y<<","<<sol.z<<")"<< '\n';
         applyCentralForce(sol);
     }
 }

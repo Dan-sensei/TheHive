@@ -24,7 +24,6 @@ void StateMachine::ProcessStateChanges() {
 	if (isRemoving && !states.empty())
 	{
 		while(cantidad && !states.empty()){
-			states.top()->CLIN();
 			delete states.top();
 			states.pop();
 			--cantidad;
@@ -38,7 +37,6 @@ void StateMachine::ProcessStateChanges() {
 	if (isAdding) {
 		if (!states.empty()) {
 			if (isReplacing) {
-				states.top()->CLIN();
 				delete states.top();
 				states.pop();
 				isReplacing = false;
