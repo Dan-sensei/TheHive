@@ -10,6 +10,7 @@ class ggDynWorld;
 //#include <iostream>
 #include "States/State.hpp"
 #include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
 
 class PopState : public State {
 public:
@@ -42,6 +43,7 @@ private:
     Shader* SH;
 
     SoundSystem* SS;
+    SoundEvent* nextImage;
 
     unsigned int QUAD;
     unsigned int QUAD_POS_UV;

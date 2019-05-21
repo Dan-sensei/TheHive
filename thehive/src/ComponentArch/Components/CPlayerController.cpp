@@ -210,7 +210,6 @@ void CPlayerController::FixedUpdate(){
     else if(cDynamicModel->getAnimationPlayed()){
         if(pressed){
             cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.5);
-
         }
         else{
             cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);
@@ -603,7 +602,12 @@ void CPlayerController::ToggleFreeCamera(){
         FreeCamera = false;
     }
 }
+void CPlayerController::explosion(glm::vec3 vPos,float fuerzabomba){
+    float distancia=glm::distance(cTransform->getPosition(),vPos);
+    glm::vec3 sol =glm::normalize(cTransform->getPosition()-vPos)*fuerzabomba;
+    collider->applyCentralForce(sol);
 
+}
 void CPlayerController::EnemyInfo(){
     //devuelve ide de un objeto
     glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition(),200);

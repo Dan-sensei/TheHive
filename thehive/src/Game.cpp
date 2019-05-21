@@ -20,6 +20,7 @@
 #include <GameAI/Pathfinding.hpp>
 #include <Omicron/2D/BillboardBueno.hpp>
 
+
 #define MOVEMENT_SPEED 1.f
 
 #define FRAMERATE 60.f
@@ -28,6 +29,7 @@
 
 
 #include <Omicron/ZPlayer.hpp>
+#include <Omicron/SkyBox.hpp>
 
 Game::Game()
 :Accumulator(0)
@@ -57,7 +59,7 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
-    Engine->resizeFrameBuffers(1280, 720);
+    Engine->resizeFrameBuffers(848, 480);
 
     Engine->createZones(8);
 
@@ -122,11 +124,16 @@ void Game::Init(){
     PS_D.ParticleLifeTime = 4;
     PS_D.MaxParticles = 1/PS_D.SpawnTime * PS_D.ParticleLifeTime;
 
+
     BinaryParser::LoadParticleSystem(PS_D, "assets/BinaryFiles/ParticleTest.ps");
     PS = Engine->CreateParticleSystem(Singleton<Omicron>::Instance()->FORWARD_LAYER, PS_D);
 
     // BillboardBueno* B = new BillboardBueno(-26.074661, -21.048573, 30.194473,"assets/Textures/prueba1.png");
     // Leaf* ParticleNode = new Leaf(Singleton<Omicron>::Instance()->FORWARD_LAYER, B);
+    //
+    // SkyBox* S = new SkyBox();
+    // S->init();
+    // Leaf* SkyboxNode = new Leaf(Singleton<Omicron>::Instance()->FORWARD_LAYER, S);
 
     TData mes;
     mes.add(kDat_total_img,1);
@@ -155,12 +162,23 @@ void Game::Init(){
     estado->Addim(Manager->getTexture("assets/HUD/camara_esp.png"));
     estado->Addim(Manager->getTexture("assets/HUD/dash_esp.png"));
     Singleton<StateMachine>::Instance()->AddState(estado);
+
+    dialog1 = 0;
+    dialogoInicial = new SonidoNormal();
+    soundSys->createSound("event:/Voces/Dialogos/DialogoIntro", dialogoInicial);
 }
 
 void Game::Update(){
     //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
     ////std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
 
+    if(dialog1==1){
+        dialogoInicial->play();
+        dialog1=2;
+    }
+    if(dialog1==0){
+        dialog1=1;
+    }
     DeltaTime = MasterClock.Restart().Seconds();
 
 
@@ -188,7 +206,7 @@ void Game::Update(){
 
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
-    // Director->update(DeltaTime);
+    Director->update(DeltaTime);
 
     //Director->update(DeltaTime);
 
@@ -260,6 +278,7 @@ void Game::CLIN(){
     cont->musicaJuegoPause(true);
     cont->musicaMenuPlay();
     Engine->resetSceneGraph();
+    delete dialogoInicial;
 }
 void Game::Pause(){
     cont->musicaJuegoPause(true);

@@ -17,6 +17,7 @@ class AIDirector;
 #include <FMOD/SoundSystem.hpp>
 #include <Omicron/NatureGenerator.hpp>
 #include <Omicron/2D/GUIController.hpp>
+#include <FMOD/SonidoNormal.hpp>
 
 class Motor2D;
 class Game : public State{
@@ -52,8 +53,9 @@ private:
     CCamera* MainCamera;
     AIDirector* Director;
     SoundSystem* soundSys;
+    SoundEvent* dialogoInicial;
     GUIController* cont;
-
+    int dialog1;
 
     gg::Clock MasterClock;
     double DeltaTime;

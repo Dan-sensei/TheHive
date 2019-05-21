@@ -50,6 +50,8 @@ class CPlayerController : public IComponent {
         virtual void FixedUpdate();
         virtual void Update();
 
+        void explosion(glm::vec3 vPos,float fuerzabomba);
+
         int setSecondWeapon(CGun*);
         bool heroHasSecondWeapon();
         bool canPickWeapon();

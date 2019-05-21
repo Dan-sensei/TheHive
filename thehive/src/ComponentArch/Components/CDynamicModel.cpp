@@ -3,11 +3,12 @@
 #include "CTransform.hpp"
 
 CDynamicModel::CDynamicModel(StandardNode* FATHER, ZMaterial* material)
-:DynamicModel(nullptr), cTransform(nullptr), CurrentAnimation(0)
+:DynamicModel(nullptr), cTransform(nullptr), CurrentAnimation(0), Auto(false)
 {
     Surreal = Singleton<Omicron>::Instance();
     DynamicModel = Surreal->CreateDynamicMesh(FATHER);
     Surreal->bindMaterialToDynamicMesh(DynamicModel, material);
+    DynamicModelEntity = static_cast<ZDynamicMesh*>(DynamicModel->getEntidad());
 }
 
 CDynamicModel::CDynamicModel(const CDynamicModel &orig){
@@ -18,23 +19,26 @@ CDynamicModel::~CDynamicModel() {
     Surreal->deleteLeafNode(DynamicModel);
 }
 
-void CDynamicModel::Init(){
+void CDynamicModel::Init() {
     MHandler_SETPTRS();
 }
 
-void CDynamicModel::setVisibility(bool flag){
+void CDynamicModel::setVisibility(bool flag) {
     DynamicModel->getPadre()->getPadre()->setVisibility(flag);
 }
 
-void CDynamicModel::AddAnimation(ZAnimationData* Anim){
-    static_cast<ZDynamicMesh*>(DynamicModel->getEntidad())->AddAnimation(Anim);
+void CDynamicModel::AddAnimation(ZAnimationData* Anim) {
+    DynamicModelEntity->AddAnimation(Anim);
+}
+void CDynamicModel::setStepDistance(float D){
+    DynamicModelEntity->setStepDistance(D);
 }
 
-void CDynamicModel::ToggleAnimation(uint8_t Anim, float Time){
+void CDynamicModel::ToggleAnimation(uint8_t Anim, float Time, bool _Auto) {
     CurrentAnimation = Anim;
-    static_cast<ZDynamicMesh*>(DynamicModel->getEntidad())->SwitchAnimation(Anim, Time);
+    DynamicModelEntity->SwitchAnimation(Anim, Time, _Auto);
+    Auto = _Auto;
 }
-
 
 gg::EMessageStatus CDynamicModel::processMessage(const Message &m) {
     if (m.mType == gg::M_SETPTRS)  return MHandler_SETPTRS();
@@ -46,6 +50,9 @@ void CDynamicModel::Update(){
         //  If exists, we get its position, and asign it to the DynamicModel
         Surreal->setPosition(DynamicModel, cTransform->getPosition());
         Surreal->setRotation(DynamicModel, cTransform->getRotation());
+
+        if(!Auto)
+            DynamicModelEntity->setPosForStep(glm::vec2(cTransform->getPosition().x, cTransform->getPosition().z));
     }
 }
 

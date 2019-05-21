@@ -49,7 +49,7 @@ CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos,
         case gg::TANK:
         Arange          = 2;
 
-            velocity=2;
+            velocity=1;
             s_caminar = new SonidoNormal();
             SS->createSound("event:/SFX/Enemigos/Tank/TankMovimiento", s_caminar);
 
@@ -144,7 +144,7 @@ void CAIEnem::Init(){
     PlayerBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
     cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,getEntityID()));
     cDynamicModel = static_cast<CDynamicModel*>(Manager->getComponent(gg::DYNAMICMODEL, getEntityID()));
-
+    cDynamicModel->setStepDistance(0.8f);
     playerSeeing        = false;
     playerOnRange       = false;
     //playerSeen          = false;
@@ -169,7 +169,7 @@ void CAIEnem::Init(){
 
     arbol = new Treecontroller(data,type,this);
 
-    Vrange          = 10;
+    Vrange          = 20;
     //Arange          = 1;
     enfado          = 1;
     gradovision     = cos(45*3.14159265359/180.f);
@@ -332,7 +332,7 @@ void CAIEnem::FixedUpdate(){
     arbol->update();
 
     if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_WALKING && cDynamicModel->getAnimationPlayed()){
-        cDynamicModel->ToggleAnimation(A_ENEMIES::E_WALKING, 0.4);
+        cDynamicModel->ToggleAnimation(A_ENEMIES::E_WALKING, 0.4, false);
     }
 }
 
@@ -421,7 +421,7 @@ void CAIEnem::explosiveWave(){
     // TODO
     //EventSystem
     TData mes;
-    mes.add(kDat_Damage,1000000000);
+    mes.add(kDat_Damage,10000);
     //mes.add(kDat_img1,0);
     //std::cout << "entra" << '\n';
 
