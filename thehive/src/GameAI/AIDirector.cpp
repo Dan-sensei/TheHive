@@ -112,7 +112,7 @@ int AIDirector::checkzone(glm::vec3 pos){
     return -1;
 }
 AIDirector::~AIDirector (){
-
+    delete s_vozTantos;
 
 }
 
@@ -273,6 +273,13 @@ void AIDirector::setActive(bool dato){
     activado=dato;
     if(activado){
         //Director << "entra3" << '\n';
+
+        //sonido de donde salen tantos
+        // SS = Singleton<SoundSystem>::Instance();
+        // s_vozTantos= new SonidoNormal();
+        // SS->createSound("event:/Voces/Jugador/FraseSoldier2", s_vozTantos);
+        // s_vozTantos->play();
+
         createWandering(1);
         createWandering(2);
         //invocartank(1);

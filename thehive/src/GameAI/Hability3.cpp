@@ -48,12 +48,12 @@
     //codigo de las habilidades
     void Hability3::Hab1_init (){
         TData mes;
-        mes.add(kDat_Damage,6000);
+        mes.add(kDat_Damage,3000);
         CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
 
         CTransform* cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, id));
         float id=cTransform->getEntityID();
-        EventSystem->PulsoTrigger(kTrig_ExpansiveForce,id,cTransform->getPosition(),500,mes);
+        EventSystem->PulsoTrigger(kTrig_ExpansiveForce,id,cTransform->getPosition(),100,mes);
         //EventSystem->RegisterTriger(kTrig_Explosion,1,0,cTransform->getPosition(), radius, 10000,false,mes);
 
         s_hab->play();

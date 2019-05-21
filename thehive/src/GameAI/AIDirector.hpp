@@ -9,6 +9,9 @@
 #include <Singleton.hpp>
 #include <Factory.hpp>
 
+#include <FMOD/SoundSystem.hpp>
+#include <FMOD/SonidoNormal.hpp>
+
 #include <ComponentArch/Components/CCamera.hpp>
 #include <ComponentArch/Components/CRenderable_3D.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
@@ -63,6 +66,9 @@ class AIDirector {
 
     private:
         int zona_actual;
+        SoundSystem* SS;
+        SoundEvent* s_vozTantos;
+
         //glm::vec3 ;
         //std::vector<AINode* > nodos;
         std::vector<CTransform*> enemigos;

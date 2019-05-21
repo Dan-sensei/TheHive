@@ -97,7 +97,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
     hud->setPrimaryChamber(gun->getTotalBullets());
     // ------------------------------------------------------
 
-    CAgent* Agent = new CAgent(kTrig_InteractMess |kTrig_Gunfire/*|kTrig_Explosion|*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
+    CAgent* Agent = new CAgent(kTrig_SoundJumpCliff | kTrig_InteractMess |kTrig_Gunfire/*|kTrig_Explosion|*/|kTrig_Touchable|kTrig_Pickable|kTrig_ExpansiveWave|kTrig_LoadZone|kTrig_UnLoadZone);
     Manager->addComponentToEntity(Agent, gg::AGENT, hero);
 
     Manager->setHeroID(hero);

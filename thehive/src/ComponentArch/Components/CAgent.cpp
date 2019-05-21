@@ -81,6 +81,7 @@ void CAgent::Init(){
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_LoadZone,     &CAgent::ENTER_func_kTrig_LoadZone));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_UnLoadZone,   &CAgent::ENTER_func_kTrig_UnLoadZone));
     mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_InteractMess,   &CAgent::ENTER_func_kTrig_InteractMess));
+    mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_SoundJumpCliff,   &CAgent::ENTER_func_kTrig_SoundJumpCliff));
     // mapFuncOnTriggerEnter.insert(std::make_pair(kTrig_Plantilla,    &CAgent::ENTER_func_kTrig_Plantilla));
 
     // Mapa a funcion de los trigger ON STAY
@@ -99,6 +100,7 @@ void CAgent::Init(){
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_LoadZone,      &CAgent::STAY_func_kTrig_LoadZone));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_UnLoadZone,    &CAgent::STAY_func_kTrig_UnLoadZone));
     mapFuncOnTriggerStay.insert(std::make_pair(kTrig_InteractMess,    &CAgent::STAY_func_kTrig_InteractMess));
+    mapFuncOnTriggerStay.insert(std::make_pair(kTrig_SoundJumpCliff,    &CAgent::STAY_func_kTrig_SoundJumpCliff));
     // mapFuncOnTriggerStay.insert(std::make_pair(kTrig_Plantilla,    &CAgent::STAY_func_kTrig_Plantilla));
 
     // Mapa a funcion de los trigger ON STAY
@@ -117,6 +119,7 @@ void CAgent::Init(){
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_LoadZone,      &CAgent::EXIT_func_kTrig_LoadZone));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_UnLoadZone,    &CAgent::EXIT_func_kTrig_UnLoadZone));
     mapFuncOnTriggerExit.insert(std::make_pair(kTrig_InteractMess,    &CAgent::EXIT_func_kTrig_InteractMess));
+    mapFuncOnTriggerExit.insert(std::make_pair(kTrig_SoundJumpCliff,    &CAgent::EXIT_func_kTrig_SoundJumpCliff));
     // mapFuncOnTriggerExit.insert(std::make_pair(kTrig_Plantilla,    &CAgent::EXIT_func_kTrig_Plantilla));
 
 
@@ -181,6 +184,13 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
     return true;
 }
 
+void CAgent::ENTER_func_kTrig_SoundJumpCliff          (TriggerRecordStruct *_pRec){
+    SS = Singleton<SoundSystem>::Instance();
+    s_sonidoSaltoPrecipicio = new SonidoNormal();
+    SS->createSound("event:/Voces/Dialogos/DialogoTren", s_sonidoSaltoPrecipicio);
+    s_sonidoSaltoPrecipicio->play();
+    std::cout << "/* message */" << '\n';
+}
 void CAgent::ENTER_func_kTrig_InteractMess          (TriggerRecordStruct *_pRec){
 
     //inicializaciones necesarias
@@ -320,6 +330,7 @@ void CAgent::onTriggerStay(TriggerRecordStruct* _pRec){
     (this->*mapFuncOnTriggerStay[_pRec->eTriggerType])(_pRec);
 }
 void CAgent::STAY_func_kTrig_InteractMess           (TriggerRecordStruct *_pRec){}
+void CAgent::STAY_func_kTrig_SoundJumpCliff          (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_none           (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_EnemyNear      (TriggerRecordStruct *_pRec){}
 void CAgent::STAY_func_kTrig_Shoot          (TriggerRecordStruct *_pRec){}
@@ -503,6 +514,10 @@ void CAgent::onTriggerExit(TriggerRecordStruct* _pRec){
 }
 
 void CAgent::EXIT_func_kTrig_InteractMess        (TriggerRecordStruct *_pRec){
+    Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
+}
+void CAgent::EXIT_func_kTrig_SoundJumpCliff       (TriggerRecordStruct *_pRec){
+    delete s_sonidoSaltoPrecipicio;
     Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
 }
 void CAgent::EXIT_func_kTrig_none        (TriggerRecordStruct *_pRec){}
