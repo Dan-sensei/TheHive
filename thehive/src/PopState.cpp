@@ -66,12 +66,15 @@ void PopState::Init(){
 
     glBindVertexArray(0);
 
+    nextImage = new SonidoNormal();
+    SS->createSound("event:/SFX/Menu/Aceptar", nextImage);
     //_GUIController->musicaMenuPlay();
     //Engine->createCamera(glm::vec3(0, /* message */30, 30), glm::vec3(0, 0, 0));
 }
 
 void PopState::siguiente(){
     if(imagenes.size()){
+        nextImage->play();
         Singleton<AssetManager>::Instance()->freeTexture(imagenes.front());
         imagenes.erase(imagenes.begin());
     }
@@ -121,5 +124,6 @@ void PopState::CLIN(){
 
     Singleton<Motor2D>::Instance()->clinpopup();
     Singleton<Motor2D>::Instance()->CLINMenu();
+    delete nextImage;
     //_GUIController->musicaMenuStop();
 }
