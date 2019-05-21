@@ -337,12 +337,12 @@ bool Omicron::Initialize(){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    WINDOW_WIDTH = mode->width;
-    WINDOW_HEIGHT = mode->height;
+    WINDOW_WIDTH = 1280;
+    WINDOW_HEIGHT = 720;
     INTERNAL_BUFFER_WIDTH = 1280;
     INTERNAL_BUFFER_HEIGHT = 720;
 
-	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", nullptr, NULL);
 	if( window == NULL ){
 	    glfwTerminate();
 	    return false;

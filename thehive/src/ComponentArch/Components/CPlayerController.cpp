@@ -210,7 +210,6 @@ void CPlayerController::FixedUpdate(){
     else if(cDynamicModel->getAnimationPlayed()){
         if(pressed){
             cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.5);
-
         }
         else{
             cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);

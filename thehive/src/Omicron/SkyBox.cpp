@@ -5,12 +5,9 @@
 SkyBox::SkyBox()
 :engine(nullptr)
 {
-    engine=Singleton<Omicron>::Instance();
+    engine = Singleton<Omicron>::Instance();
     auto manager =Singleton<AssetManager>::Instance();
-    inicio=manager->getShader("skyboxShader");
-
-    view=inicio->getUniformLocation("view");
-    text=inicio->getUniformLocation("skybox");
+    inicio = manager->getShader("skyboxShader");
 
     //skyboxtype = 0;
 
@@ -27,17 +24,34 @@ SkyBox::SkyBox()
 
     //cubemapTexture = this->loadCubemap(auxfaces);
 
-    std::vector<const GLchar*> faces;
-    faces.reserve(6);
-    faces.resize(6);
 
-    faces[0] = ( "assets/skybox/skyboxRT.png" );
-    faces[1] = ( "assets/skybox/skyboxLF.png" );
-    faces[2] = ( "assets/skybox/skyboxUP.png" );
-    faces[3] = ( "assets/skybox/skyboxDN.png" );
-    faces[4] = ( "assets/skybox/skyboxFT.png" );
-    faces[5] = ( "assets/skybox/skyboxBK.png" );
-    cubemapTexture = loadCubemap(faces);
+    const char* faces[6];
+    faces[0] = "assets/skybox/skyboxRT.png";
+    faces[1] = "assets/skybox/skyboxLF.png";
+    faces[2] = "assets/skybox/skyboxUP.png";
+    faces[3] = "assets/skybox/skyboxDN.png";
+    faces[4] = "assets/skybox/skyboxFT.png";
+    faces[5] = "assets/skybox/skyboxBK.png";
+    //cubemapTexture = loadCubemap(faces);
+
+    glGenTextures( 1, &cubemapTexture );
+
+    int imageWidth, imageHeight, nrChannels;
+    unsigned char *image;
+
+    glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture );
+
+    for ( GLuint i = 0; i < 6; i++ )
+    {
+        image = stbi_load( faces[i], &imageWidth, &imageHeight, &nrChannels, 0);
+        glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
+        stbi_image_free( image );
+    }
+    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE );
 
     // faces[0] = ( "assets/skybox/skybox2RT.png" );
     // faces[1] = ( "assets/skybox/skybox2LF.png" );
@@ -107,31 +121,6 @@ SkyBox::~SkyBox(){
 // }
 
 
-unsigned int SkyBox::loadCubemap( std::vector<const char * > faces)
-    {
-        unsigned int textureID;
-        glGenTextures( 1, &textureID );
-
-        int imageWidth, imageHeight, nrChannels;
-        unsigned char *image;
-
-        glBindTexture( GL_TEXTURE_CUBE_MAP, textureID );
-
-        for ( GLuint i = 0; i < faces.size( ); i++ )
-        {
-            image = stbi_load( faces[i], &imageWidth, &imageHeight, &nrChannels, 0);
-            glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
-            stbi_image_free( image );
-        }
-        glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-        glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-        glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE );
-        //glBindTexture( GL_TEXTURE_CUBE_MAP, 0);
-
-        return textureID;
-    }
 
 void SkyBox::init(){
 
@@ -139,51 +128,51 @@ void SkyBox::init(){
     float b = -10000.0f;
     float centroX = 0.0f;
     float centroY = 0.0f;
-    float centroZ = 100.0f;
+    float centroZ = 0.0f;
 
     float skyboxVertices[] = {
     // positions
-    b + centroX, a + centroY, b + centroZ,
-    b + centroX, b + centroY, b + centroZ,
-    a + centroX, b + centroY, b + centroZ,
-    a + centroX, b + centroY, b + centroZ,
-    a + centroX, a + centroY, b + centroZ,
-    b + centroX, a + centroY, b + centroZ,
+        b + centroX, a + centroY, b + centroZ,
+        b + centroX, b + centroY, b + centroZ,
+        a + centroX, b + centroY, b + centroZ,
+        a + centroX, b + centroY, b + centroZ,
+        a + centroX, a + centroY, b + centroZ,
+        b + centroX, a + centroY, b + centroZ,
 
-    b + centroX, b + centroY, a + centroZ ,
-    b + centroX, b + centroY, b + centroZ ,
-    b + centroX, a + centroY, b + centroZ ,
-    b + centroX, a + centroY, b + centroZ ,
-    b + centroX, a + centroY, a + centroZ ,
-    b + centroX, b + centroY, a + centroZ ,
+        b + centroX, b + centroY, a + centroZ ,
+        b + centroX, b + centroY, b + centroZ ,
+        b + centroX, a + centroY, b + centroZ ,
+        b + centroX, a + centroY, b + centroZ ,
+        b + centroX, a + centroY, a + centroZ ,
+        b + centroX, b + centroY, a + centroZ ,
 
-    a + centroX, b + centroY, b + centroZ,
-    a + centroX, b + centroY, a + centroZ,
-    a + centroX, a + centroY, a + centroZ,
-    a + centroX, a + centroY, a + centroZ,
-    a + centroX, a + centroY, b + centroZ,
-    a + centroX, b + centroY, b + centroZ,
+        a + centroX, b + centroY, b + centroZ,
+        a + centroX, b + centroY, a + centroZ,
+        a + centroX, a + centroY, a + centroZ,
+        a + centroX, a + centroY, a + centroZ,
+        a + centroX, a + centroY, b + centroZ,
+        a + centroX, b + centroY, b + centroZ,
 
-    b + centroX, b + centroY, a + centroZ,
-    b + centroX, a + centroY, a + centroZ,
-    a + centroX, a + centroY, a + centroZ,
-    a + centroX, a + centroY, a + centroZ,
-    a + centroX, b + centroY, a + centroZ,
-    b + centroX, b + centroY, a + centroZ,
+        b + centroX, b + centroY, a + centroZ,
+        b + centroX, a + centroY, a + centroZ,
+        a + centroX, a + centroY, a + centroZ,
+        a + centroX, a + centroY, a + centroZ,
+        a + centroX, b + centroY, a + centroZ,
+        b + centroX, b + centroY, a + centroZ,
 
-    b + centroX,  a + centroY, b + centroZ,
-    a + centroX,  a + centroY, b + centroZ,
-    a + centroX,  a + centroY, a + centroZ,
-    a + centroX,  a + centroY, a + centroZ,
-    b + centroX,  a + centroY, a + centroZ,
-    b + centroX,  a + centroY, b + centroZ,
+        b + centroX,  a + centroY, b + centroZ,
+        a + centroX,  a + centroY, b + centroZ,
+        a + centroX,  a + centroY, a + centroZ,
+        a + centroX,  a + centroY, a + centroZ,
+        b + centroX,  a + centroY, a + centroZ,
+        b + centroX,  a + centroY, b + centroZ,
 
-    b + centroX, b + centroY, b + centroZ,
-    b + centroX, b + centroY, a + centroZ,
-    a + centroX, b + centroY, b + centroZ,
-    a + centroX, b + centroY, b + centroZ,
-    b + centroX, b + centroY, a + centroZ,
-    a + centroX, b + centroY, a + centroZ
+        b + centroX, b + centroY, b + centroZ,
+        b + centroX, b + centroY, a + centroZ,
+        a + centroX, b + centroY, b + centroZ,
+        a + centroX, b + centroY, b + centroZ,
+        b + centroX, b + centroY, a + centroZ,
+        a + centroX, b + centroY, a + centroZ
     };
 
 
@@ -212,7 +201,8 @@ void SkyBox::init(){
 
 }
 
-void SkyBox::Draw(){
+
+void SkyBox::beginDraw(){
     // if(engine->key(gg::_6) && skyboxtype !=0){
     //     skyboxtype = 0;
     // }
@@ -226,21 +216,27 @@ void SkyBox::Draw(){
     //     skyboxtype = 3;
     // }
 
-    auto viewt = engine->getVP();
+
     glDepthMask(GL_FALSE);
     glDepthFunc( GL_LEQUAL );
+
     inicio->Bind();
-    //view = glm::mat4( glm::mat3( engine->getCam()->GetViewMatrix() ) );
-    glUniformMatrix4fv(view, 1, GL_FALSE, &(viewt)[0][0]);
-    //glUniformMatrix4fv( glGetUniformLocation( inicio.Program, "view" ), 1, GL_FALSE, glm::value_ptr( viewt ) );
+
+
+    glm::mat4 VP = projMatrix*viewMatrix;
+
+    glUniformMatrix4fv(1, 1, GL_FALSE, &VP[0][0]);
     glBindVertexArray( skyboxVAO );
     glActiveTexture(GL_TEXTURE0);
     glBindTexture( GL_TEXTURE_CUBE_MAP, cubemapTexture );
+    // glUniform1i(text, 0);
 
-    glUniform1i(text, 0);
     glDrawArrays( GL_TRIANGLES, 0, 36 );
     glBindVertexArray( 0 );
+
     glDepthFunc( GL_LESS );
     glDepthMask(GL_TRUE);
 
 }
+
+void SkyBox::endDraw(){}
