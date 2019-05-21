@@ -6,7 +6,7 @@
 #include <Omicron/AssetManager.hpp>
 #include <Omicron/LIGHTS/TLuz.hpp>
 
-#define tamanyo 1024
+#define tamanyo 2048
 #define Ldirec   0
 #define Lcolor  16
 #define Lint   28
@@ -20,11 +20,7 @@ struct LUZF
     LUZF(float x,float y,float z,float x2,float y2,float z2){
         pos[0]=x;
         pos[1]=y;
-        pos[2]=z;
-
-        //posfoco[0]=x2;
-        //posfoco[1]=y2;
-        //posfoco[2]=z2;
+        pos[2]=z;;
 
         posfoco[0]=0;
         posfoco[1]=-1;
@@ -111,7 +107,7 @@ void DeferredShading::info(){
         std::cout << "#define S"<<i<<"    " <<arrayStrides[i]<< '\n';
     }
 
-    std::cout << "/* max */" << uniformOffsets[11]+arrayStrides[11]*9<<'\n';
+    std::cout << "MAX MEMORY NEEDED" << uniformOffsets[11]+arrayStrides[11]*9<<'\n';
 
 }
 
@@ -164,7 +160,6 @@ void DeferredShading::init(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIG
 
     setDirLuz(glm::vec3(0,1,0), glm::vec3(1,1,1), 0.5);
     setnluces(0,0);
-
 
 
     glGenBuffers(1, &ubo);

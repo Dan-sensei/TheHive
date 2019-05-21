@@ -225,8 +225,7 @@ void CAgent::ENTER_func_kTrig_Gunfire       (TriggerRecordStruct *_pRec){}
 void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     std::string name = zonesArray[id].first;
-    zonesArray[id].second("assets/BinaryFiles/"+name+"_MODELS.data", id);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/"+name+"_EVENTS.data", id);
+    Engine->SetMapZoneVisibility(id, true);
     BinaryParser::LoadLevelLights("assets/BinaryFiles/"+name+"_LIGHTS.data", id);
 }
 
