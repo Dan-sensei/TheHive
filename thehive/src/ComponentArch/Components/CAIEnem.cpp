@@ -250,12 +250,13 @@ void CAIEnem::FixedUpdate(){
     float dist = glm::distance(pTF,cTF_POS);
     if(dist<15){
         if(!s_caminar->isPlaying()){
+            s_caminar->setPosition(cTF_POS);
             s_caminar->play();
         }
-        s_caminar->setPosition(cTF_POS);
 
-        int ramstein=gg::genIntRandom(1, 400);
+        int ramstein=gg::genIntRandom(1, 500);
         if(ramstein==66){
+            s_grito->setPosition(cTF_POS);
             s_grito->play();
         }
 

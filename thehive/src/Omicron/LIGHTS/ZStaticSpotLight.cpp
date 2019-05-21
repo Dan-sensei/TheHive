@@ -10,6 +10,7 @@
 #define S7    16
 #define S8    16
 
+
 ZStaticSpotLight::ZStaticSpotLight(const glm::vec3 &Position, const glm::vec3 &LightColor, uint8_t _ZONE)
 :TLuz(LightColor), position(Position), ZONE(_ZONE), OVERRIDE(false)
 {

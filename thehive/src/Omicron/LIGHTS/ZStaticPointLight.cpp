@@ -1,8 +1,8 @@
 #include "ZStaticPointLight.hpp"
 
 #define U9    560
-#define U10    688
-#define U11    816
+#define U10    816
+#define U11    1072
 
 #define S9    16
 #define S10    16

@@ -22,16 +22,18 @@ CVida::CVida(int _vida)
     hud             = Singleton<HUD>::Instance();
     triggerSystem   = Singleton<CTriggerSystem>::Instance();
     SS = Singleton<SoundSystem>::Instance();
-    s_vida = new SonidoNormal();
     s_muerte = new SonidoNormal();
+    SS->createSound("event:/SFX/Jugador/PocaVida", s_muerte);
 
-    // SS->createSound("event:/Voces/Jugador/Golpe", s_vida);
-    // SS->createSound("event:/SFX/Jugador/PocaVida", s_muerte);
+    s_muletillas = new SonidoNormal();
+    SS->createSound("event:/Voces/Jugador/Muletillas", s_muletillas);
+
  }
 
 CVida::~CVida() {
-  delete s_vida;
-  delete s_muerte;
+
+    delete s_muerte;
+    delete s_muletillas;
 }
 
 void CVida::Muerte(){
@@ -49,13 +51,26 @@ bool CVida::quitarvida(const float &_factor){
     //std::cout << "QUITANDO VIDA " <<vida<< '\n';
     if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
         hud->setHealthBarPc(vida/vida_max);
-        s_vida->play();
 
-        if(vida<25)
-          s_muerte->play();
+
+
+        s_muerte->setParameter("Vida",vida);
+
+        s_muerte->play();
+
+        // if(vida<5){
+        //   s_muerte->play();
+      // }
     }
     else{
         if(vida <= 0){
+
+            //sonido muletillas
+            int ramstein=gg::genIntRandom(1, 8);
+            if(ramstein==5){
+                s_muletillas->play();
+            }
+
             //gg::cout(" -- ENTITY["+std::to_string(getEntityID())+"] has died painfully");
             vida = 0;
             ret = true;
@@ -135,8 +150,6 @@ void CVida::FixedUpdate() {
             //aqui se muere
 
         }
-        else{
 
-        }
     }
 }

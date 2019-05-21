@@ -61,7 +61,7 @@ void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
     Engine->resizeFrameBuffers(848, 480);
 
-    Engine->createZones(8);
+    Engine->createZones(6);
 
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
@@ -70,6 +70,24 @@ void Game::Init(){
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 0);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 0);
     BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_LIGHTS.data", 0);
+
+    BinaryParser::LoadLevelData("assets/BinaryFiles/PASILLOS_MODELS.data", 1);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/PASILLOS_EVENTS.data", 1);
+
+    BinaryParser::LoadLevelData("assets/BinaryFiles/TUNELES_MODELS.data", 2);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/TUNELES_EVENTS.data",2);
+
+    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 3);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_CIUDAD_EVENTS.data",3);
+
+    BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 4);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CALLE_PRINCIPAL_EVENTS.data",4);
+
+    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 5);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CENTRO_EVENTS.data",5);
+    //
+    BinaryParser::LoadLevelData("assets/BinaryFiles/FINAL_MODELS.data", 6);
+    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/FINAL_EVENTS.data",6);
 
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
 
@@ -184,7 +202,6 @@ void Game::Update(){
 
     Engine->PollEvents();
 
-
     if(DeltaTime > 0.25) DeltaTime = 0.25;
 
 
@@ -220,10 +237,6 @@ void Game::Update(){
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
-    // std::cout << " - " << glm::to_string(pos) << '\n';
-    // pos.y += 10;
-    // Engine->setPosition(luz,pos);
-
     pos.y += 3;
     PS->setPosition(pos);
 
@@ -233,7 +246,7 @@ void Game::Update(){
 
     MainCamera->CameraUpdate();
 
-    soundSys->setListenerPosition(MainCamera->getCameraPosition(),MainCamera->getTargetPosition());
+    soundSys->setListenerPosition(MainCamera->getCameraPosition(), MainCamera->getTargetPosition());
 
     Engine->draw();
     Engine->drawHUD();
