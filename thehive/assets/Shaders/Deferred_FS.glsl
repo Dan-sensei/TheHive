@@ -1,7 +1,7 @@
 #version 450 core
 
 #define NLUCESF 8
-#define NLUCESP 8
+#define NLUCESP 16
 
 
 layout (std140) uniform light
