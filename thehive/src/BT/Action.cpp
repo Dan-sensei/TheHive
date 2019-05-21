@@ -785,9 +785,30 @@ void Action::FIVE_SinceLastHability(){
 }
 
 void Action::doExplosiveWave(){
-    yo->explosiveWave();
-    //s = BH_FAILURE;
-    s = BH_SUCCESS;
+
+    if(s!=BH_RUNNING){
+        cRigidBody->setLinearVelocity(glm::vec3());
+        CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
+        if(nvAgent){
+            nvAgent->ResetDestination();
+        }
+        cont_hit = 0;
+        modifyImAttacking(true);
+
+        uint16_t hero = manager->getHeroID();
+        CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
+        ht->quitarvida(0.5+(yo->getRage()/2));
+
+        s = BH_RUNNING;
+
+        yo->explosiveWave();
+        //yo->playAttack();
+    }
+
+    cont_hit++;
+    if(cont_hit > 50){
+        s = BH_SUCCESS;
+    }
 }
 
 void Action::doSpit(){
