@@ -6,10 +6,11 @@
 #include <Omicron/Omicron.hpp>
 #include <vector>
 #include <string>
+#include <Omicron/CORE/TEntidad.hpp>
 
 class Omicron;
 
-class SkyBox{
+class SkyBox : public TEntidad {
 	public:
 		SkyBox();
 		~SkyBox();
@@ -19,17 +20,17 @@ class SkyBox{
         void init();
         void Draw();
 
+		virtual void beginDraw();
+		virtual void endDraw();
+
     private:
 		Shader* inicio;
 		Omicron* engine;
         unsigned int cubemapTexture;
         unsigned int skyboxVBO;
         unsigned int skyboxVAO;
-		unsigned int view;
-		unsigned int text;
 
 		//int skyboxtype;
-
 };
 
 #endif

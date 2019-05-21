@@ -51,7 +51,7 @@ void AIDirector::init(){
     zona_actual=1;
 
     TimeBusqueda=1;
-    TimeHorda=10;//300
+    TimeHorda=50;//300
     TimePico=10;
 
     AcumulatorBusqueda=0;
@@ -197,14 +197,14 @@ void AIDirector::changeNode(int nodo){
     int crear=nodo +dif;
     int destruir=zona_actual-dif;
     zona_actual=nodo;
-    ////Director << "cambiamos" <<nodo<< '\n';
-
-    ////Director << "creamos" <<crear<< '\n';
+    //std::cout << "cambiamos" <<nodo<< '\n';
     if(crear>0 && crear<8){
+    //    std::cout << "creamos" <<crear<< '\n';
         createWandering(crear);
     }
     ////Director << "destruimos" <<destruir<< '\n';
     if(destruir>0 && destruir<8){
+    //    std::cout << "destruimos" <<destruir<< '\n';
         removePos(destruir);
     }
 }
@@ -239,24 +239,31 @@ glm::vec3 AIDirector::getposzona(int nodo){
 
 //creamos horda delante o atras
 void AIDirector::invocar(){
-
-    int enemigosint =1;
+    int enemigosint =0;
     if(zona_actual<6&&zona_actual>2){
-        enemigosint = gg::genIntRandom(0, 1);
+        enemigosint = gg::genIntRandom(0, 2);
     }else if(zona_actual>=6){
         enemigosint=1;
 
     }
     int nodo=0;
-    if(enemigosint=0){
+    if(enemigosint==0){
+        if(zona_actual==2){
 
-        nodo=zona_actual+2;
+            nodo=zona_actual+3;
+        }
+        else{
+            nodo=zona_actual+2;
+
+        }
     }
     else{
 
         nodo=zona_actual-2;
     }
 
+    //std::cout << "invocar :" <<zona_actual<< '\n';
+    //std::cout << "invocar ::" <<nodo<< '\n';
     //esto funciona para todos los nodos
     createHorda(nodo);
 }
@@ -317,7 +324,7 @@ void AIDirector::createHorda(int nodo){
 
     for (int i = 0; i < enemigosint; i++) {
         zonarand=getposzona(nodo);
-        id = fac->createSoldierHorda(zonarand, 10, dest);
+        id = fac->createSoldierHorda(zonarand, 1, dest);
 
         enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
         enemigos.push_back(enemypos);

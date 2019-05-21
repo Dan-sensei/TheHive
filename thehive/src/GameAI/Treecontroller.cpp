@@ -250,21 +250,21 @@ void Treecontroller::arboltank(){
     //Selector* sel2= createSelector();//random selector?
     //sel2->addChild(addAction(EXPANSIVE_WAVE));
     //sel2->addChild(addAction(SPIT));
-    Sequence* sec6= createSequence();
-    sec6->addChild(addAction(FIVE_SINCELASTHABILITY));
-    sec6->addChild(addAction(SPIT));
+    //Sequence* sec6= createSequence();
+    //sec6->addChild(addAction(FIVE_SINCELASTHABILITY));
+    //sec6->addChild(addAction(SPIT));
     //si no estoy a rango 2-10M-- escupo/onda expansiva
-    Sequence* sec5= createSequence();//eing?
-    sec5->addChild(addAction(ENEMY_OVER_2_METERS));   // Por encima de 2 metros
-    sec5->addChild(addAction(TEN_METROS));     // Por debajo de 10 metros
-    sec5->addChild(sec6);
+    //Sequence* sec5= createSequence();//eing?
+    //sec5->addChild(addAction(ENEMY_OVER_2_METERS));   // Por encima de 2 metros
+    //sec5->addChild(addAction(TEN_METROS));     // Por debajo de 10 metros
+    //sec5->addChild(sec6);
     //si esta a rango ataco
     Sequence* sec4= createSequence();
     sec4->addChild(addAction(ON_RANGE));
     sec4->addChild(addAction(EXPANSIVE_WAVE));
     Selector* sel1= createSelector();
     sel1->addChild(sec4);
-    sel1->addChild(sec5);
+    //sel1->addChild(sec5);
     sel1->addChild(pal1);
     //si veo al jugador
     Sequence* sec3= createSequence();

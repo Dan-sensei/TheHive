@@ -29,6 +29,7 @@
 
 
 #include <Omicron/ZPlayer.hpp>
+#include <Omicron/SkyBox.hpp>
 
 Game::Game()
 :Accumulator(0)
@@ -58,7 +59,7 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
-    Engine->resizeFrameBuffers(1280, 720);
+    Engine->resizeFrameBuffers(848, 480);
 
     Engine->createZones(8);
 
@@ -123,11 +124,16 @@ void Game::Init(){
     PS_D.ParticleLifeTime = 4;
     PS_D.MaxParticles = 1/PS_D.SpawnTime * PS_D.ParticleLifeTime;
 
+
     BinaryParser::LoadParticleSystem(PS_D, "assets/BinaryFiles/ParticleTest.ps");
     PS = Engine->CreateParticleSystem(Singleton<Omicron>::Instance()->FORWARD_LAYER, PS_D);
 
     // BillboardBueno* B = new BillboardBueno(-26.074661, -21.048573, 30.194473,"assets/Textures/prueba1.png");
     // Leaf* ParticleNode = new Leaf(Singleton<Omicron>::Instance()->FORWARD_LAYER, B);
+    //
+    // SkyBox* S = new SkyBox();
+    // S->init();
+    // Leaf* SkyboxNode = new Leaf(Singleton<Omicron>::Instance()->FORWARD_LAYER, S);
 
     TData mes;
     mes.add(kDat_total_img,1);
@@ -200,7 +206,7 @@ void Game::Update(){
 
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
-    // Director->update(DeltaTime);
+    Director->update(DeltaTime);
 
     //Director->update(DeltaTime);
 

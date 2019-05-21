@@ -1,13 +1,13 @@
 #include "ImageButton.hpp"
-#include <GLFW/glfw3.h>
-
+#include <Omicron/Omicron.hpp>
+#include <Singleton.hpp>
 
 ImageButton::ImageButton(float x, float y, float w, float h, EnumButtonType _tipo, unsigned int Texture, unsigned int TextureHover)
 :Imagen(x,y,w,h,Texture), imgPrincipal(Texture), imgHover_Selected(TextureHover), tipo(_tipo), selected(false), Played(false)
 {
-    auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    float ancho = mode->width;
-    float alto = mode->height;
+
+    float ancho = Singleton<Omicron>::Instance()->getWindowsWidth();
+    float alto = Singleton<Omicron>::Instance()->getWindowsHeight();
 
     X=x*ancho;
     W=w*ancho;
