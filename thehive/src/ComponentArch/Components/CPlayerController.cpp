@@ -170,9 +170,9 @@ void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !ghostCollider)  return;
 
-    auto posJ=cTransform->getPosition();
+    //auto posJ=cTransform->getPosition();
 
-    std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
+    //std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
     //332.327,-42.8137,60.2511
 
 
