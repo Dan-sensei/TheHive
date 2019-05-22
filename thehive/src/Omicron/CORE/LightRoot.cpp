@@ -19,8 +19,8 @@ LightRoot::LightRoot(const LightRoot &orig)
 LightRoot::~LightRoot(){
     SPOT_LIGHTS.clear();
     POINT_LIGHTS.clear();
-    std::cout << " MAX SPOTS " << MAXSPOT << '\n';
-    std::cout << "MAX POINTS " << MAXPOINT << '\n';
+    // std::cout << " MAX SPOTS " << MAXSPOT << '\n';
+    // std::cout << "MAX POINTS " << MAXPOINT << '\n';
 }
 
 void LightRoot::setOVERRIDE(uint8_t ZONE) {

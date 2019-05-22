@@ -18,7 +18,6 @@
 #include <Bullet/ggDynWorld.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
 #include <GameAI/Pathfinding.hpp>
-#include <Omicron/2D/BillboardBueno.hpp>
 
 
 #define MOVEMENT_SPEED 1.f
@@ -27,9 +26,6 @@
 #define UPDATE_STEP 15.f
 #define BULLET_STEP 1.f/FRAMERATE
 
-
-#include <Omicron/ZPlayer.hpp>
-#include <Omicron/SkyBox.hpp>
 
 Game::Game()
 :Accumulator(0)
@@ -137,8 +133,7 @@ void Game::Init(){
     Accumulator = 0;
 
     // Singleton<Pathfinding>::Instance()->SetDebug(true);
-    world->setDebug(true);
-    MasterClock.Restart();
+    // world->setDebug(true);
 
     //sky.init();
     //Engine2D->prueba();
@@ -213,30 +208,41 @@ void Game::Init(){
 
     Director->init();
 
-
-    auto estado = new PopState();
-    AssetManager* Manager = Singleton<AssetManager>::Instance();
-    estado->Addim(Manager->getTexture("assets/HUD/asdw_esp.png"));
-    estado->Addim(Manager->getTexture("assets/HUD/camara_esp.png"));
-    Singleton<StateMachine>::Instance()->AddState(estado);
-
-    dialog1 = 0;
     dialogoInicial = new SonidoNormal();
     soundSys->createSound("event:/Voces/Dialogos/DialogoIntro", dialogoInicial);
     // world->setDebug(true);
+
+    UPD = &Game::FirstUpdate;
+    MasterClock.Restart();
 }
 
 void Game::Update(){
+    (this->*UPD)();
+}
+
+void Game::FirstUpdate(){
+
+    NormalUpdate();
+
+    PopState* estado = new PopState();
+    AssetManager* Manager = Singleton<AssetManager>::Instance();
+    estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/asdw_esp.png"));
+    estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
+    Singleton<StateMachine>::Instance()->AddState(estado);
+    UPD = &Game::SecondUpdate;
+}
+
+void Game::SecondUpdate(){
+    dialogoInicial->play();
+    UPD = &Game::NormalUpdate;
+    MasterClock.Restart();
+    NormalUpdate();
+}
+
+void Game::NormalUpdate(){
     //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
     ////std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
 
-    if(dialog1==1){
-        dialogoInicial->play();
-        dialog1=2;
-    }
-    if(dialog1==0){
-        dialog1=1;
-    }
     DeltaTime = MasterClock.Restart().Seconds();
 
 

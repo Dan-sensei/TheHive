@@ -159,8 +159,8 @@ void DeferredShading::init(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIG
     buffer = (unsigned char *)malloc(tamanyo);
     TLuz::buffer=buffer;
 
-    info();
-    
+    // info();
+
     setDirLuz(glm::vec3(0,1,0), glm::vec3(1,1,1), DIRECTIONAL_LIGHT_FACTOR);
     setnluces(0,0);
 

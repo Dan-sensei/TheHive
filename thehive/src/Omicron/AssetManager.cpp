@@ -198,10 +198,10 @@ unsigned int AssetManager::getConstantTexture(const std::string &Name, int Force
 unsigned int AssetManager::getTextureWithoutSavingToMap(const char* TexturePath, int ForceChannels){
     unsigned int NewID = 0;
     int width, height, nrChannels;
-    unsigned char *data = stbi_load(TexturePath, &width, &height, &nrChannels, ForceChannels);
+    unsigned char *data = stbi_load(TexturePath, &width, &height, &nrChannels, 0);
 
     if (data) {
-        if(ForceChannels == 0) ForceChannels = nrChannels;
+        ForceChannels = nrChannels;
 
         glGenTextures(1, &NewID);
         glBindTexture(GL_TEXTURE_2D, NewID);
@@ -240,8 +240,8 @@ unsigned int AssetManager::getTextureWithoutSavingToMap(const char* TexturePath,
     return NewID;
 }
 
-void AssetManager::freeTexture(unsigned int TextureID){
-    glDeleteTextures(1, &TextureID);
+void AssetManager::freeTexture(unsigned int Target){
+    glDeleteTextures(1, &Target);
 }
 
 

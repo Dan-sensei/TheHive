@@ -53,47 +53,47 @@ void ZPlayer::PlayVideo(const std::string &PathToVideo, const std::string &PathT
   s_video = new SonidoNormal();
   Sound->createSound(PathToAudio, s_video);
 
-    // ZVideo.open(PathToVideo);
-    //
-    // if (!ZVideo.isOpened()) {
-    //     std::cout  << "No se pudo abrir el vídeo " << PathToVideo << std::endl;
-    //     return;
-    // }
-    //
-    // Singleton<AssetManager>::Instance()->getShader("Video")->Bind();
+    ZVideo.open(PathToVideo);
 
-    // double I_FPS = 1/ZVideo.get(5);
-    // ZVideo >> ZFrame;
-    // THE_CLOCK.Restart();
-    // double Accumulator = 0;
-    // s_video->play();
-    // do{
-    //
-    //     Engine->BeginDraw();
-    //
-    //     Accumulator += THE_CLOCK.Restart().Seconds();
-    //     if(Accumulator > I_FPS){
-    //         Accumulator -= I_FPS;
-    //         glTextureSubImage2D(VideoBuffer, 0,0,0, 1280, 720, GL_BGR, GL_UNSIGNED_BYTE, ZFrame.ptr());
-    //         ZVideo >> ZFrame;
-    //         Sound->update();
-    //     }
-    //
-    //     glActiveTexture(GL_TEXTURE0);
-    //     glBindTexture(GL_TEXTURE_2D, VideoBuffer);
-    //     glUniform1i(5, 0);
-    //
-    //     glBindVertexArray(QUAD);
-    //     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    //     glBindVertexArray(0);
-    //
-    //     Engine->PollEvents();
-    //     Engine->EndDraw();
-    //
-    // } while(!ZFrame.empty() && !Engine->key(gg::X, true));
+    if (!ZVideo.isOpened()) {
+        std::cout  << "No se pudo abrir el vídeo " << PathToVideo << std::endl;
+        return;
+    }
 
-    // s_video->stop();
+    Singleton<AssetManager>::Instance()->getShader("Video")->Bind();
 
-    // ZVideo.release();
+    double I_FPS = 1/ZVideo.get(5);
+    ZVideo >> ZFrame;
+    THE_CLOCK.Restart();
+    double Accumulator = 0;
+    s_video->play();
+    do{
+
+        Engine->BeginDraw();
+
+        Accumulator += THE_CLOCK.Restart().Seconds();
+        if(Accumulator > I_FPS){
+            Accumulator -= I_FPS;
+            glTextureSubImage2D(VideoBuffer, 0,0,0, 1280, 720, GL_BGR, GL_UNSIGNED_BYTE, ZFrame.ptr());
+            ZVideo >> ZFrame;
+            Sound->update();
+        }
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, VideoBuffer);
+        glUniform1i(5, 0);
+
+        glBindVertexArray(QUAD);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
+
+        Engine->PollEvents();
+        Engine->EndDraw();
+
+    } while(!ZFrame.empty() && !Engine->key(gg::X, true));
+
+    s_video->stop();
+
+    ZVideo.release();
     delete s_video;
 }
