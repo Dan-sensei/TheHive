@@ -3,6 +3,7 @@
 #include <Game.hpp>
 #include <OptionState.hpp>
 #include <Omicron/2D/Motor2D.hpp>
+#include <Omicron/ZPlayer.hpp>
 //#include <SMaterial>
 GUIController::GUIController()
 :Engine(nullptr)
@@ -93,6 +94,10 @@ void GUIController::update(){
          if(VectorAcciones[id] != nullptr)
              (this->*VectorAcciones[id])();
      }
+
+     if(!s_musica_menu->isPaused()){
+         s_musica_menu->pause(false);
+     }
 }
 //but0
 void GUIController::gotoPlay(){
@@ -103,9 +108,10 @@ void GUIController::gotoPlay(){
 //but1
 void GUIController::gotoCredits(){
     s_musica_menu->pause(true);
-    s_musica_cred->play();
     sonido_accion(0);
-    Engine2D->InitMenu3();
+    ZPlayer Player;
+    Player.PlayVideo("assets/Video/creditos.mp4","event:/Musica/Menu/MusicaCreditos");
+    //Engine2D->InitMenu3();
 }
 //but2
 void GUIController::gotoOptions(){

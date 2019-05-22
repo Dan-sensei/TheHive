@@ -30,7 +30,7 @@
 #define DASH_FORCE_FACTOR   FORCE_FACTOR/30.f
 
 #define MULT_RUN_FACTOR     1.5
-#define MULT_DASH_FACTOR    3
+#define MULT_DASH_FACTOR    1
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), ghostCollider(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
@@ -60,6 +60,7 @@ void CPlayerController::Init(){
     debug1 = false;
     debug2 = false;
     MULT_BASE=1;
+    MULT_FACTOR = 1;
 
     maxsoldier  = 10;
     maxrusher   = 10;
@@ -170,9 +171,9 @@ void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !ghostCollider)  return;
 
-    //auto posJ=cTransform->getPosition();
-
-    //std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
+    // auto posJ=cTransform->getPosition();
+    //
+    // std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
     //332.327,-42.8137,60.2511
 
 
@@ -180,11 +181,10 @@ void CPlayerController::FixedUpdate(){
     force.x = 0;
     force.y = 0;
     force.z = 0;
-    MULT_FACTOR = 1;
 
     pressed = false;
     check_WASD(force, pressed);
-    force *= 4;
+    force *= 3.7*MULT_FACTOR;
 
 
 
@@ -426,7 +426,7 @@ int CPlayerController::setSecondWeapon(CGun *_weapon){
 }
 
 void CPlayerController::SprintBuf(){
-    MULT_BASE=2.5;
+    MULT_BASE=1.5;
 }
 
 void CPlayerController::SprintDebuf(){
@@ -490,6 +490,10 @@ void CPlayerController::ToggleSkill1(){
 }
 void CPlayerController::ToggleSkill2(){
     hab->ToggleSkill(1);
+    MULT_FACTOR = 1.7;
+}
+void CPlayerController::resetMultFactor(){
+    MULT_FACTOR = 1;
 }
 void CPlayerController::ToggleSkill3(){
     hab->ToggleSkill(2);

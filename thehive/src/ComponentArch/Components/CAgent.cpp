@@ -254,6 +254,7 @@ void CAgent::sonido_5(){
 }
 void CAgent::sonido_6(){
     SS->createSound("event:/Ambiente/Viento", s_sonidoSaltoPrecipicio);
+    std::cout << "puto viento" << '\n';
 }
 
 

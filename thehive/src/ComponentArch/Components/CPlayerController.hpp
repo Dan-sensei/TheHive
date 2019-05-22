@@ -66,6 +66,7 @@ class CPlayerController : public IComponent {
 
         void SprintBuf();
         void SprintDebuf();
+        void resetMultFactor();
         int maxsoldier;
         int maxrusher;
         int maxtank;

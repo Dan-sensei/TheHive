@@ -61,4 +61,5 @@
         CPlayerController* cPlayer = static_cast<CPlayerController*>(Singleton<ObjectManager>::Instance()->getComponent(gg::PLAYERCONTROLLER, id));
         cPlayer->SprintDebuf();
         s_hab2->play();
+        cPlayer->resetMultFactor();
     }

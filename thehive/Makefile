@@ -9,7 +9,7 @@ OBJECTS := $(addprefix $(BUILD),$(OBJECTS))
 ADDITIONAL_H :=  -I ./include -I ./src -I /usr/include/bullet -I /usr/include/opencv4
 ADDITIONAL_LIB := -L ./lib
 # -lopencv_core -lopencv_videoio
-LIBRARIES := -lfmod -lfmodL -lfmodstudio -lfmodstudioL -lGLEW -lGL -lGLU -lglut -lglfw -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader -lBullet2FileLoader 
+LIBRARIES := -lfmod -lfmodL -lfmodstudio -lfmodstudioL -lGLEW -lGL -lGLU -lglut -lglfw -lBulletCollision -lBullet3Common -lBulletDynamics -lLinearMath -lBullet3Geometry -lBulletWorldImporter -lBulletFileLoader -lBullet2FileLoader  -lopencv_core -lopencv_videoio 
 COMPILER := g++ -std=c++17 -O3
 
 EXE := main

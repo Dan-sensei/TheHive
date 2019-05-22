@@ -586,6 +586,7 @@ void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone)
             uint8_t hasPickable;
             GG_Read(inStream,hasPickable);
             if(hasPickable){
+                
                 GG_Read(inStream,px);
                 GG_Read(inStream,py);
                 GG_Read(inStream,pz);

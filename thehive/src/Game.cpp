@@ -185,6 +185,7 @@ void Game::Init(){
     mes7.add(kDat_soundRoute,5);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(80,-21,34), 6, 0, false, mes7);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(201,-23,31), 6, 0, false, mes7);
+
     TData mes8;
     mes8.add(kDat_soundRoute,6);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(255,-43,233), 30, 0, false, mes8);
