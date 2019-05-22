@@ -162,8 +162,10 @@ void Game::Init(){
     mes1.add(kDat_img1,1);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(171.164,-23.4092,35.5667), 5, 0, false, mes1);
     TData mes2;
-    mes2.add(kDat_total_img,1);
+    mes2.add(kDat_total_img,3);
     mes2.add(kDat_img1,2);
+    mes2.add(kDat_img2,3);
+    mes2.add(kDat_img3,4);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(330.681,-42.8137,79.0592 ), 5, 0, false, mes2);
     TData mes3;
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(332.327,-42.8137,60.2511), 10, 0, false, mes3);

@@ -195,7 +195,7 @@ void CAgent::ENTER_func_kTrig_InteractMess          (TriggerRecordStruct *_pRec)
 
     //inicializaciones necesarias
     EnumDataType tipos[3]={kDat_img1,kDat_img2,kDat_img3};
-    std::string  imagenes[3]={"assets/HUD/interaccionar_esp.png","assets/HUD/salto_esp.png","assets/HUD/ultrasonido_esp.png"};
+    std::string  imagenes[5]={"assets/HUD/interaccionar_esp.png","assets/HUD/salto_esp.png","assets/HUD/ultrasonido_esp.png", "assets/HUD/overload_esp.png", "assets/HUD/ondaexpansiva_esp.png"};
 
     auto mes=_pRec->data;
 
