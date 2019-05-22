@@ -1,25 +1,24 @@
 #version 450 core
 
-#define NLUCESF 8
-#define NLUCESP 16
+#define NLUCESF 10
+#define NLUCESP 20
 
 
-layout (std140) uniform light
-{
-  vec3 dirluzD;
-  vec3 colorluzD;
-  float intluzD;
-  float NNlucesF;
-  float NNlucesP;
+layout (std140) uniform light {
+    vec3 dirluzD;
+    vec3 colorluzD;
+    float intluzD;
+    float NNlucesF;
+    float NNlucesP;
 
-  vec3 posluzF      [NLUCESF];
-  vec3 posfocoluzF  [NLUCESF];
-  vec3 colorluzF  [NLUCESF];
-  float intluzF  [NLUCESF];
+    vec3 posluzF      [NLUCESF];
+    vec3 posfocoluzF  [NLUCESF];
+    vec3 colorluzF  [NLUCESF];
+    float intluzF  [NLUCESF];
 
-  vec3 posluzP      [NLUCESP];
-  vec3 colorluzP  [NLUCESP];
-  float intluzP  [NLUCESP];
+    vec3 posluzP      [NLUCESP];
+    vec3 colorluzP  [NLUCESP];
+    float intluzP  [NLUCESP];
 }luces;
 
 
@@ -81,8 +80,7 @@ void main()
         float cosAlpha = max(dot(Normal, halfwayDir), 0.0);
         // Optimización a pow(cosAlpha, n) = cosAlpha / (n - n*cosAlpha + cosAlpha)
         float spec = cosAlpha/(16 - 16 * cosAlpha + cosAlpha);
-        //FinalSpecular =FinalSpecular+ LightColor * spec * SpecularTex * LightPower;
-        vec3 SPECULAR = LightColor * spec * SpecularTex *LightPowerDir;
+        vec3 SPECULAR = LightColor * spec * SpecularTex * LightPowerDir;
     // ==================================================================================
 
 
@@ -135,7 +133,7 @@ void main()
         LightDir1 = normalize(  luzp1 - VertexPos );
         eff = dot(LightDir1,dir);
         if(eff > 0.9) {
-            att2=(0.1-(1-eff))/0.1; //0.1-->0//0-->1
+            att2 = ( 0.1 - (1-eff) ) / 0.1; //0.1-->0//0-->1
             // Diffuse
             diffuse2 = clamp( dot( Normal, LightDir1 ), 0,1 ) * Diffuse * LightPowerFo * LightColor;
 

@@ -59,6 +59,7 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
+    ZMaterial* MUSHROOM = Singleton<AssetManager>::Instance()->getMaterial("Mushroom");
     Engine->resizeFrameBuffers(848, 480);
 
     Engine->createZones(6);
@@ -70,24 +71,31 @@ void Game::Init(){
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 0);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 0);
     BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_LIGHTS.data", 0);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasInicio", 0, MUSHROOM);
+    // Singleton<Factory>::Instance()->createStaticModel("HierbasInicio", 0, Singleton<AssetManager>::Instance()->getMaterial("Mushroom"));
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/PASILLOS_MODELS.data", 1);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/PASILLOS_EVENTS.data", 1);
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/TUNELES_MODELS.data", 2);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/TUNELES_EVENTS.data",2);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasTuneles", 2, MUSHROOM);
 
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 3);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_CIUDAD_EVENTS.data",3);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasInicioCiudad", 3, MUSHROOM);
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 4);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CALLE_PRINCIPAL_EVENTS.data",4);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasCallePrincipal", 4, MUSHROOM);
 
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 5);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CENTRO_EVENTS.data",5);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasCentro", 5, MUSHROOM);
     //
     BinaryParser::LoadLevelData("assets/BinaryFiles/FINAL_MODELS.data", 6);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/FINAL_EVENTS.data",6);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasFinal", 6, MUSHROOM);
 
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
 
@@ -186,6 +194,7 @@ void Game::Init(){
     dialog1 = 0;
     dialogoInicial = new SonidoNormal();
     soundSys->createSound("event:/Voces/Dialogos/DialogoIntro", dialogoInicial);
+    // world->setDebug(true);
 }
 
 void Game::Update(){

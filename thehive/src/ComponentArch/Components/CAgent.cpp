@@ -189,7 +189,6 @@ void CAgent::ENTER_func_kTrig_SoundJumpCliff          (TriggerRecordStruct *_pRe
     s_sonidoSaltoPrecipicio = new SonidoNormal();
     SS->createSound("event:/Voces/Dialogos/DialogoTren", s_sonidoSaltoPrecipicio);
     s_sonidoSaltoPrecipicio->play();
-    std::cout << "/* message */" << '\n';
 }
 void CAgent::ENTER_func_kTrig_InteractMess          (TriggerRecordStruct *_pRec){
 

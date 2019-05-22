@@ -266,6 +266,24 @@ uint16_t Factory::createSwarm(const glm::vec3 &Position,const float &health) {
 
     return holyBomb;
 }
+
+uint16_t Factory::createStaticModel(const std::string &Model, uint8_t Zone, ZMaterial* Mat) {
+    StandardNode* Node = Singleton<Omicron>::Instance()->ZONES[Zone];
+    TTransform T_Position;
+    TTransform T_Rotation;
+    T_Position.setPosition(glm::vec3(0,0,0));
+    T_Rotation.setRotation(glm::quat());
+    ZStaticMesh* M = new ZStaticMesh(T_Position.matrix * T_Rotation.matrix);
+    M->load("assets/BinaryFiles/BinaryModels/"+Model+".modelgg");
+
+    Leaf* Malla = new Leaf(Node, M);
+
+    uint16_t NewEntity = Manager->createEntity();
+    CStaticModel* Transform = new CStaticModel(Malla, Mat);
+    Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
+    return NewEntity;
+}
+
 // uint16_t Factory::createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position) {
 //     uint16_t CollisionableStaticObject = Manager->createEntity();
 //     Material yelo(Texture);

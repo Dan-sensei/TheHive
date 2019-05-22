@@ -32,12 +32,6 @@ void AssetManager::loadInit(){
     MAT->addTexture(GN::NORMAL_MAP,   getTexture("assets/Textures/DefaultNormal.jpg",3));
     MAT->addTexture(GN::SPECULAR_MAP, getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
-    MAT = getMaterial("Morado");
-    MAT->attachShader(shader);
-    MAT->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/prueba1.png",3));
-    MAT->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/COMOUNPUTOPRO3.png",3));
-    MAT->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
     getConstantTexture("assets/HUD/NUEVO/plantilla.png");
     getConstantTexture("assets/HUD/NUEVO/cruceta_g.png");
     getConstantTexture("assets/HUD/NUEVO/cruceta_p.png");
@@ -48,29 +42,17 @@ void AssetManager::loadInit(){
     getConstantTexture("assets/HUD/NUEVO/S_ESCOPETA_HUD.png");
     getConstantTexture("assets/HUD/NUEVO/S_PISTOLA_HUD.png");
 
-    ZMaterial* 		Blue = getMaterial("Blue");
-    Blue->attachShader(shader);
-    Blue->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/Blue.png",3));
-    Blue->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Blue->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		Nav = getMaterial("Nav");
-    Nav->attachShader(shader);
-    Nav->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/TEST.png",3));
-    Nav->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Nav->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
-    ZMaterial* 		Grey = getMaterial("Grey");
-    Grey->attachShader(shader);
-    Grey->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/grey.jpg",3));
-    Grey->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    Grey->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
     ZMaterial* 		Red = getMaterial("Red");
     Red->attachShader(shader);
     Red->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/red.jpg",3));
     Red->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
     Red->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
+
+    ZMaterial* 		MUSH = getMaterial("Mushroom");
+    MUSH->attachShader(shader);
+    MUSH->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/151_t.jpg",3));
+    MUSH->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
+    MUSH->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
     shader = getShader("AnimationShader");
     ZMaterial* Sold = getMaterial("Soldier");
