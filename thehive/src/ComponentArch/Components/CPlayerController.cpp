@@ -26,8 +26,8 @@
 #define WEAPON_KEY          gg::Q
 
 #define FORCE_FACTOR        500.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*2.5f
-#define DASH_FORCE_FACTOR   FORCE_FACTOR/35.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*4.3
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/30.f
 
 #define MULT_RUN_FACTOR     1.5
 #define MULT_DASH_FACTOR    3
@@ -184,7 +184,7 @@ void CPlayerController::FixedUpdate(){
 
     pressed = false;
     check_WASD(force, pressed);
-    force *= 2;
+    force *= 4;
 
 
 
