@@ -10,9 +10,9 @@
 CHabilityController::CHabilityController(){
     hud = Singleton<HUD>::Instance();
 
-    vHabs.emplace_back(&CHabilityController::updateHudCooldown_TL); // Amarilio
-    vHabs.emplace_back(&CHabilityController::updateHudCooldown_TR); // Asur
     vHabs.emplace_back(&CHabilityController::updateHudCooldown_BM); // Naranha
+    vHabs.emplace_back(&CHabilityController::updateHudCooldown_TR); // Asur
+    vHabs.emplace_back(&CHabilityController::updateHudCooldown_TL); // Amarilio
 }
 
 CHabilityController::~CHabilityController() {

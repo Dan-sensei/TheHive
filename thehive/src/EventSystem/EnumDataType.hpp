@@ -13,7 +13,8 @@ enum EnumDataType{
     kDat_total_img,          //total de imagenes en un pop up
     kDat_img1,              //img 1
     kDat_img2,              //img 2
-    kDat_img3               //img 3
+    kDat_img3,              //img 3
+    kDat_soundRoute
 };
 
 enum EnumActionType{

@@ -67,6 +67,14 @@ class CAgent : public IComponent {
         bool HandleTrig(TriggerRecordStruct* _pRec);//manejar el trigger
         void addAgent(CAgent* agente);
         void removeAgent(std::list <CAgent*>::iterator ite);
+
+        void sonido_0();
+        void sonido_1();
+        void sonido_2();
+        void sonido_3();
+        void sonido_4();
+        void sonido_5();
+        void sonido_6();
         //uint16_t getEntityID();upda
 
     private:
@@ -81,6 +89,10 @@ class CAgent : public IComponent {
         SoundEvent* s_puerta;
         SoundEvent* s_fusible;
         SoundEvent* s_sonidoSaltoPrecipicio;
+
+
+        using pSonido = void(CAgent::*)();
+        pSonido VectorSonidos[7];
 
 
 
