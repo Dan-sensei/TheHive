@@ -111,8 +111,8 @@ void Game::Init(){
     //luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 
 
-    // glm::vec3 tmp(-19,-21,22);
-    // sF->createSoldier(Engine->ZONES.back(),tmp, 2000);
+    // glm::vec3 tmp(40,-21,17);
+    // sF->createCollectableWeapon(tmp,3);
 
     //Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
@@ -243,8 +243,8 @@ void Game::SecondUpdate(){
 }
 
 void Game::NormalUpdate(){
-    //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
-    ////std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
+    // CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
+    // std::cout << "POS BUENA:" << glm::to_string(cTransform2->getPosition()) << '\n';
 
     DeltaTime = MasterClock.Restart().Seconds();
 
