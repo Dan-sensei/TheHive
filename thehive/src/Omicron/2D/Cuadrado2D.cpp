@@ -8,49 +8,41 @@
 #define HEIGTH         720.0f
 
 Cuadrado2D::Cuadrado2D()
-:Zindex(0),inputColour(0),
-VAO(0),VBO(0),EBO(0),
+:VAO(0),VBO(0),EBO(0),
 index(-1),
-color(1,1,1,1),
+color(1,1,1),
 inicio(nullptr),
-fin(nullptr)
+Alpha(1)
 {}
 
 Cuadrado2D::Cuadrado2D(const Cuadrado2D &orig):
-Zindex(orig.Zindex),
-inputColour(orig.inputColour),
 VAO(orig.VAO),
 VBO(orig.VBO),
 EBO(orig.EBO),
 index(orig.index),
 color(orig.color),
 inicio(orig.inicio),
-fin(orig.fin)
+Alpha(1)
 {}
 
 Cuadrado2D& Cuadrado2D::operator=(Cuadrado2D other){
-    std::swap(Zindex        ,other.Zindex);
-    std::swap(inputColour   ,other.inputColour);
     std::swap(VAO           ,other.VAO);
     std::swap(VBO           ,other.VBO);
     std::swap(EBO           ,other.EBO);
     std::swap(index         ,other.index);
     std::swap(color         ,other.color);
     std::swap(inicio        ,other.inicio);
-    std::swap(fin           ,other.fin);
+    std::swap(Alpha         ,other.Alpha);
 
     return *this;
 }
 
 
 Cuadrado2D::Cuadrado2D(float x,float y,float w,float h)
-:VAO(0),VBO(0),EBO(0),color(1,1,1,1),index(-1),inicio(nullptr),fin(nullptr)
+:VAO(0),VBO(0),EBO(0),color(1,1,1),index(-1),inicio(nullptr)
 {
     auto sh=Singleton<AssetManager>::Instance();
-    inicio=sh->getShader("Plano");
-    fin=sh->getShader("Default");
-    Zindex = inicio->getUniformLocation("Zindex");
-    inputColour = inicio->getUniformLocation("inputColour");
+    inicio = sh->getShader("Plano");
 
 
     float _x,_y,_w,_h;
@@ -126,26 +118,28 @@ void Cuadrado2D::setPos(float x,float y,float w,float h){
 
 
 }
-void Cuadrado2D::setColor(glm::vec4 _color){
-    color=_color;
+void Cuadrado2D::setColor(glm::vec3 _color){
+    color = _color;
 }
 void Cuadrado2D::setZindex(float res){
     index=res;
+}
+
+void Cuadrado2D::setTransparency(float ALPHA) {
+    Alpha = ALPHA;
 }
 
 
 void Cuadrado2D::Draw(){
     inicio->Bind();
     //metemos el color
-    glUniform4fv(inputColour,1,&color[0]);
-    glUniform1f(Zindex,index);
+    glUniform1f(1, index);
+    glUniform3f(2, color.x, color.y, color.z);
+    glUniform1f(3, Alpha);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-    glUniform1f(Zindex,index);
-
-    fin->Bind();
 
 }
 

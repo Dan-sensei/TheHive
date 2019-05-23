@@ -24,7 +24,7 @@ class ZStaticSpotLight : public TLuz {
         glm::vec3 position;
         glm::vec3 direccion;
         uint8_t ZONE;
-        bool OVERRIDE;
+        bool ACTIVE;
 };
 
 #endif

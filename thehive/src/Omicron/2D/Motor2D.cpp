@@ -93,22 +93,26 @@ void Motor2D::draw(){
     //     it++;
     // }
     // std::cout << "BOTONES SIZE " << BOTONES.size() << '\n';
-    auto it3=BOTONES.begin();
-    while(it3!=BOTONES.end()){
-        (*it3).Draw();
-        it3++;
+    auto it1=RECTANGULOS.begin();
+    while(it1!=RECTANGULOS.end()){
+        it1->Draw();
+        it1++;
     }
     auto it2=IMAGENES.begin();
     while(it2!=IMAGENES.end()){
-        (*it2)->Draw();
+        it2->Draw();
         it2++;
+    }
+    auto it3=BOTONES.begin();
+    while(it3!=BOTONES.end()){
+        it3->Draw();
+        it3++;
     }
 }
 
 Cuadrado2D* Motor2D::addRect(float x, float y,float w, float h){
-    auto nuevo = new Cuadrado2D(x,y,w,h);
-    RECTANGULOS.push_back(nuevo);
-    return nuevo;
+    RECTANGULOS.emplace_back(x,y,w,h);
+    return &RECTANGULOS.back();
 }
 
 int Motor2D::checkbuton(){
@@ -314,10 +318,14 @@ int Motor2D::InitAIDebug(int id){
 //Menu principal
 int Motor2D::InitPause(){
     CLINMenu();
-    // addButton(40,31,20,10,CONTINUE,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Continuar",true);
-    // addButton(40,43,20,10,GOOPTIONS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Opciones");
-    // addButton(40,55,20,10,RETURNMENU,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Salir al menu");
 
+    AssetManager* AM = Singleton<AssetManager>::Instance();
+    IMAGENES.emplace_back(35/1280.f, 100/720.f, 254/1280.f, 196/720.f, AM->getTexture("assets/HUD/PAUSA.png") );
+
+    BOTONES.emplace_back(84/1280.f, 236/720.f, 251/1280.f, 285/720.f, CONTINUE,    AM->getConstantTexture("assets/HUD/CONTINUAR.png"),      AM->getConstantTexture("assets/HUD/CONTINUAR_HOVER.png") );
+    BOTONES.emplace_back(84/1280.f, 301/720.f, 226/1280.f, 350/720.f, GOOPTIONS,   AM->getConstantTexture("assets/HUD/OPCIONES_Pause.png"), AM->getConstantTexture("assets/HUD/OPCIONES_Pause_HOVER.png"));
+    BOTONES.emplace_back(84/1280.f, 366/720.f, 307/1280.f, 415/720.f, RETURNMENU,  AM->getConstantTexture("assets/HUD/SALIR_AL_MENU.png"),  AM->getConstantTexture("assets/HUD/SALIR_AL_MENU_HOVER.png"));
+    BOTONES.emplace_back(84/1280.f, 435/720.f, 391/1280.f, 484/720.f, CLOSE,       AM->getConstantTexture("assets/HUD/SALIR_DELTO.png"),    AM->getConstantTexture("assets/HUD/SALIR_DELTO_HOVER.png"));
 
     return 3;
 
@@ -334,8 +342,11 @@ int Motor2D::InitMenu(){
     BOTONES.emplace_back(142/1280.f, 601/720.f, 364/1280.f, 692/720.f,GOOPTIONS, AM->getTexture("assets/HUD/OPTIONS.png"), AM->getTexture("assets/HUD/OPTIONS_HOVER.png"));
     BOTONES.emplace_back(552/1280.f, 601/720.f, 774/1280.f, 692/720.f,GOCREDITS, AM->getTexture("assets/HUD/CREDITS.png"), AM->getTexture("assets/HUD/CREDITS_HOVER.png"));
     BOTONES.emplace_back(964/1280.f, 601/720.f, 1141/1280.f, 692/720.f,CLOSE, AM->getTexture("assets/HUD/EXIT.png"), AM->getTexture("assets/HUD/EXIT_HOVER.png"));
+
+    IMAGENES.emplace_back(200/1280.f, 72/720.f, 1091/1280.f, 286/720.f, Singleton<AssetManager>::Instance()->getTexture("assets/HUD/THEHIVE.png"));
     return 4;
 }
+
 //Jugar
 int Motor2D::InitMenu2(){
     CLINMenu();
@@ -360,9 +371,18 @@ int Motor2D::InitMenu3(){
 
     return 1;
 }
+
 //Opciones
-int Motor2D::InitMenu4(){
+int Motor2D::InitOptions(){
     CLINMenu();
+    RECTANGULOS.emplace_back(0, 0, 1, 1);
+    RECTANGULOS.back().setTransparency(0.95);
+    RECTANGULOS.back().setColor(glm::vec3(0,0,0));
+    RECTANGULOS.back().setZindex(-0.995);
+
+    AssetManager* AM = Singleton<AssetManager>::Instance();
+    BOTONES.emplace_back(82/1280.f, 73/720.f, 154/1280.f, 149/720.f,CONTINUE, AM->getTexture("assets/HUD/Botonsoloatras.png"), AM->getTexture("assets/HUD/BACK_HOVER.png") );
+
     // AddImage("assets/HUD/menucerca.png",0,0,100,100);
     //
     // //addText(45,10,"Options");
@@ -371,9 +391,9 @@ int Motor2D::InitMenu4(){
     // addButton(40,55,20,10,GOCONTROLLS,"assets/HUD/Botonsolo.png","assets/HUD/Botonsolo.png","Controlls");
     //
     // addButton(20,20,5,9,CONTINUE,"assets/HUD/Botonsoloatras.png","assets/HUD/Botonsoloatras.png","");
-
     return 4;
 }
+
 //graficos
 int Motor2D::InitMenu5(){
     CLINMenu();
@@ -623,41 +643,11 @@ void Motor2D::CLINTexto(){
 
 }
 void Motor2D::CLINMenu(){
-    //liberar eso
-    //std::vector<Cuadrado2D*> RECTANGULOS;
-    //std::vector<Boton2D*> BOTONES;
-    //std::vector<Boton2D*> TEXT;
 
     BOTONES.clear();
-
-    auto it=IMAGENES.begin();
-    while(it!=IMAGENES.end()){
-        delete (*it);
-        it++;
-    }
     IMAGENES.clear();
-
-
-    // auto it2=TEXT.begin();
-    // while(it2!=TEXT.end()){
-    //     delete (*it2);
-    //     it2++;
-    // }
-    // TEXT.clear();
-    //
-    // auto it3=BOTONES.begin();
-    // while(it3!=BOTONES.end()){
-    //     delete (*it3);
-    //     it3++;
-    // }
-    // BOTONES.clear();
-
-    auto it4=RECTANGULOS.begin();
-    while(it4!=RECTANGULOS.end()){
-        delete (*it4);
-        it4++;
-    }
     RECTANGULOS.clear();
+
 }
 
 void Motor2D::CLINNormal(){
@@ -665,11 +655,6 @@ void Motor2D::CLINNormal(){
     //std::vector<Cuadrado2D*> RECTANGULOS;
     //std::vector<Boton2D*> BOTONES;
     //std::vector<Boton2D*> TEXT;
-    auto it=IMAGENES.begin();
-    while(it!=IMAGENES.end()){
-        delete (*it);
-        it++;
-    }
     IMAGENES.clear();
 
     // auto it2=TEXT.begin();

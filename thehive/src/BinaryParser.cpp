@@ -432,8 +432,7 @@ void BinaryParser::CreateMesh(std::ifstream &inStream, AssetManager* _AssetManag
 
     CStaticModel* Transform = new CStaticModel(NODE->Leaf, "assets/BinaryFiles/BinaryModels/"+str+".modelgg", Material, Position, Rotation);
     Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
-    Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
-
+    //Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
 }
 
 

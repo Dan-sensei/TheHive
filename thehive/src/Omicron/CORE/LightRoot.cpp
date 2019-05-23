@@ -19,15 +19,15 @@ LightRoot::LightRoot(const LightRoot &orig)
 LightRoot::~LightRoot(){
     SPOT_LIGHTS.clear();
     POINT_LIGHTS.clear();
-    // std::cout << " MAX SPOTS " << MAXSPOT << '\n';
-    // std::cout << "MAX POINTS " << MAXPOINT << '\n';
+    std::cout << " MAX SPOTS " << MAXSPOT << '\n';
+    std::cout << "MAX POINTS " << MAXPOINT << '\n' << '\n';
 }
 
-void LightRoot::setOVERRIDE(uint8_t ZONE) {
+void LightRoot::setActive(uint8_t ZONE, bool Active) {
     auto SPOT_it = SPOT_LIGHTS.begin();
     while(SPOT_it != SPOT_LIGHTS.end()){
         if(SPOT_it->ZONE == ZONE)
-            SPOT_it->OVERRIDE = true;
+            SPOT_it->ACTIVE = Active;
 
         ++SPOT_it;
     }
@@ -35,7 +35,7 @@ void LightRoot::setOVERRIDE(uint8_t ZONE) {
     auto POINT_it = POINT_LIGHTS.begin();
     while(POINT_it != POINT_LIGHTS.end()){
         if(POINT_it->ZONE == ZONE)
-            POINT_it->OVERRIDE = true;
+            POINT_it->ACTIVE = Active;
 
         ++POINT_it;
     }
@@ -43,35 +43,17 @@ void LightRoot::setOVERRIDE(uint8_t ZONE) {
 
 
 ZStaticSpotLight* LightRoot::emplace_SpotLight(const glm::vec3 &MVP, const glm::vec3 &Color, uint8_t ZONE) {
-    auto SPOT_it = SPOT_LIGHTS.begin();
-    while(SPOT_it != SPOT_LIGHTS.end()){
-        if(SPOT_it->OVERRIDE){
-            (*SPOT_it) = ZStaticSpotLight(MVP, Color, ZONE);
-            return &(*SPOT_it);
-        }
-        ++SPOT_it;
-    }
-
     SPOT_LIGHTS.emplace_back(MVP, Color, ZONE);
     return &SPOT_LIGHTS.back();
 }
 
 ZStaticPointLight* LightRoot::emplace_PointLight(const glm::vec3 &MVP, const glm::vec3 &Color, uint8_t ZONE) {
-    auto POINT_it = POINT_LIGHTS.begin();
-    while(POINT_it != POINT_LIGHTS.end()){
-        if(POINT_it->OVERRIDE){
-            (*POINT_it) = ZStaticPointLight(MVP, Color, ZONE);
-            return &(*POINT_it);
-        }
-        ++POINT_it;
-    }
-
     POINT_LIGHTS.emplace_back(MVP, Color, ZONE);
     return &POINT_LIGHTS.back();
 }
 
 
-#define DISTANCE 60*60
+#define DISTANCE 50*50
 
 void LightRoot::draw() {
 
@@ -84,7 +66,7 @@ void LightRoot::draw() {
 
     auto SPOT_it = SPOT_LIGHTS.begin();
     while(SPOT_it != SPOT_LIGHTS.end()){
-        if(glm::length2(SPOT_it->getPosition()-CameraPos) < DISTANCE) {
+        if(SPOT_it->ACTIVE && glm::length2(SPOT_it->getPosition()-CameraPos) < DISTANCE) {
             ++SPOT;
             SPOTLIGHTS_PTR.push_back(&(*SPOT_it));
         }
@@ -96,7 +78,7 @@ void LightRoot::draw() {
 
     auto POINT_it = POINT_LIGHTS.begin();
     while(POINT_it != POINT_LIGHTS.end()){
-        if(glm::length2(POINT_it->getPosition()-CameraPos)) {
+        if(POINT_it->ACTIVE && glm::length2(POINT_it->getPosition()-CameraPos)) {
             ++POINT;
             POINTLIGHTS_PTR.push_back(&(*POINT_it));
         }

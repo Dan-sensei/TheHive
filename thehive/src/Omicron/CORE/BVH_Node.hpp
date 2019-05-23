@@ -13,9 +13,9 @@ class BVH_Node {
         //BVH_Node(uint16_t P);
         BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, StandardNode* _Leaf = nullptr);
         BVH_Node(const BVH_Node &orig);
-        virtual ~BVH_Node();
+        ~BVH_Node();
 
-        virtual bool isLeaf();
+        bool isLeaf();
         void DrawBounding(const glm::mat4 &VP);
         bool isInsideFrustrum(const glm::vec2 &CameraPosition, const glm::vec2 &ViewDirection);
         bool isCameraInside(const glm::vec3 CameraPos);

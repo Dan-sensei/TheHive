@@ -225,7 +225,7 @@ void CPlayerController::FixedUpdate(){
 
     glm::vec3 Direction = ghostCollider->getVirtualRotation() * glm::vec3(0,0,1);
     glm::vec3 Velocity = ghostCollider->getVelocity() * glm::vec3(-1, 0,-1);
-    if(Velocity.x || Velocity.z) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
+    if((Velocity.x || Velocity.z) && glm::length2(Velocity) > 1) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
 
     collider->activate(true);
     if(pressed) collider->setLinearVelocity(glm::vec3(force.x, collider->getVelocity().y, force.z));

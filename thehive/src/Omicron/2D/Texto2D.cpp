@@ -288,7 +288,6 @@ float Texto2D::getSizeX(){
             tam=getWid(palabra[i]);
         }
         _w=_w+tam+separacion;
-
     }
     return _w;
 }

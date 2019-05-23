@@ -41,7 +41,16 @@ void AssetManager::loadInit(){
     getConstantTexture("assets/HUD/NUEVO/S_AMETRALLADORA_HUD.png");
     getConstantTexture("assets/HUD/NUEVO/S_ESCOPETA_HUD.png");
     getConstantTexture("assets/HUD/NUEVO/S_PISTOLA_HUD.png");
-
+    getConstantTexture("assets/HUD/FondoPausa.png");
+    getConstantTexture("assets/HUD/CONTINUAR.png");
+    getConstantTexture("assets/HUD/CONTINUAR_HOVER.png");
+    getConstantTexture("assets/HUD/OPCIONES_Pause.png");
+    getConstantTexture("assets/HUD/OPCIONES_Pause_HOVER.png");
+    getConstantTexture("assets/HUD/SALIR_AL_MENU.png");
+    getConstantTexture("assets/HUD/SALIR_AL_MENU_HOVER.png");
+    getConstantTexture("assets/HUD/SALIR_DELTO.png");
+    getConstantTexture("assets/HUD/SALIR_DELTO_HOVER.png");
+    
     ZMaterial* 		Red = getMaterial("Red");
     Red->attachShader(shader);
     Red->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/red.jpg",3));

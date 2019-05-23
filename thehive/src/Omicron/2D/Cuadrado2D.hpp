@@ -21,16 +21,14 @@ class Cuadrado2D {
 
         void setPos(float x,float y,float w,float h);
 
-        void setColor(glm::vec4 _color);
-
+        void setColor(glm::vec3 _color);
+        void setTransparency(float ALPHA);
 
     private:
-        unsigned long Zindex;
-        unsigned long inputColour;
         Shader* inicio;
-        Shader* fin;
         float index;
-        glm::vec4 color;
+        float Alpha;
+        glm::vec3 color;
         unsigned int VAO;
         unsigned int VBO;
         unsigned int EBO;

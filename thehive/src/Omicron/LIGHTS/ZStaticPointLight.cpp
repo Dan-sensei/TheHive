@@ -10,7 +10,7 @@
 
 
 ZStaticPointLight::ZStaticPointLight(const glm::vec3 &Position, const glm::vec3 &LightColor, uint8_t _ZONE)
-:TLuz(LightColor), position(Position), ZONE(_ZONE), OVERRIDE(false)
+:TLuz(LightColor), position(Position), ZONE(_ZONE), ACTIVE(false)
 {}
 
 ZStaticPointLight::ZStaticPointLight(const ZStaticPointLight &orig){
@@ -20,7 +20,7 @@ ZStaticPointLight::ZStaticPointLight(const ZStaticPointLight &orig){
     N = orig.N;
     position = orig.position;
     ZONE = orig.ZONE;
-    OVERRIDE = orig.OVERRIDE;
+    ACTIVE = orig.ACTIVE;
 }
 
 ZStaticPointLight::~ZStaticPointLight(){

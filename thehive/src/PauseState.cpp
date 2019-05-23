@@ -20,10 +20,12 @@
 
 
 PauseState::PauseState()
+:BACKGROUND(0,0,1,1, Singleton<AssetManager>::Instance()->getConstantTexture("assets/HUD/FondoPausa.png"))
 {
     _GUIController = Singleton<GUIController>::Instance();
     Engine = Singleton<Omicron>::Instance();
     SS = Singleton<SoundSystem>::Instance();
+    BACKGROUND.setZindex(-0.995);
 }
 
 PauseState::~PauseState(){
@@ -55,6 +57,8 @@ void PauseState::Update(){
     _GUIController->update();
     //Singleton<Motor2D>::Instance()->DisplayMenu();
     //Singleton<StateMachine>::Instance()->AddState(new GameState());
+    BACKGROUND.Draw();
+
     Singleton<Motor2D>::Instance()->draw();
     Singleton<Motor2D>::Instance()->checkbuton();
     Singleton<Motor2D>::Instance()->aplyhover();

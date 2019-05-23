@@ -82,12 +82,15 @@ void HUD::initHUD(unsigned int SW, unsigned int SH, unsigned int TEX, Shader* _S
 
     HAB_BM = Cuadrado2D(X_HAB_BM+HABS_SIZE,Y_HAB_BM+(HABS_SIZE*1.8f*__ZERO),X_HAB_BM,Y_HAB_BM);
     HAB_BM.setColor(WHITE_ALPHA);
+    HAB_BM.setTransparency(0.5f);
 
     HAB_TR = Cuadrado2D(X_HAB_TR+HABS_SIZE,Y_HAB_TR+(HABS_SIZE*1.8f*__ZERO),X_HAB_TR,Y_HAB_TR);
     HAB_TR.setColor(WHITE_ALPHA);
+    HAB_TR.setTransparency(0.5f);
 
     HAB_TL = Cuadrado2D(X_HAB_TL+HABS_SIZE,Y_HAB_TL+(HABS_SIZE*1.8f*__ZERO),X_HAB_TL,Y_HAB_TL);
     HAB_TL.setColor(WHITE_ALPHA);
+    HAB_TL.setTransparency(0.5f);
 
     HEALTH_BAR = Cuadrado2D(X_HEALTH+(W_HEALTH-X_HEALTH),Y_HEALTH+0.02,X_HEALTH,Y_HEALTH);
     HEALTH_BAR.setColor(BLUE);

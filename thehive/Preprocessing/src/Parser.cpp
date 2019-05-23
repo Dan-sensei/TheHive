@@ -12,8 +12,9 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/fusible.obj",                           "fusible");
 
     for(uint16_t i = 1; i < 151; ++i){
-        if (i == 70)
+        if (i == 70){
             ModelParser::generateBinaryGG_DynamicModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",           std::to_string(i));
+        }
         else
             ModelParser::generateBinaryGG_StaticModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i));
     }

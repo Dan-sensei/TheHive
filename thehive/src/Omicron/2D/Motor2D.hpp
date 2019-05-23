@@ -46,7 +46,7 @@ class Motor2D{
         int InitMenu();
         int InitMenu2();
         int InitMenu3();
-        int InitMenu4();
+        int InitOptions();
         int InitMenu5();
         int InitMenu6();
         int InitMenu7();
@@ -74,14 +74,15 @@ class Motor2D{
         Imagen2D* POUP;
         SoundSystem* SS;
 
+        Omicron* motor;
         SoundEvent* s_hover;
         //nuevo
-        std::vector<Cuadrado2D*> RECTANGULOS;
-        Omicron* motor;
+        std::vector<Cuadrado2D> RECTANGULOS;
         std::vector<ImageButton> BOTONES;
+        std::vector<Imagen2D> IMAGENES;
+        std::vector<Texto2D> TEXT;
         //std::vector<Imagen2D*> IMAGENES;
         //std::vector<std::pair<std::string,Imagen2D*>> IMAGENES;
-        std::vector<Imagen2D*> IMAGENES;
         //td::vector<std::pair<std::string,Imagen2D*>> IMAGENES;
         //std::vector<void(Motor2D::*)(Imagen2D*)> mapHudFunctions;
         //using pGui = void(Motor2D::*)(Imagen2D*);

@@ -38,13 +38,7 @@ int main(int argc, char const *argv[]) {
     ggDynWorld *world = Singleton<ggDynWorld>::Instance();
     world->inito();
 
-
-    //singleton StateMachine
-    //new GameState();
     StateMachine *mainstates = Singleton<StateMachine>::Instance();
-    //mainstates->AddState(new GameState());
-    //mainstates->AddState(new GameState());
-    //mainstates->AddState(new Game());
     mainstates->AddState(new MenuState());
 
     while(Engine->isWindowOpen()) {
@@ -60,4 +54,3 @@ int main(int argc, char const *argv[]) {
 
     return 0;
 }
-

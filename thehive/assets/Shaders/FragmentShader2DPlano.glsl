@@ -1,9 +1,10 @@
-#version 400
+#version 450
 
-uniform vec4 inputColour;
+layout(location = 2) uniform vec3 inputColour;
+layout(location = 3) uniform float Alpha;
 
 out vec4 frag_colour;
 
 void main() {
-    frag_colour = inputColour;
+    frag_colour = vec4(inputColour, Alpha);
 };

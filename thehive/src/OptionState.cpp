@@ -55,7 +55,7 @@ OptionState::~OptionState(){
 }
 
 void OptionState::Init(){
-    Singleton<Motor2D>::Instance()->InitMenu4();
+    Singleton<Motor2D>::Instance()->InitOptions();
 
     //Engine->createCamera(glm::vec3(0, 30, 30), glm::vec3(0, 0, 0));
 }

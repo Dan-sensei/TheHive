@@ -4,6 +4,7 @@
 #include <OptionState.hpp>
 #include <Omicron/2D/Motor2D.hpp>
 #include <PopState.hpp>
+#include <MenuState.hpp>
 
 //#include <SMaterial>
 GUIController::GUIController()
@@ -176,14 +177,16 @@ void GUIController::Continue(){
 //but13
 void GUIController::ReturnMain(){
     Singleton<StateMachine>::Instance()->RemoveStates(2);
+    Singleton<StateMachine>::Instance()->AddState(new MenuState());
     sonido_accion(0);
     // s_musica_basica->stop();
 }
 //but 14
 void GUIController::initOptions(){
-    Engine2D->InitMenu4();
+    Engine2D->InitOptions();
     sonido_accion(1);
 }
+
 //but 14
 void GUIController::gotoPause(){
     Engine2D->InitPause();
