@@ -350,7 +350,6 @@ void CPlayerController::check_WASD(glm::vec3 &force, bool &flag_pressed){
 void CPlayerController::autoStepping(){
     // Auto-stepping
     glm::vec3 start = ghostCollider->getBodyPosition();
-    start.y -= 0.4;
     glm::vec3 end = glm::vec3(start.x,start.y-(RC_OFFSET),start.z);
     glm::vec3 result;
 
@@ -358,7 +357,7 @@ void CPlayerController::autoStepping(){
     // bool hit = world->CompleteRayCastTest(start,end,result,ghostCollider,collider);
 
     if(hit){
-        result.y += RC_OFFSET/1.3;
+        result.y += RC_OFFSET/1.7f;
         ghostCollider->setBodyPosition(result);
 
         start = collider->getLinearVelocity();

@@ -26,12 +26,13 @@ void CNavmeshAgent::Init(){
     Engine = Singleton<Omicron>::Instance();
     MHandler_SETPTRS();
     ObjectManager* Manager=Singleton<ObjectManager>::Instance();
-    CAIEnem* ia=static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, getEntityID()));
-    if(ia){
-        vel=ia->getVelocity();
-    }else{
-        vel=0;
-    }
+
+    // ----------------------------
+    AI = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM, getEntityID()));
+    AI? vel=AI->getVelocity() : vel=0;
+
+    collider = AI->getCollider();
+    // ----------------------------
 }
 
 
@@ -47,7 +48,7 @@ gg::EMessageStatus CNavmeshAgent::processMessage(const Message &m) {
 //|     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
-    cRigidBody = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
+    ghostCollider = static_cast<CRigidBody*>(Singleton<ObjectManager>::Instance()->getComponent(gg::RIGID_BODY, getEntityID()));
     cTransform = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, getEntityID()));
     world = Singleton<ggDynWorld>::Instance();
     return gg::ST_TRUE;
@@ -56,7 +57,7 @@ gg::EMessageStatus CNavmeshAgent::MHandler_SETPTRS(){
 void CNavmeshAgent::Update(){
     //  Debug!
     //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(moveVector*100.f)+glm::vec3(0, 5, 0), gg::Color(255,0,0,1));
-    //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(glm::normalize(cRigidBody->getVelocity())*100.f)+glm::vec3(0, 5, 0), gg::Color(255,255,0,1));
+    //Engine->Draw3DLine(cTransform->getPosition() + glm::vec3(0, 5, 0), cTransform->getPosition()+(glm::normalize(ghostCollider->getVelocity())*100.f)+glm::vec3(0, 5, 0), gg::Color(255,255,0,1));
 
     if(Singleton<Pathfinding>::Instance()->isDebugging() && !Waypoints.empty()){
 
@@ -102,31 +103,25 @@ void CNavmeshAgent::FixedUpdate(){
         if(Waypoints.empty()){
             // Stop moving
             currentlyMovingTowardsTarget = false;
-            glm::vec3 Counter = glm::vec3(cRigidBody->getXZVelocity().x * -0.7f, 0, cRigidBody->getXZVelocity().y * -0.7f)*FORCE_FACTOR;
-            cRigidBody->applyCentralForce(Counter);
-            //cRigidBody->setLinearVelocity(glm::vec3());//para solo velocidades
         }
 
         return;
     }
 
     moveVector = (moveVector / modulo);
+    moveVector *= 2;
+    moveVector.y = collider->getVelocity().y;
 
-    //  Apply a counter force when we change direction, so we can stop on curves
-    ApplyCouterForce(moveVector);
+    // Para el maravilloso autostepping
+    AI->moveBodies(moveVector);
 
-
-    //if(glm::length(cRigidBody->getXZVelocity()) < vel)
-    //   cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5);
-
-
-
-    cRigidBody->applyConstantVelocityNormal(moveVector,vel);//para solo velocidades
-
-    // if(glm::length(cRigidBody->getXZVelocity()) < MAXSPEED)
-    //     cRigidBody->applyCentralForce(moveVector*FORCE_FACTOR*1.5f);
-
-
+    // collider->activate(true);
+    // collider->setLinearVelocity(glm::vec3(moveVector.x, collider->getVelocity().y, moveVector.z));
+    //
+    // glm::vec3 tmp = collider->getBodyPosition();
+    // ghostCollider->setBodyPosition(tmp);            // Para captar la fuerza del salto
+    //
+    // autoStepping();
 }
 
 void CNavmeshAgent::CheckShortcut(){
@@ -151,7 +146,7 @@ void CNavmeshAgent::CheckShortcut(){
 }
 
 void CNavmeshAgent::ApplyCouterForce(const glm::vec3 &DirVector){
-    glm::vec2 XZVelocity = glm::normalize(cRigidBody->getXZVelocity());
+    glm::vec2 XZVelocity = glm::normalize(ghostCollider->getXZVelocity());
 
     float dot = DirVector.x * XZVelocity.x  +  DirVector.z * XZVelocity.y;
     float det = DirVector.x * XZVelocity.y  -  DirVector.z * XZVelocity.x;
@@ -159,8 +154,8 @@ void CNavmeshAgent::ApplyCouterForce(const glm::vec3 &DirVector){
 
     glm::vec3 Counter = glm::vec3();
     if(cos(angle) < 0.98) {
-        Counter = glm::vec3(cRigidBody->getXZVelocity().x * -0.12f, 0, cRigidBody->getXZVelocity().y * -0.12f)*FORCE_FACTOR*(abs(sin(angle))*1.2f);
-        cRigidBody->applyCentralForce(Counter);
+        Counter = glm::vec3(ghostCollider->getXZVelocity().x * -0.12f, 0, ghostCollider->getXZVelocity().y * -0.12f)*FORCE_FACTOR*(abs(sin(angle))*1.2f);
+        ghostCollider->applyCentralForce(Counter);
     }
 }
 
@@ -170,7 +165,7 @@ void CNavmeshAgent::SetDestination(const glm::vec3 &Target){
     if(Waypoints.empty()){
         ////std::cout << "EMPTY!" << '\n';
         currentlyMovingTowardsTarget = false;
-        cRigidBody->setLinearVelocity(glm::vec3(0.5));
+        AI->moveBodies(glm::vec3(0.5));
         return;
     }
     CheckShortcut();

@@ -126,12 +126,22 @@ class CAIEnem : public IComponent {
         bool senyuelo;
         bool            CanIReset;
 
+        inline CRigidBody* getCollider(){ return collider; };
+        void moveBodies(const glm::vec3 &vel);
+
     private:
         Omicron      *Engine;
         ObjectManager   *Manager;
         CTriggerSystem  *EventSystem;
         CTransform      *cTransform;
-        CRigidBody      *cRigidBody;
+
+        // ----------------------------
+        CRigidBody      *ghostCollider;
+        CRigidBody      *collider;
+        glm::vec3 GH_PREV;
+        bool isColliderGravitySet;
+        // ----------------------------
+
         CAgent          *cAgent;
         ggDynWorld      *world;
         CDynamicModel   *cDynamicModel;

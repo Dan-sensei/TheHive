@@ -145,8 +145,9 @@ uint16_t Factory::createSoldier(StandardNode* FATHER, const glm::vec3 &Position,
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Attacking")); // 0.2
     DynamicModel->ToggleAnimation(0, 0.4);
 
-    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BulletBoundingBoxes/soldier_final.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
+    CRigidBody* RigidBody               = new CRigidBody(true, true,"assets/BulletBoundingBoxes/soldier_final.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
+    RigidBody->setGhostObject();
 
     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);

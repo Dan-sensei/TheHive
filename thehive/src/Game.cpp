@@ -111,8 +111,8 @@ void Game::Init(){
     //luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 
 
-    glm::vec3 tmp(-19,-21,22);
-    //->createTank(tmp, 2000);
+    // glm::vec3 tmp(-19,-21,22);
+    // sF->createSoldier(Engine->ZONES.back(),tmp, 2000);
 
     //Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
@@ -309,11 +309,10 @@ void Game::NormalUpdate(){
     // Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-     // glClear(GL_DEPTH_BUFFER_BIT);
+    // glClear(GL_DEPTH_BUFFER_BIT);
+    // world->debugDrawWorld();
     // Engine->DrawZero();
     // Manager->DibLineas();
-
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
 
