@@ -27,7 +27,7 @@ CRigidBody* CAIEnem::PlayerBody;
 
 CAIEnem::CAIEnem(gg::EEnemyType _type, float _agresividad, glm::vec3 _playerPos, bool _playerSeen)
 :cTransform(nullptr),cAgent(nullptr), Engine(nullptr),arbol(nullptr), world(nullptr),
- type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen),cRigidBody(nullptr)
+ type(_type), agresividad(_agresividad), playerPos(_playerPos), playerSeen(_playerSeen),ghostCollider(nullptr)
 {
 
     SS = Singleton<SoundSystem>::Instance();
@@ -114,9 +114,11 @@ int CAIEnem::getSigno(){
 }
 
 CAIEnem::~CAIEnem() {
-    delete s_caminar  ;
-    delete s_atacar   ;
-    delete s_grito    ;
+    delete s_caminar;
+    delete s_atacar;
+    delete s_grito;
+
+    delete collider;
 
     //CPlayerController::
     //CPlayerController::cont_enemigos--;
@@ -142,7 +144,9 @@ void CAIEnem::Init(){
     data            = new Blackboard();
     PlayerTransform = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
     PlayerBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
-    cRigidBody = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,getEntityID()));
+
+    MHandler_SETPTRS();
+
     cDynamicModel = static_cast<CDynamicModel*>(Manager->getComponent(gg::DYNAMICMODEL, getEntityID()));
     cDynamicModel->setStepDistance(0.8f);
     playerSeeing        = false;
@@ -172,11 +176,20 @@ void CAIEnem::Init(){
     Vrange          = 20;
     //Arange          = 1;
     enfado          = 1;
-    gradovision     = cos(45*3.14159265359/180.f);
+    gradovision     = cos(180.f*3.14159265359/180.f);
 
     numberOfUpdatesSinceLastHability = 0;
 
-    MHandler_SETPTRS();
+    // -----------------------------
+    ghostCollider = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,getEntityID()));
+    glm::vec3 c_pos = ghostCollider->getBodyPosition();
+    collider = new CRigidBody(false, false,"", c_pos.x,c_pos.y,c_pos.z, 0.2,0.2,0.2, 50, 0,0,0);
+    collider->deactivateGravity();
+
+    GH_PREV = glm::vec3(0);
+    isColliderGravitySet = true;
+    // -----------------------------
+
 }
 
 gg::EMessageStatus CAIEnem::processMessage(const Message &m) {
@@ -243,7 +256,7 @@ void CAIEnem::FixedUpdate(){
         diren       = gg::Direccion2D_to_rot(diren);
 
         //cTransform->setRotation(V_AI_DEST);
-        cRigidBody->setRotY(180+diren.y);
+        ghostCollider->setRotY(180+diren.y);
 
     }
 
@@ -294,9 +307,9 @@ void CAIEnem::FixedUpdate(){
             }
             else if(playerSeeing){
             CAIEnem* cAIEnem =  static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
-                if(cAIEnem&&cAIEnem->playerSeeing){
+            if(cAIEnem&&cAIEnem->playerSeeing){
 
-                }
+            }
             }else{
                 //no lo veo
                 playerSeeing = false;
@@ -328,12 +341,50 @@ void CAIEnem::FixedUpdate(){
     //    playerPos       = PlayerTransform->getPosition();
 
     //}
-    ////std::cout << "mi pos?" <<playerPos<< '\n';
-    ////std::cout << "atacando" <<imAttacking<< '\n';
+    ////std::cout << "mi pos?" <<playerPos;
+    ////std::cout << "atacando" <<imAttacking;
     arbol->update();
 
     if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_WALKING && cDynamicModel->getAnimationPlayed()){
         cDynamicModel->ToggleAnimation(A_ENEMIES::E_WALKING, 0.4, false);
+    }
+}
+
+void CAIEnem::moveBodies(const glm::vec3 &vel){
+    collider->activate(true);
+    collider->setLinearVelocity(vel);
+
+    glm::vec3 tmp = collider->getBodyPosition();
+    ghostCollider->setBodyPosition(tmp);
+
+    // Auto-stepping
+    #define RC_OFFSET           1.6f                // Max offset del auto-stepping
+    glm::vec3 start = ghostCollider->getBodyPosition();
+    glm::vec3 end = glm::vec3(start.x,start.y-(RC_OFFSET),start.z);
+    glm::vec3 result;
+
+    bool hit = world->RayCastTest(start,end,result,ghostCollider,collider);
+
+    if(hit){
+        result.y += RC_OFFSET/1.7f;
+        ghostCollider->setBodyPosition(result);
+
+        start = collider->getLinearVelocity();
+
+        collider->deactivateGravity();
+        collider->setLinearVelocity(glm::vec3(start.x,0,start.z));
+
+        if(isColliderGravitySet || GH_PREV != result){
+            result.y += 0.3;
+            collider->setNotKinematicBodyPosition(result);
+            isColliderGravitySet = false;
+            GH_PREV = result;
+        }
+    }
+    else{
+        collider->activateGravity();
+        isColliderGravitySet = true;
+        GH_PREV = glm::vec3(0);
     }
 }
 

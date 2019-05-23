@@ -17,6 +17,7 @@
 
 #include <Omicron/Clock.hpp>
 class CRigidBody;
+class CAIEnem;
 class ggDynWorld;
 
 class CNavmeshAgent : public IComponent {
@@ -55,7 +56,12 @@ class CNavmeshAgent : public IComponent {
 
         CTransform* cTransform;
 
-        CRigidBody* cRigidBody;
+        // ----------------------------------
+        CAIEnem*    AI;
+        CRigidBody* ghostCollider;
+        CRigidBody* collider;
+
+        // ----------------------------------
 
         float SightDistance;
         uint16_t currentWaypointID;
