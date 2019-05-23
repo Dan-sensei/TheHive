@@ -18,7 +18,6 @@
 #include <Bullet/ggDynWorld.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
 #include <GameAI/Pathfinding.hpp>
-#include <Omicron/2D/BillboardBueno.hpp>
 
 
 #define MOVEMENT_SPEED 1.f
@@ -27,9 +26,6 @@
 #define UPDATE_STEP 15.f
 #define BULLET_STEP 1.f/FRAMERATE
 
-
-#include <Omicron/ZPlayer.hpp>
-#include <Omicron/SkyBox.hpp>
 
 Game::Game()
 :Accumulator(0)
@@ -59,6 +55,7 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
+    ZMaterial* MUSHROOM = Singleton<AssetManager>::Instance()->getMaterial("Mushroom");
     Engine->resizeFrameBuffers(848, 480);
 
     Engine->createZones(6);
@@ -70,24 +67,31 @@ void Game::Init(){
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 0);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 0);
     BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_LIGHTS.data", 0);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasInicio", 0, MUSHROOM);
+    // Singleton<Factory>::Instance()->createStaticModel("HierbasInicio", 0, Singleton<AssetManager>::Instance()->getMaterial("Mushroom"));
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/PASILLOS_MODELS.data", 1);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/PASILLOS_EVENTS.data", 1);
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/TUNELES_MODELS.data", 2);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/TUNELES_EVENTS.data",2);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasTuneles", 2, MUSHROOM);
 
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 3);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_CIUDAD_EVENTS.data",3);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasInicioCiudad", 3, MUSHROOM);
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 4);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CALLE_PRINCIPAL_EVENTS.data",4);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasCallePrincipal", 4, MUSHROOM);
 
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 5);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CENTRO_EVENTS.data",5);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasCentro", 5, MUSHROOM);
     //
     BinaryParser::LoadLevelData("assets/BinaryFiles/FINAL_MODELS.data", 6);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/FINAL_EVENTS.data",6);
+    // Singleton<Factory>::Instance()->createStaticModel("SetasFinal", 6, MUSHROOM);
 
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
 
@@ -129,8 +133,7 @@ void Game::Init(){
     Accumulator = 0;
 
     // Singleton<Pathfinding>::Instance()->SetDebug(true);
-    world->setDebug(true);
-    MasterClock.Restart();
+    // world->setDebug(true);
 
     //sky.init();
     //Engine2D->prueba();
@@ -156,17 +159,47 @@ void Game::Init(){
     TData mes;
     mes.add(kDat_total_img,1);
     mes.add(kDat_img1,0);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(79.7904,-20.6495,59.8293), 5, 0, false, mes);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(129.712,-20.6495,59.8293), 5, 0, false, mes);
     TData mes1;
     mes1.add(kDat_total_img,1);
     mes1.add(kDat_img1,1);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(171.164,-23.4092,35.5667), 5, 0, false, mes1);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(221.164,-23.4092,35.5667), 5, 0, false, mes1);
     TData mes2;
-    mes2.add(kDat_total_img,1);
+    mes2.add(kDat_total_img,3);
     mes2.add(kDat_img1,2);
+    mes2.add(kDat_img2,3);
+    mes2.add(kDat_img3,4);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(330.681,-42.8137,79.0592 ), 5, 0, false, mes2);
     TData mes3;
+    mes3.add(kDat_soundRoute,1);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(332.327,-42.8137,60.2511), 10, 0, false, mes3);
+    TData mes4;
+    mes4.add(kDat_soundRoute,2);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(330.681,-42.8137,87.0592 ), 10, 0, false, mes4);
+    TData mes5;
+    mes5.add(kDat_soundRoute,3);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(113.177,-21.2692,36.0758), 15, 0, false, mes5);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(355,-28,45), 7, 0, false, mes5);
+    TData mes6;
+    mes6.add(kDat_soundRoute,4);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(129,-20,70), 6, 0, false, mes6);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(149,-20,62), 6, 0, false, mes6);
+    TData mes7;
+    mes7.add(kDat_soundRoute,5);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(80,-21,34), 6, 0, false, mes7);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(201,-23,31), 6, 0, false, mes7);
+    TData mes8;
+    mes8.add(kDat_soundRoute,6);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(255,-43,233), 30, 0, false, mes8);
+
+    TData mes9;
+    mes9.add(kDat_total_img,1);
+    mes9.add(kDat_img1,5);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(89,-21,33), 5, 0, false, mes9);
+
+    TData mes10;
+    mes10.add(kDat_soundRoute,0);
+    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(91,-21,35), 3, 0, false, mes10);
 
     //TData mes1;
     //mes1.add(kDat_total_img,1);
@@ -175,30 +208,41 @@ void Game::Init(){
 
     Director->init();
 
-
-    auto estado = new PopState();
-    AssetManager* Manager = Singleton<AssetManager>::Instance();
-    estado->Addim(Manager->getTexture("assets/HUD/asdw_esp.png"));
-    estado->Addim(Manager->getTexture("assets/HUD/camara_esp.png"));
-    estado->Addim(Manager->getTexture("assets/HUD/dash_esp.png"));
-    Singleton<StateMachine>::Instance()->AddState(estado);
-
-    dialog1 = 0;
     dialogoInicial = new SonidoNormal();
     soundSys->createSound("event:/Voces/Dialogos/DialogoIntro", dialogoInicial);
+    // world->setDebug(true);
+
+    UPD = &Game::FirstUpdate;
+    MasterClock.Restart();
 }
 
 void Game::Update(){
+    (this->*UPD)();
+}
+
+void Game::FirstUpdate(){
+
+    NormalUpdate();
+
+    PopState* estado = new PopState();
+    AssetManager* Manager = Singleton<AssetManager>::Instance();
+    estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/asdw_esp.png"));
+    estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
+    Singleton<StateMachine>::Instance()->AddState(estado);
+    UPD = &Game::SecondUpdate;
+}
+
+void Game::SecondUpdate(){
+    dialogoInicial->play();
+    UPD = &Game::NormalUpdate;
+    MasterClock.Restart();
+    NormalUpdate();
+}
+
+void Game::NormalUpdate(){
     //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
     ////std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
 
-    if(dialog1==1){
-        dialogoInicial->play();
-        dialog1=2;
-    }
-    if(dialog1==0){
-        dialog1=1;
-    }
     DeltaTime = MasterClock.Restart().Seconds();
 
 

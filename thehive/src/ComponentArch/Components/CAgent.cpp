@@ -52,6 +52,17 @@ CAgent::~CAgent() {
 
 
 void CAgent::Init(){
+
+    VectorSonidos[0] = &CAgent::sonido_0;
+    VectorSonidos[1] = &CAgent::sonido_1;
+    VectorSonidos[2] = &CAgent::sonido_2;
+    VectorSonidos[3] = &CAgent::sonido_3;
+    VectorSonidos[4] = &CAgent::sonido_4;
+    VectorSonidos[5] = &CAgent::sonido_5;
+    VectorSonidos[6] = &CAgent::sonido_6;
+
+
+
     Engine = Singleton<Omicron>::Instance();
 
     s_puerta = new SonidoNormal();
@@ -185,16 +196,72 @@ bool CAgent::onTriggerEnter(TriggerRecordStruct* _pRec){
 }
 
 void CAgent::ENTER_func_kTrig_SoundJumpCliff          (TriggerRecordStruct *_pRec){
-    SS = Singleton<SoundSystem>::Instance();
+
+
+    auto mes=_pRec->data;
+    int sound=mes.find(kDat_soundRoute);
+    //sonido precipicio
     s_sonidoSaltoPrecipicio = new SonidoNormal();
-    SS->createSound("event:/Voces/Dialogos/DialogoTren", s_sonidoSaltoPrecipicio);
+
+    (this->*VectorSonidos[sound])();
+
+    // if(sound == -1){
+    //     SS->createSound("event:/Voces/Dialogos/DialogoTank", s_sonidoSaltoPrecipicio);
+    // }
+    // if(sound == 0){
+    //     SS->createSound("event:/Voces/Dialogos/DialogoTren", s_sonidoSaltoPrecipicio);
+    // }
+    // //sonido de donde salen tantos
+    // else if(sound == 1){
+    //     SS->createSound("event:/Voces/Jugador/FraseSoldier2", s_sonidoSaltoPrecipicio);
+    // }
+    // //sonido ratas
+    // else if(sound == 2){
+    //     SS->createSound("event:/Ambiente/Ratas", s_sonidoSaltoPrecipicio);
+    // }
+    // //sonido gotera
+    // else if(sound == 3){
+    //     SS->createSound("event:/Ambiente/Gotera", s_sonidoSaltoPrecipicio);
+    // }
+    // //sonido luces rotas
+    // else if(sound == 4){
+    //     SS->createSound("event:/Ambiente/LucesRotas", s_sonidoSaltoPrecipicio);
+    // }
+    // //sonido viento
+    // else if(sound == 5){
+    //     SS->createSound("event:/Ambiente/Viento", s_sonidoSaltoPrecipicio);
+    // }
     s_sonidoSaltoPrecipicio->play();
 }
+
+void CAgent::sonido_0(){
+    SS->createSound("event:/Voces/Dialogos/DialogoTank", s_sonidoSaltoPrecipicio);
+}
+void CAgent::sonido_1(){
+    SS->createSound("event:/Voces/Dialogos/DialogoTren", s_sonidoSaltoPrecipicio);
+}
+void CAgent::sonido_2(){
+    SS->createSound("event:/Voces/Jugador/FraseSoldier2", s_sonidoSaltoPrecipicio);
+}
+void CAgent::sonido_3(){
+    SS->createSound("event:/Ambiente/Ratas", s_sonidoSaltoPrecipicio);
+}
+void CAgent::sonido_4(){
+    SS->createSound("event:/Ambiente/Gotera", s_sonidoSaltoPrecipicio);
+}
+void CAgent::sonido_5(){
+    SS->createSound("event:/Ambiente/LucesRotas", s_sonidoSaltoPrecipicio);
+}
+void CAgent::sonido_6(){
+    SS->createSound("event:/Ambiente/Viento", s_sonidoSaltoPrecipicio);
+}
+
+
 void CAgent::ENTER_func_kTrig_InteractMess          (TriggerRecordStruct *_pRec){
 
     //inicializaciones necesarias
     EnumDataType tipos[3]={kDat_img1,kDat_img2,kDat_img3};
-    std::string  imagenes[3]={"assets/HUD/interaccionar_esp.png","assets/HUD/salto_esp.png","assets/HUD/ultrasonido_esp.png"};
+    std::string  imagenes[6]={"assets/HUD/interaccionar_esp.png","assets/HUD/salto_esp.png","assets/HUD/ultrasonido_esp.png", "assets/HUD/overload_esp.png", "assets/HUD/ondaexpansiva_esp.png", "assets/HUD/dash_esp.png"};
 
     auto mes=_pRec->data;
 
@@ -515,8 +582,18 @@ void CAgent::EXIT_func_kTrig_InteractMess        (TriggerRecordStruct *_pRec){
     Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
 }
 void CAgent::EXIT_func_kTrig_SoundJumpCliff       (TriggerRecordStruct *_pRec){
-    delete s_sonidoSaltoPrecipicio;
-    Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
+
+    auto mes=_pRec->data;
+    int sound=mes.find(kDat_soundRoute);
+    if(sound < 3){
+        delete s_sonidoSaltoPrecipicio;
+        Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
+    }
+    else{
+        s_sonidoSaltoPrecipicio->stop_fadeout();
+        delete s_sonidoSaltoPrecipicio;
+    }
+
 }
 void CAgent::EXIT_func_kTrig_none        (TriggerRecordStruct *_pRec){}
 void CAgent::EXIT_func_kTrig_Gunfire     (TriggerRecordStruct *_pRec){}

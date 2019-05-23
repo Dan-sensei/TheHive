@@ -3,6 +3,8 @@
 #include <Game.hpp>
 #include <OptionState.hpp>
 #include <Omicron/2D/Motor2D.hpp>
+#include <PopState.hpp>
+
 //#include <SMaterial>
 GUIController::GUIController()
 :Engine(nullptr)

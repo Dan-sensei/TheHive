@@ -629,7 +629,7 @@ void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone)
             str = "assets/BinaryFiles/BinaryModels/"+std::to_string(toggleObj)+".modelgg";
             Position = glm::vec3(tx,ty,tz);
             Rotation = glm::quat(trw,trx,tory,trz);
-            glm::vec3 Vel(0.0,0.1,0.0);
+            glm::vec3 Vel(0.0,0.0542,0.0);
 
             uint16_t NewToggle;
             // INTERRUPTOR

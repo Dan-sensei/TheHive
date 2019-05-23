@@ -9,5 +9,4 @@ void main()
 {
     UV = vertexUV;
     gl_Position = vec4(vertexPosition, 0.0, 1.0);
-
 }

@@ -36,7 +36,7 @@ public:
     */
     void siguiente();
 
-    void Addim(unsigned int im);
+    void Addim(unsigned int TextureID);
 private:
     Omicron* Engine;
     CTriggerSystem* EventSystem;
@@ -47,6 +47,7 @@ private:
 
     unsigned int QUAD;
     unsigned int QUAD_POS_UV;
+
     std::vector<unsigned int> imagenes;
 
 

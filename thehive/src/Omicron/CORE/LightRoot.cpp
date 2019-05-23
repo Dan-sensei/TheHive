@@ -4,7 +4,7 @@
 
 glm::vec3* LightRoot::CameraPosition = nullptr;
 LightRoot::LightRoot(ZNode* P)
-:ZNode(P), SPOT(0), POINT(0)
+:ZNode(P), SPOT(0), POINT(0), MAXSPOT(0), MAXPOINT(0)
 {
     static_cast<StandardNode*>(P)->addHijo(this);
     SPOT_LIGHTS.reserve(10);
@@ -13,12 +13,14 @@ LightRoot::LightRoot(ZNode* P)
 }
 
 LightRoot::LightRoot(const LightRoot &orig)
-:SPOT_LIGHTS(orig.SPOT_LIGHTS), POINT_LIGHTS(POINT_LIGHTS), SPOT(orig.SPOT), POINT(orig.POINT)
+:SPOT_LIGHTS(orig.SPOT_LIGHTS), POINT_LIGHTS(POINT_LIGHTS), SPOT(orig.SPOT), POINT(orig.POINT), MAXSPOT(orig.MAXSPOT), MAXPOINT(orig.MAXPOINT)
 {}
 
 LightRoot::~LightRoot(){
     SPOT_LIGHTS.clear();
     POINT_LIGHTS.clear();
+    // std::cout << " MAX SPOTS " << MAXSPOT << '\n';
+    // std::cout << "MAX POINTS " << MAXPOINT << '\n';
 }
 
 void LightRoot::setOVERRIDE(uint8_t ZONE) {
@@ -102,6 +104,8 @@ void LightRoot::draw() {
     }
 
     Engine->setLights(SPOT, POINT);
+    if(SPOT > MAXSPOT) MAXSPOT = SPOT;
+    if(POINT > MAXPOINT) MAXPOINT = POINT;
 
     for(uint8_t i = 0; i < SPOTLIGHTS_PTR.size(); ++i){
         SPOTLIGHTS_PTR[i]->setN(i);
