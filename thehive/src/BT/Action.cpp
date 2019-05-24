@@ -797,12 +797,12 @@ void Action::doExplosiveWave(){
 
         uint16_t hero = manager->getHeroID();
         CVida *ht = static_cast<CVida*>(manager->getComponent(gg::VIDA, hero));
-        ht->quitarvida(0.5+(yo->getRage()/2));
+        ht->quitarvida(5);
 
         s = BH_RUNNING;
 
         yo->explosiveWave();
-        //yo->playAttack();
+        yo->playAttack();
     }
 
     cont_hit++;

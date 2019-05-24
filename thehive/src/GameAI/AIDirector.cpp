@@ -280,9 +280,9 @@ void AIDirector::setActive(bool dato){
         // SS->createSound("event:/Voces/Jugador/FraseSoldier2", s_vozTantos);
         // s_vozTantos->play();
 
-        createWandering(1);
-        createWandering(2);
-        //invocartank(1);
+        //createWandering(1);
+        //createWandering(2);
+        invocartank(1);
         //invocarswarm(1);
         //invocarrusher(1);
     }

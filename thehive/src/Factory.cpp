@@ -200,7 +200,7 @@ uint16_t Factory::createTank(const glm::vec3 &Position,const float &health){
     CDynamicModel* DynamicModel       = new CDynamicModel(FATHER, moradoDeLos80);
     Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, Enemy);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Tank_Walking"));
-    // DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Tank_Attacking"));
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Tank_Attacking"));
     DynamicModel->ToggleAnimation(0,1);
 
     // CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 50, 0,0,0, 0);

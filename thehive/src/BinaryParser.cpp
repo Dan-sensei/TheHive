@@ -586,7 +586,7 @@ void BinaryParser::LoadLevelDataEvents(const std::string &DATA, int8_t map_zone)
             uint8_t hasPickable;
             GG_Read(inStream,hasPickable);
             if(hasPickable){
-                
+
                 GG_Read(inStream,px);
                 GG_Read(inStream,py);
                 GG_Read(inStream,pz);
@@ -842,8 +842,8 @@ uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
     GG_Read(inStream,z);
 
     //posicion jugador
-    glm::vec3 Position(x,y,z);
-    //glm::vec3 Position(331.092,-43.1192,70.0263);
+    //glm::vec3 Position(x,y,z);
+    glm::vec3 Position(331.092,-43.1192,70.0263);
     uint16_t HERO = fac->createHero(Position,-1);
 /*
     std::vector<AINode*> nodes;
