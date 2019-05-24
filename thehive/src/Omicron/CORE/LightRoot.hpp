@@ -34,8 +34,8 @@ class LightRoot : public ZNode {
         int SPOT;
         int POINT;
 
-        int MAXSPOT;
-        int MAXPOINT;
+        // int MAXSPOT;
+        // int MAXPOINT;
 };
 
 #endif
