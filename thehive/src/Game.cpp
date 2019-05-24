@@ -31,7 +31,6 @@ Game::Game()
 :Accumulator(0)
 {
     Engine = Singleton<Omicron>::Instance();
-    Engine2D = Singleton<Motor2D>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     Director = Singleton<AIDirector>::Instance();
     cont = Singleton<GUIController>::Instance();
@@ -56,7 +55,6 @@ Game::~Game(){
 void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
     ZMaterial* MUSHROOM = Singleton<AssetManager>::Instance()->getMaterial("Mushroom");
-    Engine->resizeFrameBuffers(848, 480);
 
     Engine->createZones(6);
 
@@ -98,9 +96,6 @@ void Game::Init(){
 
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
 
-    Engine2D->InitHUD();
-
-
     cont->musicaJuegoPlay();
     cont->musicaJuegoPause(false);
     cont->musicaMenuStop();
@@ -139,7 +134,6 @@ void Game::Init(){
     // world->setDebug(true);
 
     //sky.init();
-    //Engine2D->prueba();
 
 
     ParticleSystem_Data PS_D;
@@ -306,7 +300,6 @@ void Game::NormalUpdate(){
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     Engine->DisplayFPS();
-    // Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
     // glClear(GL_DEPTH_BUFFER_BIT);
@@ -322,7 +315,6 @@ void Game::NormalUpdate(){
 
 void Game::Resume(){
     Engine->HideCursor(true);
-    Engine2D->InitHUD();
     MainCamera->resetMouse();
 
     cont->musicaJuegoPause(false);

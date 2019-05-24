@@ -11,6 +11,7 @@ class ggDynWorld;
 #include "States/State.hpp"
 #include <Omicron/2D/GUIController.hpp>
 #include <FMOD/SoundSystem.hpp>
+#include <Omicron/2D/Imagen2D.hpp>
 
 class OptionState : public State{
 public:
@@ -43,7 +44,8 @@ private:
     GUIController* cont;
 
     SoundSystem* SS;
-
+    unsigned int BACKGROUND_TEXTURE_ID;
+    Imagen2D BACKGROUND;
 };
 
 

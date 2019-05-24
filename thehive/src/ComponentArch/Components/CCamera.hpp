@@ -30,6 +30,7 @@ public:
     void setExcludingBodyA(CRigidBody* R);
     void setExcludingBodyB(CRigidBody* R);
     void CameraUpdate();
+    void ToggleCameraInversionY();
 
     glm::vec3 getCameraPosition();
     glm::vec3 getOffsetPositionVector();

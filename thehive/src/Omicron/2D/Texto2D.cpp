@@ -301,7 +301,7 @@ void Texto2D::Draw(){
 
 
 
-    glActiveTexture(GL_TEXTURE0 + 0);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
 

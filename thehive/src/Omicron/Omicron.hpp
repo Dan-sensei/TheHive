@@ -87,8 +87,14 @@ class Omicron {
         inline StandardNode* getCamera(){return MainCameraNode;};
         inline TCamara* getMainCameraEntity(){return MainCamera;};
         inline glm::vec3* getMainCameraPositionPtr(){return MainCamera->getPositionPtr();};
+
         inline uint16_t getWindowsWidth(){ return WINDOW_WIDTH; };
         inline uint16_t getWindowsHeight(){ return WINDOW_HEIGHT; };
+
+        inline uint16_t getInternalWindowsWidth(){ return INTERNAL_BUFFER_WIDTH; };
+        inline uint16_t getInternalWindowsHeight(){ return INTERNAL_BUFFER_HEIGHT; };
+
+        inline uint8_t getGlobalIlumination(){ return GLOBAL_LIGHT; };
 
         void getCursorPosition(double &posX, double &posY);
         void clean();
@@ -110,6 +116,7 @@ class Omicron {
         void resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIGHT);
         void setLights(int nluces_F, int nluces_p);
         void setLightsZone(uint8_t ZONE, bool Active);
+        void setGlobalIlumination(uint8_t FACTOR);
         void SetMapZoneVisibility(const int8_t &zone,const bool &flag);
 
         void resetClickVariable();
@@ -160,6 +167,7 @@ class Omicron {
         uint16_t INTERNAL_BUFFER_WIDTH;
         uint16_t INTERNAL_BUFFER_HEIGHT;
 
+        uint8_t GLOBAL_LIGHT;
 
 };
 

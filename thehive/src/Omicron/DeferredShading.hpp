@@ -19,6 +19,7 @@ class DeferredShading{
         void DrawQuad();
         void DrawPostProcessing();
 
+        void setGlobalIlumination(float Intensity);
         void setnluces(int nluces_F, int nluces_p);
         void setDirLuz(glm::vec3 dir,glm::vec3 color,float inten);
         void info();

@@ -46,7 +46,6 @@ public:
 
 private:
     Omicron* Engine;
-    Motor2D* Engine2D;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;

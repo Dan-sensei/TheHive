@@ -842,7 +842,7 @@ uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
     //posicion jugador
     glm::vec3 Position(x,y,z);
     // glm::vec3 Position(331.092,-43.1192,70.0263);
-    uint16_t HERO = fac->createHero(Position,-1);
+    uint16_t HERO = fac->createHero(Position);
 /*
     std::vector<AINode*> nodes;
     nodes.reserve(TOTAL);

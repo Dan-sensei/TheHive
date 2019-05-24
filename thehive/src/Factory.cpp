@@ -26,7 +26,9 @@
 #include <Omicron/CORE/FrustrumLeaf.hpp>
 #include <Omicron/FX/ParticleSystem.hpp>
 
-Factory::Factory() {
+Factory::Factory()
+:InvertCamera(-1)
+{
     Manager = Singleton<ObjectManager>::Instance();
     Engine = Singleton<Omicron>::Instance();
     AManager = Singleton<AssetManager>::Instance();
@@ -35,7 +37,11 @@ Factory::Factory() {
 
 }
 
-uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
+void Factory::ToggleInvertedCamera(){
+    InvertCamera *= -1;
+}
+
+uint16_t Factory::createHero(const glm::vec3 &Position) {
 
 
     ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Hero");
@@ -46,7 +52,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 
     CAIEnem::PlayerTransform=Transform;
 
-    CCamera* Camera                     = new CCamera(_b);
+    CCamera* Camera                     = new CCamera(InvertCamera);
     Camera->setTarget(Transform);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 
@@ -143,7 +149,7 @@ uint16_t Factory::createSoldier(StandardNode* FATHER, const glm::vec3 &Position,
     Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, Enemy);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Walking"));   // 0.4
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Attacking")); // 0.2
-    DynamicModel->ToggleAnimation(0, 0.4);
+    DynamicModel->ToggleAnimation(0, 0.4, false);
 
     CRigidBody* RigidBody               = new CRigidBody(true, true,"assets/BulletBoundingBoxes/soldier_final.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);

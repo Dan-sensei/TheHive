@@ -31,7 +31,7 @@ MenuState::~MenuState(){
 }
 
 void MenuState::Init(){
-    Engine->resizeFrameBuffers(Engine->getWindowsWidth(), Engine->getWindowsHeight());
+    Engine->resizeFrameBuffers(848, 480);
 
     Engine->HideCursor(false);
 

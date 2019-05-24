@@ -5,10 +5,11 @@
 #include <Omicron/2D/Motor2D.hpp>
 #include <PopState.hpp>
 #include <MenuState.hpp>
+#include <ComponentArch/ObjectManager.hpp>
 
 //#include <SMaterial>
 GUIController::GUIController()
-:Engine(nullptr)
+:Engine(nullptr), _ObjectManager(nullptr), CurrentResolution(1), LIGHTNING(25)
 {
   Init();
 }
@@ -25,6 +26,8 @@ void GUIController::setposmax(int p){
 void GUIController::Init(){
 
     SS = Singleton<SoundSystem>::Instance();
+    _ObjectManager = Singleton<ObjectManager>::Instance();
+
     s_accion = new SonidoNormal();
     SS->createSound("event:/SFX/Menu/Aceptar",s_accion);
 
@@ -87,8 +90,31 @@ void GUIController::Init(){
     VectorAcciones[MUTEEFFECT] = &GUIController::muteEffect;
     VectorAcciones[GOINITOPTIONS] = &GUIController::initOptions;
 
+    VectorAcciones[INVERTCAMERA] = &GUIController::invertCamera;
+    VectorAcciones[MORERESOLUTION] = &GUIController::moreResolution;
+    VectorAcciones[LESSRESOLUTION] = &GUIController::lessResolution;
+    VectorAcciones[MOREBRIGHTNESS] = &GUIController::moreBrightness;
+    VectorAcciones[LESSBRIGHTNESS] = &GUIController::lessBrightness;
 
+    RESOLUTIONS[0].WIDTH = 640;
+    RESOLUTIONS[0].HEIGHT = 360;
+
+    RESOLUTIONS[1].WIDTH = 848;
+    RESOLUTIONS[1].HEIGHT = 480;
+
+    RESOLUTIONS[2].WIDTH = 1280;
+    RESOLUTIONS[2].HEIGHT = 720;
+
+    RESOLUTIONS[3].WIDTH = 1366;
+    RESOLUTIONS[3].HEIGHT = 768;
+
+    RESOLUTIONS[4].WIDTH = 1920;
+    RESOLUTIONS[4].HEIGHT = 1080;
+
+    RESOLUTIONS[5].WIDTH = 2560;
+    RESOLUTIONS[5].HEIGHT = 1440;
 }
+
 void GUIController::update(){
 
     int id =Engine2D->checkbuton();
@@ -114,6 +140,9 @@ void GUIController::gotoCredits(){
 void GUIController::gotoOptions(){
     sonido_accion(0);
     Singleton<StateMachine>::Instance()->AddState(new OptionState(),false);
+    Engine2D->setVolDialogo(dialogue);
+    Engine2D->setVolMusic(music);
+    Engine2D->setVolEffect(effect);
 }
 //but3
 void GUIController::Close(){
@@ -130,8 +159,6 @@ void GUIController::gotoMusic(){
     Engine2D->setVolDialogo(dialogue);
     Engine2D->setVolMusic(music);
     Engine2D->setVolEffect(effect);
-
-    Engine2D->InitMenu6();
     sonido_accion(0);
 }
 //but6
@@ -225,7 +252,7 @@ void GUIController::moreDialog(){
         dialogue=dialogue + 10;
     }
     Engine2D->setVolDialogo(dialogue);
-    Engine2D->InitMenu6();
+    Engine2D->InitOptions();
     SS->setVolume(dialogue/40, "bus:/Voces");
 }
 //but 19
@@ -234,7 +261,7 @@ void GUIController::lessDialog(){
         dialogue= dialogue-10;
     }
     Engine2D->setVolDialogo(dialogue);
-    Engine2D->InitMenu6();
+    Engine2D->InitOptions();
     SS->setVolume(dialogue/40, "bus:/Voces");
 }
 
@@ -248,7 +275,7 @@ void GUIController::moreMusic(){
         music = music + 10;
     }
     Engine2D->setVolMusic(music);
-    Engine2D->InitMenu6();
+    Engine2D->InitOptions();
     SS->setVolume(music/40, "bus:/Musica");
 }
 //but 21
@@ -257,7 +284,7 @@ void GUIController::lessMusic(){
         music = music - 10;
     }
     Engine2D->setVolMusic(music);
-    Engine2D->InitMenu6();
+    Engine2D->InitOptions();
     SS->setVolume(music/40, "bus:/Musica");
 }
 
@@ -272,7 +299,7 @@ void GUIController::moreEffect(){
         effect = effect + 10;
     }
     Engine2D->setVolEffect(effect);
-    Engine2D->InitMenu6();
+    Engine2D->InitOptions();
     SS->setVolume(effect/40, "bus:/SFX");
 }
 //but 23
@@ -281,7 +308,7 @@ void GUIController::lessEffect(){
         effect = effect - 10;
     }
     Engine2D->setVolEffect(effect);
-    Engine2D->InitMenu6();
+    Engine2D->InitOptions();
     SS->setVolume(effect/40, "bus:/SFX");
 }
 
@@ -294,4 +321,62 @@ void GUIController::muteEffect(){
 void GUIController::sonido_accion(float param){
     s_accion->setParameter("Aceptar", param);
     s_accion->play();
+}
+
+Resolution::Resolution()
+:WIDTH(848), HEIGHT(480)
+{}
+
+Resolution::Resolution(const Resolution &orig)
+:WIDTH(orig.WIDTH), HEIGHT(orig.HEIGHT)
+{}
+
+
+void GUIController::invertCamera(){
+    uint16_t HERO = _ObjectManager->getHeroID();
+    IComponent* CAMERA_ICOMPONENT = _ObjectManager->getComponent(gg::CAMERA, HERO);
+
+    if(CAMERA_ICOMPONENT){
+        static_cast<CCamera*>(CAMERA_ICOMPONENT)->ToggleCameraInversionY();
+    }
+    Engine2D->InvertCamera();
+    Singleton<Factory>::Instance()->ToggleInvertedCamera();
+    Engine2D->InitOptions();
+}
+
+void GUIController::moreResolution(){
+    if(CurrentResolution > 5) CurrentResolution = 5;
+    if(CurrentResolution == 5) return;
+    ++CurrentResolution;
+    Engine->resizeFrameBuffers(RESOLUTIONS[CurrentResolution].WIDTH, RESOLUTIONS[CurrentResolution].HEIGHT);
+    Engine2D->InitOptions();
+}
+
+void GUIController::lessResolution(){
+    if(CurrentResolution < 0) CurrentResolution = 0;
+    if(CurrentResolution == 0) return;
+
+    --CurrentResolution;
+    Engine->resizeFrameBuffers(RESOLUTIONS[CurrentResolution].WIDTH, RESOLUTIONS[CurrentResolution].HEIGHT);
+    Engine2D->InitOptions();
+}
+
+void GUIController::moreBrightness(){
+    if(LIGHTNING > 100) LIGHTNING = 5;
+    if(LIGHTNING == 100) return;
+
+    LIGHTNING += 5;
+    Engine->setGlobalIlumination(LIGHTNING);
+    Engine2D->InitOptions();
+
+}
+
+void GUIController::lessBrightness(){
+    if(LIGHTNING < 0) LIGHTNING = 0;
+    if(LIGHTNING == 0) return;
+
+    LIGHTNING -= 5;
+    Engine->setGlobalIlumination(LIGHTNING);
+    Engine2D->InitOptions();
+
 }

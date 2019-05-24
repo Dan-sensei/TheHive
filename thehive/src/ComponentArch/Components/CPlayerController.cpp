@@ -124,7 +124,7 @@ void CPlayerController::Init(){
     KEYMAP[13] = {gg::M, &CPlayerController::EnemyInfo};
 
     KEYMAP[14] = {gg::V, &CPlayerController::MostrarTexto};
-    KEYMAP[15] = {gg::C, &CPlayerController::QuitarTexto};
+    // KEYMAP[15] = {gg::C, &CPlayerController::QuitarTexto};
 }
 
 gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
@@ -576,13 +576,13 @@ void CPlayerController::MostrarTexto(){
     estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/asdw_esp.png"));
     estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
     estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/dash_esp.png"));
-    Singleton<StateMachine>::Instance()->AddState(estado,false);
+    Singleton<StateMachine>::Instance()->AddState(estado, false);
 
     //Singleton<Motor2D>::Instance()->pintarImagen("assets/HUD/ultrasonido_esp.png");
 }
-void CPlayerController::QuitarTexto(){
-    Singleton<Motor2D>::Instance()->InitHUD();
-}
+// void CPlayerController::QuitarTexto(){
+//     Singleton<Motor2D>::Instance()->InitHUD();
+// }
 void CPlayerController::invocasionhorda(){
     auto hola=glm::vec3(651.342,0.684987,-14.1424);
     factory->createTank(hola, 200);

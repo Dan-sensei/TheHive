@@ -66,7 +66,7 @@ void main()
     float LightPowerFo;// = 150.0f;
     //float LightPower = 25.0f;
 
-    vec3 FinalPixelColor  = Diffuse * 0.18f;
+    vec3 FinalPixelColor  = Diffuse * 0.05f;
 
     // ================================== Direccional ==================================
         vec3 LightDir=luces.dirluzD;//vec3(0,1,0);// la luz del sol
@@ -88,7 +88,7 @@ void main()
     for(int i = 0;  i < luces.NNlucesP; i++) {
 
         LightColor = luces.colorluzP[i];
-        float LightPower = luces.intluzP[i];
+        float LightPower = luces.intluzP[i]*0.8;
         vec3 posluz = luces.posluzP[i];
 
         // Diffuse
@@ -104,7 +104,7 @@ void main()
 
         // Attenuation
         dist = length(posluz - VertexPos);
-        attenuation = 1.0 / (dist * dist);
+        attenuation = 1.0 / (dist * (dist/2));
 
         DIFFUSE += PointDiffuse * attenuation;
         SPECULAR += SpecularPoint * attenuation;

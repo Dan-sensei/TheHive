@@ -14,7 +14,7 @@ int Omicron::wheel;
 int Omicron::IdButon;
 
 Omicron::Omicron()
-:MainCamera(nullptr), MainCameraNode(nullptr), FPS(0), _DeferredShading(), WINDOW_WIDTH(0), WINDOW_HEIGHT(0), ESCENA(nullptr)
+:MainCamera(nullptr), MainCameraNode(nullptr), FPS(0), _DeferredShading(), WINDOW_WIDTH(0), WINDOW_HEIGHT(0), ESCENA(nullptr), GLOBAL_LIGHT(25)
 {
     Initialize();
 
@@ -401,6 +401,11 @@ void Omicron::resizeFrameBuffers(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFE
     INTERNAL_BUFFER_WIDTH = FRAMEBUFFER_WIDTH;
     INTERNAL_BUFFER_HEIGHT = FRAMEBUFFER_HEIGHT;
     _DeferredShading.resizeFrameBuffers(FRAMEBUFFER_WIDTH, FRAMEBUFFER_HEIGHT);
+}
+
+void Omicron::setGlobalIlumination(uint8_t FACTOR){
+    _DeferredShading.setGlobalIlumination((static_cast<float>(FACTOR)) / 100.f);
+    GLOBAL_LIGHT = FACTOR;
 }
 
 void Omicron::deleteLeafNode(ZNode *node){

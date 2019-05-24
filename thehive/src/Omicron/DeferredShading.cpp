@@ -13,7 +13,7 @@
 #define Nfocales   32
 #define Npuntuales   36
 
-#define DIRECTIONAL_LIGHT_FACTOR 0.5
+#define DIRECTIONAL_LIGHT_FACTOR 0.25
 
 struct LUZF
 {
@@ -111,6 +111,11 @@ void DeferredShading::info(){
     std::cout << "MAX MEMORY NEEDED" << uniformOffsets[11]+arrayStrides[11]*9<<'\n';
 
 }
+
+void DeferredShading::setGlobalIlumination(float Intensity){
+    setDirLuz(glm::vec3(0,1,0), glm::vec3(1,1,1), Intensity);
+}
+
 
 DeferredShading::DeferredShading(){}
 
