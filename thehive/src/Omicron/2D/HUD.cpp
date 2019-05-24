@@ -54,7 +54,10 @@ textureID(-1),
 crucetaG(-1),crucetaP(-1),actualCruceta(-1),
 IMG_PrimaryW_P(-1),IMG_PrimaryW_S(-1),
 IMG_SecondaryW_P(-1),IMG_SecondaryW_S(-1),
-IMG_Actual_P(-1),IMG_Actual_S(-1)
+IMG_Actual_P(-1),IMG_Actual_S(-1),
+GENERATIONTIME(20/1280.f, 20/720.f, "GENERATION TIME ", glm::vec4(1,1,1,1), 40),
+LIFE(20/1280.f, 70/720.f, "PARTICLE LIFE ", glm::vec4(1,1,1,1), 40),
+MAX_ALPHA(20/1280.f, 130/720.f, "MAX ALPHA ", glm::vec4(1,1,1,1), 40)
 {}
 
 HUD::~HUD(){
@@ -198,6 +201,9 @@ void HUD::draw(){
     HAB_TR.Draw();
     HAB_TL.Draw();
     HEALTH_BAR.Draw();
+    GENERATIONTIME.Draw();
+    LIFE.Draw();
+    MAX_ALPHA.Draw();
 }
 
 void HUD::aim(const uint8_t &s){

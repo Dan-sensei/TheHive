@@ -32,6 +32,13 @@ class ParticleSystem : public TEntidad {
         virtual void beginDraw();
         virtual void endDraw();
 
+        float Accumulator;
+
+        float DELAY;
+        float ParticleLifeTime;
+        uint8_t MAXALPHA;
+
+
     private:
 
         void ParticleCreationHandler();
@@ -48,9 +55,6 @@ class ParticleSystem : public TEntidad {
 
         Shader* Particles_Shader;
 
-        float Accumulator;
-        float DELAY;
-        float ParticleLifeTime;
 
         unsigned int PARTICLE_SYSTEM;
         unsigned int VBO_SHAPE;

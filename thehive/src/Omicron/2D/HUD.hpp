@@ -39,6 +39,10 @@ class HUD {
         void aim(const uint8_t &s);
         void setHealthBarPc(const float &pc);
 
+        Texto2D GENERATIONTIME;
+        Texto2D LIFE;
+        Texto2D MAX_ALPHA;
+
     private:
         HUD();
         HUD(const HUD &orig) = delete;
@@ -74,6 +78,7 @@ class HUD {
         unsigned int IMG_SecondaryW_S;
         unsigned int IMG_Actual_P;
         unsigned int IMG_Actual_S;
+
 
 
         void drawHUDItem(const float &_ZINDEX, const unsigned int &_IMG, const unsigned int &_VAO, const float &_ALPHA);

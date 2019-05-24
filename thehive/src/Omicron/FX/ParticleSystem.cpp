@@ -9,7 +9,7 @@
 #include <algorithm>
 
 ParticleSystem::ParticleSystem()
-:DELAY(0), Accumulator(0), ParticleLifeTime(0), Position(glm::vec3()), Size(glm::vec3()), LastAvailablePosition(0)
+:DELAY(0), Accumulator(0), ParticleLifeTime(0), Position(glm::vec3()), Size(glm::vec3()), LastAvailablePosition(0), MAXALPHA(50)
 {
     Particles_Shader = Singleton<AssetManager>::Instance()->getShader("Particles");
     CurrentUpdate = &ParticleSystem::UpdateAndDraw;
@@ -136,7 +136,7 @@ void ParticleSystem::Update(){
             GL_Color_Buffer[4*ActiveParticles+2] = (GLubyte)CurrentParticle.B;
 
             float L = ((ParticleLifeTime-CurrentParticle.Life) - ParticleLifeTime/2);
-            float Alpha =   (1-((L*L)/BASE)) * 50;
+            float Alpha =   (1-((L*L)/BASE)) * MAXALPHA;
 
             GL_Color_Buffer[4*ActiveParticles+3] = (GLubyte)Alpha;
 

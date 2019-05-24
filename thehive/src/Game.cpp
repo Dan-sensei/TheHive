@@ -32,7 +32,7 @@ Game::Game()
 {
     Engine = Singleton<Omicron>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
-    Director = Singleton<AIDirector>::Instance();
+    // Director = Singleton<AIDirector>::Instance();
     cont = Singleton<GUIController>::Instance();
 
     //Engine->Starto();
@@ -157,64 +157,41 @@ void Game::Init(){
     // S->init();
     // Leaf* SkyboxNode = new Leaf(Singleton<Omicron>::Instance()->FORWARD_LAYER, S);
 
-    TData mes;
-    mes.add(kDat_total_img,1);
-    mes.add(kDat_img1,0);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(129.712,-20.6495,59.8293), 5, 0, false, mes);
-    TData mes1;
-    mes1.add(kDat_total_img,1);
-    mes1.add(kDat_img1,1);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(221.164,-23.4092,35.5667), 5, 0, false, mes1);
-    TData mes2;
-    mes2.add(kDat_total_img,3);
-    mes2.add(kDat_img1,2);
-    mes2.add(kDat_img2,3);
-    mes2.add(kDat_img3,4);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(330.681,-42.8137,79.0592 ), 5, 0, false, mes2);
-    TData mes3;
-    mes3.add(kDat_soundRoute,1);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(332.327,-42.8137,60.2511), 10, 0, false, mes3);
-    TData mes4;
-    mes4.add(kDat_soundRoute,2);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(330.681,-42.8137,87.0592 ), 10, 0, false, mes4);
-    TData mes5;
-    mes5.add(kDat_soundRoute,3);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(113.177,-21.2692,36.0758), 15, 0, false, mes5);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(355,-28,45), 7, 0, false, mes5);
-    TData mes6;
-    mes6.add(kDat_soundRoute,4);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(129,-20,70), 6, 0, false, mes6);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(149,-20,62), 6, 0, false, mes6);
-    TData mes7;
-    mes7.add(kDat_soundRoute,5);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(80,-21,34), 6, 0, false, mes7);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(201,-23,31), 6, 0, false, mes7);
-    TData mes8;
-    mes8.add(kDat_soundRoute,6);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(255,-43,233), 30, 0, false, mes8);
-
-    TData mes9;
-    mes9.add(kDat_total_img,1);
-    mes9.add(kDat_img1,5);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(89,-21,33), 5, 0, false, mes9);
-
-    TData mes10;
-    mes10.add(kDat_soundRoute,0);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(91,-21,35), 3, 0, false, mes10);
-
     //TData mes1;
     //mes1.add(kDat_total_img,1);
     //mes1.add(kDat_img1,3);
     //Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(81.9019,2.11054,41.7012), 5, 0, false, mes1);
 
-    Director->init();
+    // Director->init();
 
     dialogoInicial = new SonidoNormal();
     soundSys->createSound("event:/Voces/Dialogos/DialogoIntro", dialogoInicial);
     // world->setDebug(true);
 
-    UPD = &Game::FirstUpdate;
+    UPD = &Game::NormalUpdate;
     MasterClock.Restart();
+
+    {
+        std::string TEXTO = "GENERATION TIME ";
+        TEXTO += std::to_string((uint16_t)(PS->DELAY*1000));
+        TEXTO += " miliseconds";
+        Engine->hud->GENERATIONTIME.setText(TEXTO);
+    }
+
+    {
+        std::string TEXTO = "PARTICLE LIFE ";
+        TEXTO += std::to_string((uint16_t)(PS->ParticleLifeTime*1000));
+        TEXTO += " miliseconds";
+        Engine->hud->LIFE.setText(TEXTO);
+    }
+
+    {
+        std::string TEXTO = "MAX ALPHA ";
+        TEXTO += std::to_string((uint16_t)50);
+        TEXTO += " percent";
+
+        Engine->hud->MAX_ALPHA.setText(TEXTO);
+    }
 }
 
 void Game::Update(){
@@ -268,9 +245,10 @@ void Game::NormalUpdate(){
         Accumulator -= 1/UPDATE_STEP;
     }
 
+
     // //std::cout << " - EVENTSYSTEM UPDATE" << '\n';
     EventSystem->Update();
-    Director->update(DeltaTime);
+    // Director->update(DeltaTime);
 
     //Director->update(DeltaTime);
 
@@ -315,6 +293,69 @@ void Game::NormalUpdate(){
 
 
     Engine->EndDraw();
+    entregableParticleSystem();
+}
+
+void Game::entregableParticleSystem(){
+    if(Engine->key(gg::U, true)){
+        if(PS->DELAY < 5){
+            PS->DELAY += 0.1f;
+            std::string TEXTO = "GENERATION TIME ";
+            TEXTO += std::to_string((uint16_t)(PS->DELAY*1000));
+            TEXTO += " miliseconds";
+            Engine->hud->GENERATIONTIME.setText(TEXTO);
+        }
+    }
+    else if(Engine->key(gg::J, true)){
+        if(PS->DELAY > 0.2){
+            PS->DELAY -= 0.1f;
+            std::string TEXTO = "GENERATION TIME ";
+            TEXTO += std::to_string((uint16_t)(PS->DELAY*1000));
+            TEXTO += " miliseconds";
+            Engine->hud->GENERATIONTIME.setText(TEXTO);
+        }
+    }
+
+    if(Engine->key(gg::I, true)){
+        if(PS->ParticleLifeTime < 10){
+            PS->ParticleLifeTime += 0.1f;
+            std::string TEXTO = "PARTICLE LIFE ";
+            TEXTO += std::to_string((uint16_t)(PS->ParticleLifeTime*1000));
+            TEXTO += " miliseconds";
+            Engine->hud->LIFE.setText(TEXTO);
+        }
+    }
+    else if(Engine->key(gg::K, true)){
+        if(PS->ParticleLifeTime > 0.2){
+            PS->ParticleLifeTime -= 0.1f;
+            std::string TEXTO = "PARTICLE LIFE ";
+            TEXTO += std::to_string((uint16_t)(PS->ParticleLifeTime*1000));
+            TEXTO += " miliseconds";
+            Engine->hud->LIFE.setText(TEXTO);
+        }
+    }
+
+    if(Engine->key(gg::O, true)){
+        if(PS->MAXALPHA < 255){
+            PS->MAXALPHA += 5;
+            std::string TEXTO = "MAX ALPHA ";
+            uint16_t A =  (uint16_t)((PS->MAXALPHA/255.f)*100);
+            TEXTO += std::to_string(A);
+            TEXTO += " percent";
+            Engine->hud->MAX_ALPHA.setText(TEXTO);
+        }
+    }
+    else if(Engine->key(gg::L, true)){
+        if(PS->MAXALPHA > 0) {
+            PS->MAXALPHA += 5;
+            std::string TEXTO = "MAX ALPHA ";
+            uint16_t A =  (uint16_t)((PS->MAXALPHA/255.f)*100);
+            TEXTO += std::to_string(A);
+            TEXTO += " percent";
+
+            Engine->hud->MAX_ALPHA.setText(TEXTO);
+        }
+    }
 }
 
 void Game::Resume(){

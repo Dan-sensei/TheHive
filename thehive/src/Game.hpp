@@ -68,6 +68,8 @@ private:
     NatureGenerator nat;
     ParticleSystem* PS;
 
+    void entregableParticleSystem();
+
     void FirstUpdate();
     void SecondUpdate();
     void NormalUpdate();

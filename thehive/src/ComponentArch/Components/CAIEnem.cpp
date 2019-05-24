@@ -232,122 +232,122 @@ void CAIEnem::Update(){
 }
 
 void CAIEnem::FixedUpdate(){
-    ////std::cout << "entrando" << '\n';
-    checkzona();
-
-    if(isPlayerAttacking){
-        CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
-        if(clk && clk->hasEnded()){
-            isPlayerAttacking = false;
-            Manager->removeComponentFromEntity(gg::CLOCK,ID);
-        }
-    }
-
-    numberOfUpdatesSinceLastHability++;
-
-    glm::vec3 pTF        = PlayerTransform->getPosition();
-    glm::vec3 cTF_POS    = cTransform->getPosition();
-
-    pTF.y =0;
-    cTF_POS.y =0;
-    if(playerSeeing){
-        glm::vec3 diren      = pTF-cTF_POS;
-        diren       = glm::normalize(diren);
-        diren       = gg::Direccion2D_to_rot(diren);
-
-        //cTransform->setRotation(V_AI_DEST);
-        ghostCollider->setRotY(180+diren.y);
-
-    }
-
-    float dist = glm::distance(pTF,cTF_POS);
-    if(dist<15){
-        if(!s_caminar->isPlaying()){
-            s_caminar->setPosition(cTF_POS);
-            s_caminar->play();
-        }
-
-        int ramstein=gg::genIntRandom(1, 500);
-        if(ramstein==66){
-            s_grito->setPosition(cTF_POS);
-            s_grito->play();
-        }
-
-    }
-    else{
-        if(s_caminar->isPlaying()){
-            s_caminar->stop_fadeout();
-        }
-    }
-    if(dist<Vrange){
-        // glm::vec3 cTF_ROT    = cTransform->getRotation();
-        // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
-        glm::vec3 dir        = cTransform->getRotation() * glm::vec3(0,0,1);
-        dir *=-1;
-        glm::vec3 diren      = pTF-cTF_POS;
-
-        diren       = glm::normalize(diren);
-        float sol   = glm::dot(diren,dir);
-
-        if(gradovision<sol){
-            //comprobar raytracing
-            //CRigidBody* body = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
-            //glm::vec3 posmala        = PlayerBody->getBodyPosition();
-
-
-            glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTransform->getPosition(),PlayerBody->getBodyPosition(),Vrange);
-            int id=world->getIDFromRaycast();
-            if(id==Manager->getHeroID()){
-                //lo veo
-                playerSeen      = true;
-                playerSeeing    = true;
-                playerPos       = PlayerTransform->getPosition();
-
-                //resetHabilityUpdateCounter();
-            }
-            else if(playerSeeing){
-            CAIEnem* cAIEnem =  static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
-            if(cAIEnem&&cAIEnem->playerSeeing){
-
-            }
-            }else{
-                //no lo veo
-                playerSeeing = false;
-                //playerSeen = true;
-                resetHabilityUpdateCounter();
-            }
-        }
-        else if(playerSeeing){
-            //no lo veo
-            playerSeeing = false;
-            //playerSeen = true;
-            resetHabilityUpdateCounter();
-        }
-
-        if((dist-0.1)<=Arange){
-            //lo tengo encima
-            playerSeen      = true;
-            playerSeeing    = true;
-            playerOnRange   =  true;
-            playerPos       = PlayerTransform->getPosition();
-
-        }
-        else{
-            //no lo tengo encima
-            playerOnRange = false;
-        }
-    }
-    //if(playerSeeing){
-    //    playerPos       = PlayerTransform->getPosition();
-
-    //}
-    ////std::cout << "mi pos?" <<playerPos;
-    ////std::cout << "atacando" <<imAttacking;
-    arbol->update();
-
-    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_WALKING && cDynamicModel->getAnimationPlayed()){
-        cDynamicModel->ToggleAnimation(A_ENEMIES::E_WALKING, 0.4, false);
-    }
+    // ////std::cout << "entrando" << '\n';
+    // checkzona();
+    //
+    // if(isPlayerAttacking){
+    //     CClock *clk = static_cast<CClock*>(Manager->getComponent(gg::CLOCK,ID));
+    //     if(clk && clk->hasEnded()){
+    //         isPlayerAttacking = false;
+    //         Manager->removeComponentFromEntity(gg::CLOCK,ID);
+    //     }
+    // }
+    //
+    // numberOfUpdatesSinceLastHability++;
+    //
+    // glm::vec3 pTF        = PlayerTransform->getPosition();
+    // glm::vec3 cTF_POS    = cTransform->getPosition();
+    //
+    // pTF.y =0;
+    // cTF_POS.y =0;
+    // if(playerSeeing){
+    //     glm::vec3 diren      = pTF-cTF_POS;
+    //     diren       = glm::normalize(diren);
+    //     diren       = gg::Direccion2D_to_rot(diren);
+    //
+    //     //cTransform->setRotation(V_AI_DEST);
+    //     ghostCollider->setRotY(180+diren.y);
+    //
+    // }
+    //
+    // float dist = glm::distance(pTF,cTF_POS);
+    // if(dist<15){
+    //     if(!s_caminar->isPlaying()){
+    //         s_caminar->setPosition(cTF_POS);
+    //         s_caminar->play();
+    //     }
+    //
+    //     int ramstein=gg::genIntRandom(1, 500);
+    //     if(ramstein==66){
+    //         s_grito->setPosition(cTF_POS);
+    //         s_grito->play();
+    //     }
+    //
+    // }
+    // else{
+    //     if(s_caminar->isPlaying()){
+    //         s_caminar->stop_fadeout();
+    //     }
+    // }
+    // if(dist<Vrange){
+    //     // glm::vec3 cTF_ROT    = cTransform->getRotation();
+    //     // glm::vec3 dir        = gg::Direccion2D(cTF_ROT);
+    //     glm::vec3 dir        = cTransform->getRotation() * glm::vec3(0,0,1);
+    //     dir *=-1;
+    //     glm::vec3 diren      = pTF-cTF_POS;
+    //
+    //     diren       = glm::normalize(diren);
+    //     float sol   = glm::dot(diren,dir);
+    //
+    //     if(gradovision<sol){
+    //         //comprobar raytracing
+    //         //CRigidBody* body = static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY,Manager->getHeroID()));
+    //         //glm::vec3 posmala        = PlayerBody->getBodyPosition();
+    //
+    //
+    //         glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCastTo(cTransform->getPosition(),PlayerBody->getBodyPosition(),Vrange);
+    //         int id=world->getIDFromRaycast();
+    //         if(id==Manager->getHeroID()){
+    //             //lo veo
+    //             playerSeen      = true;
+    //             playerSeeing    = true;
+    //             playerPos       = PlayerTransform->getPosition();
+    //
+    //             //resetHabilityUpdateCounter();
+    //         }
+    //         else if(playerSeeing){
+    //         CAIEnem* cAIEnem =  static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+    //         if(cAIEnem&&cAIEnem->playerSeeing){
+    //
+    //         }
+    //         }else{
+    //             //no lo veo
+    //             playerSeeing = false;
+    //             //playerSeen = true;
+    //             resetHabilityUpdateCounter();
+    //         }
+    //     }
+    //     else if(playerSeeing){
+    //         //no lo veo
+    //         playerSeeing = false;
+    //         //playerSeen = true;
+    //         resetHabilityUpdateCounter();
+    //     }
+    //
+    //     if((dist-0.1)<=Arange){
+    //         //lo tengo encima
+    //         playerSeen      = true;
+    //         playerSeeing    = true;
+    //         playerOnRange   =  true;
+    //         playerPos       = PlayerTransform->getPosition();
+    //
+    //     }
+    //     else{
+    //         //no lo tengo encima
+    //         playerOnRange = false;
+    //     }
+    // }
+    // //if(playerSeeing){
+    // //    playerPos       = PlayerTransform->getPosition();
+    //
+    // //}
+    // ////std::cout << "mi pos?" <<playerPos;
+    // ////std::cout << "atacando" <<imAttacking;
+    // arbol->update();
+    //
+    // if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_WALKING && cDynamicModel->getAnimationPlayed()){
+    //     cDynamicModel->ToggleAnimation(A_ENEMIES::E_WALKING, 0.4, false);
+    // }
 }
 
 void CAIEnem::moveBodies(const glm::vec3 &vel){

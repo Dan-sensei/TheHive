@@ -584,24 +584,24 @@ void CPlayerController::MostrarTexto(){
 //     Singleton<Motor2D>::Instance()->InitHUD();
 // }
 void CPlayerController::invocasionhorda(){
-    auto hola=glm::vec3(651.342,0.684987,-14.1424);
-    factory->createTank(hola, 200);
+    // auto hola=glm::vec3(651.342,0.684987,-14.1424);
+    // factory->createTank(hola, 200);
 }
 void CPlayerController::invocasionwander(){
-    glm::vec3 hola[]={
-        glm::vec3(-15,0.684987,11),
-        glm::vec3(-18,0.684987,12),
-        glm::vec3(22,0.684986,14),
-        glm::vec3(30,0.684986,20),
-        glm::vec3(40,0.684986,25),
-        glm::vec3(50,0.684986,28),
-        glm::vec3(60,0.684986,35),
-        glm::vec3(70,0.684986,40)
-    };
-    //wandering
-    for (int i = 0; i < 8; i++) {
-        factory->createSoldierWandering(hola[i], 1);
-    }
+    // glm::vec3 hola[]={
+    //     glm::vec3(-15,0.684987,11),
+    //     glm::vec3(-18,0.684987,12),
+    //     glm::vec3(22,0.684986,14),
+    //     glm::vec3(30,0.684986,20),
+    //     glm::vec3(40,0.684986,25),
+    //     glm::vec3(50,0.684986,28),
+    //     glm::vec3(60,0.684986,35),
+    //     glm::vec3(70,0.684986,40)
+    // };
+    // //wandering
+    // for (int i = 0; i < 8; i++) {
+    //     factory->createSoldierWandering(hola[i], 1);
+    // }
 }
 void CPlayerController::ToggleFreeCamera(){
     camera->ToogleFreeCamera();

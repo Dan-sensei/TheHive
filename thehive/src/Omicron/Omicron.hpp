@@ -117,13 +117,13 @@ class Omicron {
         int DRAW_OBJECTS;
         std::vector<StandardNode*> ZONES;
         StandardNode* FORWARD_LAYER;
+        HUD* hud;
     private:
 
         Omicron();
 
         DeferredShading _DeferredShading;
         gg::Clock FPS_Clock;
-        HUD* hud;
 
 
         StandardNode* ESCENA;
