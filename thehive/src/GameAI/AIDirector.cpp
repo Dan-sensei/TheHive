@@ -1,7 +1,11 @@
 #include "AIDirector.hpp"
 //#include "Enum.hpp"
 #include <ComponentArch/Components/CFlock.hpp>
+#include <ComponentArch/Components/CPlayerController.hpp>
 #include <BinaryParser.hpp>
+#include "PopState.hpp"
+#include "States/StateMachine.hpp"
+
 /*
 RECORDATORIO
 poner y usar medidor de estres:
@@ -119,6 +123,44 @@ AIDirector::~AIDirector (){
 AIDirector::AIDirector (const AIDirector &orig){}
 void AIDirector::update (float delta){
     if(!activado) return;
+    if(muerto){
+        AcumulatorHorda=TimeHorda;
+        muerto=false;
+        //eliminamos enemigos
+        removeAllEnem();
+        //seleccionamos nueva area de aparacion+ creamos wandering alrededor
+        zona_actual-=1;
+        if(zona_actual<1){
+            zona_actual=1;
+        }
+        //std::cout << "estamos en " <<zona_actual<< '\n';
+        int prev =zona_actual-1;
+        if(prev<8 && prev>0){
+        //    std::cout << "creamos en :" << prev<<'\n';
+            createWandering(prev);
+        }
+        int post=zona_actual+1;
+        if(post<8 && post>0){
+        //    std::cout << "creamos en :" << post<<'\n';
+            createWandering(post);
+        }
+        auto pos_jugador=getposzona(zona_actual);
+        //CRigidBody* Rjugador=static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, Manager->getHeroID()));
+        //Rjugador->setBodyPosition(pos_jugador);
+        CPlayerController* cPlayerController=static_cast<CPlayerController*>(Manager->getComponent(gg::PLAYERCONTROLLER, Manager->getHeroID()));
+        cPlayerController->reset(pos_jugador);
+        //Rjugador->se
+
+        //ponemos pop up muerte
+
+        PopState* aux = new PopState();
+        AssetManager* Manager = Singleton<AssetManager>::Instance();
+        aux->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/muerte_esp.png"));
+        //estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
+        Singleton<StateMachine>::Instance()->AddState(aux);
+
+        return;
+    }
 
     AcumulatorBusqueda += delta;
     //Acumulator+=(delta*(estres/10));
@@ -280,9 +322,9 @@ void AIDirector::setActive(bool dato){
         // SS->createSound("event:/Voces/Jugador/FraseSoldier2", s_vozTantos);
         // s_vozTantos->play();
 
-        //createWandering(1);
-        //createWandering(2);
-        invocartank(1);
+        createWandering(1);
+        createWandering(2);
+        //invocartank(1);
         //invocarswarm(1);
         //invocarrusher(1);
     }
@@ -347,6 +389,23 @@ void AIDirector::removeEnemy(CTransform* nodo){
         }
         it++;
     }
+}
+void AIDirector::restart(){
+    //removeAllEnem();
+    //std::cout << "eliminado" << '\n';
+    //activado=false;
+    muerto=true;
+
+}
+void AIDirector::removeAllEnem(){
+    auto it=enemigos.begin();
+    while(it!=enemigos.end()){
+            int id=(*it)->getEntityID();
+            Manager->removeEntity(id);
+            it++;
+    }
+    enemigos.clear();
+    numEnemigos=0;
 }
 //eliminamos todos los enemigos de una zona
 void AIDirector::removePos(int nodo){

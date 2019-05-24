@@ -50,7 +50,14 @@ CGun::~CGun() {
     delete s_cogida;
 
 }
+void CGun::reset(){
+    charger_bullets=kcharger_bullets ;
+    total_bullets=ktotal_bullets ;
+    canShoot = true;
+    reloading = false;
+    generatorDT = 2;
 
+}
 void CGun::shoot(glm::vec3 to){
     CTriggerSystem* EventSystem=Singleton<CTriggerSystem>::Instance();
     if(canShoot && !reloading){

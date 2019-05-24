@@ -625,6 +625,60 @@ void CPlayerController::explosion(glm::vec3 vPos,float fuerzabomba){
     collider->applyCentralForce(sol);
 
 }
+void CPlayerController::reset(glm::vec3  pos_jugador){
+    //resetear la posicion del jugador
+    //colider en pos //pos_jugador
+    /*traza
+    pos_jugador fixed (310.148,-43.975,130.425)
+    pos_jugador fixed (310.148,-43.975,130.425)
+    pos_jugador en reset (317.127,-24.6235,71.4132)
+    pos_jugador fixed (310.156,-43.979,130.587)
+    pos_jugador fixed (316.671,-25.8877,75.2786)
+    pos_jugador fixed (310.632,-42.6559,126.577)
+    */
+    //std::cout << "pos_jugador en reset (" <<pos_jugador.x<<","<<pos_jugador.y<<","<<pos_jugador.z<<")"<< '\n';
+    collider->activate(true);
+    collider->setNotKinematicBodyPosition(pos_jugador);
+    collider->setBodyPosition(pos_jugador);
+    //collider->setXZPosition(pos_jugador.x, pos_jugador.z);
+
+    int nCAgentID=Manager->getHeroID();
+
+    //reset habilidades
+
+    Manager->removeComponentFromEntity(gg::HAB,nCAgentID);
+    CHabilityController* Hab                         = new CHabilityController();
+    Manager->addComponentToEntity(Hab,             gg::HAB, nCAgentID);
+
+    hab = static_cast<CHabilityController*>(Manager->getComponent(gg::HAB, nCAgentID));
+
+    //eliminar anyadir componente
+
+    //reset arma
+    CGun *gun = static_cast<CGun*>(Manager->getComponent(gg::GUN,nCAgentID));
+    if(gun){
+        //std::cout << "reseteamos arma" << '\n';
+        gun->reset();
+    }
+    if(secondWeapon){
+        secondWeapon->reset();
+    }
+    /*
+    int _wtype_floor=gun->getType();
+    float   dmg, cdc, relDT, rng;
+    std::string sonido_disparo, sonido_recarga, sonido_desenfundado, sonido_vacia,imgP,imgS;
+    int     cb,tb;
+
+    gg::getWeaponInformation(dmg,cdc,relDT,rng,cb,tb,_wtype_floor, sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia,imgP,imgS);
+    // Elimino el arma que tiene la entidad
+    Manager->removeComponentFromEntity(gg::GUN,nCAgentID);
+    // Le anyado la nueva
+    CGun* Gun = new CGun(dmg,cdc,cb,tb,relDT,rng,_wtype_floor,sonido_disparo,sonido_recarga,sonido_desenfundado,sonido_vacia);
+    Manager->addComponentToEntity(Gun, gg::GUN, nCAgentID);
+    */
+    //eliminar anyadir componente
+
+}
 void CPlayerController::EnemyInfo(){
     //devuelve ide de un objeto
     glm::vec3 STOESUNUPDATE_PERODEVUELVEUNAPOSICION = world->handleRayCast(camera->getCameraPosition(),camera->getTargetPosition(),200);

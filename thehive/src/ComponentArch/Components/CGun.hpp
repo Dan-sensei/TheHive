@@ -47,6 +47,8 @@ class CGun : public IComponent {
         void desenfundado();
         void cogida();
 
+        void reset();
+
     private:
         ObjectManager* Manager;
 

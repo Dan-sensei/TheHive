@@ -40,6 +40,7 @@ class CVida : public IComponent {
 
 
     private:
+        int cont;
         CVida(const CVida &orig) = delete;
         ObjectManager   *Manager;
         HUD   *hud;

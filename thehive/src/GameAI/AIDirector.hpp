@@ -40,6 +40,9 @@ class AIDirector {
         void invocartank(int nodo);
         void invocarswarm(int nodo);
 
+        void removeAllEnem();
+        void restart();
+
          glm::vec3 getposzona(int);
          int checkzone(glm::vec3 pos);
 
@@ -65,6 +68,7 @@ class AIDirector {
         void DrawZones();
 
     private:
+        bool muerto;
         int zona_actual;
         SoundSystem* SS;
         SoundEvent* s_vozTantos;

@@ -50,10 +50,13 @@ bool CVida::quitarvida(const float &_factor){
     //std::cout << "QUITANDO VIDA " <<_factor<< '\n';
     //std::cout << "QUITANDO VIDA " <<vida<< '\n';
     if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+
+        if(vida <= 0){
+            vida=vida_max;
+            Singleton<AIDirector>::Instance()->restart();
+        }
+
         hud->setHealthBarPc(vida/vida_max);
-
-
-
         s_muerte->setParameter("Vida",vida);
 
         s_muerte->play();
@@ -103,6 +106,7 @@ bool CVida::quitarvida(const float &_factor){
 }
 
 void CVida::Init(){
+    cont=0;
     //  We check if this entity has the TRANSFORM component
     //Manager = Singleton<ObjectManager>::Instance();
     MHandler_SETPTRS();
@@ -128,14 +132,25 @@ gg::EMessageStatus CVida::MHandler_SETPTRS(){
 
 
 void CVida::FixedUpdate() {
-    if(vida <= 0){
-        if(!Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+    if(Manager->getComponent(gg::PLAYERCONTROLLER,getEntityID())){
+        cont++;
+        if(cont>50){
+            cont=0;
+            vida++;
+            if(vida>=vida_max){
+                vida=vida_max;
+            }
+            hud->setHealthBarPc(vida/vida_max);
+        }
+    }
+    else{
+        if(vida <= 0){
             CTransform  *t  = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,getEntityID()));
             CAIEnem     *AI = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
             if(t && AI){
                 // //gg::cout("DEAD ALIEN");
                 if(AI->getImAttacking())
-                    Action::aliensAttacking--;
+                Action::aliensAttacking--;
                 // Evento para que los enemigos vean que se ha muerto un aliado suyo
 
                 triggerSystem->RegisterTriger(kTrig_DeadAlien,1,getEntityID(),t->getPosition(), 20, 5000, false, TData());
@@ -152,4 +167,5 @@ void CVida::FixedUpdate() {
         }
 
     }
+
 }

@@ -74,6 +74,7 @@ class CPlayerController : public IComponent {
         int currentsoldier;
         int currentrusher;
         int currenttank;
+        void reset(glm::vec3  pos_jugador);
     private:
 
         CPlayerController();
