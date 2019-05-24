@@ -257,7 +257,7 @@ void Omicron::drawHUD(){
     else {
         hud->setOclusion(false);
     }
-    
+
     hud->setDRAWNOBJECTS(DRAW_OBJECTS);
     hud->draw();
 }
@@ -308,8 +308,8 @@ bool Omicron::Initialize(){
     auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     WINDOW_WIDTH = mode->width;
     WINDOW_HEIGHT = mode->height;
-    INTERNAL_BUFFER_WIDTH = 1280;
-    INTERNAL_BUFFER_HEIGHT = 720;
+    INTERNAL_BUFFER_WIDTH = 1920;
+    INTERNAL_BUFFER_HEIGHT = 1080;
 
 	window = glfwCreateWindow(static_cast<int>(WINDOW_WIDTH), static_cast<int>(WINDOW_HEIGHT), "The Hive - ALPHA", glfwGetPrimaryMonitor(), NULL);
 	if( window == NULL ){

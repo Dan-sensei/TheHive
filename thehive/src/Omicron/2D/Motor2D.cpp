@@ -317,20 +317,20 @@ int Motor2D::InitOptions(){
     std::string RESOLUTION = "";
     RESOLUTION += std::to_string(motor->getInternalWindowsWidth()) + "x";
     RESOLUTION += std::to_string(motor->getInternalWindowsHeight());
-    TEXT.emplace_back(826/1280.f, 305/720.f, RESOLUTION,glm::vec4(1,1,1,1), 30);
+    TEXT.emplace_back(823/1280.f, 304/720.f, RESOLUTION,glm::vec4(1,1,1,1), 25);
     BOTONES.emplace_back(803/1280.f, 305/720.f, 815/1280.f, 319/720.f, LESSRESOLUTION, AM->getTexture("assets/HUD/DOWN.png"), AM->getTexture("assets/HUD/DOWN_HOVER.png") );
     BOTONES.emplace_back(911/1280.f, 305/720.f, 923/1280.f, 319/720.f, MORERESOLUTION, AM->getTexture("assets/HUD/UP.png"),   AM->getTexture("assets/HUD/UP_HOVER.png") );
 
     std::string LIGHTNING = "";
     LIGHTNING += std::to_string(motor->getGlobalIlumination());
-    TEXT.emplace_back(853/1280.f, 363/720.f, LIGHTNING,glm::vec4(1,1,1,1), 30);
+    TEXT.emplace_back(850/1280.f, 362/720.f, LIGHTNING,glm::vec4(1,1,1,1), 25);
     BOTONES.emplace_back(831/1280.f, 363/720.f, 843/1280.f, 377/720.f, LESSBRIGHTNESS, AM->getTexture("assets/HUD/DOWN.png"), AM->getTexture("assets/HUD/DOWN_HOVER.png") );
     BOTONES.emplace_back(880/1280.f, 363/720.f, 892/1280.f, 377/720.f, MOREBRIGHTNESS, AM->getTexture("assets/HUD/UP.png"),   AM->getTexture("assets/HUD/UP_HOVER.png") );
 
 
     // SONIDO
         // Dialogos
-        TEXT.emplace_back(1145/1280.f, 309/720.f, std::to_string(VolDialogo),glm::vec4(1,1,1,1), 30);
+        TEXT.emplace_back(1142/1280.f, 308/720.f, std::to_string(VolDialogo),glm::vec4(1,1,1,1), 25);
         BOTONES.emplace_back(1123/1280.f, 308/720.f, 1135/1280.f, 322/720.f, LESSDIALOD, AM->getTexture("assets/HUD/DOWN.png"), AM->getTexture("assets/HUD/DOWN_HOVER.png") );
         BOTONES.emplace_back(1172/1280.f, 308/720.f, 1184/1280.f, 322/720.f, MOREDIALOD, AM->getTexture("assets/HUD/UP.png"),   AM->getTexture("assets/HUD/UP_HOVER.png") );
         if(muteDialog){
@@ -341,7 +341,7 @@ int Motor2D::InitOptions(){
         }
 
         // Musica
-        TEXT.emplace_back(1145/1280.f, 365/720.f, std::to_string(VolMusic), glm::vec4(1,1,1,1), 30);
+        TEXT.emplace_back(1142/1280.f, 364/720.f, std::to_string(VolMusic), glm::vec4(1,1,1,1), 25);
         BOTONES.emplace_back(1123/1280.f, 364/720.f, 1135/1280.f, 378/720.f, LESSMUSIC, AM->getTexture("assets/HUD/DOWN.png"), AM->getTexture("assets/HUD/DOWN_HOVER.png") );
         BOTONES.emplace_back(1172/1280.f, 364/720.f, 1184/1280.f, 378/720.f, MOREMUSIC, AM->getTexture("assets/HUD/UP.png"),   AM->getTexture("assets/HUD/UP_HOVER.png") );
         if(muteMusic){
@@ -352,7 +352,7 @@ int Motor2D::InitOptions(){
         }
 
         // Efectos
-        TEXT.emplace_back(1145/1280.f, 422/720.f, std::to_string(VolEffect), glm::vec4(1,1,1,1), 30);
+        TEXT.emplace_back(1142/1280.f, 421/720.f, std::to_string(VolEffect), glm::vec4(1,1,1,1), 25);
         BOTONES.emplace_back(1123/1280.f, 421/720.f, 1135/1280.f, 435/720.f, LESSEFFECT, AM->getTexture("assets/HUD/DOWN.png"), AM->getTexture("assets/HUD/DOWN_HOVER.png") );
         BOTONES.emplace_back(1172/1280.f, 421/720.f, 1184/1280.f, 435/720.f, MOREEFFECT, AM->getTexture("assets/HUD/UP.png"),   AM->getTexture("assets/HUD/UP_HOVER.png") );
         if(muteEffect){
