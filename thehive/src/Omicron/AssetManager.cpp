@@ -50,7 +50,7 @@ void AssetManager::loadInit(){
     getConstantTexture("assets/HUD/SALIR_AL_MENU_HOVER.png");
     getConstantTexture("assets/HUD/SALIR_DELTO.png");
     getConstantTexture("assets/HUD/SALIR_DELTO_HOVER.png");
-    
+
     ZMaterial* 		Red = getMaterial("Red");
     Red->attachShader(shader);
     Red->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/red.jpg",3));
@@ -62,6 +62,12 @@ void AssetManager::loadInit(){
     MUSH->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/151_t.jpg",3));
     MUSH->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
     MUSH->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
+
+    ZMaterial* 		WeaponMAT = getMaterial("Weapon");
+    WeaponMAT->attachShader(shader);
+    WeaponMAT->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/camo2.png",3));
+    WeaponMAT->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
+    WeaponMAT->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
     shader = getShader("AnimationShader");
     ZMaterial* Sold = getMaterial("Soldier");

@@ -424,7 +424,7 @@ uint16_t Factory::createHolyBomb(const glm::vec3 &Position, const glm::vec3 &Imp
 
 uint16_t Factory::createCollectableWeapon(const glm::vec3 &_position, int _weaponType){
     uint16_t weapon = Manager->createEntity();
-    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Default");
+    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Weapon");
 
     CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, weapon);
@@ -433,7 +433,7 @@ uint16_t Factory::createCollectableWeapon(const glm::vec3 &_position, int _weapo
     CRenderable_3D *renderable = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/escopeta.modelgg", Blue);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, weapon);
 
-    CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
+    CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BulletBoundingBoxes/weapon.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
     Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, weapon);
 
     TData mes;
