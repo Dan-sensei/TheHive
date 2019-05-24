@@ -12,6 +12,7 @@
 #include <Omicron/2D/Texto2D.hpp>
 #include <Omicron/2D/Cuadrado2D.hpp>
 
+class Omicron;
 template <typename T>
 class Singleton;
 
@@ -39,9 +40,17 @@ class HUD {
         void aim(const uint8_t &s);
         void setHealthBarPc(const float &pc);
 
+        void setOmicron();
+        void setFPS(int __FPS);
+        void setDRAWNOBJECTS(int __DRAW);
+        void setOclusion(bool O);
+
     private:
         HUD();
         HUD(const HUD &orig) = delete;
+
+        Omicron* Engine;
+
         bool INIT;
         float ALPHA;
 
@@ -75,6 +84,13 @@ class HUD {
         unsigned int IMG_Actual_P;
         unsigned int IMG_Actual_S;
 
+        Texto2D FPS;
+        Texto2D DRAWN_OBJECTS;
+        Texto2D OCLUSIONES;
+
+        int FPS_;
+        int DRAWN_OBJECTS_;
+        bool OCC;
 
         void drawHUDItem(const float &_ZINDEX, const unsigned int &_IMG, const unsigned int &_VAO, const float &_ALPHA);
 };

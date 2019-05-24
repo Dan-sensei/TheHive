@@ -34,7 +34,7 @@
 
 CPlayerController::CPlayerController()
 :Engine(nullptr), Manager(nullptr), world(nullptr), cTransform(nullptr), ghostCollider(nullptr), camera(nullptr),hab(nullptr)//,hab(0,2000,4000)
-,ToggleFreeCameraKey(true), FreeCamera(false), PlayerMovement(true), cV(0,0,1)
+,ToggleFreeCameraKey(true), FreeCamera(false), PlayerMovement(true), cV(0,0,1), BVH_Active(true)
 {}
 
 CPlayerController::~CPlayerController() {
@@ -124,6 +124,7 @@ void CPlayerController::Init(){
     KEYMAP[13] = {gg::M, &CPlayerController::EnemyInfo};
 
     KEYMAP[14] = {gg::V, &CPlayerController::MostrarTexto};
+    KEYMAP[15] = {gg::K, &CPlayerController::SwitchBVH_TO_Normal};
     // KEYMAP[15] = {gg::C, &CPlayerController::QuitarTexto};
 }
 
@@ -637,4 +638,17 @@ void CPlayerController::EnemyInfo(){
         }
     }
     //gun->shoot(STOESUNUPDATE_PERODEVUELVEUNAPOSICION);
+}
+
+void CPlayerController::SwitchBVH_TO_Normal() {
+    BVH_Active = !BVH_Active;
+
+    if(BVH_Active){
+        Engine->ZONES[0]->setVisibility(true);
+        Engine->ZONES[1]->setVisibility(false);
+    }
+    else{
+        Engine->ZONES[0]->setVisibility(false);
+        Engine->ZONES[1]->setVisibility(true);
+    }
 }

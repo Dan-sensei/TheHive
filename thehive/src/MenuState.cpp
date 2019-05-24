@@ -31,7 +31,7 @@ MenuState::~MenuState(){
 }
 
 void MenuState::Init(){
-    Engine->resizeFrameBuffers(848, 480);
+    Engine->resizeFrameBuffers(1920, 1080);
 
     Engine->HideCursor(false);
 

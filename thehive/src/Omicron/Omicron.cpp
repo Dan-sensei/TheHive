@@ -33,6 +33,8 @@ void Omicron::createZones(uint8_t NumberOfZones){
 }
 
 void Omicron::resetSceneGraph() {
+    hud->setOmicron();
+
     ZONES.clear();
     delete ESCENA;
 
@@ -56,7 +58,9 @@ void Omicron::DisplayFPS(){
     if(FPS_Clock.ElapsedTime().Seconds() > 1){
         // std::string TEXT = "The Hive - ALPHA FPS: " + std::to_string(FPS) + "DRAWN OBJECTS: " + std::to_string(DRAW_OBJECTS);
         // glfwSetWindowTitle(window, TEXT.c_str());
-        //std::cout << "FPS: " << FPS << '\n';
+        // std::cout << "FPS: " << FPS << '\n';
+        hud->setFPS(FPS);
+
         FPS = 0;
         FPS_Clock.Restart();
     }
@@ -247,6 +251,14 @@ void Omicron::draw(){
 }
 
 void Omicron::drawHUD(){
+    if(ZONES[0]->Visibility) {
+        hud->setOclusion(true);
+    }
+    else {
+        hud->setOclusion(false);
+    }
+    
+    hud->setDRAWNOBJECTS(DRAW_OBJECTS);
     hud->draw();
 }
 

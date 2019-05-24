@@ -9,7 +9,7 @@
 
 //#include <SMaterial>
 GUIController::GUIController()
-:Engine(nullptr), _ObjectManager(nullptr), CurrentResolution(1), LIGHTNING(25)
+:Engine(nullptr), _ObjectManager(nullptr), CurrentResolution(4), LIGHTNING(25)
 {
   Init();
 }

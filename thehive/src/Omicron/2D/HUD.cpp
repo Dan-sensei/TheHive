@@ -1,4 +1,5 @@
 #include "HUD.hpp"
+#include <Omicron/Omicron.hpp>
 
 //      X               |   Y
 // TL   0.78754578754   |   0.32724902216
@@ -54,7 +55,11 @@ textureID(-1),
 crucetaG(-1),crucetaP(-1),actualCruceta(-1),
 IMG_PrimaryW_P(-1),IMG_PrimaryW_S(-1),
 IMG_SecondaryW_P(-1),IMG_SecondaryW_S(-1),
-IMG_Actual_P(-1),IMG_Actual_S(-1)
+IMG_Actual_P(-1),IMG_Actual_S(-1),
+FPS(20/1280.f, 20/720.f, "FPS ", glm::vec4(1,1,1,1), 50),
+DRAWN_OBJECTS(20/1280.f, 80/720.f, "OBJETOS DIBUJADOS ", glm::vec4(1,1,1,1), 50),
+OCLUSIONES(20/1280.f, 140/720.f, "OCLUSIONES ", glm::vec4(1,1,1,1), 50),
+Engine(nullptr), FPS_(0), DRAWN_OBJECTS_(0), OCC(true)
 {}
 
 HUD::~HUD(){
@@ -174,6 +179,12 @@ void HUD::initHUD(unsigned int SW, unsigned int SH, unsigned int TEX, Shader* _S
 
         glBindVertexBuffer(0, VBO_2, 0, 16);
     glBindVertexArray(0);
+
+}
+
+
+void HUD::setOmicron(){
+    Engine = Singleton<Omicron>::Instance();
 }
 
 void HUD::draw(){
@@ -198,6 +209,36 @@ void HUD::draw(){
     HAB_TR.Draw();
     HAB_TL.Draw();
     HEALTH_BAR.Draw();
+    std::string TEXT_FPS = "FPS " + std::to_string(FPS_);
+    FPS.setText(TEXT_FPS);
+    FPS.Draw();
+
+    std::string TEXT_DRAW = "OBJETOS DIBUJADOS " + std::to_string(DRAWN_OBJECTS_);
+    DRAWN_OBJECTS.setText(TEXT_DRAW);
+    DRAWN_OBJECTS.Draw();
+
+    std::string TEXT_OCLUSIONES = "OCLUSIONES ";
+    if(OCC){
+        TEXT_OCLUSIONES += "ON";
+    }
+    else{
+        TEXT_OCLUSIONES += "OFF";
+    }
+
+    OCLUSIONES.setText(TEXT_OCLUSIONES);
+    OCLUSIONES.Draw();
+}
+
+void HUD::setFPS(int __FPS){
+    FPS_ = __FPS;
+}
+
+void HUD::setDRAWNOBJECTS(int __DRAW){
+    DRAWN_OBJECTS_ = __DRAW;
+}
+
+void HUD::setOclusion(bool O) {
+    OCC = O;
 }
 
 void HUD::aim(const uint8_t &s){

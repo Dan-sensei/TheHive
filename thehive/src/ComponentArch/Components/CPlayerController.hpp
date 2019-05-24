@@ -133,7 +133,7 @@ class CPlayerController : public IComponent {
             void (CPlayerController::*Target)();
         };
 
-        std::array<Key2Func, 15> KEYMAP;
+        std::array<Key2Func, 16> KEYMAP;
 
         void ToggleSkill1();
         void ToggleSkill2();
@@ -146,6 +146,9 @@ class CPlayerController : public IComponent {
         void JUMP();
         void TogglePause();
         void MostrarTexto();
+
+        void SwitchBVH_TO_Normal();
+        bool BVH_Active;
         // void QuitarTexto();
         void invocasionhorda();
         void invocasionwander();

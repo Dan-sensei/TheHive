@@ -19,10 +19,10 @@ class ZNode{
         bool setEntidad(TEntidad*);
         TEntidad* getEntidad();
 
+        bool Visibility;
     protected:
         ZNode* Padre;
         TEntidad* Entidad;
-        bool Visibility;
 };
 
 #endif

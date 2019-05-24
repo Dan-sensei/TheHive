@@ -56,47 +56,20 @@ void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
     ZMaterial* MUSHROOM = Singleton<AssetManager>::Instance()->getMaterial("Mushroom");
 
-    Engine->createZones(7);
-
-    BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
-    BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
+    Engine->createZones(2);
+    //
+    // BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
+    // BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
 
     //Los eventos son propios de cada zona!
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_MODELS.data", 0);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_EVENTS.data", 0);
+    BinaryParser::LoadLevelData("assets/BinaryFiles/INICIO_MODELS_NORMAL.data", 1);
+
     BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_LIGHTS.data", 0);
 
-    BinaryParser::LoadLevelData("assets/BinaryFiles/PASILLOS_MODELS.data", 1);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/PASILLOS_EVENTS.data", 1);
-    BinaryParser::LoadLevelLights("assets/BinaryFiles/PASILLOS_LIGHTS.data", 1);
-
-    BinaryParser::LoadLevelData("assets/BinaryFiles/TUNELES_MODELS.data", 2);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/TUNELES_EVENTS.data",2);
-    BinaryParser::LoadLevelLights("assets/BinaryFiles/TUNELES_LIGHTS.data", 2);
-
-    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 3);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_CIUDAD_EVENTS.data",3);
-    BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_CIUDAD_LIGHTS.data", 3);
-
-    BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 4);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CALLE_PRINCIPAL_EVENTS.data",4);
-    BinaryParser::LoadLevelLights("assets/BinaryFiles/CALLE_PRINCIPAL_LIGHTS.data", 4);
-
-    BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 5);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CENTRO_EVENTS.data",5);
-    BinaryParser::LoadLevelLights("assets/BinaryFiles/CENTRO_LIGHTS.data", 5);
-    //
-    BinaryParser::LoadLevelData("assets/BinaryFiles/FINAL_MODELS.data", 6);
-    BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/FINAL_EVENTS.data",6);
-    BinaryParser::LoadLevelLights("assets/BinaryFiles/FINAL_LIGHTS.data", 6);
-
     Engine->setLightsZone(0, true);
+    Engine->ZONES[0]->setVisibility(true);
     Engine->ZONES[1]->setVisibility(false);
-    Engine->ZONES[2]->setVisibility(false);
-    Engine->ZONES[3]->setVisibility(false);
-    Engine->ZONES[4]->setVisibility(false);
-    Engine->ZONES[5]->setVisibility(false);
-    Engine->ZONES[6]->setVisibility(false);
 
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
 
@@ -157,50 +130,6 @@ void Game::Init(){
     // S->init();
     // Leaf* SkyboxNode = new Leaf(Singleton<Omicron>::Instance()->FORWARD_LAYER, S);
 
-    TData mes;
-    mes.add(kDat_total_img,1);
-    mes.add(kDat_img1,0);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(129.712,-20.6495,59.8293), 5, 0, false, mes);
-    TData mes1;
-    mes1.add(kDat_total_img,1);
-    mes1.add(kDat_img1,1);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(221.164,-23.4092,35.5667), 5, 0, false, mes1);
-    TData mes2;
-    mes2.add(kDat_total_img,3);
-    mes2.add(kDat_img1,2);
-    mes2.add(kDat_img2,3);
-    mes2.add(kDat_img3,4);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(330.681,-42.8137,79.0592 ), 5, 0, false, mes2);
-    TData mes3;
-    mes3.add(kDat_soundRoute,1);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(332.327,-42.8137,60.2511), 10, 0, false, mes3);
-    TData mes4;
-    mes4.add(kDat_soundRoute,2);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(330.681,-42.8137,87.0592 ), 10, 0, false, mes4);
-    TData mes5;
-    mes5.add(kDat_soundRoute,3);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(113.177,-21.2692,36.0758), 15, 0, false, mes5);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(355,-28,45), 7, 0, false, mes5);
-    TData mes6;
-    mes6.add(kDat_soundRoute,4);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(129,-20,70), 6, 0, false, mes6);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(149,-20,62), 6, 0, false, mes6);
-    TData mes7;
-    mes7.add(kDat_soundRoute,5);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(80,-21,34), 6, 0, false, mes7);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(201,-23,31), 6, 0, false, mes7);
-    TData mes8;
-    mes8.add(kDat_soundRoute,6);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(255,-43,233), 30, 0, false, mes8);
-
-    TData mes9;
-    mes9.add(kDat_total_img,1);
-    mes9.add(kDat_img1,5);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(89,-21,33), 5, 0, false, mes9);
-
-    TData mes10;
-    mes10.add(kDat_soundRoute,0);
-    Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(91,-21,35), 3, 0, false, mes10);
 
     //TData mes1;
     //mes1.add(kDat_total_img,1);
@@ -213,7 +142,7 @@ void Game::Init(){
     soundSys->createSound("event:/Voces/Dialogos/DialogoIntro", dialogoInicial);
     // world->setDebug(true);
 
-    UPD = &Game::FirstUpdate;
+    UPD = &Game::NormalUpdate;
     MasterClock.Restart();
 }
 

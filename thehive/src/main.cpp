@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
     world->inito();
 
     StateMachine *mainstates = Singleton<StateMachine>::Instance();
-    mainstates->AddState(new MenuState());
+    mainstates->AddState(new Game());
 
     while(Engine->isWindowOpen()) {
         mainstates->UpdateStateMachine();
