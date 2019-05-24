@@ -4,12 +4,11 @@
 
 //Constructor para el nodo raiz
 StandardNode::StandardNode()
-:Visibility(true)
 {}
 
 //Constructor para el resto de nodos
 StandardNode::StandardNode(ZNode *P, TEntidad *_ent)
-:ZNode(P, _ent), Visibility(true)
+:ZNode(P, _ent)
 {
     static_cast<StandardNode*>(P)->addHijo(this);
 }
@@ -59,11 +58,6 @@ void StandardNode::draw(){
         drawRoot();
     }
 }
-
-void StandardNode::setVisibility(bool Flag){
-    Visibility = Flag;
-}
-
 
 // Este para los demas
 void StandardNode::drawRoot(){

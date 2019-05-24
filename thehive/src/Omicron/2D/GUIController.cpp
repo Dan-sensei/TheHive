@@ -342,6 +342,7 @@ void GUIController::invertCamera(){
     Engine2D->InvertCamera();
     Singleton<Factory>::Instance()->ToggleInvertedCamera();
     Engine2D->InitOptions();
+
 }
 
 void GUIController::moreResolution(){

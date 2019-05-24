@@ -56,7 +56,7 @@ void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
     ZMaterial* MUSHROOM = Singleton<AssetManager>::Instance()->getMaterial("Mushroom");
 
-    Engine->createZones(6);
+    Engine->createZones(7);
 
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
@@ -91,8 +91,12 @@ void Game::Init(){
     BinaryParser::LoadLevelLights("assets/BinaryFiles/FINAL_LIGHTS.data", 6);
 
     Engine->setLightsZone(0, true);
-
-
+    Engine->ZONES[1]->setVisibility(false);
+    Engine->ZONES[2]->setVisibility(false);
+    Engine->ZONES[3]->setVisibility(false);
+    Engine->ZONES[4]->setVisibility(false);
+    Engine->ZONES[5]->setVisibility(false);
+    Engine->ZONES[6]->setVisibility(false);
 
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
 

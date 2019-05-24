@@ -21,8 +21,6 @@ class StandardNode : public ZNode {
         virtual bool isLeaf();
         void drawRoot();
 
-        void setVisibility(bool Flag);
-
         void ROOT_OkameraUpdate();
         void ROOT_LightsUpdate();
         void ROOT_ObjectsUpdate();
@@ -31,7 +29,6 @@ class StandardNode : public ZNode {
     private:
 
         std::deque<ZNode*> hijos;
-        bool Visibility;
 };
 
 #endif

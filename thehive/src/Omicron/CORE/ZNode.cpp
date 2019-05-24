@@ -1,7 +1,7 @@
 #include "ZNode.hpp"
 
 ZNode::ZNode()
-:ZNode(nullptr)
+:ZNode(nullptr, nullptr)
 {}
 
 ZNode::ZNode(ZNode* P)
@@ -9,7 +9,7 @@ ZNode::ZNode(ZNode* P)
 {}
 
 ZNode::ZNode(ZNode* P, TEntidad* _entidad)
-:Padre(P), Entidad(_entidad), Visibility(false)
+:Padre(P), Entidad(_entidad), Visibility(true)
 {}
 
 ZNode::ZNode(const ZNode &orig)
