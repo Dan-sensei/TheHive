@@ -26,7 +26,9 @@
 #include <Omicron/CORE/FrustrumLeaf.hpp>
 #include <Omicron/FX/ParticleSystem.hpp>
 
-Factory::Factory() {
+Factory::Factory()
+:InvertCamera(-1)
+{
     Manager = Singleton<ObjectManager>::Instance();
     Engine = Singleton<Omicron>::Instance();
     AManager = Singleton<AssetManager>::Instance();
@@ -35,7 +37,11 @@ Factory::Factory() {
 
 }
 
-uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
+void Factory::ToggleInvertedCamera(){
+    InvertCamera *= -1;
+}
+
+uint16_t Factory::createHero(const glm::vec3 &Position) {
 
 
     ZMaterial* moradoDeLos80 = Singleton<AssetManager>::Instance()->getMaterial("Hero");
@@ -46,7 +52,7 @@ uint16_t Factory::createHero(const glm::vec3 &Position,int8_t _b) {
 
     CAIEnem::PlayerTransform=Transform;
 
-    CCamera* Camera                     = new CCamera(_b);
+    CCamera* Camera                     = new CCamera(InvertCamera);
     Camera->setTarget(Transform);
     Manager->addComponentToEntity(Camera,           gg::CAMERA, hero);
 
@@ -143,10 +149,11 @@ uint16_t Factory::createSoldier(StandardNode* FATHER, const glm::vec3 &Position,
     Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, Enemy);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Walking"));   // 0.4
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Soldier_Attacking")); // 0.2
-    DynamicModel->ToggleAnimation(0, 0.4);
+    DynamicModel->ToggleAnimation(0, 0.4, false);
 
-    CRigidBody* RigidBody               = new CRigidBody(false, true,"assets/BulletBoundingBoxes/soldier_final.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
+    CRigidBody* RigidBody               = new CRigidBody(true, true,"assets/BulletBoundingBoxes/soldier_final.bullet", Position.x, Position.y, Position.z, -1,-1,-1, 80, 0,0,0, 0);
     Manager->addComponentToEntity(RigidBody, gg::RIGID_BODY, Enemy);
+    RigidBody->setGhostObject();
 
     CAgent* Agent                       = new CAgent(kTrig_ExpansiveForce|kTrig_Aturd|kTrig_EnemyNear|kTrig_Shoot|kTrig_Senyuelo|kTrig_Explosion|kTrig_DeadAlien);
     Manager->addComponentToEntity(Agent, gg::AGENT, Enemy);
@@ -266,6 +273,24 @@ uint16_t Factory::createSwarm(const glm::vec3 &Position,const float &health) {
 
     return holyBomb;
 }
+
+uint16_t Factory::createStaticModel(const std::string &Model, uint8_t Zone, ZMaterial* Mat) {
+    StandardNode* Node = Singleton<Omicron>::Instance()->ZONES[Zone];
+    TTransform T_Position;
+    TTransform T_Rotation;
+    T_Position.setPosition(glm::vec3(0,0,0));
+    T_Rotation.setRotation(glm::quat());
+    ZStaticMesh* M = new ZStaticMesh(T_Position.matrix * T_Rotation.matrix);
+    M->load("assets/BinaryFiles/BinaryModels/"+Model+".modelgg");
+
+    Leaf* Malla = new Leaf(Node, M);
+
+    uint16_t NewEntity = Manager->createEntity();
+    CStaticModel* Transform = new CStaticModel(Malla, Mat);
+    Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
+    return NewEntity;
+}
+
 // uint16_t Factory::createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position) {
 //     uint16_t CollisionableStaticObject = Manager->createEntity();
 //     Material yelo(Texture);
@@ -399,7 +424,7 @@ uint16_t Factory::createHolyBomb(const glm::vec3 &Position, const glm::vec3 &Imp
 
 uint16_t Factory::createCollectableWeapon(const glm::vec3 &_position, int _weaponType){
     uint16_t weapon = Manager->createEntity();
-    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Default");
+    ZMaterial* Blue = Singleton<AssetManager>::Instance()->getMaterial("Weapon");
 
     CTransform *transform = new CTransform(_position, glm::vec3(0,0,0));
     Manager->addComponentToEntity(transform, gg::TRANSFORM, weapon);
@@ -408,7 +433,7 @@ uint16_t Factory::createCollectableWeapon(const glm::vec3 &_position, int _weapo
     CRenderable_3D *renderable = new CRenderable_3D(FATHER, "assets/BinaryFiles/BinaryModels/escopeta.modelgg", Blue);
     Manager->addComponentToEntity(renderable, gg::RENDERABLE_3D, weapon);
 
-    CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BoundingBoxes/Cube.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
+    CRigidBody *rigidBody = new CRigidBody(false, true,"assets/BulletBoundingBoxes/weapon.bullet",  _position.x,_position.y,_position.z, -1,-1,-1, 25, 0,0,0);
     Manager->addComponentToEntity(rigidBody, gg::RIGID_BODY, weapon);
 
     TData mes;

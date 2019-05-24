@@ -56,6 +56,11 @@ void CCamera::setExcludingBodyB(CRigidBody* R){
     ExcludingBodyB = R;
 }
 
+void CCamera::ToggleCameraInversionY(){
+    InvertCamera *= -1;
+}
+
+
 void CCamera::resetMouse() {
     double x, y;
     Engine->getCursorPosition(x, y);

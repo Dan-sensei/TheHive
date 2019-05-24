@@ -136,7 +136,7 @@ void ParticleSystem::Update(){
             GL_Color_Buffer[4*ActiveParticles+2] = (GLubyte)CurrentParticle.B;
 
             float L = ((ParticleLifeTime-CurrentParticle.Life) - ParticleLifeTime/2);
-            float Alpha =   (1-((L*L)/BASE)) * 72;
+            float Alpha =   (1-((L*L)/BASE)) * 50;
 
             GL_Color_Buffer[4*ActiveParticles+3] = (GLubyte)Alpha;
 
@@ -162,7 +162,7 @@ void ParticleSystem::ParticleCreationHandler(){
 
         FreePos = getFreePosition();
 
-        #define SPEED 2.f
+        #define SPEED 1.8f
 
         Particles[FreePos].Position = glm::vec3(
             gg::genFloatRandom(Position.x - Size.x, Position.x + Size.x),
@@ -183,7 +183,7 @@ void ParticleSystem::ParticleCreationHandler(){
         //std::cout << "Color " << (uint16_t)Particles[FreePos].Color.R << ", " << (uint16_t)Particles[FreePos].Color.G << ", " << (uint16_t)Particles[FreePos].Color.B << ", " << (uint16_t)Particles[FreePos].Color.Alpha << '\n';
 
         Particles[FreePos].Life = ParticleLifeTime;
-        Particles[FreePos].Size = gg::genFloatRandom(35, 45);
+        Particles[FreePos].Size = gg::genFloatRandom(32, 40);
     }
 }
 

@@ -13,7 +13,9 @@
 #include <BinaryParser.hpp>
 
 MenuState::MenuState()
-:Engine(Singleton<Omicron>::Instance()), Menu(200/1280.f, 72/720.f, 1091/1280.f, 286/720.f, Singleton<AssetManager>::Instance()->getTexture("assets/HUD/THEHIVE.png"))
+:Engine(Singleton<Omicron>::Instance()),
+ BACKGROUND_TEXTURE_ID(Singleton<AssetManager>::Instance()->getTextureWithoutSavingToMap("assets/HUD/THE_FONDO.png")),
+ BACKGROUND(0,0,1,1, BACKGROUND_TEXTURE_ID)
 // :Engine(Singleton<Omicron>::Instance()), Menu(561/1280.f, 467/720.f, 723/1280.f, 569/720.f, "assets/HUD/PLAY.png")
 {
     cont = Singleton<GUIController>::Instance();
@@ -21,6 +23,7 @@ MenuState::MenuState()
     Engine->HideCursor(false);
     Manager = Singleton<ObjectManager>::Instance();
     world = Singleton<ggDynWorld>::Instance();
+    BACKGROUND.setZindex(-0.995f);
 }
 
 MenuState::~MenuState(){
@@ -28,7 +31,7 @@ MenuState::~MenuState(){
 }
 
 void MenuState::Init(){
-    Engine->resizeFrameBuffers(Engine->getWindowsWidth(), Engine->getWindowsHeight());
+    Engine->resizeFrameBuffers(848, 480);
 
     Engine->HideCursor(false);
 
@@ -38,7 +41,9 @@ void MenuState::Init(){
 
     //Los eventos son propios de cada zona!
     BinaryParser::LoadLevelData("assets/BinaryFiles/MENU/MENU_MODELS.data", 0);
-    BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_LIGHTS.data", 0);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/MENU/MENU_LIGHTS.data", 0);
+
+    Engine->setLightsZone(0, true);
 
     glm::vec3 Position = glm::vec3();
 
@@ -106,15 +111,13 @@ void MenuState::Update(){
     Engine->draw();
     glClear(GL_DEPTH_BUFFER_BIT);
 
+    // glDisable (GL_BLEND);
+    BACKGROUND.Draw();
+    // glEnable (GL_BLEND);
     cont->update();
     Singleton<Motor2D>::Instance()->draw();
     Singleton<Motor2D>::Instance()->aplyhover();
 
-    glEnable (GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-    glUniform1f(3,-0.995);
-    Menu.Draw();
-    glEnable (GL_FALSE);
 
     Engine->EndDraw();
     Engine->resetClickVariable();
@@ -127,6 +130,7 @@ void MenuState::CLIN(){
     Manager->clin();
     world->clear();
     Singleton<AssetManager>::Instance()->freeAssets();
+    Singleton<AssetManager>::Instance()->freeTexture(BACKGROUND_TEXTURE_ID);
 
     Engine->resetSceneGraph();
 }

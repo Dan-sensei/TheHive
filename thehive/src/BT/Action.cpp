@@ -95,8 +95,11 @@ Action::Action(Hojas task,Blackboard* _data,CAIEnem* ai){
 
     manager = Singleton<ObjectManager>::Instance();
 
+    // ----------------------------------
     cTransform = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,yo->getEntityID()));
-    cRigidBody = static_cast<CRigidBody*>(manager->getComponent(gg::RIGID_BODY,yo->getEntityID()));
+    ghostCollider = static_cast<CRigidBody*>(manager->getComponent(gg::RIGID_BODY,yo->getEntityID()));
+    collider = nullptr;
+    // ----------------------------------
 }
 
 Action::~Action(){
@@ -105,6 +108,12 @@ Action::~Action(){
 void Action::onInitialize(){
     s = BH_INVALID;
     SetStatus(BH_INVALID);
+
+    if(!collider){
+        AI = static_cast<CAIEnem*>(manager->getComponent(gg::AIENEM,yo->getEntityID()));
+        collider = AI->getCollider();
+    }
+
 }//parámetros del mundo necesarios para el update} // Es llamado UNA VEZ e inmediatamente antes de la primera llamada del update
 
 Status Action::update() {
@@ -243,7 +252,10 @@ void Action::rond(bool _b){
 
 
 
-    cRigidBody->applyConstantVelocityNormal(V_FINAL,yo->getVelocity()-(yo->getEnemyType()*VEL_ATENUATION));
+    // collider->applyConstantVelocityNormal(V_FINAL,yo->getVelocity()-(yo->getEnemyType()*VEL_ATENUATION));
+    V_FINAL *= 2;
+    // collider->setLinearVelocity(V_FINAL);
+    AI->moveBodies(V_FINAL);
 }
 
 void Action::ult_cont(){
@@ -366,7 +378,7 @@ void Action::predash(){
         V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
         //cTransform->setRotation(V_AI_DEST);
-        cRigidBody->setRotY(180+V_AI_DEST.y);
+        ghostCollider->setRotY(180+V_AI_DEST.y);
 
         //inicializamos variables
         cont_hit = 0;
@@ -411,7 +423,10 @@ void Action::hit(){
 
 
     if(s!=BH_RUNNING){
-        cRigidBody->setLinearVelocity(glm::vec3());
+        // collider->setLinearVelocity(glm::vec3());
+        // glm::vec3 tmp(0);
+        // AI->moveBodies(tmp);
+
         CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
         if(nvAgent){
             nvAgent->ResetDestination();
@@ -549,13 +564,16 @@ void Action::move_leader(){
                 std::cout << "nulo" << '\n';
             }else{
                 direccion       = glm::normalize(direccion);
-                cRigidBody->applyConstantVelocityNormal(direccion,yo->getVelocity());
+                // collider->applyConstantVelocityNormal(direccion,yo->getVelocity());
+                direccion *= 2;
+                // collider->setLinearVelocity(direccion);
+                AI->moveBodies(direccion);
 
                 direccion.y     = 0;
                 direccion       = glm::normalize(direccion);
                 direccion       = gg::Direccion2D_to_rot(direccion);
                 //cTransform->setRotation(direccion);
-                cRigidBody->setRotY(180+direccion.y);
+                ghostCollider->setRotY(180+direccion.y);
 
             }
 
@@ -567,7 +585,12 @@ void Action::move_leader(){
                 std::cout << "nulo" << '\n';
             }else{
                 vel.y=0;
-                cRigidBody->applyConstantVelocityNormal(glm::normalize(vel),yo->getVelocity());
+                // collider->applyConstantVelocityNormal(glm::normalize(vel),yo->getVelocity());
+
+                vel = glm::normalize(vel);
+                vel *= 2;
+                // collider->setLinearVelocity(vel);
+                AI->moveBodies(vel);
 
             }
         }
@@ -588,6 +611,7 @@ void Action::move_player_utilx(){
 
     move_too(15);
 }
+
 void Action::move_player(){
     if(s!=BH_RUNNING){
         s=BH_RUNNING;
@@ -652,7 +676,7 @@ void Action::move_last(){
                 V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
                 //cTransform->setRotation(V_AI_DEST);
-                cRigidBody->setRotY(180+V_AI_DEST.y);
+                ghostCollider->setRotY(180+V_AI_DEST.y);
 
 
                 yo->destino = cTransform->getPosition();
@@ -700,7 +724,7 @@ void Action::move_around(){
                 V_AI_DEST       = gg::Direccion2D_to_rot(V_AI_DEST);
 
 
-                cRigidBody->setRotY(180+V_AI_DEST.y);
+                ghostCollider->setRotY(180+V_AI_DEST.y);
                 yo->destino = cTransform->getPosition();
             }
             if(!nvAgent->HasDestination()){
@@ -725,9 +749,9 @@ void Action::move_too(int min){
 
     if(dist<min){
         s = BH_SUCCESS;
-        //cRigidBody->clearForce();
-        cRigidBody->setLinearVelocity(glm::vec3());
-        //cRigidBody->applyConstantVelocity(glm::vec3(0,0,0),0);
+        //collider->clearForce();
+        // collider->setLinearVelocity(glm::vec3());
+        //collider->applyConstantVelocity(glm::vec3(0,0,0),0);
     }
     else{
         s = BH_RUNNING;
@@ -737,17 +761,20 @@ void Action::move_too(int min){
         mio       = gg::Direccion2D_to_rot(mio);
 
         //cTransform->setRotation(mio);
-        cRigidBody->setRotY(180+mio.y);
+        ghostCollider->setRotY(180+mio.y);
 
 
         direccion       = glm::normalize(direccion);
-        //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
-        cRigidBody->applyConstantVelocityNormal(direccion,yo->getVelocity());
+        direccion *= 2;
+        // collider->applyConstantVelocityNormal(direccion,yo->getVelocity());
+        // collider->setLinearVelocity(direccion);
+        AI->moveBodies(direccion);
+
+
+
         ////std::cout << yo->getVelocity() << '\n';
-        //cRigidBody->applyConstantVelocity(direccion,yo->getVelocity());
-}
-
-
+        //collider->applyConstantVelocity(direccion,yo->getVelocity());
+    }
 }
 
 void Action::onTerminate(Status state){//tener cuidado de cerrar todos los recursos que abramos
@@ -787,7 +814,10 @@ void Action::FIVE_SinceLastHability(){
 void Action::doExplosiveWave(){
 
     if(s!=BH_RUNNING){
-        cRigidBody->setLinearVelocity(glm::vec3());
+        // collider->setLinearVelocity(glm::vec3());
+        // glm::vec3 tmp(0);
+        // AI->moveBodies(tmp);
+
         CNavmeshAgent *nvAgent = static_cast<CNavmeshAgent*>(manager->getComponent(gg::NAVMESHAGENT,yo->getEntityID()));
         if(nvAgent){
             nvAgent->ResetDestination();

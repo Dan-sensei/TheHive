@@ -125,7 +125,7 @@ void CPlayerController::Init(){
     KEYMAP[13] = {gg::M, &CPlayerController::EnemyInfo};
 
     KEYMAP[14] = {gg::V, &CPlayerController::MostrarTexto};
-    KEYMAP[15] = {gg::C, &CPlayerController::QuitarTexto};
+    // KEYMAP[15] = {gg::C, &CPlayerController::QuitarTexto};
 }
 
 gg::EMessageStatus CPlayerController::processMessage(const Message &m) {
@@ -225,7 +225,7 @@ void CPlayerController::FixedUpdate(){
 
     glm::vec3 Direction = ghostCollider->getVirtualRotation() * glm::vec3(0,0,1);
     glm::vec3 Velocity = ghostCollider->getVelocity() * glm::vec3(-1, 0,-1);
-    if(Velocity.x || Velocity.z) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
+    if((Velocity.x || Velocity.z) && glm::length2(Velocity) > 1) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
 
     collider->activate(true);
     if(pressed) collider->setLinearVelocity(glm::vec3(force.x, collider->getVelocity().y, force.z));
@@ -350,7 +350,6 @@ void CPlayerController::check_WASD(glm::vec3 &force, bool &flag_pressed){
 void CPlayerController::autoStepping(){
     // Auto-stepping
     glm::vec3 start = ghostCollider->getBodyPosition();
-    start.y -= 0.4;
     glm::vec3 end = glm::vec3(start.x,start.y-(RC_OFFSET),start.z);
     glm::vec3 result;
 
@@ -358,7 +357,7 @@ void CPlayerController::autoStepping(){
     // bool hit = world->CompleteRayCastTest(start,end,result,ghostCollider,collider);
 
     if(hit){
-        result.y += RC_OFFSET/1.3;
+        result.y += RC_OFFSET/1.7f;
         ghostCollider->setBodyPosition(result);
 
         start = collider->getLinearVelocity();
@@ -581,13 +580,13 @@ void CPlayerController::MostrarTexto(){
     estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/asdw_esp.png"));
     estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
     estado->Addim(_AssetManager->getTextureWithoutSavingToMap("assets/HUD/dash_esp.png"));
-    Singleton<StateMachine>::Instance()->AddState(estado,false);
+    Singleton<StateMachine>::Instance()->AddState(estado, false);
 
     //Singleton<Motor2D>::Instance()->pintarImagen("assets/HUD/ultrasonido_esp.png");
 }
-void CPlayerController::QuitarTexto(){
-    Singleton<Motor2D>::Instance()->InitHUD();
-}
+// void CPlayerController::QuitarTexto(){
+//     Singleton<Motor2D>::Instance()->InitHUD();
+// }
 void CPlayerController::invocasionhorda(){
     auto hola=glm::vec3(651.342,0.684987,-14.1424);
     factory->createTank(hola, 200);

@@ -48,7 +48,8 @@ private:
     glm::vec3 OriginalTarget;
     glm::vec3 CurrentTarget;
     glm::vec3 RandomTarget;
-    Imagen2D Menu;
+    unsigned int BACKGROUND_TEXTURE_ID;
+    Imagen2D BACKGROUND;
 };
 
 

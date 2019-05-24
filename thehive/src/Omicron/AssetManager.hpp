@@ -59,7 +59,7 @@ class AssetManager {
 
         unsigned int getTextureWithoutSavingToMap(const char* TexturePath, int ForceChannels = 0);
         void freeAssets();
-        void freeTexture(unsigned int TextureID);
+        void freeTexture(unsigned int Target);
 
         // void reserveMaterials(uint16_t SIZE);
         // void addMaterial(

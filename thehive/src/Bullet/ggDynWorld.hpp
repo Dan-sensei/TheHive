@@ -135,7 +135,7 @@ private:
 
 
 
-    btIDebugDraw* debugDrawer;
+    // btIDebugDraw* debugDrawer;
 
     // ------------------------- //
     // IMPORTANTE: CUERPO!=FORMA //

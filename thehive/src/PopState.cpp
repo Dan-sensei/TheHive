@@ -22,6 +22,7 @@ PopState::PopState()
     Engine = Singleton<Omicron>::Instance();
     SS = Singleton<SoundSystem>::Instance();
     SH = Singleton<AssetManager>::Instance()->getShader("Image");
+    imagenes.reserve(3);
 }
 
 PopState::~PopState(){
@@ -30,8 +31,8 @@ PopState::~PopState(){
 
     CLIN();
 }
-void PopState::Addim(unsigned int im){
-    imagenes.push_back(im);
+void PopState::Addim(unsigned int TextureID){
+    imagenes.push_back(TextureID);
 }
 
 void PopState::Init(){
@@ -121,8 +122,6 @@ void PopState::Update(){
 }
 
 void PopState::CLIN(){
-
-    Singleton<Motor2D>::Instance()->clinpopup();
     Singleton<Motor2D>::Instance()->CLINMenu();
     delete nextImage;
     //_GUIController->musicaMenuStop();

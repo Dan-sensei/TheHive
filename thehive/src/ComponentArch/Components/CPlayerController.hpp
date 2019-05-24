@@ -134,7 +134,7 @@ class CPlayerController : public IComponent {
             void (CPlayerController::*Target)();
         };
 
-        std::array<Key2Func, 16> KEYMAP;
+        std::array<Key2Func, 15> KEYMAP;
 
         void ToggleSkill1();
         void ToggleSkill2();
@@ -147,7 +147,7 @@ class CPlayerController : public IComponent {
         void JUMP();
         void TogglePause();
         void MostrarTexto();
-        void QuitarTexto();
+        // void QuitarTexto();
         void invocasionhorda();
         void invocasionwander();
         void ToggleFreeCamera();

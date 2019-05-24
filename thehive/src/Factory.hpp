@@ -26,7 +26,7 @@ class Factory{
     friend class Singleton<Factory>;
 
     public:
-        uint16_t createHero(const glm::vec3 &Position,int8_t);
+        uint16_t createHero(const glm::vec3 &Position);
         uint16_t createSoldier(StandardNode* FATHER, const glm::vec3&,const float&);
         uint16_t createSoldierHorda(const glm::vec3&,const float&,const glm::vec3&);
         uint16_t createSoldierWandering(const glm::vec3&,const float&);
@@ -41,9 +41,7 @@ class Factory{
         uint16_t createNatureMesh(StandardNode* FATHER, const std::string &Path, const glm::vec3 &Position, const glm::quat &Rotation, ZMaterial *Material);
 
 
-        // uint16_t createCollisionableStaticModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
-        // uint16_t createCollisionableDynamicModel(const std::string &Path, const std::string &BulletPath, const std::string &Texture, const glm::vec3 &Position);
-        // uint16_t createStaticModel(const std::string &Path, const std::string &Texture, const glm::vec3 &Position, const glm::vec3 &Rotation = glm::vec3());
+        uint16_t createStaticModel(const std::string &Model, uint8_t Zone, ZMaterial* Mat);
         //uint16_t createPathFindingActor(const glm::vec3 &Position);
         uint16_t createHolyBomb(const glm::vec3 &Position, const glm::vec3 &Impulse);
         uint16_t createMatriuska(const glm::vec3 &Position, const glm::vec3 &Impulse);
@@ -53,6 +51,7 @@ class Factory{
         uint16_t createTouchableObject(StandardNode* FATHER, const std::string&, const glm::vec3&, const glm::quat &_rotation, const uint16_t&, const glm::vec3&, const int&, int, uint16_t=0);
         //uint16_t createDebugBullet(StandardNode* FATHER, const glm::vec3&);
 
+        void ToggleInvertedCamera();
     private:
         Factory();
         Factory(const Factory &orig) = delete;
@@ -62,6 +61,7 @@ class Factory{
         ObjectManager*  Manager;
         AssetManager*   AManager;
         Omicron*        Engine;
+        int8_t InvertCamera;
 };
 
 #endif

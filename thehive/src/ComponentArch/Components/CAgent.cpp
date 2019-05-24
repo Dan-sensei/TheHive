@@ -293,13 +293,15 @@ void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     std::string name = zonesArray[id].first;
     Engine->SetMapZoneVisibility(id, true);
-    BinaryParser::LoadLevelLights("assets/BinaryFiles/"+name+"_LIGHTS.data", id);
+    Engine->setLightsZone(id, true);
+    Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
 }
 
 void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     Engine->SetMapZoneVisibility(id,false);
-    Engine->resetLightsZone(id);
+    Engine->setLightsZone(id, false);
+    Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
 }
 
 void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){

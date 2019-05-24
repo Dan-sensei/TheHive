@@ -34,8 +34,8 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
     if(dyn){
         scene = importer.ReadFile(
             FileInput,
-            aiProcess_CalcTangentSpace       |
             aiProcess_Triangulate            |
+            aiProcess_CalcTangentSpace       |
             aiProcess_FlipUVs                |
             aiProcess_SortByPType
         );
@@ -43,9 +43,9 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
     else{
         scene = importer.ReadFile(
             FileInput,
-            aiProcess_CalcTangentSpace       |
             aiProcess_Triangulate            |
             aiProcess_JoinIdenticalVertices  |
+            aiProcess_CalcTangentSpace       |
             aiProcess_FlipUVs                |
             aiProcess_SortByPType
         );

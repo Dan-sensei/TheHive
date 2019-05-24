@@ -1,18 +1,19 @@
 #include "ZStaticSpotLight.hpp"
 
 #define U5    48
-#define U6    176
-#define U7    304
-#define U8    432
-
 #define S5    16
+#define U6    208
 #define S6    16
+#define U7    368
 #define S7    16
+#define U8    528
 #define S8    16
 
 
+
+
 ZStaticSpotLight::ZStaticSpotLight(const glm::vec3 &Position, const glm::vec3 &LightColor, uint8_t _ZONE)
-:TLuz(LightColor), position(Position), ZONE(_ZONE), OVERRIDE(false)
+:TLuz(LightColor), position(Position), ZONE(_ZONE), ACTIVE(false)
 {
 
 }
@@ -25,7 +26,7 @@ ZStaticSpotLight::ZStaticSpotLight(const ZStaticSpotLight &orig) {
     position = orig.position;
     direccion = orig.direccion;
     ZONE = orig.ZONE;
-    OVERRIDE = orig.OVERRIDE;
+    ACTIVE = orig.ACTIVE;
 }
 
 

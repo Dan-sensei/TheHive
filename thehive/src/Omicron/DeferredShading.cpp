@@ -13,6 +13,8 @@
 #define Nfocales   32
 #define Npuntuales   36
 
+#define DIRECTIONAL_LIGHT_FACTOR 0.25
+
 struct LUZF
 {
     LUZF(){
@@ -87,12 +89,11 @@ void DeferredShading::info(){
     glGetActiveUniformsiv(DEFERRED_SHADER->getID(), tam, uniformIndices,
     GL_UNIFORM_MATRIX_STRIDE, matrixStrides);
 
-
-    std::cout << "#define Ldirec   " <<uniformOffsets[0]<< '\n';
-    std::cout << "#define Lcolor  " <<uniformOffsets[1]<< '\n';
-    std::cout << "#define Lint   " <<uniformOffsets[2]<< '\n';
+    std::cout << "#define Ldirec     " <<uniformOffsets[0]<< '\n';
+    std::cout << "#define Lcolor     " <<uniformOffsets[1]<< '\n';
+    std::cout << "#define Lint       " <<uniformOffsets[2]<< '\n';
     std::cout << "#define Nfocales   " <<uniformOffsets[3]<< '\n';
-    std::cout << "#define Npuntuales   " <<uniformOffsets[4]<< '\n';
+    std::cout << "#define Npuntuales " <<uniformOffsets[4]<< '\n';
     std::cout << "Luz dirigida" << '\n';
     for (size_t i = 5; i < 9; i++) {
         std::cout << "#define U"<<i<<"    " <<uniformOffsets[i]<< '\n';
@@ -110,6 +111,11 @@ void DeferredShading::info(){
     std::cout << "MAX MEMORY NEEDED" << uniformOffsets[11]+arrayStrides[11]*9<<'\n';
 
 }
+
+void DeferredShading::setGlobalIlumination(float Intensity){
+    setDirLuz(glm::vec3(0,1,0), glm::vec3(1,1,1), Intensity);
+}
+
 
 DeferredShading::DeferredShading(){}
 
@@ -158,7 +164,9 @@ void DeferredShading::init(uint16_t FRAMEBUFFER_WIDTH, uint16_t FRAMEBUFFER_HEIG
     buffer = (unsigned char *)malloc(tamanyo);
     TLuz::buffer=buffer;
 
-    setDirLuz(glm::vec3(0,1,0), glm::vec3(1,1,1), 0.5);
+    // info();
+
+    setDirLuz(glm::vec3(0,1,0), glm::vec3(1,1,1), DIRECTIONAL_LIGHT_FACTOR);
     setnluces(0,0);
 
 

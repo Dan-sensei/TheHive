@@ -46,7 +46,6 @@ public:
 
 private:
     Omicron* Engine;
-    Motor2D* Engine2D;
     CTriggerSystem* EventSystem;
     ObjectManager* Manager;
     ggDynWorld* world;
@@ -55,7 +54,6 @@ private:
     SoundSystem* soundSys;
     SoundEvent* dialogoInicial;
     GUIController* cont;
-    int dialog1;
 
     gg::Clock MasterClock;
     double DeltaTime;
@@ -69,6 +67,11 @@ private:
     //SkyBox sky;
     NatureGenerator nat;
     ParticleSystem* PS;
+
+    void FirstUpdate();
+    void SecondUpdate();
+    void NormalUpdate();
+    void (Game::*UPD)();
 };
 
 

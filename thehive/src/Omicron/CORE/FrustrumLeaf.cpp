@@ -2,21 +2,22 @@
 #include <glm/gtx/normalize_dot.hpp>
 
 
-glm::vec3* FrustrumLeaf::CameraPosition;
+glm::vec3* FrustrumLeaf::CameraPosition = nullptr;
 
 
 FrustrumLeaf::FrustrumLeaf()
+:LastFailedFrustrumCorner(-1)
 {}
 
 FrustrumLeaf::FrustrumLeaf(StandardNode* P, TEntidad* Ent)
-:ZNode(static_cast<ZNode*>(P), Ent)
+:ZNode(static_cast<ZNode*>(P), Ent), LastFailedFrustrumCorner(-1)
 {
     static_cast<StandardNode*>(P)->addHijo(this);
 }
 
 
 FrustrumLeaf::FrustrumLeaf(const FrustrumLeaf &orig)
-:ZNode(orig.Padre, orig.Entidad)
+:ZNode(orig.Padre, orig.Entidad), LastFailedFrustrumCorner(-1)
 {
 
 }

@@ -19,7 +19,7 @@ class ZStaticPointLight : public TLuz{
     private:
         glm::vec3 position;
         uint8_t ZONE;
-        bool OVERRIDE;
+        bool ACTIVE;
 };
 
 #endif

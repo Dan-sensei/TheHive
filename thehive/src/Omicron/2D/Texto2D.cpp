@@ -288,7 +288,6 @@ float Texto2D::getSizeX(){
             tam=getWid(palabra[i]);
         }
         _w=_w+tam+separacion;
-
     }
     return _w;
 }
@@ -302,7 +301,7 @@ void Texto2D::Draw(){
 
 
 
-    glActiveTexture(GL_TEXTURE0 + 0);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
 

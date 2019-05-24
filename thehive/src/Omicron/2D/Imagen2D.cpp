@@ -164,9 +164,11 @@ void Imagen2D::setZindex(float res){
     index=res;
 }
 
+
 void Imagen2D::Draw(){
 
     inicio->Bind();
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glUniform1f(3,index);

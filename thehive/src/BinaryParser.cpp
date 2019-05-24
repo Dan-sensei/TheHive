@@ -432,8 +432,7 @@ void BinaryParser::CreateMesh(std::ifstream &inStream, AssetManager* _AssetManag
 
     CStaticModel* Transform = new CStaticModel(NODE->Leaf, "assets/BinaryFiles/BinaryModels/"+str+".modelgg", Material, Position, Rotation);
     Manager->addComponentToEntity(Transform, gg::STATICMODEL, NewEntity);
-    Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
-
+    //Transform->addLOD("assets/BinaryFiles/BinaryModels/"+lod);
 }
 
 
@@ -842,9 +841,9 @@ uint16_t BinaryParser::ReadRespawnNodesData(const std::string &BinaryFile){
     GG_Read(inStream,z);
 
     //posicion jugador
-    //glm::vec3 Position(x,y,z);
-    glm::vec3 Position(331.092,-43.1192,70.0263);
-    uint16_t HERO = fac->createHero(Position,-1);
+    glm::vec3 Position(x,y,z);
+    // glm::vec3 Position(331.092,-43.1192,70.0263);
+    uint16_t HERO = fac->createHero(Position);
 /*
     std::vector<AINode*> nodes;
     nodes.reserve(TOTAL);

@@ -89,9 +89,11 @@ class Action : public Behavior {
         static int aliensAttacking;
 
    private:
-        CRigidBody       *cRigidBody;
-        ObjectManager    *manager;
-        CTransform       *cTransform;
+        CRigidBody      *ghostCollider;
+        CRigidBody      *collider;
+        ObjectManager   *manager;
+        CTransform      *cTransform;
+        CAIEnem         *AI;
 
         Blackboard* data;
 

@@ -18,7 +18,6 @@
 #include <Bullet/ggDynWorld.hpp>
 #include <Omicron/FX/Particle_System_DATA.hpp>
 #include <GameAI/Pathfinding.hpp>
-#include <Omicron/2D/BillboardBueno.hpp>
 
 
 #define MOVEMENT_SPEED 1.f
@@ -28,14 +27,10 @@
 #define BULLET_STEP 1.f/FRAMERATE
 
 
-#include <Omicron/ZPlayer.hpp>
-#include <Omicron/SkyBox.hpp>
-
 Game::Game()
 :Accumulator(0)
 {
     Engine = Singleton<Omicron>::Instance();
-    Engine2D = Singleton<Motor2D>::Instance();
     EventSystem = Singleton<CTriggerSystem>::Instance();
     Director = Singleton<AIDirector>::Instance();
     cont = Singleton<GUIController>::Instance();
@@ -59,9 +54,9 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
-    Engine->resizeFrameBuffers(848, 480);
+    ZMaterial* MUSHROOM = Singleton<AssetManager>::Instance()->getMaterial("Mushroom");
 
-    Engine->createZones(6);
+    Engine->createZones(7);
 
     BinaryParser::ReadLoadZonesData("assets/BinaryFiles/LOADZONES.data");
     BinaryParser::ReadUnLoadZonesData("assets/BinaryFiles/UNLOADZONES.data");
@@ -73,26 +68,37 @@ void Game::Init(){
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/PASILLOS_MODELS.data", 1);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/PASILLOS_EVENTS.data", 1);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/PASILLOS_LIGHTS.data", 1);
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/TUNELES_MODELS.data", 2);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/TUNELES_EVENTS.data",2);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/TUNELES_LIGHTS.data", 2);
 
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 3);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/INICIO_CIUDAD_EVENTS.data",3);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/INICIO_CIUDAD_LIGHTS.data", 3);
 
     BinaryParser::LoadLevelData("assets/BinaryFiles/CALLE_PRINCIPAL_MODELS.data", 4);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CALLE_PRINCIPAL_EVENTS.data",4);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/CALLE_PRINCIPAL_LIGHTS.data", 4);
 
     BinaryParser::LoadBVHLevelData("assets/BinaryFiles/CENTRO_MODELS.data", 5);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/CENTRO_EVENTS.data",5);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/CENTRO_LIGHTS.data", 5);
     //
     BinaryParser::LoadLevelData("assets/BinaryFiles/FINAL_MODELS.data", 6);
     BinaryParser::LoadLevelDataEvents("assets/BinaryFiles/FINAL_EVENTS.data",6);
+    BinaryParser::LoadLevelLights("assets/BinaryFiles/FINAL_LIGHTS.data", 6);
+
+    Engine->setLightsZone(0, true);
+    Engine->ZONES[1]->setVisibility(false);
+    Engine->ZONES[2]->setVisibility(false);
+    Engine->ZONES[3]->setVisibility(false);
+    Engine->ZONES[4]->setVisibility(false);
+    Engine->ZONES[5]->setVisibility(false);
+    Engine->ZONES[6]->setVisibility(false);
 
     //BinaryParser::LoadBVHLevelData("assets/BinaryFiles/INICIO_CIUDAD_MODELS.data", 4);
-
-    Engine2D->InitHUD();
-
 
     cont->musicaJuegoPlay();
     cont->musicaJuegoPause(false);
@@ -104,8 +110,8 @@ void Game::Init(){
     //luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 
 
-    glm::vec3 tmp(-19,-21,22);
-    //->createTank(tmp, 2000);
+    // glm::vec3 tmp(40,-21,17);
+    // sF->createCollectableWeapon(tmp,3);
 
     //Engine->setPosition(luz, glm::vec3(125.964005, 10, -46.611977));
 
@@ -129,11 +135,9 @@ void Game::Init(){
     Accumulator = 0;
 
     // Singleton<Pathfinding>::Instance()->SetDebug(true);
-    world->setDebug(true);
-    MasterClock.Restart();
+    // world->setDebug(true);
 
     //sky.init();
-    //Engine2D->prueba();
 
 
     ParticleSystem_Data PS_D;
@@ -206,29 +210,41 @@ void Game::Init(){
 
     Director->init();
 
-
-    auto estado = new PopState();
-    AssetManager* Manager = Singleton<AssetManager>::Instance();
-    estado->Addim(Manager->getTexture("assets/HUD/asdw_esp.png"));
-    estado->Addim(Manager->getTexture("assets/HUD/camara_esp.png"));
-    Singleton<StateMachine>::Instance()->AddState(estado);
-
-    dialog1 = 0;
     dialogoInicial = new SonidoNormal();
     soundSys->createSound("event:/Voces/Dialogos/DialogoIntro", dialogoInicial);
+    // world->setDebug(true);
+
+    UPD = &Game::FirstUpdate;
+    MasterClock.Restart();
 }
 
 void Game::Update(){
-    //CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
-    ////std::cout << "POS BUENA:" <<cTransform2->getPosition()<< '\n';
+    (this->*UPD)();
+}
 
-    if(dialog1==1){
-        dialogoInicial->play();
-        dialog1=2;
-    }
-    if(dialog1==0){
-        dialog1=1;
-    }
+void Game::FirstUpdate(){
+
+    NormalUpdate();
+
+    PopState* estado = new PopState();
+    AssetManager* Manager = Singleton<AssetManager>::Instance();
+    estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/asdw_esp.png"));
+    estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
+    Singleton<StateMachine>::Instance()->AddState(estado);
+    UPD = &Game::SecondUpdate;
+}
+
+void Game::SecondUpdate(){
+    dialogoInicial->play();
+    UPD = &Game::NormalUpdate;
+    MasterClock.Restart();
+    NormalUpdate();
+}
+
+void Game::NormalUpdate(){
+    // CTransform* cTransform2 = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM,Manager->getHeroID()));
+    // std::cout << "POS BUENA:" << glm::to_string(cTransform2->getPosition()) << '\n';
+
     DeltaTime = MasterClock.Restart().Seconds();
 
 
@@ -289,14 +305,12 @@ void Game::Update(){
     //Singleton<Pathfinding>::Instance()->DroNodes();
 
     Engine->DisplayFPS();
-    // Engine2D->DisplayHUD();
 
     // ======================= Debug =======================
-     // glClear(GL_DEPTH_BUFFER_BIT);
+    // glClear(GL_DEPTH_BUFFER_BIT);
+    // world->debugDrawWorld();
     // Engine->DrawZero();
     // Manager->DibLineas();
-
-    // Singleton<ggDynWorld>::Instance()->debugDrawWorld();
     // Director->DrawZones();
     // =====================================================
 
@@ -306,7 +320,6 @@ void Game::Update(){
 
 void Game::Resume(){
     Engine->HideCursor(true);
-    Engine2D->InitHUD();
     MainCamera->resetMouse();
 
     cont->musicaJuegoPause(false);

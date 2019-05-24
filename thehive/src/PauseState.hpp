@@ -12,6 +12,7 @@ class ggDynWorld;
 #include <Omicron/SkyBox.hpp>
 #include <Omicron/2D/GUIController.hpp>
 #include <FMOD/SoundSystem.hpp>
+#include <Omicron/2D/Imagen2D.hpp>
 
 class PauseState : public State {
 public:
@@ -45,7 +46,7 @@ private:
 
     SoundSystem* SS;
 
-
+    Imagen2D BACKGROUND;
 };
 
 

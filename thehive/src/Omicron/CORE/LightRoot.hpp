@@ -20,7 +20,7 @@ class LightRoot : public ZNode {
         virtual void draw();
         virtual bool isLeaf();
 
-        void setOVERRIDE(uint8_t ZONE);
+        void setActive(uint8_t ZONE, bool Active);
         ZStaticSpotLight* emplace_SpotLight(const glm::vec3 &MVP, const glm::vec3 &Color, uint8_t ZONE);
         ZStaticPointLight* emplace_PointLight(const glm::vec3 &MVP, const glm::vec3 &Color, uint8_t ZONE);
 
@@ -33,6 +33,9 @@ class LightRoot : public ZNode {
         static glm::vec3* CameraPosition;
         int SPOT;
         int POINT;
+
+        // int MAXSPOT;
+        // int MAXPOINT;
 };
 
 #endif

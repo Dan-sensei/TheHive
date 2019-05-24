@@ -303,19 +303,13 @@ void AIDirector::createWandering(int nodo){
     int id;
 
     for (int i = 0; i < enemigosint; i++) {
-        //Director << "i" << '\n';
         //zonarand=navmesh punto zona
         zonarand=getposzona(nodo);
-        //Director << "i" << '\n';
         id = fac->createSoldierWandering(zonarand, 1);
-        //Director << "i" << '\n';
 
         enemypos = static_cast<CTransform*>(Manager->getComponent(gg::TRANSFORM, id));
-        //Director << "i" << '\n';
         enemigos.emplace_back(enemypos);
-        //Director << "i" << '\n';
         numEnemigos++;
-        //Director << "i" << '\n';
     }
 }
 

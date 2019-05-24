@@ -15,6 +15,14 @@
 class Motor2D;
 template <typename T>
 class Singleton;
+class ObjectManager;
+
+struct Resolution{
+    Resolution();
+    Resolution(const Resolution &orig);
+    int WIDTH;
+    int HEIGHT;
+};
 
 class GUIController{
     friend class Singleton<GUIController>;
@@ -47,6 +55,10 @@ class GUIController{
         bool esc_pulsado;
         SoundSystem* SS;
 
+        uint8_t LIGHTNING;
+        uint8_t CurrentResolution;
+        Resolution RESOLUTIONS[6];
+
 void gotoPlay();
 void gotoCredits();
 void gotoOptions();
@@ -78,7 +90,13 @@ void muteEffect();
 void initOptions();
 void sonido_accion(float);
 
+void invertCamera();
+void moreResolution();
+void lessResolution();
+void moreBrightness();
+void lessBrightness();
 
+        ObjectManager * _ObjectManager;
         Omicron* Engine;
         Motor2D* Engine2D;
         using pFunc = void(GUIController::*)();

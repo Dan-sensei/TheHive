@@ -12,8 +12,9 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_StaticModel("../assets/Models/fusible.obj",                           "fusible");
 
     for(uint16_t i = 1; i < 151; ++i){
-        if (i == 70)
+        if (i == 70){
             ModelParser::generateBinaryGG_DynamicModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",           std::to_string(i));
+        }
         else
             ModelParser::generateBinaryGG_StaticModel("../assets/Models/INT8_T/"+std::to_string(i)+".obj",            std::to_string(i));
     }
@@ -61,11 +62,29 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking3.obj",                        "Jumping_Walking3");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking4.obj",                        "Jumping_Walking4");
 
-    ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature_test1.obj",                "nature_test1");
-    ModelParser::generateBinaryGG_StaticModel("../assets/Models/flor.obj",                        "flor");
-    ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature1.obj",                     "nature1");
+    // ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature_test1.obj",                "nature_test1");
+    // ModelParser::generateBinaryGG_StaticModel("../assets/Models/flor.obj",                        "flor");
+    // ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature1.obj",                     "nature1");
+    //
+    // ModelParser::generateBinaryGG_StaticModel("../assets/Models/arbol.obj",                     "arbol");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/SetasInicio.obj",                       "SetasInicio");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/HierbasInicio.obj",                     "HierbasInicio");
 
-    ModelParser::generateBinaryGG_StaticModel("../assets/Models/arbol.obj",                     "arbol");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/SetasTuneles.obj",                     "SetasTuneles");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/HierbasTuneles.obj",                   "HierbasTuneles");
+
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/SetasInicioCiudad.obj",                "SetasInicioCiudad");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/HierbasInicioCiudad.obj",              "HierbasInicioCiudad");
+
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/SetasCallePrincipal.obj",              "SetasCallePrincipal");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/HierbasCallePrincipal.obj",            "HierbasCallePrincipal");
+
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/SetasCentro.obj",            "SetasCentro");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/HierbasCentro.obj",        "HierbasCentro");
+
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/SetasFinal.obj",        "SetasFinal");
+    ModelParser::generateBinaryGG_StaticModel("../assets/Models/VEGETACION/HierbasFinal.obj",       "HierbasFinal");
+
 
     NavmeshParser::generateBinaryGG_Navmesh("../assets/NavMeshes/FINALNAV.obj",             "NavmeshCITY.nav");
     NavmeshParser::generateBinaryGG_NavmeshZone("../assets/NavMeshes/ZONA_1.obj",             "ZONA_1.nav_z");

@@ -1,15 +1,16 @@
 #include "ZStaticPointLight.hpp"
 
-#define U9    560
-#define U10    816
-#define U11    1072
-
+#define U9    688
 #define S9    16
+#define U10    1008
 #define S10    16
+#define U11    1328
 #define S11    16
 
+
+
 ZStaticPointLight::ZStaticPointLight(const glm::vec3 &Position, const glm::vec3 &LightColor, uint8_t _ZONE)
-:TLuz(LightColor), position(Position), ZONE(_ZONE), OVERRIDE(false)
+:TLuz(LightColor), position(Position), ZONE(_ZONE), ACTIVE(false)
 {}
 
 ZStaticPointLight::ZStaticPointLight(const ZStaticPointLight &orig){
@@ -19,7 +20,7 @@ ZStaticPointLight::ZStaticPointLight(const ZStaticPointLight &orig){
     N = orig.N;
     position = orig.position;
     ZONE = orig.ZONE;
-    OVERRIDE = orig.OVERRIDE;
+    ACTIVE = orig.ACTIVE;
 }
 
 ZStaticPointLight::~ZStaticPointLight(){

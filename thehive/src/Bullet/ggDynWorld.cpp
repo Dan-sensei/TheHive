@@ -13,7 +13,7 @@ ggDynWorld::ggDynWorld()
  dynamicsWorld(&dispatcher, &overlappingPairCache, &solver, &collisionConfiguration),
  collisionWorld(&dispatcher, &overlappingPairCache, &collisionConfiguration)
 {
-    debugDrawer = Singleton<GLDebugDrawer>::Instance();
+    // debugDrawer = Singleton<GLDebugDrawer>::Instance();
     Factory *fac = Singleton<Factory>::Instance();
 
     //collisionConfiguration  = new btDefaultCollisionConfiguration();
@@ -53,20 +53,20 @@ void ggDynWorld::stepSimulation(float timeStep, int maxSubSteps, float fixedTime
 }
 
 void ggDynWorld::debugDrawWorld(){
-    if(debug){
-        debugDrawer->setDebugMode(1);
-        dynamicsWorld.setDebugDrawer(debugDrawer);
-        dynamicsWorld.debugDrawWorld();
-    }
+    // if(debug){
+    //     debugDrawer->setDebugMode(1);
+    //     dynamicsWorld.setDebugDrawer(debugDrawer);
+    //     dynamicsWorld.debugDrawWorld();
+    // }
 }
 
 void ggDynWorld::debugRaycast(){
-    gg::Color color;
-    color.Alpha = 1;
-    color.R = 212;
-    color.G = 175;
-    color.B = 55;
-    Singleton<Omicron>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color);
+    // gg::Color color;
+    // color.Alpha = 1;
+    // color.R = 212;
+    // color.G = 175;
+    // color.B = 55;
+    // Singleton<Omicron>::Instance()->Draw3DLine(cameraPosition,raycastHitPosition,color);
 }
 
 // void ggDynWorld::printObjects(int _end){
@@ -272,7 +272,7 @@ bool ggDynWorld::CompleteRayCastTest(const glm::vec3 &Start, const glm::vec3 &En
 
     btAlignedObjectArray<const btCollisionObject*>  OBJS = callBack.m_collisionObjects;
     btAlignedObjectArray<btVector3>                 HITS = callBack.m_hitPointWorld;
-    
+
     for(int i=0 ; i<OBJS.size() ; i++){
         if(OBJS[i] != ExcludeA->getBody() && OBJS[i] != ExcludeB->getBody()){
             CollisionResult = glm::vec3(
