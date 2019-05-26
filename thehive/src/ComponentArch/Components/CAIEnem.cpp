@@ -537,14 +537,14 @@ void CAIEnem::playMovement(){
     s_caminar->play();
 }
 void CAIEnem::playAttack(){
-    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_ATTACKING && cDynamicModel->getAnimationPlayed()){
+    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_ATTACKING){
         cDynamicModel->ToggleAnimation(A_ENEMIES::E_ATTACKING, 0.3);
     }
     s_atacar->setParameter("Impacto", 1);
     s_atacar->play();
 }
 void CAIEnem::playAttack2(){
-    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_ATTACKING && cDynamicModel->getAnimationPlayed()){
+    if(cDynamicModel->getCurrentAnimation() != A_ENEMIES::E_ATTACKING){
         cDynamicModel->ToggleAnimation(A_ENEMIES::E_ATTACKING, 0.3);
     }
     s_atacar->setParameter("Impacto", 0);
