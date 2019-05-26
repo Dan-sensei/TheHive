@@ -11,11 +11,13 @@
 #include <Omicron/2D/Motor2D.hpp>
 #include <States/StateMachine.hpp>
 #include <BinaryParser.hpp>
+#include <Game.hpp>
 
 MenuState::MenuState()
-:Engine(Singleton<Omicron>::Instance()),
+:FADE(Singleton<Fade>::Instance()),
+ Engine(Singleton<Omicron>::Instance()),
  BACKGROUND_TEXTURE_ID(Singleton<AssetManager>::Instance()->getTextureWithoutSavingToMap("assets/HUD/THE_FONDO.png")),
- BACKGROUND(0,0,1,1, BACKGROUND_TEXTURE_ID)
+ BACKGROUND(0,0,1,1, BACKGROUND_TEXTURE_ID),  UPD(&MenuState::FadeInUpdate)
 // :Engine(Singleton<Omicron>::Instance()), Menu(561/1280.f, 467/720.f, 723/1280.f, 569/720.f, "assets/HUD/PLAY.png")
 {
     cont = Singleton<GUIController>::Instance();
@@ -49,7 +51,6 @@ void MenuState::Init(){
 
     BinaryParser::MENU_getCameraPositionRotation("assets/BinaryFiles/MENU/MenuCam.cam", Position, OriginalTarget);
 
-    auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,100.f, Position, glm::quat(), 16.f/9.f);
     Camera = Engine->getMainCameraEntity();
     //MainCamera = static_cast<CCamera*>(Manager->getComponent(gg::CAMERA, h));
@@ -71,6 +72,7 @@ void MenuState::Init(){
     CurrentTarget = OriginalTarget;
     Singleton<Motor2D>::Instance()->InitMenu();
 
+    FADE->setFadeIn();
 }
 
 void MenuState::Resume() {
@@ -81,6 +83,32 @@ void MenuState::Resume() {
 }
 
 void MenuState::Update(){
+    Engine->BeginDraw();
+    (this->*UPD)();
+    Engine->EndDraw();
+}
+
+
+void MenuState::FadeInUpdate(){
+    NormalUpdate();
+    if(FADE->Draw()){
+        UPD = &MenuState::NormalUpdate;
+    }
+}
+
+void MenuState::FadeOutUpdate(){
+    DrawMenu();
+    if(FADE->Draw()){
+        Singleton<StateMachine>::Instance()->AddState(new Game(), true);
+    }
+}
+
+void MenuState::NormalUpdate(){
+    DrawMenu();
+    CheckGUI();
+}
+
+void MenuState::DrawMenu(){
 
     float DeltaTime = MasterClock.Restart().Seconds();
 
@@ -99,7 +127,6 @@ void MenuState::Update(){
 
     Engine->PollEvents();
 
-    Engine->BeginDraw();
     // cont->update();
     SS->update();
 
@@ -109,17 +136,22 @@ void MenuState::Update(){
 
     Camera->setTarget(CurrentTarget);
     Engine->draw();
-    glClear(GL_DEPTH_BUFFER_BIT);
 
     // glDisable (GL_BLEND);
     BACKGROUND.Draw();
     // glEnable (GL_BLEND);
-    cont->update();
     Singleton<Motor2D>::Instance()->draw();
     Singleton<Motor2D>::Instance()->aplyhover();
+}
 
+void MenuState::CheckGUI(){
+    STATUS S = cont->update();
 
-    Engine->EndDraw();
+    if(S == CHANGE_TO_GAME){
+        FADE->setFadeOut(1);
+        UPD = &MenuState::FadeOutUpdate;
+    }
+
     Engine->resetClickVariable();
 }
 

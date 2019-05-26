@@ -136,7 +136,6 @@ void CTriggerSystem::Update()
         }else{
           //Update pos if dynamic flag is set.Reset time-stamp
           if(pRec->bDynamicSourcePos==true){
-              auto t = Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, pRec->idSource);
               CTransform *ct = static_cast<CTransform*>(Singleton<ObjectManager>::Instance()->getComponent(gg::TRANSFORM, pRec->idSource));
               if(ct){
                   pRec->vPos = ct->getPosition();
@@ -212,10 +211,6 @@ TriggerRecordStruct::TriggerRecordStruct(
     idSource=_idSource;
     vPos=_vPos;
     fRadius=_fRadius;
-
-    std::chrono::steady_clock::time_point  begin = std::chrono::steady_clock::now();
-
-
     nTimeStamp=std::chrono::steady_clock::now();// eso o sucedaneo
     nExpirationTime=_fDuration;
     bDynamicSourcePos=_bDynamicSourcePos;

@@ -19,8 +19,6 @@ BVH_Node::BVH_Node(uint16_t P, uint16_t _FirstChild, const BoundingBox &_AABB, S
 
     glGenVertexArrays(1, &VAO_Bounding);
 
-
-
     float cube_strip[] = {
         _AABB.AABB[0].x, _AABB.AABB[0].y, _AABB.AABB[0].z,     // Back-bottom-right
         _AABB.AABB[2].x, _AABB.AABB[2].y, _AABB.AABB[2].z,     // Back-bottom-left
@@ -91,8 +89,9 @@ bool BVH_Node::isLeaf(){
 };
 
 BVH_Node::BVH_Node(const BVH_Node &orig)
-:AABB(orig.AABB), Father(orig.Father), FirstChild(orig.FirstChild), Leaf(orig.Leaf), LastVisited(orig.LastVisited), ToRender(orig.ToRender),
- Visible(orig.Visible), LastFailedFrustrumCorner(orig.LastFailedFrustrumCorner), QueryID(orig.QueryID), VAO_Bounding(orig.VAO_Bounding), VBO_BoundingVertices(orig.VBO_BoundingVertices),
+:AABB(orig.AABB), Father(orig.Father), FirstChild(orig.FirstChild), Leaf(orig.Leaf), LastVisited(orig.LastVisited),
+ ToRender(orig.ToRender), Visible(orig.Visible), LastFailedFrustrumCorner(orig.LastFailedFrustrumCorner),
+ QueryID(orig.QueryID), VAO_Bounding(orig.VAO_Bounding), VBO_BoundingVertices(orig.VBO_BoundingVertices),
  IndexBuffer(orig.IndexBuffer)
 {
 

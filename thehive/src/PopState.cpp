@@ -18,6 +18,7 @@
 
 
 PopState::PopState()
+:FADE(Singleton<Fade>::Instance()), UPD(&PopState::NormalUpdate)
 {
     Engine = Singleton<Omicron>::Instance();
     SS = Singleton<SoundSystem>::Instance();
@@ -73,6 +74,11 @@ void PopState::Init(){
     //Engine->createCamera(glm::vec3(0, /* message */30, 30), glm::vec3(0, 0, 0));
 }
 
+void PopState::setFadeIn(){
+    UPD = &PopState::FadeInUpdate;
+    FADE->setFadeIn(2.5);
+}
+
 void PopState::siguiente(){
     if(imagenes.size()){
         nextImage->play();
@@ -94,7 +100,21 @@ void PopState::Resume(){
 //}
 
 void PopState::Update(){
+    Engine->BeginDraw();
 
+    (this->*UPD)();
+
+    Engine->EndDraw();
+}
+
+void PopState::FadeInUpdate(){
+    NormalUpdate();
+    if(FADE->Draw()){
+        UPD = &PopState::NormalUpdate;
+    }
+}
+
+void PopState::NormalUpdate(){
 
     Engine->PollEvents();
     if(Engine->key(gg::X, true))  {
@@ -103,18 +123,17 @@ void PopState::Update(){
 
     if(imagenes.empty()) return;
 
-    Engine->BeginDraw();
     Engine->draw();
 
     SH->Bind();
 
+    glUniform1f(3, -0.995f);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, imagenes.front());
 
     glBindVertexArray(QUAD);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-    Engine->EndDraw();
     //Engine->resetClickVariable();
 
     SS->update();

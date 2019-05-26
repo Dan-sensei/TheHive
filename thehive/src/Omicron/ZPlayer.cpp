@@ -43,7 +43,8 @@ ZPlayer::ZPlayer() {
 }
 
 ZPlayer::~ZPlayer(){
-
+    glDeleteBuffers(1, &QUAD_POS_UV);
+    glDeleteVertexArrays(1, &QUAD);
 }
 
 void ZPlayer::PlayVideo(const std::string &PathToVideo, const std::string &PathToAudio) {
@@ -89,7 +90,6 @@ void ZPlayer::PlayVideo(const std::string &PathToVideo, const std::string &PathT
 
         Engine->PollEvents();
         Engine->EndDraw();
-
     } while(!ZFrame.empty() && !Engine->key(gg::X, true));
 
     s_video->stop();

@@ -25,9 +25,9 @@
 #define RELOAD_KEY          gg::R
 #define WEAPON_KEY          gg::Q
 
-#define FORCE_FACTOR        500.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*4.3
-#define DASH_FORCE_FACTOR   FORCE_FACTOR/30.f
+#define FORCE_FACTOR        480.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*3.f
+#define DASH_FORCE_FACTOR   FORCE_FACTOR/50.f
 
 #define MULT_RUN_FACTOR     1.5
 #define MULT_DASH_FACTOR    1
@@ -221,11 +221,21 @@ void CPlayerController::FixedUpdate(){
         }
     }
 
-    aim(Engine->isRClickPressed());
+    bool AIM = Engine->isRClickPressed();
 
-    glm::vec3 Direction = ghostCollider->getVirtualRotation() * glm::vec3(0,0,1);
-    glm::vec3 Velocity = ghostCollider->getVelocity() * glm::vec3(-1, 0,-1);
-    if((Velocity.x || Velocity.z) && glm::length2(Velocity) > 1) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
+    aim(AIM);
+
+    if(AIM){
+        glm::vec3 Direction = ghostCollider->getVirtualRotation() * glm::vec3(0,0,1);
+        camera->getDirectionVector(cV);
+        cV.y = 0;
+        if((cV.x || cV.z)) ghostCollider->setVirtualRotation(RotationBetween(Direction, cV));
+    }
+    else{
+        glm::vec3 Direction = ghostCollider->getVirtualRotation() * glm::vec3(0,0,1);
+        glm::vec3 Velocity = ghostCollider->getVelocity() * glm::vec3(-1, 0,-1);
+        if((Velocity.x || Velocity.z) && glm::length2(Velocity) > 1) ghostCollider->setVirtualRotation(RotationBetween(Direction, Velocity));
+    }
 
     collider->activate(true);
     if(pressed) collider->setLinearVelocity(glm::vec3(force.x, collider->getVelocity().y, force.z));

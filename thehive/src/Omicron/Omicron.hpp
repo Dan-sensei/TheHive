@@ -120,7 +120,8 @@ class Omicron {
     private:
 
         Omicron();
-
+        Omicron(const Omicron &orig) = delete;
+        
         DeferredShading _DeferredShading;
         gg::Clock FPS_Clock;
         HUD* hud;

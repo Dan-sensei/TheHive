@@ -13,8 +13,8 @@ poner y usar medidor de estres:
 depende del estres invocar unas cosas u otras
 
 */
-#define MIN_WAN 7.f
-#define MAX_WAN 15.f
+#define MIN_WAN 3.f
+#define MAX_WAN 7.f
 
 //((estres/100)*8)+7;
 //((estres/100)*15)+15;

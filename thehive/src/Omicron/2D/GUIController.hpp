@@ -17,6 +17,11 @@ template <typename T>
 class Singleton;
 class ObjectManager;
 
+enum STATUS{
+    IGNORE = 0,
+    CHANGE_TO_GAME
+};
+
 struct Resolution{
     Resolution();
     Resolution(const Resolution &orig);
@@ -29,15 +34,14 @@ class GUIController{
     public:
         GUIController();
         ~GUIController();
-        void update();
-        void setposmax(int p);
-        void musicaPause();
-        void musicaMenuPlay();
-        void musicaMenuStop();
-        void musicaJuegoStop();
-        void musicaMenuPause(bool);
-        void musicaJuegoPlay();
-        void musicaJuegoPause(bool);
+        STATUS update();
+        STATUS musicaPause();
+        STATUS musicaMenuPlay();
+        STATUS musicaMenuStop();
+        STATUS musicaJuegoStop();
+        STATUS musicaMenuPause(bool);
+        STATUS musicaJuegoPlay();
+        STATUS musicaJuegoPause(bool);
     private:
         int dif;
         int dialogue;
@@ -59,47 +63,46 @@ class GUIController{
         uint8_t CurrentResolution;
         Resolution RESOLUTIONS[6];
 
-void gotoPlay();
-void gotoCredits();
-void gotoOptions();
-void Close();
-void gotoVideo();
-void gotoMusic();
-void gotoControlls();
-void StartGame();
-void gotoMain();
-void dif1();
-void dif2();
-void dif3();
-void Continue();
-void ReturnMain();
-void PgotoOptions();
-void PgotoVideo();
-void PgotoMusic();
-void PgotoControlls();
-void gotoPause();
-void moreDialog();
-void lessDialog();
-void muteDialog();
-void moreMusic();
-void lessMusic();
-void muteMusic();
-void moreEffect();
-void lessEffect();
-void muteEffect();
-void initOptions();
-void sonido_accion(float);
-
-void invertCamera();
-void moreResolution();
-void lessResolution();
-void moreBrightness();
-void lessBrightness();
+STATUS gotoPlay();
+STATUS gotoCredits();
+STATUS gotoOptions();
+STATUS Close();
+STATUS gotoVideo();
+STATUS gotoMusic();
+STATUS gotoControlls();
+STATUS StartGame();
+STATUS gotoMain();
+STATUS dif1();
+STATUS dif2();
+STATUS dif3();
+STATUS Continue();
+STATUS ReturnMain();
+STATUS PgotoOptions();
+STATUS PgotoVideo();
+STATUS PgotoMusic();
+STATUS PgotoControlls();
+STATUS gotoPause();
+STATUS moreDialog();
+STATUS lessDialog();
+STATUS muteDialog();
+STATUS moreMusic();
+STATUS lessMusic();
+STATUS muteMusic();
+STATUS moreEffect();
+STATUS lessEffect();
+STATUS muteEffect();
+STATUS initOptions();
+STATUS sonido_accion(float);
+STATUS invertCamera();
+STATUS moreResolution();
+STATUS lessResolution();
+STATUS moreBrightness();
+STATUS lessBrightness();
 
         ObjectManager * _ObjectManager;
         Omicron* Engine;
         Motor2D* Engine2D;
-        using pFunc = void(GUIController::*)();
+        using pFunc = STATUS(GUIController::*)();
         pFunc VectorAcciones[Butn];
 
         SoundEvent* s_accion;

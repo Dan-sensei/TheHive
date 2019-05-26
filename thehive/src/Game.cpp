@@ -224,9 +224,14 @@ void Game::Update(){
 
 void Game::FirstUpdate(){
 
-    NormalUpdate();
+    Engine->BeginDraw();
+    Manager->UpdateAll();
+    MainCamera->CameraUpdate();
+    Engine->draw();
+    Engine->drawHUD();
 
     PopState* estado = new PopState();
+    estado->setFadeIn();
     AssetManager* Manager = Singleton<AssetManager>::Instance();
     estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/asdw_esp.png"));
     estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
@@ -313,8 +318,6 @@ void Game::NormalUpdate(){
     // Manager->DibLineas();
     // Director->DrawZones();
     // =====================================================
-
-
     Engine->EndDraw();
 }
 

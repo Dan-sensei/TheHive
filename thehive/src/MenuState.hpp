@@ -12,6 +12,7 @@ class ggDynWorld;
 #include <Omicron/2D/GUIController.hpp>
 #include <FMOD/SoundSystem.hpp>
 #include <Omicron/2D/Imagen2D.hpp>
+#include <Omicron/Fade.hpp>
 
 class MenuState : public State{
 public:
@@ -37,6 +38,7 @@ public:
     */
 
 private:
+    Fade* FADE;
     Omicron* Engine;
     ObjectManager* Manager;
     ggDynWorld* world;
@@ -50,6 +52,14 @@ private:
     glm::vec3 RandomTarget;
     unsigned int BACKGROUND_TEXTURE_ID;
     Imagen2D BACKGROUND;
+
+    void FadeInUpdate();
+    void FadeOutUpdate();
+    void NormalUpdate();
+    void DrawMenu();
+
+    void CheckGUI();
+    void (MenuState::*UPD)();
 };
 
 

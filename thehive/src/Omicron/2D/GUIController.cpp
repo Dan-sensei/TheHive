@@ -1,12 +1,13 @@
 #include "GUIController.hpp"
 //#include <iostream>
-#include <Game.hpp>
 #include <OptionState.hpp>
 #include <Omicron/2D/Motor2D.hpp>
 #include <Omicron/ZPlayer.hpp>
 #include <PopState.hpp>
 #include <MenuState.hpp>
 #include <ComponentArch/ObjectManager.hpp>
+#include <ComponentArch/Components/CCamera.hpp>
+#include <Factory.hpp>
 
 //#include <SMaterial>
 GUIController::GUIController()
@@ -20,10 +21,7 @@ GUIController::~GUIController(){
   delete s_musica_cred;
   delete s_musica_basica;
 }
-void GUIController::setposmax(int p){
-    cursorpos=0;
-    posmax=p;
-}
+
 void GUIController::Init(){
 
     SS = Singleton<SoundSystem>::Instance();
@@ -116,217 +114,250 @@ void GUIController::Init(){
     RESOLUTIONS[5].HEIGHT = 1440;
 }
 
-void GUIController::update(){
-
+STATUS GUIController::update(){
+    STATUS S = IGNORE;
     int id =Engine2D->checkbuton();
      if(id!=-1){
          if(VectorAcciones[id] != nullptr)
-             (this->*VectorAcciones[id])();
+             S = (this->*VectorAcciones[id])();
      }
 
      if(!s_musica_menu->isPaused()){
          s_musica_menu->pause(false);
      }
+     return S;
 }
 //but0
-void GUIController::gotoPlay(){
+STATUS GUIController::gotoPlay(){
     sonido_accion(0);
     dif=1;
     Engine2D->InitMenu2();
+    return IGNORE;
 }
 //but1
-void GUIController::gotoCredits(){
+STATUS GUIController::gotoCredits(){
     s_musica_menu->pause(true);
     sonido_accion(0);
     ZPlayer Player;
     Player.PlayVideo("assets/Video/creditos.mp4","event:/Musica/Menu/MusicaCreditos");
+    return IGNORE;
     //Engine2D->InitMenu3();
 }
 //but2
-void GUIController::gotoOptions(){
+STATUS GUIController::gotoOptions(){
     sonido_accion(0);
     Singleton<StateMachine>::Instance()->AddState(new OptionState(),false);
     Engine2D->setVolDialogo(dialogue);
     Engine2D->setVolMusic(music);
     Engine2D->setVolEffect(effect);
+    return IGNORE;
 }
 //but3
-void GUIController::Close(){
+STATUS GUIController::Close(){
     Engine->close();
+    return IGNORE;
 }
 //but4
-void GUIController::gotoVideo(){
+STATUS GUIController::gotoVideo(){
     Engine2D->InitMenu5();
     sonido_accion(0);
+    return IGNORE;
 
 }
 //but5
-void GUIController::gotoMusic(){
+STATUS GUIController::gotoMusic(){
     Engine2D->setVolDialogo(dialogue);
     Engine2D->setVolMusic(music);
     Engine2D->setVolEffect(effect);
     sonido_accion(0);
+    return IGNORE;
 }
 //but6
-void GUIController::gotoControlls(){
+STATUS GUIController::gotoControlls(){
     Engine2D->InitMenu7();
     sonido_accion(0);
+    return IGNORE;
 }
 //but7
-void GUIController::StartGame(){
+STATUS GUIController::StartGame(){
     // s_musica_menu->stop();
     sonido_accion(0);
-    Singleton<StateMachine>::Instance()->AddState(new Game(), true);
     // s_musica_basica->play();
+    return CHANGE_TO_GAME;
 }
 //but8
-void GUIController::gotoMain(){
+STATUS GUIController::gotoMain(){
     Engine2D->InitMenu();
     sonido_accion(1);
     if(s_musica_cred->isPaused()){
         s_musica_cred->stop();
         s_musica_menu->pause(false);
     }
+    return IGNORE;
 }
 //but9
-void GUIController::dif1(){
+STATUS GUIController::dif1(){
     dif=1;
+    return IGNORE;
 }
 //but10
-void GUIController::dif2(){
+STATUS GUIController::dif2(){
     dif=2;
+    return IGNORE;
 }
 //but11
-void GUIController::dif3(){
+STATUS GUIController::dif3(){
     dif=3;
+    return IGNORE;
 }
 //but12
-void GUIController::Continue(){
+STATUS GUIController::Continue(){
     Engine->resetClickVariable();
     Singleton<StateMachine>::Instance()->RemoveStates();
     sonido_accion(1);
+    return IGNORE;
     // s_musica_basica->pause(false);
 }
 //but13
-void GUIController::ReturnMain(){
+STATUS GUIController::ReturnMain(){
     Singleton<StateMachine>::Instance()->RemoveStates(2);
     Singleton<StateMachine>::Instance()->AddState(new MenuState());
     sonido_accion(0);
+    return IGNORE;
     // s_musica_basica->stop();
 }
 //but 14
-void GUIController::initOptions(){
+STATUS GUIController::initOptions(){
     Engine2D->InitOptions();
     sonido_accion(1);
+    return IGNORE;
 }
 
 //but 14
-void GUIController::gotoPause(){
+STATUS GUIController::gotoPause(){
     Engine2D->InitPause();
+    return IGNORE;
 }
 
-void GUIController::musicaMenuPlay(){
+STATUS GUIController::musicaMenuPlay(){
   s_musica_menu->play();
+  return IGNORE;
 }
 
-void GUIController::musicaMenuStop(){
+STATUS GUIController::musicaMenuStop(){
   s_musica_menu->stop();
+  return IGNORE;
 
 }
 
-void GUIController::musicaJuegoStop(){
+STATUS GUIController::musicaJuegoStop(){
   s_musica_basica->stop();
+  return IGNORE;
 
 }
-void GUIController::musicaMenuPause(bool b){
+STATUS GUIController::musicaMenuPause(bool b){
   s_musica_menu->pause(b);
+  return IGNORE;
 }
 
-void GUIController::musicaJuegoPlay(){
+STATUS GUIController::musicaJuegoPlay(){
   s_musica_basica->play();
+  return IGNORE;
 
 }
-void GUIController::musicaJuegoPause(bool b){
+STATUS GUIController::musicaJuegoPause(bool b){
   s_musica_basica->pause(b);
+  return IGNORE;
 
 }
 
 
 //but 18
-void GUIController::moreDialog(){
+STATUS GUIController::moreDialog(){
     if(dialogue!=dialogue_max){
         dialogue=dialogue + 10;
     }
     Engine2D->setVolDialogo(dialogue);
     Engine2D->InitOptions();
     SS->setVolume(dialogue/40, "bus:/Voces");
+    return IGNORE;
 }
 //but 19
-void GUIController::lessDialog(){
+STATUS GUIController::lessDialog(){
     if(dialogue!=0){
         dialogue= dialogue-10;
     }
     Engine2D->setVolDialogo(dialogue);
     Engine2D->InitOptions();
     SS->setVolume(dialogue/40, "bus:/Voces");
+    return IGNORE;
 }
 
-void GUIController::muteDialog(){
+STATUS GUIController::muteDialog(){
     SS->setMute("bus:/Voces");
     Engine2D->colorMute(MUTEDIALOD);
+    return IGNORE;
 }
 //but 20
-void GUIController::moreMusic(){
+STATUS GUIController::moreMusic(){
     if(music!=music_max){
         music = music + 10;
     }
     Engine2D->setVolMusic(music);
     Engine2D->InitOptions();
     SS->setVolume(music/40, "bus:/Musica");
+    return IGNORE;
 }
 //but 21
-void GUIController::lessMusic(){
+STATUS GUIController::lessMusic(){
     if(music!=0){
         music = music - 10;
     }
     Engine2D->setVolMusic(music);
     Engine2D->InitOptions();
     SS->setVolume(music/40, "bus:/Musica");
+    return IGNORE;
 }
 
-void GUIController::muteMusic(){
+STATUS GUIController::muteMusic(){
     SS->setMute("bus:/Musica");
     Engine2D->colorMute(MUTEMUSIC);
 
+    return IGNORE;
 }
 //but 22
-void GUIController::moreEffect(){
+STATUS GUIController::moreEffect(){
     if(effect!=effect_max){
         effect = effect + 10;
     }
     Engine2D->setVolEffect(effect);
     Engine2D->InitOptions();
     SS->setVolume(effect/40, "bus:/SFX");
+    return IGNORE;
 }
 //but 23
-void GUIController::lessEffect(){
+STATUS GUIController::lessEffect(){
     if(effect!=0){
         effect = effect - 10;
     }
     Engine2D->setVolEffect(effect);
     Engine2D->InitOptions();
     SS->setVolume(effect/40, "bus:/SFX");
+    return IGNORE;
+
 }
 
-void GUIController::muteEffect(){
+STATUS GUIController::muteEffect(){
     SS->setMute("bus:/SFX");
     Engine2D->colorMute(MUTEEFFECT);
+    return IGNORE;
 }
 
 
-void GUIController::sonido_accion(float param){
+STATUS GUIController::sonido_accion(float param){
     s_accion->setParameter("Aceptar", param);
     s_accion->play();
+    return IGNORE;
 }
 
 Resolution::Resolution()
@@ -338,7 +369,7 @@ Resolution::Resolution(const Resolution &orig)
 {}
 
 
-void GUIController::invertCamera(){
+STATUS GUIController::invertCamera(){
     uint16_t HERO = _ObjectManager->getHeroID();
     IComponent* CAMERA_ICOMPONENT = _ObjectManager->getComponent(gg::CAMERA, HERO);
 
@@ -348,42 +379,46 @@ void GUIController::invertCamera(){
     Engine2D->InvertCamera();
     Singleton<Factory>::Instance()->ToggleInvertedCamera();
     Engine2D->InitOptions();
+    return IGNORE;
 
 }
 
-void GUIController::moreResolution(){
+STATUS GUIController::moreResolution(){
     if(CurrentResolution > 5) CurrentResolution = 5;
-    if(CurrentResolution == 5) return;
+    if(CurrentResolution == 5) return IGNORE;
     ++CurrentResolution;
     Engine->resizeFrameBuffers(RESOLUTIONS[CurrentResolution].WIDTH, RESOLUTIONS[CurrentResolution].HEIGHT);
     Engine2D->InitOptions();
+    return IGNORE;
 }
 
-void GUIController::lessResolution(){
+STATUS GUIController::lessResolution(){
     if(CurrentResolution < 0) CurrentResolution = 0;
-    if(CurrentResolution == 0) return;
+    if(CurrentResolution == 0) return IGNORE;
 
     --CurrentResolution;
     Engine->resizeFrameBuffers(RESOLUTIONS[CurrentResolution].WIDTH, RESOLUTIONS[CurrentResolution].HEIGHT);
     Engine2D->InitOptions();
+    return IGNORE;
 }
 
-void GUIController::moreBrightness(){
+STATUS GUIController::moreBrightness(){
     if(LIGHTNING > 100) LIGHTNING = 5;
-    if(LIGHTNING == 100) return;
+    if(LIGHTNING == 100) return IGNORE;
 
     LIGHTNING += 5;
     Engine->setGlobalIlumination(LIGHTNING);
     Engine2D->InitOptions();
+    return IGNORE;
 
 }
 
-void GUIController::lessBrightness(){
+STATUS GUIController::lessBrightness(){
     if(LIGHTNING < 0) LIGHTNING = 0;
-    if(LIGHTNING == 0) return;
+    if(LIGHTNING == 0) return IGNORE;
 
     LIGHTNING -= 5;
     Engine->setGlobalIlumination(LIGHTNING);
     Engine2D->InitOptions();
-
+    return IGNORE;
 }

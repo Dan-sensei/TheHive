@@ -113,8 +113,7 @@ void CCamera::FollowTarget(){
     Engine->setPosition(cam, CurrentPosition);
     static_cast<TCamara*>(cam->getEntidad())->setTarget(CameraTarget);
 
-    fixCameraPositionOnCollision(TARGET_POSITION,CurrentPosition);
-
+    // fixCameraPositionOnCollision(TARGET_POSITION,CurrentPosition);
 }
 
 void CCamera::fixCameraPositionOnCollision(const glm::vec3 &Target, const glm::vec3 &CameraPosition){

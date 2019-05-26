@@ -11,6 +11,8 @@ class ggDynWorld;
 #include "States/State.hpp"
 #include <FMOD/SoundSystem.hpp>
 #include <FMOD/SonidoNormal.hpp>
+#include <Omicron/Fade.hpp>
+
 
 class PopState : public State {
 public:
@@ -35,9 +37,12 @@ public:
 
     */
     void siguiente();
+    void setFadeIn();
 
     void Addim(unsigned int TextureID);
 private:
+    Fade* FADE;
+
     Omicron* Engine;
     CTriggerSystem* EventSystem;
     Shader* SH;
@@ -50,6 +55,9 @@ private:
 
     std::vector<unsigned int> imagenes;
 
+    void FadeInUpdate();
+    void NormalUpdate();
+    void (PopState::*UPD)();
 
 };
 
