@@ -317,8 +317,20 @@ void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){
 void CAgent::ENTER_func_kTrig_ExpansiveForce (TriggerRecordStruct *_pRec){
     if(_pRec->eTriggerType & kTrig_ExpansiveForce){
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
+            CAIEnem *AI = static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID));
+            if(AI){
+                CTransform *CT = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID));
 
-            static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
+                float distancia=glm::distance(cTransform->getPosition(),_pRec->vPos);
+                float fuerzabomba=_pRec->data.find(kDat_Damage);
+
+                glm::vec3 sol =glm::normalize(cTransform->getPosition()-_pRec->vPos)*fuerzabomba*(1-distancia/_pRec->fRadius);
+
+                // AI->moveBodies(sol);
+                AI->getCollider()->applyCentralForce(sol*10.f);
+            }
+            else
+                static_cast<CRigidBody*>(oManager->getComponent(gg::RIGID_BODY,nCAgentID))->MHandler_XPLOTATO(_pRec);
         }
     }
 }
