@@ -66,6 +66,11 @@ bool CVida::quitarvida(const float &_factor){
       // }
     }
     else{
+        CAIEnem* cAIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
+        if(cAIEnem->getEnemyType() == gg::SOLDIER){
+            static_cast<CDynamicModel*>(Manager->getComponent(gg::DYNAMICMODEL, getEntityID()))->ToggleAnimation(E_DAMAGE, 0.5, true);
+        }
+
         if(vida <= 0){
 
             //sonido muletillas
@@ -81,7 +86,6 @@ bool CVida::quitarvida(const float &_factor){
             //Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID());
             //Manager->getComponent(gg::AIENEM,getEntityID());
 
-            CAIEnem* cAIEnem = static_cast<CAIEnem*>(Manager->getComponent(gg::AIENEM,getEntityID()));
             CPlayerController* cPlayerController = static_cast<CPlayerController*>(Manager->getComponent(gg::PLAYERCONTROLLER,Manager->getHeroID()));
             //cTransform = static_cast<CTransform*>(manager->getComponent(gg::TRANSFORM,yo->getEntityID()));
             switch (cAIEnem->getEnemyType()) {

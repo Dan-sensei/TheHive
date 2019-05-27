@@ -193,11 +193,9 @@ glm::vec3 ggDynWorld::handleRayCast(glm::vec3 from, glm::vec3 Target,float _weap
 
     glm::vec3 aux = Target - from;
 
-    glm::vec3 to =aux*FAR_RANGE_FACTOR+from;
+    glm::vec3 to = aux*FAR_RANGE_FACTOR+from;
 
     return handleRayCastTo(from,to,_weaponRange);
-
-
 }
 
 int ggDynWorld::getIDFromRaycast(){

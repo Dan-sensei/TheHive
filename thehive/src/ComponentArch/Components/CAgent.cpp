@@ -306,7 +306,7 @@ void CAgent::ENTER_func_kTrig_ExpansiveForce (TriggerRecordStruct *_pRec){
         if(oManager->getComponent(gg::RIGID_BODY,nCAgentID)){
             CAIEnem *AI = static_cast<CAIEnem*>(oManager->getComponent(gg::AIENEM,nCAgentID));
             if(AI){
-                CTransform *CT = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID));
+                // CTransform *CT = static_cast<CTransform*>(oManager->getComponent(gg::TRANSFORM,nCAgentID));
 
                 float distancia=glm::distance(cTransform->getPosition(),_pRec->vPos);
                 float fuerzabomba=_pRec->data.find(kDat_Damage);

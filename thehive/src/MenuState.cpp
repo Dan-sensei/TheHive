@@ -65,9 +65,9 @@ void MenuState::Init(){
     Engine->CreateParticleSystem(Singleton<Omicron>::Instance()->FORWARD_LAYER, PS_D);
 
     RandomTarget = glm::vec3(
-        gg::genFloatRandom(OriginalTarget.x-1, OriginalTarget.x+1),
-        gg::genFloatRandom(OriginalTarget.y-1, OriginalTarget.y+1),
-        gg::genFloatRandom(OriginalTarget.z-1, OriginalTarget.z+1)
+        gg::genFloatRandom(OriginalTarget.x-2, OriginalTarget.x+2),
+        gg::genFloatRandom(OriginalTarget.y-2, OriginalTarget.y+2),
+        gg::genFloatRandom(OriginalTarget.z-2, OriginalTarget.z+2)
     );
     CurrentTarget = OriginalTarget;
     Singleton<Motor2D>::Instance()->InitMenu();
@@ -122,7 +122,7 @@ void MenuState::DrawMenu(){
     else{
         glm::vec3 Dir = glm::normalize(RandomTarget - CurrentTarget);
 
-        CurrentTarget += Dir*0.5f*DeltaTime;
+        CurrentTarget += Dir*DeltaTime;
     }
 
     Engine->PollEvents();

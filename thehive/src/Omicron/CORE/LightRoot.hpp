@@ -33,9 +33,6 @@ class LightRoot : public ZNode {
         static glm::vec3* CameraPosition;
         int SPOT;
         int POINT;
-
-        // int MAXSPOT;
-        // int MAXPOINT;
 };
 
 #endif

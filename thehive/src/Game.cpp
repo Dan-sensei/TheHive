@@ -54,7 +54,6 @@ Game::~Game(){
 
 void Game::Init(){
     Singleton<AssetManager>::Instance()->loadInit();
-    ZMaterial* MUSHROOM = Singleton<AssetManager>::Instance()->getMaterial("Mushroom");
 
     Engine->createZones(7);
 

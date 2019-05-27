@@ -27,7 +27,7 @@ class CDynamicModel : public IComponent {
         virtual void Update();
 
         void AddAnimation(ZAnimationData* Anim);
-        void ToggleAnimation(uint8_t Anim, float Time, bool _Auto = true);
+        void ToggleAnimation(uint8_t Anim, float Time, bool NeedsToComplete = false,  bool _Auto = true);
         void setStepDistance(float D);
 
         inline uint8_t getCurrentAnimation(){ return CurrentAnimation; };

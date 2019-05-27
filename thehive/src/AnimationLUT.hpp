@@ -3,10 +3,10 @@
 
 enum A_HERO{
     STANDING = 0,
-    WALKING,
     WALKING_WEAPON,
     JUMPING,
-    JUMPING_WALKING
+    JUMPING_WALKING,
+    WAVE
 };
 
 enum A_ENEMIES{

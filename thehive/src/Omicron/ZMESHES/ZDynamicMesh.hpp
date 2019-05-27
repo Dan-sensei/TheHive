@@ -12,7 +12,7 @@ class ZDynamicMesh : public ZMesh {
         ZDynamicMesh(const ZDynamicMesh &orig);
         virtual ~ZDynamicMesh();
 
-        void SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes, bool Auto);
+        bool SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes, bool _NeedsToComplete, bool Auto);
         void AddAnimation(ZAnimationData* Anim);
         void setPosForStep(const glm::vec2 &P);
         void setStepDistance(float D);
@@ -23,6 +23,7 @@ class ZDynamicMesh : public ZMesh {
         virtual void endDraw();
 
     private:
+        void checkAnimationComplete();
         void Auto();
         void Manual();
 
@@ -31,7 +32,6 @@ class ZDynamicMesh : public ZMesh {
         Shader* shader;
 
         void (ZDynamicMesh::*CurrentUpd)();
-
         glm::vec2 LastPosition;
         glm::vec2 CurrentPosition;
         double Timer;
@@ -39,14 +39,13 @@ class ZDynamicMesh : public ZMesh {
         float AngleAccumulator;
         float StepDistance;
 
+        bool NeedsToComplete;
         bool animationPlayed;
 
         uint8_t CurrentAnimation;
         uint8_t CurrentFrame;
         uint8_t NextFrame;
         uint8_t NFrames;
-
-
 };
 
 #endif

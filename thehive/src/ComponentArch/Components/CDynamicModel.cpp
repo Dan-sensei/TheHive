@@ -34,10 +34,11 @@ void CDynamicModel::setStepDistance(float D){
     DynamicModelEntity->setStepDistance(D);
 }
 
-void CDynamicModel::ToggleAnimation(uint8_t Anim, float Time, bool _Auto) {
-    CurrentAnimation = Anim;
-    DynamicModelEntity->SwitchAnimation(Anim, Time, _Auto);
-    Auto = _Auto;
+void CDynamicModel::ToggleAnimation(uint8_t Anim, float Time, bool NeedsToComplete, bool _Auto) {
+    if(DynamicModelEntity->SwitchAnimation(Anim, Time, NeedsToComplete, _Auto)){
+        CurrentAnimation = Anim;
+        Auto = _Auto;
+    }
 }
 
 gg::EMessageStatus CDynamicModel::processMessage(const Message &m) {

@@ -200,26 +200,19 @@ void CPlayerController::FixedUpdate(){
 
     if(!PlayerMovement)     return;
 
-    if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING && cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
-        if( !pressed){
-            if(cDynamicModel->getCurrentAnimation() != A_HERO::STANDING){
-                cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);
-            }
-        }
-        else{
-            if(cDynamicModel->getCurrentAnimation() != A_HERO::WALKING){
-                cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.5);
-            }
+
+    if(pressed){
+        if(cDynamicModel->getCurrentAnimation() != A_HERO::WALKING_WEAPON){
+            cDynamicModel->ToggleAnimation(A_HERO::WALKING_WEAPON, 0.5);
         }
     }
-    else if(cDynamicModel->getAnimationPlayed()){
-        if(pressed){
-            cDynamicModel->ToggleAnimation(A_HERO::WALKING, 0.5);
-        }
-        else{
+    else{
+        if(cDynamicModel->getCurrentAnimation() != A_HERO::STANDING){
             cDynamicModel->ToggleAnimation(A_HERO::STANDING, 2);
         }
     }
+
+
 
     bool AIM = Engine->isRClickPressed();
 
@@ -505,6 +498,9 @@ void CPlayerController::resetMultFactor(){
     MULT_FACTOR = 1;
 }
 void CPlayerController::ToggleSkill3(){
+    if(cDynamicModel->getCurrentAnimation() != A_HERO::WAVE) {
+        cDynamicModel->ToggleAnimation(A_HERO::WAVE, 0.15, true);
+    }
     hab->ToggleSkill(2);
 }
 
@@ -561,14 +557,13 @@ void CPlayerController::JUMP(){
     if(pressed){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
             s_saltarVoz->play();
-            cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.2);
-
+            cDynamicModel->ToggleAnimation(A_HERO::JUMPING_WALKING, 0.2, true);
         }
     }
     else{
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING){
             s_saltarVoz->play();
-            cDynamicModel->ToggleAnimation(A_HERO::JUMPING, 0.2);
+            cDynamicModel->ToggleAnimation(A_HERO::JUMPING, 0.2, true);
         }
     }
 }
@@ -630,7 +625,7 @@ void CPlayerController::ToggleFreeCamera(){
     }
 }
 void CPlayerController::explosion(glm::vec3 vPos,float fuerzabomba){
-    float distancia=glm::distance(cTransform->getPosition(),vPos);
+    // float distancia=glm::distance(cTransform->getPosition(),vPos);
     glm::vec3 sol =glm::normalize(cTransform->getPosition()-vPos)*fuerzabomba;
     collider->applyCentralForce(sol);
 

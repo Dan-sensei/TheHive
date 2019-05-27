@@ -40,6 +40,10 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking2_NT.obj",                          "Soldier_Walking2");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/Walking3_NT.obj",                          "Soldier_Walking3");
 
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/DAMAGE_1.obj",                          "DAMAGE_1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/DAMAGE_2.obj",                          "DAMAGE_2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/SOLDIER/DAMAGE_3.obj",                          "DAMAGE_3");
+
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking1.obj",                                "Walking1");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Walking2.obj",                                "Walking2");
 
@@ -59,6 +63,11 @@ int main(int argc, char const *argv[]) {
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking2.obj",                        "Jumping_Walking2");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking3.obj",                        "Jumping_Walking3");
     ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/Jumping_Walking4.obj",                        "Jumping_Walking4");
+
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/WAVE_1.obj",                        "WAVE_1");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/WAVE_2.obj",                        "WAVE_2");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/WAVE_3.obj",                        "WAVE_3");
+    ModelParser::generateBinaryGG_DynamicModel("../assets/Animations/HERO/WAVE_4.obj",                        "WAVE_4");
 
     // ModelParser::generateBinaryGG_StaticModel("../assets/Models/nature_test1.obj",                "nature_test1");
     // ModelParser::generateBinaryGG_StaticModel("../assets/Models/flor.obj",                        "flor");

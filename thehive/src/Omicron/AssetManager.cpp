@@ -57,16 +57,10 @@ void AssetManager::loadInit(){
     Red->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
     Red->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
-    ZMaterial* 		MUSH = getMaterial("Mushroom");
-    MUSH->attachShader(shader);
-    MUSH->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/151_t.jpg",3));
-    MUSH->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
-    MUSH->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
-
     ZMaterial* 		WeaponMAT = getMaterial("Weapon");
     WeaponMAT->attachShader(shader);
-    WeaponMAT->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/camo2.png",3));
-    WeaponMAT->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/DefaultNormal.jpg",3));
+    WeaponMAT->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/HERO/HERO_t.jpg",3));
+    WeaponMAT->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/HERO/HERO_n.jpg",3));
     WeaponMAT->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
     shader = getShader("AnimationShader");
@@ -116,14 +110,22 @@ void AssetManager::loadInit(){
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Standing2.modelgg");
 
     AnimationData = getAnimation("Hero_Walking");
-    // AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking3.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking2.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking1.modelgg");
 
     AnimationData = getAnimation("Hero_Walking_Weapon");
-    // AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon3.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon2.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon1.modelgg");
+
+    AnimationData = getAnimation("Hero_WAVE");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/WAVE_1.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/WAVE_2.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/WAVE_3.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/WAVE_4.modelgg");
+
+    AnimationData = getAnimation("Hero_DASH");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/DASH_1.modelgg");
+    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/DASH_2.modelgg");
 
     AnimationData = getAnimation("Hero_Jumping");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Jumping4.modelgg");

@@ -3,13 +3,12 @@
 #include <iostream>
 
 ZDynamicMesh::ZDynamicMesh()
-:CurrentAnimation(0), shader(nullptr), CurrentFrame(0), NextFrame(0), NFrames(0), animationPlayed(false),
- LastPosition(), CurrentPosition(), StepDistance(2.f), AngleAccumulator(0)
+:shader(nullptr), CurrentUpd(&ZDynamicMesh::checkAnimationComplete), LastPosition(), CurrentPosition(), Timer(0), TimeBetweenAnimations(0),
+ AngleAccumulator(0), StepDistance(2.f), NeedsToComplete(false), animationPlayed(false), CurrentAnimation(0), CurrentFrame(0), NextFrame(0), NFrames(0)
 {
     Animations.reserve(5);
     zmat = nullptr;
     MVP = glm::mat4();
-    CurrentUpd = &ZDynamicMesh::Auto;
 }
 
 ZDynamicMesh::ZDynamicMesh(const ZDynamicMesh &orig)
@@ -25,7 +24,9 @@ ZDynamicMesh::~ZDynamicMesh(){}
 //     shader = zmat->getShader();
 // }
 
-void ZDynamicMesh::SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes, bool Auto){
+bool ZDynamicMesh::SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes, bool _NeedsToComplete, bool Auto) {
+
+    if(NeedsToComplete && !animationPlayed) return false;
     CurrentAnimation = Animation;
     DeltaTime.Restart();
     TimeBetweenAnimations = TimeBetweenKeyframes;
@@ -34,8 +35,10 @@ void ZDynamicMesh::SwitchAnimation(uint8_t Animation, float TimeBetweenKeyframes
     NextFrame = 1;
     animationPlayed = false;
     NFrames = Animations[Animation]->Keyframes.size();
+    NeedsToComplete = _NeedsToComplete;
+    CurrentUpd = Auto ? &ZDynamicMesh::checkAnimationComplete : &ZDynamicMesh::Manual;
 
-    CurrentUpd = Auto ? &ZDynamicMesh::Auto : &ZDynamicMesh::Manual;
+    return true;
 }
 
 void ZDynamicMesh::setPosForStep(const glm::vec2 &P){
@@ -71,13 +74,29 @@ void ZDynamicMesh::beginDraw(){
     (this->*CurrentUpd)();
 }
 
+void ZDynamicMesh::checkAnimationComplete(){
+
+    Timer += DeltaTime.Restart().Seconds();
+    if(Timer > TimeBetweenAnimations){
+        CurrentFrame = (CurrentFrame + 1) % NFrames;
+        NextFrame = (CurrentFrame + 1) % NFrames;
+        Timer -= TimeBetweenAnimations;
+        if(CurrentFrame == 0) {
+            animationPlayed = true;
+            CurrentUpd = &ZDynamicMesh::Auto;
+        }
+    }
+    glUniform1f(_U_BLEND_FACTOR, Timer/TimeBetweenAnimations);
+
+    Animations[CurrentAnimation]->draw(CurrentFrame, NextFrame);
+}
+
 void ZDynamicMesh::Auto(){
     Timer += DeltaTime.Restart().Seconds();
     if(Timer > TimeBetweenAnimations){
         CurrentFrame = (CurrentFrame + 1) % NFrames;
         NextFrame = (CurrentFrame + 1) % NFrames;
         Timer -= TimeBetweenAnimations;
-        animationPlayed = true;
     }
 
     glUniform1f(_U_BLEND_FACTOR, Timer/TimeBetweenAnimations);
