@@ -553,6 +553,8 @@ void CPlayerController::DASH(){
 }
 
 void CPlayerController::JUMP(){
+    if(!canJump()) return;
+
     collider->applyCentralForce(glm::vec3(0, JUMP_FORCE_FACTOR, 0));
     if(pressed){
         if(cDynamicModel->getCurrentAnimation() != A_HERO::JUMPING_WALKING){
@@ -566,6 +568,15 @@ void CPlayerController::JUMP(){
             cDynamicModel->ToggleAnimation(A_HERO::JUMPING, 0.2, true);
         }
     }
+}
+
+bool CPlayerController::canJump(){
+    glm::vec3 start = cTransform->getPosition();
+    glm::vec3 end = start;
+    end.y -= 1.f;
+    glm::vec3 result;
+
+    return world->RayCastTest(start,end,result,ghostCollider,collider);
 }
 
 void CPlayerController::TogglePause() {

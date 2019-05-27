@@ -11,7 +11,8 @@ enum A_HERO{
 
 enum A_ENEMIES{
     E_WALKING = 0,
-    E_ATTACKING
+    E_ATTACKING,
+    // E_DAMAGE
 };
 
 #endif

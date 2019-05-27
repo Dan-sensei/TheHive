@@ -155,6 +155,8 @@ class CPlayerController : public IComponent {
         void EnemyInfo();
         void aim(const uint8_t &s);
 
+        bool canJump();
+
         glm::quat GetQuaternionBetween_MaxAngle(glm::vec3 &V1, glm::vec3 &V2, glm::quat CurrentRotation, const float &MaxTurnAngle);
         glm::quat RotationBetween(glm::vec3 &V1, glm::vec3 &V2);
 
