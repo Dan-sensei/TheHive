@@ -792,7 +792,7 @@ void BinaryParser::ReadLoadZonesData(const std::string &BinaryFile){
         GG_Read(inStream,y);
         GG_Read(inStream,z);
         glm::vec3 Position(x,y,z);
-
+        
         TData mes;
         mes.add(kDat_LoadThatZone,ZONE);
         TS->RegisterTriger(kTrig_LoadZone,1,0,Position, 15, 0, false, mes);

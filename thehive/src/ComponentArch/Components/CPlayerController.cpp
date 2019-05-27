@@ -26,7 +26,7 @@
 #define WEAPON_KEY          gg::Q
 
 #define FORCE_FACTOR        480.f
-#define JUMP_FORCE_FACTOR   FORCE_FACTOR*3.f
+#define JUMP_FORCE_FACTOR   FORCE_FACTOR*4.f
 #define DASH_FORCE_FACTOR   FORCE_FACTOR/50.f
 
 #define MULT_RUN_FACTOR     1.5

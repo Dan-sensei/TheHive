@@ -66,8 +66,8 @@ uint16_t Factory::createHero(const glm::vec3 &Position) {
     CDynamicModel* DynamicModel       = new CDynamicModel(FATHER, moradoDeLos80);
     Manager->addComponentToEntity(DynamicModel, gg::DYNAMICMODEL, hero);
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Standing"));
-    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Walking"));
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Walking_Weapon"));
+    DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Walking"));
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Jumping"));
     DynamicModel->AddAnimation(Singleton<AssetManager>::Instance()->getAnimation("Hero_Jumping_Walking"));
     DynamicModel->ToggleAnimation(0, 2);

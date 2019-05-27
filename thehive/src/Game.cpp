@@ -104,8 +104,6 @@ void Game::Init(){
     cont->musicaJuegoPause(false);
     cont->musicaMenuStop();
 
-
-    auto sF = Singleton<Factory>::Instance();
     Engine->crearCamara(90,0.15f,100.f, glm::vec3(2,2,10),glm::vec3(),16.f/9.f);
     //luz = Engine->crearLuz(col,glm::vec3(5, 6, 0),glm::vec3(), Singleton<AssetManager>::Instance()->getShader("Default"));
 

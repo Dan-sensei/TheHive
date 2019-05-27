@@ -137,15 +137,6 @@ void CAgent::Init(){
     // void (*)(std::__cxx11::basic_string<char>&, signed char)
     // void (*)(std::__cxx11::basic_string<char>, signed char)
 
-    zonesArray[0] = std::make_pair("INICIO", BinaryParser::LoadBVHLevelData);
-    zonesArray[1] = std::make_pair("PASILLOS", BinaryParser::LoadLevelData);
-    zonesArray[2] = std::make_pair("TUNELES", BinaryParser::LoadLevelData);
-    zonesArray[3] = std::make_pair("INICIO_CIUDAD", BinaryParser::LoadBVHLevelData);
-    zonesArray[4] = std::make_pair("CALLE_PRINCIPAL", BinaryParser::LoadLevelData);
-    zonesArray[5] = std::make_pair("CENTRO", BinaryParser::LoadBVHLevelData);
-    zonesArray[6] = std::make_pair("FINAL", BinaryParser::LoadLevelData);
-
-
     //  Inicializar punteros a otras compnentes
     MHandler_SETPTRS();
 }
@@ -254,7 +245,6 @@ void CAgent::sonido_5(){
 }
 void CAgent::sonido_6(){
     SS->createSound("event:/Ambiente/Viento", s_sonidoSaltoPrecipicio);
-    std::cout << "puto viento" << '\n';
 }
 
 
@@ -291,17 +281,14 @@ void CAgent::ENTER_func_kTrig_Gunfire       (TriggerRecordStruct *_pRec){}
 
 void CAgent::ENTER_func_kTrig_LoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
-    std::string name = zonesArray[id].first;
     Engine->SetMapZoneVisibility(id, true);
     Engine->setLightsZone(id, true);
-    Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
 }
 
 void CAgent::ENTER_func_kTrig_UnLoadZone       (TriggerRecordStruct *_pRec){
     int8_t id = _pRec->data.find(kDat_LoadThatZone);
     Engine->SetMapZoneVisibility(id,false);
     Engine->setLightsZone(id, false);
-    Singleton<CTriggerSystem>::Instance()->RemoveTrigger(_pRec);
 }
 
 void CAgent::ENTER_func_kTrig_ExpansiveWave (TriggerRecordStruct *_pRec){

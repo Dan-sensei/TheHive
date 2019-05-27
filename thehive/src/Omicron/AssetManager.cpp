@@ -84,8 +84,8 @@ void AssetManager::loadInit(){
 
     ZMaterial* 		Hero = getMaterial("Hero");
     Hero->attachShader(shader);
-    Hero->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/HERO/HERO_t.png",3));
-    Hero->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/HERO/HERO_n.png",3));
+    Hero->addTexture(GN::DIFFUSE_MAP,      getTexture("assets/Textures/HERO/HERO_t.jpg",3));
+    Hero->addTexture(GN::NORMAL_MAP,       getTexture("assets/Textures/HERO/HERO_n.jpg",3));
     Hero->addTexture(GN::SPECULAR_MAP,     getTexture("assets/Textures/DefaultSpecular.jpg",1));
 
     ZAnimationData* AnimationData = getAnimation("Soldier_Walking");
@@ -121,7 +121,7 @@ void AssetManager::loadInit(){
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking1.modelgg");
 
     AnimationData = getAnimation("Hero_Walking_Weapon");
-    AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon3.modelgg");
+    // AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon3.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon2.modelgg");
     AnimationData->addKeyframe("assets/BinaryFiles/BinaryModels/Walking_Weapon1.modelgg");
 

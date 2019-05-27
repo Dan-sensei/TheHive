@@ -82,8 +82,7 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
                 faces   =   meshes[i]->mFaces;
 
             THE_BUFFER.reserve(meshes[i]->mNumVertices*6 + meshes[i]->mNumVertices*2 + meshes[i]->mNumVertices*3);
-
-
+            
         for(uint16_t j = 0; j < meshes[i]->mNumVertices; ++j){
 
             THE_BUFFER.emplace_back(vertices[j].x);
@@ -108,7 +107,7 @@ void ModelParser::parser(const std::string &FileInput, const std::string& FileOu
 
         index.reserve(meshes[i]->mNumFaces*3);
         for(uint16_t j = 0; j < meshes[i]->mNumFaces; ++j){
-            const aiFace& Face = faces[j];
+            const aiFace& Face =  meshes[i]->mFaces[j];
             assert(Face.mNumIndices == 3);
             index.emplace_back(Face.mIndices[0]);
             index.emplace_back(Face.mIndices[1]);
