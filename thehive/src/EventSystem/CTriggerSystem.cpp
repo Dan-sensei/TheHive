@@ -234,4 +234,6 @@ void CTriggerSystem::clin(){
         delete(it->second);
         ++it;
     }
+
+    m_mapTriggerMap.clear();
 }

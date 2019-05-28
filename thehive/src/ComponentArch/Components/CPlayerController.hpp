@@ -74,7 +74,7 @@ class CPlayerController : public IComponent {
         int currentsoldier;
         int currentrusher;
         int currenttank;
-        void reset(glm::vec3  pos_jugador);
+        void reset();
     private:
 
         CPlayerController();
@@ -135,7 +135,7 @@ class CPlayerController : public IComponent {
             void (CPlayerController::*Target)();
         };
 
-        std::array<Key2Func, 15> KEYMAP;
+        std::array<Key2Func, 13> KEYMAP;
 
         void ToggleSkill1();
         void ToggleSkill2();
@@ -149,8 +149,6 @@ class CPlayerController : public IComponent {
         void TogglePause();
         void MostrarTexto();
         // void QuitarTexto();
-        void invocasionhorda();
-        void invocasionwander();
         void ToggleFreeCamera();
         void EnemyInfo();
         void aim(const uint8_t &s);

@@ -11,6 +11,7 @@
 #include <ComponentArch/Components/CRigidBody.hpp>
 #include <ComponentArch/Components/CAIEnem.hpp>
 #include <ComponentArch/Components/CGun.hpp>
+#include <GameAI/AIDirector.hpp>
 
 
 #define GRENADE_VEL_FACTOR      500.f
@@ -119,12 +120,10 @@ void CPlayerController::Init(){
     KEYMAP[8] = {JUMP_KEY, &CPlayerController::JUMP};
     KEYMAP[9] = {gg::P, &CPlayerController::TogglePause};
 
-    KEYMAP[10] = {gg::I, &CPlayerController::invocasionwander};
-    KEYMAP[11] = {gg::U, &CPlayerController::invocasionhorda};
-    KEYMAP[12] = {gg::_4, &CPlayerController::ToggleFreeCamera};
-    KEYMAP[13] = {gg::M, &CPlayerController::EnemyInfo};
+    KEYMAP[10] = {gg::_4, &CPlayerController::ToggleFreeCamera};
+    KEYMAP[11] = {gg::M, &CPlayerController::EnemyInfo};
 
-    KEYMAP[14] = {gg::V, &CPlayerController::MostrarTexto};
+    KEYMAP[12] = {gg::V, &CPlayerController::MostrarTexto};
     // KEYMAP[15] = {gg::C, &CPlayerController::QuitarTexto};
 }
 
@@ -171,6 +170,10 @@ void CPlayerController::FixedUpdate(){
 
     if(!cTransform || !camera || !ghostCollider)  return;
 
+    if(collider->getBodyPosition().y < -65){
+        reset();
+        return;
+    }
     // auto posJ=cTransform->getPosition();
     //
     // std::cout << posJ.x <<","<< posJ.y << "," << posJ.z << '\n';
@@ -603,26 +606,7 @@ void CPlayerController::MostrarTexto(){
 // void CPlayerController::QuitarTexto(){
 //     Singleton<Motor2D>::Instance()->InitHUD();
 // }
-void CPlayerController::invocasionhorda(){
-    auto hola=glm::vec3(651.342,0.684987,-14.1424);
-    factory->createTank(hola, 200);
-}
-void CPlayerController::invocasionwander(){
-    glm::vec3 hola[]={
-        glm::vec3(-15,0.684987,11),
-        glm::vec3(-18,0.684987,12),
-        glm::vec3(22,0.684986,14),
-        glm::vec3(30,0.684986,20),
-        glm::vec3(40,0.684986,25),
-        glm::vec3(50,0.684986,28),
-        glm::vec3(60,0.684986,35),
-        glm::vec3(70,0.684986,40)
-    };
-    //wandering
-    for (int i = 0; i < 8; i++) {
-        factory->createSoldierWandering(hola[i], 1);
-    }
-}
+
 void CPlayerController::ToggleFreeCamera(){
     camera->ToogleFreeCamera();
 
@@ -641,7 +625,7 @@ void CPlayerController::explosion(glm::vec3 vPos,float fuerzabomba){
     collider->applyCentralForce(sol);
 
 }
-void CPlayerController::reset(glm::vec3  pos_jugador){
+void CPlayerController::reset(){
     //resetear la posicion del jugador
     //colider en pos //pos_jugador
     /*traza
@@ -653,6 +637,27 @@ void CPlayerController::reset(glm::vec3  pos_jugador){
     pos_jugador fixed (310.632,-42.6559,126.577)
     */
     //std::cout << "pos_jugador en reset (" <<pos_jugador.x<<","<<pos_jugador.y<<","<<pos_jugador.z<<")"<< '\n';
+
+
+    glm::vec3 ZONES_RESPAWNS[7] = {
+        glm::vec3(33.225227, -21.338203, 35.246361),
+        glm::vec3(129.612900, -20.939051, 62.093109),
+        glm::vec3(217.182678, -24.362558, 39.726517),
+        glm::vec3(329.710754, -43.133827, 61.127842),
+        glm::vec3(295.498993, -43.432789, 156.500885),
+        glm::vec3(239.640900, -43.432274, 245.919968),
+        glm::vec3(35.163818, -44.162739, 258.325195)
+    };
+
+    uint8_t CURRENT_ZONE = 0;
+    for(uint8_t i = 0; i < 7; ++i) {
+        if(Engine->ZONES[i]->getVisibility())
+            CURRENT_ZONE = i;
+    }
+
+
+    glm::vec3 pos_jugador = ZONES_RESPAWNS[CURRENT_ZONE];
+
     collider->activate(true);
     collider->setNotKinematicBodyPosition(pos_jugador);
     collider->setBodyPosition(pos_jugador);
@@ -679,6 +684,16 @@ void CPlayerController::reset(glm::vec3  pos_jugador){
     if(secondWeapon){
         secondWeapon->reset();
     }
+
+    Singleton<AIDirector>::Instance()->restart();
+
+    //ponemos pop up muertes
+    PopState* aux = new PopState();
+    AssetManager* Manager = Singleton<AssetManager>::Instance();
+    aux->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/muerte_esp.png"));
+    //estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
+    Singleton<StateMachine>::Instance()->AddState(aux);
+
     /*
     int _wtype_floor=gun->getType();
     float   dmg, cdc, relDT, rng;

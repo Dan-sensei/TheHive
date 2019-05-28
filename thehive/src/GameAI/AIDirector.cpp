@@ -144,20 +144,12 @@ void AIDirector::update (float delta){
         //    std::cout << "creamos en :" << post<<'\n';
             createWandering(post);
         }
-        auto pos_jugador=getposzona(zona_actual);
+        //auto pos_jugador=getposzona(zona_actual);
         //CRigidBody* Rjugador=static_cast<CRigidBody*>(Manager->getComponent(gg::RIGID_BODY, Manager->getHeroID()));
         //Rjugador->setBodyPosition(pos_jugador);
-        CPlayerController* cPlayerController=static_cast<CPlayerController*>(Manager->getComponent(gg::PLAYERCONTROLLER, Manager->getHeroID()));
-        cPlayerController->reset(pos_jugador);
+        // CPlayerController* cPlayerController=static_cast<CPlayerController*>(Manager->getComponent(gg::PLAYERCONTROLLER, Manager->getHeroID()));
+        // cPlayerController->reset(pos_jugador);
         //Rjugador->se
-
-        //ponemos pop up muerte
-
-        PopState* aux = new PopState();
-        AssetManager* Manager = Singleton<AssetManager>::Instance();
-        aux->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/muerte_esp.png"));
-        //estado->Addim(Manager->getTextureWithoutSavingToMap("assets/HUD/camara_esp.png"));
-        Singleton<StateMachine>::Instance()->AddState(aux);
 
         return;
     }
@@ -394,9 +386,10 @@ void AIDirector::restart(){
     //removeAllEnem();
     //std::cout << "eliminado" << '\n';
     //activado=false;
+    if(!activado) return;
     muerto=true;
-
 }
+
 void AIDirector::removeAllEnem(){
     auto it=enemigos.begin();
     while(it!=enemigos.end()){

@@ -168,6 +168,7 @@ void Game::Init(){
     mes2.add(kDat_img2,3);
     mes2.add(kDat_img3,4);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_InteractMess,1,0,glm::vec3(330.681,-42.8137,79.0592 ), 5, 0, false, mes2);
+
     TData mes3;
     mes3.add(kDat_soundRoute,1);
     Singleton<CTriggerSystem>::Instance()->RegisterTriger(kTrig_SoundJumpCliff,1,0,glm::vec3(332.327,-42.8137,60.2511), 10, 0, false, mes3);
@@ -287,6 +288,7 @@ void Game::NormalUpdate(){
     Manager->sendMessageToAllEntities(Message(gg::M_INTERPOLATE, &Tick));
 
     glm::vec3 pos = playerpos->getPosition();
+    std::cout << glm::to_string(pos) << '\n';
     pos.y += 3;
     PS->setPosition(pos);
 
@@ -337,6 +339,8 @@ void Game::CLIN(){
     cont->musicaMenuPlay();
     Engine->resetSceneGraph();
     delete dialogoInicial;
+
+    EventSystem->clin();
 }
 void Game::Pause(){
     cont->musicaJuegoPause(true);

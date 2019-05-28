@@ -14,6 +14,7 @@ class ZNode{
         virtual bool isLeaf() = 0;
 
         void setVisibility(bool Flag);
+        inline bool getVisibility() { return Visibility; };
         ZNode* getPadre();
 
         bool setEntidad(TEntidad*);

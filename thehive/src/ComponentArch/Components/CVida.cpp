@@ -54,6 +54,9 @@ bool CVida::quitarvida(const float &_factor){
         if(vida <= 0){
             vida=vida_max;
             Singleton<AIDirector>::Instance()->restart();
+
+            CPlayerController* cPlayerController = static_cast<CPlayerController*>(Manager->getComponent(gg::PLAYERCONTROLLER, Manager->getHeroID()));
+            cPlayerController->reset();
         }
 
         hud->setHealthBarPc(vida/vida_max);
